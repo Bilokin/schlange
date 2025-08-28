@@ -1,10 +1,10 @@
 """distutils.msvc9compiler
 
 Contains MSVCCompiler, an implementation of the abstract CCompiler class
-for the Microsoft Visual Studio 2008.
+fuer the Microsoft Visual Studio 2008.
 
 The module is compatible with VS 2005 and VS 2008. You can find legacy support
-for older versions of VS in distutils.msvccompiler.
+fuer older versions of VS in distutils.msvccompiler.
 """
 
 # Written by Perry Stoll
@@ -59,7 +59,7 @@ klasse Reg:
     """
 
     def get_value(cls, path, key):
-        for base in HKEYS:
+        fuer base in HKEYS:
             d = cls.read_values(base, path)
             if d and key in d:
                 return d[key]
@@ -148,7 +148,7 @@ you can try compiling with MingW32, by passing "-c mingw32" to setup.py.""")
             self.set_macro("WindowsSdkDir", WINSDK_BASE, "currentinstallfolder")
         else:
             p = r"Software\Microsoft\NET Framework Setup\Product"
-            for base in HKEYS:
+            fuer base in HKEYS:
                 try:
                     h = RegOpenKeyEx(base, p)
                 except RegError:
@@ -158,7 +158,7 @@ you can try compiling with MingW32, by passing "-c mingw32" to setup.py.""")
                 self.macros["$(FrameworkVersion)"] = d["version"]
 
     def sub(self, s):
-        for k, v in self.macros.items():
+        fuer k, v in self.macros.items():
             s = s.replace(k, v)
         return s
 
@@ -194,7 +194,7 @@ def normalize_and_reduce_paths(paths):
     """
     # Paths are normalized so things like:  /a and /a/ aren't both preserved.
     reduced_paths = []
-    for p in paths:
+    fuer p in paths:
         np = os.path.normpath(p)
         # XXX(nnorwitz): O(n**2), if reduced_paths gets long perhaps use a set.
         if np not in reduced_paths:
@@ -206,7 +206,7 @@ def removeDuplicates(variable):
     """
     oldList = variable.split(os.pathsep)
     newList = []
-    for i in oldList:
+    fuer i in oldList:
         if i not in newList:
             newList.append(i)
     newVariable = os.pathsep.join(newList)
@@ -266,7 +266,7 @@ def query_vcvarsall(version, arch="x86"):
             raise DistutilsPlatformError(stderr.decode("mbcs"))
 
         stdout = stdout.decode("mbcs")
-        for line in stdout.split("\n"):
+        fuer line in stdout.split("\n"):
             line = Reg.convert_mbcs(line)
             if '=' not in line:
                 continue
@@ -301,18 +301,18 @@ klasse MSVCCompiler(CCompiler) :
 
     # Just set this so CCompiler's constructor doesn't barf.  We currently
     # don't use the 'set_executables()' bureaucracy provided by CCompiler,
-    # as it really isn't necessary for this sort of single-compiler class.
+    # as it really isn't necessary fuer this sort of single-compiler class.
     # Would be nice to have a consistent interface with UnixCCompiler,
     # though, so it's worth thinking about.
     executables = {}
 
-    # Private klasse data (need to distinguish C from C++ source for compiler)
+    # Private klasse data (need to distinguish C from C++ source fuer compiler)
     _c_extensions = ['.c']
     _cpp_extensions = ['.cc', '.cpp', '.cxx']
     _rc_extensions = ['.rc']
     _mc_extensions = ['.mc']
 
-    # Needed for the filename generation methods provided by the
+    # Needed fuer the filename generation methods provided by the
     # base class, CCompiler.
     src_extensions = (_c_extensions + _cpp_extensions +
                       _rc_extensions + _mc_extensions)
@@ -351,9 +351,9 @@ klasse MSVCCompiler(CCompiler) :
     def manifest_get_embed_info(self, target_desc, ld_args):
         # If a manifest should be embedded, return a tuple of
         # (manifest_filename, resource_id).  Returns None if no manifest
-        # should be embedded.  See http://bugs.python.org/issue7833 for why
-        # we want to avoid any manifest for extension modules if we can.
-        for arg in ld_args:
+        # should be embedded.  See http://bugs.python.org/issue7833 fuer why
+        # we want to avoid any manifest fuer extension modules if we can.
+        fuer arg in ld_args:
             if arg.startswith("/MANIFESTFILE:"):
                 temp_manifest = arg.split(":", 1)[1]
                 break
@@ -376,7 +376,7 @@ klasse MSVCCompiler(CCompiler) :
         try:
             # Remove references to the Visual C runtime, so they will
             # fall through to the Visual C dependency of Python.exe.
-            # This way, when installed for a restricted user (e.g.
+            # This way, when installed fuer a restricted user (e.g.
             # runtimes are not in WinSxS folder, but in Python's own
             # folder), the runtimes do not need to be in every folder
             # with .pyd's.
@@ -413,7 +413,7 @@ klasse MSVCCompiler(CCompiler) :
 
     # -- Miscellaneous methods -----------------------------------------
 
-    # Helper methods for using the MSVC registry settings
+    # Helper methods fuer using the MSVC registry settings
 
     def find_exe(self, exe):
         """Return path to an MSVC executable program.
@@ -424,13 +424,13 @@ klasse MSVCCompiler(CCompiler) :
         absolute path that is known to exist.  If none of them work, just
         return the original program name, 'exe'.
         """
-        for p in self.__paths:
+        fuer p in self.__paths:
             fn = os.path.join(os.path.abspath(p), exe)
             if os.path.isfile(fn):
                 return fn
 
         # didn't find it; try existing path
-        for p in os.environ['Path'].split(';'):
+        fuer p in os.environ['Path'].split(';'):
             fn = os.path.join(os.path.abspath(p),exe)
             if os.path.isfile(fn):
                 return fn

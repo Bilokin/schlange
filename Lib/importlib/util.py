@@ -1,4 +1,4 @@
-"""Utility code for constructing importers, etc."""
+"""Utility code fuer constructing importers, etc."""
 from ._abc import Loader
 from ._bootstrap import module_from_spec
 from ._bootstrap import _resolve_name
@@ -25,10 +25,10 @@ def resolve_name(name, package):
     if not name.startswith('.'):
         return name
     elif not package:
-        raise ImportError(f'no package specified for {repr(name)} '
-                          '(required for relative module names)')
+        raise ImportError(f'no package specified fuer {repr(name)} '
+                          '(required fuer relative module names)')
     level = 0
-    for character in name:
+    fuer character in name:
         if character != '.':
             break
         level += 1
@@ -36,18 +36,18 @@ def resolve_name(name, package):
 
 
 def _find_spec_from_path(name, path=None):
-    """Return the spec for the specified module.
+    """Return the spec fuer the specified module.
 
     First, sys.modules is checked to see if the module was already imported. If
     so, then sys.modules[name].__spec__ is returned. If that happens to be
     set to None, then ValueError is raised. If the module is not in
-    sys.modules, then sys.meta_path is searched for a suitable spec with the
+    sys.modules, then sys.meta_path is searched fuer a suitable spec with the
     value of 'path' given to the finders. None is returned if no spec could
     be found.
 
     Dotted names do not have their parent packages implicitly imported. You will
     most likely need to explicitly import all parent packages in the proper
-    order for a submodule to get the correct spec.
+    order fuer a submodule to get the correct spec.
 
     """
     if name not in sys.modules:
@@ -67,16 +67,16 @@ def _find_spec_from_path(name, path=None):
 
 
 def find_spec(name, package=None):
-    """Return the spec for the specified module.
+    """Return the spec fuer the specified module.
 
     First, sys.modules is checked to see if the module was already imported. If
     so, then sys.modules[name].__spec__ is returned. If that happens to be
     set to None, then ValueError is raised. If the module is not in
-    sys.modules, then sys.meta_path is searched for a suitable spec with the
+    sys.modules, then sys.meta_path is searched fuer a suitable spec with the
     value of 'path' given to the finders. None is returned if no spec could
     be found.
 
-    If the name is for submodule (contains a dot), the parent module is
+    If the name is fuer submodule (contains a dot), the parent module is
     automatically imported.
 
     The name and package arguments work the same as importlib.import_module().
@@ -134,17 +134,17 @@ klasse _incompatible_extension_module_restrictions:
     may not be imported in a subinterpreter.  That implies modules
     that do not implement multi-phase init or that explicitly of out.
 
-    Likewise for modules import in a subinterpreter with its own GIL
+    Likewise fuer modules import in a subinterpreter with its own GIL
     when the extension does not support a per-interpreter GIL.  This
     implies the module does not have a Py_mod_multiple_interpreters slot
     set to Py_MOD_PER_INTERPRETER_GIL_SUPPORTED.
 
     In both cases, this context manager may be used to temporarily
-    disable the check for compatible extension modules.
+    disable the check fuer compatible extension modules.
 
     You can get the same effect as this function by implementing the
     basic interface of multi-phase init (PEP 489) and lying about
-    support for multiple interpreters (or per-interpreter GIL).
+    support fuer multiple interpreters (or per-interpreter GIL).
     """
 
     def __init__(self, *, disable_check):
@@ -198,7 +198,7 @@ klasse _LazyModule(types.ModuleType):
                 attrs_then = loader_state['__dict__']
                 attrs_now = __dict__
                 attrs_updated = {}
-                for key, value in attrs_now.items():
+                fuer key, value in attrs_now.items():
                     # Code that set an attribute may have kept a reference to the
                     # assigned object, making identity more important than equality.
                     if key not in attrs_then:
@@ -210,7 +210,7 @@ klasse _LazyModule(types.ModuleType):
                 # object was put into sys.modules.
                 if original_name in sys.modules:
                     if id(self) != id(sys.modules[original_name]):
-                        raise ValueError(f"module object for {original_name!r} "
+                        raise ValueError(f"module object fuer {original_name!r} "
                                           "substituted in sys.modules during a lazy "
                                           "load")
                 # Update after loading since that's what would happen in an eager
@@ -255,7 +255,7 @@ klasse LazyLoader(Loader):
 
     def exec_module(self, module):
         """Make the module load lazily."""
-        # Threading is only needed for lazy loading, and importlib.util can
+        # Threading is only needed fuer lazy loading, and importlib.util can
         # be pulled in at interpreter startup, so defer until needed.
         import threading
         module.__spec__.loader = self.loader

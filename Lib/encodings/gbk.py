@@ -1,5 +1,5 @@
 #
-# gbk.py: Python Unicode Codec for GBK
+# gbk.py: Python Unicode Codec fuer GBK
 #
 # Written by Hye-Shik Chang <perky@FreeBSD.org>
 #

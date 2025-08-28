@@ -31,7 +31,7 @@ klasse byteskeydict(MutableMapping):
         return len(self.d)
 
     def iterkeys(self):
-        for k in self.d.keys():
+        fuer k in self.d.keys():
             yield k.encode("latin-1")
 
     __iter__ = iterkeys
@@ -177,7 +177,7 @@ klasse TestCase(unittest.TestCase):
                 return type(obj).__name__
             elif isinstance(obj, array.array):
                 return obj.tobytes()
-            raise TypeError(f"Unsupported type for serialization: {type(obj)}")
+            raise TypeError(f"Unsupported type fuer serialization: {type(obj)}")
 
         def deserializer(data):
             if isinstance(data, (bytes, bytearray, str)):
@@ -185,10 +185,10 @@ klasse TestCase(unittest.TestCase):
             elif isinstance(data, array.array):
                 return array.array("b", data)
             raise TypeError(
-                f"Unsupported type for deserialization: {type(data)}"
+                f"Unsupported type fuer deserialization: {type(data)}"
             )
 
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             with self.subTest(proto=proto), shelve.open(
                 self.fn,
                 protocol=proto,
@@ -267,7 +267,7 @@ klasse TestCase(unittest.TestCase):
         def type_name_len(obj):
             return f"{(len(type(obj).__name__))}"
 
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             with self.subTest(proto=proto), shelve.BsdDbShelf(
                 berkeleydb.btopen(self.fn),
                 protocol=proto,
@@ -432,13 +432,13 @@ klasse TestShelveFileBase(TestShelveBase):
 
 from test import mapping_tests
 
-for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
     bases = (TestShelveInMemBase, mapping_tests.BasicTestMappingProtocol)
     name = f'TestProto{proto}MemShelve'
     globals()[name] = type(name, bases,
                            {'_args': {'protocol': proto}})
     bases = (TestShelveFileBase, mapping_tests.BasicTestMappingProtocol)
-    for dbm_mod in dbm_iterator():
+    fuer dbm_mod in dbm_iterator():
         assert dbm_mod.__name__.startswith('dbm.')
         suffix = dbm_mod.__name__[4:]
         name = f'TestProto{proto}File_{suffix}Shelve'

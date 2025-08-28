@@ -16,7 +16,7 @@ klasse TestAppleSystemLogOutput(unittest.TestCase):
             self.log_write.mock_calls,
             [
                 call(self.log_level, line)
-                for line in output
+                fuer line in output
             ]
         )
 
@@ -67,8 +67,8 @@ klasse TestAppleSystemLogOutput(unittest.TestCase):
 
         self.assert_writes([])
 
-        self.log.write(" world\nHere for a while...\nGoodbye")
-        self.assert_writes([b"Hello world\n", b"Here for a while...\n"])
+        self.log.write(" world\nHere fuer a while...\nGoodbye")
+        self.assert_writes([b"Hello world\n", b"Here fuer a while...\n"])
 
         self.log.write(" world\nHello again")
         self.assert_writes([b"Goodbye world\n"])
@@ -122,7 +122,7 @@ klasse TestAppleSystemLogOutput(unittest.TestCase):
 
     def test_non_str(self):
         # Non-string classes are not accepted.
-        for obj in [b"", b"hello", None, 42]:
+        fuer obj in [b"", b"hello", None, 42]:
             with self.subTest(obj=obj):
                 with self.assertRaisesRegex(
                     TypeError,
@@ -145,7 +145,7 @@ klasse TestAppleSystemLogOutput(unittest.TestCase):
         self.assert_writes([b"hello", b"goodbye"])
 
     def test_non_byteslike_in_buffer(self):
-        for obj in ["hello", None, 42]:
+        fuer obj in ["hello", None, 42]:
             with self.subTest(obj=obj):
                 with self.assertRaisesRegex(
                     TypeError,

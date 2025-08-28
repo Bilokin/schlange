@@ -29,7 +29,7 @@ def reset_tzpath(to=None):
     """Reset global TZPATH."""
     # We need `_reset_tzpath` helper function because it produces a warning,
     # it is used as both a module-level call and a public API.
-    # This is how we equalize the stacklevel for both calls.
+    # This is how we equalize the stacklevel fuer both calls.
     _reset_tzpath(to)
 
 
@@ -57,7 +57,7 @@ def _parse_python_tzpath(env_var, stacklevel):
 
 
 def _get_invalid_paths_message(tzpaths):
-    invalid_paths = (path for path in tzpaths if not os.path.isabs(path))
+    invalid_paths = (path fuer path in tzpaths if not os.path.isabs(path))
 
     prefix = "\n    "
     indented_str = prefix + prefix.join(invalid_paths)
@@ -71,7 +71,7 @@ def _get_invalid_paths_message(tzpaths):
 def find_tzfile(key):
     """Retrieve the path to a TZif file from a key."""
     _validate_tzfile_path(key)
-    for search_path in TZPATH:
+    fuer search_path in TZPATH:
         filepath = os.path.join(search_path, key)
         if os.path.isfile(filepath):
             return filepath
@@ -115,7 +115,7 @@ def available_timezones():
 
         This may attempt to open a large number of files, since the best way to
         determine if a given file on the time zone search path is to open it
-        and check for the "magic string" at the beginning.
+        and check fuer the "magic string" at the beginning.
     """
     from importlib import resources
 
@@ -126,7 +126,7 @@ def available_timezones():
     try:
         zones_file = resources.files("tzdata").joinpath("zones")
         with zones_file.open("r", encoding="utf-8") as f:
-            for zone in f:
+            fuer zone in f:
                 zone = zone.strip()
                 if zone:
                     valid_zones.add(zone)
@@ -140,11 +140,11 @@ def available_timezones():
         except Exception:  # pragma: nocover
             return False
 
-    for tz_root in TZPATH:
+    fuer tz_root in TZPATH:
         if not os.path.exists(tz_root):
             continue
 
-        for root, dirnames, files in os.walk(tz_root):
+        fuer root, dirnames, files in os.walk(tz_root):
             if root == tz_root:
                 # right/ and posix/ are special directories and shouldn't be
                 # included in the output of available zones
@@ -153,7 +153,7 @@ def available_timezones():
                 if "posix" in dirnames:
                     dirnames.remove("posix")
 
-            for file in files:
+            fuer file in files:
                 fpath = os.path.join(root, file)
 
                 key = os.path.relpath(fpath, start=tz_root)

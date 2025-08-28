@@ -35,7 +35,7 @@ klasse TestAndroidOutput(unittest.TestCase):
         self.logcat_queue = queue.Queue()
 
         def logcat_thread():
-            for line in self.logcat_process.stdout:
+            fuer line in self.logcat_process.stdout:
                 self.logcat_queue.put(line.rstrip("\n"))
             self.logcat_process.stdout.close()
 
@@ -61,7 +61,7 @@ klasse TestAndroidOutput(unittest.TestCase):
             raise
 
     def assert_logs(self, level, tag, expected, **kwargs):
-        for line in expected:
+        fuer line in expected:
             self.assert_log(level, tag, line, **kwargs)
 
     def assert_log(self, level, tag, expected, *, skip=False):
@@ -122,7 +122,7 @@ klasse TestAndroidOutput(unittest.TestCase):
         return stack
 
     def test_str(self):
-        for stream_name, level, fileno in STREAM_INFO:
+        fuer stream_name, level, fileno in STREAM_INFO:
             with self.stream_context(stream_name, level):
                 stream = getattr(sys, stream_name)
                 tag = f"python.{stream_name}"
@@ -229,7 +229,7 @@ klasse TestAndroidOutput(unittest.TestCase):
                 write(CustomStr("custom\n"), ["custom"], write_len=7)
 
                 # Non-string classes are not accepted.
-                for obj in [b"", b"hello", None, 42]:
+                fuer obj in [b"", b"hello", None, 42]:
                     with self.subTest(obj=obj):
                         with self.assertRaisesRegex(
                             TypeError,
@@ -271,7 +271,7 @@ klasse TestAndroidOutput(unittest.TestCase):
                 write("\n", [s * 51])  # 0 bytes in, 510 bytes out
 
     def test_bytes(self):
-        for stream_name, level, fileno in STREAM_INFO:
+        fuer stream_name, level, fileno in STREAM_INFO:
             with self.stream_context(stream_name, level):
                 stream = getattr(sys, stream_name).buffer
                 tag = f"python.{stream_name}"
@@ -368,7 +368,7 @@ klasse TestAndroidOutput(unittest.TestCase):
                 )
 
                 # Non-bytes-like classes are not accepted.
-                for obj in ["", "hello", None, 42]:
+                fuer obj in ["", "hello", None, 42]:
                     with self.subTest(obj=obj):
                         with self.assertRaisesRegex(
                             TypeError,

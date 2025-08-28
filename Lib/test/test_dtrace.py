@@ -20,7 +20,7 @@ def abspath(filename):
 
 
 def normalize_trace_output(output):
-    """Normalize DTrace output for comparison.
+    """Normalize DTrace output fuer comparison.
 
     DTrace keeps a per-CPU buffer, and when showing the fired probes, buffers
     are concatenated. So if the operating system moves our thread around, the
@@ -32,11 +32,11 @@ def normalize_trace_output(output):
     try:
         result = [
             row.split("\t")
-            for row in output.splitlines()
+            fuer row in output.splitlines()
             if row and not row.startswith('#')
         ]
         result.sort(key=lambda row: int(row[0]))
-        result = [row[1] for row in result]
+        result = [row[1] fuer row in result]
         return "\n".join(result)
     except (IndexError, ValueError):
         raise AssertionError(
@@ -138,12 +138,12 @@ klasse TraceTests:
                            mode="exec",
                            optimize=self.optimize_python)
 
-            for c in code.co_consts:
+            fuer c in code.co_consts:
                 if isinstance(c, types.CodeType) and c.co_name == funcname:
                     return dis.get_instructions(c)
             return []
 
-        for instruction in get_function_instructions('start'):
+        fuer instruction in get_function_instructions('start'):
             opcodes.discard(instruction.opname)
 
         self.assertEqual(set(), opcodes)
@@ -236,7 +236,7 @@ klasse CheckDtraceProbes(unittest.TestCase):
             "Name: gc__done",
         ]
 
-        for probe_name in available_probe_names:
+        fuer probe_name in available_probe_names:
             with self.subTest(probe_name=probe_name):
                 self.assertIn(probe_name, readelf_output)
 
@@ -251,7 +251,7 @@ klasse CheckDtraceProbes(unittest.TestCase):
             "Name: line",
         ]
 
-        for probe_name in missing_probe_names:
+        fuer probe_name in missing_probe_names:
             with self.subTest(probe_name=probe_name):
                 self.assertIn(probe_name, readelf_output)
 

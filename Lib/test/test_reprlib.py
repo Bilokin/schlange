@@ -1,5 +1,5 @@
 """
-  Test cases for the repr module
+  Test cases fuer the repr module
   Nick Mathewson
 """
 
@@ -21,7 +21,7 @@ from reprlib import recursive_repr
 
 def nestedTuple(nesting):
     t = ()
-    for i in range(nesting):
+    fuer i in range(nesting):
         t = (t,)
     return t
 
@@ -44,10 +44,10 @@ klasse ReprTests(unittest.TestCase):
             "indent": "x" * 113,
         }
         r1 = Repr()
-        for attr, val in example_kwargs.items():
+        fuer attr, val in example_kwargs.items():
             setattr(r1, attr, val)
         r2 = Repr(**example_kwargs)
-        for attr in example_kwargs:
+        fuer attr in example_kwargs:
             self.assertEqual(getattr(r1, attr), getattr(r2, attr), msg=attr)
 
     def test_string(self):
@@ -151,11 +151,11 @@ klasse ReprTests(unittest.TestCase):
         eq(r(frozenset({1, 2, 3, 4, 5, 6, 7})), "frozenset({1, 2, 3, 4, 5, 6, ...})")
 
     def test_numbers(self):
-        for x in [123, 1.0 / 3]:
+        fuer x in [123, 1.0 / 3]:
             self.assertEqual(r(x), repr(x))
 
         max_digits = sys.get_int_max_str_digits()
-        for k in [100, max_digits - 1]:
+        fuer k in [100, max_digits - 1]:
             with self.subTest(f'10 ** {k}', k=k):
                 n = 10 ** k
                 expected = repr(n)[:18] + "..." + repr(n)[-19:]
@@ -171,7 +171,7 @@ klasse ReprTests(unittest.TestCase):
             self.assertRaises(ValueError, repr, n)
             self.assertRegex(r(n), re_msg(n, k + 1))
 
-        for k in [max_digits + 1, 2 * max_digits]:
+        fuer k in [max_digits + 1, 2 * max_digits]:
             self.assertGreater(k, 100)
             with self.subTest(f'10 ** {k}', k=k):
                 n = 10 ** k
@@ -575,12 +575,12 @@ klasse ReprTests(unittest.TestCase):
                 ),
             },
         ]
-        for test_case in test_cases:
+        fuer test_case in test_cases:
             with self.subTest(test_object=test_case['object']):
-                for repr_settings, expected_repr in test_case['tests']:
+                fuer repr_settings, expected_repr in test_case['tests']:
                     with self.subTest(repr_settings=repr_settings):
                         r = Repr()
-                        for attribute, value in repr_settings.items():
+                        fuer attribute, value in repr_settings.items():
                             setattr(r, attribute, value)
                         resulting_repr = r.repr(test_case['object'])
                         expected_repr = textwrap.dedent(expected_repr)
@@ -597,7 +597,7 @@ klasse ReprTests(unittest.TestCase):
             ([4,], (TypeError, None)),
             (object(), (TypeError, None)),
         ]
-        for indent, (expected_error, expected_msg) in test_cases:
+        fuer indent, (expected_error, expected_msg) in test_cases:
             with self.subTest(indent=indent):
                 r = Repr()
                 r.indent = indent
@@ -675,13 +675,13 @@ klasse LongReprTest(unittest.TestCase):
 
     def tearDown(self):
         actions = []
-        for dirpath, dirnames, filenames in os.walk(self.pkgname):
-            for name in dirnames + filenames:
+        fuer dirpath, dirnames, filenames in os.walk(self.pkgname):
+            fuer name in dirnames + filenames:
                 actions.append(os.path.join(dirpath, name))
         actions.append(self.pkgname)
         actions.sort()
         actions.reverse()
-        for p in actions:
+        fuer p in actions:
             if os.path.isdir(p):
                 os.rmdir(p)
             else:
@@ -701,7 +701,7 @@ klasse LongReprTest(unittest.TestCase):
             # Under Windows, the max path len is 260 including C's terminating
             # NUL character.
             # (see http://msdn.microsoft.com/en-us/library/windows/desktop/aa365247%28v=vs.85%29.aspx#maxpath)
-            self.skipTest("test paths too long (%d characters) for Windows' 260 character limit"
+            self.skipTest("test paths too long (%d characters) fuer Windows' 260 character limit"
                           % cached_path_len)
         elif os.name == 'nt' and verbose:
             print("cached_path_len =", cached_path_len)
@@ -793,7 +793,7 @@ klasse ClassWithFailingRepr:
         raise Exception("This should be caught by Repr.repr_instance")
 
 klasse MyContainer:
-    'Helper klasse for TestRecursiveRepr'
+    'Helper klasse fuer TestRecursiveRepr'
     def __init__(self, values):
         self.values = list(values)
     def append(self, value):
@@ -831,7 +831,7 @@ klasse TestRecursiveRepr(unittest.TestCase):
         from functools import WRAPPER_ASSIGNMENTS as assigned
         wrapped = MyContainer3.wrapped
         wrapper = MyContainer3.wrapper
-        for name in assigned:
+        fuer name in assigned:
             self.assertIs(getattr(wrapper, name), getattr(wrapped, name))
 
     def test__wrapped__(self):

@@ -40,7 +40,7 @@ klasse MiscTest(AbstractTkTest, unittest.TestCase):
         self.assertNotEqual(str(f), str(f2))
         b = tkinter.Button(f2)
         b2 = Button2(f2)
-        for name in str(b).split('.') + str(b2).split('.'):
+        fuer name in str(b).split('.') + str(b2).split('.'):
             self.assertFalse(name.isidentifier(), msg=repr(name))
         b3 = tkinter.Button(f2)
         b4 = Button2(f2)
@@ -136,7 +136,7 @@ klasse MiscTest(AbstractTkTest, unittest.TestCase):
             nonlocal count
             count = start + step + end
 
-        # Without function, sleeps for ms.
+        # Without function, sleeps fuer ms.
         self.assertIsNone(root.after(1))
 
         # Set up with callback with no args.
@@ -224,7 +224,7 @@ klasse MiscTest(AbstractTkTest, unittest.TestCase):
         timer1 = root.after(5000, callback)
         idle1 = root.after_idle(callback)
 
-        # No value for id raises a ValueError.
+        # No value fuer id raises a ValueError.
         with self.assertRaises(ValueError):
             root.after_cancel(None)
 
@@ -322,7 +322,7 @@ klasse MiscTest(AbstractTkTest, unittest.TestCase):
         def assertApprox(col1, col2):
             # A small amount of flexibility is required (bpo-45496)
             # 33 is ~0.05% of 65535, which is a reasonable margin
-            for col1_channel, col2_channel in zip(col1, col2):
+            fuer col1_channel, col2_channel in zip(col1, col2):
                 self.assertAlmostEqual(col1_channel, col2_channel, delta=33)
 
         root = self.root
@@ -449,9 +449,9 @@ klasse MiscTest(AbstractTkTest, unittest.TestCase):
         enum._test_simple_enum(CheckedEventType, tkinter.EventType)
 
     def test_getboolean(self):
-        for v in 'true', 'yes', 'on', '1', 't', 'y', 1, True:
+        fuer v in 'true', 'yes', 'on', '1', 't', 'y', 1, True:
             self.assertIs(self.root.getboolean(v), True)
-        for v in 'false', 'no', 'off', '0', 'f', 'n', 0, False:
+        fuer v in 'false', 'no', 'off', '0', 'f', 'n', 0, False:
             self.assertIs(self.root.getboolean(v), False)
         self.assertRaises(ValueError, self.root.getboolean, 'yea')
         self.assertRaises(ValueError, self.root.getboolean, '')
@@ -474,7 +474,7 @@ klasse MiscTest(AbstractTkTest, unittest.TestCase):
         vi = self.root.info_patchlevel()
         f = tkinter.Frame(self.root)
         self.assertEqual(f.info_patchlevel(), vi)
-        # The following is almost a copy of tests for sys.version_info.
+        # The following is almost a copy of tests fuer sys.version_info.
         self.assertIsInstance(vi[:], tuple)
         self.assertEqual(len(vi), 5)
         self.assertIsInstance(vi[0], int)
@@ -518,7 +518,7 @@ klasse WmTest(AbstractTkTest, unittest.TestCase):
         attributes2 = w.wm_attributes()
         self.assertIsInstance(attributes2, tuple)
         self.assertEqual(attributes2[::2],
-                         tuple('-' + k for k in attributes))
+                         tuple('-' + k fuer k in attributes))
         self.assertEqual(attributes2[1::2], tuple(attributes.values()))
         # silently deprecated
         attributes3 = w.wm_attributes(None)
@@ -527,10 +527,10 @@ klasse WmTest(AbstractTkTest, unittest.TestCase):
         else:
             self.assertIsInstance(attributes3, str)
 
-        for name in attributes:
+        fuer name in attributes:
             self.assertEqual(w.wm_attributes(name), attributes[name])
         # silently deprecated
-        for name in attributes:
+        fuer name in attributes:
             self.assertEqual(w.wm_attributes('-' + name), attributes[name])
 
         self.assertIn('alpha', attributes)

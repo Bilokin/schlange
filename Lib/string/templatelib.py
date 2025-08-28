@@ -1,4 +1,4 @@
-"""Support for template string literals (t-strings)."""
+"""Support fuer template string literals (t-strings)."""
 
 t = t"{0}"
 Template = type(t)
@@ -25,7 +25,7 @@ def _template_unpickle(*args):
 
     strings, interpolations = args
     parts = []
-    for string, interpolation in itertools.zip_longest(strings, interpolations):
+    fuer string, interpolation in itertools.zip_longest(strings, interpolations):
         if string is not None:
             parts.append(string)
         if interpolation is not None:

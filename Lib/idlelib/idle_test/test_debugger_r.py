@@ -3,7 +3,7 @@
 from idlelib import debugger_r
 import unittest
 
-# Boilerplate likely to be needed for future test classes.
+# Boilerplate likely to be needed fuer future test classes.
 ##from test.support import requires
 ##from tkinter import Tk
 ##class Test(unittest.TestCase):

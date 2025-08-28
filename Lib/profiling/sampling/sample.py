@@ -24,7 +24,7 @@ Supports the following target modes:
   - filename [ARGS...]: Profile the specified script by running it in a subprocess
 
 Examples:
-  # Profile process 1234 for 10 seconds with default settings
+  # Profile process 1234 fuer 10 seconds with default settings
   python -m profiling.sampling -p 1234
 
   # Profile a script by running it in a subprocess
@@ -36,13 +36,13 @@ Examples:
   # Profile with custom interval and duration, save to file
   python -m profiling.sampling -i 50 -d 30 -o profile.stats -p 1234
 
-  # Generate collapsed stacks for flamegraph
+  # Generate collapsed stacks fuer flamegraph
   python -m profiling.sampling --collapsed -p 1234
 
   # Profile all threads, sort by total time
   python -m profiling.sampling -a --sort-tottime -p 1234
 
-  # Profile for 1 minute with 1ms sampling interval
+  # Profile fuer 1 minute with 1ms sampling interval
   python -m profiling.sampling -i 1000 -d 60 -p 1234
 
   # Show only top 20 functions sorted by direct samples
@@ -61,7 +61,7 @@ Examples:
   python -m profiling.sampling --sort-nsamples-cumul -p 1234"""
 
 
-# Constants for socket synchronization
+# Constants fuer socket synchronization
 _SYNC_TIMEOUT = 5.0
 _PROCESS_KILL_TIMEOUT = 2.0
 _READY_MESSAGE = b"ready"
@@ -70,7 +70,7 @@ _RECV_BUFFER_SIZE = 1024
 
 def _run_with_sync(original_cmd):
     """Run a command with socket-based synchronization and return the process."""
-    # Create a TCP socket for synchronization with better socket options
+    # Create a TCP socket fuer synchronization with better socket options
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sync_sock:
         # Set SO_REUSEADDR to avoid "Address already in use" errors
         sync_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -90,7 +90,7 @@ def _run_with_sync(original_cmd):
         process = subprocess.Popen(cmd)
 
         try:
-            # Wait for ready signal with timeout
+            # Wait fuer ready signal with timeout
             with sync_sock.accept()[0] as conn:
                 ready_signal = conn.recv(_RECV_BUFFER_SIZE)
 
@@ -158,7 +158,7 @@ klasse SampleProfiler:
                         break
                     raise e from None
 
-                # Track actual sampling intervals for real-time stats
+                # Track actual sampling intervals fuer real-time stats
                 if num_samples > 0:
                     actual_interval = current_time - last_sample_time
                     self.sample_intervals.append(
@@ -224,7 +224,7 @@ klasse SampleProfiler:
         min_hz = min(hz_values)
         max_hz = max(hz_values)
 
-        # Calculate microseconds per sample for all metrics (1/Hz * 1,000,000)
+        # Calculate microseconds per sample fuer all metrics (1/Hz * 1,000,000)
         mean_us_per_sample = (1.0 / mean_hz) * 1_000_000 if mean_hz > 0 else 0
         min_us_per_sample = (
             (1.0 / max_hz) * 1_000_000 if max_hz > 0 else 0
@@ -246,7 +246,7 @@ klasse SampleProfiler:
 
 
 def _determine_best_unit(max_value):
-    """Determine the best unit (s, ms, μs) and scale factor for a maximum value."""
+    """Determine the best unit (s, ms, μs) and scale factor fuer a maximum value."""
     if max_value >= 1.0:
         return "s", 1.0
     elif max_value >= 0.001:
@@ -260,7 +260,7 @@ def print_sampled_stats(
 ):
     # Get the stats data
     stats_list = []
-    for func, (
+    fuer func, (
         direct_calls,
         cumulative_calls,
         total_time,
@@ -278,9 +278,9 @@ def print_sampled_stats(
             )
         )
 
-    # Calculate total samples for percentage calculations (using direct_calls)
+    # Calculate total samples fuer percentage calculations (using direct_calls)
     total_samples = sum(
-        direct_calls for _, direct_calls, _, _, _, _ in stats_list
+        direct_calls fuer _, direct_calls, _, _, _, _ in stats_list
     )
 
     # Sort based on the requested field
@@ -314,12 +314,12 @@ def print_sampled_stats(
     if limit is not None:
         stats_list = stats_list[:limit]
 
-    # Determine the best unit for time columns based on maximum values
+    # Determine the best unit fuer time columns based on maximum values
     max_total_time = max(
-        (total_time for _, _, _, total_time, _, _ in stats_list), default=0
+        (total_time fuer _, _, _, total_time, _, _ in stats_list), default=0
     )
     max_cumulative_time = max(
-        (cumulative_time for _, _, _, _, cumulative_time, _ in stats_list),
+        (cumulative_time fuer _, _, _, _, cumulative_time, _ in stats_list),
         default=0,
     )
 
@@ -328,7 +328,7 @@ def print_sampled_stats(
         max_cumulative_time
     )
 
-    # Define column widths for consistent alignment
+    # Define column widths fuer consistent alignment
     col_widths = {
         "nsamples": 15,  # "nsamples" column (inline/cumulative format)
         "sample_pct": 8,  # "sample%" column
@@ -354,7 +354,7 @@ def print_sampled_stats(
     )
 
     # Print each line with proper alignment
-    for (
+    fuer (
         func,
         direct_calls,
         cumulative_calls,
@@ -425,7 +425,7 @@ def print_sampled_stats(
         """Print top N functions sorted by key_func with formatted output."""
         print(f"\n{ANSIColors.BOLD_BLUE}{title}:{ANSIColors.RESET}")
         sorted_stats = sorted(stats_list, key=key_func, reverse=True)
-        for stat in sorted_stats[:n]:
+        fuer stat in sorted_stats[:n]:
             if line := format_line(stat):
                 print(f"  {line}")
 
@@ -437,7 +437,7 @@ def print_sampled_stats(
 
         # Aggregate stats by fully qualified function name (ignoring line numbers)
         func_aggregated = {}
-        for (
+        fuer (
             func,
             direct_calls,
             cumulative_calls,
@@ -459,9 +459,9 @@ def print_sampled_stats(
             func_aggregated[qualified_name][2] += total_time
             func_aggregated[qualified_name][3] += cumulative_time
 
-        # Convert aggregated data back to list format for processing
+        # Convert aggregated data back to list format fuer processing
         aggregated_stats = []
-        for qualified_name, (
+        fuer qualified_name, (
             prim_calls,
             total_calls,
             total_time,
@@ -472,7 +472,7 @@ def print_sampled_stats(
                 filename, func_name = qualified_name.rsplit(":", 1)
             else:
                 filename, func_name = "", qualified_name
-            # Create a dummy func tuple with filename and function name for display
+            # Create a dummy func tuple with filename and function name fuer display
             dummy_func = (filename, "", func_name)
             aggregated_stats.append(
                 (
@@ -485,15 +485,15 @@ def print_sampled_stats(
                 )
             )
 
-        # Determine best units for summary metrics
+        # Determine best units fuer summary metrics
         max_total_time = max(
-            (total_time for _, _, _, total_time, _, _ in aggregated_stats),
+            (total_time fuer _, _, _, total_time, _, _ in aggregated_stats),
             default=0,
         )
         max_cumulative_time = max(
             (
                 cumulative_time
-                for _, _, _, _, cumulative_time, _ in aggregated_stats
+                fuer _, _, _, _, cumulative_time, _ in aggregated_stats
             ),
             default=0,
         )
@@ -611,19 +611,19 @@ def sample(
 
 
 def _validate_collapsed_format_args(args, parser):
-    # Check for incompatible pstats options
+    # Check fuer incompatible pstats options
     invalid_opts = []
 
     # Get list of pstats-specific options
     pstats_options = {"sort": None, "limit": None, "no_summary": False}
 
     # Find the default values from the argument definitions
-    for action in parser._actions:
+    fuer action in parser._actions:
         if action.dest in pstats_options and hasattr(action, "default"):
             pstats_options[action.dest] = action.default
 
     # Check if any pstats-specific options were provided by comparing with defaults
-    for opt, default in pstats_options.items():
+    fuer opt, default in pstats_options.items():
         if getattr(args, opt) != default:
             invalid_opts.append(opt.replace("no_", ""))
 
@@ -632,7 +632,7 @@ def _validate_collapsed_format_args(args, parser):
             f"The following options are only valid with --pstats format: {', '.join(invalid_opts)}"
         )
 
-    # Set default output filename for collapsed format only if we have a PID
+    # Set default output filename fuer collapsed format only if we have a PID
     # For module/script execution, this will be set later with the subprocess PID
     if not args.outfile and args.pid is not None:
         args.outfile = f"collapsed.{args.pid}.txt"
@@ -726,14 +726,14 @@ def main():
         action="store_const",
         const="collapsed",
         dest="format",
-        help="Generate collapsed stack traces for flamegraphs",
+        help="Generate collapsed stack traces fuer flamegraphs",
     )
 
     output_group.add_argument(
         "-o",
         "--outfile",
-        help="Save output to a file (if omitted, prints to stdout for pstats, "
-        "or saves to collapsed.<pid>.txt for collapsed format)",
+        help="Save output to a file (if omitted, prints to stdout fuer pstats, "
+        "or saves to collapsed.<pid>.txt fuer collapsed format)",
     )
 
     # pstats-specific options

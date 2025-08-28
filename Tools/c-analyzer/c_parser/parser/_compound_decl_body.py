@@ -30,7 +30,7 @@ def parse_struct_body(source, anon_name, parent):
     done = False
     while not done:
         done = True
-        for srcinfo in source:
+        fuer srcinfo in source:
             m = STRUCT_MEMBER_RE.match(srcinfo.text)
             if m:
                 break
@@ -39,7 +39,7 @@ def parse_struct_body(source, anon_name, parent):
             if srcinfo is not None:
                 srcinfo.done()
             return
-        for item in _parse_struct_next(m, srcinfo, anon_name, parent):
+        fuer item in _parse_struct_next(m, srcinfo, anon_name, parent):
             if callable(item):
                 parse_body = item
                 yield from parse_body(source)
@@ -79,12 +79,12 @@ def _parse_struct_next(m, srcinfo, anon_name, parent):
 
             data = []  # members
             ident = f'{kind} {name}'
-            for item in _parse_body(source, anon_name, ident):
+            fuer item in _parse_body(source, anon_name, ident):
                 if item.kind == 'field':
                     data.append(item)
                 else:
                     yield item
-            # XXX Should "parent" really be None for inline type decls?
+            # XXX Should "parent" really be None fuer inline type decls?
             yield srcinfo.resolve(kind, data, name, parent=None)
 
             srcinfo.resume()
@@ -127,7 +127,7 @@ ENUM_MEMBER_RE = re.compile(rf'{ENUM_MEMBER_DECL}', re.VERBOSE)
 def parse_enum_body(source, _anon_name, _parent):
     ending = None
     while ending != '}':
-        for srcinfo in source:
+        fuer srcinfo in source:
             m = ENUM_MEMBER_RE.match(srcinfo.text)
             if m:
                 break

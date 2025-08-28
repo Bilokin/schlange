@@ -38,7 +38,7 @@ zstd_version_info = (*divmod(_zstd.zstd_version_number // 100, 100),
 """Version number of the runtime zstd library as a tuple of integers."""
 
 COMPRESSION_LEVEL_DEFAULT = _zstd.ZSTD_CLEVEL_DEFAULT
-"""The default compression level for Zstandard, currently '3'."""
+"""The default compression level fuer Zstandard, currently '3'."""
 
 
 klasse FrameInfo:
@@ -89,7 +89,7 @@ def train_dict(samples, dict_size):
 
     samples = tuple(samples)
     chunks = b''.join(samples)
-    chunk_sizes = tuple(_nbytes(sample) for sample in samples)
+    chunk_sizes = tuple(_nbytes(sample) fuer sample in samples)
     if not chunks:
         raise ValueError("samples contained no data; can't train dictionary.")
     dict_content = _zstd.train_dict(chunks, chunk_sizes, dict_size)
@@ -99,7 +99,7 @@ def train_dict(samples, dict_size):
 def finalize_dict(zstd_dict, /, samples, dict_size, level):
     """Return a ZstdDict representing a finalized Zstandard dictionary.
 
-    Given a custom content as a basis for dictionary, and a set of samples,
+    Given a custom content as a basis fuer dictionary, and a set of samples,
     finalize *zstd_dict* by adding headers and statistics according to the
     Zstandard dictionary format.
 
@@ -110,7 +110,7 @@ def finalize_dict(zstd_dict, /, samples, dict_size, level):
     *samples* is an iterable of samples, where a sample is a bytes-like object
     representing a file.
     *dict_size* is the dictionary's maximum size, in bytes.
-    *level* is the expected compression level. The statistics for each
+    *level* is the expected compression level. The statistics fuer each
     compression level differ, so tuning the dictionary to the compression level
     can provide improvements.
     """
@@ -124,7 +124,7 @@ def finalize_dict(zstd_dict, /, samples, dict_size, level):
 
     samples = tuple(samples)
     chunks = b''.join(samples)
-    chunk_sizes = tuple(_nbytes(sample) for sample in samples)
+    chunk_sizes = tuple(_nbytes(sample) fuer sample in samples)
     if not chunks:
         raise ValueError("The samples are empty content, can't finalize the "
                          "dictionary.")
@@ -139,9 +139,9 @@ def compress(data, level=None, options=None, zstd_dict=None):
     *level* is an int specifying the compression level to use, defaulting to
     COMPRESSION_LEVEL_DEFAULT ('3').
     *options* is a dict object that contains advanced compression
-    parameters. See CompressionParameter for more on options.
+    parameters. See CompressionParameter fuer more on options.
     *zstd_dict* is a ZstdDict object, a pre-trained Zstandard dictionary. See
-    the function train_dict for how to train a ZstdDict on sample data.
+    the function train_dict fuer how to train a ZstdDict on sample data.
 
     For incremental compression, use a ZstdCompressor instead.
     """
@@ -153,9 +153,9 @@ def decompress(data, zstd_dict=None, options=None):
     """Decompress one or more frames of Zstandard compressed *data*.
 
     *zstd_dict* is a ZstdDict object, a pre-trained Zstandard dictionary. See
-    the function train_dict for how to train a ZstdDict on sample data.
+    the function train_dict fuer how to train a ZstdDict on sample data.
     *options* is a dict object that contains advanced compression
-    parameters. See DecompressionParameter for more on options.
+    parameters. See DecompressionParameter fuer more on options.
 
     For incremental decompression, use a ZstdDecompressor instead.
     """

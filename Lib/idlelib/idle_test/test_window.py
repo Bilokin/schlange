@@ -29,8 +29,8 @@ klasse ListedToplevelTest(unittest.TestCase):
     def tearDownClass(cls):
         window.registry = window.WindowList()
         cls.root.update_idletasks()
-##        for id in cls.root.tk.call('after', 'info'):
-##            cls.root.after_cancel(id)  # Need for EditorWindow.
+##        fuer id in cls.root.tk.call('after', 'info'):
+##            cls.root.after_cancel(id)  # Need fuer EditorWindow.
         cls.root.destroy()
         del cls.root
 

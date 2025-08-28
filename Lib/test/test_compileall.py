@@ -41,7 +41,7 @@ def get_pyc(script, opt):
 
 
 def get_pycs(script):
-    return [get_pyc(script, opt) for opt in (0, 1, 2)]
+    return [get_pyc(script, opt) fuer opt in (0, 1, 2)]
 
 
 def is_hardlink(filename1, filename2):
@@ -129,7 +129,7 @@ klasse CompileallTestsBase:
 
     def test_compile_files(self):
         # Test compiling a single file, and complete directory
-        for fn in (self.bc_path, self.bc_path2):
+        fuer fn in (self.bc_path, self.bc_path2):
             try:
                 os.unlink(fn)
             except:
@@ -192,7 +192,7 @@ klasse CompileallTestsBase:
 
     def test_no_pycache_in_non_package(self):
         # Bug 8563 reported that __pycache__ directories got created by
-        # compile_file() for non-.py files.
+        # compile_file() fuer non-.py files.
         data_dir = os.path.join(self.directory, 'data')
         data_file = os.path.join(data_dir, 'file')
         os.mkdir(data_dir)
@@ -283,7 +283,7 @@ klasse CompileallTestsBase:
         # Test the actual impact of maxlevels parameter
         depth = 3
         path = self.directory
-        for i in range(1, depth + 1):
+        fuer i in range(1, depth + 1):
             path = os.path.join(path, f"dir_{i}")
             source = os.path.join(path, 'script.py')
             os.mkdir(path)
@@ -301,7 +301,7 @@ klasse CompileallTestsBase:
         fullpath = ["test", "foo"]
         path = self.directory
         mods = []
-        for subdir in fullpath:
+        fuer subdir in fullpath:
             path = os.path.join(path, subdir)
             os.mkdir(path)
             script_helper.make_script(path, "__init__", "")
@@ -315,7 +315,7 @@ klasse CompileallTestsBase:
                 workers=2 if parallel else 1)
 
         self.assertTrue(mods)
-        for mod in mods:
+        fuer mod in mods:
             self.assertStartsWith(mod, self.directory)
             modcode = importlib.util.cache_from_source(mod)
             modpath = mod[len(self.directory+os.sep):]
@@ -437,14 +437,14 @@ klasse CompileallTestsBase:
                                            "test_optimization",
                                            "a = 0")
         bc = []
-        for opt_level in "", 1, 2, 3:
+        fuer opt_level in "", 1, 2, 3:
             bc.append(importlib.util.cache_from_source(script,
                                                        optimization=opt_level))
         test_combinations = [[0, 1], [1, 2], [0, 2], [0, 1, 2]]
-        for opt_combination in test_combinations:
+        fuer opt_combination in test_combinations:
             compileall.compile_file(script, quiet=True,
                                     optimize=opt_combination)
-            for opt_level in opt_combination:
+            fuer opt_level in opt_combination:
                 self.assertTrue(os.path.isfile(bc[opt_level]))
                 try:
                     os.unlink(bc[opt_level])
@@ -453,7 +453,7 @@ klasse CompileallTestsBase:
 
     @os_helper.skip_unless_symlink
     def test_ignore_symlink_destination(self):
-        # Create folders for allowed files, symlinks and prohibited area
+        # Create folders fuer allowed files, symlinks and prohibited area
         allowed_path = os.path.join(self.directory, "test", "dir", "allowed")
         symlinks_path = os.path.join(self.directory, "test", "dir", "symlinks")
         prohibited_path = os.path.join(self.directory, "test", "dir", "prohibited")
@@ -577,7 +577,7 @@ klasse CommandLineTestsBase:
         self.assertFalse(os.path.exists(path))
 
     def test_no_args_compiles_path(self):
-        # Note that -l is implied for the no args case.
+        # Note that -l is implied fuer the no args case.
         bazfn = script_helper.make_script(self.directory, 'baz', '')
         with self.temporary_pycache_prefix() as env:
             self.assertRunOK(**env)
@@ -615,7 +615,7 @@ klasse CommandLineTestsBase:
 
     # Ensure that the default behavior of compileall's CLI is to create
     # PEP 3147/PEP 488 pyc files.
-    for name, ext, switch in [
+    fuer name, ext, switch in [
         ('normal', 'pyc', []),
         ('optimize', 'opt-1.pyc', ['-O']),
         ('doubleoptimize', 'opt-2.pyc', ['-OO']),
@@ -626,10 +626,10 @@ klasse CommandLineTestsBase:
             # Verify the __pycache__ directory contents.
             self.assertTrue(os.path.exists(self.pkgdir_cachedir))
             expected = sorted(base.format(sys.implementation.cache_tag, ext)
-                              for base in ('__init__.{}.{}', 'bar.{}.{}'))
+                              fuer base in ('__init__.{}.{}', 'bar.{}.{}'))
             self.assertEqual(sorted(os.listdir(self.pkgdir_cachedir)), expected)
             # Make sure there are no .pyc files in the source directory.
-            self.assertFalse([fn for fn in os.listdir(self.pkgdir)
+            self.assertFalse([fn fuer fn in os.listdir(self.pkgdir)
                               if fn.endswith(ext)])
         locals()['test_pep3147_paths_' + name] = f
 
@@ -688,7 +688,7 @@ klasse CommandLineTestsBase:
         subpackage = os.path.join(self.pkgdir, 'spam')
         subpackage2 = os.path.join(subpackage, 'ham')
         subpackage3 = os.path.join(subpackage2, 'eggs')
-        for pkg in (subpackage, subpackage2, subpackage3):
+        fuer pkg in (subpackage, subpackage2, subpackage3):
             script_helper.make_pkg(pkg)
 
         subinitfn = os.path.join(subpackage, '__init__.py')
@@ -855,7 +855,7 @@ klasse CommandLineTestsBase:
     def test_workers(self):
         bar2fn = script_helper.make_script(self.directory, 'bar2', '')
         files = []
-        for suffix in range(5):
+        fuer suffix in range(5):
             pkgdir = os.path.join(self.directory, 'foo{}'.format(suffix))
             os.mkdir(pkgdir)
             fn = script_helper.make_script(pkgdir, '__init__', '')
@@ -863,7 +863,7 @@ klasse CommandLineTestsBase:
 
         self.assertRunOK(self.directory, '-j', '0')
         self.assertCompiled(bar2fn)
-        for file in files:
+        fuer file in files:
             self.assertCompiled(file)
 
     @mock.patch('compileall.compile_dir')
@@ -901,16 +901,16 @@ klasse CommandLineTestsBase:
                                            "test_optimization",
                                            "a = 0")
         bc = []
-        for opt_level in "", 1, 2, 3:
+        fuer opt_level in "", 1, 2, 3:
             bc.append(importlib.util.cache_from_source(script,
                                                        optimization=opt_level))
         test_combinations = [["0", "1"],
                              ["1", "2"],
                              ["0", "2"],
                              ["0", "1", "2"]]
-        for opt_combination in test_combinations:
-            self.assertRunOK(path, *("-o" + str(n) for n in opt_combination))
-            for opt_level in opt_combination:
+        fuer opt_combination in test_combinations:
+            self.assertRunOK(path, *("-o" + str(n) fuer n in opt_combination))
+            fuer opt_level in opt_combination:
                 self.assertTrue(os.path.isfile(bc[int(opt_level)]))
                 try:
                     os.unlink(bc[opt_level])
@@ -919,7 +919,7 @@ klasse CommandLineTestsBase:
 
     @os_helper.skip_unless_symlink
     def test_ignore_symlink_destination(self):
-        # Create folders for allowed files, symlinks and prohibited area
+        # Create folders fuer allowed files, symlinks and prohibited area
         allowed_path = os.path.join(self.directory, "test", "dir", "allowed")
         symlinks_path = os.path.join(self.directory, "test", "dir", "symlinks")
         prohibited_path = os.path.join(self.directory, "test", "dir", "prohibited")
@@ -944,16 +944,16 @@ klasse CommandLineTestsBase:
 
     def test_hardlink_bad_args(self):
         # Bad arguments combination, hardlink deduplication make sense
-        # only for more than one optimization level
+        # only fuer more than one optimization level
         self.assertRunNotOK(self.directory, "-o 1", "--hardlink-dupes")
 
     def test_hardlink(self):
-        # 'a = 0' code produces the same bytecode for the 3 optimization
+        # 'a = 0' code produces the same bytecode fuer the 3 optimization
         # levels. All three .pyc files must have the same inode (hardlinks).
         #
         # If deduplication is disabled, all pyc files must have different
         # inodes.
-        for dedup in (True, False):
+        fuer dedup in (True, False):
             with tempfile.TemporaryDirectory() as path:
                 with self.subTest(dedup=dedup):
                     script = script_helper.make_script(path, "script", "a = 0")
@@ -1007,7 +1007,7 @@ klasse HardlinkDedupTestsBase:
 
     def test_bad_args(self):
         # Bad arguments combination, hardlink deduplication make sense
-        # only for more than one optimization level
+        # only fuer more than one optimization level
         with self.temporary_directory():
             self.make_script("pass")
             with self.assertRaises(ValueError):
@@ -1029,14 +1029,14 @@ klasse HardlinkDedupTestsBase:
         return '\n'.join(lines)
 
     def iter_codes(self):
-        for docstring in (False, True):
-            for assertion in (False, True):
+        fuer docstring in (False, True):
+            fuer assertion in (False, True):
                 code = self.create_code(docstring=docstring, assertion=assertion)
                 yield (code, docstring, assertion)
 
     def test_disabled(self):
         # Deduplication disabled, no hardlinks
-        for code, docstring, assertion in self.iter_codes():
+        fuer code, docstring, assertion in self.iter_codes():
             with self.subTest(docstring=docstring, assertion=assertion):
                 with self.temporary_directory():
                     script = self.make_script(code)
@@ -1057,7 +1057,7 @@ klasse HardlinkDedupTestsBase:
 
     def test_hardlink(self):
         # Test deduplication on all combinations
-        for code, docstring, assertion in self.iter_codes():
+        fuer code, docstring, assertion in self.iter_codes():
             with self.subTest(docstring=docstring, assertion=assertion):
                 with self.temporary_directory():
                     script = self.make_script(code)
@@ -1066,11 +1066,11 @@ klasse HardlinkDedupTestsBase:
 
     def test_only_two_levels(self):
         # Don't build the 3 optimization levels, but only 2
-        for opts in ((0, 1), (1, 2), (0, 2)):
+        fuer opts in ((0, 1), (1, 2), (0, 2)):
             with self.subTest(opts=opts):
                 with self.temporary_directory():
                     # code with no dostring and no assertion:
-                    # same bytecode for all optimization levels
+                    # same bytecode fuer all optimization levels
                     script = self.make_script(self.create_code())
                     self.compile_dir(optimize=opts)
                     pyc1 = get_pyc(script, opts[0])
@@ -1082,7 +1082,7 @@ klasse HardlinkDedupTestsBase:
         # optimization levels and/or if optimization levels are not sorted.
         with self.temporary_directory():
             # code with no dostring and no assertion:
-            # same bytecode for all optimization levels
+            # same bytecode fuer all optimization levels
             script = self.make_script(self.create_code())
             self.compile_dir(optimize=[1, 0, 1, 0])
             pyc1 = get_pyc(script, 0)

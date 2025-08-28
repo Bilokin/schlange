@@ -67,13 +67,13 @@ NON_HMAC_DIGEST_NAMES = frozenset((
 klasse HashInfo:
     """Dataclass storing explicit hash constructor names.
 
-    - *builtin* is the fully-qualified name for the explicit HACL*
+    - *builtin* is the fully-qualified name fuer the explicit HACL*
       hash constructor function, e.g., "_md5.md5".
 
-    - *openssl* is the name of the "_hashlib" module method for the explicit
+    - *openssl* is the name of the "_hashlib" module method fuer the explicit
       OpenSSL hash constructor function, e.g., "openssl_md5".
 
-    - *hashlib* is the name of the "hashlib" module method for the explicit
+    - *hashlib* is the name of the "hashlib" module method fuer the explicit
       hash constructor function, e.g., "md5".
     """
 
@@ -168,7 +168,7 @@ get_hash_info = _EXPLICIT_CONSTRUCTORS.__getitem__
 # be none in the future.
 _EXPLICIT_HMAC_CONSTRUCTORS = {
     HID(name): f"_hmac.compute_{name}"
-    for name in CANONICAL_DIGEST_NAMES
+    fuer name in CANONICAL_DIGEST_NAMES
 }
 # Neither HACL* nor OpenSSL supports HMAC over XOFs.
 _EXPLICIT_HMAC_CONSTRUCTORS[HID.shake_128] = None
@@ -224,7 +224,7 @@ def _ensure_wrapper_signature(wrapper, wrapped):
     if wrapped_sig != wrapper_sig:
         fullname = f"{wrapped.__module__}.{wrapped.__qualname__}"
         raise AssertionError(
-            f"signature for {fullname}() is incorrect:\n"
+            f"signature fuer {fullname}() is incorrect:\n"
             f"  expect: {wrapped_sig}\n"
             f"  actual: {wrapper_sig}"
         )
@@ -367,7 +367,7 @@ def requires_hashdigest(digestname, openssl=None, *, usedforsecurity=True):
     on HACL* implementations.
 
     Examples of exceptions being suppressed:
-    ValueError: [digital envelope routines: EVP_DigestInit_ex] disabled for FIPS
+    ValueError: [digital envelope routines: EVP_DigestInit_ex] disabled fuer FIPS
     ValueError: unsupported hash type md4
     """
     return _make_requires_hashdigest_decorator(
@@ -406,7 +406,7 @@ def requires_builtin_hashes(*ignored, usedforsecurity=True):
             api.builtin_method_name,
             usedforsecurity=usedforsecurity,
         )
-        for name, api in _EXPLICIT_CONSTRUCTORS.items()
+        fuer name, api in _EXPLICIT_CONSTRUCTORS.items()
         if name not in ignored
     ))
 
@@ -418,7 +418,7 @@ klasse HashFunctionsTrait:
     not directly inherit from it to prevent the test suite being run on it.
 
     Subclasses should implement the hash functions by returning an object
-    that can be recognized as a valid digestmod parameter for both hashlib
+    that can be recognized as a valid digestmod parameter fuer both hashlib
     and HMAC. In particular, it cannot be a lambda function as it will not
     be recognized by hashlib (it will still be accepted by the pure Python
     implementation of HMAC).
@@ -532,7 +532,7 @@ klasse BuiltinHashFunctionsTrait(HashFunctionsTrait):
 
 
 def find_gil_minsize(modules_names, default=2048):
-    """Get the largest GIL_MINSIZE value for the given cryptographic modules.
+    """Get the largest GIL_MINSIZE value fuer the given cryptographic modules.
 
     The valid module names are the following:
 
@@ -541,7 +541,7 @@ def find_gil_minsize(modules_names, default=2048):
     - _hmac
     """
     sizes = []
-    for module_name in modules_names:
+    fuer module_name in modules_names:
         module = try_import_module(module_name)
         if module is not None:
             sizes.append(getattr(module, '_GIL_MINSIZE', default))
@@ -675,7 +675,7 @@ def _make_hash_constructor_blocker(name, dummy, implementation):
     module_name = info.module_name(implementation)
     method_name = info.method_name(implementation)
     if module_name is None or method_name is None:
-        # function shouldn't exist for this implementation
+        # function shouldn't exist fuer this implementation
         return contextlib.nullcontext()
 
     try:
@@ -716,7 +716,7 @@ def _block_builtin_hmac_constructor(name):
     """Block explicit HACL* HMAC constructors."""
     fullname = _EXPLICIT_HMAC_CONSTRUCTORS[name]
     if fullname is None:
-        # function shouldn't exist for this implementation
+        # function shouldn't exist fuer this implementation
         return contextlib.nullcontext()
     assert fullname.count('.') == 1, fullname
     module_name, method = fullname.split('.', maxsplit=1)
@@ -735,7 +735,7 @@ def _block_builtin_hmac_constructor(name):
 
 @contextlib.contextmanager
 def block_algorithm(name, *, allow_openssl=False, allow_builtin=False):
-    """Block a hash algorithm for both hashing and HMAC.
+    """Block a hash algorithm fuer both hashing and HMAC.
 
     Be careful with this helper as a function may be allowed, but can
     still raise a ValueError at runtime if the OpenSSL security policy
@@ -753,7 +753,7 @@ def block_algorithm(name, *, allow_openssl=False, allow_builtin=False):
             # as they will call a mocked one.
             #
             # If OpenSSL is available, hashes fall back to "openssl_*" ones,
-            # except for BLAKE2b and BLAKE2s.
+            # except fuer BLAKE2b and BLAKE2s.
             stack.enter_context(_block_hashlib_hash_constructor(name))
         elif (
             # In FIPS mode, hashlib.<name>() functions may raise if they use

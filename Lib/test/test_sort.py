@@ -28,7 +28,7 @@ def check(tag, expected, raw, compare=None):
         nerrors += 1
         return
 
-    for i, good in enumerate(expected):
+    fuer i, good in enumerate(expected):
         maybe = raw[i]
         if good is not maybe:
             print("error in", tag)
@@ -43,7 +43,7 @@ klasse TestBase(unittest.TestCase):
     def testStressfully(self):
         # Try a variety of sizes at and around powers of 2, and at powers of 10.
         sizes = [0]
-        for power in range(1, 10):
+        fuer power in range(1, 10):
             n = 2 ** power
             sizes.extend(range(n-1, n+2))
         sizes.extend([10, 100, 1000])
@@ -75,7 +75,7 @@ klasse TestBase(unittest.TestCase):
             def __repr__(self):
                 return "Stable(%d, %d)" % (self.key, self.index)
 
-        for n in sizes:
+        fuer n in sizes:
             x = list(range(n))
             if verbose:
                 print("Testing size", n)
@@ -109,7 +109,7 @@ klasse TestBase(unittest.TestCase):
                 s = x[:]
                 self.assertRaises(RuntimeError, s.sort, key=bad_key)
 
-            x = [Complains(i) for i in x]
+            x = [Complains(i) fuer i in x]
             s = x[:]
             random.shuffle(s)
             Complains.maybe_complain = True
@@ -122,10 +122,10 @@ klasse TestBase(unittest.TestCase):
                 Complains.maybe_complain = False
                 check("exception during sort left some permutation", x, s)
 
-            s = [Stable(random.randrange(10), i) for i in range(n)]
-            augmented = [(e, e.index) for e in s]
+            s = [Stable(random.randrange(10), i) fuer i in range(n)]
+            augmented = [(e, e.index) fuer e in s]
             augmented.sort()    # forced stable because ties broken by index
-            x = [e for e, i in augmented] # a stable sort of s
+            x = [e fuer e, i in augmented] # a stable sort of s
             check("stability", x, s)
 
     def test_small_stability(self):
@@ -140,9 +140,9 @@ klasse TestBase(unittest.TestCase):
         MAXSIZE = 9
 
         pick0 = itemgetter(0)
-        for length in range(MAXSIZE + 1):
+        fuer length in range(MAXSIZE + 1):
             # There are NELTS ** length distinct lists.
-            for t in product(range(NELTS), repeat=length):
+            fuer t in product(range(NELTS), repeat=length):
                 xs = list(zip(t, range(length)))
                 # Stability forced by index in each element.
                 forced = sorted(xs)
@@ -166,13 +166,13 @@ klasse TestBugs(unittest.TestCase):
                     L.append(3)
                 return random.random() < 0.5
 
-        L = [C() for i in range(50)]
+        L = [C() fuer i in range(50)]
         self.assertRaises(ValueError, L.sort)
 
     def test_undetected_mutation(self):
         # Python 2.4a1 did not always detect mutation
         memorywaster = []
-        for i in range(20):
+        fuer i in range(20):
             def mutating_cmp(x, y):
                 L.append(3)
                 L.pop()
@@ -205,7 +205,7 @@ klasse TestDecorateSortUndecorate(unittest.TestCase):
         self.assertRaises(TypeError, data.sort, key=lambda x,y: 0)
 
     def test_stability(self):
-        data = [(random.randrange(100), i) for i in range(200)]
+        data = [(random.randrange(100), i) fuer i in range(200)]
         copy = data[:]
         data.sort(key=lambda t: t[0])   # sort on the random first field
         copy.sort()                     # sort using both fields
@@ -265,7 +265,7 @@ klasse TestDecorateSortUndecorate(unittest.TestCase):
         self.assertEqual(data, list(range(99,-1,-1)))
 
     def test_reverse_stability(self):
-        data = [(random.randrange(100), i) for i in range(200)]
+        data = [(random.randrange(100), i) fuer i in range(200)]
         copy1 = data[:]
         copy2 = data[:]
         def my_cmp(x, y):
@@ -283,29 +283,29 @@ klasse TestDecorateSortUndecorate(unittest.TestCase):
 #==============================================================================
 def check_against_PyObject_RichCompareBool(self, L):
     ## The idea here is to exploit the fact that unsafe_tuple_compare uses
-    ## PyObject_RichCompareBool for the second elements of tuples. So we have,
-    ## for (most) L, sorted(L) == [y[1] for y in sorted([(0,x) for x in L])]
-    ## This will work as long as __eq__ => not __lt__ for all the objects in L,
-    ## which holds for all the types used below.
+    ## PyObject_RichCompareBool fuer the second elements of tuples. So we have,
+    ## fuer (most) L, sorted(L) == [y[1] fuer y in sorted([(0,x) fuer x in L])]
+    ## This will work as long as __eq__ => not __lt__ fuer all the objects in L,
+    ## which holds fuer all the types used below.
     ##
     ## Testing this way ensures that the optimized implementation remains consistent
     ## with the naive implementation, even if changes are made to any of the
     ## richcompares.
     ##
-    ## This function tests sorting for three lists (it randomly shuffles each one):
+    ## This function tests sorting fuer three lists (it randomly shuffles each one):
     ##                        1. L
-    ##                        2. [(x,) for x in L]
-    ##                        3. [((x,),) for x in L]
+    ##                        2. [(x,) fuer x in L]
+    ##                        3. [((x,),) fuer x in L]
 
     random.seed(0)
     random.shuffle(L)
     L_1 = L[:]
-    L_2 = [(x,) for x in L]
-    L_3 = [((x,),) for x in L]
-    for L in [L_1, L_2, L_3]:
+    L_2 = [(x,) fuer x in L]
+    L_3 = [((x,),) fuer x in L]
+    fuer L in [L_1, L_2, L_3]:
         optimized = sorted(L)
-        reference = [y[1] for y in sorted([(0,x) for x in L])]
-        for (opt, ref) in zip(optimized, reference):
+        reference = [y[1] fuer y in sorted([(0,x) fuer x in L])]
+        fuer (opt, ref) in zip(optimized, reference):
             self.assertIs(opt, ref)
             #note: not assertEqual! We want to ensure *identical* behavior.
 
@@ -314,16 +314,16 @@ klasse TestOptimizedCompares(unittest.TestCase):
         heterogeneous_lists = [[0, 'foo'],
                                [0.0, 'foo'],
                                [('foo',), 'foo']]
-        for L in heterogeneous_lists:
+        fuer L in heterogeneous_lists:
             self.assertRaises(TypeError, L.sort)
-            self.assertRaises(TypeError, [(x,) for x in L].sort)
-            self.assertRaises(TypeError, [((x,),) for x in L].sort)
+            self.assertRaises(TypeError, [(x,) fuer x in L].sort)
+            self.assertRaises(TypeError, [((x,),) fuer x in L].sort)
 
         float_int_lists = [[1,1.1],
                            [1<<70,1.1],
                            [1.1,1],
                            [1.1,1<<70]]
-        for L in float_int_lists:
+        fuer L in float_int_lists:
             check_against_PyObject_RichCompareBool(self, L)
 
     def test_unsafe_object_compare(self):
@@ -343,15 +343,15 @@ klasse TestOptimizedCompares(unittest.TestCase):
             def __lt__(self, other):
                 raise ValueError
 
-        L = [WackyList1([WackyComparator(i), i]) for i in range(10)]
+        L = [WackyList1([WackyComparator(i), i]) fuer i in range(10)]
         elem = L[-1]
         with self.assertRaises(ValueError):
             L.sort()
 
-        L = [WackyList1([WackyComparator(i), i]) for i in range(10)]
+        L = [WackyList1([WackyComparator(i), i]) fuer i in range(10)]
         elem = L[-1]
         with self.assertRaises(ValueError):
-            [(x,) for x in L].sort()
+            [(x,) fuer x in L].sort()
 
         # The following test is also by ppperry. It ensures that
         # unsafe_object_compare handles Py_NotImplemented appropriately.
@@ -360,15 +360,15 @@ klasse TestOptimizedCompares(unittest.TestCase):
                 return NotImplemented
         L = [PointlessComparator(), PointlessComparator()]
         self.assertRaises(TypeError, L.sort)
-        self.assertRaises(TypeError, [(x,) for x in L].sort)
+        self.assertRaises(TypeError, [(x,) fuer x in L].sort)
 
         # The following tests go through various types that would trigger
         # ms->key_compare = unsafe_object_compare
         lists = [list(range(100)) + [(1<<70)],
-                 [str(x) for x in range(100)] + ['\uffff'],
-                 [bytes(x) for x in range(100)],
-                 [cmp_to_key(lambda x,y: x<y)(x) for x in range(100)]]
-        for L in lists:
+                 [str(x) fuer x in range(100)] + ['\uffff'],
+                 [bytes(x) fuer x in range(100)],
+                 [cmp_to_key(lambda x,y: x<y)(x) fuer x in range(100)]]
+        fuer L in lists:
             check_against_PyObject_RichCompareBool(self, L)
 
     def test_unsafe_latin_compare(self):

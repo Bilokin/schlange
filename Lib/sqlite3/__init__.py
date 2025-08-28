@@ -5,10 +5,10 @@
 # This file is part of pysqlite.
 #
 # This software is provided 'as-is', without any express or implied
-# warranty.  In no event will the authors be held liable for any damages
+# warranty.  In no event will the authors be held liable fuer any damages
 # arising from the use of this software.
 #
-# Permission is granted to anyone to use this software for any purpose,
+# Permission is granted to anyone to use this software fuer any purpose,
 # including commercial applications, and to alter it and redistribute it
 # freely, subject to the following restrictions:
 #
@@ -46,7 +46,7 @@ its execute() method to perform SQL queries:
     cu.execute("insert into lang values (?, ?)", ("C", 1972))
 
     # execute a query and iterate over the result
-    for row in cu.execute("select * from lang"):
+    fuer row in cu.execute("select * from lang"):
         print(row)
 
     cx.close()

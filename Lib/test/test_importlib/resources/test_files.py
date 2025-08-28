@@ -68,7 +68,7 @@ klasse OpenNamespaceTests(FilesTests, util.DiskSetup, unittest.TestCase):
         sentinel like
         ``__editable__.sample_namespace-1.0.finder.__path_hook__``
         to cause the ``PathEntryFinder`` to be called when searching
-        for packages. In that case, resources should still be loadable.
+        fuer packages. In that case, resources should still be loadable.
         """
         import namespacedata01
 
@@ -160,14 +160,14 @@ klasse ImplicitContextFiles:
         c_resources = pathlib.Path(bin_site, 'c_resources')
         sources = pathlib.Path(resources.__file__).parent
 
-        for source_path in sources.glob('**/*.py'):
+        fuer source_path in sources.glob('**/*.py'):
             c_path = c_resources.joinpath(source_path.relative_to(sources)).with_suffix('.pyc')
             py_compile.compile(source_path, c_path)
         self.fixtures.enter_context(import_helper.DirsOnSysPath(bin_site))
 
     def test_implicit_files_with_compiled_importlib(self):
         """
-        Caller detection works for compiled-only resources module.
+        Caller detection works fuer compiled-only resources module.
 
         python/cpython#123085
         """

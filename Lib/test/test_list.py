@@ -21,7 +21,7 @@ klasse ListTest(list_tests.CommonTest):
         self.assertEqual(list((0, 1, 2, 3)), [0, 1, 2, 3])
         self.assertEqual(list(''), [])
         self.assertEqual(list('spam'), ['s', 'p', 'a', 'm'])
-        self.assertEqual(list(x for x in range(10) if x % 2),
+        self.assertEqual(list(x fuer x in range(10) if x % 2),
                          [1, 3, 5, 7, 9])
 
         if sys.maxsize == 0x7fffffff:
@@ -36,14 +36,14 @@ klasse ListTest(list_tests.CommonTest):
             #
             # Note: This test is expected to SEGV under Cygwin 1.3.12 or
             # earlier due to a newlib bug.  See the following mailing list
-            # thread for the details:
+            # thread fuer the details:
 
             #     http://sources.redhat.com/ml/newlib/2002/msg00369.html
             self.assertRaises(MemoryError, list, range(sys.maxsize // 2))
 
         # This code used to segfault in Py2.4a3
         x = []
-        x.extend(-y for y in x)
+        x.extend(-y fuer y in x)
         self.assertEqual(x, [])
 
     def test_keyword_args(self):
@@ -128,7 +128,7 @@ klasse ListTest(list_tests.CommonTest):
                     pass
                 return 'obj'
 
-        mylist = [Obj() for _ in range(5)]
+        mylist = [Obj() fuer _ in range(5)]
         self.assertEqual(repr(mylist), '[obj, obj, obj]')
 
     def test_repr_large(self):
@@ -144,7 +144,7 @@ klasse ListTest(list_tests.CommonTest):
     def test_iterator_pickle(self):
         orig = self.type2test([4, 5, 6, 7])
         data = [10, 11, 12, 13, 14, 15]
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             # initial iterator
             itorig = iter(orig)
             d = pickle.dumps((itorig, orig), proto)
@@ -162,7 +162,7 @@ klasse ListTest(list_tests.CommonTest):
             self.assertEqual(list(it), data[1:])
 
             # empty iterator
-            for i in range(1, len(orig)):
+            fuer i in range(1, len(orig)):
                 next(itorig)
             d = pickle.dumps((itorig, orig), proto)
             it, a = pickle.loads(d)
@@ -180,7 +180,7 @@ klasse ListTest(list_tests.CommonTest):
     def test_reversed_pickle(self):
         orig = self.type2test([4, 5, 6, 7])
         data = [10, 11, 12, 13, 14, 15]
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             # initial iterator
             itorig = reversed(orig)
             d = pickle.dumps((itorig, orig), proto)
@@ -198,7 +198,7 @@ klasse ListTest(list_tests.CommonTest):
             self.assertEqual(list(it), data[len(orig)-2::-1])
 
             # empty iterator
-            for i in range(1, len(orig)):
+            fuer i in range(1, len(orig)):
                 next(itorig)
             d = pickle.dumps((itorig, orig), proto)
             it, a = pickle.loads(d)
@@ -227,7 +227,7 @@ klasse ListTest(list_tests.CommonTest):
             (3,) + L([1,2])
 
     def test_equal_operator_modifying_operand(self):
-        # test fix for seg fault reported in bpo-38588 part 2.
+        # test fix fuer seg fault reported in bpo-38588 part 2.
         klasse X:
             def __eq__(self,other) :
                 list2.clear()
@@ -318,10 +318,10 @@ klasse ListTest(list_tests.CommonTest):
 
     def test_tier2_invalidates_iterator(self):
         # GH-121012
-        for _ in range(100):
+        fuer _ in range(100):
             a = [1, 2, 3]
             it = iter(a)
-            for _ in it:
+            fuer _ in it:
                 pass
             a.append(4)
             self.assertEqual(list(it), [])
@@ -352,7 +352,7 @@ klasse ListTest(list_tests.CommonTest):
             l = []
             def lappend(l, x, y):
                 l.append((x, y))
-            for x in range(3):
+            fuer x in range(3):
                 lappend(l, None, None)
             try:
                 lappend(list, None, None)
@@ -372,7 +372,7 @@ klasse ListTest(list_tests.CommonTest):
         def foo(x):
             self.assertEqual(sys.getrefcount(x), 1)
             r = 0
-            for i in x:
+            fuer i in x:
                 r += i
                 x = None
             return r

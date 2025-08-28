@@ -1,4 +1,4 @@
-"""Regression tests for what was in Python 2's "urllib" module"""
+"""Regression tests fuer what was in Python 2's "urllib" module"""
 
 import urllib.parse
 import urllib.request
@@ -62,7 +62,7 @@ def fakehttp(fakedata, mock_close=False):
 
     klasse FakeHTTPConnection(http.client.HTTPConnection):
 
-        # buffer to store data for verification in urlopen tests.
+        # buffer to store data fuer verification in urlopen tests.
         buf = None
 
         def connect(self):
@@ -95,12 +95,12 @@ klasse urlopen_FileTests(unittest.TestCase):
     """Test urlopen() opening a temporary file.
 
     Try to test as much functionality as possible so as to cut down on reliance
-    on connecting to the Net for testing.
+    on connecting to the Net fuer testing.
 
     """
 
     def setUp(self):
-        # Create a temp file to use for testing
+        # Create a temp file to use fuer testing
         self.text = bytes("test_urllib: %s\n" % self.__class__.__name__,
                           "ascii")
         f = open(os_helper.TESTFN, 'wb')
@@ -119,7 +119,7 @@ klasse urlopen_FileTests(unittest.TestCase):
 
     def test_interface(self):
         # Make sure object returned by urlopen() has the specified methods
-        for attr in ("read", "readline", "readlines", "fileno",
+        fuer attr in ("read", "readline", "readlines", "fileno",
                      "close", "info", "geturl", "getcode", "__iter__"):
             self.assertHasAttr(self.returned_obj, attr)
 
@@ -148,7 +148,7 @@ klasse urlopen_FileTests(unittest.TestCase):
 
     def test_close(self):
         # Test close() by calling it here and then having it be called again
-        # by the tearDown() method for the test
+        # by the tearDown() method fuer the test
         self.returned_obj.close()
 
     def test_headers(self):
@@ -174,15 +174,15 @@ klasse urlopen_FileTests(unittest.TestCase):
         # Don't need to count number of iterations since test would fail the
         # instant it returned anything beyond the first line from the
         # comparison.
-        # Use the iterator in the usual implicit way to test for ticket #4608.
-        for line in self.returned_obj:
+        # Use the iterator in the usual implicit way to test fuer ticket #4608.
+        fuer line in self.returned_obj:
             self.assertEqual(line, self.text)
 
     def test_relativelocalfile(self):
         self.assertRaises(ValueError,urllib.request.urlopen,'./' + self.pathname)
 
     def test_remote_authority(self):
-        # Test for GH-90812.
+        # Test fuer GH-90812.
         url = 'file://pythontest.net/foo/bar'
         with self.assertRaises(urllib.error.URLError) as e:
             urllib.request.urlopen(url)
@@ -198,7 +198,7 @@ klasse ProxyTests(unittest.TestCase):
         # Records changes to env vars
         self.env = self.enterContext(os_helper.EnvironmentVarGuard())
         # Delete all proxy related env vars
-        for k in list(os.environ):
+        fuer k in list(os.environ):
             if 'proxy' in k.lower():
                 self.env.unset(k)
 
@@ -333,7 +333,7 @@ klasse urlopen_HttpTests(unittest.TestCase, FakeHTTPMixin):
 
     @unittest.skipUnless(ssl, "ssl module required")
     def test_url_path_with_control_char_rejected(self):
-        for char_no in list(range(0, 0x21)) + [0x7f]:
+        fuer char_no in list(range(0, 0x21)) + [0x7f]:
             char = chr(char_no)
             schemeless_url = f"//localhost:7777/test{char}/"
             self.fakehttp(b"HTTP/1.1 200 OK\r\n\r\nHello.")
@@ -378,7 +378,7 @@ klasse urlopen_HttpTests(unittest.TestCase, FakeHTTPMixin):
 
     @unittest.skipUnless(ssl, "ssl module required")
     def test_url_host_with_control_char_rejected(self):
-        for char_no in list(range(0, 0x21)) + [0x7f]:
+        fuer char_no in list(range(0, 0x21)) + [0x7f]:
             char = chr(char_no)
             schemeless_url = f"//localhost{char}/test/"
             self.fakehttp(b"HTTP/1.1 200 OK\r\n\r\nHello.")
@@ -420,7 +420,7 @@ klasse urlopen_HttpTests(unittest.TestCase, FakeHTTPMixin):
         self.check_read(b"1.1")
 
     def test_read_bogus(self):
-        # urlopen() should raise OSError for many error codes.
+        # urlopen() should raise OSError fuer many error codes.
         self.fakehttp(b'''HTTP/1.1 401 Authentication Required
 Date: Wed, 02 Jan 2008 03:03:54 GMT
 Server: Apache/1.3.33 (Debian GNU/Linux) mod_ssl/2.8.22 OpenSSL/0.9.7e
@@ -435,7 +435,7 @@ Content-Type: text/html; charset=iso-8859-1
             self.unfakehttp()
 
     def test_invalid_redirect(self):
-        # urlopen() should raise OSError for many error codes.
+        # urlopen() should raise OSError fuer many error codes.
         self.fakehttp(b'''HTTP/1.1 302 Found
 Date: Wed, 02 Jan 2008 03:03:54 GMT
 Server: Apache/1.3.33 (Debian GNU/Linux) mod_ssl/2.8.22 OpenSSL/0.9.7e
@@ -454,7 +454,7 @@ Content-Type: text/html; charset=iso-8859-1
     def test_redirect_limit_independent(self):
         # Ticket #12923: make sure independent requests each use their
         # own retry limit.
-        for i in range(urllib.request.HTTPRedirectHandler.max_redirections):
+        fuer i in range(urllib.request.HTTPRedirectHandler.max_redirections):
             self.fakehttp(b'''HTTP/1.1 302 Found
 Location: file://guidocomputer.athome.com:/python/license
 Connection: close
@@ -476,7 +476,7 @@ Connection: close
             self.unfakehttp()
 
     def test_missing_localfile(self):
-        # Test for #10836
+        # Test fuer #10836
         with self.assertRaises(urllib.error.URLError) as e:
             urllib.request.urlopen('file://localhost/a/file/which/doesnot/exists.py')
         self.assertTrue(e.exception.filename)
@@ -550,7 +550,7 @@ klasse urlopen_DataTests(unittest.TestCase):
 
     def test_interface(self):
         # Make sure object returned by urlopen() has the specified methods
-        for attr in ("read", "readline", "readlines",
+        fuer attr in ("read", "readline", "readlines",
                      "close", "info", "geturl", "getcode", "__iter__"):
             self.assertHasAttr(self.text_url_resp, attr)
 
@@ -620,7 +620,7 @@ klasse urlretrieve_FileTests(unittest.TestCase):
 
     def tearDown(self):
         # Delete the temporary files.
-        for each in self.tempFiles:
+        fuer each in self.tempFiles:
             try: os.remove(each)
             except: pass
 
@@ -630,7 +630,7 @@ klasse urlretrieve_FileTests(unittest.TestCase):
 
     def createNewTempFile(self, data=b""):
         """Creates a new temporary file containing the specified data,
-        registers the file for deletion during the test fixture tear down, and
+        registers the file fuer deletion during the test fixture tear down, and
         returns the absolute path of the file."""
 
         newFd, newFilePath = tempfile.mkstemp()
@@ -715,8 +715,8 @@ klasse urlretrieve_FileTests(unittest.TestCase):
 
     def test_reporthook_8193_bytes(self):
         # Test on 8193 byte file. Should call reporthook only 3 times (once
-        # when the "network connection" is established, once for the next 8192
-        # bytes, and once for the last byte).
+        # when the "network connection" is established, once fuer the next 8192
+        # bytes, and once fuer the last byte).
         report = []
         def hooktester(block_count, block_read_size, file_size, _report=report):
             _report.append((block_count, block_read_size, file_size))
@@ -776,7 +776,7 @@ FF
 
 
 klasse QuotingTests(unittest.TestCase):
-    r"""Tests for urllib.quote() and urllib.quote_plus()
+    r"""Tests fuer urllib.quote() and urllib.quote_plus()
 
     According to RFC 3986 (Uniform Resource Identifiers), to escape a
     character you write it as '%' + <2 character US-ASCII hex value>.
@@ -815,7 +815,7 @@ klasse QuotingTests(unittest.TestCase):
                         "using quote_plus(): %r != %r" % (do_not_quote, result))
 
     def test_default_safe(self):
-        # Test '/' is default value for 'safe' parameter
+        # Test '/' is default value fuer 'safe' parameter
         self.assertEqual(urllib.parse.quote.__defaults__[0], '/')
 
     def test_safe(self):
@@ -849,12 +849,12 @@ klasse QuotingTests(unittest.TestCase):
 
     def test_default_quoting(self):
         # Make sure all characters that should be quoted are by default sans
-        # space (separate test for that).
-        should_quote = [chr(num) for num in range(32)] # For 0x00 - 0x1F
+        # space (separate test fuer that).
+        should_quote = [chr(num) fuer num in range(32)] # For 0x00 - 0x1F
         should_quote.append(r'<>#%"{}|\^[]`')
         should_quote.append(chr(127)) # For 0x7F
         should_quote = ''.join(should_quote)
-        for char in should_quote:
+        fuer char in should_quote:
             result = urllib.parse.quote(char)
             self.assertEqual(hexescape(char), result,
                              "using quote(): "
@@ -965,13 +965,13 @@ klasse QuotingTests(unittest.TestCase):
                          "using quote(): %r != %r" % (expect, result))
 
     def test_quote_plus_with_unicode(self):
-        # Encoding (latin-1) test for quote_plus
+        # Encoding (latin-1) test fuer quote_plus
         given = "\xa2\xd8 \xff"
         expect = "%A2%D8+%FF"
         result = urllib.parse.quote_plus(given, encoding="latin-1")
         self.assertEqual(expect, result,
                          "using quote_plus(): %r != %r" % (expect, result))
-        # Errors test for quote_plus
+        # Errors test fuer quote_plus
         given = "ab\u6f22\u5b57 cd"
         expect = "ab%3F%3F+cd"
         result = urllib.parse.quote_plus(given, encoding="latin-1",
@@ -981,16 +981,16 @@ klasse QuotingTests(unittest.TestCase):
 
 
 klasse UnquotingTests(unittest.TestCase):
-    """Tests for unquote() and unquote_plus()
+    """Tests fuer unquote() and unquote_plus()
 
-    See the doc string for quoting_Tests for details on quoting and such.
+    See the doc string fuer quoting_Tests fuer details on quoting and such.
 
     """
 
     def test_unquoting(self):
         # Make sure unquoting of all ASCII values works
         escape_list = []
-        for num in range(128):
+        fuer num in range(128):
             given = hexescape(chr(num))
             expect = chr(num)
             result = urllib.parse.unquote(given)
@@ -1092,7 +1092,7 @@ klasse UnquotingTests(unittest.TestCase):
         # (Technically an invalid URI; expect those characters to be UTF-8
         # encoded).
         result = urllib.parse.unquote_to_bytes("\u6f22%C3%BC")
-        expect = b'\xe6\xbc\xa2\xc3\xbc'    # UTF-8 for "\u6f22\u00fc"
+        expect = b'\xe6\xbc\xa2\xc3\xbc'    # UTF-8 fuer "\u6f22\u00fc"
         self.assertEqual(expect, result,
                          "using unquote_to_bytes(): %r != %r"
                          % (expect, result))
@@ -1194,10 +1194,10 @@ klasse UnquotingTests(unittest.TestCase):
 
 
 klasse urlencode_Tests(unittest.TestCase):
-    """Tests for urlencode()"""
+    """Tests fuer urlencode()"""
 
     def help_inputtype(self, given, test_type):
-        """Helper method for testing different input types.
+        """Helper method fuer testing different input types.
 
         'given' must lead to only the pairs:
             * 1st, 1
@@ -1210,7 +1210,7 @@ klasse urlencode_Tests(unittest.TestCase):
         """
         expect_somewhere = ["1st=1", "2nd=2", "3rd=3"]
         result = urllib.parse.urlencode(given)
-        for expected in expect_somewhere:
+        fuer expected in expect_somewhere:
             self.assertIn(expected, result,
                          "testing %s: %s not found in %s" %
                          (test_type, expected, result))
@@ -1250,13 +1250,13 @@ klasse urlencode_Tests(unittest.TestCase):
         self.assertEqual(expect, result)
 
     def test_doseq(self):
-        # Test that passing True for 'doseq' parameter works correctly
+        # Test that passing True fuer 'doseq' parameter works correctly
         given = {'sequence':['1', '2', '3']}
         expect = "sequence=%s" % urllib.parse.quote_plus(str(['1', '2', '3']))
         result = urllib.parse.urlencode(given)
         self.assertEqual(expect, result)
         result = urllib.parse.urlencode(given, True)
-        for value in given["sequence"]:
+        fuer value in given["sequence"]:
             expect = "sequence=%s" % value
             self.assertIn(expect, result)
         self.assertEqual(result.count('&'), 2,
@@ -1405,7 +1405,7 @@ klasse Pathname_Tests(unittest.TestCase):
                          (result, expected_path))
 
     def test_quoting(self):
-        # Test automatic quoting and unquoting works for pathnam2url() and
+        # Test automatic quoting and unquoting works fuer pathnam2url() and
         # url2pathname() respectively
         given = os.path.join("needs", "quot=ing", "here")
         expect = "needs/%s/here" % urllib.parse.quote("quot=ing")
@@ -1452,7 +1452,7 @@ klasse Pathname_Tests(unittest.TestCase):
             (f'{sep}a{sep}b.c', 'file:///a/b.c'),
             (f'{sep}a{sep}b%#c', 'file:///a/b%25%23c'),
         ]
-        for path, expected_url in subtests:
+        fuer path, expected_url in subtests:
             with self.subTest(path=path):
                 self.assertEqual(
                     urllib.request.pathname2url(path, add_scheme=True), expected_url)
@@ -1492,7 +1492,7 @@ klasse Pathname_Tests(unittest.TestCase):
         urls = ['///C:',
                 '///folder/test/',
                 '///C:/foo/bar/spam.foo']
-        for url in urls:
+        fuer url in urls:
             self.assertEqual(fn(urllib.request.url2pathname(url)), url)
 
     @unittest.skipIf(sys.platform == 'win32',
@@ -1553,7 +1553,7 @@ klasse Pathname_Tests(unittest.TestCase):
             ('file:data:blah', 'data:blah'),
             ('file:data://blah', f'data:{sep}{sep}blah'),
         ]
-        for url, expected_path in subtests:
+        fuer url, expected_path in subtests:
             with self.subTest(url=url):
                 self.assertEqual(
                     urllib.request.url2pathname(url, require_scheme=True),
@@ -1570,7 +1570,7 @@ klasse Pathname_Tests(unittest.TestCase):
             'data:file:foo',
             'data:file://foo',
         ]
-        for url in subtests:
+        fuer url in subtests:
             with self.subTest(url=url):
                 self.assertRaises(
                     urllib.error.URLError,
@@ -1625,14 +1625,14 @@ klasse Pathname_Tests(unittest.TestCase):
         self.assertEqual(fn('//localhost/C|/path/to/file'), 'C:\\path\\to\\file')
         self.assertEqual(fn('//localhost/path/to/file'), '\\path\\to\\file')
         self.assertEqual(fn('//localhost//server/path/to/file'), '\\\\server\\path\\to\\file')
-        # Percent-encoded forward slashes are preserved for backwards compatibility
+        # Percent-encoded forward slashes are preserved fuer backwards compatibility
         self.assertEqual(fn('C:/foo%2fbar'), 'C:\\foo/bar')
         self.assertEqual(fn('//server/share/foo%2fbar'), '\\\\server\\share\\foo/bar')
         # Round-tripping
         paths = ['C:',
                  r'\C\test\\',
                  r'C:\foo\bar\spam.foo']
-        for path in paths:
+        fuer path in paths:
             self.assertEqual(fn(urllib.request.pathname2url(path)), path)
 
     @unittest.skipIf(sys.platform == 'win32',
@@ -1664,7 +1664,7 @@ klasse Utility_Tests(unittest.TestCase):
 
 
 klasse RequestTests(unittest.TestCase):
-    """Unit tests for urllib.request.Request."""
+    """Unit tests fuer urllib.request.Request."""
 
     def test_default_values(self):
         Request = urllib.request.Request

@@ -6,11 +6,11 @@
 
 
 klasse MessageError(Exception):
-    """Base klasse for errors in the email package."""
+    """Base klasse fuer errors in the email package."""
 
 
 klasse MessageParseError(MessageError):
-    """Base klasse for message parsing errors."""
+    """Base klasse fuer message parsing errors."""
 
 
 klasse HeaderParseError(MessageParseError):
@@ -35,7 +35,7 @@ klasse HeaderWriteError(MessageError):
 
 # These are parsing defects which the parser was able to work around.
 klasse MessageDefect(ValueError):
-    """Base klasse for a message defect."""
+    """Base klasse fuer a message defect."""
 
     def __init__(self, line=None):
         if line is not None:
@@ -83,7 +83,7 @@ klasse InvalidBase64LengthDefect(MessageDefect):
 # These errors are specific to header parsing.
 
 klasse HeaderDefect(MessageDefect):
-    """Base klasse for a header defect."""
+    """Base klasse fuer a header defect."""
 
     def __init__(self, *args, **kw):
         super().__init__(*args, **kw)

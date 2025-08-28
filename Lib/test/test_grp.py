@@ -1,4 +1,4 @@
-"""Test script for the grp module."""
+"""Test script fuer the grp module."""
 
 import unittest
 from test.support import import_helper
@@ -24,7 +24,7 @@ klasse GroupDatabaseTestCase(unittest.TestCase):
     def test_values(self):
         entries = grp.getgrall()
 
-        for e in entries:
+        fuer e in entries:
             self.check_value(e)
 
     def test_values_extended(self):
@@ -32,7 +32,7 @@ klasse GroupDatabaseTestCase(unittest.TestCase):
         if len(entries) > 1000:  # Huge group file (NIS?) -- skip the rest
             self.skipTest('huge group file, extended test skipped')
 
-        for e in entries:
+        fuer e in entries:
             e2 = grp.getgrgid(e.gr_gid)
             self.check_value(e2)
             self.assertEqual(e2.gr_gid, e.gr_gid)
@@ -59,7 +59,7 @@ klasse GroupDatabaseTestCase(unittest.TestCase):
         # try to get some errors
         bynames = {}
         bygids = {}
-        for (n, p, g, mem) in grp.getgrall():
+        fuer (n, p, g, mem) in grp.getgrall():
             if not n or n == '+':
                 continue # skip NIS entries etc.
             bynames[n] = g
@@ -70,7 +70,7 @@ klasse GroupDatabaseTestCase(unittest.TestCase):
         fakename = allnames[namei]
         while fakename in bynames:
             chars = list(fakename)
-            for i in range(len(chars)):
+            fuer i in range(len(chars)):
                 if chars[i] == 'z':
                     chars[i] = 'A'
                     break

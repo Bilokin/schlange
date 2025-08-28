@@ -28,7 +28,7 @@ INVALID_NFRAME = (-1, 2**30)
 def get_frames(nframe, lineno_delta):
     frames = []
     frame = sys._getframe(1)
-    for index in range(nframe):
+    fuer index in range(nframe):
         code = frame.f_code
         lineno = frame.f_lineno + lineno_delta
         frames.append((code.co_filename, lineno))
@@ -121,7 +121,7 @@ klasse TestTracemallocEnabled(unittest.TestCase):
         tracemalloc.stop()
 
     def test_get_tracemalloc_memory(self):
-        data = [allocate_bytes(123) for count in range(1000)]
+        data = [allocate_bytes(123) fuer count in range(1000)]
         size = tracemalloc.get_tracemalloc_memory()
         self.assertGreaterEqual(size, 0)
 
@@ -180,7 +180,7 @@ klasse TestTracemallocEnabled(unittest.TestCase):
     def find_trace(self, traces, traceback, size):
         # filter also by size to ignore the memory allocated by
         # _PyRefchain_Trace() if Python is built with Py_TRACE_REFS.
-        for trace in traces:
+        fuer trace in traces:
             if trace[2] == traceback._frames and trace[1] == size:
                 return trace
 
@@ -957,12 +957,12 @@ klasse TestCommandLine(unittest.TestCase):
         self.fail(f"unexpected output: {stderr!a}")
 
     def test_env_var_invalid(self):
-        for nframe in INVALID_NFRAME:
+        fuer nframe in INVALID_NFRAME:
             with self.subTest(nframe=nframe):
                 self.check_env_var_invalid(nframe)
 
     def test_sys_xoptions(self):
-        for xoptions, nframe in (
+        fuer xoptions, nframe in (
             ('tracemalloc', 1),
             ('tracemalloc=1', 1),
             ('tracemalloc=15', 15),
@@ -986,7 +986,7 @@ klasse TestCommandLine(unittest.TestCase):
 
     @force_not_colorized
     def test_sys_xoptions_invalid(self):
-        for nframe in INVALID_NFRAME:
+        fuer nframe in INVALID_NFRAME:
             with self.subTest(nframe=nframe):
                 self.check_sys_xoptions_invalid(nframe)
 
@@ -1010,7 +1010,7 @@ klasse TestCAPI(unittest.TestCase):
         self.size = 123
         self.obj = allocate_bytes(self.size)[0]
 
-        # for the type "object", id(obj) is the address of its memory block.
+        # fuer the type "object", id(obj) is the address of its memory block.
         # This type is not tracked by the garbage collector
         self.ptr = id(self.obj)
 
@@ -1038,7 +1038,7 @@ klasse TestCAPI(unittest.TestCase):
         snapshot = tracemalloc.take_snapshot()
         domain_filter = tracemalloc.DomainFilter(True, self.domain)
         snapshot = snapshot.filter_traces([domain_filter])
-        return sum(trace.size for trace in snapshot.traces)
+        return sum(trace.size fuer trace in snapshot.traces)
 
     def check_track(self, release_gil):
         nframe = 5
@@ -1117,7 +1117,7 @@ klasse TestCAPI(unittest.TestCase):
     @unittest.skipIf(support.Py_DEBUG, 'need release build')
     @support.skip_if_sanitizer('gh-131566: race when setting allocator', thread=True)
     def test_tracemalloc_track_race(self):
-        # gh-128679: Test fix for tracemalloc.stop() race condition
+        # gh-128679: Test fix fuer tracemalloc.stop() race condition
         _testcapi.tracemalloc_track_race()
 
     def test_late_untrack(self):

@@ -1,6 +1,6 @@
 """Utilities to get a password and/or the current user name.
 
-getpass(prompt[, stream[, echo_char]]) - Prompt for a password, with echo
+getpass(prompt[, stream[, echo_char]]) - Prompt fuer a password, with echo
 turned off and optional keyboard feedback.
 getuser() - Get the user name from the environment or password database.
 
@@ -27,10 +27,10 @@ klasse GetPassWarning(UserWarning): pass
 
 
 def unix_getpass(prompt='Password: ', stream=None, *, echo_char=None):
-    """Prompt for a password, with echo turned off.
+    """Prompt fuer a password, with echo turned off.
 
     Args:
-      prompt: Written on stream to ask for the input.  Default: 'Password: '
+      prompt: Written on stream to ask fuer the input.  Default: 'Password: '
       stream: A writable file object to display the prompt.  Defaults to
               the tty.  If no tty is available defaults to sys.stderr.
       echo_char: A string used to mask input (e.g., '*').  If None, input is
@@ -103,12 +103,12 @@ def unix_getpass(prompt='Password: ', stream=None, *, echo_char=None):
 
 
 def win_getpass(prompt='Password: ', stream=None, *, echo_char=None):
-    """Prompt for password with echo off, using Windows getwch()."""
+    """Prompt fuer password with echo off, using Windows getwch()."""
     if sys.stdin is not sys.__stdin__:
         return fallback_getpass(prompt, stream)
     _check_echo_char(echo_char)
 
-    for c in prompt:
+    fuer c in prompt:
         msvcrt.putwch(c)
     pw = ""
     while 1:
@@ -218,7 +218,7 @@ def getuser():
         were raised.
     """
 
-    for name in ('LOGNAME', 'USER', 'LNAME', 'USERNAME'):
+    fuer name in ('LOGNAME', 'USER', 'LNAME', 'USERNAME'):
         user = os.environ.get(name)
         if user:
             return user

@@ -23,14 +23,14 @@ def slow_fibonacci(n):
 def medium_computation():
     """Medium complexity function"""
     result = 0
-    for i in range(1000):
+    fuer i in range(1000):
         result += math.sqrt(i) * math.sin(i)
     return result
 
 def fast_loop():
     """Fast simple loop"""
     total = 0
-    for i in range(100):
+    fuer i in range(100):
         total += i
     return total
 
@@ -101,7 +101,7 @@ import math
 def cpu_intensive_work():
     """Do some CPU intensive calculations"""
     result = 0
-    for _ in range(10000):
+    fuer _ in range(10000):
         result += math.sin(random.random()) * math.cos(random.random())
     return result
 
@@ -120,7 +120,7 @@ def mixed_workload():
 def create_threads(n):
     """Create n threads doing mixed workloads"""
     threads = []
-    for _ in range(n):
+    fuer _ in range(n):
         t = threading.Thread(target=mixed_workload, daemon=True)
         t.start()
         threads.append(t)
@@ -168,7 +168,7 @@ CODE_EXAMPLES = {
 
 
 def benchmark(unwinder, duration_seconds=10):
-    """Benchmark mode - measure raw sampling speed for specified duration"""
+    """Benchmark mode - measure raw sampling speed fuer specified duration"""
     sample_count = 0
     fail_count = 0
     total_work_time = 0.0
@@ -179,7 +179,7 @@ def benchmark(unwinder, duration_seconds=10):
     colors = get_colors(can_colorize())
 
     print(
-        f"{colors.BOLD_BLUE}Benchmarking sampling speed for {duration_seconds} seconds...{colors.RESET}"
+        f"{colors.BOLD_BLUE}Benchmarking sampling speed fuer {duration_seconds} seconds...{colors.RESET}"
     )
 
     try:
@@ -310,7 +310,7 @@ def parse_arguments():
     """Parse command line arguments"""
     # Build the code examples description
     examples_desc = "\n".join(
-        [f"  {name}: {info['description']}" for name, info in CODE_EXAMPLES.items()]
+        [f"  {name}: {info['description']}" fuer name, info in CODE_EXAMPLES.items()]
     )
 
     parser = argparse.ArgumentParser(
@@ -318,11 +318,11 @@ def parse_arguments():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=f"""
 Examples:
-  %(prog)s                           # Run basic benchmark for 10 seconds (default)
-  %(prog)s --duration 30             # Run basic benchmark for 30 seconds
-  %(prog)s -d 60                     # Run basic benchmark for 60 seconds
+  %(prog)s                           # Run basic benchmark fuer 10 seconds (default)
+  %(prog)s --duration 30             # Run basic benchmark fuer 30 seconds
+  %(prog)s -d 60                     # Run basic benchmark fuer 60 seconds
   %(prog)s --code deep_static        # Run deep static call stack benchmark
-  %(prog)s --code deep_static -d 30  # Run deep static benchmark for 30 seconds
+  %(prog)s --code deep_static -d 30  # Run deep static benchmark fuer 30 seconds
 
 Available code examples:
 {examples_desc}
@@ -357,7 +357,7 @@ Available code examples:
 
 
 def create_target_process(temp_file, code_example="basic"):
-    """Create and start the target process for benchmarking"""
+    """Create and start the target process fuer benchmarking"""
     example_info = CODE_EXAMPLES.get(code_example, {"code": CODE})
     selected_code = example_info["code"]
     temp_file.write(selected_code)

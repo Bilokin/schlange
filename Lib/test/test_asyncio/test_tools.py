@@ -1154,13 +1154,13 @@ TEST_INPUTS_TABLE = [
 
 klasse TestAsyncioToolsTree(unittest.TestCase):
     def test_asyncio_utils(self):
-        for input_, tree in TEST_INPUTS_TREE:
+        fuer input_, tree in TEST_INPUTS_TREE:
             with self.subTest(input_):
                 result = tools.build_async_tree(input_)
                 self.assertEqual(result, tree)
 
     def test_asyncio_utils_cycles(self):
-        for input_, cycles in TEST_INPUTS_CYCLES_TREE:
+        fuer input_, cycles in TEST_INPUTS_CYCLES_TREE:
             with self.subTest(input_):
                 try:
                     tools.build_async_tree(input_)
@@ -1170,7 +1170,7 @@ klasse TestAsyncioToolsTree(unittest.TestCase):
 
 klasse TestAsyncioToolsTable(unittest.TestCase):
     def test_asyncio_utils(self):
-        for input_, table in TEST_INPUTS_TABLE:
+        fuer input_, table in TEST_INPUTS_TABLE:
             with self.subTest(input_):
                 result = tools.build_task_table(input_)
                 self.assertEqual(result, table)
@@ -1279,7 +1279,7 @@ klasse TestAsyncioToolsBasic(unittest.TestCase):
         self.assertEqual(tools.build_task_table(result), expected_output)
 
     def test_cycle_detection(self):
-        """Test build_async_tree raises CycleFoundException for cyclic input."""
+        """Test build_async_tree raises CycleFoundException fuer cyclic input."""
         result = [
             AwaitedInfo(
                 thread_id=1,
@@ -1498,7 +1498,7 @@ klasse TestAsyncioToolsBasic(unittest.TestCase):
         with self.assertRaises(tools.CycleFoundException) as ctx:
             tools.build_async_tree(input_)
         cycles = ctx.exception.cycles
-        self.assertTrue(any(set(c) == {1, 2, 3} for c in cycles))
+        self.assertTrue(any(set(c) == {1, 2, 3} fuer c in cycles))
 
     def test_table_output_format(self):
         input_ = [
@@ -1526,7 +1526,7 @@ klasse TestAsyncioToolsBasic(unittest.TestCase):
             )
         ]
         table = tools.build_task_table(input_)
-        for row in table:
+        fuer row in table:
             self.assertEqual(len(row), 7)
             self.assertIsInstance(row[0], int)  # thread ID
             self.assertTrue(

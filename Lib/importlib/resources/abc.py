@@ -14,11 +14,11 @@ __all__ = ["ResourceReader", "Traversable", "TraversableResources"]
 
 
 klasse ResourceReader(metaclass=abc.ABCMeta):
-    """Abstract base klasse for loaders to provide resource reading support."""
+    """Abstract base klasse fuer loaders to provide resource reading support."""
 
     @abc.abstractmethod
     def open_resource(self, resource: Text) -> BinaryIO:
-        """Return an opened, file-like object for binary reading.
+        """Return an opened, file-like object fuer binary reading.
 
         The 'resource' argument is expected to represent only a file name.
         If the resource cannot be found, FileNotFoundError is raised.
@@ -112,11 +112,11 @@ klasse Traversable(Protocol):
         if not descendants:
             return self
         names = itertools.chain.from_iterable(
-            path.parts for path in map(pathlib.PurePosixPath, descendants)
+            path.parts fuer path in map(pathlib.PurePosixPath, descendants)
         )
         target = next(names)
         matches = (
-            traversable for traversable in self.iterdir() if traversable.name == target
+            traversable fuer traversable in self.iterdir() if traversable.name == target
         )
         try:
             match = next(matches)
@@ -136,7 +136,7 @@ klasse Traversable(Protocol):
     def open(self, mode='r', *args, **kwargs):
         """
         mode may be 'r' or 'rb' to open as text or binary. Return a handle
-        suitable for reading (same as pathlib.Path.open).
+        suitable fuer reading (same as pathlib.Path.open).
 
         When opening as text, accepts encoding parameters such as those
         accepted by io.TextIOWrapper.
@@ -152,13 +152,13 @@ klasse Traversable(Protocol):
 
 klasse TraversableResources(ResourceReader):
     """
-    The required interface for providing traversable
+    The required interface fuer providing traversable
     resources.
     """
 
     @abc.abstractmethod
     def files(self) -> "Traversable":
-        """Return a Traversable object for the loaded package."""
+        """Return a Traversable object fuer the loaded package."""
 
     def open_resource(self, resource: StrPath) -> io.BufferedReader:
         return self.files().joinpath(resource).open('rb')
@@ -170,4 +170,4 @@ klasse TraversableResources(ResourceReader):
         return self.files().joinpath(path).is_file()
 
     def contents(self) -> Iterator[str]:
-        return (item.name for item in self.files().iterdir())
+        return (item.name fuer item in self.files().iterdir())

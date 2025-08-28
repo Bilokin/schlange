@@ -1,6 +1,6 @@
 #
 # multibytecodec_support.py
-#   Common Unittest Routines for CJK codecs
+#   Common Unittest Routines fuer CJK codecs
 #
 
 import codecs
@@ -35,20 +35,20 @@ klasse TestBase:
 
     def test_chunkcoding(self):
         tstring_lines = []
-        for b in self.tstring:
+        fuer b in self.tstring:
             lines = b.split(b"\n")
             last = lines.pop()
             assert last == b""
-            lines = [line + b"\n" for line in lines]
+            lines = [line + b"\n" fuer line in lines]
             tstring_lines.append(lines)
-        for native, utf8 in zip(*tstring_lines):
+        fuer native, utf8 in zip(*tstring_lines):
             u = self.decode(native)[0]
             self.assertEqual(u, utf8.decode('utf-8'))
             if self.roundtriptest:
                 self.assertEqual(native, self.encode(u)[0])
 
     def test_errorhandle(self):
-        for source, scheme, expected in self.codectests:
+        fuer source, scheme, expected in self.codectests:
             if isinstance(source, bytes):
                 func = self.decode
             else:
@@ -90,7 +90,7 @@ klasse TestBase:
             if not isinstance(exc, UnicodeEncodeError):
                 raise TypeError("don't know how to handle %r" % exc)
             l = []
-            for c in exc.object[exc.start:exc.end]:
+            fuer c in exc.object[exc.start:exc.end]:
                 if ord(c) in codepoint2name:
                     l.append("&%s;" % codepoint2name[ord(c)])
                 else:
@@ -119,7 +119,7 @@ klasse TestBase:
             return (ret, exc.end)
         codecs.register_error("test.cjktest", myreplace)
 
-        for ret in ([1, 2, 3], [], None, object()):
+        fuer ret in ([1, 2, 3], [], None, object()):
             self.assertRaises(TypeError, self.encode, self.unmappedunicode,
                               'test.cjktest')
 
@@ -172,7 +172,7 @@ klasse TestBase:
 
     def test_incrementalencoder(self):
         UTF8Reader = codecs.getreader('utf-8')
-        for sizehint in [None] + list(range(1, 33)) + \
+        fuer sizehint in [None] + list(range(1, 33)) + \
                         [64, 128, 256, 512, 1024]:
             istream = UTF8Reader(BytesIO(self.tstring[1]))
             ostream = BytesIO()
@@ -192,7 +192,7 @@ klasse TestBase:
 
     def test_incrementaldecoder(self):
         UTF8Writer = codecs.getwriter('utf-8')
-        for sizehint in [None, -1] + list(range(1, 33)) + \
+        fuer sizehint in [None, -1] + list(range(1, 33)) + \
                         [64, 128, 256, 512, 1024]:
             istream = BytesIO(self.tstring[0])
             ostream = UTF8Writer(BytesIO())
@@ -229,8 +229,8 @@ klasse TestBase:
 
     def test_streamreader(self):
         UTF8Writer = codecs.getwriter('utf-8')
-        for name in ["read", "readline", "readlines"]:
-            for sizehint in [None, -1] + list(range(1, 33)) + \
+        fuer name in ["read", "readline", "readlines"]:
+            fuer sizehint in [None, -1] + list(range(1, 33)) + \
                             [64, 128, 256, 512, 1024]:
                 istream = self.reader(BytesIO(self.tstring[0]))
                 ostream = UTF8Writer(BytesIO())
@@ -249,8 +249,8 @@ klasse TestBase:
     def test_streamwriter(self):
         readfuncs = ('read', 'readline', 'readlines')
         UTF8Reader = codecs.getreader('utf-8')
-        for name in readfuncs:
-            for sizehint in [None] + list(range(1, 33)) + \
+        fuer name in readfuncs:
+            fuer sizehint in [None] + list(range(1, 33)) + \
                             [64, 128, 256, 512, 1024]:
                 istream = UTF8Reader(BytesIO(self.tstring[1]))
                 ostream = self.writer(BytesIO())
@@ -306,12 +306,12 @@ klasse TestBase_Mapping(unittest.TestCase):
 
     def _test_mapping_file_plain(self):
         def unichrs(s):
-            return ''.join(chr(int(x, 16)) for x in s.split('+'))
+            return ''.join(chr(int(x, 16)) fuer x in s.split('+'))
 
         urt_wa = {}
 
         with self.open_mapping_file() as f:
-            for line in f:
+            fuer line in f:
                 if not line:
                     break
                 data = line.split('#')[0].split()
@@ -335,13 +335,13 @@ klasse TestBase_Mapping(unittest.TestCase):
         with self.open_mapping_file() as f:
             ucmdata = f.read()
         uc = re.findall('<a u="([A-F0-9]{4})" b="([0-9A-F ]+)"/>', ucmdata)
-        for uni, coded in uc:
+        fuer uni, coded in uc:
             unich = chr(int(uni, 16))
             codech = bytes.fromhex(coded)
             self._testpoint(codech, unich)
 
     def test_mapping_supplemental(self):
-        for mapping in self.supmaps:
+        fuer mapping in self.supmaps:
             self._testpoint(*mapping)
 
     def _testpoint(self, csetch, unich):
@@ -351,7 +351,7 @@ klasse TestBase_Mapping(unittest.TestCase):
             self.assertEqual(str(csetch, self.encoding), unich)
 
     def test_errorhandle(self):
-        for source, scheme, expected in self.codectests:
+        fuer source, scheme, expected in self.codectests:
             if isinstance(source, bytes):
                 func = source.decode
             else:

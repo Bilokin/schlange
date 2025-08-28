@@ -36,7 +36,7 @@ with test_tools.imports_under_tool('clinic'):
 def repeat_fn(*functions):
     def wrapper(test):
         def wrapped(self):
-            for fn in functions:
+            fuer fn in functions:
                 with self.subTest(fn=fn):
                     test(self, fn)
         return wrapped
@@ -51,10 +51,10 @@ def _make_clinic(*, filename='clinic_tests', limited_capi=False):
 
 def _expect_failure(tc, parser, code, errmsg, *, filename=None, lineno=None,
                     strip=True):
-    """Helper for the parser tests.
+    """Helper fuer the parser tests.
 
     tc: unittest.TestCase; passed self in the wrapper
-    parser: the clinic parser used for this test case
+    parser: the clinic parser used fuer this test case
     code: a str with input text (clinic code)
     errmsg: the expected error message
     filename: str, optional filename
@@ -101,10 +101,10 @@ klasse ClinicWholeFileTest(TestCase):
     def test_eol(self):
         # regression test:
         # clinic's block parser didn't recognize
-        # the "end line" for the block if it
+        # the "end line" fuer the block if it
         # didn't end in "\n" (as in, the last)
         # byte of the file was '/'.
-        # so it would spit out an end line for you.
+        # so it would spit out an end line fuer you.
         # and since you really already had one,
         # the last line of the block got corrupted.
         raw = "/*[clinic]\nfoo\n[clinic]*/"
@@ -193,7 +193,7 @@ klasse ClinicWholeFileTest(TestCase):
             a()
             #endif
         """
-        err = 'Invalid format for #if line: no argument!'
+        err = 'Invalid format fuer #if line: no argument!'
         self.expect_failure(raw, err, filename="test.c", lineno=1)
 
     def test_cpp_monitor_fail_invalid_format_toomanyargs(self):
@@ -202,7 +202,7 @@ klasse ClinicWholeFileTest(TestCase):
             a()
             #endif
         """
-        err = 'Invalid format for #ifdef line: should be exactly one argument!'
+        err = 'Invalid format fuer #ifdef line: should be exactly one argument!'
         self.expect_failure(raw, err, filename="test.c", lineno=1)
 
     def test_cpp_monitor_fail_no_matching_if(self):
@@ -235,7 +235,7 @@ klasse ClinicWholeFileTest(TestCase):
             [clinic start generated code]*/
         """)
         out = self.clinic.parse(raw)
-        # The generated output will differ for every run, but we can check that
+        # The generated output will differ fuer every run, but we can check that
         # it starts with the clinic block, we check that it contains all the
         # expected fields, and we check that it contains the checksum line.
         self.assertStartsWith(out, dedent("""
@@ -255,7 +255,7 @@ klasse ClinicWholeFileTest(TestCase):
             "parser_definition",
             "parser_prototype",
         }
-        for field in fields:
+        fuer field in fields:
             with self.subTest(field=field):
                 self.assertIn(field, out)
         last_line = out.rstrip().split("\n")[-1]
@@ -315,7 +315,7 @@ klasse ClinicWholeFileTest(TestCase):
         self.expect_failure(block, err, lineno=9)
 
     def test_badly_formed_return_annotation(self):
-        err = "Badly formed annotation for 'm.f': 'Custom'"
+        err = "Badly formed annotation fuer 'm.f': 'Custom'"
         block = """
             /*[python input]
             klasse Custom_return_converter(CReturnConverter):
@@ -557,7 +557,7 @@ klasse ClinicWholeFileTest(TestCase):
         self.expect_failure(block, err, lineno=3)
 
     def test_directive_preserve_input(self):
-        err = "'preserve' only works for blocks that don't produce any output!"
+        err = "'preserve' only works fuer blocks that don't produce any output!"
         block = """
             /*[clinic input]
             preserve
@@ -739,7 +739,7 @@ klasse ClinicWholeFileTest(TestCase):
         self.expect_failure(block, err, lineno=11)
 
     def test_ignore_preprocessor_in_comments(self):
-        for dsl in "clinic", "python":
+        fuer dsl in "clinic", "python":
             raw = dedent(f"""\
                 /*[{dsl} input]
                 # CPP directives, valid or not, should be ignored in C comments.
@@ -760,16 +760,16 @@ klasse ParseFileUnitTest(TestCase):
     def test_parse_file_no_extension(self) -> None:
         self.expect_parsing_failure(
             filename="foo",
-            expected_error="Can't extract file type for file 'foo'"
+            expected_error="Can't extract file type fuer file 'foo'"
         )
 
     def test_parse_file_strange_extension(self) -> None:
         filenames_to_errors = {
-            "foo.rs": "Can't identify file type for file 'foo.rs'",
-            "foo.hs": "Can't identify file type for file 'foo.hs'",
-            "foo.js": "Can't identify file type for file 'foo.js'",
+            "foo.rs": "Can't identify file type fuer file 'foo.rs'",
+            "foo.hs": "Can't identify file type fuer file 'foo.hs'",
+            "foo.js": "Can't identify file type fuer file 'foo.js'",
         }
-        for filename, errmsg in filenames_to_errors.items():
+        fuer filename, errmsg in filenames_to_errors.items():
             with self.subTest(filename=filename):
                 self.expect_parsing_failure(filename=filename, expected_error=errmsg)
 
@@ -877,13 +877,13 @@ klasse ClinicLinearFormatTest(TestCase):
     def test_text_before_block_marker(self):
         regex = re.escape("found before '{marker}'")
         with self.assertRaisesRegex(ClinicError, regex):
-            libclinic.linear_format("no text before marker for you! {marker}",
+            libclinic.linear_format("no text before marker fuer you! {marker}",
                                     marker="not allowed!")
 
     def test_text_after_block_marker(self):
         regex = re.escape("found after '{marker}'")
         with self.assertRaisesRegex(ClinicError, regex):
-            libclinic.linear_format("{marker} no text after marker for you!",
+            libclinic.linear_format("{marker} no text after marker fuer you!",
                                     marker="not allowed!")
 
 
@@ -908,7 +908,7 @@ klasse ClinicBlockParserTest(TestCase):
 
         blocks = list(BlockParser(input, language))
         writer = BlockPrinter(language)
-        for block in blocks:
+        fuer block in blocks:
             writer.print_block(block)
         output = writer.f.getvalue()
         assert output == input, "output != input!\n\noutput " + repr(output) + "\n\n input " + repr(input)
@@ -1072,10 +1072,10 @@ klasse ClinicParserTest(TestCase):
                 follow_symlinks: int = {default}
         """
         err = "Unsupported expression as default value"
-        for bad_default_value in (
+        fuer bad_default_value in (
             "{1, 2, 3}",
             "3 if bool() else 4",
-            "[x for x in range(42)]"
+            "[x fuer x in range(42)]"
         ):
             with self.subTest(bad_default=bad_default_value):
                 block = template.format(default=bad_default_value)
@@ -1199,10 +1199,10 @@ klasse ClinicParserTest(TestCase):
             module foo
             foo.bar
               x: int
-                 Documentation for x.
+                 Documentation fuer x.
               y: int
 
-            This is the documentation for foo.
+            This is the documentation fuer foo.
 
             Okay, we're done here.
         """))
@@ -1210,10 +1210,10 @@ klasse ClinicParserTest(TestCase):
             bar($module, /, x, y)
             --
 
-            This is the documentation for foo.
+            This is the documentation fuer foo.
 
               x
-                Documentation for x.
+                Documentation fuer x.
 
             Okay, we're done here.
         """)
@@ -1224,17 +1224,17 @@ klasse ClinicParserTest(TestCase):
             foo.bar
               x: int
                  # We're about to have
-                 # the documentation for x.
-                 Documentation for x.
+                 # the documentation fuer x.
+                 Documentation fuer x.
                  # We've just had
-                 # the documentation for x.
+                 # the documentation fuer x.
               y: int
 
             # We're about to have
-            # the documentation for foo.
-            This is the documentation for foo.
+            # the documentation fuer foo.
+            This is the documentation fuer foo.
             # We've just had
-            # the documentation for foo.
+            # the documentation fuer foo.
 
             Okay, we're done here.
         """))
@@ -1242,10 +1242,10 @@ klasse ClinicParserTest(TestCase):
             bar($module, /, x, y)
             --
 
-            This is the documentation for foo.
+            This is the documentation fuer foo.
 
               x
-                Documentation for x.
+                Documentation fuer x.
 
             Okay, we're done here.
         """)
@@ -1316,7 +1316,7 @@ klasse ClinicParserTest(TestCase):
             module os
             os.stat -> invalid syntax
         """
-        err = "Badly formed annotation for 'os.stat': 'invalid syntax'"
+        err = "Badly formed annotation fuer 'os.stat': 'invalid syntax'"
         self.expect_failure(block, err)
 
     def test_legacy_converter_disallowed_in_return_annotation(self):
@@ -1372,7 +1372,7 @@ klasse ClinicParserTest(TestCase):
                     Character to add.
                 [
                 attr: long
-                    Attributes for the character.
+                    Attributes fuer the character.
                 ]
                 /
         """)
@@ -1381,7 +1381,7 @@ klasse ClinicParserTest(TestCase):
             ('ch', 0),
             ('attr', 1),
         )
-        for name, group in dataset:
+        fuer name, group in dataset:
             with self.subTest(name=name, group=group):
                 p = function.parameters[name]
                 self.assertEqual(p.group, group)
@@ -1397,7 +1397,7 @@ klasse ClinicParserTest(TestCase):
               ch
                 Character to add.
               attr
-                Attributes for the character.
+                Attributes fuer the character.
         """)
 
     def test_nested_groups(self):
@@ -1420,18 +1420,18 @@ klasse ClinicParserTest(TestCase):
                  Character to add.
                [
                attr1: long
-                 Attributes for the character.
+                 Attributes fuer the character.
                attr2: long
-                 Attributes for the character.
+                 Attributes fuer the character.
                attr3: long
-                 Attributes for the character.
+                 Attributes fuer the character.
                [
                attr4: long
-                 Attributes for the character.
+                 Attributes fuer the character.
                attr5: long
-                 Attributes for the character.
+                 Attributes fuer the character.
                attr6: long
-                 Attributes for the character.
+                 Attributes fuer the character.
                ]
                ]
                /
@@ -1443,7 +1443,7 @@ klasse ClinicParserTest(TestCase):
             ('attr1', 1), ('attr2', 1), ('attr3', 1),
             ('attr4', 2), ('attr5', 2), ('attr6', 2),
         )
-        for name, group in dataset:
+        fuer name, group in dataset:
             with self.subTest(name=name, group=group):
                 p = function.parameters[name]
                 self.assertEqual(p.group, group)
@@ -1465,17 +1465,17 @@ klasse ClinicParserTest(TestCase):
               ch
                 Character to add.
               attr1
-                Attributes for the character.
+                Attributes fuer the character.
               attr2
-                Attributes for the character.
+                Attributes fuer the character.
               attr3
-                Attributes for the character.
+                Attributes fuer the character.
               attr4
-                Attributes for the character.
+                Attributes fuer the character.
               attr5
-                Attributes for the character.
+                Attributes fuer the character.
               attr6
-                Attributes for the character.
+                Attributes fuer the character.
         """)
 
     def test_disallowed_grouping__two_top_groups_on_left(self):
@@ -1613,7 +1613,7 @@ klasse ClinicParserTest(TestCase):
             "You cannot use optional groups ('[' and ']') unless all "
             "parameters are positional-only ('/')"
         )
-        for block in dataset:
+        fuer block in dataset:
             with self.subTest(block=block):
                 self.expect_failure(block, err)
 
@@ -1684,7 +1684,7 @@ klasse ClinicParserTest(TestCase):
             "module foo\nfoo.bar\n  this: int\n  *\nDocstring.",
         )
         err = "Function 'bar' specifies '*' without following parameters."
-        for block in dataset:
+        fuer block in dataset:
             with self.subTest(block=block):
                 self.expect_failure(block, err)
 
@@ -1707,7 +1707,7 @@ klasse ClinicParserTest(TestCase):
                 m.T.C.__init__
             """),
         )
-        for name, code in dataset:
+        fuer name, code in dataset:
             with self.subTest(name=name, code=code):
                 block = self.parse(code)
                 func = block.signatures[-1]
@@ -1736,7 +1736,7 @@ klasse ClinicParserTest(TestCase):
                 m.T.C.meth
             """),
         )
-        for name, code in dataset:
+        fuer name, code in dataset:
             with self.subTest(name=name, code=code):
                 block = self.parse(code)
                 func = block.signatures[-1]
@@ -2129,15 +2129,15 @@ klasse ClinicParserTest(TestCase):
               module m
               m.f
                 a: int
-                    Param docstring for 'a' will be included
+                    Param docstring fuer 'a' will be included
                 b: int
                 c: int
-                    Param docstring for 'c' will be included
+                    Param docstring fuer 'c' will be included
               This is the summary line.
 
               We'll now place the params section here:
               {parameters}
-              And now for something completely different!
+              And now fuer something completely different!
               (Note the added newline)
         """)
         self.checkDocstring(function, """
@@ -2148,11 +2148,11 @@ klasse ClinicParserTest(TestCase):
 
             We'll now place the params section here:
               a
-                Param docstring for 'a' will be included
+                Param docstring fuer 'a' will be included
               c
-                Param docstring for 'c' will be included
+                Param docstring fuer 'c' will be included
 
-            And now for something completely different!
+            And now fuer something completely different!
             (Note the added newline)
         """)
 
@@ -2199,7 +2199,7 @@ klasse ClinicParserTest(TestCase):
             'module os\nos.access\n   path: 42j',
             'module os\nos.access\n   path: b"42"',
         )
-        for block in dataset:
+        fuer block in dataset:
             with self.subTest(block=block):
                 self.expect_failure(block, err, lineno=2)
 
@@ -2208,9 +2208,9 @@ klasse ClinicParserTest(TestCase):
         dataset = (
             'module os\nos.access\n   path: {"some": "dictionary"}',
             'module os\nos.access\n   path: ["list", "of", "strings"]',
-            'module os\nos.access\n   path: (x for x in range(42))',
+            'module os\nos.access\n   path: (x fuer x in range(42))',
         )
-        for block in dataset:
+        fuer block in dataset:
             with self.subTest(block=block):
                 self.expect_failure(block, err, lineno=2)
 
@@ -2222,7 +2222,7 @@ klasse ClinicParserTest(TestCase):
             'module fo\nfo.barbaz -> bool(**{"bang": 42})',
             'module fo\nfo.barbaz\n   o: bool(**{"bang": None})',
         )
-        for block in dataset:
+        fuer block in dataset:
             with self.subTest(block=block):
                 self.expect_failure(block, err)
 
@@ -2299,7 +2299,7 @@ klasse ClinicParserTest(TestCase):
             "@staticmethod": "STATIC_METHOD",
             "@getter": "GETTER",
         }
-        for annotation, invalid_kind in annotations.items():
+        fuer annotation, invalid_kind in annotations.items():
             with self.subTest(annotation=annotation, invalid_kind=invalid_kind):
                 block = f"""
                     module foo
@@ -2320,7 +2320,7 @@ klasse ClinicParserTest(TestCase):
 
     def test_invalid_getset(self):
         annotations = ["@getter", "@setter"]
-        for annotation in annotations:
+        fuer annotation in annotations:
             with self.subTest(annotation=annotation):
                 block = f"""
                     module foo
@@ -2354,12 +2354,12 @@ klasse ClinicParserTest(TestCase):
             bar
             [clinic start generated code]*/
         """
-        expected_error = "docstrings are only supported for @getter, not @setter"
+        expected_error = "docstrings are only supported fuer @getter, not @setter"
         self.expect_failure(block, expected_error)
 
     def test_duplicate_getset(self):
         annotations = ["@getter", "@setter"]
-        for annotation in annotations:
+        fuer annotation in annotations:
             with self.subTest(annotation=annotation):
                 block = f"""
                     module foo
@@ -2373,7 +2373,7 @@ klasse ClinicParserTest(TestCase):
 
     def test_getter_and_setter_disallowed_on_same_function(self):
         dup_annotations = [("@getter", "@setter"), ("@setter", "@getter")]
-        for dup in dup_annotations:
+        fuer dup in dup_annotations:
             with self.subTest(dup=dup):
                 block = f"""
                     module foo
@@ -2386,7 +2386,7 @@ klasse ClinicParserTest(TestCase):
                 self.expect_failure(block, expected_error, lineno=3)
 
     def test_getset_no_class(self):
-        for annotation in "@getter", "@setter":
+        fuer annotation in "@getter", "@setter":
             with self.subTest(annotation=annotation):
                 block = f"""
                     module m
@@ -2426,7 +2426,7 @@ klasse ClinicParserTest(TestCase):
             {"name": "i", "unused": True},
             {"name": "flag", "unused": True},
         )
-        for param in dataset:
+        fuer param in dataset:
             name, unused = param.values()
             with self.subTest(name=name, unused=unused):
                 p = conv(name)
@@ -2514,7 +2514,7 @@ klasse ClinicParserTest(TestCase):
         self.expect_failure(block, err, lineno=1)
 
     def test_default_is_not_of_correct_type(self):
-        err = ("int_converter: default value 2.5 for field 'a' "
+        err = ("int_converter: default value 2.5 fuer field 'a' "
                "is not of type 'int'")
         block = """
             fn
@@ -2568,7 +2568,7 @@ klasse ClinicParserTest(TestCase):
         self.expect_failure(block, err, lineno=2)
 
     def test_state_func_docstring_no_summary(self):
-        err = "Docstring for 'm.func' does not have a summary line!"
+        err = "Docstring fuer 'm.func' does not have a summary line!"
         block = """
             module m
             m.func
@@ -2697,7 +2697,7 @@ klasse ClinicExternalTest(TestCase):
                 f.write(invalid_input)
             # First, run the CLI without -f and expect failure.
             # Note, we cannot check the entire fail msg, because the path to
-            # the tmp file will change for every run.
+            # the tmp file will change fuer every run.
             _, err = self.expect_failure(fn)
             self.assertEndsWith(err, fail_msg)
             # Then, force regeneration; success expected.
@@ -2722,7 +2722,7 @@ klasse ClinicExternalTest(TestCase):
         py_files = "file1.py", "file2.py"
 
         def create_files(files, srcdir, code):
-            for fn in files:
+            fuer fn in files:
                 path = os.path.join(srcdir, fn)
                 with open(path, "w", encoding="utf-8") as f:
                     f.write(code)
@@ -2741,16 +2741,16 @@ klasse ClinicExternalTest(TestCase):
                 out = self.expect_success("-v", "--make", "--srcdir", tmp_dir)
 
             # expect verbose mode to only mention the C files in tmp_dir
-            for filename in c_files:
+            fuer filename in c_files:
                 with self.subTest(filename=filename):
                     path = os.path.join(tmp_dir, filename)
                     self.assertIn(path, out)
-            for filename in py_files:
+            fuer filename in py_files:
                 with self.subTest(filename=filename):
                     path = os.path.join(tmp_dir, filename)
                     self.assertNotIn(path, out)
             # don't expect C files from the externals dir
-            for filename in c_files:
+            fuer filename in c_files:
                 with self.subTest(filename=filename):
                     path = os.path.join(ext_path, filename)
                     self.assertNotIn(path, out)
@@ -2762,7 +2762,7 @@ klasse ClinicExternalTest(TestCase):
         """)
         with os_helper.temp_dir(quiet=False) as tmp_dir:
             # add some folders, some C files and a Python file
-            for fn in "file1.c", "file2.c", "file3.c", "file4.c":
+            fuer fn in "file1.c", "file2.c", "file3.c", "file4.c":
                 path = os.path.join(tmp_dir, fn)
                 with open(path, "w", encoding="utf-8") as f:
                     f.write(code)
@@ -2866,7 +2866,7 @@ klasse ClinicExternalTest(TestCase):
         out = out.removeprefix(prelude)
         out = out.removesuffix(finale)
         lines = out.split("\n")
-        for converter, line in zip(expected_converters, lines):
+        fuer converter, line in zip(expected_converters, lines):
             line = line.lstrip()
             with self.subTest(converter=converter):
                 self.assertStartsWith(line, converter)
@@ -2887,7 +2887,7 @@ klasse ClinicExternalTest(TestCase):
 
     def test_cli_fail_filename_or_output_and_make(self):
         msg = "can't use -o or filenames with --make"
-        for opts in ("-o", "out.c"), ("filename.c",):
+        fuer opts in ("-o", "out.c"), ("filename.c",):
             with self.subTest(opts=opts):
                 _, err = self.expect_failure("--make", *opts)
                 self.assertIn(msg, err)
@@ -2961,7 +2961,7 @@ except ImportError:
 @unittest.skipIf(ac_tester is None, "_testclinic is missing")
 klasse ClinicFunctionalTest(unittest.TestCase):
     locals().update((name, getattr(ac_tester, name))
-                    for name in dir(ac_tester) if name.startswith('test_'))
+                    fuer name in dir(ac_tester) if name.startswith('test_'))
 
     def check_depr(self, regex, fn, /, *args, **kwds):
         with self.assertWarnsRegex(DeprecationWarning, regex) as cm:
@@ -3037,10 +3037,10 @@ klasse ClinicFunctionalTest(unittest.TestCase):
         with self.assertRaises(TypeError):
             ac_tester.char_converter(b'ab')
         chars = [b'A', b'\a', b'\b', b'\t', b'\n', b'\v', b'\f', b'\r', b'"', b"'", b'?', b'\\', b'\000', b'\377']
-        expected = tuple(ord(c) for c in chars)
+        expected = tuple(ord(c) fuer c in chars)
         self.assertEqual(ac_tester.char_converter(), expected)
         chars = [b'1', b'2', b'3', b'4', b'5', b'6', b'7', b'8', b'9', b'0', b'a', b'b', b'c', b'd']
-        expected = tuple(ord(c) for c in chars)
+        expected = tuple(ord(c) fuer c in chars)
         self.assertEqual(ac_tester.char_converter(*chars), expected)
 
     def test_unsigned_char_converter(self):
@@ -3574,7 +3574,7 @@ klasse ClinicFunctionalTest(unittest.TestCase):
             ac_tester.clone_f2(incorrect_arg)
 
     def test_cloned_func_with_converter_exception_message(self):
-        for name in "clone_with_conv_f1", "clone_with_conv_f2":
+        fuer name in "clone_with_conv_f1", "clone_with_conv_f2":
             with self.subTest(name=name):
                 func = getattr(ac_tester, name)
                 self.assertEqual(func(), name)
@@ -3986,7 +3986,7 @@ except ImportError:
 @unittest.skipIf(_testclinic_limited is None, "_testclinic_limited is missing")
 klasse LimitedCAPIFunctionalTest(unittest.TestCase):
     locals().update((name, getattr(_testclinic_limited, name))
-                    for name in dir(_testclinic_limited) if name.startswith('test_'))
+                    fuer name in dir(_testclinic_limited) if name.startswith('test_'))
 
     def test_my_int_func(self):
         with self.assertRaises(TypeError):
@@ -4009,7 +4009,7 @@ klasse LimitedCAPIFunctionalTest(unittest.TestCase):
             _testclinic_limited.my_int_sum(1, "str")
 
     def test_my_double_sum(self):
-        for func in (
+        fuer func in (
             _testclinic_limited.my_float_sum,
             _testclinic_limited.my_double_sum,
         ):
@@ -4035,7 +4035,7 @@ klasse LimitedCAPIFunctionalTest(unittest.TestCase):
             def fileno(self):
                 return self._fd
 
-        for fd in (0, 1, 2, 5, 123_456):
+        fuer fd in (0, 1, 2, 5, 123_456):
             self.assertEqual(get_fd(fd), fd)
 
             myint = MyInt(fd)
@@ -4155,7 +4155,7 @@ klasse PermutationTests(unittest.TestCase):
             noright1, noright2, noright3,
             leftandright1, leftandright2,
         )
-        for params in dataset:
+        fuer params in dataset:
             with self.subTest(**params):
                 left, required, right, expected = params.values()
                 permutations = permute_optional_groups(left, required, right)
@@ -4179,7 +4179,7 @@ klasse FormatHelperTests(unittest.TestCase):
             (" a\nb ",              " a\nb"),
             (" \n \n a\nb \n \n ",  " a\nb"),
         )
-        for lines, expected in dataset:
+        fuer lines, expected in dataset:
             with self.subTest(lines=lines, expected=expected):
                 out = libclinic.normalize_snippet(lines)
                 self.assertEqual(out, expected)
@@ -4208,7 +4208,7 @@ klasse FormatHelperTests(unittest.TestCase):
             "        three"
         )
         expected_outputs = {0: zero_indent, 4: four_indent, 8: eight_indent}
-        for indent, expected in expected_outputs.items():
+        fuer indent, expected in expected_outputs.items():
             with self.subTest(indent=indent):
                 actual = libclinic.normalize_snippet(snippet, indent=indent)
                 self.assertEqual(actual, expected)
@@ -4223,7 +4223,7 @@ klasse FormatHelperTests(unittest.TestCase):
             (r'"abc"',  r'"\"abc\""'),
             (r"'a'",    r'"\'a\'"'),
         )
-        for line, expected in dataset:
+        fuer line, expected in dataset:
             with self.subTest(line=line, expected=expected):
                 out = libclinic.docstring_for_c_string(line)
                 self.assertEqual(out, expected)

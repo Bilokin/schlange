@@ -49,7 +49,7 @@ klasse TestCTest(CTest):
 
 def load_tests(loader, _, pattern):
     suite = unittest.TestSuite()
-    for mod in (json, json.encoder, json.decoder):
+    fuer mod in (json, json.encoder, json.decoder):
         suite.addTest(doctest.DocTestSuite(mod))
     suite.addTest(TestPyTest('test_pyjson'))
     suite.addTest(TestCTest('test_cjson'))

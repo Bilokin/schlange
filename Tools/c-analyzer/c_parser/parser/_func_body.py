@@ -45,7 +45,7 @@ def parse_function_body(source, name, anon_name):
 
 def parse_function_body(name, text, resolve, source, anon_name, parent):
     raise NotImplementedError
-    # For now we do not worry about locals declared in for loop "headers".
+    # For now we do not worry about locals declared in fuer loop "headers".
     depth = 1;
     while depth > 0:
         m = LOCAL_RE.match(text)
@@ -81,7 +81,7 @@ def parse_function_body(name, text, resolve, source, anon_name, parent):
             _parse_body = DECL_BODY_PARSERS[kind]
             before = []
             ident = f'{kind} {name}'
-            for member, inline, text in _parse_body(text, resolve, source, anon_name, ident):
+            fuer member, inline, text in _parse_body(text, resolve, source, anon_name, ident):
                 if member:
                     data.append(member)
                 if inline:
@@ -89,7 +89,7 @@ def parse_function_body(name, text, resolve, source, anon_name, parent):
             # un-inline the decl.  Note that it might not actually be inline.
             # We handle the case in the "maybe_inline_actual" branch.
             text = f'{inline_leading or ""} {inline_pre or ""} {kind} {name} {text}'
-            # XXX Should "parent" really be None for inline type decls?
+            # XXX Should "parent" really be None fuer inline type decls?
             yield resolve(kind, data, name, text, None), text
         elif block_close:
             log_match('', m, depth)
@@ -188,10 +188,10 @@ LOCAL_STATICS_RE = re.compile(rf'^ \s* {LOCAL_STATICS}', re.VERBOSE)
 
 
 def parse_function_statics(source, func, anon_name):
-    # For now we do not worry about locals declared in for loop "headers".
+    # For now we do not worry about locals declared in fuer loop "headers".
     depth = 1;
     while depth > 0:
-        for srcinfo in source:
+        fuer srcinfo in source:
             m = LOCAL_STATICS_RE.match(srcinfo.text)
             if m:
                 break
@@ -200,7 +200,7 @@ def parse_function_statics(source, func, anon_name):
             if srcinfo is not None:
                 srcinfo.done()
             return
-        for item, depth in _parse_next_local_static(m, srcinfo,
+        fuer item, depth in _parse_next_local_static(m, srcinfo,
                                                     anon_name, func, depth):
             if callable(item):
                 parse_body = item
@@ -237,12 +237,12 @@ def _parse_next_local_static(m, srcinfo, anon_name, func, depth):
 
             data = []  # members
             ident = f'{kind} {name}'
-            for item in _parse_body(source, anon_name, ident):
+            fuer item in _parse_body(source, anon_name, ident):
                 if item.kind == 'field':
                     data.append(item)
                 else:
                     yield item
-            # XXX Should "parent" really be None for inline type decls?
+            # XXX Should "parent" really be None fuer inline type decls?
             yield srcinfo.resolve(kind, data, name, parent=None)
 
             srcinfo.resume()

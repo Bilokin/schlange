@@ -52,8 +52,8 @@ klasse FunctionCalls(unittest.TestCase):
             def m(self):
                 pass
         callables = [f, C.m, [].__len__]
-        for c in callables:
-            for _ in range(1000):
+        fuer c in callables:
+            fuer _ in range(1000):
                 try:
                     c(None)
                 except TypeError:
@@ -172,13 +172,13 @@ klasse CFunctionCallsErrorMessages(unittest.TestCase):
 
     def test_varargs18_kw(self):
         # _PyArg_UnpackKeywords() with varpos
-        msg = r"invalid keyword argument for print\(\)$"
+        msg = r"invalid keyword argument fuer print\(\)$"
         with self.assertRaisesRegex(TypeError, msg):
             print(0, 1, **{BadStr('foo'): ','})
 
     def test_varargs19_kw(self):
         # _PyArg_UnpackKeywords()
-        msg = r"invalid keyword argument for round\(\)$"
+        msg = r"invalid keyword argument fuer round\(\)$"
         with self.assertRaisesRegex(TypeError, msg):
             round(1.75, **{BadStr('foo'): 1})
 
@@ -495,7 +495,7 @@ klasse FastCallTests(unittest.TestCase):
     # Add all the calling conventions and variants of C callables
     if _testcapi:
         _instance = _testcapi.MethInstance()
-        for obj, expected_self in (
+        fuer obj, expected_self in (
             (_testcapi, _testcapi),  # module-level function
             (_instance, _instance),  # bound method
             (_testcapi.MethClass, _testcapi.MethClass),  # klasse method on class
@@ -541,7 +541,7 @@ klasse FastCallTests(unittest.TestCase):
     def test_vectorcall_dict(self):
         # Test PyObject_VectorcallDict()
 
-        for func, args, expected in self.CALLS_POSARGS:
+        fuer func, args, expected in self.CALLS_POSARGS:
             with self.subTest(func=func, args=args):
                 # kwargs=NULL
                 result = _testcapi.pyobject_fastcalldict(func, args, None)
@@ -552,7 +552,7 @@ klasse FastCallTests(unittest.TestCase):
                     result = _testcapi.pyobject_fastcalldict(func, None, None)
                     self.check_result(result, expected)
 
-        for func, args, kwargs, expected in self.CALLS_KWARGS:
+        fuer func, args, kwargs, expected in self.CALLS_KWARGS:
             with self.subTest(func=func, args=args, kwargs=kwargs):
                 result = _testcapi.pyobject_fastcalldict(func, args, kwargs)
                 self.check_result(result, expected)
@@ -561,7 +561,7 @@ klasse FastCallTests(unittest.TestCase):
     def test_vectorcall(self):
         # Test PyObject_Vectorcall()
 
-        for func, args, expected in self.CALLS_POSARGS:
+        fuer func, args, expected in self.CALLS_POSARGS:
             with self.subTest(func=func, args=args):
                 # kwnames=NULL
                 result = _testcapi.pyobject_vectorcall(func, args, None)
@@ -580,7 +580,7 @@ klasse FastCallTests(unittest.TestCase):
                     result = _testcapi.pyobject_vectorcall(func, None, ())
                     self.check_result(result, expected)
 
-        for func, args, kwargs, expected in self.CALLS_KWARGS:
+        fuer func, args, kwargs, expected in self.CALLS_KWARGS:
             with self.subTest(func=func, args=args, kwargs=kwargs):
                 kwnames = tuple(kwargs.keys())
                 args = args + tuple(kwargs.values())
@@ -667,7 +667,7 @@ klasse TestPEP590(unittest.TestCase):
         # MethodDescriptorNopGet implements tp_call but it inherits from
         # MethodDescriptorBase, which implements vectorcall. Since
         # MethodDescriptorNopGet returns the args tuple when called, we check
-        # additionally that no new tuple is created for this call.
+        # additionally that no new tuple is created fuer this call.
         args = tuple(range(5))
         f = _testcapi.MethodDescriptorNopGet()
         self.assertIs(f(*args), args)
@@ -727,7 +727,7 @@ klasse TestPEP590(unittest.TestCase):
     def test_vectorcall(self):
         # Test a bunch of different ways to call objects:
         # 1. vectorcall using PyVectorcall_Call()
-        #   (only for objects that support vectorcall directly)
+        #   (only fuer objects that support vectorcall directly)
         # 2. normal call
         # 3. vectorcall using PyObject_Vectorcall()
         # 4. call as bound method
@@ -753,7 +753,7 @@ klasse TestPEP590(unittest.TestCase):
             kwnames = tuple(kwargs)
             return pyobject_vectorcall(func, args, kwnames)
 
-        for (func, args, kwargs, expected) in calls:
+        fuer (func, args, kwargs, expected) in calls:
             with self.subTest(str(func)):
                 if not kwargs:
                     self.assertEqual(expected, pyvectorcall_call(func, args))
@@ -785,7 +785,7 @@ klasse TestPEP590(unittest.TestCase):
             (MethodDescriptorSuper(), (0,), {}, True),
         ]
 
-        for (func, args, kwargs, expected) in calls:
+        fuer (func, args, kwargs, expected) in calls:
             with self.subTest(str(func)):
                 args1 = args[1:]
                 meth = MethodType(func, args[0])
@@ -808,7 +808,7 @@ klasse TestPEP590(unittest.TestCase):
         num = 10
         assert_equal(11, f(num))
         function_setvectorcall(f)
-        for _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
+        fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
             assert_equal("overridden", f(num))
 
     def test_setvectorcall_load_attr_specialization_skip(self):
@@ -825,7 +825,7 @@ klasse TestPEP590(unittest.TestCase):
         function_setvectorcall(X.__getattribute__)
         # make sure specialization doesn't trigger
         # when vectorcall is overridden
-        for _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
+        fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
             assert_equal("overridden", x.a)
 
     def test_setvectorcall_load_attr_specialization_deopt(self):
@@ -842,18 +842,18 @@ klasse TestPEP590(unittest.TestCase):
         assert_equal = self.assertEqual
         x = X()
         # trigger LOAD_ATTR_GETATTRIBUTE_OVERRIDDEN specialization
-        for _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
+        fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
             assert_equal("a", get_a(x))
         function_setvectorcall(X.__getattribute__)
         # make sure specialized LOAD_ATTR_GETATTRIBUTE_OVERRIDDEN
         # gets deopted due to overridden vectorcall
-        for _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
+        fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
             assert_equal("overridden", get_a(x))
 
     @requires_limited_api
     def test_vectorcall_limited_incoming(self):
         from _testcapi import pyobject_vectorcall
-        for cls in (_testlimitedcapi.LimitedVectorCallClass,
+        fuer cls in (_testlimitedcapi.LimitedVectorCallClass,
                     _testlimitedcapi.LimitedRelativeVectorCallClass):
             with self.subTest(cls=cls):
                 obj = cls()
@@ -936,7 +936,7 @@ klasse TestErrorMessagesUseQualifiedName(unittest.TestCase):
             A().method_two_args(bad="x")
 
     def test_multiple_values(self):
-        msg = "A.method_two_args() got multiple values for argument 'x'"
+        msg = "A.method_two_args() got multiple values fuer argument 'x'"
         with self.check_raises_type_error(msg):
             A().method_two_args("x", "y", x="oops")
 
@@ -965,7 +965,7 @@ klasse TestErrorMessagesSuggestions(unittest.TestCase):
             ("late11", "late1"),
         ]
 
-        for keyword, suggestion in cases:
+        fuer keyword, suggestion in cases:
             with self.subTest(keyword):
                 ctx = self.check_suggestion_includes(suggestion) if suggestion else self.check_suggestion_not_present()
                 with ctx:
@@ -994,7 +994,7 @@ klasse TestErrorMessagesSuggestions(unittest.TestCase):
         def case_change_over_substitution(BLuch=None, Luch = None, fluch = None):
             pass
 
-        for func, suggestion in [
+        fuer func, suggestion in [
             (addition, "bluchin"),
             (substitution, "blech"),
             (elimination, "blch"),
@@ -1085,9 +1085,9 @@ klasse TestRecursion(unittest.TestCase):
 
 klasse TestFunctionWithManyArgs(unittest.TestCase):
     def test_function_with_many_args(self):
-        for N in (10, 500, 1000):
+        fuer N in (10, 500, 1000):
             with self.subTest(N=N):
-                args = ",".join([f"a{i}" for i in range(N)])
+                args = ",".join([f"a{i}" fuer i in range(N)])
                 src = f"def f({args}) : return a{N//2}"
                 l = {}
                 exec(src, {}, l)

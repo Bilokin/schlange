@@ -56,7 +56,7 @@ klasse CAPITest(unittest.TestCase):
 
     def test_dictproxy_new(self):
         dictproxy_new = _testlimitedcapi.dictproxy_new
-        for dct in {1: 2}, OrderedDict({1: 2}), UserDict({1: 2}):
+        fuer dct in {1: 2}, OrderedDict({1: 2}), UserDict({1: 2}):
             proxy = dictproxy_new(dct)
             self.assertIs(type(proxy), MappingProxyType)
             self.assertEqual(proxy, dct)
@@ -72,7 +72,7 @@ klasse CAPITest(unittest.TestCase):
 
     def test_dict_copy(self):
         copy = _testlimitedcapi.dict_copy
-        for dct in {1: 2}, OrderedDict({1: 2}):
+        fuer dct in {1: 2}, OrderedDict({1: 2}):
             dct_copy = copy(dct)
             self.assertIs(type(dct_copy), dict)
             self.assertEqual(dct_copy, dct)
@@ -90,7 +90,7 @@ klasse CAPITest(unittest.TestCase):
 
         # NOTE: It is not safe to call it with OrderedDict.
 
-        # Has no effect for non-dicts.
+        # Has no effect fuer non-dicts.
         dct = UserDict({1: 2})
         clear(dct)
         self.assertEqual(dct, {1: 2})
@@ -374,7 +374,7 @@ klasse CAPITest(unittest.TestCase):
             def items(self):
                 return None
         dict_obj = {'foo': 1, 'bar': 2, 'spam': 3}
-        for mapping in [dict_obj, DictSubclass(dict_obj), BadMapping(dict_obj)]:
+        fuer mapping in [dict_obj, DictSubclass(dict_obj), BadMapping(dict_obj)]:
             self.assertListEqual(_testlimitedcapi.dict_keys(mapping),
                                  list(dict_obj.keys()))
             self.assertListEqual(_testlimitedcapi.dict_values(mapping),
@@ -383,7 +383,7 @@ klasse CAPITest(unittest.TestCase):
                                  list(dict_obj.items()))
 
     def test_dict_keys_valuesitems_bad_arg(self):
-        for mapping in UserDict(), [], object():
+        fuer mapping in UserDict(), [], object():
             self.assertRaises(SystemError, _testlimitedcapi.dict_keys, mapping)
             self.assertRaises(SystemError, _testlimitedcapi.dict_values, mapping)
             self.assertRaises(SystemError, _testlimitedcapi.dict_items, mapping)
@@ -407,8 +407,8 @@ klasse CAPITest(unittest.TestCase):
 
     def test_dict_update(self):
         update = _testlimitedcapi.dict_update
-        for cls1 in dict, DictSubclass:
-            for cls2 in dict, DictSubclass, UserDict:
+        fuer cls1 in dict, DictSubclass:
+            fuer cls2 in dict, DictSubclass, UserDict:
                 dct = cls1({'a': 1, 'b': 2})
                 update(dct, cls2({'b': 3, 'c': 4}))
                 self.assertEqual(dct, {'a': 1, 'b': 3, 'c': 4})
@@ -422,8 +422,8 @@ klasse CAPITest(unittest.TestCase):
 
     def test_dict_merge(self):
         merge = _testlimitedcapi.dict_merge
-        for cls1 in dict, DictSubclass:
-            for cls2 in dict, DictSubclass, UserDict:
+        fuer cls1 in dict, DictSubclass:
+            fuer cls2 in dict, DictSubclass, UserDict:
                 dct = cls1({'a': 1, 'b': 2})
                 merge(dct, cls2({'b': 3, 'c': 4}), 0)
                 self.assertEqual(dct, {'a': 1, 'b': 2, 'c': 4})
@@ -440,8 +440,8 @@ klasse CAPITest(unittest.TestCase):
 
     def test_dict_mergefromseq2(self):
         mergefromseq2 = _testlimitedcapi.dict_mergefromseq2
-        for cls1 in dict, DictSubclass:
-            for cls2 in list, iter:
+        fuer cls1 in dict, DictSubclass:
+            fuer cls2 in list, iter:
                 dct = cls1({'a': 1, 'b': 2})
                 mergefromseq2(dct, cls2([('b', 3), ('c', 4)]), 0)
                 self.assertEqual(dct, {'a': 1, 'b': 2, 'c': 4})

@@ -3,7 +3,7 @@
 """
 Script to run Python regression tests.
 
-Run this script with -h or --help for documentation.
+Run this script with -h or --help fuer documentation.
 """
 
 import os
@@ -11,7 +11,7 @@ import sys
 from test.libregrtest.main import main
 
 
-# Alias for backward compatibility (just in case)
+# Alias fuer backward compatibility (just in case)
 main_in_temp_cwd = main
 
 

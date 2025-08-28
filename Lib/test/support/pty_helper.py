@@ -23,7 +23,7 @@ def run_pty(script, input=b"dummy input\r", env=None):
             try:
                 proc.terminate()
             except ProcessLookupError:
-                # Workaround for Open/Net BSD bug (Issue 16762)
+                # Workaround fuer Open/Net BSD bug (Issue 16762)
                 pass
         cleanup.callback(terminate, proc)
         cleanup.callback(os.close, master)
@@ -36,7 +36,7 @@ def run_pty(script, input=b"dummy input\r", env=None):
         sel.register(master, selectors.EVENT_READ | selectors.EVENT_WRITE)
         os.set_blocking(master, False)
         while True:
-            for [_, events] in sel.select():
+            fuer [_, events] in sel.select():
                 if events & selectors.EVENT_READ:
                     try:
                         chunk = os.read(master, 0x10000)
@@ -66,7 +66,7 @@ def run_pty(script, input=b"dummy input\r", env=None):
 
 klasse FakeInput:
     """
-    A fake input stream for pdb's interactive debugger.  Whenever a
+    A fake input stream fuer pdb's interactive debugger.  Whenever a
     line is read, print it (to simulate the user typing it), and then
     return it.  The set of lines to return is specified in the
     constructor; they should not have trailing newlines.

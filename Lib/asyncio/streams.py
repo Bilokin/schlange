@@ -25,7 +25,7 @@ _DEFAULT_LIMIT = 2 ** 16  # 64 KiB
 
 async def open_connection(host=None, port=None, *,
                           limit=_DEFAULT_LIMIT, **kwds):
-    """A wrapper for create_connection() returning a (reader, writer) pair.
+    """A wrapper fuer create_connection() returning a (reader, writer) pair.
 
     The reader returned is a StreamReader instance; the writer is a
     StreamWriter instance.
@@ -53,7 +53,7 @@ async def open_connection(host=None, port=None, *,
 
 async def start_server(client_connected_cb, host=None, port=None, *,
                        limit=_DEFAULT_LIMIT, **kwds):
-    """Start a socket server, call back for each client connected.
+    """Start a socket server, call back fuer each client connected.
 
     The first parameter, `client_connected_cb`, takes two parameters:
     client_reader, client_writer.  client_reader is a StreamReader
@@ -114,13 +114,13 @@ if hasattr(socket, 'AF_UNIX'):
 
 
 klasse FlowControlMixin(protocols.Protocol):
-    """Reusable flow control logic for StreamWriter.drain().
+    """Reusable flow control logic fuer StreamWriter.drain().
 
     This implements the protocol methods pause_writing(),
     resume_writing() and connection_lost().  If the subclass overrides
     these it must call the super methods.
 
-    StreamWriter.drain() must wait for _drain_helper() coroutine.
+    StreamWriter.drain() must wait fuer _drain_helper() coroutine.
     """
 
     def __init__(self, loop=None):
@@ -144,7 +144,7 @@ klasse FlowControlMixin(protocols.Protocol):
         if self._loop.get_debug():
             logger.debug("%r resumes writing", self)
 
-        for waiter in self._drain_waiters:
+        fuer waiter in self._drain_waiters:
             if not waiter.done():
                 waiter.set_result(None)
 
@@ -154,7 +154,7 @@ klasse FlowControlMixin(protocols.Protocol):
         if not self._paused:
             return
 
-        for waiter in self._drain_waiters:
+        fuer waiter in self._drain_waiters:
             if not waiter.done():
                 if exc is None:
                     waiter.set_result(None)
@@ -310,7 +310,7 @@ klasse StreamWriter:
 
     This exposes write(), writelines(), [can_]write_eof(),
     get_extra_info() and close().  It adds drain() which returns an
-    optional Future on which you can wait for flow control.  It also
+    optional Future on which you can wait fuer flow control.  It also
     adds a transport property which references the Transport
     directly.
     """
@@ -372,7 +372,7 @@ klasse StreamWriter:
             if exc is not None:
                 raise exc
         if self._transport.is_closing():
-            # Wait for protocol.connection_lost() call
+            # Wait fuer protocol.connection_lost() call
             # Raise connection closing error if any,
             # ConnectionResetError otherwise
             # Yield to the event loop so connection_lost() may be
@@ -465,7 +465,7 @@ klasse StreamReader:
                 waiter.set_exception(exc)
 
     def _wakeup_waiter(self):
-        """Wakeup read*() functions waiting for data or EOF."""
+        """Wakeup read*() functions waiting fuer data or EOF."""
         waiter = self._waiter
         if waiter is not None:
             self._waiter = None
@@ -523,12 +523,12 @@ klasse StreamReader:
         if self._waiter is not None:
             raise RuntimeError(
                 f'{func_name}() called while another coroutine is '
-                f'already waiting for incoming data')
+                f'already waiting fuer incoming data')
 
         assert not self._eof, '_wait_for_data after EOF'
 
-        # Waiting for data while paused will make deadlock, so prevent it.
-        # This is essential for readexactly(n) for case when n > self._limit.
+        # Waiting fuer data while paused will make deadlock, so prevent it.
+        # This is essential fuer readexactly(n) fuer case when n > self._limit.
         if self._paused:
             self._paused = False
             self._transport.resume_reading()
@@ -637,12 +637,12 @@ klasse StreamReader:
         while True:
             buflen = len(self._buffer)
 
-            # Check if we now have enough data in the buffer for shortest
+            # Check if we now have enough data in the buffer fuer shortest
             # separator to fit.
             if buflen - offset >= min_seplen:
                 match_start = None
                 match_end = None
-                for sep in separator:
+                fuer sep in separator:
                     isep = self._buffer.find(sep, offset)
 
                     if isep != -1:
@@ -656,7 +656,7 @@ klasse StreamReader:
                 if match_end is not None:
                     break
 
-                # see upper comment for explanation.
+                # see upper comment fuer explanation.
                 offset = max(0, buflen + 1 - max_seplen)
                 if offset > self._limit:
                     raise exceptions.LimitOverrunError(

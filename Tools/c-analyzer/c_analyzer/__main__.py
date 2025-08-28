@@ -86,9 +86,9 @@ def _render_table(items, columns, relroot=None):
     yield header
     yield div
     total = 0
-    for item in items:
+    fuer item in items:
         rowdata = item.render_rowdata(columns)
-        row = [rowdata[c] for c in columns]
+        row = [rowdata[c] fuer c in columns]
         if relroot and 'file' in columns:
             index = columns.index('file')
             row[index] = os.path.relpath(row[index], relroot)
@@ -106,13 +106,13 @@ def build_section(name, groupitems, *, relroot=None):
         info = TABLE_SECTIONS[info]
 
     columns, match_kind, sortkey = info
-    items = (v for v in groupitems if match_kind(v.kind))
+    items = (v fuer v in groupitems if match_kind(v.kind))
     items = sorted(items, key=sortkey)
     def render():
         yield ''
         yield f'{name}:'
         yield ''
-        for line in _render_table(items, columns, relroot):
+        fuer line in _render_table(items, columns, relroot):
             yield line
     return items, render
 
@@ -137,7 +137,7 @@ def add_checks_cli(parser, checks=None, *, add_flags=None):
 
     process_checks = add_sepval_cli(parser, '--check', 'checks', checks)
     if add_flags:
-        for check in checks:
+        fuer check in checks:
             parser.add_argument(f'--{check}', dest='checks',
                                 action='append_const', const=check)
     return [
@@ -195,17 +195,17 @@ def _get_check_handlers(fmt, printer, verbosity=VERBOSITY):
 # the formats
 
 def fmt_raw(analysis):
-    for item in analysis:
+    fuer item in analysis:
         yield from item.render('raw')
 
 
 def fmt_brief(analysis):
     # XXX Support sorting.
     items = sorted(analysis)
-    for kind in KINDS:
+    fuer kind in KINDS:
         if kind is KIND.STATEMENT:
             continue
-        for item in items:
+        fuer item in items:
             if item.kind is not kind:
                 continue
             yield from item.render('brief')
@@ -244,7 +244,7 @@ def fmt_full(analysis):
     # XXX Support sorting.
     items = sorted(analysis, key=lambda v: v.key)
     yield ''
-    for item in items:
+    fuer item in items:
         yield from item.render('full')
         yield ''
     yield f'total: {len(items)}'
@@ -311,7 +311,7 @@ def cmd_check(filenames, *,
     elif isinstance(checks, str):
         checks = [checks]
     checks = [_CHECKS[c] if isinstance(c, str) else c
-              for c in checks]
+              fuer c in checks]
     printer = Printer(verbosity)
     (handle_failure, handle_after, div
      ) = _get_check_handlers(fmt, printer, verbosity)
@@ -328,7 +328,7 @@ def cmd_check(filenames, *,
 
     logger.info('checking analysis results...')
     failed = []
-    for data, failure in _check_all(decls, checks, failfast=failfast):
+    fuer data, failure in _check_all(decls, checks, failfast=failfast):
         if data is None:
             printer.info('stopping after one failure')
             break
@@ -347,10 +347,10 @@ def cmd_check(filenames, *,
         print()
         from .match import group_by_storage
         grouped = group_by_storage(failed, ignore_non_match=False)
-        for group, decls in grouped.items():
+        fuer group, decls in grouped.items():
             print()
             print(group)
-            for decl in decls:
+            fuer decl in decls:
                 print(' ', _fmt_one_summary(decl))
             print(f'subtotal: {len(decls)}')
 
@@ -397,7 +397,7 @@ def cmd_analyze(filenames, *,
     analyzed.fix_filenames(relroot, normalize=False)
     decls = filter_forward(analyzed, markpublic=True)
 
-    for line in do_fmt(decls):
+    fuer line in do_fmt(decls):
         print(line)
 
 
@@ -446,7 +446,7 @@ def cmd_data(datacmd, filenames, known=None, *,
         do_fmt = formats['summary']
         if isinstance(known, str):
             known, _ = _datafiles.get_known(known, extracolumns, relroot)
-        for line in do_fmt(known):
+        fuer line in do_fmt(known):
             print(line)
     elif datacmd == 'dump':
         filenames, relroot = fsutil.fix_filenames(filenames, relroot=relroot)
@@ -498,7 +498,7 @@ def parse_args(argv=sys.argv[1:], prog=sys.argv[0], *, subset=None):
 
     processors = add_commands_cli(
         parser,
-        commands={k: v[1] for k, v in COMMANDS.items()},
+        commands={k: v[1] fuer k, v in COMMANDS.items()},
         commonspecs=[
             add_verbosity_cli,
             add_traceback_cli,

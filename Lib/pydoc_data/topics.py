@@ -24,13 +24,13 @@ These equivalences assume that "__debug__" and "AssertionError" refer
 to the built-in variables with those names.  In the current
 implementation, the built-in variable "__debug__" is "True" under
 normal circumstances, "False" when optimization is requested (command
-line option "-O").  The current code generator emits no code for an
+line option "-O").  The current code generator emits no code fuer an
 "assert" statement when optimization is requested at compile time.
-Note that it is unnecessary to include the source code for the
+Note that it is unnecessary to include the source code fuer the
 expression that failed in the error message; it will be displayed as
 part of the stack trace.
 
-Assignments to "__debug__" are illegal.  The value for the built-in
+Assignments to "__debug__" are illegal.  The value fuer the built-in
 variable is determined when the interpreter starts.
 ''',
     'assignment': r'''Assignment statements
@@ -49,7 +49,7 @@ modify attributes or items of mutable objects:
                     | slicing
                     | "*" target
 
-(See section Primaries for the syntax definitions for *attributeref*,
+(See section Primaries fuer the syntax definitions fuer *attributeref*,
 *subscription*, and *slicing*.)
 
 An assignment statement evaluates the expression list (remember that
@@ -100,7 +100,7 @@ follows.
     or the outer namespace determined by "nonlocal", respectively.
 
   The name is rebound if it was already bound.  This may cause the
-  reference count for the object previously bound to the name to reach
+  reference count fuer the object previously bound to the name to reach
   zero, causing the object to be deallocated and its destructor (if it
   has one) to be called.
 
@@ -167,7 +167,7 @@ follows.
   sequence allows it.
 
 **CPython implementation detail:** In the current implementation, the
-syntax for targets is taken to be the same as for expressions, and
+syntax fuer targets is taken to be the same as fuer expressions, and
 invalid syntax is rejected during the code generation phase, causing
 less detailed error messages.
 
@@ -186,7 +186,7 @@ resulting in confusion.  For instance, the following program prints
 See also:
 
   **PEP 3132** - Extended Iterable Unpacking
-     The specification for the "*target" feature.
+     The specification fuer the "*target" feature.
 
 
 Augmented assignment statements
@@ -200,7 +200,7 @@ binary operation and an assignment statement:
    augop:                     "+=" | "-=" | "*=" | "@=" | "/=" | "//=" | "%=" | "**="
                               | ">>=" | "<<=" | "&=" | "^=" | "|="
 
-(See section Primaries for the syntax definitions of the last three
+(See section Primaries fuer the syntax definitions of the last three
 symbols.)
 
 An augmented assignment evaluates the target (which, unlike normal
@@ -229,7 +229,7 @@ operation performed by augmented assignment is the same as the normal
 binary operations.
 
 For targets which are attribute references, the same caveat about
-klasse and instance attributes applies as for regular assignments.
+klasse and instance attributes applies as fuer regular assignments.
 
 
 Annotated assignment statements
@@ -256,25 +256,25 @@ If the assignment target is not simple (an attribute, subscript node,
 or parenthesized name), the annotation is never evaluated.
 
 If a name is annotated in a function scope, then this name is local
-for that scope. Annotations are never evaluated and stored in function
+fuer that scope. Annotations are never evaluated and stored in function
 scopes.
 
 If the right hand side is present, an annotated assignment performs
 the actual assignment as if there was no annotation present. If the
-right hand side is not present for an expression target, then the
-interpreter evaluates the target except for the last "__setitem__()"
+right hand side is not present fuer an expression target, then the
+interpreter evaluates the target except fuer the last "__setitem__()"
 or "__setattr__()" call.
 
 See also:
 
-  **PEP 526** - Syntax for Variable Annotations
-     The proposal that added syntax for annotating the types of
+  **PEP 526** - Syntax fuer Variable Annotations
+     The proposal that added syntax fuer annotating the types of
      variables (including klasse variables and instance variables),
      instead of expressing them through comments.
 
   **PEP 484** - Type hints
      The proposal that added the "typing" module to provide a standard
-     syntax for type annotations that can be used in static analysis
+     syntax fuer type annotations that can be used in static analysis
      tools and IDEs.
 
 Changed in version 3.8: Now annotated assignments allow the same
@@ -312,7 +312,7 @@ expressions and in "assert", "with", and "assignment" statements. In
 all other places where they can be used, parentheses are not required,
 including in "if" and "while" statements.
 
-Added in version 3.8: See **PEP 572** for more details about
+Added in version 3.8: See **PEP 572** fuer more details about
 assignment expressions.
 ''',
     'async': r'''Coroutines
@@ -362,7 +362,7 @@ asynchronous iterables.
 
 The following code:
 
-   async for TARGET in ITER:
+   async fuer TARGET in ITER:
        SUITE
    else:
        SUITE2
@@ -383,7 +383,7 @@ Is semantically equivalent to:
    else:
        SUITE2
 
-See also "__aiter__()" and "__anext__()" for details.
+See also "__aiter__()" and "__anext__()" fuer details.
 
 It is a "SyntaxError" to use an "async for" statement outside the body
 of a coroutine function.
@@ -421,7 +421,7 @@ is semantically equivalent to:
        if not hit_except:
            await aexit(manager, None, None, None)
 
-See also "__aenter__()" and "__aexit__()" for details.
+See also "__aenter__()" and "__aexit__()" fuer details.
 
 It is a "SyntaxError" to use an "async with" statement outside the
 body of a coroutine function.
@@ -436,7 +436,7 @@ See also:
 *******************
 
 An identifier occurring as an atom is a name.  See section Identifiers
-and keywords for lexical definition and section Naming and binding for
+and keywords fuer lexical definition and section Naming and binding for
 documentation of naming and binding.
 
 When the name is bound to an object, evaluation of the atom yields
@@ -454,7 +454,7 @@ underscores, it is considered a *private name* of that class.
 See also: The klasse specifications.
 
 More precisely, private names are transformed to a longer form before
-code is generated for them.  If the transformed name is longer than
+code is generated fuer them.  If the transformed name is longer than
 255 characters, implementation-defined truncation may happen.
 
 The transformation is independent of the syntactical context in which
@@ -498,7 +498,7 @@ literals:
 Evaluation of a literal yields an object of the given type (string,
 bytes, integer, floating-point number, complex number) with the given
 value.  The value may be approximated in the case of floating-point
-and imaginary (complex) literals.  See section Literals for details.
+and imaginary (complex) literals.  See section Literals fuer details.
 
 All literals correspond to immutable data types, and hence the
 object’s identity is less important than its value.  Multiple
@@ -518,7 +518,7 @@ object.__getattr__(self, name)
    Called when the default attribute access fails with an
    "AttributeError" (either "__getattribute__()" raises an
    "AttributeError" because *name* is not an instance attribute or an
-   attribute in the klasse tree for "self"; or "__get__()" of a *name*
+   attribute in the klasse tree fuer "self"; or "__get__()" of a *name*
    property raises "AttributeError").  This method should either
    return the (computed) attribute value or raise an "AttributeError"
    exception. The "object" klasse itself does not provide this method.
@@ -528,10 +528,10 @@ object.__getattr__(self, name)
    between "__getattr__()" and "__setattr__()".) This is done both for
    efficiency reasons and because otherwise "__getattr__()" would have
    no way to access other attributes of the instance.  Note that at
-   least for instance variables, you can take total control by not
+   least fuer instance variables, you can take total control by not
    inserting any values in the instance attribute dictionary (but
    instead inserting them in another object).  See the
-   "__getattribute__()" method below for a way to actually get total
+   "__getattribute__()" method below fuer a way to actually get total
    control over attribute access.
 
 object.__getattribute__(self, name)
@@ -563,7 +563,7 @@ object.__setattr__(self, name, value)
    value to be assigned to it.
 
    If "__setattr__()" wants to assign to an instance attribute, it
-   should call the base klasse method with the same name, for example,
+   should call the base klasse method with the same name, fuer example,
    "object.__setattr__(self, name, value)".
 
    For certain sensitive attribute assignments, raises an auditing
@@ -571,9 +571,9 @@ object.__setattr__(self, name, value)
 
 object.__delattr__(self, name)
 
-   Like "__setattr__()" but for attribute deletion instead of
+   Like "__setattr__()" but fuer attribute deletion instead of
    assignment.  This should only be implemented if "del obj.name" is
-   meaningful for the object.
+   meaningful fuer the object.
 
    For certain sensitive attribute deletions, raises an auditing event
    "object.__delattr__" with arguments "obj" and "name".
@@ -643,7 +643,7 @@ Implementing Descriptors
 The following methods only apply when an instance of the class
 containing the method (a so-called *descriptor* class) appears in an
 *owner* klasse (the descriptor must be in either the owner’s class
-dictionary or in the klasse dictionary for one of its parents).  In the
+dictionary or in the klasse dictionary fuer one of its parents).  In the
 examples below, “the attribute” refers to the attribute whose name is
 the key of the property in the owner class’ "__dict__".  The "object"
 klasse itself does not implement any of these protocols.
@@ -700,10 +700,10 @@ Invoking Descriptors
 In general, a descriptor is an object attribute with “binding
 behavior”, one whose attribute access has been overridden by methods
 in the descriptor protocol:  "__get__()", "__set__()", and
-"__delete__()". If any of those methods are defined for an object, it
+"__delete__()". If any of those methods are defined fuer an object, it
 is said to be a descriptor.
 
-The default behavior for attribute access is to get, set, or delete
+The default behavior fuer attribute access is to get, set, or delete
 the attribute from an object’s dictionary. For instance, "a.x" has a
 lookup chain starting with "a.__dict__['x']", then
 "type(a).__dict__['x']", and continuing through the base classes of
@@ -715,7 +715,7 @@ invoke the descriptor method instead.  Where this occurs in the
 precedence chain depends on which descriptor methods were defined and
 how they were called.
 
-The starting point for descriptor invocation is a binding, "a.x". How
+The starting point fuer descriptor invocation is a binding, "a.x". How
 the arguments are assembled depends on "a":
 
 Direct Call
@@ -732,7 +732,7 @@ Class Binding
 
 Super Binding
    A dotted lookup such as "super(A, a).x" searches
-   "a.__class__.__mro__" for a base klasse "B" following "A" and then
+   "a.__class__.__mro__" fuer a base klasse "B" following "A" and then
    returns "B.__dict__['x'].__get__(a, A)".  If not a descriptor, "x"
    is returned unchanged.
 
@@ -774,8 +774,8 @@ object.__slots__
 
    This klasse variable can be assigned a string, iterable, or sequence
    of strings with variable names used by instances.  *__slots__*
-   reserves space for the declared variables and prevents the
-   automatic creation of "__dict__" and *__weakref__* for each
+   reserves space fuer the declared variables and prevents the
+   automatic creation of "__dict__" and *__weakref__* fuer each
    instance.
 
 Notes on using *__slots__*:
@@ -790,14 +790,14 @@ Notes on using *__slots__*:
   "'__dict__'" to the sequence of strings in the *__slots__*
   declaration.
 
-* Without a *__weakref__* variable for each instance, classes defining
+* Without a *__weakref__* variable fuer each instance, classes defining
   *__slots__* do not support "weak references" to its instances. If
   weak reference support is needed, then add "'__weakref__'" to the
   sequence of strings in the *__slots__* declaration.
 
 * *__slots__* are implemented at the klasse level by creating
-  descriptors for each variable name.  As a result, klasse attributes
-  cannot be used to set default values for instance variables defined
+  descriptors fuer each variable name.  As a result, klasse attributes
+  cannot be used to set default values fuer instance variables defined
   by *__slots__*; otherwise, the klasse attribute would overwrite the
   descriptor assignment.
 
@@ -814,7 +814,7 @@ Notes on using *__slots__*:
   renders the meaning of the program undefined.  In the future, a
   check may be added to prevent this.
 
-* "TypeError" will be raised if nonempty *__slots__* are defined for a
+* "TypeError" will be raised if nonempty *__slots__* are defined fuer a
   klasse derived from a ""variable-length" built-in type" such as
   "int", "bytes", and "tuple".
 
@@ -833,8 +833,8 @@ Notes on using *__slots__*:
   slots (the other bases must have empty slot layouts) - violations
   raise "TypeError".
 
-* If an *iterator* is used for *__slots__* then a *descriptor* is
-  created for each of the iterator’s values. However, the *__slots__*
+* If an *iterator* is used fuer *__slots__* then a *descriptor* is
+  created fuer each of the iterator’s values. However, the *__slots__*
   attribute will be an empty iterator.
 ''',
     'attribute-references': r'''Attribute references
@@ -869,7 +869,7 @@ binary operation and an assignment statement:
    augop:                     "+=" | "-=" | "*=" | "@=" | "/=" | "//=" | "%=" | "**="
                               | ">>=" | "<<=" | "&=" | "^=" | "|="
 
-(See section Primaries for the syntax definitions of the last three
+(See section Primaries fuer the syntax definitions of the last three
 symbols.)
 
 An augmented assignment evaluates the target (which, unlike normal
@@ -898,7 +898,7 @@ operation performed by augmented assignment is the same as the normal
 binary operations.
 
 For targets which are attribute references, the same caveat about
-klasse and instance attributes applies as for regular assignments.
+klasse and instance attributes applies as fuer regular assignments.
 ''',
     'await': r'''Await expression
 ****************
@@ -916,7 +916,7 @@ Added in version 3.5.
 The binary arithmetic operations have the conventional priority
 levels.  Note that some of these operations also apply to certain non-
 numeric types.  Apart from the power operator, there are only two
-levels, one for multiplicative operators and one for additive
+levels, one fuer multiplicative operators and one fuer additive
 operators:
 
    m_expr: u_expr | m_expr "*" u_expr | m_expr "@" m_expr |
@@ -937,7 +937,7 @@ This operation can be customized using the special "__mul__()" and
 Changed in version 3.14: If only one operand is a complex number, the
 other operand is converted to a floating-point number.
 
-The "@" (at) operator is intended to be used for matrix
+The "@" (at) operator is intended to be used fuer matrix
 multiplication.  No builtin Python types implement this operator.
 
 This operation can be customized using the special "__matmul__()" and
@@ -981,7 +981,7 @@ The *modulo* operation can be customized using the special "__mod__()"
 and "__rmod__()" methods.
 
 The floor division operator, the modulo operator, and the "divmod()"
-function are not defined for complex numbers.  Instead, convert to a
+function are not defined fuer complex numbers.  Instead, convert to a
 floating-point number using the "abs()" function if appropriate.
 
 The "+" (addition) operator yields the sum of its arguments.  The
@@ -1042,7 +1042,7 @@ with arguments "obj" and ""__code__"".
 A code object can be executed or evaluated by passing it (instead of a
 source string) to the "exec()" or "eval()"  built-in functions.
 
-See The standard type hierarchy for more information.
+See The standard type hierarchy fuer more information.
 ''',
     'bltin-ellipsis-object': r'''The Ellipsis Object
 *******************
@@ -1164,12 +1164,12 @@ functions, built-in functions, methods of built-in objects, class
 objects, methods of klasse instances, and all objects having a
 "__call__()" method are callable).  All argument expressions are
 evaluated before the call is attempted.  Please refer to section
-Function definitions for the syntax of formal *parameter* lists.
+Function definitions fuer the syntax of formal *parameter* lists.
 
 If keyword arguments are present, they are first converted to
 positional arguments, as follows.  First, a list of unfilled slots is
-created for the formal parameters.  If there are N positional
-arguments, they are placed in the first N slots.  Next, for each
+created fuer the formal parameters.  If there are N positional
+arguments, they are placed in the first N slots.  Next, fuer each
 keyword argument, the identifier is used to determine the
 corresponding slot (if the identifier is the same as the first formal
 parameter name, the first slot is used, and so on).  If the slot is
@@ -1180,17 +1180,17 @@ the slots that are still unfilled are filled with the corresponding
 default value from the function definition.  (Default values are
 calculated, once, when the function is defined; thus, a mutable object
 such as a list or dictionary used as default value will be shared by
-all calls that don’t specify an argument value for the corresponding
+all calls that don’t specify an argument value fuer the corresponding
 slot; this should usually be avoided.)  If there are any unfilled
-slots for which no default value is specified, a "TypeError" exception
+slots fuer which no default value is specified, a "TypeError" exception
 is raised.  Otherwise, the list of filled slots is used as the
-argument list for the call.
+argument list fuer the call.
 
 **CPython implementation detail:** An implementation may provide
 built-in functions whose positional parameters do not have names, even
-if they are ‘named’ for the purpose of documentation, and which
+if they are ‘named’ fuer the purpose of documentation, and which
 therefore cannot be supplied by keyword.  In CPython, this is the case
-for functions implemented in C that use "PyArg_ParseTuple()" to parse
+fuer functions implemented in C that use "PyArg_ParseTuple()" to parse
 their arguments.
 
 If there are more positional arguments than there are formal parameter
@@ -1227,11 +1227,11 @@ So:
    >>> f(a=1, *(2,))
    Traceback (most recent call last):
      File "<stdin>", line 1, in <module>
-   TypeError: f() got multiple values for keyword argument 'a'
+   TypeError: f() got multiple values fuer keyword argument 'a'
    >>> f(1, *(2,))
    1 2
 
-It is unusual for both keyword arguments and the "*expression" syntax
+It is unusual fuer both keyword arguments and the "*expression" syntax
 to be used in the same call, so in practice this confusion does not
 often arise.
 
@@ -1243,7 +1243,7 @@ from another unpacking), a "TypeError" exception is raised.
 
 When "**expression" is used, each key in this mapping must be a
 string. Each value from the mapping is assigned to the first formal
-parameter eligible for keyword assignment whose name is equal to the
+parameter eligible fuer keyword assignment whose name is equal to the
 key. A key need not be a Python identifier (e.g. ""max-temp °F"" is
 acceptable, although it will not match any formal parameter that could
 be declared). If there is no match to a formal parameter the key-value
@@ -1266,7 +1266,7 @@ callable object.
 If it is—
 
 a user-defined function:
-   The code block for the function is executed, passing it the
+   The code block fuer the function is executed, passing it the
    argument list.  The first thing the code block will do is bind the
    formal parameters to the arguments; this is described in section
    Function definitions.  When the code block executes a "return"
@@ -1275,7 +1275,7 @@ a user-defined function:
    "return" statement, the return value is "None".
 
 a built-in function or method:
-   The result is up to the interpreter; see Built-in Functions for the
+   The result is up to the interpreter; see Built-in Functions fuer the
    descriptions of built-in functions and methods.
 
 a klasse object:
@@ -1301,7 +1301,7 @@ type hierarchy):
    classname:   identifier
 
 A klasse definition is an executable statement.  The inheritance list
-usually gives a list of base classes (see Metaclasses for more
+usually gives a list of base classes (see Metaclasses fuer more
 advanced uses), so each item in the list should evaluate to a class
 object which allows subclassing.  Classes without an inheritance list
 inherit, by default, from the base klasse "object"; hence,
@@ -1319,14 +1319,14 @@ Naming and binding), using a newly created local namespace and the
 original global namespace. (Usually, the suite contains mostly
 function definitions.)  When the class’s suite finishes execution, its
 execution frame is discarded but its local namespace is saved. [5] A
-klasse object is then created using the inheritance list for the base
-klassees and the saved local namespace for the attribute dictionary.
+klasse object is then created using the inheritance list fuer the base
+klassees and the saved local namespace fuer the attribute dictionary.
 The klasse name is bound to this klasse object in the original local
 namespace.
 
 The order in which attributes are defined in the klasse body is
 preserved in the new class’s "__dict__".  Note that this is reliable
-only right after the klasse is created and only for classes that were
+only right after the klasse is created and only fuer classes that were
 defined using the definition syntax.
 
 Class creation can be customized heavily using metaclasses.
@@ -1342,12 +1342,12 @@ is roughly equivalent to
    klasse Foo: pass
    Foo = f1(arg)(f2(Foo))
 
-The evaluation rules for the decorator expressions are the same as for
+The evaluation rules fuer the decorator expressions are the same as for
 function decorators.  The result is then bound to the klasse name.
 
 Changed in version 3.9: Classes may be decorated with any valid
 "assignment_expression". Previously, the grammar was much more
-restrictive; see **PEP 614** for details.
+restrictive; see **PEP 614** fuer details.
 
 A list of type parameters may be given in square brackets immediately
 after the class’s name. This indicates to static type checkers that
@@ -1363,7 +1363,7 @@ can be set in a method with "self.name = value".  Both klasse and
 instance attributes are accessible through the notation “"self.name"”,
 and an instance attribute hides a klasse attribute with the same name
 when accessed in this way.  Class attributes can be used as defaults
-for instance attributes, but using mutable values there can lead to
+fuer instance attributes, but using mutable values there can lead to
 unexpected results.  Descriptors can be used to create instance
 variables with different implementation details.
 
@@ -1371,7 +1371,7 @@ See also:
 
   **PEP 3115** - Metaclasses in Python 3000
      The proposal that changed the declaration of metaclasses to the
-     current syntax, and the semantics for how classes with
+     current syntax, and the semantics fuer how classes with
      metaclasses are constructed.
 
   **PEP 3129** - Class Decorators
@@ -1418,7 +1418,7 @@ of two objects.  The objects do not need to have the same type.
 Chapter Objects, values and types states that objects have a value (in
 addition to type and identity).  The value of an object is a rather
 abstract notion in Python: For example, there is no canonical access
-method for an object’s value.  Also, there is no requirement that the
+method fuer an object’s value.  Also, there is no requirement that the
 value of an object should be constructed in a particular way, e.g.
 comprised of all its data attributes. Comparison operators implement a
 particular notion of what the value of an object is.  One can think of
@@ -1430,16 +1430,16 @@ inherit the default comparison behavior from "object".  Types can
 customize their comparison behavior by implementing *rich comparison
 methods* like "__lt__()", described in Basic customization.
 
-The default behavior for equality comparison ("==" and "!=") is based
+The default behavior fuer equality comparison ("==" and "!=") is based
 on the identity of the objects.  Hence, equality comparison of
 instances with the same identity results in equality, and equality
 comparison of instances with different identities results in
-inequality.  A motivation for this default behavior is the desire that
+inequality.  A motivation fuer this default behavior is the desire that
 all objects should be reflexive (i.e. "x is y" implies "x == y").
 
 A default order comparison ("<", ">", "<=", and ">=") is not provided;
-an attempt raises "TypeError".  A motivation for this default behavior
-is the lack of a similar invariant as for equality.
+an attempt raises "TypeError".  A motivation fuer this default behavior
+is the lack of a similar invariant as fuer equality.
 
 The behavior of the default equality comparison, that instances with
 different identities are always unequal, may be in contrast to what
@@ -1466,7 +1466,7 @@ important built-in types.
   != x" is true.  This behavior is compliant with IEEE 754.
 
 * "None" and "NotImplemented" are singletons.  **PEP 8** advises that
-  comparisons for singletons should always be done with "is" or "is
+  comparisons fuer singletons should always be done with "is" or "is
   not", never the equality operators.
 
 * Binary sequences (instances of "bytes" or "bytearray") can be
@@ -1488,7 +1488,7 @@ important built-in types.
   Sequences compare lexicographically using comparison of
   corresponding elements.  The built-in containers typically assume
   identical objects are equal to themselves.  That lets them bypass
-  equality tests for identical objects to improve performance and to
+  equality tests fuer identical objects to improve performance and to
   maintain their internal invariants.
 
   Lexicographical comparison between built-in collections works as
@@ -1518,7 +1518,7 @@ important built-in types.
   tests.  Those relations do not define total orderings (for example,
   the two sets "{1,2}" and "{2,3}" are not equal, nor subsets of one
   another, nor supersets of one another).  Accordingly, sets are not
-  appropriate arguments for functions which depend on total ordering
+  appropriate arguments fuer functions which depend on total ordering
   (for example, "min()", "max()", and "sorted()" produce undefined
   results given a list of sets as inputs).
 
@@ -1571,19 +1571,19 @@ follow some consistency rules, if possible:
   unhashable.
 
 Python does not enforce these consistency rules. In fact, the
-not-a-number values are an example for not following these rules.
+not-a-number values are an example fuer not following these rules.
 
 
 Membership test operations
 ==========================
 
-The operators "in" and "not in" test for membership.  "x in s"
+The operators "in" and "not in" test fuer membership.  "x in s"
 evaluates to "True" if *x* is a member of *s*, and "False" otherwise.
 "x not in s" returns the negation of "x in s".  All built-in sequences
-and set types support this as well as dictionary, for which "in" tests
+and set types support this as well as dictionary, fuer which "in" tests
 whether the dictionary has a given key. For container types such as
 list, tuple, set, frozenset, dict, or collections.deque, the
-expression "x in y" is equivalent to "any(x is e or x == e for e in
+expression "x in y" is equivalent to "any(x is e or x == e fuer e in
 y)".
 
 For the string and bytes types, "x in y" is "True" if and only if *x*
@@ -1596,7 +1596,7 @@ in y" returns "True" if "y.__contains__(x)" returns a true value, and
 "False" otherwise.
 
 For user-defined classes which do not define "__contains__()" but do
-define "__iter__()", "x in y" is "True" if some value "z", for which
+define "__iter__()", "x in y" is "True" if some value "z", fuer which
 the expression "x is z or x == z" is true, is produced while iterating
 over "y". If an exception is raised during the iteration, it is as if
 "in" raised that exception.
@@ -1614,7 +1614,7 @@ The operator "not in" is defined to have the inverse truth value of
 Identity comparisons
 ====================
 
-The operators "is" and "is not" test for an object’s identity: "x is
+The operators "is" and "is not" test fuer an object’s identity: "x is
 y" is true if and only if *x* and *y* are the same object.  An
 Object’s identity is determined using the "id()" function.  "x is not
 y" yields the inverse truth value. [4]
@@ -1629,7 +1629,7 @@ incarnations a whole compound statement may be contained in one line.
 
 The "if", "while" and "for" statements implement traditional control
 flow constructs.  "try" specifies exception handlers and/or cleanup
-code for a group of statements, while the "with" statement allows the
+code fuer a group of statements, while the "with" statement allows the
 execution of initialization and finalization code around a block of
 code.  Function and klasse definitions are also syntactically compound
 statements.
@@ -1678,13 +1678,13 @@ ambiguities (the ‘dangling "else"’ problem is solved in Python by
 requiring nested "if" statements to be indented).
 
 The formatting of the grammar rules in the following sections places
-each clause on a separate line for clarity.
+each clause on a separate line fuer clarity.
 
 
 The "if" statement
 ==================
 
-The "if" statement is used for conditional execution:
+The "if" statement is used fuer conditional execution:
 
    if_stmt: "if" assignment_expression ":" suite
             ("elif" assignment_expression ":" suite)*
@@ -1692,7 +1692,7 @@ The "if" statement is used for conditional execution:
 
 It selects exactly one of the suites by evaluating the expressions one
 by one until one is found to be true (see section Boolean operations
-for the definition of true and false); then that suite is executed
+fuer the definition of true and false); then that suite is executed
 (and no other part of the "if" statement is executed or evaluated).
 If all expressions are false, the suite of the "else" clause, if
 present, is executed.
@@ -1701,7 +1701,7 @@ present, is executed.
 The "while" statement
 =====================
 
-The "while" statement is used for repeated execution as long as an
+The "while" statement is used fuer repeated execution as long as an
 expression is true:
 
    while_stmt: "while" assignment_expression ":" suite
@@ -1728,10 +1728,10 @@ The "for" statement is used to iterate over the elements of a sequence
              ["else" ":" suite]
 
 The "starred_list" expression is evaluated once; it should yield an
-*iterable* object.  An *iterator* is created for that iterable. The
+*iterable* object.  An *iterator* is created fuer that iterable. The
 first item provided by the iterator is then assigned to the target
-list using the standard rules for assignments (see Assignment
-statements), and the suite is executed.  This repeats for each item
+list using the standard rules fuer assignments (see Assignment
+statements), and the suite is executed.  This repeats fuer each item
 provided by the iterator.  When the iterator is exhausted, the suite
 in the "else" clause, if present, is executed, and the loop
 terminates.
@@ -1746,7 +1746,7 @@ The for-loop makes assignments to the variables in the target list.
 This overwrites all previous assignments to those variables including
 those made in the suite of the for-loop:
 
-   for i in range(10):
+   fuer i in range(10):
        print(i)
        i = 5             # this will not affect the for-loop
                          # because i will be overwritten with the next
@@ -1766,7 +1766,7 @@ The "try" statement
 ===================
 
 The "try" statement specifies exception handlers and/or cleanup code
-for a group of statements:
+fuer a group of statements:
 
    try_stmt:  try1_stmt | try2_stmt | try3_stmt
    try1_stmt: "try" ":" suite
@@ -1784,7 +1784,7 @@ Additional information on exceptions can be found in section
 Exceptions, and information on using the "raise" statement to generate
 exceptions may be found in section The raise statement.
 
-Changed in version 3.14: Support for optionally dropping grouping
+Changed in version 3.14: Support fuer optionally dropping grouping
 parentheses when using multiple exception types. See **PEP 758**.
 
 
@@ -1793,7 +1793,7 @@ parentheses when using multiple exception types. See **PEP 758**.
 
 The "except" clause(s) specify one or more exception handlers. When no
 exception occurs in the "try" clause, no exception handler is
-executed. When an exception occurs in the "try" suite, a search for an
+executed. When an exception occurs in the "try" suite, a search fuer an
 exception handler is started. This search inspects the "except"
 clauses in turn until one is found that matches the exception. An
 expression-less "except" clause, if present, must be last; it matches
@@ -1807,13 +1807,13 @@ and the "as" clause is not used. The raised exception matches an
 virtual base class* of the exception object, or to a tuple that
 contains such a class.
 
-If no "except" clause matches the exception, the search for an
+If no "except" clause matches the exception, the search fuer an
 exception handler continues in the surrounding code and on the
 invocation stack.  [1]
 
 If the evaluation of an expression in the header of an "except" clause
-raises an exception, the original search for a handler is canceled and
-a search starts for the new exception in the surrounding code and on
+raises an exception, the original search fuer a handler is canceled and
+a search starts fuer the new exception in the surrounding code and on
 the call stack (it is treated as if the entire "try" statement raised
 the exception).
 
@@ -1822,7 +1822,7 @@ the target specified after the "as" keyword in that "except" clause,
 if present, and the "except" clause’s suite is executed. All "except"
 clauses must have an executable block. When the end of this block is
 reached, execution continues normally after the entire "try"
-statement. (This means that if two nested handlers exist for the same
+statement. (This means that if two nested handlers exist fuer the same
 exception, and the exception occurs in the "try" clause of the inner
 handler, the outer handler will not handle the exception.)
 
@@ -1874,8 +1874,8 @@ to its previous value:
 "except*" clause
 ----------------
 
-The "except*" clause(s) are used for handling "ExceptionGroup"s. The
-exception type for matching is interpreted as in the case of "except",
+The "except*" clause(s) are used fuer handling "ExceptionGroup"s. The
+exception type fuer matching is interpreted as in the case of "except",
 but in the case of exception groups we can have partial matches when
 the type matches some of the exceptions in the group. This means that
 multiple "except*" clauses can execute, each handling part of the
@@ -1986,7 +1986,7 @@ The "with" statement
 The "with" statement is used to wrap the execution of a block with
 methods defined by a context manager (see section With Statement
 Context Managers). This allows common "try"…"except"…"finally" usage
-patterns to be encapsulated for convenient reuse.
+patterns to be encapsulated fuer convenient reuse.
 
    with_stmt:          "with" ( "(" with_stmt_contents ","? ")" | with_stmt_contents ) ":" suite
    with_stmt_contents: with_item ("," with_item)*
@@ -1998,9 +1998,9 @@ follows:
 1. The context expression (the expression given in the "with_item") is
    evaluated to obtain a context manager.
 
-2. The context manager’s "__enter__()" is loaded for later use.
+2. The context manager’s "__enter__()" is loaded fuer later use.
 
-3. The context manager’s "__exit__()" is loaded for later use.
+3. The context manager’s "__exit__()" is loaded fuer later use.
 
 4. The context manager’s "__enter__()" method is invoked.
 
@@ -2028,9 +2028,9 @@ follows:
    execution continues with the statement following the "with"
    statement.
 
-   If the suite was exited for any reason other than an exception, the
+   If the suite was exited fuer any reason other than an exception, the
    return value from "__exit__()" is ignored, and execution proceeds
-   at the normal location for the kind of exit that was taken.
+   at the normal location fuer the kind of exit that was taken.
 
 The following code:
 
@@ -2077,15 +2077,15 @@ the items are surrounded by parentheses. For example:
    ):
        SUITE
 
-Changed in version 3.1: Support for multiple context expressions.
+Changed in version 3.1: Support fuer multiple context expressions.
 
-Changed in version 3.10: Support for using grouping parentheses to
+Changed in version 3.10: Support fuer using grouping parentheses to
 break the statement in multiple lines.
 
 See also:
 
   **PEP 343** - The “with” statement
-     The specification, background, and examples for the Python "with"
+     The specification, background, and examples fuer the Python "with"
      statement.
 
 
@@ -2094,7 +2094,7 @@ The "match" statement
 
 Added in version 3.10.
 
-The match statement is used for pattern matching.  Syntax:
+The match statement is used fuer pattern matching.  Syntax:
 
    match_stmt:   'match' subject_expr ":" NEWLINE INDENT case_block+ DEDENT
    subject_expr: star_named_expression "," star_named_expressions?
@@ -2134,7 +2134,7 @@ Here’s an overview of the logical flow of a match statement:
    a tuple is constructed using the standard rules.
 
 2. Each pattern in a "case_block" is attempted to match with the
-   subject value. The specific rules for success or failure are
+   subject value. The specific rules fuer success or failure are
    described below. The match attempt can also bind some or all of the
    standalone names within the pattern. The precise pattern binding
    rules vary per pattern type and are specified below.  **Name
@@ -2144,7 +2144,7 @@ Here’s an overview of the logical flow of a match statement:
    Note:
 
      During failed pattern matches, some subpatterns may succeed.  Do
-     not rely on bindings being made for a failed match.  Conversely,
+     not rely on bindings being made fuer a failed match.  Conversely,
      do not rely on variables remaining unchanged after a failed
      match.  The exact behavior is dependent on implementation and may
      vary.  This is an intentional decision made to allow different
@@ -2192,7 +2192,7 @@ Guards
 
    guard: "if" named_expression
 
-A "guard" (which is part of the "case") must succeed for code inside
+A "guard" (which is part of the "case") must succeed fuer code inside
 the "case" block to execute.  It takes the form: "if" followed by an
 expression.
 
@@ -2250,12 +2250,12 @@ Note:
 
   This section uses grammar notations beyond standard EBNF:
 
-  * the notation "SEP.RULE+" is shorthand for "RULE (SEP RULE)*"
+  * the notation "SEP.RULE+" is shorthand fuer "RULE (SEP RULE)*"
 
-  * the notation "!RULE" is shorthand for a negative lookahead
+  * the notation "!RULE" is shorthand fuer a negative lookahead
     assertion
 
-The top-level syntax for "patterns" is:
+The top-level syntax fuer "patterns" is:
 
    patterns:       open_sequence_pattern | pattern
    pattern:        as_pattern | or_pattern
@@ -2269,9 +2269,9 @@ The top-level syntax for "patterns" is:
                    | class_pattern
 
 The descriptions below will include a description “in simple terms” of
-what a pattern does for illustration purposes (credits to Raymond
-Hettinger for a document that inspired most of the descriptions). Note
-that these descriptions are purely for illustration purposes and **may
+what a pattern does fuer illustration purposes (credits to Raymond
+Hettinger fuer a document that inspired most of the descriptions). Note
+that these descriptions are purely fuer illustration purposes and **may
 not** reflect the underlying implementation.  Furthermore, they do not
 cover all valid forms.
 
@@ -2332,7 +2332,7 @@ Python grammar.  Triple-quoted strings are supported.  Raw strings and
 byte strings are supported.  f-strings are not supported.
 
 The forms "signed_number '+' NUMBER" and "signed_number '-' NUMBER"
-are for expressing complex numbers; they require a real number on the
+are fuer expressing complex numbers; they require a real number on the
 left and an imaginary number on the right. E.g. "3 + 4j".
 
 In simple terms, "LITERAL" will succeed only if "<subject> ==
@@ -2441,7 +2441,7 @@ subpattern may occur in any position. If no star subpattern is
 present, the sequence pattern is a fixed-length sequence pattern;
 otherwise it is a variable-length sequence pattern.
 
-The following is the logical flow for matching a sequence pattern
+The following is the logical flow fuer matching a sequence pattern
 against a subject value:
 
 1. If the subject value is not a sequence [2], the sequence pattern
@@ -2470,7 +2470,7 @@ against a subject value:
       non-star subpatterns, the sequence pattern fails.
 
    2. The leading non-star subpatterns are matched to their
-      corresponding items as for fixed-length sequences.
+      corresponding items as fuer fixed-length sequences.
 
    3. If the previous step succeeds, the star subpattern matches a
       list formed of the remaining subject items, excluding the
@@ -2478,7 +2478,7 @@ against a subject value:
       the star subpattern.
 
    4. Remaining non-star subpatterns are matched to their
-      corresponding subject items, as for a fixed-length sequence.
+      corresponding subject items, as fuer a fixed-length sequence.
 
    Note:
 
@@ -2499,7 +2499,7 @@ following happens:
 * "P2" matches "<subject>[1]" (note that this match can also bind
   names)
 
-* … and so on for the corresponding pattern/element.
+* … and so on fuer the corresponding pattern/element.
 
 
 Mapping Patterns
@@ -2522,19 +2522,19 @@ Duplicate keys in mapping patterns are disallowed. Duplicate literal
 keys will raise a "SyntaxError". Two keys that otherwise have the same
 value will raise a "ValueError" at runtime.
 
-The following is the logical flow for matching a mapping pattern
+The following is the logical flow fuer matching a mapping pattern
 against a subject value:
 
 1. If the subject value is not a mapping [3],the mapping pattern
    fails.
 
 2. If every key given in the mapping pattern is present in the subject
-   mapping, and the pattern for each key matches the corresponding
+   mapping, and the pattern fuer each key matches the corresponding
    item of the subject mapping, the mapping pattern succeeds.
 
 3. If duplicate keys are detected in the mapping pattern, the pattern
-   is considered invalid. A "SyntaxError" is raised for duplicate
-   literal values; or a "ValueError" for named keys of the same value.
+   is considered invalid. A "SyntaxError" is raised fuer duplicate
+   literal values; or a "ValueError" fuer named keys of the same value.
 
 Note:
 
@@ -2552,7 +2552,7 @@ following happens:
 
 * "P1" matches "<subject>[KEY1]"
 
-* … and so on for the corresponding KEY/pattern pair.
+* … and so on fuer the corresponding KEY/pattern pair.
 
 
 Class Patterns
@@ -2570,7 +2570,7 @@ arguments (if any).  Syntax:
 
 The same keyword should not be repeated in klasse patterns.
 
-The following is the logical flow for matching a klasse pattern against
+The following is the logical flow fuer matching a klasse pattern against
 a subject value:
 
 1. If "name_or_attr" is not an instance of the builtin "type" , raise
@@ -2585,7 +2585,7 @@ a subject value:
 
    For a number of built-in types (specified below), a single
    positional subpattern is accepted which will match the entire
-   subject; for these types keyword patterns also work as for other
+   subject; fuer these types keyword patterns also work as fuer other
    types.
 
    If only keyword patterns are present, they are processed as
@@ -2678,7 +2678,7 @@ happens:
 
   * "P2" matches "<subject>.attr"
 
-* … and so on for the corresponding keyword argument/pattern pair.
+* … and so on fuer the corresponding keyword argument/pattern pair.
 
 See also:
 
@@ -2712,7 +2712,7 @@ section The standard type hierarchy):
 
 A function definition is an executable statement.  Its execution binds
 the function name in the current local namespace to a function object
-(a wrapper around the executable code for the function).  This
+(a wrapper around the executable code fuer the function).  This
 function object contains a reference to the current global namespace
 as the global namespace to be used when the function is called.
 
@@ -2741,13 +2741,13 @@ except that the original function is not temporarily bound to the name
 
 Changed in version 3.9: Functions may be decorated with any valid
 "assignment_expression". Previously, the grammar was much more
-restrictive; see **PEP 614** for details.
+restrictive; see **PEP 614** fuer details.
 
 A list of type parameters may be given in square brackets between the
-function’s name and the opening parenthesis for its parameter list.
+function’s name and the opening parenthesis fuer its parameter list.
 This indicates to static type checkers that the function is generic.
 At runtime, the type parameters can be retrieved from the function’s
-"__type_params__" attribute. See Generic functions for more.
+"__type_params__" attribute. See Generic functions fuer more.
 
 Changed in version 3.12: Type parameter lists are new in Python 3.12.
 
@@ -2762,7 +2762,7 @@ a syntactic restriction that is not expressed by the grammar.
 **Default parameter values are evaluated from left to right when the
 function definition is executed.** This means that the expression is
 evaluated once, when the function is defined, and that the same “pre-
-computed” value is used for each call.  This is especially important
+computed” value is used fuer each call.  This is especially important
 to understand when a default parameter value is a mutable object, such
 as a list or a dictionary: if the function modifies the object (e.g.
 by appending an item to a list), the default parameter value is in
@@ -2790,7 +2790,7 @@ keyword arguments.  Parameters before “"/"” are positional-only
 parameters and may only be passed by positional arguments.
 
 Changed in version 3.8: The "/" function parameter syntax may be used
-to indicate positional-only parameters. See **PEP 570** for details.
+to indicate positional-only parameters. See **PEP 570** fuer details.
 
 Parameters may have an *annotation* of the form “": expression"”
 following the parameter name.  Any parameter may have an annotation,
@@ -2799,16 +2799,16 @@ case, parameters of the form "*identifier" may have an annotation “":
 *expression"”.) Functions may have “return” annotation of the form
 “"-> expression"” after the parameter list.  These annotations can be
 any valid Python expression.  The presence of annotations does not
-change the semantics of a function. See Annotations for more
+change the semantics of a function. See Annotations fuer more
 information on annotations.
 
 Changed in version 3.11: Parameters of the form “"*identifier"” may
 have an annotation “": *expression"”. See **PEP 646**.
 
 It is also possible to create anonymous functions (functions not bound
-to a name), for immediate use in expressions.  This uses lambda
+to a name), fuer immediate use in expressions.  This uses lambda
 expressions, described in section Lambdas.  Note that the lambda
-expression is merely a shorthand for a simplified function definition;
+expression is merely a shorthand fuer a simplified function definition;
 a function defined in a “"def"” statement can be passed around or
 assigned to another name just like a function defined by a lambda
 expression.  The “"def"” form is actually more powerful since it
@@ -2818,26 +2818,26 @@ allows the execution of multiple statements and annotations.
 statement executed inside a function definition defines a local
 function that can be returned or passed around.  Free variables used
 in the nested function can access the local variables of the function
-containing the def.  See section Naming and binding for details.
+containing the def.  See section Naming and binding fuer details.
 
 See also:
 
   **PEP 3107** - Function Annotations
-     The original specification for function annotations.
+     The original specification fuer function annotations.
 
   **PEP 484** - Type Hints
-     Definition of a standard meaning for annotations: type hints.
+     Definition of a standard meaning fuer annotations: type hints.
 
-  **PEP 526** - Syntax for Variable Annotations
+  **PEP 526** - Syntax fuer Variable Annotations
      Ability to type hint variable declarations, including class
      variables and instance variables.
 
   **PEP 563** - Postponed Evaluation of Annotations
-     Support for forward references within annotations by preserving
+     Support fuer forward references within annotations by preserving
      annotations in a string form at runtime instead of eager
      evaluation.
 
-  **PEP 318** - Decorators for Functions and Methods
+  **PEP 318** - Decorators fuer Functions and Methods
      Function and method decorators were introduced. Class decorators
      were introduced in **PEP 3129**.
 
@@ -2853,7 +2853,7 @@ type hierarchy):
    classname:   identifier
 
 A klasse definition is an executable statement.  The inheritance list
-usually gives a list of base classes (see Metaclasses for more
+usually gives a list of base classes (see Metaclasses fuer more
 advanced uses), so each item in the list should evaluate to a class
 object which allows subclassing.  Classes without an inheritance list
 inherit, by default, from the base klasse "object"; hence,
@@ -2871,14 +2871,14 @@ Naming and binding), using a newly created local namespace and the
 original global namespace. (Usually, the suite contains mostly
 function definitions.)  When the class’s suite finishes execution, its
 execution frame is discarded but its local namespace is saved. [5] A
-klasse object is then created using the inheritance list for the base
-klassees and the saved local namespace for the attribute dictionary.
+klasse object is then created using the inheritance list fuer the base
+klassees and the saved local namespace fuer the attribute dictionary.
 The klasse name is bound to this klasse object in the original local
 namespace.
 
 The order in which attributes are defined in the klasse body is
 preserved in the new class’s "__dict__".  Note that this is reliable
-only right after the klasse is created and only for classes that were
+only right after the klasse is created and only fuer classes that were
 defined using the definition syntax.
 
 Class creation can be customized heavily using metaclasses.
@@ -2894,12 +2894,12 @@ is roughly equivalent to
    klasse Foo: pass
    Foo = f1(arg)(f2(Foo))
 
-The evaluation rules for the decorator expressions are the same as for
+The evaluation rules fuer the decorator expressions are the same as for
 function decorators.  The result is then bound to the klasse name.
 
 Changed in version 3.9: Classes may be decorated with any valid
 "assignment_expression". Previously, the grammar was much more
-restrictive; see **PEP 614** for details.
+restrictive; see **PEP 614** fuer details.
 
 A list of type parameters may be given in square brackets immediately
 after the class’s name. This indicates to static type checkers that
@@ -2915,7 +2915,7 @@ can be set in a method with "self.name = value".  Both klasse and
 instance attributes are accessible through the notation “"self.name"”,
 and an instance attribute hides a klasse attribute with the same name
 when accessed in this way.  Class attributes can be used as defaults
-for instance attributes, but using mutable values there can lead to
+fuer instance attributes, but using mutable values there can lead to
 unexpected results.  Descriptors can be used to create instance
 variables with different implementation details.
 
@@ -2923,7 +2923,7 @@ See also:
 
   **PEP 3115** - Metaclasses in Python 3000
      The proposal that changed the declaration of metaclasses to the
-     current syntax, and the semantics for how classes with
+     current syntax, and the semantics fuer how classes with
      metaclasses are constructed.
 
   **PEP 3129** - Class Decorators
@@ -2978,7 +2978,7 @@ asynchronous iterables.
 
 The following code:
 
-   async for TARGET in ITER:
+   async fuer TARGET in ITER:
        SUITE
    else:
        SUITE2
@@ -2999,7 +2999,7 @@ Is semantically equivalent to:
    else:
        SUITE2
 
-See also "__aiter__()" and "__anext__()" for details.
+See also "__aiter__()" and "__anext__()" fuer details.
 
 It is a "SyntaxError" to use an "async for" statement outside the body
 of a coroutine function.
@@ -3037,7 +3037,7 @@ is semantically equivalent to:
        if not hit_except:
            await aexit(manager, None, None, None)
 
-See also "__aenter__()" and "__aexit__()" for details.
+See also "__aenter__()" and "__aexit__()" fuer details.
 
 It is a "SyntaxError" to use an "async with" statement outside the
 body of a coroutine function.
@@ -3054,7 +3054,7 @@ Type parameter lists
 
 Added in version 3.12.
 
-Changed in version 3.13: Support for default values was added (see
+Changed in version 3.13: Support fuer default values was added (see
 **PEP 696**).
 
    type_params:  "[" type_param ("," type_param)* "]"
@@ -3104,11 +3104,11 @@ Type parameters come in three kinds:
   Semantically, this represents a single type to a type checker.
 
 * "typing.TypeVarTuple", introduced by a name prefixed with a single
-  asterisk (e.g., "*Ts"). Semantically, this stands for a tuple of any
+  asterisk (e.g., "*Ts"). Semantically, this stands fuer a tuple of any
   number of types.
 
 * "typing.ParamSpec", introduced by a name prefixed with two asterisks
-  (e.g., "**P"). Semantically, this stands for the parameters of a
+  (e.g., "**P"). Semantically, this stands fuer the parameters of a
   callable.
 
 "typing.TypeVar" declarations can define *bounds* and *constraints*
@@ -3137,7 +3137,7 @@ expression. Like the bounds and constraints of type variables, the
 default value is not evaluated when the object is created, but only
 when the type parameter’s "__default__" attribute is accessed. To this
 end, the default value is evaluated in a separate annotation scope. If
-no default value is specified for a type parameter, the "__default__"
+no default value is specified fuer a type parameter, the "__default__"
 attribute is set to the special sentinel object "typing.NoDefault".
 
 The following example indicates the full set of allowed type parameter
@@ -3182,17 +3182,17 @@ the "typing" module, but creates an instance of "typing.TypeVar"
 directly.)
 
 The annotations of generic functions are evaluated within the
-annotation scope used for declaring the type parameters, but the
+annotation scope used fuer declaring the type parameters, but the
 function’s defaults and decorators are not.
 
-The following example illustrates the scoping rules for these cases,
-as well as for additional flavors of type parameters:
+The following example illustrates the scoping rules fuer these cases,
+as well as fuer additional flavors of type parameters:
 
    @decorator
    def func[T: int, *Ts, **P](*args: *Ts, arg: Callable[P, T] = some_default):
        ...
 
-Except for the lazy evaluation of the "TypeVar" bound, this is
+Except fuer the lazy evaluation of the "TypeVar" bound, this is
 equivalent to:
 
    DEFAULT_OF_arg = some_default
@@ -3241,7 +3241,7 @@ bound at runtime.
 
 Generic classes implicitly inherit from "typing.Generic". The base
 klassees and keyword arguments of generic classes are evaluated within
-the type scope for the type parameters, and decorators are evaluated
+the type scope fuer the type parameters, and decorators are evaluated
 outside that scope. This is illustrated by this example:
 
    @decorator
@@ -3265,7 +3265,7 @@ The "type" statement can also be used to create a generic type alias:
 
    type ListOrSet[T] = list[T] | set[T]
 
-Except for the lazy evaluation of the value, this is equivalent to:
+Except fuer the lazy evaluation of the value, this is equivalent to:
 
    annotation-def TYPE_PARAMS_OF_ListOrSet():
        T = typing.TypeVar("T")
@@ -3297,7 +3297,7 @@ Functions may also carry a return annotation following an arrow:
 
    def f() -> annotation: ...
 
-Annotations are conventionally used for *type hints*, but this is not
+Annotations are conventionally used fuer *type hints*, but this is not
 enforced by the language, and in general annotations may contain
 arbitrary expressions. The presence of annotations does not change the
 runtime semantics of the code, except if some mechanism is used that
@@ -3308,7 +3308,7 @@ By default, annotations are lazily evaluated in a annotation scope.
 This means that they are not evaluated when the code containing the
 annotation is evaluated. Instead, the interpreter saves information
 that can be used to evaluate the annotation later if requested. The
-"annotationlib" module provides tools for evaluating annotations.
+"annotationlib" module provides tools fuer evaluating annotations.
 
 If the future statement "from __future__ import annotations" is
 present, all annotations are instead stored as strings:
@@ -3385,7 +3385,7 @@ present, all annotations are instead stored as strings:
 A *context manager* is an object that defines the runtime context to
 be established when executing a "with" statement. The context manager
 handles the entry into, and the exit from, the desired runtime context
-for the execution of the block of code.  Context managers are normally
+fuer the execution of the block of code.  Context managers are normally
 invoked using the "with" statement (described in section The with
 statement), but can also be used by directly invoking their methods.
 
@@ -3421,7 +3421,7 @@ object.__exit__(self, exc_type, exc_value, traceback)
 See also:
 
   **PEP 343** - The “with” statement
-     The specification, background, and examples for the Python "with"
+     The specification, background, and examples fuer the Python "with"
      statement.
 ''',
     'continue': r'''The "continue" statement
@@ -3442,7 +3442,7 @@ starting the next loop cycle.
 
 When a description of an arithmetic operator below uses the phrase
 “the numeric arguments are converted to a common real type”, this
-means that the operator implementation for built-in types works as
+means that the operator implementation fuer built-in types works as
 follows:
 
 * If both arguments are complex numbers, no conversion is performed;
@@ -3452,7 +3452,7 @@ follows:
 
 * otherwise, both must be integers and no conversion is necessary.
 
-Some additional rules apply for certain operators (e.g., a string as a
+Some additional rules apply fuer certain operators (e.g., a string as a
 left argument to the ‘%’ operator).  Extensions must define their own
 conversion behavior.
 ''',
@@ -3496,7 +3496,7 @@ object.__init__(self[, ...])
    passed to the klasse constructor expression.  If a base klasse has an
    "__init__()" method, the derived class’s "__init__()" method, if
    any, must explicitly call it to ensure proper initialization of the
-   base klasse part of the instance; for example:
+   base klasse part of the instance; fuer example:
    "super().__init__([args...])".
 
    Because "__new__()" and "__init__()" work together in constructing
@@ -3512,7 +3512,7 @@ object.__del__(self)
    if any, must explicitly call it to ensure proper deletion of the
    base klasse part of the instance.
 
-   It is possible (though not recommended!) for the "__del__()" method
+   It is possible (though not recommended!) fuer the "__del__()" method
    to postpone destruction of the instance by creating a new reference
    to it.  This is called object *resurrection*.  It is
    implementation-dependent whether "__del__()" is called a second
@@ -3527,10 +3527,10 @@ object.__del__(self)
    Note:
 
      "del x" doesn’t directly call "x.__del__()" — the former
-     decrements the reference count for "x" by one, and the latter is
+     decrements the reference count fuer "x" by one, and the latter is
      only called when "x"’s reference count reaches zero.
 
-   **CPython implementation detail:** It is possible for a reference
+   **CPython implementation detail:** It is possible fuer a reference
    cycle to prevent the reference count of an object from going to
    zero.  In this case, the cycle will be later detected and deleted
    by the *cyclic garbage collector*.  A common cause of reference
@@ -3539,7 +3539,7 @@ object.__del__(self)
    its own traceback, which references the locals of all frames caught
    in the traceback.
 
-   See also: Documentation for the "gc" module.
+   See also: Documentation fuer the "gc" module.
 
    Warning:
 
@@ -3575,7 +3575,7 @@ object.__repr__(self)
    not "__str__()", then "__repr__()" is also used when an “informal”
    string representation of instances of that klasse is required.
 
-   This is typically used for debugging, so it is important that the
+   This is typically used fuer debugging, so it is important that the
    representation is information-rich and unambiguous. A default
    implementation is provided by the "object" klasse itself.
 
@@ -3611,7 +3611,7 @@ object.__format__(self, format_spec)
    formatting to one of the built-in types, or use a similar
    formatting option syntax.
 
-   See Format Specification Mini-Language for a description of the
+   See Format Specification Mini-Language fuer a description of the
    standard formatting syntax.
 
    The return value must be a string object.
@@ -3639,8 +3639,8 @@ object.__ge__(self, other)
    "x.__gt__(y)", and "x>=y" calls "x.__ge__(y)".
 
    A rich comparison method may return the singleton "NotImplemented"
-   if it does not implement the operation for a given pair of
-   arguments. By convention, "False" and "True" are returned for a
+   if it does not implement the operation fuer a given pair of
+   arguments. By convention, "False" and "True" are returned fuer a
    successful comparison. However, these methods can return any value,
    so if the comparison operator is used in a Boolean context (e.g.,
    in the condition of an "if" statement), Python will call "bool()"
@@ -3651,7 +3651,7 @@ object.__ge__(self, other)
    else NotImplemented". For "__ne__()", by default it delegates to
    "__eq__()" and inverts the result unless it is "NotImplemented".
    There are no other implied relationships among the comparison
-   operators or default implementations; for example, the truth of
+   operators or default implementations; fuer example, the truth of
    "(x<y or x==y)" does not imply "x<=y". To automatically generate
    ordering operations from a single root operation, see
    "functools.total_ordering()".
@@ -3662,7 +3662,7 @@ object.__ge__(self, other)
    method may generate these results directly, but may also return
    "NotImplemented".
 
-   See the paragraph on "__hash__()" for some important notes on
+   See the paragraph on "__hash__()" fuer some important notes on
    creating *hashable* objects which support custom comparison
    operations and are usable as dictionary keys.
 
@@ -3683,7 +3683,7 @@ object.__ge__(self, other)
 
 object.__hash__(self)
 
-   Called by built-in function "hash()" and for operations on members
+   Called by built-in function "hash()" and fuer operations on members
    of hashed collections including "set", "frozenset", and "dict".
    The "__hash__()" method should return an integer. The only required
    property is that objects which compare equal have the same hash
@@ -3826,7 +3826,7 @@ in debug mode:
    3 * 2 is 6
 
 Changed in version 3.3: Tab-completion via the "readline" module is
-available for commands and command arguments, e.g. the current global
+available fuer commands and command arguments, e.g. the current global
 and local names are offered as arguments of the "p" command.
 
 You can also invoke "pdb" from the command line to debug other
@@ -3951,7 +3951,7 @@ pdb.post_mortem(t=None)
    object. If no value is given, it uses the exception that is
    currently being handled, or raises "ValueError" if there isn’t one.
 
-   Changed in version 3.13: Support for exception objects was added.
+   Changed in version 3.13: Support fuer exception objects was added.
 
 pdb.pm()
 
@@ -3960,8 +3960,8 @@ pdb.pm()
 
 pdb.set_default_backend(backend)
 
-   There are two supported backends for pdb: "'settrace'" and
-   "'monitoring'". See "bdb.Bdb" for details. The user can set the
+   There are two supported backends fuer pdb: "'settrace'" and
+   "'monitoring'". See "bdb.Bdb" fuer details. The user can set the
    default backend to use if none is specified when instantiating
    "Pdb". If no backend is specified, the default is "'settrace'".
 
@@ -3974,11 +3974,11 @@ pdb.set_default_backend(backend)
 
 pdb.get_default_backend()
 
-   Returns the default backend for pdb.
+   Returns the default backend fuer pdb.
 
    Added in version 3.14.
 
-The "run*" functions and "set_trace()" are aliases for instantiating
+The "run*" functions and "set_trace()" are aliases fuer instantiating
 the "Pdb" klasse and calling the method of the same name.  If you want
 to access further features, you have to do this yourself:
 
@@ -3993,7 +3993,7 @@ klasse pdb.Pdb(completekey='tab', stdin=None, stdout=None, skip=None, nosigint=F
    module name patterns.  The debugger will not step into frames that
    originate in a module that matches one of these patterns. [1]
 
-   By default, Pdb sets a handler for the SIGINT signal (which is sent
+   By default, Pdb sets a handler fuer the SIGINT signal (which is sent
    when the user presses "Ctrl"-"C" on the console) when you give a
    "continue" command. This allows you to break into the debugger
    again by pressing "Ctrl"-"C".  If you want Pdb not to touch the
@@ -4008,7 +4008,7 @@ klasse pdb.Pdb(completekey='tab', stdin=None, stdout=None, skip=None, nosigint=F
    command line invocation) or "None" (for backwards compatible
    behaviour, as before the *mode* argument was added).
 
-   The *backend* argument specifies the backend to use for the
+   The *backend* argument specifies the backend to use fuer the
    debugger. If "None" is passed, the default backend will be used.
    See "set_default_backend()". Otherwise the supported backends are
    "'settrace'" and "'monitoring'".
@@ -4045,7 +4045,7 @@ klasse pdb.Pdb(completekey='tab', stdin=None, stdout=None, skip=None, nosigint=F
    runcall(function, *args, **kwds)
    set_trace()
 
-      See the documentation for the functions explained above.
+      See the documentation fuer the functions explained above.
 
 
 Debugger Commands
@@ -4080,11 +4080,11 @@ allows one a certain level of adaptability to the context under
 examination.
 
 Multiple commands may be entered on a single line, separated by ";;".
-(A single ";" is not used as it is the separator for multiple commands
+(A single ";" is not used as it is the separator fuer multiple commands
 in a line that is passed to the Python parser.)  No intelligence is
 applied to separating the commands; the input is split at the first
 ";;" pair, even if it is in the middle of a quoted string. A
-workaround for strings with double semicolons is to use implicit
+workaround fuer strings with double semicolons is to use implicit
 string concatenation "';'';'" or "";"";"".
 
 To set a temporary global variable, use a *convenience variable*. A
@@ -4112,7 +4112,7 @@ If a file ".pdbrc" exists in the user’s home directory or in the
 current directory, it is read with "'utf-8'" encoding and executed as
 if it had been typed at the debugger prompt, with the exception that
 empty lines and lines starting with "#" are ignored.  This is
-particularly useful for aliases.  If both files exist, the one in the
+particularly useful fuer aliases.  If both files exist, the one in the
 home directory is read first and aliases defined there can be
 overridden by the local file.
 
@@ -4168,7 +4168,7 @@ b(reak) [([filename:]lineno | function) [, condition]]
    If a second argument is present, it is an expression which must
    evaluate to true before the breakpoint is honored.
 
-   Without argument, list all breaks, including for each breakpoint,
+   Without argument, list all breaks, including fuer each breakpoint,
    the number of times that breakpoint has been hit, the current
    ignore count, and the associated condition if any.
 
@@ -4178,7 +4178,7 @@ b(reak) [([filename:]lineno | function) [, condition]]
 tbreak [([filename:]lineno | function) [, condition]]
 
    Temporary breakpoint, which is removed automatically when it is
-   first hit. The arguments are the same as for "break".
+   first hit. The arguments are the same as fuer "break".
 
 cl(ear) [filename:lineno | bpnumber ...]
 
@@ -4200,7 +4200,7 @@ enable bpnumber [bpnumber ...]
 
 ignore bpnumber [count]
 
-   Set the ignore count for the given breakpoint number.  If *count*
+   Set the ignore count fuer the given breakpoint number.  If *count*
    is omitted, the ignore count is set to 0.  A breakpoint becomes
    active when the ignore count is zero.  When non-zero, the *count*
    is decremented each time the breakpoint is reached and the
@@ -4209,14 +4209,14 @@ ignore bpnumber [count]
 
 condition bpnumber [condition]
 
-   Set a new *condition* for the breakpoint, an expression which must
+   Set a new *condition* fuer the breakpoint, an expression which must
    evaluate to true before the breakpoint is honored.  If *condition*
    is absent, any existing condition is removed; i.e., the breakpoint
    is made unconditional.
 
 commands [bpnumber]
 
-   Specify a list of commands for breakpoint number *bpnumber*.  The
+   Specify a list of commands fuer breakpoint number *bpnumber*.  The
    commands themselves appear on the following lines.  Type a line
    containing just "end" to terminate the commands. An example:
 
@@ -4289,13 +4289,13 @@ j(ump) lineno
    bottom-most frame.  This lets you jump back and execute code again,
    or jump forward to skip code that you don’t want to run.
 
-   It should be noted that not all jumps are allowed – for instance it
+   It should be noted that not all jumps are allowed – fuer instance it
    is not possible to jump into the middle of a "for" loop or out of a
    "finally" clause.
 
 l(ist) [first[, last]]
 
-   List source code for the current file.  Without arguments, list 11
+   List source code fuer the current file.  Without arguments, list 11
    lines around the current line or continue the previous listing.
    With "." as argument, list 11 lines around the current line.  With
    one argument, list 11 lines around at that line.  With two
@@ -4311,8 +4311,8 @@ l(ist) [first[, last]]
 
 ll | longlist
 
-   List all source code for the current function or frame.
-   Interesting lines are marked as for "list".
+   List all source code fuer the current function or frame.
+   Interesting lines are marked as fuer "list".
 
    Added in version 3.2.
 
@@ -4350,7 +4350,7 @@ display [expression]
    Display the value of *expression* if it changed, each time
    execution stops in the current frame.
 
-   Without *expression*, list all display expressions for the current
+   Without *expression*, list all display expressions fuer the current
    frame.
 
    Note:
@@ -4403,7 +4403,7 @@ display [expression]
 undisplay [expression]
 
    Do not display *expression* anymore in the current frame.  Without
-   *expression*, clear all display expressions for the current frame.
+   *expression*, clear all display expressions fuer the current frame.
 
    Added in version 3.2.
 
@@ -4411,12 +4411,12 @@ interact
 
    Start an interactive interpreter (using the "code" module) in a new
    global namespace initialised from the local and global namespaces
-   for the current scope. Use "exit()" or "quit()" to exit the
+   fuer the current scope. Use "exit()" or "quit()" to exit the
    interpreter and return to the debugger.
 
    Note:
 
-     As "interact" creates a new dedicated namespace for code
+     As "interact" creates a new dedicated namespace fuer code
      execution, assignments to variables will not affect the original
      namespaces. However, modifications to any referenced mutable
      objects will be reflected in the original namespaces as usual.
@@ -4435,7 +4435,7 @@ alias [name [command]]
    *command* must *not* be enclosed in quotes.  Replaceable parameters
    can be indicated by "%1", "%2", … and "%9", while "%*" is replaced
    by all the parameters. If *command* is omitted, the current alias
-   for *name* is shown. If no arguments are given, all aliases are
+   fuer *name* is shown. If no arguments are given, all aliases are
    listed.
 
    Aliases may be nested and can contain anything that can be legally
@@ -4449,7 +4449,7 @@ alias [name [command]]
    in the ".pdbrc" file):
 
       # Print instance variables (usage "pi classInst")
-      alias pi for k in %1.__dict__.keys(): print(f"%1.{k} = {%1.__dict__[k]}")
+      alias pi fuer k in %1.__dict__.keys(): print(f"%1.{k} = {%1.__dict__[k]}")
       # Print instance variables in self
       alias ps pi self
 
@@ -4478,7 +4478,7 @@ restart [args ...]
    Restart the debugged Python program.  If *args* is supplied, it is
    split with "shlex" and the result is used as the new "sys.argv".
    History, breakpoints, actions and debugger options are preserved.
-   "restart" is an alias for "run".
+   "restart" is an alias fuer "run".
 
    Changed in version 3.14: "run" and "restart" commands are disabled
    when the debugger is invoked in "'inline'" mode.
@@ -4505,7 +4505,7 @@ debug code
 
 retval
 
-   Print the return value for the last return of the current function.
+   Print the return value fuer the last return of the current function.
 
 exceptions [excnumber]
 
@@ -4604,7 +4604,7 @@ evaluated from left to right to define the entries of the dictionary:
 each key object is used as a key into the dictionary to store the
 corresponding value.  This means that you can specify the same key
 multiple times in the dict item list, and the final dictionary’s value
-for that key will be the last one given.
+fuer that key will be the last one given.
 
 A double asterisk "**" denotes *dictionary unpacking*. Its operand
 must be a *mapping*.  Each mapping item is added to the new
@@ -4624,7 +4624,7 @@ Restrictions on the types of the key values are listed earlier in
 section The standard type hierarchy.  (To summarize, the key type
 should be *hashable*, which excludes all mutable objects.)  Clashes
 between duplicate keys are not detected; the last value (textually
-rightmost in the display) stored for a given key value prevails.
+rightmost in the display) stored fuer a given key value prevails.
 
 Changed in version 3.8: Prior to Python 3.8, in dict comprehensions,
 the evaluation order of key and value was not well-defined.  In
@@ -4644,17 +4644,17 @@ time. This means that the following code will print 42:
    f()
 
 The "eval()" and "exec()" functions do not have access to the full
-environment for resolving names.  Names may be resolved in the local
+environment fuer resolving names.  Names may be resolved in the local
 and global namespaces of the caller.  Free variables are not resolved
 in the nearest enclosing namespace, but in the global namespace.  [1]
 The "exec()" and "eval()" functions have optional arguments to
 override the global and local namespace.  If only one namespace is
-specified, it is used for both.
+specified, it is used fuer both.
 ''',
     'else': r'''The "if" statement
 ******************
 
-The "if" statement is used for conditional execution:
+The "if" statement is used fuer conditional execution:
 
    if_stmt: "if" assignment_expression ":" suite
             ("elif" assignment_expression ":" suite)*
@@ -4662,7 +4662,7 @@ The "if" statement is used for conditional execution:
 
 It selects exactly one of the suites by evaluating the expressions one
 by one until one is found to be true (see section Boolean operations
-for the definition of true and false); then that suite is executed
+fuer the definition of true and false); then that suite is executed
 (and no other part of the "if" statement is executed or evaluated).
 If all expressions are false, the suite of the "else" clause, if
 present, is executed.
@@ -4737,7 +4737,7 @@ block. The string argument passed to the built-in functions "eval()"
 and "exec()" is a code block.
 
 A code block is executed in an *execution frame*.  A frame contains
-some administrative information (used for debugging) and determines
+some administrative information (used fuer debugging) and determines
 where and how execution continues after the code block’s execution has
 completed.
 
@@ -4805,7 +4805,7 @@ A *scope* defines the visibility of a name within a block.  If a local
 variable is defined in a block, its scope includes that block.  If the
 definition occurs in a function block, the scope extends to any blocks
 contained within the defining one, unless a contained block introduces
-a different binding for the name.
+a different binding fuer the name.
 
 When a name is used in a code block, it is resolved using the nearest
 enclosing scope.  The set of all such scopes visible to a code block
@@ -4823,8 +4823,8 @@ current block.  This can lead to errors when a name is used within a
 block before it is bound.  This rule is subtle.  Python lacks
 declarations and allows name binding operations to occur anywhere
 within a code block.  The local variables of a code block can be
-determined by scanning the entire text of the block for name binding
-operations. See the FAQ entry on UnboundLocalError for examples.
+determined by scanning the entire text of the block fuer name binding
+operations. See the FAQ entry on UnboundLocalError fuer examples.
 
 If the "global" statement occurs within a block, all uses of the names
 specified in the statement refer to the bindings of those names in the
@@ -4838,7 +4838,7 @@ variables are created in the global namespace. The global statement
 must precede all uses of the listed names.
 
 The "global" statement has the same scope as a name binding operation
-in the same block.  If the nearest enclosing scope for a free variable
+in the same block.  If the nearest enclosing scope fuer a free variable
 contains a global statement, the free variable is treated as a global.
 
 The "nonlocal" statement causes corresponding names to refer to
@@ -4847,14 +4847,14 @@ previously bound variables in the nearest enclosing function scope.
 exist in any enclosing function scope. Type parameters cannot be
 rebound with the "nonlocal" statement.
 
-The namespace for a module is automatically created the first time a
-module is imported.  The main module for a script is always called
+The namespace fuer a module is automatically created the first time a
+module is imported.  The main module fuer a script is always called
 "__main__".
 
 Class definition blocks and arguments to "exec()" and "eval()" are
 special in the context of name resolution. A klasse definition is an
 executable statement that may use and define names. These references
-follow the normal rules for name resolution with an exception that
+follow the normal rules fuer name resolution with an exception that
 unbound local variables are looked up in the global namespace. The
 namespace of the klasse definition becomes the attribute dictionary of
 the class. The scope of names defined in a klasse block is limited to
@@ -4865,7 +4865,7 @@ klasse scopes. This means that the following will fail:
 
    klasse A:
        a = 42
-       b = list(a + i for i in range(10))
+       b = list(a + i fuer i in range(10))
 
 However, the following will succeed:
 
@@ -4889,17 +4889,17 @@ Annotation scopes are used in the following contexts:
 
 * *Variable annotations*.
 
-* Type parameter lists for generic type aliases.
+* Type parameter lists fuer generic type aliases.
 
-* Type parameter lists for generic functions. A generic function’s
+* Type parameter lists fuer generic functions. A generic function’s
   annotations are executed within the annotation scope, but its
   defaults and decorators are not.
 
-* Type parameter lists for generic classes. A generic class’s base
+* Type parameter lists fuer generic classes. A generic class’s base
   classes and keyword arguments are executed within the annotation
   scope, but its decorators are not.
 
-* The bounds, constraints, and default values for type parameters
+* The bounds, constraints, and default values fuer type parameters
   (lazily evaluated).
 
 * The value of type aliases (lazily evaluated).
@@ -4931,7 +4931,7 @@ Annotation scopes differ from function scopes in the following ways:
 Added in version 3.12: Annotation scopes were introduced in Python
 3.12 as part of **PEP 695**.
 
-Changed in version 3.13: Annotation scopes are also used for type
+Changed in version 3.13: Annotation scopes are also used fuer type
 parameter defaults, as introduced by **PEP 696**.
 
 Changed in version 3.14: Annotation scopes are now also used for
@@ -4947,7 +4947,7 @@ statement, and the bounds, constraints, and default values of type
 variables created through the type parameter syntax. This means that
 they are not evaluated when the type alias or type variable is
 created, or when the object carrying annotations is created. Instead,
-they are only evaluated when necessary, for example when the
+they are only evaluated when necessary, fuer example when the
 "__value__" attribute on a type alias is accessed.
 
 Example:
@@ -4968,7 +4968,7 @@ Here the exception is raised only when the "__value__" attribute of
 the type alias or the "__bound__" attribute of the type variable is
 accessed.
 
-This behavior is primarily useful for references to types that have
+This behavior is primarily useful fuer references to types that have
 not yet been defined when the type alias or type variable is created.
 For example, lazy evaluation enables creation of mutually recursive
 type aliases:
@@ -4999,7 +4999,7 @@ is actually found by looking up the name "__builtins__" in its global
 namespace; this should be a dictionary or a module (in the latter case
 the module’s dictionary is used).  By default, when in the "__main__"
 module, "__builtins__" is the built-in module "builtins"; when in any
-other module, "__builtins__" is an alias for the dictionary of the
+other module, "__builtins__" is an alias fuer the dictionary of the
 "builtins" module itself.
 
 
@@ -5016,12 +5016,12 @@ time. This means that the following code will print 42:
    f()
 
 The "eval()" and "exec()" functions do not have access to the full
-environment for resolving names.  Names may be resolved in the local
+environment fuer resolving names.  Names may be resolved in the local
 and global namespaces of the caller.  Free variables are not resolved
 in the nearest enclosing namespace, but in the global namespace.  [1]
 The "exec()" and "eval()" functions have optional arguments to
 override the global and local namespace.  If only one namespace is
-specified, it is used for both.
+specified, it is used fuer both.
 
 
 Exceptions
@@ -5123,13 +5123,13 @@ Note that the integer and exponent parts are always interpreted using
 radix 10. For example, "077e010" is legal, and denotes the same number
 as "77e10". The allowed range of floating-point literals is
 implementation-dependent.  As in integer literals, underscores are
-supported for digit grouping.
+supported fuer digit grouping.
 
 Some examples of floating-point literals:
 
    3.14    10.    .001    1e100    3.14e-10    0e0    3.14_15_93
 
-Changed in version 3.6: Underscores are now allowed for grouping
+Changed in version 3.6: Underscores are now allowed fuer grouping
 purposes in literals.
 ''',
     'for': r'''The "for" statement
@@ -5142,10 +5142,10 @@ The "for" statement is used to iterate over the elements of a sequence
              ["else" ":" suite]
 
 The "starred_list" expression is evaluated once; it should yield an
-*iterable* object.  An *iterator* is created for that iterable. The
+*iterable* object.  An *iterator* is created fuer that iterable. The
 first item provided by the iterator is then assigned to the target
-list using the standard rules for assignments (see Assignment
-statements), and the suite is executed.  This repeats for each item
+list using the standard rules fuer assignments (see Assignment
+statements), and the suite is executed.  This repeats fuer each item
 provided by the iterator.  When the iterator is exhausted, the suite
 in the "else" clause, if present, is executed, and the loop
 terminates.
@@ -5160,7 +5160,7 @@ The for-loop makes assignments to the variables in the target list.
 This overwrites all previous assignments to those variables including
 those made in the suite of the for-loop:
 
-   for i in range(10):
+   fuer i in range(10):
        print(i)
        i = 5             # this will not affect the for-loop
                          # because i will be overwritten with the next
@@ -5179,7 +5179,7 @@ expression list.
 ********************
 
 The "str.format()" method and the "Formatter" klasse share the same
-syntax for format strings (although in the case of "Formatter",
+syntax fuer format strings (although in the case of "Formatter",
 subclasses can define their own format string syntax).  The syntax is
 related to that of formatted string literals, but it is less
 sophisticated and, in particular, does not support arbitrary
@@ -5191,7 +5191,7 @@ text, which is copied unchanged to the output.  If you need to include
 a brace character in the literal text, it can be escaped by doubling:
 "{{" and "}}".
 
-The grammar for a replacement field is as follows:
+The grammar fuer a replacement field is as follows:
 
    replacement_field: "{" [field_name] ["!" conversion] [":" format_spec] "}"
    field_name:        arg_name ("." attribute_name | "[" element_index "]")*
@@ -5207,7 +5207,7 @@ In less formal terms, the replacement field can start with a
 and inserted into the output instead of the replacement field. The
 *field_name* is optionally followed by a  *conversion* field, which is
 preceded by an exclamation point "'!'", and a *format_spec*, which is
-preceded by a colon "':'".  These specify a non-default format for the
+preceded by a colon "':'".  These specify a non-default format fuer the
 replacement value.
 
 See also the Format Specification Mini-Language section.
@@ -5228,11 +5228,11 @@ attribute using "getattr()", while an expression of the form
 "'[index]'" does an index lookup using "__getitem__()".
 
 Changed in version 3.1: The positional argument specifiers can be
-omitted for "str.format()", so "'{} {}'.format(a, b)" is equivalent to
+omitted fuer "str.format()", so "'{} {}'.format(a, b)" is equivalent to
 "'{0} {1}'.format(a, b)".
 
 Changed in version 3.4: The positional argument specifiers can be
-omitted for "Formatter".
+omitted fuer "Formatter".
 
 Some simple format string examples:
 
@@ -5275,7 +5275,7 @@ allowed.  The replacement fields within the format_spec are
 substituted before the *format_spec* string is interpreted. This
 allows the formatting of a value to be dynamically specified.
 
-See the Format examples section for some examples.
+See the Format examples section fuer some examples.
 
 
 Format Specification Mini-Language
@@ -5287,7 +5287,7 @@ within a format string to define how individual values are presented
 directly to the built-in "format()" function.  Each formattable type
 may define how the format specification is to be interpreted.
 
-Most built-in types implement the following options for format
+Most built-in types implement the following options fuer format
 specifications, although some of the formatting options are only
 supported by the numeric types.
 
@@ -5325,16 +5325,16 @@ The meaning of the various alignment options is as follows:
 | Option    | Meaning                                                    |
 |===========|============================================================|
 | "'<'"     | Forces the field to be left-aligned within the available   |
-|           | space (this is the default for most objects).              |
+|           | space (this is the default fuer most objects).              |
 +-----------+------------------------------------------------------------+
 | "'>'"     | Forces the field to be right-aligned within the available  |
-|           | space (this is the default for numbers).                   |
+|           | space (this is the default fuer numbers).                   |
 +-----------+------------------------------------------------------------+
 | "'='"     | Forces the padding to be placed after the sign (if any)    |
-|           | but before the digits.  This is used for printing fields   |
+|           | but before the digits.  This is used fuer printing fields   |
 |           | in the form ‘+000000120’. This alignment option is only    |
-|           | valid for numeric types, excluding "complex". It becomes   |
-|           | the default for numbers when ‘0’ immediately precedes the  |
+|           | valid fuer numeric types, excluding "complex". It becomes   |
+|           | the default fuer numbers when ‘0’ immediately precedes the  |
 |           | field width.                                               |
 +-----------+------------------------------------------------------------+
 | "'^'"     | Forces the field to be centered within the available       |
@@ -5345,16 +5345,16 @@ Note that unless a minimum field width is defined, the field width
 will always be the same size as the data to fill it, so that the
 alignment option has no meaning in this case.
 
-The *sign* option is only valid for number types, and can be one of
+The *sign* option is only valid fuer number types, and can be one of
 the following:
 
 +-----------+------------------------------------------------------------+
 | Option    | Meaning                                                    |
 |===========|============================================================|
-| "'+'"     | Indicates that a sign should be used for both positive as  |
+| "'+'"     | Indicates that a sign should be used fuer both positive as  |
 |           | well as negative numbers.                                  |
 +-----------+------------------------------------------------------------+
-| "'-'"     | Indicates that a sign should be used only for negative     |
+| "'-'"     | Indicates that a sign should be used only fuer negative     |
 |           | numbers (this is the default behavior).                    |
 +-----------+------------------------------------------------------------+
 | space     | Indicates that a leading space should be used on positive  |
@@ -5363,21 +5363,21 @@ the following:
 
 The "'z'" option coerces negative zero floating-point values to
 positive zero after rounding to the format precision.  This option is
-only valid for floating-point presentation types.
+only valid fuer floating-point presentation types.
 
 Changed in version 3.11: Added the "'z'" option (see also **PEP
 682**).
 
-The "'#'" option causes the “alternate form” to be used for the
-conversion.  The alternate form is defined differently for different
-types.  This option is only valid for integer, float and complex
+The "'#'" option causes the “alternate form” to be used fuer the
+conversion.  The alternate form is defined differently fuer different
+types.  This option is only valid fuer integer, float and complex
 types. For integers, when binary, octal, or hexadecimal output is
 used, this option adds the respective prefix "'0b'", "'0o'", "'0x'",
 or "'0X'" to the output value. For float and complex the alternate
 form causes the result of the conversion to always contain a decimal-
 point character, even if no digits follow it. Normally, a decimal-
 point character appears in the result of these conversions only if a
-digit follows it. In addition, for "'g'" and "'G'" conversions,
+digit follows it. In addition, fuer "'g'" and "'G'" conversions,
 trailing zeros are not removed from the result.
 
 The *width* is a decimal integer defining the minimum total field
@@ -5386,34 +5386,34 @@ characters. If not specified, then the field width will be determined
 by the content.
 
 When no explicit alignment is given, preceding the *width* field by a
-zero ("'0'") character enables sign-aware zero-padding for numeric
+zero ("'0'") character enables sign-aware zero-padding fuer numeric
 types, excluding "complex".  This is equivalent to a *fill* character
 of "'0'" with an *alignment* type of "'='".
 
 Changed in version 3.10: Preceding the *width* field by "'0'" no
-longer affects the default alignment for strings.
+longer affects the default alignment fuer strings.
 
 The *precision* is a decimal integer indicating how many digits should
-be displayed after the decimal point for presentation types "'f'" and
-"'F'", or before and after the decimal point for presentation types
+be displayed after the decimal point fuer presentation types "'f'" and
+"'F'", or before and after the decimal point fuer presentation types
 "'g'" or "'G'".  For string presentation types the field indicates the
 maximum field size - in other words, how many characters will be used
-from the field content.  The *precision* is not allowed for integer
+from the field content.  The *precision* is not allowed fuer integer
 presentation types.
 
 The *grouping* option after *width* and *precision* fields specifies a
-digit group separator for the integral and fractional parts of a
+digit group separator fuer the integral and fractional parts of a
 number respectively. It can be one of the following:
 
 +-----------+------------------------------------------------------------+
 | Option    | Meaning                                                    |
 |===========|============================================================|
-| "','"     | Inserts a comma every 3 digits for integer presentation    |
+| "','"     | Inserts a comma every 3 digits fuer integer presentation    |
 |           | type "'d'" and floating-point presentation types,          |
 |           | excluding "'n'". For other presentation types, this option |
 |           | is not supported.                                          |
 +-----------+------------------------------------------------------------+
-| "'_'"     | Inserts an underscore every 3 digits for integer           |
+| "'_'"     | Inserts an underscore every 3 digits fuer integer           |
 |           | presentation type "'d'" and floating-point presentation    |
 |           | types, excluding "'n'". For integer presentation types     |
 |           | "'b'", "'o'", "'x'", and "'X'", underscores are inserted   |
@@ -5427,7 +5427,7 @@ Changed in version 3.1: Added the "','" option (see also **PEP 378**).
 
 Changed in version 3.6: Added the "'_'" option (see also **PEP 515**).
 
-Changed in version 3.14: Support the *grouping* option for the
+Changed in version 3.14: Support the *grouping* option fuer the
 fractional part.
 
 Finally, the *type* determines how the data should be presented.
@@ -5437,7 +5437,7 @@ The available string presentation types are:
    +-----------+------------------------------------------------------------+
    | Type      | Meaning                                                    |
    |===========|============================================================|
-   | "'s'"     | String format. This is the default type for strings and    |
+   | "'s'"     | String format. This is the default type fuer strings and    |
    |           | may be omitted.                                            |
    +-----------+------------------------------------------------------------+
    | None      | The same as "'s'".                                         |
@@ -5458,10 +5458,10 @@ The available integer presentation types are:
    | "'o'"     | Octal format. Outputs the number in base 8.                |
    +-----------+------------------------------------------------------------+
    | "'x'"     | Hex format. Outputs the number in base 16, using lower-    |
-   |           | case letters for the digits above 9.                       |
+   |           | case letters fuer the digits above 9.                       |
    +-----------+------------------------------------------------------------+
    | "'X'"     | Hex format. Outputs the number in base 16, using upper-    |
-   |           | case letters for the digits above 9. In case "'#'" is      |
+   |           | case letters fuer the digits above 9. In case "'#'" is      |
    |           | specified, the prefix "'0x'" will be upper-cased to "'0X'" |
    |           | as well.                                                   |
    +-----------+------------------------------------------------------------+
@@ -5477,7 +5477,7 @@ with the floating-point presentation types listed below (except "'n'"
 and "None"). When doing so, "float()" is used to convert the integer
 to a floating-point number before formatting.
 
-The available presentation types for "float" and "Decimal" values are:
+The available presentation types fuer "float" and "Decimal" values are:
 
    +-----------+------------------------------------------------------------+
    | Type      | Meaning                                                    |
@@ -5486,10 +5486,10 @@ The available presentation types for "float" and "Decimal" values are:
    |           | the number in scientific notation with the letter ‘e’      |
    |           | separating the coefficient from the exponent. The          |
    |           | coefficient has one digit before and "p" digits after the  |
-   |           | decimal point, for a total of "p + 1" significant digits.  |
+   |           | decimal point, fuer a total of "p + 1" significant digits.  |
    |           | With no precision given, uses a precision of "6" digits    |
-   |           | after the decimal point for "float", and shows all         |
-   |           | coefficient digits for "Decimal".  If "p=0", the decimal   |
+   |           | after the decimal point fuer "float", and shows all         |
+   |           | coefficient digits fuer "Decimal".  If "p=0", the decimal   |
    |           | point is omitted unless the "#" option is used.            |
    +-----------+------------------------------------------------------------+
    | "'E'"     | Scientific notation. Same as "'e'" except it uses an upper |
@@ -5498,9 +5498,9 @@ The available presentation types for "float" and "Decimal" values are:
    | "'f'"     | Fixed-point notation. For a given precision "p", formats   |
    |           | the number as a decimal number with exactly "p" digits     |
    |           | following the decimal point. With no precision given, uses |
-   |           | a precision of "6" digits after the decimal point for      |
+   |           | a precision of "6" digits after the decimal point fuer      |
    |           | "float", and uses a precision large enough to show all     |
-   |           | coefficient digits for "Decimal".  If "p=0", the decimal   |
+   |           | coefficient digits fuer "Decimal".  If "p=0", the decimal   |
    |           | point is omitted unless the "#" option is used.            |
    +-----------+------------------------------------------------------------+
    | "'F'"     | Fixed-point notation. Same as "'f'", but converts "nan" to |
@@ -5514,7 +5514,7 @@ The available presentation types for "float" and "Decimal" values are:
    |           | of "1".  The precise rules are as follows: suppose that    |
    |           | the result formatted with presentation type "'e'" and      |
    |           | precision "p-1" would have exponent "exp".  Then, if "m <= |
-   |           | exp < p", where "m" is -4 for floats and -6 for            |
+   |           | exp < p", where "m" is -4 fuer floats and -6 fuer            |
    |           | "Decimals", the number is formatted with presentation type |
    |           | "'f'" and precision "p-1-exp".  Otherwise, the number is   |
    |           | formatted with presentation type "'e'" and precision       |
@@ -5522,10 +5522,10 @@ The available presentation types for "float" and "Decimal" values are:
    |           | removed from the significand, and the decimal point is     |
    |           | also removed if there are no remaining digits following    |
    |           | it, unless the "'#'" option is used.  With no precision    |
-   |           | given, uses a precision of "6" significant digits for      |
+   |           | given, uses a precision of "6" significant digits fuer      |
    |           | "float". For "Decimal", the coefficient of the result is   |
    |           | formed from the coefficient digits of the value;           |
-   |           | scientific notation is used for values smaller than "1e-6" |
+   |           | scientific notation is used fuer values smaller than "1e-6" |
    |           | in absolute value and values where the place value of the  |
    |           | least significant digit is larger than 1, and fixed-point  |
    |           | notation is used otherwise.  Positive and negative         |
@@ -5539,7 +5539,7 @@ The available presentation types for "float" and "Decimal" values are:
    +-----------+------------------------------------------------------------+
    | "'n'"     | Number. This is the same as "'g'", except that it uses the |
    |           | current locale setting to insert the appropriate digit     |
-   |           | group separators for the integral part of a number.        |
+   |           | group separators fuer the integral part of a number.        |
    +-----------+------------------------------------------------------------+
    | "'%'"     | Percentage. Multiplies the number by 100 and displays in   |
    |           | fixed ("'f'") format, followed by a percent sign.          |
@@ -5552,18 +5552,18 @@ The available presentation types for "float" and "Decimal" values are:
    |           | be as large as needed to represent the given value         |
    |           | faithfully.  For "Decimal", this is the same as either     |
    |           | "'g'" or "'G'" depending on the value of                   |
-   |           | "context.capitals" for the current decimal context.  The   |
+   |           | "context.capitals" fuer the current decimal context.  The   |
    |           | overall effect is to match the output of "str()" as        |
    |           | altered by the other format modifiers.                     |
    +-----------+------------------------------------------------------------+
 
 The result should be correctly rounded to a given precision "p" of
-digits after the decimal point.  The rounding mode for "float" matches
+digits after the decimal point.  The rounding mode fuer "float" matches
 that of the "round()" builtin.  For "Decimal", the rounding mode of
 the current context will be used.
 
-The available presentation types for "complex" are the same as those
-for "float" ("'%'" is not allowed).  Both the real and imaginary
+The available presentation types fuer "complex" are the same as those
+fuer "float" ("'%'" is not allowed).  Both the real and imaginary
 components of a complex number are formatted as floating-point
 numbers, according to the specified presentation type.  They are
 separated by the mandatory sign of the imaginary part, the latter
@@ -5648,7 +5648,7 @@ Replacing "%+f", "%-f", and "% f" and specifying a sign:
 
    >>> '{:+f}; {:+f}'.format(3.14, -3.14)  # show it always
    '+3.140000; -3.140000'
-   >>> '{: f}; {: f}'.format(3.14, -3.14)  # show a space for positive numbers
+   >>> '{: f}; {: f}'.format(3.14, -3.14)  # show a space fuer positive numbers
    ' 3.140000; -3.140000'
    >>> '{:-f}; {:-f}'.format(3.14, -3.14)  # show only the minus -- same as '{:f}; {:f}'
    '3.140000; -3.140000'
@@ -5695,7 +5695,7 @@ Using type-specific formatting:
 
 Nesting arguments and more complex examples:
 
-   >>> for align, text in zip('<^>', ['left', 'center', 'right']):
+   >>> fuer align, text in zip('<^>', ['left', 'center', 'right']):
    ...     '{0:{fill}{align}16}'.format(text, fill=align, align=align)
    ...
    'left<<<<<<<<<<<<'
@@ -5709,8 +5709,8 @@ Nesting arguments and more complex examples:
    3232235521
    >>>
    >>> width = 5
-   >>> for num in range(5,12):
-   ...     for base in 'dXob':
+   >>> fuer num in range(5,12):
+   ...     fuer base in 'dXob':
    ...         print('{0:{width}{base}}'.format(num, base=base, width=width), end=' ')
    ...     print()
    ...
@@ -5747,7 +5747,7 @@ section The standard type hierarchy):
 
 A function definition is an executable statement.  Its execution binds
 the function name in the current local namespace to a function object
-(a wrapper around the executable code for the function).  This
+(a wrapper around the executable code fuer the function).  This
 function object contains a reference to the current global namespace
 as the global namespace to be used when the function is called.
 
@@ -5776,13 +5776,13 @@ except that the original function is not temporarily bound to the name
 
 Changed in version 3.9: Functions may be decorated with any valid
 "assignment_expression". Previously, the grammar was much more
-restrictive; see **PEP 614** for details.
+restrictive; see **PEP 614** fuer details.
 
 A list of type parameters may be given in square brackets between the
-function’s name and the opening parenthesis for its parameter list.
+function’s name and the opening parenthesis fuer its parameter list.
 This indicates to static type checkers that the function is generic.
 At runtime, the type parameters can be retrieved from the function’s
-"__type_params__" attribute. See Generic functions for more.
+"__type_params__" attribute. See Generic functions fuer more.
 
 Changed in version 3.12: Type parameter lists are new in Python 3.12.
 
@@ -5797,7 +5797,7 @@ a syntactic restriction that is not expressed by the grammar.
 **Default parameter values are evaluated from left to right when the
 function definition is executed.** This means that the expression is
 evaluated once, when the function is defined, and that the same “pre-
-computed” value is used for each call.  This is especially important
+computed” value is used fuer each call.  This is especially important
 to understand when a default parameter value is a mutable object, such
 as a list or a dictionary: if the function modifies the object (e.g.
 by appending an item to a list), the default parameter value is in
@@ -5825,7 +5825,7 @@ keyword arguments.  Parameters before “"/"” are positional-only
 parameters and may only be passed by positional arguments.
 
 Changed in version 3.8: The "/" function parameter syntax may be used
-to indicate positional-only parameters. See **PEP 570** for details.
+to indicate positional-only parameters. See **PEP 570** fuer details.
 
 Parameters may have an *annotation* of the form “": expression"”
 following the parameter name.  Any parameter may have an annotation,
@@ -5834,16 +5834,16 @@ case, parameters of the form "*identifier" may have an annotation “":
 *expression"”.) Functions may have “return” annotation of the form
 “"-> expression"” after the parameter list.  These annotations can be
 any valid Python expression.  The presence of annotations does not
-change the semantics of a function. See Annotations for more
+change the semantics of a function. See Annotations fuer more
 information on annotations.
 
 Changed in version 3.11: Parameters of the form “"*identifier"” may
 have an annotation “": *expression"”. See **PEP 646**.
 
 It is also possible to create anonymous functions (functions not bound
-to a name), for immediate use in expressions.  This uses lambda
+to a name), fuer immediate use in expressions.  This uses lambda
 expressions, described in section Lambdas.  Note that the lambda
-expression is merely a shorthand for a simplified function definition;
+expression is merely a shorthand fuer a simplified function definition;
 a function defined in a “"def"” statement can be passed around or
 assigned to another name just like a function defined by a lambda
 expression.  The “"def"” form is actually more powerful since it
@@ -5853,26 +5853,26 @@ allows the execution of multiple statements and annotations.
 statement executed inside a function definition defines a local
 function that can be returned or passed around.  Free variables used
 in the nested function can access the local variables of the function
-containing the def.  See section Naming and binding for details.
+containing the def.  See section Naming and binding fuer details.
 
 See also:
 
   **PEP 3107** - Function Annotations
-     The original specification for function annotations.
+     The original specification fuer function annotations.
 
   **PEP 484** - Type Hints
-     Definition of a standard meaning for annotations: type hints.
+     Definition of a standard meaning fuer annotations: type hints.
 
-  **PEP 526** - Syntax for Variable Annotations
+  **PEP 526** - Syntax fuer Variable Annotations
      Ability to type hint variable declarations, including class
      variables and instance variables.
 
   **PEP 563** - Postponed Evaluation of Annotations
-     Support for forward references within annotations by preserving
+     Support fuer forward references within annotations by preserving
      annotations in a string form at runtime instead of eager
      evaluation.
 
-  **PEP 318** - Decorators for Functions and Methods
+  **PEP 318** - Decorators fuer Functions and Methods
      Function and method decorators were introduced. Class decorators
      were introduced in **PEP 3129**.
 ''',
@@ -5923,9 +5923,9 @@ trailing underscore characters:
    Note:
 
      The name "_" is often used in conjunction with
-     internationalization; refer to the documentation for the
-     "gettext" module for more information on this convention.It is
-     also commonly used for unused variables.
+     internationalization; refer to the documentation fuer the
+     "gettext" module fuer more information on this convention.It is
+     also commonly used fuer unused variables.
 
 "__*__"
    System-defined names, informally known as “dunder” names. These
@@ -5950,11 +5950,11 @@ following lexical definitions.
 
 The syntax of identifiers in Python is based on the Unicode standard
 annex UAX-31, with elaboration and changes as defined below; see also
-**PEP 3131** for further details.
+**PEP 3131** fuer further details.
 
 Within the ASCII range (U+0001..U+007F), the valid characters for
 identifiers include the uppercase and lowercase letters "A" through
-"Z", the underscore "_" and, except for the first character, the
+"Z", the underscore "_" and, except fuer the first character, the
 digits "0" through "9". Python 3.0 introduced additional characters
 from outside the ASCII range (see **PEP 3131**).  For these
 characters, the classification uses the version of the Unicode
@@ -6013,7 +6013,7 @@ be spelled exactly as written here:
    False      await      else       import     pass
    None       break      except     in         raise
    True       klasse      finally    is         return
-   and        continue   for        lambda     try
+   and        continue   fuer        lambda     try
    as         def        from       nonlocal   while
    assert     del        global     not        with
    async      elif       if         or         yield
@@ -6063,9 +6063,9 @@ trailing underscore characters:
    Note:
 
      The name "_" is often used in conjunction with
-     internationalization; refer to the documentation for the
-     "gettext" module for more information on this convention.It is
-     also commonly used for unused variables.
+     internationalization; refer to the documentation fuer the
+     "gettext" module fuer more information on this convention.It is
+     also commonly used fuer unused variables.
 
 "__*__"
    System-defined names, informally known as “dunder” names. These
@@ -6085,7 +6085,7 @@ trailing underscore characters:
     'if': r'''The "if" statement
 ******************
 
-The "if" statement is used for conditional execution:
+The "if" statement is used fuer conditional execution:
 
    if_stmt: "if" assignment_expression ":" suite
             ("elif" assignment_expression ":" suite)*
@@ -6093,7 +6093,7 @@ The "if" statement is used for conditional execution:
 
 It selects exactly one of the suites by evaluating the expressions one
 by one until one is found to be true (see section Boolean operations
-for the definition of true and false); then that suite is executed
+fuer the definition of true and false); then that suite is executed
 (and no other part of the "if" statement is executed or evaluated).
 If all expressions are false, the suite of the "else" clause, if
 present, is executed.
@@ -6130,11 +6130,11 @@ steps:
 
 1. find a module, loading and initializing it if necessary
 
-2. define a name or names in the local namespace for the scope where
+2. define a name or names in the local namespace fuer the scope where
    the "import" statement occurs.
 
 When the statement contains multiple clauses (separated by commas) the
-two steps are carried out separately for each clause, just as though
+two steps are carried out separately fuer each clause, just as though
 the clauses had been separated out into individual import statements.
 
 The details of the first step, finding and loading modules, are
@@ -6167,12 +6167,12 @@ The "from" form uses a slightly more complex process:
 1. find the module specified in the "from" clause, loading and
    initializing it if necessary;
 
-2. for each of the identifiers specified in the "import" clauses:
+2. fuer each of the identifiers specified in the "import" clauses:
 
    1. check if the imported module has an attribute by that name
 
    2. if not, attempt to import a submodule with that name and then
-      check the imported module again for that attribute
+      check the imported module again fuer that attribute
 
    3. if the attribute is not found, "ImportError" is raised.
 
@@ -6189,11 +6189,11 @@ Examples:
    from foo import attr       # foo imported and foo.attr bound as attr
 
 If the list of identifiers is replaced by a star ("'*'"), all public
-names defined in the module are bound in the local namespace for the
+names defined in the module are bound in the local namespace fuer the
 scope where the "import" statement occurs.
 
 The *public names* defined by a module are determined by checking the
-module’s namespace for a variable named "__all__"; if defined, it must
+module’s namespace fuer a variable named "__all__"; if defined, it must
 be a sequence of strings which are names defined or imported by that
 module.  The names given in "__all__" are all considered public and
 are required to exist.  If "__all__" is not defined, the set of public
@@ -6219,7 +6219,7 @@ one package level. Three dots is up two levels, etc. So if you execute
 "from . import mod" from a module in the "pkg" package then you will
 end up importing "pkg.mod". If you execute "from ..subpkg2 import mod"
 from within "pkg.subpkg1" you will import "pkg.subpkg2.mod". The
-specification for relative imports is contained in the Package
+specification fuer relative imports is contained in the Package
 Relative Imports section.
 
 "importlib.import_module()" is provided to support applications that
@@ -6266,7 +6266,7 @@ All historical features enabled by the future statement are still
 recognized by Python 3.  The list includes "absolute_import",
 "division", "generators", "generator_stop", "unicode_literals",
 "print_function", "nested_scopes" and "with_statement".  They are all
-redundant because they are always enabled, and only kept for backwards
+redundant because they are always enabled, and only kept fuer backwards
 compatibility.
 
 A future statement is recognized and treated specially at compile
@@ -6281,7 +6281,7 @@ For any given release, the compiler knows which feature names have
 been defined, and raises a compile-time error if a future statement
 contains a feature not known to it.
 
-The direct runtime semantics are the same as for any import statement:
+The direct runtime semantics are the same as fuer any import statement:
 there is a standard module "__future__", described later, and it will
 be imported in the usual way at the time the future statement is
 executed.
@@ -6300,10 +6300,10 @@ Code compiled by calls to the built-in functions "exec()" and
 "compile()" that occur in a module "M" containing a future statement
 will, by default, use the new syntax or semantics associated with the
 future statement.  This can be controlled by optional arguments to
-"compile()" — see the documentation of that function for details.
+"compile()" — see the documentation of that function fuer details.
 
 A future statement typed at an interactive interpreter prompt will
-take effect for the rest of the interpreter session.  If an
+take effect fuer the rest of the interpreter session.  If an
 interpreter is started with the "-i" option, is passed a script name
 to execute, and the script includes a future statement, it will be in
 effect in the interactive session started after the script is
@@ -6312,18 +6312,18 @@ executed.
 See also:
 
   **PEP 236** - Back to the __future__
-     The original proposal for the __future__ mechanism.
+     The original proposal fuer the __future__ mechanism.
 ''',
     'in': r'''Membership test operations
 **************************
 
-The operators "in" and "not in" test for membership.  "x in s"
+The operators "in" and "not in" test fuer membership.  "x in s"
 evaluates to "True" if *x* is a member of *s*, and "False" otherwise.
 "x not in s" returns the negation of "x in s".  All built-in sequences
-and set types support this as well as dictionary, for which "in" tests
+and set types support this as well as dictionary, fuer which "in" tests
 whether the dictionary has a given key. For container types such as
 list, tuple, set, frozenset, dict, or collections.deque, the
-expression "x in y" is equivalent to "any(x is e or x == e for e in
+expression "x in y" is equivalent to "any(x is e or x == e fuer e in
 y)".
 
 For the string and bytes types, "x in y" is "True" if and only if *x*
@@ -6336,7 +6336,7 @@ in y" returns "True" if "y.__contains__(x)" returns a true value, and
 "False" otherwise.
 
 For user-defined classes which do not define "__contains__()" but do
-define "__iter__()", "x in y" is "True" if some value "z", for which
+define "__iter__()", "x in y" is "True" if some value "z", fuer which
 the expression "x is z or x == z" is true, is produced while iterating
 over "y". If an exception is raised during the iteration, it is as if
 "in" raised that exception.
@@ -6366,16 +6366,16 @@ Integer literals are described by the following lexical definitions:
    octdigit:     "0"..."7"
    hexdigit:     digit | "a"..."f" | "A"..."F"
 
-There is no limit for the length of integer literals apart from what
+There is no limit fuer the length of integer literals apart from what
 can be stored in available memory.
 
-Underscores are ignored for determining the numeric value of the
-literal.  They can be used to group digits for enhanced readability.
+Underscores are ignored fuer determining the numeric value of the
+literal.  They can be used to group digits fuer enhanced readability.
 One underscore can occur between digits, and after base specifiers
 like "0x".
 
 Note that leading zeros in a non-zero decimal number are not allowed.
-This is for disambiguation with C-style octal literals, which Python
+This is fuer disambiguation with C-style octal literals, which Python
 used before version 3.0.
 
 Some examples of integer literals:
@@ -6384,7 +6384,7 @@ Some examples of integer literals:
    3     79228162514264337593543950336     0o377    0xdeadbeef
          100_000_000_000                   0b_1110_0101
 
-Changed in version 3.6: Underscores are now allowed for grouping
+Changed in version 3.6: Underscores are now allowed fuer grouping
 purposes in literals.
 ''',
     'lambda': r'''Lambdas
@@ -6400,7 +6400,7 @@ object defined with:
    def <lambda>(parameters):
        return expression
 
-See section Function definitions for the syntax of parameter lists.
+See section Function definitions fuer the syntax of parameter lists.
 Note that functions created with lambda expressions cannot contain
 statements or annotations.
 ''',
@@ -6482,7 +6482,7 @@ A *scope* defines the visibility of a name within a block.  If a local
 variable is defined in a block, its scope includes that block.  If the
 definition occurs in a function block, the scope extends to any blocks
 contained within the defining one, unless a contained block introduces
-a different binding for the name.
+a different binding fuer the name.
 
 When a name is used in a code block, it is resolved using the nearest
 enclosing scope.  The set of all such scopes visible to a code block
@@ -6500,8 +6500,8 @@ current block.  This can lead to errors when a name is used within a
 block before it is bound.  This rule is subtle.  Python lacks
 declarations and allows name binding operations to occur anywhere
 within a code block.  The local variables of a code block can be
-determined by scanning the entire text of the block for name binding
-operations. See the FAQ entry on UnboundLocalError for examples.
+determined by scanning the entire text of the block fuer name binding
+operations. See the FAQ entry on UnboundLocalError fuer examples.
 
 If the "global" statement occurs within a block, all uses of the names
 specified in the statement refer to the bindings of those names in the
@@ -6515,7 +6515,7 @@ variables are created in the global namespace. The global statement
 must precede all uses of the listed names.
 
 The "global" statement has the same scope as a name binding operation
-in the same block.  If the nearest enclosing scope for a free variable
+in the same block.  If the nearest enclosing scope fuer a free variable
 contains a global statement, the free variable is treated as a global.
 
 The "nonlocal" statement causes corresponding names to refer to
@@ -6524,14 +6524,14 @@ previously bound variables in the nearest enclosing function scope.
 exist in any enclosing function scope. Type parameters cannot be
 rebound with the "nonlocal" statement.
 
-The namespace for a module is automatically created the first time a
-module is imported.  The main module for a script is always called
+The namespace fuer a module is automatically created the first time a
+module is imported.  The main module fuer a script is always called
 "__main__".
 
 Class definition blocks and arguments to "exec()" and "eval()" are
 special in the context of name resolution. A klasse definition is an
 executable statement that may use and define names. These references
-follow the normal rules for name resolution with an exception that
+follow the normal rules fuer name resolution with an exception that
 unbound local variables are looked up in the global namespace. The
 namespace of the klasse definition becomes the attribute dictionary of
 the class. The scope of names defined in a klasse block is limited to
@@ -6542,7 +6542,7 @@ klasse scopes. This means that the following will fail:
 
    klasse A:
        a = 42
-       b = list(a + i for i in range(10))
+       b = list(a + i fuer i in range(10))
 
 However, the following will succeed:
 
@@ -6566,17 +6566,17 @@ Annotation scopes are used in the following contexts:
 
 * *Variable annotations*.
 
-* Type parameter lists for generic type aliases.
+* Type parameter lists fuer generic type aliases.
 
-* Type parameter lists for generic functions. A generic function’s
+* Type parameter lists fuer generic functions. A generic function’s
   annotations are executed within the annotation scope, but its
   defaults and decorators are not.
 
-* Type parameter lists for generic classes. A generic class’s base
+* Type parameter lists fuer generic classes. A generic class’s base
   classes and keyword arguments are executed within the annotation
   scope, but its decorators are not.
 
-* The bounds, constraints, and default values for type parameters
+* The bounds, constraints, and default values fuer type parameters
   (lazily evaluated).
 
 * The value of type aliases (lazily evaluated).
@@ -6608,7 +6608,7 @@ Annotation scopes differ from function scopes in the following ways:
 Added in version 3.12: Annotation scopes were introduced in Python
 3.12 as part of **PEP 695**.
 
-Changed in version 3.13: Annotation scopes are also used for type
+Changed in version 3.13: Annotation scopes are also used fuer type
 parameter defaults, as introduced by **PEP 696**.
 
 Changed in version 3.14: Annotation scopes are now also used for
@@ -6624,7 +6624,7 @@ statement, and the bounds, constraints, and default values of type
 variables created through the type parameter syntax. This means that
 they are not evaluated when the type alias or type variable is
 created, or when the object carrying annotations is created. Instead,
-they are only evaluated when necessary, for example when the
+they are only evaluated when necessary, fuer example when the
 "__value__" attribute on a type alias is accessed.
 
 Example:
@@ -6645,7 +6645,7 @@ Here the exception is raised only when the "__value__" attribute of
 the type alias or the "__bound__" attribute of the type variable is
 accessed.
 
-This behavior is primarily useful for references to types that have
+This behavior is primarily useful fuer references to types that have
 not yet been defined when the type alias or type variable is created.
 For example, lazy evaluation enables creation of mutually recursive
 type aliases:
@@ -6676,7 +6676,7 @@ is actually found by looking up the name "__builtins__" in its global
 namespace; this should be a dictionary or a module (in the latter case
 the module’s dictionary is used).  By default, when in the "__main__"
 module, "__builtins__" is the built-in module "builtins"; when in any
-other module, "__builtins__" is an alias for the dictionary of the
+other module, "__builtins__" is an alias fuer the dictionary of the
 "builtins" module itself.
 
 
@@ -6693,12 +6693,12 @@ time. This means that the following code will print 42:
    f()
 
 The "eval()" and "exec()" functions do not have access to the full
-environment for resolving names.  Names may be resolved in the local
+environment fuer resolving names.  Names may be resolved in the local
 and global namespaces of the caller.  Free variables are not resolved
 in the nearest enclosing namespace, but in the global namespace.  [1]
 The "exec()" and "eval()" functions have optional arguments to
 override the global and local namespace.  If only one namespace is
-specified, it is used for both.
+specified, it is used fuer both.
 ''',
     'nonlocal': r'''The "nonlocal" statement
 ************************
@@ -6721,10 +6721,10 @@ assigned to prior to its nonlocal declaration in the scope.
 See also:
 
   **PEP 3104** - Access to Names in Outer Scopes
-     The specification for the "nonlocal" statement.
+     The specification fuer the "nonlocal" statement.
 
 **Programmer’s note:** "nonlocal" is a directive to the parser and
-applies only to code parsed along with it.  See the note for the
+applies only to code parsed along with it.  See the note fuer the
 "global" statement.
 ''',
     'numbers': r'''Numeric literals
@@ -6815,7 +6815,7 @@ object.__ror__(self, other)
 
      If the right operand’s type is a subclass of the left operand’s
      type and that subclass provides a different implementation of the
-     reflected method for the operation, this method will be called
+     reflected method fuer the operation, this method will be called
      before the left operand’s non-reflected method. This behavior
      allows subclasses to override their ancestors’ operations.
 
@@ -6893,7 +6893,7 @@ object.__ceil__(self)
     'objects': r'''Objects, values and types
 *************************
 
-*Objects* are Python’s abstraction for data.  All data in a Python
+*Objects* are Python’s abstraction fuer data.  All data in a Python
 program is represented by objects or by relations between objects. (In
 a sense, and in conformance to Von Neumann’s model of a “stored
 program computer”, code is also represented by objects.)
@@ -6909,7 +6909,7 @@ address where "x" is stored.
 
 An object’s type determines the operations that the object supports
 (e.g., “does it have a length?”) and also defines the possible values
-for objects of that type.  The "type()" function returns an object’s
+fuer objects of that type.  The "type()" function returns an object’s
 type (which is an object itself).  Like its identity, an object’s
 *type* is also unchangeable. [1]
 
@@ -6921,7 +6921,7 @@ object can change when the latter’s value is changed; however the
 container is still considered immutable, because the collection of
 objects it contains cannot be changed.  So, immutability is not
 strictly the same as having an unchangeable value, it is more subtle.)
-An object’s mutability is determined by its type; for instance,
+An object’s mutability is determined by its type; fuer instance,
 numbers, strings and tuples are immutable, while dictionaries and
 lists are mutable.
 
@@ -6967,10 +6967,10 @@ container (like a tuple) contains a reference to a mutable object, its
 value changes if that mutable object is changed.
 
 Types affect almost all aspects of object behavior.  Even the
-importance of object identity is affected in some sense: for immutable
+importance of object identity is affected in some sense: fuer immutable
 types, operations that compute new values may actually return a
 reference to any existing object with the same type and value, while
-for mutable objects this is not allowed. For example, after "a = 1; b
+fuer mutable objects this is not allowed. For example, after "a = 1; b
 = 1", *a* and *b* may or may not refer to the same object with the
 value one, depending on the implementation. This is because "int" is
 an immutable type, so the reference to "1" can be reused. This
@@ -6988,7 +6988,7 @@ The following table summarizes the operator precedence in Python, from
 highest precedence (most binding) to lowest precedence (least
 binding).  Operators in the same box have the same precedence.  Unless
 the syntax is explicitly given, operators are binary.  Operators in
-the same box group left to right (except for exponentiation and
+the same box group left to right (except fuer exponentiation and
 conditional expressions, which group from right to left).
 
 Note that comparisons, membership tests, and identity tests, all have
@@ -7043,7 +7043,7 @@ described in the Comparisons section.
 
 -[ Footnotes ]-
 
-[1] While "abs(x%y) < abs(y)" is true mathematically, for floats it
+[1] While "abs(x%y) < abs(y)" is true mathematically, fuer floats it
     may not be true numerically due to roundoff.  For example, and
     assuming a platform on which a Python float is an IEEE 754 double-
     precision number, in order that "-1e-100 % 1e100" have the same
@@ -7054,7 +7054,7 @@ described in the Comparisons section.
     Which approach is more appropriate depends on the application.
 
 [2] If x is very close to an exact integer multiple of y, it’s
-    possible for "x//y" to be one larger than "(x-x%y)//y" due to
+    possible fuer "x//y" to be one larger than "(x-x%y)//y" due to
     rounding.  In such cases, Python returns the latter result, in
     order to preserve that "divmod(x,y)[0] * y + x % y" be very close
     to "x".
@@ -7084,12 +7084,12 @@ described in the Comparisons section.
     nature of descriptors, you may notice seemingly unusual behaviour
     in certain uses of the "is" operator, like those involving
     comparisons between instance methods, or constants.  Check their
-    documentation for more info.
+    documentation fuer more info.
 
 [5] The power operator "**" binds less tightly than an arithmetic or
     bitwise unary operator on its right, that is, "2**-1" is "0.5".
 
-[6] The "%" operator is also used for string formatting; the same
+[6] The "%" operator is also used fuer string formatting; the same
     precedence applies.
 ''',
     'pass': r'''The "pass" statement
@@ -7099,7 +7099,7 @@ described in the Comparisons section.
 
 "pass" is a null operation — when it is executed, nothing happens. It
 is useful as a placeholder when a statement is required syntactically,
-but no code needs to be executed, for example:
+but no code needs to be executed, fuer example:
 
    def f(arg): pass    # a function that does nothing (yet)
 
@@ -7116,7 +7116,7 @@ syntax is:
 
 Thus, in an unparenthesized sequence of power and unary operators, the
 operators are evaluated from right to left (this does not constrain
-the evaluation order for the operands): "-1**2" results in "-1".
+the evaluation order fuer the operands): "-1**2" results in "-1".
 
 The power operator has the same semantics as the built-in "pow()"
 function, when called with two arguments: it yields its left argument
@@ -7161,7 +7161,7 @@ instance, with its traceback set to its argument), like so:
 
    raise Exception("foo occurred").with_traceback(tracebackobj)
 
-The "from" clause is used for exception chaining: if given, the second
+The "from" clause is used fuer exception chaining: if given, the second
 *expression* must be another exception klasse or instance. If the
 second expression is an exception instance, it will be attached to the
 raised exception as the "__cause__" attribute (which is writable). If
@@ -7273,13 +7273,13 @@ None of them are provided by the "object" klasse itself. Containers
 usually are *sequences* (such as "lists" or "tuples") or *mappings*
 (like *dictionaries*), but can represent other containers as well.
 The first set of methods is used either to emulate a sequence or to
-emulate a mapping; the difference is that for a sequence, the
-allowable keys should be the integers *k* for which "0 <= k < N" where
+emulate a mapping; the difference is that fuer a sequence, the
+allowable keys should be the integers *k* fuer which "0 <= k < N" where
 *N* is the length of the sequence, or "slice" objects, which define a
 range of items.  It is also recommended that mappings provide the
 methods "keys()", "values()", "items()", "get()", "clear()",
 "setdefault()", "pop()", "popitem()", "copy()", and "update()"
-behaving similar to those for Python’s standard "dictionary" objects.
+behaving similar to those fuer Python’s standard "dictionary" objects.
 The "collections.abc" module provides a "MutableMapping" *abstract
 base class* to help create those methods from a base set of
 "__getitem__()", "__setitem__()", "__delitem__()", and "keys()".
@@ -7292,12 +7292,12 @@ multiplication (meaning repetition) by defining the methods
 "__imul__()" described below; they should not define other numerical
 operators.  It is recommended that both mappings and sequences
 implement the "__contains__()" method to allow efficient use of the
-"in" operator; for mappings, "in" should search the mapping’s keys;
-for sequences, it should search through the values.  It is further
+"in" operator; fuer mappings, "in" should search the mapping’s keys;
+fuer sequences, it should search through the values.  It is further
 recommended that both mappings and sequences implement the
 "__iter__()" method to allow efficient iteration through the
-container; for mappings, "__iter__()" should iterate through the
-object’s keys; for sequences, it should iterate through the values.
+container; fuer mappings, "__iter__()" should iterate through the
+object’s keys; fuer sequences, it should iterate through the values.
 
 object.__len__(self)
 
@@ -7315,7 +7315,7 @@ object.__len__(self)
 object.__length_hint__(self)
 
    Called to implement "operator.length_hint()". Should return an
-   estimated length for the object (which may be greater or less than
+   estimated length fuer the object (which may be greater or less than
    the actual length). The length must be an integer ">=" 0. The
    return value may also be "NotImplemented", which is treated the
    same as if the "__length_hint__" method didn’t exist at all. This
@@ -7343,7 +7343,7 @@ object.__getitem__(self, key)
    types, the accepted keys should be integers. Optionally, they may
    support "slice" objects as well.  Negative index support is also
    optional. If *key* is of an inappropriate type, "TypeError" may be
-   raised; if *key* is a value outside the set of indexes for the
+   raised; if *key* is a value outside the set of indexes fuer the
    sequence (after any special interpretation of negative values),
    "IndexError" should be raised. For *mapping* types, if *key* is
    missing (not in the container), "KeyError" should be raised.
@@ -7358,33 +7358,33 @@ object.__getitem__(self, key)
 
      When subscripting a *class*, the special klasse method
      "__class_getitem__()" may be called instead of "__getitem__()".
-     See __class_getitem__ versus __getitem__ for more details.
+     See __class_getitem__ versus __getitem__ fuer more details.
 
 object.__setitem__(self, key, value)
 
    Called to implement assignment to "self[key]".  Same note as for
-   "__getitem__()".  This should only be implemented for mappings if
-   the objects support changes to the values for keys, or if new keys
-   can be added, or for sequences if elements can be replaced.  The
-   same exceptions should be raised for improper *key* values as for
+   "__getitem__()".  This should only be implemented fuer mappings if
+   the objects support changes to the values fuer keys, or if new keys
+   can be added, or fuer sequences if elements can be replaced.  The
+   same exceptions should be raised fuer improper *key* values as for
    the "__getitem__()" method.
 
 object.__delitem__(self, key)
 
    Called to implement deletion of "self[key]".  Same note as for
-   "__getitem__()".  This should only be implemented for mappings if
-   the objects support removal of keys, or for sequences if elements
+   "__getitem__()".  This should only be implemented fuer mappings if
+   the objects support removal of keys, or fuer sequences if elements
    can be removed from the sequence.  The same exceptions should be
-   raised for improper *key* values as for the "__getitem__()" method.
+   raised fuer improper *key* values as fuer the "__getitem__()" method.
 
 object.__missing__(self, key)
 
-   Called by "dict"."__getitem__()" to implement "self[key]" for dict
+   Called by "dict"."__getitem__()" to implement "self[key]" fuer dict
    subclasses when key is not in the dictionary.
 
 object.__iter__(self)
 
-   This method is called when an *iterator* is required for a
+   This method is called when an *iterator* is required fuer a
    container. This method should return a new iterator object that can
    iterate over all the objects in the container.  For mappings, it
    should iterate over the keys of the container.
@@ -7444,7 +7444,7 @@ A left shift by *n* bits is defined as multiplication with "pow(2,n)".
 
 A slicing selects a range of items in a sequence object (e.g., a
 string, tuple or list).  Slicings may be used as expressions or as
-targets in assignment or "del" statements.  The syntax for a slicing:
+targets in assignment or "del" statements.  The syntax fuer a slicing:
 
    slicing:      primary "[" slice_list "]"
    slice_list:   slice_item ("," slice_item)* [","]
@@ -7462,7 +7462,7 @@ interpretation as a subscription takes priority over the
 interpretation as a slicing (this is the case if the slice list
 contains no proper slice).
 
-The semantics for a slicing are as follows.  The primary is indexed
+The semantics fuer a slicing are as follows.  The primary is indexed
 (using the same "__getitem__()" method as normal subscription) with a
 key that is constructed from the slice list, as follows.  If the slice
 list contains at least one comma, the key is a tuple containing the
@@ -7472,7 +7472,7 @@ expression is that expression.  The conversion of a proper slice is a
 slice object (see section The standard type hierarchy) whose "start",
 "stop" and "step" attributes are the values of the expressions given
 as lower bound, upper bound and stride, respectively, substituting
-"None" for missing expressions.
+"None" fuer missing expressions.
 ''',
     'specialattrs': r'''Special Attributes
 ******************
@@ -7532,7 +7532,7 @@ instances will raise a "TypeError" (without falling back to
 
 When implementing a klasse that emulates any built-in type, it is
 important that the emulation only be implemented to the degree that it
-makes sense for the object being modelled.  For example, some
+makes sense fuer the object being modelled.  For example, some
 sequences may work well with retrieval of individual elements, but
 extracting a slice may not make sense.  (One example of this is the
 "NodeList" interface in the W3C’s Document Object Model.)
@@ -7578,7 +7578,7 @@ object.__init__(self[, ...])
    passed to the klasse constructor expression.  If a base klasse has an
    "__init__()" method, the derived class’s "__init__()" method, if
    any, must explicitly call it to ensure proper initialization of the
-   base klasse part of the instance; for example:
+   base klasse part of the instance; fuer example:
    "super().__init__([args...])".
 
    Because "__new__()" and "__init__()" work together in constructing
@@ -7594,7 +7594,7 @@ object.__del__(self)
    if any, must explicitly call it to ensure proper deletion of the
    base klasse part of the instance.
 
-   It is possible (though not recommended!) for the "__del__()" method
+   It is possible (though not recommended!) fuer the "__del__()" method
    to postpone destruction of the instance by creating a new reference
    to it.  This is called object *resurrection*.  It is
    implementation-dependent whether "__del__()" is called a second
@@ -7609,10 +7609,10 @@ object.__del__(self)
    Note:
 
      "del x" doesn’t directly call "x.__del__()" — the former
-     decrements the reference count for "x" by one, and the latter is
+     decrements the reference count fuer "x" by one, and the latter is
      only called when "x"’s reference count reaches zero.
 
-   **CPython implementation detail:** It is possible for a reference
+   **CPython implementation detail:** It is possible fuer a reference
    cycle to prevent the reference count of an object from going to
    zero.  In this case, the cycle will be later detected and deleted
    by the *cyclic garbage collector*.  A common cause of reference
@@ -7621,7 +7621,7 @@ object.__del__(self)
    its own traceback, which references the locals of all frames caught
    in the traceback.
 
-   See also: Documentation for the "gc" module.
+   See also: Documentation fuer the "gc" module.
 
    Warning:
 
@@ -7657,7 +7657,7 @@ object.__repr__(self)
    not "__str__()", then "__repr__()" is also used when an “informal”
    string representation of instances of that klasse is required.
 
-   This is typically used for debugging, so it is important that the
+   This is typically used fuer debugging, so it is important that the
    representation is information-rich and unambiguous. A default
    implementation is provided by the "object" klasse itself.
 
@@ -7693,7 +7693,7 @@ object.__format__(self, format_spec)
    formatting to one of the built-in types, or use a similar
    formatting option syntax.
 
-   See Format Specification Mini-Language for a description of the
+   See Format Specification Mini-Language fuer a description of the
    standard formatting syntax.
 
    The return value must be a string object.
@@ -7721,8 +7721,8 @@ object.__ge__(self, other)
    "x.__gt__(y)", and "x>=y" calls "x.__ge__(y)".
 
    A rich comparison method may return the singleton "NotImplemented"
-   if it does not implement the operation for a given pair of
-   arguments. By convention, "False" and "True" are returned for a
+   if it does not implement the operation fuer a given pair of
+   arguments. By convention, "False" and "True" are returned fuer a
    successful comparison. However, these methods can return any value,
    so if the comparison operator is used in a Boolean context (e.g.,
    in the condition of an "if" statement), Python will call "bool()"
@@ -7733,7 +7733,7 @@ object.__ge__(self, other)
    else NotImplemented". For "__ne__()", by default it delegates to
    "__eq__()" and inverts the result unless it is "NotImplemented".
    There are no other implied relationships among the comparison
-   operators or default implementations; for example, the truth of
+   operators or default implementations; fuer example, the truth of
    "(x<y or x==y)" does not imply "x<=y". To automatically generate
    ordering operations from a single root operation, see
    "functools.total_ordering()".
@@ -7744,7 +7744,7 @@ object.__ge__(self, other)
    method may generate these results directly, but may also return
    "NotImplemented".
 
-   See the paragraph on "__hash__()" for some important notes on
+   See the paragraph on "__hash__()" fuer some important notes on
    creating *hashable* objects which support custom comparison
    operations and are usable as dictionary keys.
 
@@ -7765,7 +7765,7 @@ object.__ge__(self, other)
 
 object.__hash__(self)
 
-   Called by built-in function "hash()" and for operations on members
+   Called by built-in function "hash()" and fuer operations on members
    of hashed collections including "set", "frozenset", and "dict".
    The "__hash__()" method should return an integer. The only required
    property is that objects which compare equal have the same hash
@@ -7860,7 +7860,7 @@ object.__getattr__(self, name)
    Called when the default attribute access fails with an
    "AttributeError" (either "__getattribute__()" raises an
    "AttributeError" because *name* is not an instance attribute or an
-   attribute in the klasse tree for "self"; or "__get__()" of a *name*
+   attribute in the klasse tree fuer "self"; or "__get__()" of a *name*
    property raises "AttributeError").  This method should either
    return the (computed) attribute value or raise an "AttributeError"
    exception. The "object" klasse itself does not provide this method.
@@ -7870,10 +7870,10 @@ object.__getattr__(self, name)
    between "__getattr__()" and "__setattr__()".) This is done both for
    efficiency reasons and because otherwise "__getattr__()" would have
    no way to access other attributes of the instance.  Note that at
-   least for instance variables, you can take total control by not
+   least fuer instance variables, you can take total control by not
    inserting any values in the instance attribute dictionary (but
    instead inserting them in another object).  See the
-   "__getattribute__()" method below for a way to actually get total
+   "__getattribute__()" method below fuer a way to actually get total
    control over attribute access.
 
 object.__getattribute__(self, name)
@@ -7905,7 +7905,7 @@ object.__setattr__(self, name, value)
    value to be assigned to it.
 
    If "__setattr__()" wants to assign to an instance attribute, it
-   should call the base klasse method with the same name, for example,
+   should call the base klasse method with the same name, fuer example,
    "object.__setattr__(self, name, value)".
 
    For certain sensitive attribute assignments, raises an auditing
@@ -7913,9 +7913,9 @@ object.__setattr__(self, name, value)
 
 object.__delattr__(self, name)
 
-   Like "__setattr__()" but for attribute deletion instead of
+   Like "__setattr__()" but fuer attribute deletion instead of
    assignment.  This should only be implemented if "del obj.name" is
-   meaningful for the object.
+   meaningful fuer the object.
 
    For certain sensitive attribute deletions, raises an auditing event
    "object.__delattr__" with arguments "obj" and "name".
@@ -7985,7 +7985,7 @@ Implementing Descriptors
 The following methods only apply when an instance of the class
 containing the method (a so-called *descriptor* class) appears in an
 *owner* klasse (the descriptor must be in either the owner’s class
-dictionary or in the klasse dictionary for one of its parents).  In the
+dictionary or in the klasse dictionary fuer one of its parents).  In the
 examples below, “the attribute” refers to the attribute whose name is
 the key of the property in the owner class’ "__dict__".  The "object"
 klasse itself does not implement any of these protocols.
@@ -8042,10 +8042,10 @@ Invoking Descriptors
 In general, a descriptor is an object attribute with “binding
 behavior”, one whose attribute access has been overridden by methods
 in the descriptor protocol:  "__get__()", "__set__()", and
-"__delete__()". If any of those methods are defined for an object, it
+"__delete__()". If any of those methods are defined fuer an object, it
 is said to be a descriptor.
 
-The default behavior for attribute access is to get, set, or delete
+The default behavior fuer attribute access is to get, set, or delete
 the attribute from an object’s dictionary. For instance, "a.x" has a
 lookup chain starting with "a.__dict__['x']", then
 "type(a).__dict__['x']", and continuing through the base classes of
@@ -8057,7 +8057,7 @@ invoke the descriptor method instead.  Where this occurs in the
 precedence chain depends on which descriptor methods were defined and
 how they were called.
 
-The starting point for descriptor invocation is a binding, "a.x". How
+The starting point fuer descriptor invocation is a binding, "a.x". How
 the arguments are assembled depends on "a":
 
 Direct Call
@@ -8074,7 +8074,7 @@ Class Binding
 
 Super Binding
    A dotted lookup such as "super(A, a).x" searches
-   "a.__class__.__mro__" for a base klasse "B" following "A" and then
+   "a.__class__.__mro__" fuer a base klasse "B" following "A" and then
    returns "B.__dict__['x'].__get__(a, A)".  If not a descriptor, "x"
    is returned unchanged.
 
@@ -8116,8 +8116,8 @@ object.__slots__
 
    This klasse variable can be assigned a string, iterable, or sequence
    of strings with variable names used by instances.  *__slots__*
-   reserves space for the declared variables and prevents the
-   automatic creation of "__dict__" and *__weakref__* for each
+   reserves space fuer the declared variables and prevents the
+   automatic creation of "__dict__" and *__weakref__* fuer each
    instance.
 
 Notes on using *__slots__*:
@@ -8132,14 +8132,14 @@ Notes on using *__slots__*:
   "'__dict__'" to the sequence of strings in the *__slots__*
   declaration.
 
-* Without a *__weakref__* variable for each instance, classes defining
+* Without a *__weakref__* variable fuer each instance, classes defining
   *__slots__* do not support "weak references" to its instances. If
   weak reference support is needed, then add "'__weakref__'" to the
   sequence of strings in the *__slots__* declaration.
 
 * *__slots__* are implemented at the klasse level by creating
-  descriptors for each variable name.  As a result, klasse attributes
-  cannot be used to set default values for instance variables defined
+  descriptors fuer each variable name.  As a result, klasse attributes
+  cannot be used to set default values fuer instance variables defined
   by *__slots__*; otherwise, the klasse attribute would overwrite the
   descriptor assignment.
 
@@ -8156,7 +8156,7 @@ Notes on using *__slots__*:
   renders the meaning of the program undefined.  In the future, a
   check may be added to prevent this.
 
-* "TypeError" will be raised if nonempty *__slots__* are defined for a
+* "TypeError" will be raised if nonempty *__slots__* are defined fuer a
   klasse derived from a ""variable-length" built-in type" such as
   "int", "bytes", and "tuple".
 
@@ -8175,8 +8175,8 @@ Notes on using *__slots__*:
   slots (the other bases must have empty slot layouts) - violations
   raise "TypeError".
 
-* If an *iterator* is used for *__slots__* then a *descriptor* is
-  created for each of the iterator’s values. However, the *__slots__*
+* If an *iterator* is used fuer *__slots__* then a *descriptor* is
+  created fuer each of the iterator’s values. However, the *__slots__*
   attribute will be an empty iterator.
 
 
@@ -8244,7 +8244,7 @@ object.__set_name__(self, owner, name)
       A.x = c                  # The hook is not called
       c.__set_name__(A, 'x')   # Manually invoke the hook
 
-   See Creating the klasse object for more details.
+   See Creating the klasse object fuer more details.
 
    Added in version 3.6.
 
@@ -8311,13 +8311,13 @@ See also:
      "__mro_entries__()".
 
   **PEP 560**
-     Core support for typing module and generic types.
+     Core support fuer typing module and generic types.
 
 
 Determining the appropriate metaclass
 -------------------------------------
 
-The appropriate metaclass for a klasse definition is determined as
+The appropriate metaclass fuer a klasse definition is determined as
 follows:
 
 * if no bases and no explicit metaclass are given, then "type()" is
@@ -8394,7 +8394,7 @@ method.
 **CPython implementation detail:** In CPython 3.6 and later, the
 "__class__" cell is passed to the metaclass as a "__classcell__" entry
 in the klasse namespace. If present, this must be propagated up to the
-"type.__new__" call in order for the klasse to be initialised
+"type.__new__" call in order fuer the klasse to be initialised
 correctly. Failing to do so will result in a "RuntimeError" in Python
 3.8.
 
@@ -8426,10 +8426,10 @@ See also:
      Describes the implicit "__class__" closure reference
 
 
-Uses for metaclasses
+Uses fuer metaclasses
 --------------------
 
-The potential uses for metaclasses are boundless. Some ideas that have
+The potential uses fuer metaclasses are boundless. Some ideas that have
 been explored include enum, logging, interface checking, automatic
 delegation, automatic property creation, proxies, frameworks, and
 automatic resource locking/synchronization.
@@ -8466,9 +8466,9 @@ on instances, only in this case the instance is itself a class.
 See also:
 
   **PEP 3119** - Introducing Abstract Base Classes
-     Includes the specification for customizing "isinstance()" and
+     Includes the specification fuer customizing "isinstance()" and
      "issubclass()" behavior through "__instancecheck__()" and
-     "__subclasscheck__()", with motivation for this functionality in
+     "__subclasscheck__()", with motivation fuer this functionality in
      the context of adding Abstract Base Classes (see the "abc"
      module) to the language.
 
@@ -8484,10 +8484,10 @@ all the elements are of type "int".
 See also:
 
   **PEP 484** - Type Hints
-     Introducing Python’s framework for type annotations
+     Introducing Python’s framework fuer type annotations
 
   Generic Alias Types
-     Documentation for objects representing parameterized generic
+     Documentation fuer objects representing parameterized generic
      classes
 
   Generics, user-defined generics and "typing.Generic"
@@ -8503,7 +8503,7 @@ klassemethod object.__class_getitem__(cls, key)
    by type arguments found in *key*.
 
    When defined on a class, "__class_getitem__()" is automatically a
-   klasse method. As such, there is no need for it to be decorated with
+   klasse method. As such, there is no need fuer it to be decorated with
    "@classmethod" when it is defined.
 
 
@@ -8523,7 +8523,7 @@ own implementation of "__class_getitem__()".
 Custom implementations of "__class_getitem__()" on classes defined
 outside of the standard library may not be understood by third-party
 type-checkers such as mypy. Using "__class_getitem__()" on any class
-for purposes other than type hinting is discouraged.
+fuer purposes other than type hinting is discouraged.
 
 
 *__class_getitem__* versus *__getitem__*
@@ -8605,7 +8605,7 @@ behaviour. An example of this can be found in the "enum" module:
 
 See also:
 
-  **PEP 560** - Core Support for typing module and generic types
+  **PEP 560** - Core Support fuer typing module and generic types
      Introducing "__class_getitem__()", and outlining when a
      subscription results in "__class_getitem__()" being called
      instead of "__getitem__()"
@@ -8630,13 +8630,13 @@ None of them are provided by the "object" klasse itself. Containers
 usually are *sequences* (such as "lists" or "tuples") or *mappings*
 (like *dictionaries*), but can represent other containers as well.
 The first set of methods is used either to emulate a sequence or to
-emulate a mapping; the difference is that for a sequence, the
-allowable keys should be the integers *k* for which "0 <= k < N" where
+emulate a mapping; the difference is that fuer a sequence, the
+allowable keys should be the integers *k* fuer which "0 <= k < N" where
 *N* is the length of the sequence, or "slice" objects, which define a
 range of items.  It is also recommended that mappings provide the
 methods "keys()", "values()", "items()", "get()", "clear()",
 "setdefault()", "pop()", "popitem()", "copy()", and "update()"
-behaving similar to those for Python’s standard "dictionary" objects.
+behaving similar to those fuer Python’s standard "dictionary" objects.
 The "collections.abc" module provides a "MutableMapping" *abstract
 base class* to help create those methods from a base set of
 "__getitem__()", "__setitem__()", "__delitem__()", and "keys()".
@@ -8649,12 +8649,12 @@ multiplication (meaning repetition) by defining the methods
 "__imul__()" described below; they should not define other numerical
 operators.  It is recommended that both mappings and sequences
 implement the "__contains__()" method to allow efficient use of the
-"in" operator; for mappings, "in" should search the mapping’s keys;
-for sequences, it should search through the values.  It is further
+"in" operator; fuer mappings, "in" should search the mapping’s keys;
+fuer sequences, it should search through the values.  It is further
 recommended that both mappings and sequences implement the
 "__iter__()" method to allow efficient iteration through the
-container; for mappings, "__iter__()" should iterate through the
-object’s keys; for sequences, it should iterate through the values.
+container; fuer mappings, "__iter__()" should iterate through the
+object’s keys; fuer sequences, it should iterate through the values.
 
 object.__len__(self)
 
@@ -8672,7 +8672,7 @@ object.__len__(self)
 object.__length_hint__(self)
 
    Called to implement "operator.length_hint()". Should return an
-   estimated length for the object (which may be greater or less than
+   estimated length fuer the object (which may be greater or less than
    the actual length). The length must be an integer ">=" 0. The
    return value may also be "NotImplemented", which is treated the
    same as if the "__length_hint__" method didn’t exist at all. This
@@ -8700,7 +8700,7 @@ object.__getitem__(self, key)
    types, the accepted keys should be integers. Optionally, they may
    support "slice" objects as well.  Negative index support is also
    optional. If *key* is of an inappropriate type, "TypeError" may be
-   raised; if *key* is a value outside the set of indexes for the
+   raised; if *key* is a value outside the set of indexes fuer the
    sequence (after any special interpretation of negative values),
    "IndexError" should be raised. For *mapping* types, if *key* is
    missing (not in the container), "KeyError" should be raised.
@@ -8715,33 +8715,33 @@ object.__getitem__(self, key)
 
      When subscripting a *class*, the special klasse method
      "__class_getitem__()" may be called instead of "__getitem__()".
-     See __class_getitem__ versus __getitem__ for more details.
+     See __class_getitem__ versus __getitem__ fuer more details.
 
 object.__setitem__(self, key, value)
 
    Called to implement assignment to "self[key]".  Same note as for
-   "__getitem__()".  This should only be implemented for mappings if
-   the objects support changes to the values for keys, or if new keys
-   can be added, or for sequences if elements can be replaced.  The
-   same exceptions should be raised for improper *key* values as for
+   "__getitem__()".  This should only be implemented fuer mappings if
+   the objects support changes to the values fuer keys, or if new keys
+   can be added, or fuer sequences if elements can be replaced.  The
+   same exceptions should be raised fuer improper *key* values as for
    the "__getitem__()" method.
 
 object.__delitem__(self, key)
 
    Called to implement deletion of "self[key]".  Same note as for
-   "__getitem__()".  This should only be implemented for mappings if
-   the objects support removal of keys, or for sequences if elements
+   "__getitem__()".  This should only be implemented fuer mappings if
+   the objects support removal of keys, or fuer sequences if elements
    can be removed from the sequence.  The same exceptions should be
-   raised for improper *key* values as for the "__getitem__()" method.
+   raised fuer improper *key* values as fuer the "__getitem__()" method.
 
 object.__missing__(self, key)
 
-   Called by "dict"."__getitem__()" to implement "self[key]" for dict
+   Called by "dict"."__getitem__()" to implement "self[key]" fuer dict
    subclasses when key is not in the dictionary.
 
 object.__iter__(self)
 
-   This method is called when an *iterator* is required for a
+   This method is called when an *iterator* is required fuer a
    container. This method should return a new iterator object that can
    iterate over all the objects in the container.  For mappings, it
    should iterate over the keys of the container.
@@ -8853,7 +8853,7 @@ object.__ror__(self, other)
 
      If the right operand’s type is a subclass of the left operand’s
      type and that subclass provides a different implementation of the
-     reflected method for the operation, this method will be called
+     reflected method fuer the operation, this method will be called
      before the left operand’s non-reflected method. This behavior
      allows subclasses to override their ancestors’ operations.
 
@@ -8935,7 +8935,7 @@ With Statement Context Managers
 A *context manager* is an object that defines the runtime context to
 be established when executing a "with" statement. The context manager
 handles the entry into, and the exit from, the desired runtime context
-for the execution of the block of code.  Context managers are normally
+fuer the execution of the block of code.  Context managers are normally
 invoked using the "with" statement (described in section The with
 statement), but can also be used by directly invoking their methods.
 
@@ -8971,7 +8971,7 @@ object.__exit__(self, exc_type, exc_value, traceback)
 See also:
 
   **PEP 343** - The “with” statement
-     The specification, background, and examples for the Python "with"
+     The specification, background, and examples fuer the Python "with"
      statement.
 
 
@@ -9004,13 +9004,13 @@ Added in version 3.10.
 See also:
 
   **PEP 634** - Structural Pattern Matching
-     The specification for the Python "match" statement.
+     The specification fuer the Python "match" statement.
 
 
 Emulating buffer types
 ======================
 
-The buffer protocol provides a way for Python objects to expose
+The buffer protocol provides a way fuer Python objects to expose
 efficient access to a low-level memory array. This protocol is
 implemented by builtin types such as "bytes" and "memoryview", and
 third-party libraries may define additional buffer types.
@@ -9022,7 +9022,7 @@ object.__buffer__(self, flags)
 
    Called when a buffer is requested from *self* (for example, by the
    "memoryview" constructor). The *flags* argument is an integer
-   representing the kind of buffer requested, affecting for example
+   representing the kind of buffer requested, affecting fuer example
    whether the returned buffer is read-only or writable.
    "inspect.BufferFlags" provides a convenient way to interpret the
    flags. The method must return a "memoryview" object.
@@ -9045,7 +9045,7 @@ See also:
      methods.
 
   "collections.abc.Buffer"
-     ABC for buffer types.
+     ABC fuer buffer types.
 
 
 Annotations
@@ -9056,7 +9056,7 @@ way to associate information (usually *type hints*) with a symbol.
 
 object.__annotations__
 
-   This attribute contains the annotations for an object. It is lazily
+   This attribute contains the annotations fuer an object. It is lazily
    evaluated, so accessing the attribute may execute arbitrary code
    and raise exceptions. If evaluation is successful, the attribute is
    set to a dictionary mapping from variable names to annotations.
@@ -9162,7 +9162,7 @@ the "__getattribute__()" method even of the object’s metaclass:
    10
 
 Bypassing the "__getattribute__()" machinery in this fashion provides
-significant scope for speed optimisations within the interpreter, at
+significant scope fuer speed optimisations within the interpreter, at
 the cost of some flexibility in the handling of special methods (the
 special method *must* be set on the klasse object itself in order to be
 consistently invoked by the interpreter).
@@ -9177,7 +9177,7 @@ Strings also support two styles of string formatting, one providing a
 large degree of flexibility and customization (see "str.format()",
 Format String Syntax and Custom String Formatting) and the other based
 on C "printf" style formatting that handles a narrower range of types
-and is slightly harder to use correctly, but is often faster for the
+and is slightly harder to use correctly, but is often faster fuer the
 cases it can handle (printf-style String Formatting).
 
 The Text Processing Services section of the standard library covers a
@@ -9197,7 +9197,7 @@ str.capitalize()
 str.casefold()
 
    Return a casefolded copy of the string. Casefolded strings may be
-   used for caseless matching.
+   used fuer caseless matching.
 
    Casefolding is similar to lowercasing but more aggressive because
    it is intended to remove all case distinctions in a string. For
@@ -9237,13 +9237,13 @@ str.encode(encoding='utf-8', errors='strict')
    (the default), a "UnicodeError" exception is raised. Other possible
    values are "'ignore'", "'replace'", "'xmlcharrefreplace'",
    "'backslashreplace'" and any other name registered via
-   "codecs.register_error()". See Error Handlers for details.
+   "codecs.register_error()". See Error Handlers fuer details.
 
    For performance reasons, the value of *errors* is not checked for
    validity unless an encoding error actually occurs, Python
    Development Mode is enabled or a debug build is used.
 
-   Changed in version 3.1: Added support for keyword arguments.
+   Changed in version 3.1: Added support fuer keyword arguments.
 
    Changed in version 3.9: The value of the *errors* argument is now
    checked in Python Development Mode and in debug mode.
@@ -9305,7 +9305,7 @@ str.format(*args, **kwargs)
    >>> "The sum of 1 + 2 is {0}".format(1+2)
    'The sum of 1 + 2 is 3'
 
-   See Format String Syntax for a description of the various
+   See Format String Syntax fuer a description of the various
    formatting options that can be specified in format strings.
 
    Note:
@@ -9326,7 +9326,7 @@ str.format(*args, **kwargs)
 str.format_map(mapping, /)
 
    Similar to "str.format(**mapping)", except that "mapping" is used
-   directly and not copied to a "dict".  This is useful if for example
+   directly and not copied to a "dict".  This is useful if fuer example
    "mapping" is a dict subclass:
 
    >>> klasse Default(dict):
@@ -9424,7 +9424,7 @@ str.isprintable()
    Return true if all characters in the string are printable, false if
    it contains at least one non-printable character.
 
-   Here “printable” means the character is suitable for "repr()" to
+   Here “printable” means the character is suitable fuer "repr()" to
    use in its output; “non-printable” means that "repr()" on built-in
    types will hex-escape the character.  It has no bearing on the
    handling of strings written to "sys.stdout" or "sys.stderr".
@@ -9448,7 +9448,7 @@ str.isspace()
 str.istitle()
 
    Return "True" if the string is a titlecased string and there is at
-   least one character, for example uppercase characters may only
+   least one character, fuer example uppercase characters may only
    follow uncased characters and lowercase characters only cased ones.
    Return "False" otherwise.
 
@@ -9502,7 +9502,7 @@ str.lstrip([chars])
       >>> 'www.example.com'.lstrip('cmowz.')
       'example.com'
 
-   See "str.removeprefix()" for a method that will remove a single
+   See "str.removeprefix()" fuer a method that will remove a single
    prefix string rather than all of a set of characters.  For example:
 
       >>> 'Arthur: three!'.lstrip('Arthur: ')
@@ -9602,7 +9602,7 @@ str.rsplit(sep=None, maxsplit=-1)
    Return a list of the words in the string, using *sep* as the
    delimiter string. If *maxsplit* is given, at most *maxsplit* splits
    are done, the *rightmost* ones.  If *sep* is not specified or
-   "None", any whitespace string is a separator.  Except for splitting
+   "None", any whitespace string is a separator.  Except fuer splitting
    from the right, "rsplit()" behaves like "split()" which is
    described in detail below.
 
@@ -9619,7 +9619,7 @@ str.rstrip([chars])
       >>> 'mississippi'.rstrip('ipz')
       'mississ'
 
-   See "str.removesuffix()" for a method that will remove a single
+   See "str.removesuffix()" fuer a method that will remove a single
    suffix string rather than all of a set of characters.  For example:
 
       >>> 'Monty Python'.rstrip(' Python')
@@ -9715,7 +9715,7 @@ str.splitlines(keepends=False)
       ['ab c\n', '\n', 'de fg\r', 'kl\r\n']
 
    Unlike "split()" when a delimiter string *sep* is given, this
-   method returns an empty list for the empty string, and a terminal
+   method returns an empty list fuer the empty string, and a terminal
    line break does not result in an extra line:
 
       >>> "".splitlines()
@@ -9789,7 +9789,7 @@ str.title()
    The "string.capwords()" function does not have this problem, as it
    splits words on spaces only.
 
-   Alternatively, a workaround for apostrophes can be constructed
+   Alternatively, a workaround fuer apostrophes can be constructed
    using regular expressions:
 
       >>> import re
@@ -9815,7 +9815,7 @@ str.translate(table)
    You can use "str.maketrans()" to create a translation map from
    character-to-character mappings in different formats.
 
-   See also the "codecs" module for a more flexible approach to custom
+   See also the "codecs" module fuer a more flexible approach to custom
    character mappings.
 
 str.upper()
@@ -9884,7 +9884,7 @@ character is used to give special meaning to otherwise ordinary
 characters like "n", which means ‘newline’ when escaped ("\\n"). It can
 also be used to escape characters that otherwise have a special
 meaning, such as newline, backslash itself, or the quote character.
-See escape sequences below for examples.
+See escape sequences below fuer examples.
 
 Bytes literals are always prefixed with "'b'" or "'B'"; they produce
 an instance of the "bytes" type instead of the "str" type.  They may
@@ -9898,9 +9898,9 @@ as literal characters.  As a result, in raw string literals, "'\\U'"
 and "'\\u'" escapes are not treated specially.
 
 Added in version 3.3: The "'rb'" prefix of raw bytes literals has been
-added as a synonym of "'br'".Support for the unicode legacy literal
+added as a synonym of "'br'".Support fuer the unicode legacy literal
 ("u'value'") was reintroduced to simplify the maintenance of dual
-Python 2.x and 3.x codebases. See **PEP 414** for more information.
+Python 2.x and 3.x codebases. See **PEP 414** fuer more information.
 
 A string literal with "'f'" or "'F'" in its prefix is a *formatted
 string literal*; see f-strings.  The "'f'" may be combined with "'r'",
@@ -9992,7 +9992,7 @@ Notes:
    with the given value. In a string literal, these escapes denote a
    Unicode character with the given value.
 
-5. Changed in version 3.3: Support for name aliases [1] has been
+5. Changed in version 3.3: Support fuer name aliases [1] has been
    added.
 
 6. Exactly four hex digits are required.
@@ -10005,7 +10005,7 @@ string unchanged, i.e., *the backslash is left in the result*.  (This
 behavior is useful when debugging: if an escape sequence is mistyped,
 the resulting output is more easily recognized as broken.)  It is also
 important to note that the escape sequences only recognized in string
-literals fall into the category of unrecognized escapes for bytes
+literals fall into the category of unrecognized escapes fuer bytes
 literals.
 
 Changed in version 3.6: Unrecognized escape sequences produce a
@@ -10016,7 +10016,7 @@ Changed in version 3.12: Unrecognized escape sequences produce a
 "SyntaxError".
 
 Even in a raw literal, quotes can be escaped with a backslash, but the
-backslash remains in the result; for example, "r"\\""" is a valid
+backslash remains in the result; fuer example, "r"\\""" is a valid
 string literal consisting of two characters: a backslash and a double
 quote; "r"\\"" is not a valid string literal (even a raw string cannot
 end in an odd number of backslashes).  Specifically, *a raw literal
@@ -10067,14 +10067,14 @@ subscription via "__getitem__()":
    section). Examples of builtin sequence classes include the "str",
    "list" and "tuple" classes.
 
-The formal syntax makes no special provision for negative indices in
+The formal syntax makes no special provision fuer negative indices in
 *sequences*. However, built-in sequences all provide a "__getitem__()"
 method that interprets negative indices by adding the length of the
-sequence to the index so that, for example, "x[-1]" selects the last
+sequence to the index so that, fuer example, "x[-1]" selects the last
 item of "x". The resulting value must be a nonnegative integer less
 than the number of items in the sequence, and the subscription selects
 the item whose index is that value (counting from zero). Since the
-support for negative indices and slicing occurs in the object’s
+support fuer negative indices and slicing occurs in the object’s
 "__getitem__()" method, subclasses overriding this method will need to
 explicitly add that support.
 
@@ -10085,7 +10085,7 @@ character.
     'truth': r'''Truth Value Testing
 *******************
 
-Any object can be tested for truth value, for use in an "if" or
+Any object can be tested fuer truth value, fuer use in an "if" or
 "while" condition or as operand of the Boolean operations below.
 
 By default, an object is considered true unless its klasse defines
@@ -10102,7 +10102,7 @@ most of the built-in objects considered false:
   "range(0)"
 
 Operations and built-in functions that have a Boolean result always
-return "0" or "False" for false and "1" or "True" for true, unless
+return "0" or "False" fuer false and "1" or "True" fuer true, unless
 otherwise stated. (Important exception: the Boolean operations "or"
 and "and" always return one of their operands.)
 ''',
@@ -10110,7 +10110,7 @@ and "and" always return one of their operands.)
 *******************
 
 The "try" statement specifies exception handlers and/or cleanup code
-for a group of statements:
+fuer a group of statements:
 
    try_stmt:  try1_stmt | try2_stmt | try3_stmt
    try1_stmt: "try" ":" suite
@@ -10128,7 +10128,7 @@ Additional information on exceptions can be found in section
 Exceptions, and information on using the "raise" statement to generate
 exceptions may be found in section The raise statement.
 
-Changed in version 3.14: Support for optionally dropping grouping
+Changed in version 3.14: Support fuer optionally dropping grouping
 parentheses when using multiple exception types. See **PEP 758**.
 
 
@@ -10137,7 +10137,7 @@ parentheses when using multiple exception types. See **PEP 758**.
 
 The "except" clause(s) specify one or more exception handlers. When no
 exception occurs in the "try" clause, no exception handler is
-executed. When an exception occurs in the "try" suite, a search for an
+executed. When an exception occurs in the "try" suite, a search fuer an
 exception handler is started. This search inspects the "except"
 clauses in turn until one is found that matches the exception. An
 expression-less "except" clause, if present, must be last; it matches
@@ -10151,13 +10151,13 @@ and the "as" clause is not used. The raised exception matches an
 virtual base class* of the exception object, or to a tuple that
 contains such a class.
 
-If no "except" clause matches the exception, the search for an
+If no "except" clause matches the exception, the search fuer an
 exception handler continues in the surrounding code and on the
 invocation stack.  [1]
 
 If the evaluation of an expression in the header of an "except" clause
-raises an exception, the original search for a handler is canceled and
-a search starts for the new exception in the surrounding code and on
+raises an exception, the original search fuer a handler is canceled and
+a search starts fuer the new exception in the surrounding code and on
 the call stack (it is treated as if the entire "try" statement raised
 the exception).
 
@@ -10166,7 +10166,7 @@ the target specified after the "as" keyword in that "except" clause,
 if present, and the "except" clause’s suite is executed. All "except"
 clauses must have an executable block. When the end of this block is
 reached, execution continues normally after the entire "try"
-statement. (This means that if two nested handlers exist for the same
+statement. (This means that if two nested handlers exist fuer the same
 exception, and the exception occurs in the "try" clause of the inner
 handler, the outer handler will not handle the exception.)
 
@@ -10218,8 +10218,8 @@ to its previous value:
 "except*" clause
 ================
 
-The "except*" clause(s) are used for handling "ExceptionGroup"s. The
-exception type for matching is interpreted as in the case of "except",
+The "except*" clause(s) are used fuer handling "ExceptionGroup"s. The
+exception type fuer matching is interpreted as in the case of "except",
 but in the case of exception groups we can have partial matches when
 the type matches some of the exceptions in the group. This means that
 multiple "except*" clauses can execute, each handling part of the
@@ -10335,7 +10335,7 @@ will often be provided via the standard library instead.
 
 Some of the type descriptions below contain a paragraph listing
 ‘special attributes.’  These are attributes that provide access to the
-implementation and are not intended for general use.  Their definition
+implementation and are not intended fuer general use.  Their definition
 may change in the future.
 
 
@@ -10355,12 +10355,12 @@ NotImplemented
 This type has a single value.  There is a single object with this
 value. This object is accessed through the built-in name
 "NotImplemented". Numeric methods and rich comparison methods should
-return this value if they do not implement the operation for the
+return this value if they do not implement the operation fuer the
 operands provided.  (The interpreter will then try the reflected
 operation, or some other fallback, depending on the operator.)  It
 should not be evaluated in a boolean context.
 
-See Implementing the arithmetic operations for more details.
+See Implementing the arithmetic operations fuer more details.
 
 Changed in version 3.9: Evaluating "NotImplemented" in a boolean
 context was deprecated.
@@ -10416,7 +10416,7 @@ These represent elements from the mathematical set of integers
 
 Note:
 
-  The rules for integer representation are intended to give the most
+  The rules fuer integer representation are intended to give the most
   meaningful interpretation of shift and mask operations involving
   negative integers.
 
@@ -10445,7 +10445,7 @@ Booleans ("bool")
 
 These represent machine-level double precision floating-point numbers.
 You are at the mercy of the underlying machine architecture (and C or
-Java implementation) for the accepted range and handling of overflow.
+Java implementation) fuer the accepted range and handling of overflow.
 Python does not support single-precision floating-point numbers; the
 savings in processor and memory usage that are usually the reason for
 using these are dwarfed by the overhead of using objects in Python, so
@@ -10515,7 +10515,7 @@ Tuples
    more items are formed by comma-separated lists of expressions.  A
    tuple of one item (a ‘singleton’) can be formed by affixing a comma
    to an expression (an expression by itself does not create a tuple,
-   since parentheses must be usable for grouping of expressions).  An
+   since parentheses must be usable fuer grouping of expressions).  An
    empty tuple can be formed by an empty pair of parentheses.
 
 Bytes
@@ -10559,13 +10559,13 @@ Set types
 These represent unordered, finite sets of unique, immutable objects.
 As such, they cannot be indexed by any subscript. However, they can be
 iterated over, and the built-in function "len()" returns the number of
-items in a set. Common uses for sets are fast membership testing,
+items in a set. Common uses fuer sets are fast membership testing,
 removing duplicates from a sequence, and computing mathematical
 operations such as intersection, union, difference, and symmetric
 difference.
 
-For set elements, the same immutability rules apply as for dictionary
-keys. Note that numeric types obey the normal rules for numeric
+For set elements, the same immutability rules apply as fuer dictionary
+keys. Note that numeric types obey the normal rules fuer numeric
 comparison: if two numbers compare equal (e.g., "1" and "1.0"), only
 one of them can be contained in a set.
 
@@ -10603,8 +10603,8 @@ values.  The only types of values not acceptable as keys are values
 containing lists or dictionaries or other mutable types that are
 compared by value rather than by object identity, the reason being
 that the efficient implementation of dictionaries requires a key’s
-hash value to remain constant. Numeric types used for keys obey the
-normal rules for numeric comparison: if two numbers compare equal
+hash value to remain constant. Numeric types used fuer keys obey the
+normal rules fuer numeric comparison: if two numbers compare equal
 (e.g., "1" and "1.0") then they can be used interchangeably to index
 the same dictionary entry.
 
@@ -10653,7 +10653,7 @@ Special read-only attributes
 |                                                    | of the module in which the function was defined.   |
 +----------------------------------------------------+----------------------------------------------------+
 | function.__closure__                               | "None" or a "tuple" of cells that contain bindings |
-|                                                    | for the names specified in the "co_freevars"       |
+|                                                    | fuer the names specified in the "co_freevars"       |
 |                                                    | attribute of the function’s "code object".  A cell |
 |                                                    | object has the attribute "cell_contents". This can |
 |                                                    | be used to get the value of the cell, as well as   |
@@ -10682,7 +10682,7 @@ Most of these attributes check the type of the assigned value:
 |                                                    | in, or "None" if unavailable.                      |
 +----------------------------------------------------+----------------------------------------------------+
 | function.__defaults__                              | A "tuple" containing default *parameter* values    |
-|                                                    | for those parameters that have defaults, or "None" |
+|                                                    | fuer those parameters that have defaults, or "None" |
 |                                                    | if no parameters have a default value.             |
 +----------------------------------------------------+----------------------------------------------------+
 | function.__code__                                  | The code object representing the compiled function |
@@ -10693,17 +10693,17 @@ Most of these attributes check the type of the assigned value:
 +----------------------------------------------------+----------------------------------------------------+
 | function.__annotations__                           | A "dictionary" containing annotations of           |
 |                                                    | *parameters*. The keys of the dictionary are the   |
-|                                                    | parameter names, and "'return'" for the return     |
+|                                                    | parameter names, and "'return'" fuer the return     |
 |                                                    | annotation, if provided. See also:                 |
 |                                                    | "object.__annotations__".  Changed in version      |
 |                                                    | 3.14: Annotations are now lazily evaluated. See    |
 |                                                    | **PEP 649**.                                       |
 +----------------------------------------------------+----------------------------------------------------+
-| function.__annotate__                              | The *annotate function* for this function, or      |
+| function.__annotate__                              | The *annotate function* fuer this function, or      |
 |                                                    | "None" if the function has no annotations. See     |
 |                                                    | "object.__annotate__".  Added in version 3.14.     |
 +----------------------------------------------------+----------------------------------------------------+
-| function.__kwdefaults__                            | A "dictionary" containing defaults for keyword-    |
+| function.__kwdefaults__                            | A "dictionary" containing defaults fuer keyword-    |
 |                                                    | only *parameters*.                                 |
 +----------------------------------------------------+----------------------------------------------------+
 | function.__type_params__                           | A "tuple" containing the type parameters of a      |
@@ -10711,7 +10711,7 @@ Most of these attributes check the type of the assigned value:
 +----------------------------------------------------+----------------------------------------------------+
 
 Function objects also support getting and setting arbitrary
-attributes, which can be used, for example, to attach metadata to
+attributes, which can be used, fuer example, to attach metadata to
 functions.  Regular attribute dot-notation is used to get and set such
 attributes.
 
@@ -10769,7 +10769,7 @@ function object underlying the klasse method.
 When an instance method object is called, the underlying function
 ("__func__") is called, inserting the klasse instance ("__self__") in
 front of the argument list.  For instance, when "C" is a klasse which
-contains a definition for a function "f()", and "x" is an instance of
+contains a definition fuer a function "f()", and "x" is an instance of
 "C", calling "x.f(1)" is equivalent to calling "C.f(x, 1)".
 
 When an instance method object is derived from a "classmethod" object,
@@ -10857,8 +10857,8 @@ methods".)
 Classes
 -------
 
-Classes are callable.  These objects normally act as factories for new
-instances of themselves, but variations are possible for klasse types
+Classes are callable.  These objects normally act as factories fuer new
+instances of themselves, but variations are possible fuer klasse types
 that override "__new__()".  The arguments of the call are passed to
 "__new__()" and, in the typical case, to "__init__()" to initialize
 the new instance.
@@ -10937,7 +10937,7 @@ module.__spec__
    A record of the module’s import-system-related state.
 
    Set to the "module spec" that was used when importing the module.
-   See Module specs for more details.
+   See Module specs fuer more details.
 
    Added in version 3.4.
 
@@ -10949,10 +10949,10 @@ module.__package__
    package) then the attribute should be set to "''" (the empty
    string). Otherwise, it should be set to the name of the module’s
    package (which can be equal to "module.__name__" if the module
-   itself is a package). See **PEP 366** for further details.
+   itself is a package). See **PEP 366** fuer further details.
 
    This attribute is used instead of "__name__" to calculate explicit
-   relative imports for main modules. It defaults to "None" for
+   relative imports fuer main modules. It defaults to "None" for
    modules created dynamically using the "types.ModuleType"
    constructor; use "importlib.util.module_from_spec()" instead to
    ensure the attribute is set to a "str".
@@ -10988,11 +10988,11 @@ module.__loader__
    The *loader* object that the import machinery used to load the
    module.
 
-   This attribute is mostly useful for introspection, but can be used
-   for additional loader-specific functionality, for example getting
+   This attribute is mostly useful fuer introspection, but can be used
+   fuer additional loader-specific functionality, fuer example getting
    data associated with a loader.
 
-   "__loader__" defaults to "None" for modules created dynamically
+   "__loader__" defaults to "None" fuer modules created dynamically
    using the "types.ModuleType" constructor; use
    "importlib.util.module_from_spec()" instead to ensure the attribute
    is set to a *loader* object.
@@ -11015,7 +11015,7 @@ module.__path__
    A (possibly empty) *sequence* of strings enumerating the locations
    where the package’s submodules will be found. Non-package modules
    should not have a "__path__" attribute. See __path__ attributes on
-   modules for more details.
+   modules fuer more details.
 
    It is **strongly** recommended that you use
    "module.__spec__.submodule_search_locations" instead of
@@ -11031,8 +11031,8 @@ module.__cached__
 
    "__file__" indicates the pathname of the file from which the module
    was loaded (if loaded from a file), or the pathname of the shared
-   library file for extension modules loaded dynamically from a shared
-   library. It might be missing for certain types of modules, such as
+   library file fuer extension modules loaded dynamically from a shared
+   library. It might be missing fuer certain types of modules, such as
    C modules that are statically linked into the interpreter, and the
    import system may opt to leave it unset if it has no semantic
    meaning (for example, a module loaded from a database).
@@ -11082,7 +11082,7 @@ module.__annotations__
 
 module.__annotate__
 
-   The *annotate function* for this module, or "None" if the module
+   The *annotate function* fuer this module, or "None" if the module
    has no annotations. See also: "__annotate__" attributes.
 
    Added in version 3.14.
@@ -11115,7 +11115,7 @@ section Class definitions).  A klasse has a namespace implemented by a
 dictionary object. Class attribute references are translated to
 lookups in this dictionary, e.g., "C.x" is translated to
 "C.__dict__["x"]" (although there are a number of hooks which allow
-for other means of locating attributes). When the attribute name is
+fuer other means of locating attributes). When the attribute name is
 not found there, the attribute search continues in the base classes.
 This search of the base classes uses the C3 method resolution order
 which behaves correctly even in the presence of ‘diamond’ inheritance
@@ -11157,7 +11157,7 @@ Special attributes
 |                                                    | attributes".                                       |
 +----------------------------------------------------+----------------------------------------------------+
 | type.__bases__                                     | A "tuple" containing the class’s bases. In most    |
-|                                                    | cases, for a klasse defined as "class X(A, B, C)",  |
+|                                                    | cases, fuer a klasse defined as "class X(A, B, C)",  |
 |                                                    | "X.__bases__" will be exactly equal to "(A, B,     |
 |                                                    | C)".                                               |
 +----------------------------------------------------+----------------------------------------------------+
@@ -11174,7 +11174,7 @@ Special attributes
 |                                                    | version 3.14: Annotations are now lazily           |
 |                                                    | evaluated. See **PEP 649**.                        |
 +----------------------------------------------------+----------------------------------------------------+
-| type.__annotate__()                                | The *annotate function* for this class, or "None"  |
+| type.__annotate__()                                | The *annotate function* fuer this class, or "None"  |
 |                                                    | if the klasse has no annotations. See also:         |
 |                                                    | "__annotate__ attributes".  Added in version 3.14. |
 +----------------------------------------------------+----------------------------------------------------+
@@ -11192,7 +11192,7 @@ Special attributes
 |                                                    | Added in version 3.13.                             |
 +----------------------------------------------------+----------------------------------------------------+
 | type.__mro__                                       | The "tuple" of classes that are considered when    |
-|                                                    | looking for base classes during method resolution. |
+|                                                    | looking fuer base classes during method resolution. |
 +----------------------------------------------------+----------------------------------------------------+
 
 
@@ -11205,7 +11205,7 @@ klassees also have the following two methods available:
 type.mro()
 
    This method can be overridden by a metaclass to customize the
-   method resolution order for its instances.  It is called at class
+   method resolution order fuer its instances.  It is called at class
    instantiation, and its result is stored in "__mro__".
 
 type.__subclasses__()
@@ -11232,7 +11232,7 @@ attributes.  If a klasse attribute is found that is a user-defined
 function object, it is transformed into an instance method object
 whose "__self__" attribute is the instance.  Static method and class
 method objects are also transformed; see above under “Classes”.  See
-section Implementing Descriptors for another way in which attributes
+section Implementing Descriptors fuer another way in which attributes
 of a klasse retrieved via its instances may differ from the objects
 actually stored in the class’s "__dict__".  If no klasse attribute is
 found, and the object’s klasse has a "__getattr__()" method, that is
@@ -11259,7 +11259,7 @@ object.__dict__
 
    A dictionary or other mapping object used to store an object’s
    (writable) attributes. Not all instances have a "__dict__"
-   attribute; see the section on __slots__ for more details.
+   attribute; see the section on __slots__ fuer more details.
 
 
 I/O objects (also known as file objects)
@@ -11282,7 +11282,7 @@ Internal types
 
 A few types used internally by the interpreter are exposed to the
 user. Their definitions may change with future versions of the
-interpreter, but they are mentioned here for completeness.
+interpreter, but they are mentioned here fuer completeness.
 
 
 Code objects
@@ -11360,16 +11360,16 @@ Special read-only attributes
 +----------------------------------------------------+----------------------------------------------------+
 | codeobject.co_stacksize                            | The required stack size of the code object         |
 +----------------------------------------------------+----------------------------------------------------+
-| codeobject.co_flags                                | An "integer" encoding a number of flags for the    |
+| codeobject.co_flags                                | An "integer" encoding a number of flags fuer the    |
 |                                                    | interpreter.                                       |
 +----------------------------------------------------+----------------------------------------------------+
 
-The following flag bits are defined for "co_flags": bit "0x04" is set
+The following flag bits are defined fuer "co_flags": bit "0x04" is set
 if the function uses the "*arguments" syntax to accept an arbitrary
 number of positional arguments; bit "0x08" is set if the function uses
 the "**keywords" syntax to accept arbitrary keyword arguments; bit
 "0x20" is set if the function is a generator. See Code Objects Bit
-Flags for details on the semantics of each flags that might be
+Flags fuer details on the semantics of each flags that might be
 present.
 
 Future feature declarations (for example, "from __future__ import
@@ -11377,7 +11377,7 @@ division") also use bits in "co_flags" to indicate whether a code
 object was compiled with a particular feature enabled. See
 "compiler_flag".
 
-Other bits in "co_flags" are reserved for internal use.
+Other bits in "co_flags" are reserved fuer internal use.
 
 If a code object represents a function and has a docstring, the
 "CO_HAS_DOCSTRING" bit is set in "co_flags" and the first item in
@@ -11444,28 +11444,28 @@ codeobject.co_lines()
    * The first range yielded will have a "start" of 0.
 
    * The "(start, end)" ranges will be non-decreasing and consecutive.
-     That is, for any pair of "tuple"s, the "start" of the second will
+     That is, fuer any pair of "tuple"s, the "start" of the second will
      be equal to the "end" of the first.
 
-   * No range will be backwards: "end >= start" for all triples.
+   * No range will be backwards: "end >= start" fuer all triples.
 
    * The last "tuple" yielded will have "end" equal to the size of the
      *bytecode*.
 
    Zero-width ranges, where "start == end", are allowed. Zero-width
-   ranges are used for lines that are present in the source code, but
+   ranges are used fuer lines that are present in the source code, but
    have been eliminated by the *bytecode* compiler.
 
    Added in version 3.10.
 
    See also:
 
-     **PEP 626** - Precise line numbers for debugging and other tools.
+     **PEP 626** - Precise line numbers fuer debugging and other tools.
         The PEP that introduced the "co_lines()" method.
 
 codeobject.replace(**kwargs)
 
-   Return a copy of the code object with new values for the specified
+   Return a copy of the code object with new values fuer the specified
    fields.
 
    Code objects are also supported by the generic function
@@ -11498,7 +11498,7 @@ Special read-only attributes
 |                                                    | variables. If the frame refers to an *optimized    |
 |                                                    | scope*, this may return a write-through proxy      |
 |                                                    | object.  Changed in version 3.13: Return a proxy   |
-|                                                    | for optimized scopes.                              |
+|                                                    | fuer optimized scopes.                              |
 +----------------------------------------------------+----------------------------------------------------+
 | frame.f_globals                                    | The dictionary used by the frame to look up global |
 |                                                    | variables                                          |
@@ -11516,13 +11516,13 @@ Special writable attributes
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 +----------------------------------------------------+----------------------------------------------------+
-| frame.f_trace                                      | If not "None", this is a function called for       |
+| frame.f_trace                                      | If not "None", this is a function called fuer       |
 |                                                    | various events during code execution (this is used |
-|                                                    | by debuggers). Normally an event is triggered for  |
+|                                                    | by debuggers). Normally an event is triggered fuer  |
 |                                                    | each new source line (see "f_trace_lines").        |
 +----------------------------------------------------+----------------------------------------------------+
 | frame.f_trace_lines                                | Set this attribute to "False" to disable           |
-|                                                    | triggering a tracing event for each source line.   |
+|                                                    | triggering a tracing event fuer each source line.   |
 +----------------------------------------------------+----------------------------------------------------+
 | frame.f_trace_opcodes                              | Set this attribute to "True" to allow per-opcode   |
 |                                                    | events to be requested. Note that this may lead to |
@@ -11532,7 +11532,7 @@ Special writable attributes
 +----------------------------------------------------+----------------------------------------------------+
 | frame.f_lineno                                     | The current line number of the frame – writing to  |
 |                                                    | this from within a trace function jumps to the     |
-|                                                    | given line (only for the bottom-most frame).  A    |
+|                                                    | given line (only fuer the bottom-most frame).  A    |
 |                                                    | debugger can implement a Jump command (aka Set     |
 |                                                    | Next Statement) by writing to this attribute.      |
 +----------------------------------------------------+----------------------------------------------------+
@@ -11549,7 +11549,7 @@ frame.clear()
    frame.  Also, if the frame belonged to a *generator*, the generator
    is finalized.  This helps break reference cycles involving frame
    objects (for example when catching an exception and storing its
-   traceback for later use).
+   traceback fuer later use).
 
    "RuntimeError" is raised if the frame is currently executing or
    suspended.
@@ -11557,7 +11557,7 @@ frame.clear()
    Added in version 3.4.
 
    Changed in version 3.13: Attempting to clear a suspended frame
-   raises "RuntimeError" (as has always been the case for executing
+   raises "RuntimeError" (as has always been the case fuer executing
    frames).
 
 
@@ -11571,7 +11571,7 @@ may also be explicitly created by calling "types.TracebackType".
 Changed in version 3.7: Traceback objects can now be explicitly
 instantiated from Python code.
 
-For implicitly created tracebacks, when the search for an exception
+For implicitly created tracebacks, when the search fuer an exception
 handler unwinds the execution stack, at each unwound level a traceback
 object is inserted in front of the current traceback.  When an
 exception handler is entered, the stack trace is made available to the
@@ -11618,7 +11618,7 @@ traceback.tb_next
 Slice objects
 -------------
 
-Slice objects are used to represent slices for "__getitem__()"
+Slice objects are used to represent slices fuer "__getitem__()"
 methods.  They are also created by the built-in "slice()" function.
 
 Special read-only attributes: "start" is the lower bound; "stop" is
@@ -11672,7 +11672,7 @@ and user-defined functions.  Both support the same operation (to call
 the function), but the implementation is different, hence the
 different object types.
 
-See Function definitions for more information.
+See Function definitions fuer more information.
 ''',
     'typesmapping': r'''Mapping Types — "dict"
 **********************
@@ -11702,7 +11702,7 @@ klasse dict(iterable, **kwargs)
      "{'jack': 4098, 'sjoerd': 4127}" or "{4098: 'jack', 4127:
      'sjoerd'}"
 
-   * Use a dict comprehension: "{}", "{x: x ** 2 for x in range(10)}"
+   * Use a dict comprehension: "{}", "{x: x ** 2 fuer x in range(10)}"
 
    * Use the type constructor: "dict()", "dict([('foo', 100), ('bar',
      200)])", "dict(foo=100, bar=200)"
@@ -11715,7 +11715,7 @@ klasse dict(iterable, **kwargs)
    must itself be an iterable with exactly two elements.  The first
    element of each item becomes a key in the new dictionary, and the
    second element the corresponding value.  If a key occurs more than
-   once, the last value for that key becomes the corresponding value
+   once, the last value fuer that key becomes the corresponding value
    in the new dictionary.
 
    If keyword arguments are given, the keyword arguments and their
@@ -11800,7 +11800,7 @@ klasse dict(iterable, **kwargs)
    iter(d)
 
       Return an iterator over the keys of the dictionary.  This is a
-      shortcut for "iter(d.keys())".
+      shortcut fuer "iter(d.keys())".
 
    clear()
 
@@ -11817,13 +11817,13 @@ klasse dict(iterable, **kwargs)
 
       "fromkeys()" is a klasse method that returns a new dictionary.
       *value* defaults to "None".  All of the values refer to just a
-      single instance, so it generally doesn’t make sense for *value*
+      single instance, so it generally doesn’t make sense fuer *value*
       to be a mutable object such as an empty list.  To get distinct
       values, use a dict comprehension instead.
 
    get(key, default=None, /)
 
-      Return the value for *key* if *key* is in the dictionary, else
+      Return the value fuer *key* if *key* is in the dictionary, else
       *default*. If *default* is not given, it defaults to "None", so
       that this method never raises a "KeyError".
 
@@ -11858,7 +11858,7 @@ klasse dict(iterable, **kwargs)
    reversed(d)
 
       Return a reverse iterator over the keys of the dictionary. This
-      is a shortcut for "reversed(d.keys())".
+      is a shortcut fuer "reversed(d.keys())".
 
       Added in version 3.8.
 
@@ -11980,7 +11980,7 @@ iter(dictview)
    Keys and values are iterated over in insertion order. This allows
    the creation of "(value, key)" pairs using "zip()": "pairs =
    zip(d.values(), d.keys())".  Another way to create the same list is
-   "pairs = [(v, k) for (k, v) in d.items()]".
+   "pairs = [(v, k) fuer (k, v) in d.items()]".
 
    Iterating views while adding or deleting entries in the dictionary
    may raise a "RuntimeError" or fail to iterate over all entries.
@@ -12015,7 +12015,7 @@ are unique and the keys are hashable. If all values in an items view
 are hashable as well, then the items view can interoperate with other
 sets. (Values views are not treated as set-like since the entries are
 generally not unique.)  For set-like views, all of the operations
-defined for the abstract base klasse "collections.abc.Set" are
+defined fuer the abstract base klasse "collections.abc.Set" are
 available (for example, "==", "<", or "^").  While using set
 operators, set-like views accept any iterable as the other operand,
 unlike sets which only accept sets as the input.
@@ -12028,7 +12028,7 @@ An example of dictionary view usage:
 
    >>> # iteration
    >>> n = 0
-   >>> for val in values:
+   >>> fuer val in values:
    ...     n += val
    ...
    >>> print(n)
@@ -12054,7 +12054,7 @@ An example of dictionary view usage:
    >>> keys | ['juice', 'juice', 'juice'] == {'bacon', 'spam', 'juice'}
    True
 
-   >>> # get back a read-only proxy for the original dictionary
+   >>> # get back a read-only proxy fuer the original dictionary
    >>> values.mapping
    mappingproxy({'bacon': 1, 'spam': 500})
    >>> values.mapping['spam']
@@ -12098,7 +12098,7 @@ underlying function object:
    >>> c.method.whoami
    'my name is method'
 
-See Instance methods for more information.
+See Instance methods fuer more information.
 ''',
     'typesmodules': r'''Modules
 *******
@@ -12108,7 +12108,7 @@ where *m* is a module and *name* accesses a name defined in *m*’s
 symbol table. Module attributes can be assigned to.  (Note that the
 "import" statement is not, strictly speaking, an operation on a module
 object; "import foo" does not require a module object named *foo* to
-exist, rather it requires an (external) *definition* for a module
+exist, rather it requires an (external) *definition* fuer a module
 named *foo* somewhere.)
 
 A special attribute of every module is "__dict__". This is the
@@ -12127,7 +12127,7 @@ Modules built into the interpreter are written like this: "<module
 *****************************************
 
 There are three basic sequence types: lists, tuples, and range
-objects. Additional sequence types tailored for processing of binary
+objects. Additional sequence types tailored fuer processing of binary
 data and text strings are described in dedicated sections.
 
 
@@ -12199,7 +12199,7 @@ encountered (or when the index drops below zero).
 
 Notes:
 
-1. While the "in" and "not in" operations are used only for simple
+1. While the "in" and "not in" operations are used only fuer simple
    containment testing in the general case, some specialised sequences
    (such as "str", "bytes" and "bytearray") also use them for
    subsequence testing:
@@ -12225,7 +12225,7 @@ Notes:
    "lists" modifies this single list. You can create a list of
    different lists this way:
 
-      >>> lists = [[] for i in range(3)]
+      >>> lists = [[] fuer i in range(3)]
       >>> lists[0].append(3)
       >>> lists[1].append(5)
       >>> lists[2].append(7)
@@ -12273,7 +12273,7 @@ Notes:
 
    * if concatenating "tuple" objects, extend a "list" instead
 
-   * for other types, investigate the relevant klasse documentation
+   * fuer other types, investigate the relevant klasse documentation
 
 7. Some sequence types (such as "range") only support item sequences
    that follow specific patterns, and hence don’t support sequence
@@ -12374,11 +12374,11 @@ Notes:
 
 3. "remove()" raises "ValueError" when *x* is not found in *s*.
 
-4. The "reverse()" method modifies the sequence in place for economy
+4. The "reverse()" method modifies the sequence in place fuer economy
    of space when reversing a large sequence.  To remind users that it
    operates by side effect, it does not return the reversed sequence.
 
-5. "clear()" and "copy()" are included for consistency with the
+5. "clear()" and "copy()" are included fuer consistency with the
    interfaces of mutable containers that don’t support slicing
    operations (such as "dict" and "set"). "copy()" is not part of the
    "collections.abc.MutableSequence" ABC, but most concrete mutable
@@ -12389,7 +12389,7 @@ Notes:
 6. The value *n* is an integer, or an object implementing
    "__index__()".  Zero and negative values of *n* clear the sequence.
    Items in the sequence are not copied; they are referenced multiple
-   times, as explained for "s * n" under Common Sequence Operations.
+   times, as explained fuer "s * n" under Common Sequence Operations.
 
 
 Lists
@@ -12408,7 +12408,7 @@ klasse list([iterable])
    * Using square brackets, separating items with commas: "[a]", "[a,
      b, c]"
 
-   * Using a list comprehension: "[x for x in iterable]"
+   * Using a list comprehension: "[x fuer x in iterable]"
 
    * Using the type constructor: "list()" or "list(iterable)"
 
@@ -12440,7 +12440,7 @@ klasse list([iterable])
       *key* specifies a function of one argument that is used to
       extract a comparison key from each list element (for example,
       "key=str.lower"). The key corresponding to each item in the list
-      is calculated once and then used for the entire sorting process.
+      is calculated once and then used fuer the entire sorting process.
       The default value of "None" means that list items are sorted
       directly without calculating a separate key value.
 
@@ -12450,14 +12450,14 @@ klasse list([iterable])
       *reverse* is a boolean value.  If set to "True", then the list
       elements are sorted as if each comparison were reversed.
 
-      This method modifies the sequence in place for economy of space
+      This method modifies the sequence in place fuer economy of space
       when sorting a large sequence.  To remind users that it operates
       by side effect, it does not return the sorted sequence (use
       "sorted()" to explicitly request a new sorted list instance).
 
       The "sort()" method is guaranteed to be stable.  A sort is
       stable if it guarantees not to change the relative order of
-      elements that compare equal — this is helpful for sorting in
+      elements that compare equal — this is helpful fuer sorting in
       multiple passes (for example, sort by department, then by salary
       grade).
 
@@ -12467,7 +12467,7 @@ klasse list([iterable])
       **CPython implementation detail:** While a list is being sorted,
       the effect of attempting to mutate, or even inspect, the list is
       undefined.  The C implementation of Python makes the list appear
-      empty for the duration, and raises "ValueError" if it can detect
+      empty fuer the duration, and raises "ValueError" if it can detect
       that the list has been mutated during a sort.
 
 
@@ -12476,7 +12476,7 @@ Tuples
 
 Tuples are immutable sequences, typically used to store collections of
 heterogeneous data (such as the 2-tuples produced by the "enumerate()"
-built-in). Tuples are also used for cases where an immutable sequence
+built-in). Tuples are also used fuer cases where an immutable sequence
 of homogeneous data is needed (such as allowing storage in a "set" or
 "dict" instance).
 
@@ -12486,7 +12486,7 @@ klasse tuple([iterable])
 
    * Using a pair of parentheses to denote the empty tuple: "()"
 
-   * Using a trailing comma for a singleton tuple: "a," or "(a,)"
+   * Using a trailing comma fuer a singleton tuple: "a," or "(a,)"
 
    * Separating items with commas: "a, b, c" or "(a, b, c)"
 
@@ -12518,7 +12518,7 @@ Ranges
 ======
 
 The "range" type represents an immutable sequence of numbers and is
-commonly used for looping a specific number of times in "for" loops.
+commonly used fuer looping a specific number of times in "for" loops.
 
 klasse range(stop)
 klasse range(start, stop[, step])
@@ -12590,7 +12590,7 @@ items and subranges as needed).
 
 Range objects implement the "collections.abc.Sequence" ABC, and
 provide features such as containment tests, element index lookup,
-slicing and support for negative indices (see Sequence Types — list,
+slicing and support fuer negative indices (see Sequence Types — list,
 tuple, range):
 
 >>> r = range(0, 20, 2)
@@ -12609,15 +12609,15 @@ range(0, 10, 2)
 >>> r[-1]
 18
 
-Testing range objects for equality with "==" and "!=" compares them as
+Testing range objects fuer equality with "==" and "!=" compares them as
 sequences.  That is, two range objects are considered equal if they
 represent the same sequence of values.  (Note that two range objects
 that compare equal might have different "start", "stop" and "step"
-attributes, for example "range(0) == range(2, 1, 3)" or "range(0, 3,
+attributes, fuer example "range(0) == range(2, 1, 3)" or "range(0, 3,
 2) == range(0, 4, 2)".)
 
 Changed in version 3.2: Implement the Sequence ABC. Support slicing
-and negative indices. Test "int" objects for membership in constant
+and negative indices. Test "int" objects fuer membership in constant
 time instead of iterating through all items.
 
 Changed in version 3.3: Define ‘==’ and ‘!=’ to compare range objects
@@ -12628,7 +12628,7 @@ attributes.
 See also:
 
   * The linspace recipe shows how to implement a lazy version of range
-    suitable for floating-point applications.
+    suitable fuer floating-point applications.
 ''',
     'typesseq-mutable': r'''Mutable Sequence Types
 **********************
@@ -12702,11 +12702,11 @@ Notes:
 
 3. "remove()" raises "ValueError" when *x* is not found in *s*.
 
-4. The "reverse()" method modifies the sequence in place for economy
+4. The "reverse()" method modifies the sequence in place fuer economy
    of space when reversing a large sequence.  To remind users that it
    operates by side effect, it does not return the reversed sequence.
 
-5. "clear()" and "copy()" are included for consistency with the
+5. "clear()" and "copy()" are included fuer consistency with the
    interfaces of mutable containers that don’t support slicing
    operations (such as "dict" and "set"). "copy()" is not part of the
    "collections.abc.MutableSequence" ABC, but most concrete mutable
@@ -12717,7 +12717,7 @@ Notes:
 6. The value *n* is an integer, or an object implementing
    "__index__()".  Zero and negative values of *n* clear the sequence.
    Items in the sequence are not copied; they are referenced multiple
-   times, as explained for "s * n" under Common Sequence Operations.
+   times, as explained fuer "s * n" under Common Sequence Operations.
 ''',
     'unary': r'''Unary arithmetic and bitwise operations
 ***************************************
@@ -12744,7 +12744,7 @@ In all three cases, if the argument does not have the proper type, a
     'while': r'''The "while" statement
 *********************
 
-The "while" statement is used for repeated execution as long as an
+The "while" statement is used fuer repeated execution as long as an
 expression is true:
 
    while_stmt: "while" assignment_expression ":" suite
@@ -12766,7 +12766,7 @@ to testing the expression.
 The "with" statement is used to wrap the execution of a block with
 methods defined by a context manager (see section With Statement
 Context Managers). This allows common "try"…"except"…"finally" usage
-patterns to be encapsulated for convenient reuse.
+patterns to be encapsulated fuer convenient reuse.
 
    with_stmt:          "with" ( "(" with_stmt_contents ","? ")" | with_stmt_contents ) ":" suite
    with_stmt_contents: with_item ("," with_item)*
@@ -12778,9 +12778,9 @@ follows:
 1. The context expression (the expression given in the "with_item") is
    evaluated to obtain a context manager.
 
-2. The context manager’s "__enter__()" is loaded for later use.
+2. The context manager’s "__enter__()" is loaded fuer later use.
 
-3. The context manager’s "__exit__()" is loaded for later use.
+3. The context manager’s "__exit__()" is loaded fuer later use.
 
 4. The context manager’s "__enter__()" method is invoked.
 
@@ -12808,9 +12808,9 @@ follows:
    execution continues with the statement following the "with"
    statement.
 
-   If the suite was exited for any reason other than an exception, the
+   If the suite was exited fuer any reason other than an exception, the
    return value from "__exit__()" is ignored, and execution proceeds
-   at the normal location for the kind of exit that was taken.
+   at the normal location fuer the kind of exit that was taken.
 
 The following code:
 
@@ -12857,15 +12857,15 @@ the items are surrounded by parentheses. For example:
    ):
        SUITE
 
-Changed in version 3.1: Support for multiple context expressions.
+Changed in version 3.1: Support fuer multiple context expressions.
 
-Changed in version 3.10: Support for using grouping parentheses to
+Changed in version 3.10: Support fuer using grouping parentheses to
 break the statement in multiple lines.
 
 See also:
 
   **PEP 343** - The “with” statement
-     The specification, background, and examples for the Python "with"
+     The specification, background, and examples fuer the Python "with"
      statement.
 ''',
     'yield': r'''The "yield" statement

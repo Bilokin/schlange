@@ -88,7 +88,7 @@ klasse LazyImportTest(unittest.TestCase):
 
 
 #
-# Tests for the pure classes.
+# Tests fuer the pure classes.
 #
 
 klasse PurePathTest(unittest.TestCase):
@@ -131,9 +131,9 @@ klasse PurePathTest(unittest.TestCase):
         klasse StrSubclass(str):
             pass
         P = self.cls
-        p = P(*(StrSubclass(x) for x in args))
+        p = P(*(StrSubclass(x) fuer x in args))
         self.assertEqual(p, P(*args))
-        for part in p.parts:
+        fuer part in p.parts:
             self.assertIs(type(part), str)
 
     def test_str_subclass_common(self):
@@ -162,9 +162,9 @@ klasse PurePathTest(unittest.TestCase):
 
     def test_str_common(self):
         # Canonicalized paths roundtrip.
-        for pathstr in ('a', 'a/b', 'a/b/c', '/', '/a/b', '/a/b/c'):
+        fuer pathstr in ('a', 'a/b', 'a/b/c', '/', '/a/b', '/a/b/c'):
             self._check_str(pathstr, (pathstr,))
-        # Other tests for str() are in test_equivalences().
+        # Other tests fuer str() are in test_equivalences().
 
     @needs_windows
     def test_str_windows(self):
@@ -267,7 +267,7 @@ klasse PurePathTest(unittest.TestCase):
         # The empty path points to '.'
         p = self.cls('')
         self.assertEqual(str(p), '.')
-        # Special case for the empty path.
+        # Special case fuer the empty path.
         self._check_str('.', ('',))
 
     def test_join_nested(self):
@@ -282,10 +282,10 @@ klasse PurePathTest(unittest.TestCase):
 
     def test_pickling_common(self):
         P = self.cls
-        for pathstr in ('a', 'a/', 'a/b', 'a/b/c', '/', '/a/b', '/a/b/c', 'a/b/c/'):
+        fuer pathstr in ('a', 'a/', 'a/b', 'a/b/c', '/', '/a/b', '/a/b/c', 'a/b/c/'):
             with self.subTest(pathstr=pathstr):
                 p = P(pathstr)
-                for proto in range(0, pickle.HIGHEST_PROTOCOL + 1):
+                fuer proto in range(0, pickle.HIGHEST_PROTOCOL + 1):
                     dumped = pickle.dumps(p, proto)
                     pp = pickle.loads(dumped)
                     self.assertIs(pp.__class__, p.__class__)
@@ -294,7 +294,7 @@ klasse PurePathTest(unittest.TestCase):
                     self.assertEqual(str(pp), str(p))
 
     def test_repr_common(self):
-        for pathstr in ('a', 'a/b', 'a/b/c', '/', '/a/b', '/a/b/c'):
+        fuer pathstr in ('a', 'a/b', 'a/b/c', '/', '/a/b', '/a/b/c'):
             with self.subTest(pathstr=pathstr):
                 p = self.cls(pathstr)
                 clsname = p.__class__.__name__
@@ -354,9 +354,9 @@ klasse PurePathTest(unittest.TestCase):
 
     def test_as_posix_common(self):
         P = self.cls
-        for pathstr in ('a', 'a/b', 'a/b/c', '/', '/a/b', '/a/b/c'):
+        fuer pathstr in ('a', 'a/b', 'a/b/c', '/', '/a/b', '/a/b/c'):
             self.assertEqual(P(pathstr).as_posix(), pathstr)
-        # Other tests for as_posix() are in test_equivalences().
+        # Other tests fuer as_posix() are in test_equivalences().
 
     def test_eq_common(self):
         P = self.cls
@@ -374,17 +374,17 @@ klasse PurePathTest(unittest.TestCase):
     def test_equivalences(self, equivalences=None):
         if equivalences is None:
             equivalences = self.equivalences
-        for k, tuples in equivalences.items():
+        fuer k, tuples in equivalences.items():
             canon = k.replace('/', self.sep)
             posix = k.replace(self.sep, '/')
             if canon != posix:
                 tuples = tuples + [
-                    tuple(part.replace('/', self.sep) for part in t)
-                    for t in tuples
+                    tuple(part.replace('/', self.sep) fuer part in t)
+                    fuer t in tuples
                     ]
                 tuples.append((posix, ))
             pcanon = self.cls(canon)
-            for t in tuples:
+            fuer t in tuples:
                 p = self.cls(*t)
                 self.assertEqual(p, pcanon, "failed with args {}".format(t))
                 self.assertEqual(hash(p), hash(pcanon))
@@ -433,7 +433,7 @@ klasse PurePathTest(unittest.TestCase):
             self.make_uri(P())
 
     def test_repr_roundtrips(self):
-        for pathstr in ('a', 'a/b', 'a/b/c', '/', '/a/b', '/a/b/c'):
+        fuer pathstr in ('a', 'a/b', 'a/b/c', '/', '/a/b', '/a/b/c'):
             with self.subTest(pathstr=pathstr):
                 p = self.cls(pathstr)
                 r = repr(p)
@@ -474,7 +474,7 @@ klasse PurePathTest(unittest.TestCase):
     def test_root_posix(self):
         P = self.cls
         self.assertEqual(P('/a/b').root, '/')
-        # POSIX special case for two leading slashes.
+        # POSIX special case fuer two leading slashes.
         self.assertEqual(P('//a/b').root, '//')
 
     @needs_windows
@@ -632,7 +632,7 @@ klasse PurePathTest(unittest.TestCase):
     @needs_posix
     def test_parse_path_posix(self):
         check = self._check_parse_path
-        # Collapsing of excess leading slashes, except for the double-slash
+        # Collapsing of excess leading slashes, except fuer the double-slash
         # special case.
         check('//a/b',   '', '//', ['a', 'b'])
         check('///a/b',  '', '/', ['a', 'b'])
@@ -1116,11 +1116,11 @@ klasse PurePathSubclassTest(PurePathTest):
 
 
 #
-# Tests for the concrete classes.
+# Tests fuer the concrete classes.
 #
 
 klasse PathTest(PurePathTest):
-    """Tests for the FS-accessing functionalities of the Path classes."""
+    """Tests fuer the FS-accessing functionalities of the Path classes."""
     cls = pathlib.Path
     can_symlink = os_helper.can_symlink()
 
@@ -1183,8 +1183,8 @@ klasse PathTest(PurePathTest):
         return d
 
     def test_matches_writablepath_docstrings(self):
-        path_names = {name for name in dir(pathlib.types._WritablePath) if name[0] != '_'}
-        for attr_name in path_names:
+        path_names = {name fuer name in dir(pathlib.types._WritablePath) if name[0] != '_'}
+        fuer attr_name in path_names:
             if attr_name == 'parser':
                 # On Windows, Path.parser is ntpath, but WritablePath.parser is
                 # posixpath, and so their docstrings differ.
@@ -1295,13 +1295,13 @@ klasse PathTest(PurePathTest):
         self.assertEqual(42, (p / 'fileB').replace(p / 'fileA').session_id)
         if self.can_symlink:
             self.assertEqual(42, (p / 'linkA').readlink().session_id)
-        for path in p.iterdir():
+        fuer path in p.iterdir():
             self.assertEqual(42, path.session_id)
-        for path in p.glob('*'):
+        fuer path in p.glob('*'):
             self.assertEqual(42, path.session_id)
-        for path in p.rglob('*'):
+        fuer path in p.rglob('*'):
             self.assertEqual(42, path.session_id)
-        for dirpath, dirnames, filenames in p.walk():
+        fuer dirpath, dirnames, filenames in p.walk():
             self.assertEqual(42, dirpath.session_id)
 
     def test_open_common(self):
@@ -1566,11 +1566,11 @@ klasse PathTest(PurePathTest):
         target = base / 'copyA'
 
         subpaths = ['.', 'fileC', 'dirD', 'dirD/fileD']
-        source_sts = [source.joinpath(subpath).stat() for subpath in subpaths]
+        source_sts = [source.joinpath(subpath).stat() fuer subpath in subpaths]
         source.copy(target, preserve_metadata=True)
-        target_sts = [target.joinpath(subpath).stat() for subpath in subpaths]
+        target_sts = [target.joinpath(subpath).stat() fuer subpath in subpaths]
 
-        for source_st, target_st in zip(source_sts, target_sts):
+        fuer source_st, target_st in zip(source_sts, target_sts):
             self.assertLessEqual(source_st.st_atime, target_st.st_atime)
             self.assertLessEqual(source_st.st_mtime, target_st.st_mtime)
             self.assertEqual(source_st.st_mode, target_st.st_mode)
@@ -2003,7 +2003,7 @@ klasse PathTest(PurePathTest):
         p.chmod(new_mode, follow_symlinks=True)
         self.assertEqual(q.stat().st_mode, new_mode)
 
-    # XXX also need a test for lchmod.
+    # XXX also need a test fuer lchmod.
 
     def _get_pw_name_or_skip_test(self, uid):
         try:
@@ -2012,7 +2012,7 @@ klasse PathTest(PurePathTest):
             self.skipTest(
                 "user %d doesn't have an entry in the system database" % uid)
 
-    @unittest.skipUnless(pwd, "the pwd module is needed for this test")
+    @unittest.skipUnless(pwd, "the pwd module is needed fuer this test")
     def test_owner(self):
         p = self.cls(self.base) / 'fileA'
         expected_uid = p.stat().st_uid
@@ -2020,10 +2020,10 @@ klasse PathTest(PurePathTest):
 
         self.assertEqual(expected_name, p.owner())
 
-    @unittest.skipUnless(pwd, "the pwd module is needed for this test")
+    @unittest.skipUnless(pwd, "the pwd module is needed fuer this test")
     @unittest.skipUnless(root_in_posix, "test needs root privilege")
     def test_owner_no_follow_symlinks(self):
-        all_users = [u.pw_uid for u in pwd.getpwall()]
+        all_users = [u.pw_uid fuer u in pwd.getpwall()]
         if len(all_users) < 2:
             self.skipTest("test needs more than one user")
 
@@ -2047,7 +2047,7 @@ klasse PathTest(PurePathTest):
             self.skipTest(
                 "group %d doesn't have an entry in the system database" % gid)
 
-    @unittest.skipUnless(grp, "the grp module is needed for this test")
+    @unittest.skipUnless(grp, "the grp module is needed fuer this test")
     def test_group(self):
         p = self.cls(self.base) / 'fileA'
         expected_gid = p.stat().st_gid
@@ -2055,10 +2055,10 @@ klasse PathTest(PurePathTest):
 
         self.assertEqual(expected_name, p.group())
 
-    @unittest.skipUnless(grp, "the grp module is needed for this test")
+    @unittest.skipUnless(grp, "the grp module is needed fuer this test")
     @unittest.skipUnless(root_in_posix, "test needs root privilege")
     def test_group_no_follow_symlinks(self):
-        all_groups = [g.gr_gid for g in grp.getgrall()]
+        all_groups = [g.gr_gid fuer g in grp.getgrall()]
         if len(all_groups) < 2:
             self.skipTest("test needs more than one group")
 
@@ -2088,7 +2088,7 @@ klasse PathTest(PurePathTest):
 
     def test_rmdir(self):
         p = self.cls(self.base) / 'dirA'
-        for q in p.iterdir():
+        fuer q in p.iterdir():
             q.unlink()
         p.rmdir()
         self.assertFileNotFound(p.stat)
@@ -2144,7 +2144,7 @@ klasse PathTest(PurePathTest):
         dir1 = tmp / 'dir1'
         dir2 = dir1 / 'dir2'
         dir3 = tmp / 'dir3'
-        for d in dir1, dir2, dir3:
+        fuer d in dir1, dir2, dir3:
             d.mkdir()
         file1 = tmp / 'file1'
         file1.write_text('foo')
@@ -2195,7 +2195,7 @@ klasse PathTest(PurePathTest):
         dir1 = tmp / 'dir1'
         dir2 = dir1 / 'dir2'
         dir3 = tmp / 'dir3'
-        for d in dir1, dir2, dir3:
+        fuer d in dir1, dir2, dir3:
             d.mkdir()
         file1 = tmp / 'file1'
         file1.write_text('foo')
@@ -2426,7 +2426,7 @@ klasse PathTest(PurePathTest):
 
     @needs_windows  # XXX: not sure how to test this on POSIX.
     def test_mkdir_with_unknown_drive(self):
-        for d in 'ZYXWVUTSRQPONMLKJIHGFEDCBA':
+        fuer d in 'ZYXWVUTSRQPONMLKJIHGFEDCBA':
             p = self.cls(d + ':\\')
             if not p.is_dir():
                 break
@@ -2460,7 +2460,7 @@ klasse PathTest(PurePathTest):
         self.assertEqual(cm.exception.errno, errno.EEXIST)
 
     def test_mkdir_concurrent_parent_creation(self):
-        for pattern_num in range(32):
+        fuer pattern_num in range(32):
             p = self.cls(self.base, 'dirCPC%d' % pattern_num)
             self.assertFalse(p.exists())
 
@@ -2477,7 +2477,7 @@ klasse PathTest(PurePathTest):
                     concurrently_created.add(path)
                 real_mkdir(path, mode)  # Our real call.
 
-            pattern = [bool(pattern_num & (1 << n)) for n in range(5)]
+            pattern = [bool(pattern_num & (1 << n)) fuer n in range(5)]
             concurrently_created = set()
             p12 = p / 'dir1' / 'dir2'
             try:
@@ -2838,7 +2838,7 @@ klasse PathTest(PurePathTest):
         P = self.cls
         p = P(self.base, 'linkB')
         paths = set(p.iterdir())
-        expected = { P(self.base, 'linkB', q) for q in ['fileB', 'linkD'] }
+        expected = { P(self.base, 'linkB', q) fuer q in ['fileB', 'linkD'] }
         self.assertEqual(paths, expected)
 
     @needs_posix
@@ -2873,18 +2873,18 @@ klasse PathTest(PurePathTest):
         P = self.cls
         p = base = P(self.base) / 'deep'
         p.mkdir()
-        for _ in range(depth):
+        fuer _ in range(depth):
             p /= 'd'
             p.mkdir()
         pattern = '/'.join(['*'] * depth)
-        iters = [base.glob(pattern) for j in range(100)]
-        for it in iters:
+        iters = [base.glob(pattern) fuer j in range(100)]
+        fuer it in iters:
             self.assertEqual(next(it), p)
-        iters = [base.rglob('d') for j in range(100)]
+        iters = [base.rglob('d') fuer j in range(100)]
         p = base
-        for i in range(depth):
+        fuer i in range(depth):
             p = p / 'd'
-            for it in iters:
+            fuer it in iters:
                 self.assertEqual(next(it), p)
 
     def test_glob_above_recursion_limit(self):
@@ -2909,8 +2909,8 @@ klasse PathTest(PurePathTest):
     def test_glob_case_sensitive(self):
         P = self.cls
         def _check(path, pattern, case_sensitive, expected):
-            actual = {str(q) for q in path.glob(pattern, case_sensitive=case_sensitive)}
-            expected = {str(P(self.base, q)) for q in expected}
+            actual = {str(q) fuer q in path.glob(pattern, case_sensitive=case_sensitive)}
+            expected = {str(P(self.base, q)) fuer q in expected}
             self.assertEqual(actual, expected)
         path = P(self.base)
         _check(path, "DIRB/FILE*", True, [])
@@ -2974,9 +2974,9 @@ klasse PathTest(PurePathTest):
     @needs_symlinks
     def test_glob_recurse_symlinks_common(self):
         def _check(path, glob, expected):
-            actual = {path for path in path.glob(glob, recurse_symlinks=True)
+            actual = {path fuer path in path.glob(glob, recurse_symlinks=True)
                       if path.parts.count("linkD") <= 1}  # exclude symlink loop.
-            self.assertEqual(actual, { P(self.base, q) for q in expected })
+            self.assertEqual(actual, { P(self.base, q) fuer q in expected })
         P = self.cls
         p = P(self.base)
         _check(p, "fileB", [])
@@ -3011,9 +3011,9 @@ klasse PathTest(PurePathTest):
     @needs_symlinks
     def test_rglob_recurse_symlinks_common(self):
         def _check(path, glob, expected):
-            actual = {path for path in path.rglob(glob, recurse_symlinks=True)
+            actual = {path fuer path in path.rglob(glob, recurse_symlinks=True)
                       if path.parts.count("linkD") <= 1}  # exclude symlink loop.
-            self.assertEqual(actual, { P(self.base, q) for q in expected })
+            self.assertEqual(actual, { P(self.base, q) fuer q in expected })
         P = self.cls
         p = P(self.base)
         _check(p, "fileB", ["dirB/fileB", "dirA/linkC/fileB", "linkB/fileB",
@@ -3043,7 +3043,7 @@ klasse PathTest(PurePathTest):
     def test_rglob_recurse_symlinks_false(self):
         def _check(path, glob, expected):
             actual = set(path.rglob(glob, recurse_symlinks=False))
-            self.assertEqual(actual, { P(self.base, q) for q in expected })
+            self.assertEqual(actual, { P(self.base, q) fuer q in expected })
         P = self.cls
         p = P(self.base)
         it = p.rglob("fileA")
@@ -3115,7 +3115,7 @@ klasse PathTest(PurePathTest):
                   'linkB',
                   'brokenLinkLoop',
                   }
-        self.assertEqual(given, {p / x for x in expect})
+        self.assertEqual(given, {p / x fuer x in expect})
 
     @needs_symlinks
     def test_glob_permissions(self):
@@ -3124,7 +3124,7 @@ klasse PathTest(PurePathTest):
         base = P(self.base) / 'permissions'
         base.mkdir()
 
-        for i in range(100):
+        fuer i in range(100):
             link = base / f"link{i}"
             if i % 2:
                 link.symlink_to(P(self.base, "dirE", "nonexistent"))
@@ -3223,7 +3223,7 @@ klasse PathTest(PurePathTest):
         username = pwdent.pw_name
         userhome = pwdent.pw_dir.rstrip('/') or '/'
         # Find arbitrary different user (if exists).
-        for pwdent in pwd.getpwall():
+        fuer pwdent in pwd.getpwall():
             othername = pwdent.pw_name
             otherhome = pwdent.pw_dir.rstrip('/')
             if othername != username and otherhome:
@@ -3278,7 +3278,7 @@ klasse PathTest(PurePathTest):
                 self.skipTest("no file descriptors - issue was not reproduced")
             # Checking all file descriptors because there is no guarantee
             # which one will fail.
-            for f in file_descriptors:
+            fuer f in file_descriptors:
                 f.exists()
                 f.is_dir()
                 f.is_file()
@@ -3491,7 +3491,7 @@ klasse PathWalkTest(unittest.TestCase):
         tmp2_path = self.sub1_path / "tmp2"
         tmp3_path = self.sub2_path / "tmp3"
         tmp4_path = self.cls(self.base, "TEST2", "tmp4")
-        for path in tmp1_path, tmp2_path, tmp3_path, tmp4_path:
+        fuer path in tmp1_path, tmp2_path, tmp3_path, tmp4_path:
             with open(path, "w", encoding='utf-8') as f:
                 f.write(f"I'm {path} and proud of it.  Blame test_pathlib.\n")
 
@@ -3537,11 +3537,11 @@ klasse PathWalkTest(unittest.TestCase):
         path1new = (root / dir1).with_suffix(".new")
         path1.rename(path1new)
         try:
-            roots = [r for r, _, _ in walk_it]
+            roots = [r fuer r, _, _ in walk_it]
             self.assertTrue(errors)
             self.assertNotIn(path1, roots)
             self.assertNotIn(path1new, roots)
-            for dir2 in dirs:
+            fuer dir2 in dirs:
                 if dir2 != dir1:
                     self.assertIn(root / dir2, roots)
         finally:
@@ -3553,18 +3553,18 @@ klasse PathWalkTest(unittest.TestCase):
         path = self.cls(base, *(['d']*depth))
         path.mkdir(parents=True)
 
-        iters = [base.walk(top_down=False) for _ in range(100)]
-        for i in range(depth + 1):
+        iters = [base.walk(top_down=False) fuer _ in range(100)]
+        fuer i in range(depth + 1):
             expected = (path, ['d'] if i else [], [])
-            for it in iters:
+            fuer it in iters:
                 self.assertEqual(next(it), expected)
             path = path.parent
 
-        iters = [base.walk(top_down=True) for _ in range(100)]
+        iters = [base.walk(top_down=True) fuer _ in range(100)]
         path = base
-        for i in range(depth + 1):
+        fuer i in range(depth + 1):
             expected = (path, ['d'] if i < depth else [], [])
-            for it in iters:
+            fuer it in iters:
                 self.assertEqual(next(it), expected)
             path = path / 'd'
 
@@ -3583,7 +3583,7 @@ klasse PathWalkTest(unittest.TestCase):
     @needs_symlinks
     def test_walk_follow_symlinks(self):
         walk_it = self.walk_path.walk(follow_symlinks=True)
-        for root, dirs, files in walk_it:
+        fuer root, dirs, files in walk_it:
             if root == self.link_path:
                 self.assertEqual(dirs, [])
                 self.assertEqual(files, ["tmp4"])
@@ -3596,7 +3596,7 @@ klasse PathWalkTest(unittest.TestCase):
         # Tests whether symlinks end up in filenames or dirnames depending
         # on the `follow_symlinks` argument.
         walk_it = self.walk_path.walk(follow_symlinks=False)
-        for root, dirs, files in walk_it:
+        fuer root, dirs, files in walk_it:
             if root == self.sub2_path:
                 self.assertIn("link", files)
                 break
@@ -3604,7 +3604,7 @@ klasse PathWalkTest(unittest.TestCase):
             self.fail("symlink not found")
 
         walk_it = self.walk_path.walk(follow_symlinks=True)
-        for root, dirs, files in walk_it:
+        fuer root, dirs, files in walk_it:
             if root == self.sub2_path:
                 self.assertIn("link", dirs)
                 break

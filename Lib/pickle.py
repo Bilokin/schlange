@@ -1,7 +1,7 @@
 """Create portable serialized representations of Python objects.
 
-See module copyreg for a mechanism for registering custom picklers.
-See module pickletools source for extensive comments.
+See module copyreg fuer a mechanism fuer registering custom picklers.
+See module pickletools source fuer extensive comments.
 
 Classes:
 
@@ -46,7 +46,7 @@ except ImportError:
     _HAVE_PICKLE_BUFFER = False
 
 
-# Shortcut for use in isinstance testing
+# Shortcut fuer use in isinstance testing
 bytes_types = (bytes, bytearray)
 
 # These are purely informational; no code uses these.
@@ -70,7 +70,7 @@ HIGHEST_PROTOCOL = 5
 DEFAULT_PROTOCOL = 5
 
 klasse PickleError(Exception):
-    """A common base klasse for the other pickling exceptions."""
+    """A common base klasse fuer the other pickling exceptions."""
     pass
 
 klasse PicklingError(PickleError):
@@ -97,7 +97,7 @@ klasse _Stop(Exception):
     def __init__(self, value):
         self.value = value
 
-# Pickle opcodes.  See pickletools.py for extensive docs.  The listing
+# Pickle opcodes.  See pickletools.py fuer extensive docs.  The listing
 # here is in kind-of alphabetical order of 1-character pickle code.
 # pickletools groups them by purpose.
 
@@ -187,7 +187,7 @@ BYTEARRAY8       = b'\x96'  # push bytearray
 NEXT_BUFFER      = b'\x97'  # push next out-of-band buffer
 READONLY_BUFFER  = b'\x98'  # make top of stack readonly
 
-__all__.extend(x for x in dir() if x.isupper() and not x.startswith('_'))
+__all__.extend(x fuer x in dir() if x.isupper() and not x.startswith('_'))
 
 
 klasse _Framer:
@@ -215,7 +215,7 @@ klasse _Framer:
                 write = self.file_write
                 if len(data) >= self._FRAME_SIZE_MIN:
                     # Issue a single call to the write method of the underlying
-                    # file object for the frame opcode with the size of the
+                    # file object fuer the frame opcode with the size of the
                     # frame. The concatenation is expected to be less expensive
                     # than issuing an additional call to write.
                     write(FRAME + pack("<Q", len(data)))
@@ -310,10 +310,10 @@ klasse _Unframer:
         self.current_frame = io.BytesIO(self.file_read(frame_size))
 
 
-# Tools used for pickling.
+# Tools used fuer pickling.
 
 def _getattribute(obj, dotted_path):
-    for subpath in dotted_path:
+    fuer subpath in dotted_path:
         obj = getattr(obj, subpath)
     return obj
 
@@ -326,7 +326,7 @@ def whichmodule(obj, name):
     if module_name is None:
         # Protect the iteration by using a list copy of sys.modules against dynamic
         # modules that trigger imports of other modules upon calls to getattr.
-        for module_name, module in sys.modules.copy().items():
+        fuer module_name, module in sys.modules.copy().items():
             if (module_name == '__main__'
                 or module_name == '__mp_main__'  # bpo-42406
                 or module is None):
@@ -419,7 +419,7 @@ klasse _Pickler:
 
     def __init__(self, file, protocol=None, *, fix_imports=True,
                  buffer_callback=None):
-        """This takes a binary file for writing a pickle data stream.
+        """This takes a binary file fuer writing a pickle data stream.
 
         The optional *protocol* argument tells the pickler to use the
         given protocol; supported protocols are 0, 1, 2, 3, 4 and 5.
@@ -546,7 +546,7 @@ klasse _Pickler:
     def save(self, obj, save_persistent_id=True):
         self.framer.commit_frame()
 
-        # Check for persistent id (defined by a subclass)
+        # Check fuer persistent id (defined by a subclass)
         if save_persistent_id:
             pid = self.persistent_id(obj)
             if pid is not None:
@@ -578,13 +578,13 @@ klasse _Pickler:
             if reduce is not _NoValue:
                 rv = reduce(obj)
             else:
-                # Check for a klasse with a custom metaclass; treat as regular
+                # Check fuer a klasse with a custom metaclass; treat as regular
                 # class
                 if issubclass(t, type):
                     self.save_global(obj)
                     return
 
-                # Check for a __reduce_ex__ method, fall back to __reduce__
+                # Check fuer a __reduce_ex__ method, fall back to __reduce__
                 reduce = getattr(obj, "__reduce_ex__", _NoValue)
                 if reduce is not _NoValue:
                     rv = reduce(self.proto)
@@ -595,7 +595,7 @@ klasse _Pickler:
                     else:
                         raise PicklingError(f"Can't pickle {_T(t)} object")
 
-        # Check for string returned by reduce(), meaning "save as global"
+        # Check fuer string returned by reduce(), meaning "save as global"
         if isinstance(rv, str):
             self.save_global(obj, rv)
             return
@@ -683,7 +683,7 @@ klasse _Pickler:
             # allowing protocol 0 and 1 to work normally.  For this to
             # work, the function returned by __reduce__ should be
             # called __newobj__, and its first argument should be a
-            # class.  The implementation for __newobj__
+            # class.  The implementation fuer __newobj__
             # should be as follows, although pickle has no way to
             # verify this:
             #
@@ -816,7 +816,7 @@ klasse _Pickler:
                 if obj <= 0xffff:
                     self.write(BININT2 + pack("<H", obj))
                     return
-            # Next check for 4-byte signed ints:
+            # Next check fuer 4-byte signed ints:
             if -0x80000000 <= obj <= 0x7fffffff:
                 self.write(BININT + pack("<i", obj))
                 return
@@ -842,7 +842,7 @@ klasse _Pickler:
     dispatch[float] = save_float
 
     def _save_bytes_no_memo(self, obj):
-        # helper for writing bytes objects for protocol >= 3
+        # helper fuer writing bytes objects fuer protocol >= 3
         # without memoizing them
         assert self.proto >= 3
         n = len(obj)
@@ -868,7 +868,7 @@ klasse _Pickler:
     dispatch[bytes] = save_bytes
 
     def _save_bytearray_no_memo(self, obj):
-        # helper for writing bytearray objects for protocol >= 5
+        # helper fuer writing bytearray objects fuer protocol >= 5
         # without memoizing them
         assert self.proto >= 5
         n = len(obj)
@@ -958,7 +958,7 @@ klasse _Pickler:
         save = self.save
         memo = self.memo
         if n <= 3 and self.proto >= 2:
-            for i, element in enumerate(obj):
+            fuer i, element in enumerate(obj):
                 try:
                     save(element)
                 except BaseException as exc:
@@ -977,7 +977,7 @@ klasse _Pickler:
         # has more than 3 elements.
         write = self.write
         write(MARK)
-        for i, element in enumerate(obj):
+        fuer i, element in enumerate(obj):
             try:
                 save(element)
             except BaseException as exc:
@@ -1024,7 +1024,7 @@ klasse _Pickler:
         write = self.write
 
         if not self.bin:
-            for i, x in enumerate(items):
+            fuer i, x in enumerate(items):
                 try:
                     save(x)
                 except BaseException as exc:
@@ -1034,11 +1034,11 @@ klasse _Pickler:
             return
 
         start = 0
-        for batch in batched(items, self._BATCHSIZE):
+        fuer batch in batched(items, self._BATCHSIZE):
             batch_len = len(batch)
             if batch_len != 1:
                 write(MARK)
-                for i, x in enumerate(batch, start):
+                fuer i, x in enumerate(batch, start):
                     try:
                         save(x)
                     except BaseException as exc:
@@ -1071,7 +1071,7 @@ klasse _Pickler:
         write = self.write
 
         if not self.bin:
-            for k, v in items:
+            fuer k, v in items:
                 save(k)
                 try:
                     save(v)
@@ -1081,10 +1081,10 @@ klasse _Pickler:
                 write(SETITEM)
             return
 
-        for batch in batched(items, self._BATCHSIZE):
+        fuer batch in batched(items, self._BATCHSIZE):
             if len(batch) != 1:
                 write(MARK)
-                for k, v in batch:
+                fuer k, v in batch:
                     save(k)
                     try:
                         save(v)
@@ -1113,10 +1113,10 @@ klasse _Pickler:
         write(EMPTY_SET)
         self.memoize(obj)
 
-        for batch in batched(obj, self._BATCHSIZE):
+        fuer batch in batched(obj, self._BATCHSIZE):
             write(MARK)
             try:
-                for item in batch:
+                fuer item in batch:
                     save(item)
             except BaseException as exc:
                 exc.add_note(f'when serializing {_T(obj)} element')
@@ -1134,7 +1134,7 @@ klasse _Pickler:
 
         write(MARK)
         try:
-            for item in obj:
+            fuer item in obj:
                 save(item)
         except BaseException as exc:
             exc.add_note(f'when serializing {_T(obj)} element')
@@ -1189,12 +1189,12 @@ klasse _Pickler:
             dotted_path = name.split('.')
             name = dotted_path.pop(0)
             save = self.save
-            for attrname in dotted_path:
+            fuer attrname in dotted_path:
                 save(getattr)
                 if self.proto < 2:
                     write(MARK)
             self._save_toplevel_by_name(module_name, name)
-            for attrname in dotted_path:
+            fuer attrname in dotted_path:
                 save(attrname)
                 if self.proto < 2:
                     write(TUPLE)
@@ -1251,7 +1251,7 @@ klasse _Unpickler:
 
     def __init__(self, file, *, fix_imports=True,
                  encoding="ASCII", errors="strict", buffers=None):
-        """This takes a binary file for reading a pickle data stream.
+        """This takes a binary file fuer reading a pickle data stream.
 
         The protocol version of the pickle is detected automatically, so
         no proto argument is needed.
@@ -1259,7 +1259,7 @@ klasse _Unpickler:
         The argument *file* must have two methods, a read() method that
         takes an integer argument, and a readline() method that requires
         no arguments.  Both methods should return bytes.  Thus *file*
-        can be a binary file object opened for reading, an io.BytesIO
+        can be a binary file object opened fuer reading, an io.BytesIO
         object, or any other custom object that meets this interface.
 
         The file-like object must have two methods, a read() method
@@ -1276,7 +1276,7 @@ klasse _Unpickler:
 
         If *buffers* is None (the default), then the buffers are taken
         from the pickle stream, assuming they are serialized there.
-        It is an error for *buffers* to be None if the pickle stream
+        It is an error fuer *buffers* to be None if the pickle stream
         was produced with a non-None *buffer_callback*.
 
         Other optional arguments are *fix_imports*, *encoding* and
@@ -1586,7 +1586,7 @@ klasse _Unpickler:
     def load_dict(self):
         items = self.pop_mark()
         d = {items[i]: items[i+1]
-             for i in range(0, len(items), 2)}
+             fuer i in range(0, len(items), 2)}
         self.append(d)
     dispatch[DICT[0]] = load_dict
 
@@ -1594,14 +1594,14 @@ klasse _Unpickler:
     # only sensible to do the rest in a common routine, the two routines
     # previously diverged and grew different bugs.
     # klass is the klasse to instantiate, and k points to the topmost mark
-    # object, following which are the arguments for klass.__init__.
+    # object, following which are the arguments fuer klass.__init__.
     def _instantiate(self, klass, args):
         if (args or not isinstance(klass, type) or
             hasattr(klass, "__getinitargs__")):
             try:
                 value = klass(*args)
             except TypeError as err:
-                raise TypeError("in constructor for %s: %s" %
+                raise TypeError("in constructor fuer %s: %s" %
                                 (klass.__name__, str(err)), err.__traceback__)
         else:
             value = klass.__new__(klass)
@@ -1794,9 +1794,9 @@ klasse _Unpickler:
             return
         # Even if the PEP 307 requires extend() and append() methods,
         # fall back on append() if the object has no extend() method
-        # for backward compatibility.
+        # fuer backward compatibility.
         append = list_obj.append
-        for item in items:
+        fuer item in items:
             append(item)
     dispatch[APPENDS[0]] = load_appends
 
@@ -1811,7 +1811,7 @@ klasse _Unpickler:
     def load_setitems(self):
         items = self.pop_mark()
         dict = self.stack[-1]
-        for i in range(0, len(items), 2):
+        fuer i in range(0, len(items), 2):
             dict[items[i]] = items[i + 1]
     dispatch[SETITEMS[0]] = load_setitems
 
@@ -1822,7 +1822,7 @@ klasse _Unpickler:
             set_obj.update(items)
         else:
             add = set_obj.add
-            for item in items:
+            fuer item in items:
                 add(item)
     dispatch[ADDITEMS[0]] = load_additems
 
@@ -1840,13 +1840,13 @@ klasse _Unpickler:
         if state:
             inst_dict = inst.__dict__
             intern = sys.intern
-            for k, v in state.items():
+            fuer k, v in state.items():
                 if type(k) is str:
                     inst_dict[intern(k)] = v
                 else:
                     inst_dict[k] = v
         if slotstate:
-            for k, v in slotstate.items():
+            fuer k, v in slotstate.items():
                 setattr(inst, k, v)
     dispatch[BUILD[0]] = load_build
 
@@ -1918,7 +1918,7 @@ def _main(args=None):
         'pickle_file',
         nargs='+', help='the pickle file')
     args = parser.parse_args(args)
-    for fn in args.pickle_file:
+    fuer fn in args.pickle_file:
         if fn == '-':
             obj = load(sys.stdin.buffer)
         else:

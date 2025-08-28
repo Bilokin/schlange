@@ -1,4 +1,4 @@
-"""Policy framework for the email package.
+"""Policy framework fuer the email package.
 
 Allows fine grained feature control of how the package parses and emits data.
 """
@@ -29,12 +29,12 @@ klasse _PolicyBase:
     """Policy Object basic framework.
 
     This klasse is useless unless subclassed.  A subclass should define
-    klasse attributes with defaults for any values that are to be
+    klasse attributes with defaults fuer any values that are to be
     managed by the Policy object.  The constructor will then allow
-    non-default values to be set for these attributes at instance
+    non-default values to be set fuer these attributes at instance
     creation time.  The instance will be callable, taking these same
     attributes keyword arguments, and returning a new instance
-    identical to the called instance except for those values changed
+    identical to the called instance except fuer those values changed
     by the keyword arguments.  Instances may be added, yielding new
     instances with any non-default values from the right hand
     operand overriding those in the left hand operand.  That is,
@@ -50,36 +50,36 @@ klasse _PolicyBase:
     def __init__(self, **kw):
         """Create new Policy, possibly overriding some defaults.
 
-        See klasse docstring for a list of overridable attributes.
+        See klasse docstring fuer a list of overridable attributes.
 
         """
-        for name, value in kw.items():
+        fuer name, value in kw.items():
             if hasattr(self, name):
                 super(_PolicyBase,self).__setattr__(name, value)
             else:
                 raise TypeError(
-                    "{!r} is an invalid keyword argument for {}".format(
+                    "{!r} is an invalid keyword argument fuer {}".format(
                         name, self.__class__.__name__))
 
     def __repr__(self):
         args = [ "{}={!r}".format(name, value)
-                 for name, value in self.__dict__.items() ]
+                 fuer name, value in self.__dict__.items() ]
         return "{}({})".format(self.__class__.__name__, ', '.join(args))
 
     def clone(self, **kw):
         """Return a new instance with specified attributes changed.
 
         The new instance has the same attribute values as the current object,
-        except for the changes passed in as keyword arguments.
+        except fuer the changes passed in as keyword arguments.
 
         """
         newpolicy = self.__class__.__new__(self.__class__)
-        for attr, value in self.__dict__.items():
+        fuer attr, value in self.__dict__.items():
             object.__setattr__(newpolicy, attr, value)
-        for attr, value in kw.items():
+        fuer attr, value in kw.items():
             if not hasattr(self, attr):
                 raise TypeError(
-                    "{!r} is an invalid keyword argument for {}".format(
+                    "{!r} is an invalid keyword argument fuer {}".format(
                         attr, self.__class__.__name__))
             object.__setattr__(newpolicy, attr, value)
         return newpolicy
@@ -108,9 +108,9 @@ def _append_doc(doc, added_doc):
 def _extend_docstrings(cls):
     if cls.__doc__ and cls.__doc__.startswith('+'):
         cls.__doc__ = _append_doc(cls.__bases__[0].__doc__, cls.__doc__)
-    for name, attr in cls.__dict__.items():
+    fuer name, attr in cls.__dict__.items():
         if attr.__doc__ and attr.__doc__.startswith('+'):
-            for c in (c for base in cls.__bases__ for c in base.mro()):
+            fuer c in (c fuer base in cls.__bases__ fuer c in base.mro()):
                 doc = getattr(getattr(c, name), '__doc__')
                 if doc:
                     attr.__doc__ = _append_doc(doc, attr.__doc__)
@@ -120,7 +120,7 @@ def _extend_docstrings(cls):
 
 klasse Policy(_PolicyBase, metaclass=abc.ABCMeta):
 
-    r"""Controls for how messages are interpreted and formatted.
+    r"""Controls fuer how messages are interpreted and formatted.
 
     Most of the classes and many of the methods in the email package accept
     Policy objects as parameters.  A Policy object contains a set of values and
@@ -230,7 +230,7 @@ klasse Policy(_PolicyBase, metaclass=abc.ABCMeta):
         which will faithfully produce as many headers as exist in the message
         being parsed.)
 
-        The default implementation returns None for all header names.
+        The default implementation returns None fuer all header names.
         """
         return None
 
@@ -379,7 +379,7 @@ klasse Compat32(Policy):
             # Assume it is a Header-like object.
             h = value
         if h is not None:
-            # The Header klasse interprets a value of None for maxlinelen as the
+            # The Header klasse interprets a value of None fuer maxlinelen as the
             # default value of 78, as recommended by RFC 2822.
             maxlinelen = 0
             if self.max_line_length is not None:

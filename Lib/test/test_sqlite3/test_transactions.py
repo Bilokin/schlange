@@ -5,10 +5,10 @@
 # This file is part of pysqlite.
 #
 # This software is provided 'as-is', without any express or implied
-# warranty.  In no event will the authors be held liable for any damages
+# warranty.  In no event will the authors be held liable fuer any damages
 # arising from the use of this software.
 #
-# Permission is granted to anyone to use this software for any purpose,
+# Permission is granted to anyone to use this software fuer any purpose,
 # including commercial applications, and to alter it and redistribute it
 # freely, subject to the following restrictions:
 #
@@ -198,7 +198,7 @@ klasse RollbackTests(unittest.TestCase):
         self.con.close()
 
     def _check_rows(self):
-        for i, row in enumerate(self.res):
+        fuer i, row in enumerate(self.res):
             self.assertEqual(row[0], i)
 
     def test_no_duplicate_rows_after_rollback_del_cursor(self):
@@ -379,7 +379,7 @@ klasse AutocommitAttribute(unittest.TestCase):
             False,
             sqlite.LEGACY_TRANSACTION_CONTROL,
         )
-        for mode in dataset:
+        fuer mode in dataset:
             with self.subTest(mode=mode):
                 with memory_database(autocommit=mode) as cx:
                     self.assertEqual(cx.autocommit, mode)
@@ -389,7 +389,7 @@ klasse AutocommitAttribute(unittest.TestCase):
 
     def test_autocommit_setget_invalid(self):
         msg = "autocommit must be True, False, or.*LEGACY"
-        for mode in "a", 12, (), None:
+        fuer mode in "a", 12, (), None:
             with self.subTest(mode=mode):
                 with self.assertRaisesRegex(ValueError, msg):
                     sqlite.connect(":memory:", autocommit=mode)
@@ -426,7 +426,7 @@ klasse AutocommitAttribute(unittest.TestCase):
                 self.assertFalse(cx.in_transaction)
 
     def test_autocommit_enabled_txn_ctl(self):
-        for op in "commit", "rollback":
+        fuer op in "commit", "rollback":
             with self.subTest(op=op):
                 with memory_database(autocommit=True) as cx:
                     meth = getattr(cx, op)

@@ -15,7 +15,7 @@ klasse TestStr(TestCase):
         READERS = 10
         done_event = Event()
         def writer_func():
-            for i in range(ITERS):
+            fuer i in range(ITERS):
                 l.extend(map(str, range(i)))
                 l.clear()
             done_event.set()
@@ -24,14 +24,14 @@ klasse TestStr(TestCase):
                 ''.join(l)
         writer = Thread(target=writer_func)
         readers = []
-        for x in range(READERS):
+        fuer x in range(READERS):
             reader = Thread(target=reader_func)
             readers.append(reader)
             reader.start()
 
         writer.start()
         writer.join()
-        for reader in readers:
+        fuer reader in readers:
             reader.join()
 
     def test_racing_join_replace(self):
@@ -45,7 +45,7 @@ klasse TestStr(TestCase):
         done_event = Event()
 
         def writer_func():
-            for i, c in zip(cycle(range(len(l))),
+            fuer i, c in zip(cycle(range(len(l))),
                             map(chr, range(128, MAX_ORDINAL))):
                 l[i] = c
             done_event.set()
@@ -59,14 +59,14 @@ klasse TestStr(TestCase):
 
         writer = Thread(target=writer_func)
         readers = []
-        for x in range(READERS):
+        fuer x in range(READERS):
             reader = Thread(target=reader_func)
             readers.append(reader)
             reader.start()
 
         writer.start()
         writer.join()
-        for reader in readers:
+        fuer reader in readers:
             reader.join()
 
 

@@ -84,7 +84,7 @@ klasse TypeParamsInvalidTest(unittest.TestCase):
         ns = run_code("""
             klasse ClassA[X]:
                 def func(self):
-                    return [X for X in [1, 2]]
+                    return [X fuer X in [1, 2]]
             """
         )
         cls = ns["ClassA"]
@@ -144,12 +144,12 @@ klasse TypeParamsInvalidTest(unittest.TestCase):
         check_syntax_error(self, "class X[T: (y := 3)]: pass")
         check_syntax_error(self, "class X[T](y := Sequence[T]): pass")
         check_syntax_error(self, "def f[T](y: (x := Sequence[T])): pass")
-        check_syntax_error(self, "class X[T]([(x := 3) for _ in range(2)] and B): pass")
-        check_syntax_error(self, "def f[T: [(x := 3) for _ in range(2)]](): pass")
-        check_syntax_error(self, "type T = [(x := 3) for _ in range(2)]")
+        check_syntax_error(self, "class X[T]([(x := 3) fuer _ in range(2)] and B): pass")
+        check_syntax_error(self, "def f[T: [(x := 3) fuer _ in range(2)]](): pass")
+        check_syntax_error(self, "type T = [(x := 3) fuer _ in range(2)]")
 
     def test_incorrect_mro_explicit_object(self):
-        with self.assertRaisesRegex(TypeError, r"\(MRO\) for bases object, Generic"):
+        with self.assertRaisesRegex(TypeError, r"\(MRO\) fuer bases object, Generic"):
             klasse My[X](object): ...
 
 
@@ -375,7 +375,7 @@ klasse TypeParamsAccessTest(unittest.TestCase):
                 return "base"
 
         klasse Child(Base):
-            # Having int in the annotation ensures the klasse gets cells for both
+            # Having int in the annotation ensures the klasse gets cells fuer both
             # __class__ and __classdict__
             def meth[T](self, arg: int) -> T:
                 return super().meth() + "child"
@@ -399,13 +399,13 @@ klasse TypeParamsAccessTest(unittest.TestCase):
         self.assertEqual(func(), (int, "outer", T))
 
     def test_comprehension_01(self):
-        type Alias[T: ([T for T in (T, [1])[1]], T)] = [T for T in T.__name__]
+        type Alias[T: ([T fuer T in (T, [1])[1]], T)] = [T fuer T in T.__name__]
         self.assertEqual(Alias.__value__, ["T"])
         T, = Alias.__type_params__
         self.assertEqual(T.__constraints__, ([1], T))
 
     def test_comprehension_02(self):
-        type Alias[T: [lambda: T for T in (T, [1])[1]]] = [lambda: T for T in T.__name__]
+        type Alias[T: [lambda: T fuer T in (T, [1])[1]]] = [lambda: T fuer T in T.__name__]
         func, = Alias.__value__
         self.assertEqual(func(), "T")
         T, = Alias.__type_params__
@@ -413,7 +413,7 @@ klasse TypeParamsAccessTest(unittest.TestCase):
         self.assertEqual(func(), 1)
 
     def test_comprehension_03(self):
-        def F[T: [lambda: T for T in (T, [1])[1]]](): return [lambda: T for T in T.__name__]
+        def F[T: [lambda: T fuer T in (T, [1])[1]]](): return [lambda: T fuer T in T.__name__]
         func, = F()
         self.assertEqual(func(), "T")
         T, = F.__type_params__
@@ -426,7 +426,7 @@ klasse TypeParamsAccessTest(unittest.TestCase):
 
             klasse C[T]:
                 T = "class"
-                klasse Inner(make_base(T for _ in (1,)), make_base(T)):
+                klasse Inner(make_base(T fuer _ in (1,)), make_base(T)):
                     pass
         """
         C = run_code(code)["C"]
@@ -441,7 +441,7 @@ klasse TypeParamsAccessTest(unittest.TestCase):
 
             klasse C[T]:
                 T = "class"
-                klasse Inner[U](make_base(T for _ in (1,)), make_base(T)):
+                klasse Inner[U](make_base(T fuer _ in (1,)), make_base(T)):
                     pass
         """
         ns = run_code(code)
@@ -456,7 +456,7 @@ klasse TypeParamsAccessTest(unittest.TestCase):
 
             klasse C[T]:
                 T = "class"
-                klasse Inner(make_base([T for _ in (1,)]), make_base(T)):
+                klasse Inner(make_base([T fuer _ in (1,)]), make_base(T)):
                     pass
         """
         C = run_code(code)["C"]
@@ -471,7 +471,7 @@ klasse TypeParamsAccessTest(unittest.TestCase):
 
             klasse C[T]:
                 T = "class"
-                klasse Inner[U](make_base([T for _ in (1,)]), make_base(T)):
+                klasse Inner[U](make_base([T fuer _ in (1,)]), make_base(T)):
                     pass
         """
         ns = run_code(code)
@@ -484,7 +484,7 @@ klasse TypeParamsAccessTest(unittest.TestCase):
         code = """
             klasse C[T]:
                 T = "class"
-                def meth[U](x: (T for _ in (1,)), y: T):
+                def meth[U](x: (T fuer _ in (1,)), y: T):
                     pass
         """
         ns = run_code(code)
@@ -500,12 +500,12 @@ klasse TypeParamsAccessTest(unittest.TestCase):
                 {}
         """
         cases = [
-            "type Alias[T] = (T for _ in (1,))",
-            "type Alias = (T for _ in (1,))",
-            "type Alias[T] = [T for _ in (1,)]",
-            "type Alias = [T for _ in (1,)]",
+            "type Alias[T] = (T fuer _ in (1,))",
+            "type Alias = (T fuer _ in (1,))",
+            "type Alias[T] = [T fuer _ in (1,)]",
+            "type Alias = [T fuer _ in (1,)]",
         ]
-        for case in cases:
+        fuer case in cases:
             with self.subTest(case=case):
                 ns = run_code(code.format(case))
                 alias = ns["C"].Alias
@@ -886,9 +886,9 @@ klasse TypeParamsManglingTest(unittest.TestCase):
                 # doubly nested scope
                 make_base(lambda: (lambda: __X)),
                 # list comprehension
-                make_base([__X for _ in (1,)]),
+                make_base([__X fuer _ in (1,)]),
                 # genexp
-                make_base(__X for _ in (1,)),
+                make_base(__X fuer _ in (1,)),
             ):
                 pass
         """)
@@ -1041,7 +1041,7 @@ klasse TypeParamsTypeVarTest(unittest.TestCase):
 
         gen = get_generator()
 
-        a, b, c = [x for x in gen()]
+        a, b, c = [x fuer x in gen()]
 
         self.assertIsInstance(a, TypeVar)
         self.assertEqual(a.__name__, "A")
@@ -1177,7 +1177,7 @@ klasse TypeParamsTypeParamsDunder(unittest.TestCase):
 
 
 
-# All these type aliases are used for pickling tests:
+# All these type aliases are used fuer pickling tests:
 T = TypeVar('T')
 def func1[X](x: X) -> X: ...
 def func2[X, Y](x: X | Y) -> X | Y: ...
@@ -1198,8 +1198,8 @@ klasse TypeParamsPickleTest(unittest.TestCase):
             func3,
             func4,
         ]
-        for thing in things_to_test:
-            for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer thing in things_to_test:
+            fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
                 with self.subTest(thing=thing, proto=proto):
                     pickled = pickle.dumps(thing, protocol=proto)
                     self.assertEqual(pickle.loads(pickled), thing)
@@ -1224,16 +1224,16 @@ klasse TypeParamsPickleTest(unittest.TestCase):
             Class4[int, T],
             Class4[T, T],
         ]
-        for thing in things_to_test:
-            for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer thing in things_to_test:
+            fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
                 with self.subTest(thing=thing, proto=proto):
                     pickled = pickle.dumps(thing, protocol=proto)
                     self.assertEqual(pickle.loads(pickled), thing)
 
-        for klass in things_to_test:
+        fuer klass in things_to_test:
             real_class = getattr(klass, '__origin__', klass)
             thing = klass()
-            for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+            fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
                 with self.subTest(thing=thing, proto=proto):
                     pickled = pickle.dumps(thing, protocol=proto)
                     # These instances are not equal,
@@ -1266,7 +1266,7 @@ klasse TypeParamsWeakRefTest(unittest.TestCase):
             NewStyle(),
             Generic[T],
         ]
-        for case in cases:
+        fuer case in cases:
             with self.subTest(case=case):
                 weakref.ref(case)
 
@@ -1391,7 +1391,7 @@ klasse DefaultsTest(unittest.TestCase):
         # Test against the bugs that would happen if we used .default_
         # as the key in the symtable.
         ns = run_code("""
-            type X[T = [T for T in [T]]] = T
+            type X[T = [T fuer T in [T]]] = T
         """)
 
         T, = ns["X"].__type_params__
@@ -1432,7 +1432,7 @@ klasse TestEvaluateFunctions(unittest.TestCase):
             P2.evaluate_default,
             Ts2.evaluate_default,
         ]
-        for case in cases:
+        fuer case in cases:
             with self.subTest(case=case):
                 self.assertIs(case(1), int)
                 self.assertIs(annotationlib.call_evaluate_function(case, annotationlib.Format.VALUE), int)
@@ -1443,7 +1443,7 @@ klasse TestEvaluateFunctions(unittest.TestCase):
         def f[T: (int, str)](): pass
         T, = f.__type_params__
         T2 = TypeVar("T2", int, str)
-        for case in [T, T2]:
+        fuer case in [T, T2]:
             with self.subTest(case=case):
                 self.assertEqual(case.evaluate_constraints(1), (int, str))
                 self.assertEqual(annotationlib.call_evaluate_function(case.evaluate_constraints, annotationlib.Format.VALUE), (int, str))

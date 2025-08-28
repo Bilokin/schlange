@@ -45,13 +45,13 @@ def kill_on_error(proc):
 
 @unittest.skipUnless(hasattr(signal, "setitimer"), "requires setitimer()")
 klasse EINTRBaseTest(unittest.TestCase):
-    """ Base klasse for EINTR tests. """
+    """ Base klasse fuer EINTR tests. """
 
-    # delay for initial signal delivery
+    # delay fuer initial signal delivery
     signal_delay = 0.1
     # signal delivery periodicity
     signal_period = 0.1
-    # default sleep time for tests - should obviously have:
+    # default sleep time fuer tests - should obviously have:
     # sleep_time > signal_period
     sleep_time = 0.2
 
@@ -88,7 +88,7 @@ klasse EINTRBaseTest(unittest.TestCase):
 
 @unittest.skipUnless(hasattr(signal, "setitimer"), "requires setitimer()")
 klasse OSEINTRTest(EINTRBaseTest):
-    """ EINTR tests for the os module. """
+    """ EINTR tests fuer the os module. """
 
     def new_sleep_process(self):
         code = f'import time; time.sleep({self.sleep_time!r})'
@@ -96,11 +96,11 @@ klasse OSEINTRTest(EINTRBaseTest):
 
     def _test_wait_multiple(self, wait_func):
         num = 3
-        processes = [self.new_sleep_process() for _ in range(num)]
-        for _ in range(num):
+        processes = [self.new_sleep_process() fuer _ in range(num)]
+        fuer _ in range(num):
             wait_func()
         # Call the Popen method to avoid a ResourceWarning
-        for proc in processes:
+        fuer proc in processes:
             proc.wait()
 
     def test_wait(self):
@@ -149,16 +149,16 @@ klasse OSEINTRTest(EINTRBaseTest):
         proc = self.subprocess(code, str(wr), pass_fds=[wr])
         with kill_on_error(proc):
             os.close(wr)
-            for datum in data:
+            fuer datum in data:
                 yield rd, datum
             self.assertEqual(proc.wait(), 0)
 
     def test_read(self):
-        for fd, expected in self._interrupted_reads():
+        fuer fd, expected in self._interrupted_reads():
             self.assertEqual(expected, os.read(fd, len(expected)))
 
     def test_readinto(self):
-        for fd, expected in self._interrupted_reads():
+        fuer fd, expected in self._interrupted_reads():
             buffer = bytearray(len(expected))
             self.assertEqual(os.readinto(fd, buffer), len(expected))
             self.assertEqual(buffer, expected)
@@ -168,7 +168,7 @@ klasse OSEINTRTest(EINTRBaseTest):
         self.addCleanup(os.close, wr)
         # rd closed explicitly by parent
 
-        # we must write enough data for the write() to block
+        # we must write enough data fuer the write() to block
         data = b"x" * support.PIPE_MAX_SIZE
 
         code = '\n'.join((
@@ -204,7 +204,7 @@ klasse OSEINTRTest(EINTRBaseTest):
 
 @unittest.skipUnless(hasattr(signal, "setitimer"), "requires setitimer()")
 klasse SocketEINTRTest(EINTRBaseTest):
-    """ EINTR tests for the socket module. """
+    """ EINTR tests fuer the socket module. """
 
     @unittest.skipUnless(hasattr(socket, 'socketpair'), 'needs socketpair()')
     def _test_recv(self, recv_func):
@@ -228,7 +228,7 @@ klasse SocketEINTRTest(EINTRBaseTest):
             'os.close(fd)',
             '',
             'with wr:',
-            '    for item in data:',
+            '    fuer item in data:',
             '        # let the parent block on recv()',
             '        time.sleep(sleep_time)',
             '        wr.sendall(item)',
@@ -238,7 +238,7 @@ klasse SocketEINTRTest(EINTRBaseTest):
         proc = self.subprocess(code, str(fd), pass_fds=[fd])
         with kill_on_error(proc):
             wr.close()
-            for item in data:
+            fuer item in data:
                 self.assertEqual(item, recv_func(rd, len(item)))
             self.assertEqual(proc.wait(), 0)
 
@@ -254,7 +254,7 @@ klasse SocketEINTRTest(EINTRBaseTest):
         self.addCleanup(wr.close)
         # rd closed explicitly by parent
 
-        # we must send enough data for the send() to block
+        # we must send enough data fuer the send() to block
         data = b"xyz" * (support.SOCK_MAX_SIZE // 3)
 
         code = '\n'.join((
@@ -338,8 +338,8 @@ klasse SocketEINTRTest(EINTRBaseTest):
     def _test_open(self, do_open_close_reader, do_open_close_writer):
         filename = os_helper.TESTFN
 
-        # Use a fifo: until the child opens it for reading, the parent will
-        # block when trying to open it for writing.
+        # Use a fifo: until the child opens it fuer reading, the parent will
+        # block when trying to open it fuer writing.
         os_helper.unlink(filename)
         try:
             os.mkfifo(filename)
@@ -389,7 +389,7 @@ klasse SocketEINTRTest(EINTRBaseTest):
 
 @unittest.skipUnless(hasattr(signal, "setitimer"), "requires setitimer()")
 klasse TimeEINTRTest(EINTRBaseTest):
-    """ EINTR tests for the time module. """
+    """ EINTR tests fuer the time module. """
 
     def test_sleep(self):
         t0 = time.monotonic()
@@ -405,7 +405,7 @@ klasse TimeEINTRTest(EINTRBaseTest):
 @unittest.skipUnless(hasattr(signal, 'pthread_sigmask'),
                      'need signal.pthread_sigmask()')
 klasse SignalEINTRTest(EINTRBaseTest):
-    """ EINTR tests for the signal module. """
+    """ EINTR tests fuer the signal module. """
 
     def check_sigwait(self, wait_func):
         signum = signal.SIGUSR1
@@ -450,7 +450,7 @@ klasse SignalEINTRTest(EINTRBaseTest):
 
 @unittest.skipUnless(hasattr(signal, "setitimer"), "requires setitimer()")
 klasse SelectEINTRTest(EINTRBaseTest):
-    """ EINTR tests for the select module. """
+    """ EINTR tests fuer the select module. """
 
     def test_select(self):
         t0 = time.monotonic()
@@ -510,14 +510,14 @@ klasse FCNTLEINTRTest(EINTRBaseTest):
         self.addCleanup(os_helper.unlink, os_helper.TESTFN)
         rd1, wr1 = os.pipe()
         rd2, wr2 = os.pipe()
-        for fd in (rd1, wr1, rd2, wr2):
+        fuer fd in (rd1, wr1, rd2, wr2):
             self.addCleanup(os.close, fd)
         code = textwrap.dedent(f"""
             import fcntl, os, time
             with open('{os_helper.TESTFN}', 'wb') as f:
                 fcntl.{lock_name}(f, fcntl.LOCK_EX)
                 os.write({wr1}, b"ok")
-                _ = os.read({rd2}, 2)  # wait for parent process
+                _ = os.read({rd2}, 2)  # wait fuer parent process
                 time.sleep({self.sleep_time})
         """)
         proc = self.subprocess(code, pass_fds=[wr1, rd2])
@@ -531,8 +531,8 @@ klasse FCNTLEINTRTest(EINTRBaseTest):
                 start_time = time.monotonic()
                 os.write(wr2, b"go")
 
-                # the child locked the file just a moment ago for 'sleep_time' seconds
-                # that means that the lock below will block for 'sleep_time' minus some
+                # the child locked the file just a moment ago fuer 'sleep_time' seconds
+                # that means that the lock below will block fuer 'sleep_time' minus some
                 # potential context switch delay
                 lock_func(f, fcntl.LOCK_EX)
                 dt = time.monotonic() - start_time

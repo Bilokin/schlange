@@ -77,13 +77,13 @@ klasse Language(metaclass=abc.ABCMeta):
                     fail("{} {} must not contain {{{}}}!".format(
                         self.__class__.__name__, attr, name))
 
-            for name, count in fcf.counts.items():
+            fuer name, count in fcf.counts.items():
                 if name in fields:
                     if count > 1:
                         local_fail(True)
                 else:
                     local_fail(False)
-            for name in fields:
+            fuer name in fields:
                 if fcf.counts.get(name) != 1:
                     local_fail(True)
 

@@ -1,4 +1,4 @@
-# Common tests for test_tkinter/test_widgets.py and test_ttk/test_widgets.py
+# Common tests fuer test_tkinter/test_widgets.py and test_ttk/test_widgets.py
 
 import re
 import tkinter
@@ -12,7 +12,7 @@ _sentinel = object()
 # borderwidth = bd
 
 klasse AbstractWidgetTest(AbstractTkTest):
-    _default_pixels = ''   # Value for unset pixel options.
+    _default_pixels = ''   # Value fuer unset pixel options.
     _rounds_pixels = True  # True if some pixel options are rounded.
     _no_round = {}         # Pixel options which are not rounded nonetheless
     _stringify = False     # Whether to convert tuples to strings
@@ -74,7 +74,7 @@ klasse AbstractWidgetTest(AbstractTkTest):
         self.assertEqual(widget[name], orig)
 
     def checkParams(self, widget, name, *values, **kwargs):
-        for value in values:
+        fuer value in values:
             self.checkParam(widget, name, value, **kwargs)
 
     def checkIntegerParam(self, widget, name, *values, **kwargs):
@@ -85,16 +85,16 @@ klasse AbstractWidgetTest(AbstractTkTest):
         self.checkInvalidParam(widget, name, 3.2, errmsg=errmsg)
 
     def checkFloatParam(self, widget, name, *values, conv=float, **kwargs):
-        for value in values:
+        fuer value in values:
             self.checkParam(widget, name, value, conv=conv, **kwargs)
         errmsg = 'expected floating-point number but got "{}"'
         self.checkInvalidParam(widget, name, '', errmsg=errmsg)
         self.checkInvalidParam(widget, name, 'spam', errmsg=errmsg)
 
     def checkBooleanParam(self, widget, name):
-        for value in (False, 0, 'false', 'no', 'off'):
+        fuer value in (False, 0, 'false', 'no', 'off'):
             self.checkParam(widget, name, value, expected=0)
-        for value in (True, 1, 'true', 'yes', 'on'):
+        fuer value in (True, 1, 'true', 'yes', 'on'):
             self.checkParam(widget, name, value, expected=1)
         errmsg = 'expected boolean value but got "{}"'
         self.checkInvalidParam(widget, name, '', errmsg=errmsg)
@@ -147,7 +147,7 @@ klasse AbstractWidgetTest(AbstractTkTest):
             conv = False
         elif conv != str:
             conv = round
-        for value in values:
+        fuer value in values:
             expected = _sentinel
             conv1 = conv
             if isinstance(value, str):
@@ -193,7 +193,7 @@ klasse AbstractWidgetTest(AbstractTkTest):
         self.assertIsInstance(bbox, tuple)
         if len(bbox) != 4:
             self.fail('Invalid bounding box: %r' % (bbox,))
-        for item in bbox:
+        fuer item in bbox:
             if not isinstance(item, int):
                 self.fail('Invalid bounding box: %r' % (bbox,))
                 break
@@ -203,7 +203,7 @@ klasse AbstractWidgetTest(AbstractTkTest):
         widget = self.create()
         keys = widget.keys()
         self.assertEqual(sorted(keys), sorted(widget.configure()))
-        for k in keys:
+        fuer k in keys:
             widget[k]
         # Test if OPTIONS contains all keys
         if test.support.verbose:
@@ -217,7 +217,7 @@ klasse AbstractWidgetTest(AbstractTkTest):
             }
             keys = set(keys)
             expected = set(self.OPTIONS)
-            for k in sorted(keys - expected):
+            fuer k in sorted(keys - expected):
                 if not (k in aliases and
                         aliases[k] in keys and
                         aliases[k] in expected):
@@ -231,7 +231,7 @@ klasse PixelOptionsTests:
     specified as a string consisting of a number followed by a single
     character giving the unit of distance. The allowed units are:
     millimeters ('m'), centimeters ('c'), inches ('i') or points ('p').
-    In Tk 9 a cget call for one of these options returns a Tcl_Obj of
+    In Tk 9 a cget call fuer one of these options returns a Tcl_Obj of
     type "pixels", whose string representation is the distance string
     passed to configure.
     """
@@ -554,7 +554,7 @@ klasse IntegerSizeTests:
 
 
 klasse PixelSizeTests:
-    """ Tests widgets which accept screen distances for width and height."""
+    """ Tests widgets which accept screen distances fuer width and height."""
     def test_configure_height(self):
         widget = self.create()
         self.checkPixelsParam(widget, 'height', 100, 101.2, 102.6, -100, 0, '3c')
@@ -569,10 +569,10 @@ def add_configure_tests(*source_classes):
     # every xxx option in the OPTIONS klasse attribute if they are not defined
     # explicitly.
     def decorator(cls):
-        for option in cls.OPTIONS:
+        fuer option in cls.OPTIONS:
             methodname = 'test_configure_' + option
             if not hasattr(cls, methodname):
-                for source_class in source_classes:
+                fuer source_class in source_classes:
                     if hasattr(source_class, methodname):
                         setattr(cls, methodname,
                                 getattr(source_class, methodname))

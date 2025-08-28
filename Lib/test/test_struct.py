@@ -23,8 +23,8 @@ INF = float('inf')
 NAN = float('nan')
 
 def iter_integer_formats(byteorders=byteorders):
-    for code in integer_codes:
-        for byteorder in byteorders:
+    fuer code in integer_codes:
+        fuer byteorder in byteorders:
             if (byteorder not in ('', '@') and code in ('n', 'N')):
                 continue
             yield code, byteorder
@@ -73,8 +73,8 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         d = 3.1415
         t = True
 
-        for prefix in ('', '@', '<', '>', '=', '!'):
-            for format in ('xcbhilfd?', 'xcBHILfd?'):
+        fuer prefix in ('', '@', '<', '>', '=', '!'):
+            fuer format in ('xcbhilfd?', 'xcBHILfd?'):
                 format = prefix + format
                 s = struct.pack(format, c, b, h, i, l, f, d, t)
                 cp, bp, hp, ip, lp, fp, dp, tp = struct.unpack(format, s)
@@ -137,8 +137,8 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             ('?', (1,), b'\1', b'\1', 1),
         ]
 
-        for fmt, arg, big, lil, asy in tests:
-            for (xfmt, exp) in [('>'+fmt, big), ('!'+fmt, big), ('<'+fmt, lil),
+        fuer fmt, arg, big, lil, asy in tests:
+            fuer (xfmt, exp) in [('>'+fmt, big), ('!'+fmt, big), ('<'+fmt, lil),
                                 ('='+fmt, ISBIGENDIAN and big or lil)]:
                 res = struct.pack(xfmt, arg)
                 self.assertEqual(res, exp)
@@ -157,20 +157,20 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             }
 
         # standard integer sizes
-        for code, byteorder in iter_integer_formats(('=', '<', '>', '!')):
+        fuer code, byteorder in iter_integer_formats(('=', '<', '>', '!')):
             format = byteorder+code
             size = struct.calcsize(format)
             self.assertEqual(size, expected_size[code])
 
         # native integer sizes
         native_pairs = 'bB', 'hH', 'iI', 'lL', 'nN', 'qQ'
-        for format_pair in native_pairs:
-            for byteorder in '', '@':
+        fuer format_pair in native_pairs:
+            fuer byteorder in '', '@':
                 signed_size = struct.calcsize(byteorder + format_pair[0])
                 unsigned_size = struct.calcsize(byteorder + format_pair[1])
                 self.assertEqual(signed_size, unsigned_size)
 
-        # bounds for native integer sizes
+        # bounds fuer native integer sizes
         self.assertEqual(struct.calcsize('b'), 1)
         self.assertLessEqual(2, struct.calcsize('h'))
         self.assertLessEqual(4, struct.calcsize('l'))
@@ -251,13 +251,13 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
 
                 # Create all interesting powers of 2.
                 values = []
-                for exp in range(self.bitsize + 3):
+                fuer exp in range(self.bitsize + 3):
                     values.append(1 << exp)
 
                 # Add some random values.
-                for i in range(self.bitsize):
+                fuer i in range(self.bitsize):
                     val = 0
-                    for j in range(self.bytesize):
+                    fuer j in range(self.bytesize):
                         val = (val << 8) | randrange(256)
                     values.append(val)
 
@@ -268,9 +268,9 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                 # them.  Note that this tests all power-of-2
                 # boundaries in range, and a few out of range, plus
                 # +-(2**n +- 1).
-                for base in values:
-                    for val in -base, base:
-                        for incr in -1, 0, 1:
+                fuer base in values:
+                    fuer val in -base, base:
+                        fuer incr in -1, 0, 1:
                             x = val + incr
                             self.test_one(x)
 
@@ -314,8 +314,8 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                                   struct.pack, self.format,
                                   BadIndex())
 
-                # Check for legitimate values from '__index__'.
-                for obj in (Indexable(0), Indexable(10), Indexable(17),
+                # Check fuer legitimate values from '__index__'.
+                fuer obj in (Indexable(0), Indexable(10), Indexable(17),
                             Indexable(42), Indexable(100), Indexable(127)):
                     try:
                         struct.pack(format, obj)
@@ -323,14 +323,14 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                         self.fail("integer code pack failed on object "
                                   "with '__index__' method")
 
-                # Check for bogus values from '__index__'.
-                for obj in (Indexable(b'a'), Indexable('b'), Indexable(None),
+                # Check fuer bogus values from '__index__'.
+                fuer obj in (Indexable(b'a'), Indexable('b'), Indexable(None),
                             Indexable({'a': 1}), Indexable([1, 2, 3])):
                     self.assertRaises((TypeError, struct.error),
                                       struct.pack, self.format,
                                       obj)
 
-        for code, byteorder in iter_integer_formats():
+        fuer code, byteorder in iter_integer_formats():
             format = byteorder+code
             t = IntTester(format)
             t.run()
@@ -341,8 +341,8 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             with self.assertRaises(struct.error) as cm:
                 func(*args, **kwargs)
             self.assertIn("bad char in struct format", str(cm.exception))
-        for code in 'nN':
-            for byteorder in ('=', '<', '>', '!'):
+        fuer code in 'nN':
+            fuer byteorder in ('=', '<', '>', '!'):
                 format = byteorder+code
                 assertStructError(struct.calcsize, format)
                 assertStructError(struct.pack, format, 0)
@@ -350,7 +350,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
 
     def test_p_code(self):
         # Test p ("Pascal string") code.
-        for code, input, expected, expectedback in [
+        fuer code, input, expected, expectedback in [
                 ('0p', b'abc', b'',                b''),
                 ('p',  b'abc', b'\x00',            b''),
                 ('1p', b'abc', b'\x00',            b''),
@@ -369,7 +369,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         # SF bug 705836.  "<f" and ">f" had a severe rounding bug, where a carry
         # from the low-order discarded bits could propagate into the exponent
         # field, causing the result to be wrong by a factor of 2.
-        for base in range(1, 33):
+        fuer base in range(1, 33):
             # smaller <- largest representable float less than base.
             delta = 0.5
             while base - delta / 2.0 != base:
@@ -399,7 +399,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertRaises(OverflowError, struct.pack, ">f", big)
 
     def test_1530559(self):
-        for code, byteorder in iter_integer_formats():
+        fuer code, byteorder in iter_integer_formats():
             format = byteorder + code
             self.assertRaises(struct.error, struct.pack, format, 1.0)
             self.assertRaises(struct.error, struct.pack, format, 1.5)
@@ -410,23 +410,23 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         test_string = b'abcd01234'
         fmt = '4s'
         s = struct.Struct(fmt)
-        for cls in (bytes, bytearray):
+        fuer cls in (bytes, bytearray):
             data = cls(test_string)
             self.assertEqual(s.unpack_from(data), (b'abcd',))
             self.assertEqual(s.unpack_from(data, 2), (b'cd01',))
             self.assertEqual(s.unpack_from(data, 4), (b'0123',))
-            for i in range(6):
+            fuer i in range(6):
                 self.assertEqual(s.unpack_from(data, i), (data[i:i+4],))
-            for i in range(6, len(test_string) + 1):
+            fuer i in range(6, len(test_string) + 1):
                 self.assertRaises(struct.error, s.unpack_from, data, i)
-        for cls in (bytes, bytearray):
+        fuer cls in (bytes, bytearray):
             data = cls(test_string)
             self.assertEqual(struct.unpack_from(fmt, data), (b'abcd',))
             self.assertEqual(struct.unpack_from(fmt, data, 2), (b'cd01',))
             self.assertEqual(struct.unpack_from(fmt, data, 4), (b'0123',))
-            for i in range(6):
+            fuer i in range(6):
                 self.assertEqual(struct.unpack_from(fmt, data, i), (data[i:i+4],))
-            for i in range(6, len(test_string) + 1):
+            fuer i in range(6, len(test_string) + 1):
                 self.assertRaises(struct.error, struct.unpack_from, fmt, data, i)
 
         # keyword arguments
@@ -488,7 +488,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         # SF bug 1563759: struct.unpack doesn't support buffer protocol objects
         data1 = array.array('B', b'\x12\x34\x56\x78')
         data2 = memoryview(b'\x12\x34\x56\x78') # XXX b'......XXXX......', 6, 4
-        for data in [data1, data2]:
+        fuer data in [data1, data2]:
             value, = struct.unpack('>I', data)
             self.assertEqual(value, 0x12345678)
 
@@ -496,7 +496,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         klasse ExplodingBool(object):
             def __bool__(self):
                 raise OSError
-        for prefix in tuple("<>!=")+('',):
+        fuer prefix in tuple("<>!=")+('',):
             false = (), [], [], '', 0
             true = [1], 'test', 5, -1, 0xffffffff+1, 0xffffffff/2
 
@@ -511,9 +511,9 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             self.assertEqual(len(true), len(unpackedTrue))
             self.assertEqual(len(false), len(unpackedFalse))
 
-            for t in unpackedFalse:
+            fuer t in unpackedFalse:
                 self.assertFalse(t)
-            for t in unpackedTrue:
+            fuer t in unpackedTrue:
                 self.assertTrue(t)
 
             packed = struct.pack(prefix+'?', 1)
@@ -532,7 +532,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                 self.fail("Expected OSError: struct.pack(%r, "
                           "ExplodingBool())" % (prefix + '?'))
 
-        for c in [b'\x01', b'\x7f', b'\xff', b'\x0f', b'\xf0']:
+        fuer c in [b'\x01', b'\x7f', b'\xff', b'\x0f', b'\xf0']:
             self.assertTrue(struct.unpack('>?', c)[0])
             self.assertTrue(struct.unpack('<?', c)[0])
             self.assertTrue(struct.unpack('=?', c)[0])
@@ -586,7 +586,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
 
     @support.cpython_only
     def test__sizeof__(self):
-        for code in integer_codes:
+        fuer code in integer_codes:
             self.check_sizeof(code, 1)
         self.check_sizeof('BHILfdspP', 9)
         self.check_sizeof('B' * 1234, 1234)
@@ -602,7 +602,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
     def test_boundary_error_message(self):
         regex1 = (
             r'pack_into requires a buffer of at least 6 '
-            r'bytes for packing 1 bytes at offset 5 '
+            r'bytes fuer packing 1 bytes at offset 5 '
             r'\(actual buffer size is 1\)'
         )
         with self.assertRaisesRegex(struct.error, regex1):
@@ -610,7 +610,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
 
         regex2 = (
             r'unpack_from requires a buffer of at least 6 '
-            r'bytes for unpacking 1 bytes at offset 5 '
+            r'bytes fuer unpacking 1 bytes at offset 5 '
             r'\(actual buffer size is 1\)'
         )
         with self.assertRaisesRegex(struct.error, regex2):
@@ -625,7 +625,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
 
         with self.assertRaisesRegex(
                 struct.error,
-                'offset -11 out of range for 10-byte buffer'):
+                'offset -11 out of range fuer 10-byte buffer'):
             struct.pack_into('<B', byte_list, -11, 123)
 
         with self.assertRaisesRegex(
@@ -635,14 +635,14 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
 
         with self.assertRaisesRegex(
                 struct.error,
-                "offset -11 out of range for 10-byte buffer"):
+                "offset -11 out of range fuer 10-byte buffer"):
             struct.unpack_from('<B', byte_list, -11)
 
     def test_boundary_error_message_with_large_offset(self):
         # Test overflows cause by large offset and value size (issue 30245)
         regex1 = (
             r'pack_into requires a buffer of at least ' + str(sys.maxsize + 4) +
-            r' bytes for packing 4 bytes at offset ' + str(sys.maxsize) +
+            r' bytes fuer packing 4 bytes at offset ' + str(sys.maxsize) +
             r' \(actual buffer size is 10\)'
         )
         with self.assertRaisesRegex(struct.error, regex1):
@@ -650,7 +650,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
 
         regex2 = (
             r'unpack_from requires a buffer of at least ' + str(sys.maxsize + 4) +
-            r' bytes for unpacking 4 bytes at offset ' + str(sys.maxsize) +
+            r' bytes fuer unpacking 4 bytes at offset ' + str(sys.maxsize) +
             r' \(actual buffer size is 10\)'
         )
         with self.assertRaisesRegex(struct.error, regex2):
@@ -692,7 +692,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertIn(b"C.__del__", stderr)
 
     def test__struct_reference_cycle_cleaned_up(self):
-        # Regression test for python/cpython#94207.
+        # Regression test fuer python/cpython#94207.
 
         # When we create a new struct module, trigger use of its cache,
         # and then delete it ...
@@ -712,7 +712,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
 
         Struct = struct.Struct
         unpack_iterator = type(struct.iter_unpack("b", b'x'))
-        for cls in (Struct, unpack_iterator):
+        fuer cls in (Struct, unpack_iterator):
             with self.subTest(cls=cls):
                 with self.assertRaises(TypeError):
                     cls.x = 1
@@ -720,7 +720,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
 
     def test_issue35714(self):
         # Embedded null characters should not be allowed in format strings.
-        for s in '\0', '2\0i', b'\0':
+        fuer s in '\0', '2\0i', b'\0':
             with self.assertRaisesRegex(struct.error,
                                         'embedded null character'):
                 struct.calcsize(s)
@@ -737,7 +737,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                 max_ = 2 ** (size * 8 - 1) - 1
                 min_ = -2 ** (size * 8 - 1)
             error_msg = f"'{int_type}' format requires {min_} <= number <= {max_}"
-            for number in [int(-1e50), min_ - 1, max_ + 1, int(1e50)]:
+            fuer number in [int(-1e50), min_ - 1, max_ + 1, int(1e50)]:
                 with self.subTest(format_str=fmt_str, number=number):
                     with self.assertRaisesRegex(struct.error, error_msg):
                         struct.pack(fmt_str, number)
@@ -747,10 +747,10 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                 with self.assertRaisesRegex(struct.error, error_msg):
                     struct.pack(fmt_str, not_number)
 
-        for prefix in '@=<>':
-            for int_type in 'BHILQ':
+        fuer prefix in '@=<>':
+            fuer int_type in 'BHILQ':
                 test_error_msg(prefix, int_type, True)
-            for int_type in 'bhilq':
+            fuer int_type in 'bhilq':
                 test_error_msg(prefix, int_type, False)
 
         int_type = 'N'
@@ -770,15 +770,15 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                 with self.assertRaises(ZeroDivisionError):
                     struct.pack(fmt_str, Div0())
 
-        for prefix in '@=<>':
-            for int_type in 'BHILQbhilq':
+        fuer prefix in '@=<>':
+            fuer int_type in 'BHILQbhilq':
                 test_error_propagation(prefix + int_type)
 
         test_error_propagation('N')
         test_error_propagation('n')
 
     def test_struct_subclass_instantiation(self):
-        # Regression test for https://github.com/python/cpython/issues/112358
+        # Regression test fuer https://github.com/python/cpython/issues/112358
         klasse MyStruct(struct.Struct):
             def __init__(self):
                 super().__init__('>h')
@@ -791,10 +791,10 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertEqual(repr(s), f'Struct({s.format!r})')
 
     def test_c_complex_round_trip(self):
-        values = [complex(*_) for _ in combinations([1, -1, 0.0, -0.0, 2,
+        values = [complex(*_) fuer _ in combinations([1, -1, 0.0, -0.0, 2,
                                                      -3, INF, -INF, NAN], 2)]
-        for z in values:
-            for f in ['F', 'D', '>F', '>D', '<F', '<D']:
+        fuer z in values:
+            fuer f in ['F', 'D', '>F', '>D', '<F', '<D']:
                 with self.subTest(z=z, format=f):
                     round_trip = struct.unpack(f, struct.pack(f, z))[0]
                     self.assertComplexesAreIdentical(z, round_trip)
@@ -802,7 +802,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
 
 klasse UnpackIteratorTest(unittest.TestCase):
     """
-    Tests for iterative unpacking (struct.Struct.iter_unpack).
+    Tests fuer iterative unpacking (struct.Struct.iter_unpack).
     """
 
     def test_construct(self):
@@ -865,7 +865,7 @@ klasse UnpackIteratorTest(unittest.TestCase):
         self.assertEqual(lh(it), 0)
 
     def test_module_func(self):
-        # Sanity check for the global struct.iter_unpack()
+        # Sanity check fuer the global struct.iter_unpack()
         it = struct.iter_unpack('>IB', bytes(range(1, 11)))
         self.assertEqual(next(it), (0x01020304, 5))
         self.assertEqual(next(it), (0x06070809, 10))
@@ -888,7 +888,7 @@ klasse UnpackIteratorTest(unittest.TestCase):
             (b'\x55\x35', 0.333251953125), # ~= 1/3
         ]
 
-        for le_bits, f in format_bits_float__cleanRoundtrip_list:
+        fuer le_bits, f in format_bits_float__cleanRoundtrip_list:
             be_bits = le_bits[::-1]
             self.assertEqual(f, struct.unpack('<e', le_bits)[0])
             self.assertEqual(le_bits, struct.pack('<e', f))
@@ -901,7 +901,7 @@ klasse UnpackIteratorTest(unittest.TestCase):
                 self.assertEqual(f, struct.unpack('e', be_bits)[0])
                 self.assertEqual(be_bits, struct.pack('e', f))
 
-        # Check for NaN handling:
+        # Check fuer NaN handling:
         format_bits__nan_list = [
             ('<e', b'\x01\xfc'),
             ('<e', b'\x00\xfe'),
@@ -911,7 +911,7 @@ klasse UnpackIteratorTest(unittest.TestCase):
             ('<e', b'\xff\x7f'),
         ]
 
-        for formatcode, bits in format_bits__nan_list:
+        fuer formatcode, bits in format_bits__nan_list:
             self.assertTrue(math.isnan(struct.unpack('<e', bits)[0]))
             self.assertTrue(math.isnan(struct.unpack('>e', bits[::-1])[0]))
 
@@ -922,7 +922,7 @@ klasse UnpackIteratorTest(unittest.TestCase):
         packed = struct.pack('<e', -math.nan)
         self.assertEqual(packed[1] & 0x7e, 0x7e)
 
-        # Checks for round-to-even behavior
+        # Checks fuer round-to-even behavior
         format_bits_float__rounding_list = [
             ('>e', b'\x00\x01', 2.0**-25 + 2.0**-35), # Rounds to minimum subnormal
             ('>e', b'\x00\x00', 2.0**-25), # Underflows to zero (nearest even mode)
@@ -945,7 +945,7 @@ klasse UnpackIteratorTest(unittest.TestCase):
             ('>e', b'\xfb\xff', -65519), # rounds to 65504
         ]
 
-        for formatcode, bits, f in format_bits_float__rounding_list:
+        fuer formatcode, bits, f in format_bits_float__rounding_list:
             self.assertEqual(bits, struct.pack(formatcode, f))
 
         # This overflows, and so raises an error
@@ -965,7 +965,7 @@ klasse UnpackIteratorTest(unittest.TestCase):
             ('<e', -1e300),
         ]
 
-        for formatcode, f in format_bits_float__roundingError_list:
+        fuer formatcode, f in format_bits_float__roundingError_list:
             self.assertRaises(OverflowError, struct.pack, formatcode, f)
 
         # Double rounding
@@ -973,7 +973,7 @@ klasse UnpackIteratorTest(unittest.TestCase):
             ('>e', b'\x67\xff', 0x1ffdffffff * 2**-26), # should be 2047, if double-rounded 64>32>16, becomes 2048
         ]
 
-        for formatcode, bits, f in format_bits_float__doubleRoundingError_list:
+        fuer formatcode, bits, f in format_bits_float__doubleRoundingError_list:
             self.assertEqual(bits, struct.pack(formatcode, f))
 
 

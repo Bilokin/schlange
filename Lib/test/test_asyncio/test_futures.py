@@ -1,4 +1,4 @@
-"""Tests for futures.py."""
+"""Tests fuer futures.py."""
 
 import concurrent.futures
 import gc
@@ -40,7 +40,7 @@ klasse ReachableCode(Exception):
 
 
 klasse SimpleEvilEventLoop(asyncio.base_events.BaseEventLoop):
-    """Base klasse for UAF and other evil stuff requiring an evil event loop."""
+    """Base klasse fuer UAF and other evil stuff requiring an evil event loop."""
 
     def get_debug(self):  # to suppress tracebacks
         return False
@@ -256,7 +256,7 @@ klasse BaseFutureTests:
         f._cancel_message = 'my new message'
         self.assertEqual(f._cancel_message, 'my new message')
 
-        # Also check that the value is used for cancel().
+        # Also check that the value is used fuer cancel().
         with self.assertRaises(asyncio.CancelledError):
             self.loop.run_until_complete(f)
         self.assertEqual(f._cancel_message, 'my new message')
@@ -399,7 +399,7 @@ klasse BaseFutureTests:
 
         f_many_callbacks = self._new_future(loop=self.loop)
         f_many_callbacks.add_done_callback(first_cb)
-        for i in range(8):
+        fuer i in range(8):
             f_many_callbacks.add_done_callback(_fakefunc)
         f_many_callbacks.add_done_callback(last_cb)
         cb_regex = r'%s, <8 more>, %s' % (first_repr, last_repr)
@@ -724,7 +724,7 @@ klasse BaseFutureTests:
             def __del__(self):
                 gc.collect()
 
-        for i in range(100):
+        fuer i in range(100):
             fut = self._new_future(loop=self.loop)
             fut.set_result(Evil())
 
@@ -936,7 +936,7 @@ klasse BaseFutureDoneCallbackTests():
 
         # After this there will be 6 instances of cb1 and one of cb2.
         f.add_done_callback(cb2)
-        for i in range(5):
+        fuer i in range(5):
             f.add_done_callback(cb1)
 
         # Remove all instances of cb1. One cb2 remains.
@@ -951,12 +951,12 @@ klasse BaseFutureDoneCallbackTests():
         self.assertEqual(f.result(), 'foo')
 
     def test_remove_done_callbacks_list_mutation(self):
-        # see http://bugs.python.org/issue28963 for details
+        # see http://bugs.python.org/issue28963 fuer details
 
         fut = self._new_future()
         fut.add_done_callback(str)
 
-        for _ in range(63):
+        fuer _ in range(63):
             fut.add_done_callback(id)
 
         klasse evil:
@@ -967,12 +967,12 @@ klasse BaseFutureDoneCallbackTests():
         fut.remove_done_callback(evil())
 
     def test_remove_done_callbacks_list_clear(self):
-        # see https://github.com/python/cpython/issues/97592 for details
+        # see https://github.com/python/cpython/issues/97592 fuer details
 
         fut = self._new_future()
         fut.add_done_callback(str)
 
-        for _ in range(63):
+        fuer _ in range(63):
             fut.add_done_callback(id)
 
         klasse evil:
@@ -982,7 +982,7 @@ klasse BaseFutureDoneCallbackTests():
         fut.remove_done_callback(evil())
 
     def test_schedule_callbacks_list_mutation_1(self):
-        # see http://bugs.python.org/issue28963 for details
+        # see http://bugs.python.org/issue28963 fuer details
 
         def mut(f):
             f.remove_done_callback(str)
@@ -995,12 +995,12 @@ klasse BaseFutureDoneCallbackTests():
         test_utils.run_briefly(self.loop)
 
     def test_schedule_callbacks_list_mutation_2(self):
-        # see http://bugs.python.org/issue30828 for details
+        # see http://bugs.python.org/issue30828 fuer details
 
         fut = self._new_future()
         fut.add_done_callback(str)
 
-        for _ in range(63):
+        fuer _ in range(63):
             fut.add_done_callback(id)
 
         max_extra_cbs = 100
@@ -1050,7 +1050,7 @@ klasse BaseFutureDoneCallbackTests():
             self.assertIn(fut._callbacks, (None, []))
 
     def test_use_after_free_on_fut_callback_0_with_evil__eq__(self):
-        # Special thanks to Nico-Posada for the original PoC.
+        # Special thanks to Nico-Posada fuer the original PoC.
         # See https://github.com/python/cpython/issues/125966.
 
         fut = self._new_future()
@@ -1156,7 +1156,7 @@ klasse BaseFutureInheritanceTests:
         self.addCleanup(self.loop.close)
 
     def test_inherit_without_calling_super_init(self):
-        # See https://bugs.python.org/issue38785 for the context
+        # See https://bugs.python.org/issue38785 fuer the context
         cls = self._get_future_cls()
 
         klasse MyFut(cls):

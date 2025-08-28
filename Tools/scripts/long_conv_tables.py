@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 #
-# Compute tables for longobject.c long_from_non_binary_base().  They are used
-# for conversions of strings to integers with a non-binary base.
+# Compute tables fuer longobject.c long_from_non_binary_base().  They are used
+# fuer conversions of strings to integers with a non-binary base.
 
 import math
 import textwrap
 
 
 def format_array(name, values):
-    values = [str(v) for v in values]
+    values = [str(v) fuer v in values]
     values = ', '.join(values)
     result = f'{name} = {{{values}}};'
     result = textwrap.wrap(
@@ -24,7 +24,7 @@ def conv_tables(long_bits):
     log_base_BASE = [0.0] * 37
     convmultmax_base = [0] * 37
     convwidth_base = [0] * 37
-    for base in range(2, 37):
+    fuer base in range(2, 37):
         is_binary_base = (base & (base - 1)) == 0
         if is_binary_base:
             continue  # don't need, leave as zero

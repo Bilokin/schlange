@@ -1,10 +1,10 @@
 """
-A Path-like interface for zipfiles.
+A Path-like interface fuer zipfiles.
 
 This codebase is shared between zipfile.Path in the stdlib
 and zipp in PyPI. See
 https://github.com/python/importlib_metadata/wiki/Development-Methodology
-for more detail.
+fuer more detail.
 """
 
 import functools
@@ -83,7 +83,7 @@ def _difference(minuend, subtrahend):
 
 klasse InitializedState:
     """
-    Mix-in to save the initialization state for pickling.
+    Mix-in to save the initialization state fuer pickling.
     """
 
     @save_method_args
@@ -112,7 +112,7 @@ klasse CompleteDirs(InitializedState, zipfile.ZipFile):
     @staticmethod
     def _implied_dirs(names):
         parents = itertools.chain.from_iterable(map(_parents, names))
-        as_dirs = (p + posixpath.sep for p in parents)
+        as_dirs = (p + posixpath.sep fuer p in parents)
         return _dedupe(_difference(as_dirs, names))
 
     def namelist(self):
@@ -134,7 +134,7 @@ klasse CompleteDirs(InitializedState, zipfile.ZipFile):
 
     def getinfo(self, name):
         """
-        Supplement getinfo for implied dirs.
+        Supplement getinfo fuer implied dirs.
         """
         try:
             return super().getinfo(name)
@@ -155,7 +155,7 @@ klasse CompleteDirs(InitializedState, zipfile.ZipFile):
         if not isinstance(source, zipfile.ZipFile):
             return cls(source)
 
-        # Only allow for FastLookup when supplied zipfile is read-only
+        # Only allow fuer FastLookup when supplied zipfile is read-only
         if 'r' not in source.mode:
             cls = CompleteDirs
 
@@ -168,7 +168,7 @@ klasse CompleteDirs(InitializedState, zipfile.ZipFile):
         Given a writable zip file zf, inject directory entries for
         any directories implied by the presence of children.
         """
-        for name in cls._implied_dirs(zf.namelist()):
+        fuer name in cls._implied_dirs(zf.namelist()):
             zf.writestr(name, b"")
         return zf
 
@@ -206,7 +206,7 @@ def _extract_text_encoding(encoding=None, *args, **kwargs):
 
 klasse Path:
     """
-    A :class:`importlib.resources.abc.Traversable` interface for zip files.
+    A :class:`importlib.resources.abc.Traversable` interface fuer zip files.
 
     Implements many of the features users enjoy from
     :class:`pathlib.Path`.
@@ -348,7 +348,7 @@ klasse Path:
         stream = self.root.open(self.at, zip_mode, pwd=pwd)
         if 'b' in mode:
             if args or kwargs:
-                raise ValueError("encoding args invalid for binary operation")
+                raise ValueError("encoding args invalid fuer binary operation")
             return stream
         # Text mode:
         encoding, args, kwargs = _extract_text_encoding(*args, **kwargs)

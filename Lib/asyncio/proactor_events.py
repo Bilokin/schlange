@@ -45,7 +45,7 @@ def _set_socket_extra(transport, sock):
 
 klasse _ProactorBasePipeTransport(transports._FlowControlMixin,
                                  transports.BaseTransport):
-    """Base klasse for pipe and socket transports."""
+    """Base klasse fuer pipe and socket transports."""
 
     def __init__(self, loop, sock, protocol, waiter=None,
                  extra=None, server=None):
@@ -180,7 +180,7 @@ klasse _ProactorBasePipeTransport(transports._FlowControlMixin,
 
 klasse _ProactorReadPipeTransport(_ProactorBasePipeTransport,
                                  transports.ReadTransport):
-    """Transport for read pipes."""
+    """Transport fuer read pipes."""
 
     def __init__(self, loop, sock, protocol, waiter=None,
                  extra=None, server=None, buffer_size=65536):
@@ -327,7 +327,7 @@ klasse _ProactorReadPipeTransport(_ProactorBasePipeTransport,
 
 klasse _ProactorBaseWritePipeTransport(_ProactorBasePipeTransport,
                                       transports.WriteTransport):
-    """Transport for write pipes."""
+    """Transport fuer write pipes."""
 
     _start_tls_compatible = True
 
@@ -359,7 +359,7 @@ klasse _ProactorBaseWritePipeTransport(_ProactorBasePipeTransport,
         # 2. WRITING: _write_fut set; _buffer None
         # 3. BACKED UP: _write_fut set; _buffer a bytearray
         # We always copy the data, so the caller can't modify it
-        # while we're still waiting for the I/O to happen.
+        # while we're still waiting fuer the I/O to happen.
         if self._write_fut is None:  # IDLE -> WRITING
             assert self._buffer is None
             # Pass a copy, except if it's already immutable.
@@ -468,7 +468,7 @@ klasse _ProactorDatagramTransport(_ProactorBasePipeTransport,
         self._empty_waiter = None
         self._buffer_size = 0
         # We don't need to call _protocol.connection_made() since our base
-        # constructor does it for us.
+        # constructor does it fuer us.
         super().__init__(loop, sock, protocol, waiter=waiter, extra=extra)
 
         # The base constructor sets _buffer = None, so we set it here
@@ -591,7 +591,7 @@ klasse _ProactorDatagramTransport(_ProactorBasePipeTransport,
 klasse _ProactorDuplexPipeTransport(_ProactorReadPipeTransport,
                                    _ProactorBaseWritePipeTransport,
                                    transports.Transport):
-    """Transport for duplex pipes."""
+    """Transport fuer duplex pipes."""
 
     def can_write_eof(self):
         return False
@@ -603,7 +603,7 @@ klasse _ProactorDuplexPipeTransport(_ProactorReadPipeTransport,
 klasse _ProactorSocketTransport(_ProactorReadPipeTransport,
                                _ProactorBaseWritePipeTransport,
                                transports.Transport):
-    """Transport for connected sockets."""
+    """Transport fuer connected sockets."""
 
     _sendfile_compatible = constants._SendfileMode.TRY_NATIVE
 
@@ -802,7 +802,7 @@ klasse BaseProactorEventLoop(base_events.BaseEventLoop):
                 return
             f = self._proactor.recv(self._ssock, 4096)
         except exceptions.CancelledError:
-            # _close_self_pipe() has been called, stop waiting for data
+            # _close_self_pipe() has been called, stop waiting fuer data
             return
         except (SystemExit, KeyboardInterrupt):
             raise
@@ -819,7 +819,7 @@ klasse BaseProactorEventLoop(base_events.BaseEventLoop):
     def _write_to_self(self):
         # This may be called from a different thread, possibly after
         # _close_self_pipe() has been called or even while it is
-        # running.  Guard for self._csock being None or closed.  When
+        # running.  Guard fuer self._csock being None or closed.  When
         # a socket is closed, send() raises OSError (with errno set to
         # EBADF, but let's not rely on the exact error code).
         csock = self._csock
@@ -884,7 +884,7 @@ klasse BaseProactorEventLoop(base_events.BaseEventLoop):
         pass
 
     def _stop_accept_futures(self):
-        for future in self._accept_futures.values():
+        fuer future in self._accept_futures.values():
             future.cancel()
         self._accept_futures.clear()
 

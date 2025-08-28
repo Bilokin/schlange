@@ -1,4 +1,4 @@
-# xml.etree test for cElementTree
+# xml.etree test fuer cElementTree
 import io
 import struct
 from test import support
@@ -62,7 +62,7 @@ klasse MiscTests(unittest.TestCase):
     def test_trashcan(self):
         # If this test fails, it will most likely die via segfault.
         e = root = cET.Element('root')
-        for i in range(200000):
+        fuer i in range(200000):
             e = cET.SubElement(e, 'x')
         del e
         del root
@@ -138,7 +138,7 @@ klasse MiscTests(unittest.TestCase):
     def test_setstate_leaks(self):
         # Test reference leaks
         elem = cET.Element.__new__(cET.Element)
-        for i in range(100):
+        fuer i in range(100):
             elem.__setstate__({'tag': 'foo', 'attrib': {'bar': 42},
                                '_children': [cET.Element('child')],
                                'text': 'text goes here',
@@ -172,11 +172,11 @@ klasse MiscTests(unittest.TestCase):
         support.gc_collect()
 
     def test_dict_disappearing_during_get_item(self):
-        # test fix for seg fault reported in issue 27946
+        # test fix fuer seg fault reported in issue 27946
         klasse X:
             def __hash__(self):
                 e.attrib = {} # this frees e->extra->attrib
-                [{i: i} for i in range(1000)] # exhaust the dict keys cache
+                [{i: i} fuer i in range(1000)] # exhaust the dict keys cache
                 return 13
 
         e = cET.Element("elem", {1: 2})
@@ -192,7 +192,7 @@ klasse MiscTests(unittest.TestCase):
             cET.XMLParser,
             type(root.iter()),
         )
-        for tp in dataset:
+        fuer tp in dataset:
             with self.subTest(tp=tp):
                 with self.assertRaisesRegex(TypeError, "immutable"):
                     tp.foo = 1
@@ -250,9 +250,9 @@ klasse SizeofTest(unittest.TestCase):
 
     def test_element_with_children(self):
         e = cET.Element('a')
-        for i in range(5):
+        fuer i in range(5):
             cET.SubElement(e, 'span')
-        # should have space for 8 children now
+        # should have space fuer 8 children now
         self.check_sizeof(e, self.elementsize + self.extra +
                              struct.calcsize('8P'))
 
@@ -260,7 +260,7 @@ klasse SizeofTest(unittest.TestCase):
 def install_tests():
     # Test classes should have __module__ referring to this module.
     from test import test_xml_etree
-    for name, base in vars(test_xml_etree).items():
+    fuer name, base in vars(test_xml_etree).items():
         if isinstance(base, type) and issubclass(base, unittest.TestCase):
             klasse Temp(base):
                 pass

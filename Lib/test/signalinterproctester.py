@@ -30,7 +30,7 @@ klasse InterProcessSignalTests(unittest.TestCase):
             child.wait()
 
         start_time = time.monotonic()
-        for _ in support.busy_retry(support.SHORT_TIMEOUT, error=False):
+        fuer _ in support.busy_retry(support.SHORT_TIMEOUT, error=False):
             if self.got_signals[signame]:
                 return
             signal.pause()

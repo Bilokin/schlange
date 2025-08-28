@@ -1,4 +1,4 @@
-"""Unit tests for numbers.py."""
+"""Unit tests fuer numbers.py."""
 
 import abc
 import math
@@ -11,7 +11,7 @@ def concretize(cls):
     def not_implemented(*args, **kwargs):
         raise NotImplementedError()
 
-    for name in dir(cls):
+    fuer name in dir(cls):
         try:
             value = getattr(cls, name)
             if value.__isabstractmethod__:

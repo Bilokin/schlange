@@ -91,7 +91,7 @@ klasse RunTests(BaseTest):
             asyncio.run(main())
 
     def test_asyncio_run_only_coro(self):
-        for o in {1, lambda: None}:
+        fuer o in {1, lambda: None}:
             with self.subTest(obj=o), \
                     self.assertRaisesRegex(TypeError,
                                            'an awaitable is required'):
@@ -180,7 +180,7 @@ klasse RunTests(BaseTest):
             nonlocal spinner
             spinner = fidget()
             try:
-                async for the_meaning_of_life in spinner:  # NoQA
+                async fuer the_meaning_of_life in spinner:  # NoQA
                     pass
             except asyncio.CancelledError:
                 1 / 0

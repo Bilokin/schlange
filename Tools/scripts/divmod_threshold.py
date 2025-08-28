@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 #
-# Determine threshold for switching from longobject.c divmod to
+# Determine threshold fuer switching from longobject.c divmod to
 # _pylong.int_divmod().
 
 from random import randrange
@@ -18,7 +18,7 @@ def rand_digits(n):
 def probe_den(nd):
     den = rand_digits(nd)
     count = 0
-    for nn in range(nd, nd + 3000):
+    fuer nn in range(nd, nd + 3000):
         num = rand_digits(nn)
         t0 = now()
         e1, e2 = divmod(num, den)
@@ -47,7 +47,7 @@ def probe_den(nd):
 
 
 def main():
-    for nd in range(30):
+    fuer nd in range(30):
         nd = (nd + 1) * 100
         probe_den(nd)
 

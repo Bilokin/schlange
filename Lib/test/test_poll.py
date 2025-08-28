@@ -1,4 +1,4 @@
-# Test case for the os.poll() function
+# Test case fuer the os.poll() function
 
 import os
 import subprocess
@@ -23,7 +23,7 @@ requires_working_socket(module=True)
 
 def find_ready_matching(ready, flag):
     match = []
-    for fd, mode in ready:
+    fuer fd, mode in ready:
         if mode & flag:
             match.append(fd)
     return match
@@ -44,7 +44,7 @@ klasse PollTests(unittest.TestCase):
         r2w = {}
         w2r = {}
 
-        for i in range(NUM_PIPES):
+        fuer i in range(NUM_PIPES):
             rd, wr = os.pipe()
             p.register(rd)
             p.modify(rd, select.POLLIN)
@@ -60,14 +60,14 @@ klasse PollTests(unittest.TestCase):
             ready = p.poll()
             ready_writers = find_ready_matching(ready, select.POLLOUT)
             if not ready_writers:
-                raise RuntimeError("no pipes ready for writing")
+                raise RuntimeError("no pipes ready fuer writing")
             wr = random.choice(ready_writers)
             os.write(wr, MSG)
 
             ready = p.poll()
             ready_readers = find_ready_matching(ready, select.POLLIN)
             if not ready_readers:
-                raise RuntimeError("no pipes ready for reading")
+                raise RuntimeError("no pipes ready fuer reading")
             rd = random.choice(ready_readers)
             buf = os.read(rd, MSG_LEN)
             self.assertEqual(len(buf), MSG_LEN)
@@ -80,7 +80,7 @@ klasse PollTests(unittest.TestCase):
         self.assertEqual(bufs, [MSG] * NUM_PIPES)
 
     def test_poll_unit_tests(self):
-        # returns NVAL for invalid file descriptor
+        # returns NVAL fuer invalid file descriptor
         FD, w = os.pipe()
         os.close(FD)
         os.close(w)
@@ -99,7 +99,7 @@ klasse PollTests(unittest.TestCase):
         self.assertEqual(r[0], (fd, select.POLLNVAL))
         os.unlink(TESTFN)
 
-        # type error for invalid arguments
+        # type error fuer invalid arguments
         p = select.poll()
         self.assertRaises(TypeError, p.register, p)
         self.assertRaises(TypeError, p.unregister, p)
@@ -120,7 +120,7 @@ klasse PollTests(unittest.TestCase):
         self.assertRaises(TypeError, pollster.register, Nope(), 0)
         self.assertRaises(TypeError, pollster.register, Almost(), 0)
 
-    # Another test case for poll().  This is copied from the test case for
+    # Another test case fuer poll().  This is copied from the test case for
     # select(), modified to use poll() instead.
 
     @requires_subprocess()
@@ -133,7 +133,7 @@ klasse PollTests(unittest.TestCase):
         p = proc.stdout
         pollster = select.poll()
         pollster.register( p, select.POLLIN )
-        for tout in (0, 1000, 2000, 4000, 8000, 16000) + (-1,)*10:
+        fuer tout in (0, 1000, 2000, 4000, 8000, 16000) + (-1,)*10:
             fdlist = pollster.poll(tout)
             if (fdlist == []):
                 continue
@@ -191,12 +191,12 @@ klasse PollTests(unittest.TestCase):
         self.addCleanup(os.close, r)
         self.addCleanup(os.close, w)
         rfds = []
-        for i in range(10):
+        fuer i in range(10):
             fd = os.dup(r)
             self.addCleanup(os.close, fd)
             rfds.append(fd)
         pollster = select.poll()
-        for fd in rfds:
+        fuer fd in rfds:
             pollster.register(fd, select.POLLIN)
 
         t = threading.Thread(target=pollster.poll)
@@ -204,7 +204,7 @@ klasse PollTests(unittest.TestCase):
         try:
             time.sleep(0.5)
             # trigger ufds array reallocation
-            for fd in rfds:
+            fuer fd in rfds:
                 pollster.unregister(fd)
             pollster.register(w, select.POLLOUT)
             self.assertRaises(RuntimeError, pollster.poll)
@@ -213,10 +213,10 @@ klasse PollTests(unittest.TestCase):
             os.write(w, b'spam')
             t.join()
 
-    @unittest.skipUnless(threading, 'Threading required for this test.')
+    @unittest.skipUnless(threading, 'Threading required fuer this test.')
     @threading_helper.reap_threads
     def test_poll_blocks_with_negative_ms(self):
-        for timeout_ms in [None, -1000, -1, -1.0, -0.1, -1e-100]:
+        fuer timeout_ms in [None, -1000, -1, -1.0, -0.1, -1e-100]:
             # Create two file descriptors. This will be used to unlock
             # the blocking call to poll.poll inside the thread
             r, w = os.pipe()

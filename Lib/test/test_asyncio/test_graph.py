@@ -26,13 +26,13 @@ def capture_test_stack(*, fut=None, depth=1):
                             if hasattr(entry.frame.f_generator, 'cr_code') else
                             f"ag {entry.frame.f_generator.ag_code.co_name}"
                         )
-                ) for entry in s.call_stack
+                ) fuer entry in s.call_stack
             ]
         )
 
         ret.append(
             sorted([
-                walk(ab) for ab in s.awaited_by
+                walk(ab) fuer ab in s.awaited_by
             ], key=lambda entry: entry[0])
         )
 
@@ -119,13 +119,13 @@ klasse CallStackTestBase:
             stack_for_gen_nested_call = capture_test_stack()
 
         async def gen():
-            for num in range(2):
+            fuer num in range(2):
                 yield num
                 if num == 1:
                     await gen_nested_call()
 
         async def main():
-            async for el in gen():
+            async fuer el in gen():
                 pass
 
         await main()
@@ -243,7 +243,7 @@ klasse CallStackTestBase:
                 await inner()
 
         async def c2():
-            for i in range(3):
+            fuer i in range(3):
                 await asyncio.sleep(0)
 
         async def main(t1, t2):
@@ -318,7 +318,7 @@ klasse CallStackTestBase:
                 g.create_task(a1(fut), name="task A")
                 g.create_task(b1(fut), name='task B')
 
-                for _ in range(5):
+                fuer _ in range(5):
                     # Do a few iterations to ensure that both a1 and b1
                     # await on the future
                     await asyncio.sleep(0)

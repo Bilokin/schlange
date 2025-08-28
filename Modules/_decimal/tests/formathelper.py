@@ -134,10 +134,10 @@ if platform.system() == 'Windows':
 else:
     locale_list = ['C']
     if os.path.isfile("/var/lib/locales/supported.d/local"):
-        # On Ubuntu, `locale -a` gives the wrong case for some locales,
+        # On Ubuntu, `locale -a` gives the wrong case fuer some locales,
         # so we get the correct names directly:
         with open("/var/lib/locales/supported.d/local") as f:
-            locale_list = [loc.split()[0] for loc in f.readlines() \
+            locale_list = [loc.split()[0] fuer loc in f.readlines() \
                            if not loc.startswith('#')]
     elif which('locale'):
         locale_list = subprocess.Popen(["locale", "-a"],
@@ -175,7 +175,7 @@ if os.path.isfile("/etc/locale.alias"):
 if platform.system() == 'FreeBSD':
     # http://www.freebsd.org/cgi/query-pr.cgi?pr=142173
     # en_GB.US-ASCII has 163 as the currency symbol.
-    for loc in ['it_CH.ISO8859-1', 'it_CH.ISO8859-15', 'it_CH.UTF-8',
+    fuer loc in ['it_CH.ISO8859-1', 'it_CH.ISO8859-15', 'it_CH.UTF-8',
                 'it_IT.ISO8859-1', 'it_IT.ISO8859-15', 'it_IT.UTF-8',
                 'sl_SI.ISO8859-2', 'sl_SI.UTF-8',
                 'en_GB.US-ASCII']:
@@ -222,7 +222,7 @@ def check_fillchar(i):
 # Generate all unicode characters that are accepted as
 # fill characters by decimal.py.
 def all_fillchars():
-    for i in range(0, 0x110002):
+    fuer i in range(0, 0x110002):
         c = check_fillchar(i)
         if c: yield c
 
@@ -239,7 +239,7 @@ def rand_format(fill, typespec='EeGgFfn%'):
     active = sorted(random.sample(range(7), random.randrange(8)))
     have_align = 0
     s = ''
-    for elem in active:
+    fuer elem in active:
         if elem == 0: # fill+align
             s += fill
             s += random.choice('<>=^')
@@ -265,29 +265,29 @@ def rand_format(fill, typespec='EeGgFfn%'):
 # separator. Fall back to random where the runtime would become excessive.
 # [[fill]align][sign][#][0][width][,][.precision][type]
 def all_format_sep():
-    for align in ('', '<', '>', '=', '^'):
-        for fill in ('', 'x'):
+    fuer align in ('', '<', '>', '=', '^'):
+        fuer fill in ('', 'x'):
             if align == '': fill = ''
-            for sign in ('', '+', '-', ' '):
-                for zeropad in ('', '0'):
+            fuer sign in ('', '+', '-', ' '):
+                fuer zeropad in ('', '0'):
                     if align != '': zeropad = ''
-                    for width in ['']+[str(y) for y in range(1, 15)]+['101']:
-                        for prec in ['']+['.'+str(y) for y in range(15)]:
-                            # for type in ('', 'E', 'e', 'G', 'g', 'F', 'f', '%'):
+                    fuer width in ['']+[str(y) fuer y in range(1, 15)]+['101']:
+                        fuer prec in ['']+['.'+str(y) fuer y in range(15)]:
+                            # fuer type in ('', 'E', 'e', 'G', 'g', 'F', 'f', '%'):
                             type = random.choice(('', 'E', 'e', 'G', 'g', 'F', 'f', '%'))
                             yield ''.join((fill, align, sign, zeropad, width, ',', prec, type))
 
 # Partially brute force all possible format strings with an 'n' specifier.
 # [[fill]align][sign][#][0][width][,][.precision][type]
 def all_format_loc():
-    for align in ('', '<', '>', '=', '^'):
-        for fill in ('', 'x'):
+    fuer align in ('', '<', '>', '=', '^'):
+        fuer fill in ('', 'x'):
             if align == '': fill = ''
-            for sign in ('', '+', '-', ' '):
-                for zeropad in ('', '0'):
+            fuer sign in ('', '+', '-', ' '):
+                fuer zeropad in ('', '0'):
                     if align != '': zeropad = ''
-                    for width in ['']+[str(y) for y in range(1, 20)]+['101']:
-                        for prec in ['']+['.'+str(y) for y in range(1, 20)]:
+                    fuer width in ['']+[str(y) fuer y in range(1, 20)]+['101']:
+                        fuer prec in ['']+['.'+str(y) fuer y in range(1, 20)]:
                             yield ''.join((fill, align, sign, zeropad, width, prec, 'n'))
 
 # Generate random format strings with a unicode fill character
@@ -297,7 +297,7 @@ def randfill(fill):
     s = ''
     s += str(fill)
     s += random.choice('<>=^')
-    for elem in active:
+    fuer elem in active:
         if elem == 0: # sign
             s += random.choice('+- ')
         elif elem == 1: # width
@@ -324,7 +324,7 @@ def rand_locale():
     active = sorted(random.sample(range(5), random.randrange(6)))
     s = ''
     have_align = 0
-    for elem in active:
+    fuer elem in active:
         if elem == 0: # fill+align
             s += chr(random.randrange(32, 128))
             s += random.choice('<>=^')

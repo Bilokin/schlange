@@ -73,7 +73,7 @@ klasse OnSysPath(Fixtures):
 klasse SiteBuilder(SiteDir):
     def setUp(self):
         super().setUp()
-        for cls in self.__class__.mro():
+        fuer cls in self.__class__.mro():
             with contextlib.suppress(AttributeError):
                 build_files(cls.files, prefix=self.site_dir)
 
@@ -342,7 +342,7 @@ build_files = _path.build
 
 
 def build_record(file_defs):
-    return ''.join(f'{name},,\n' for name in record_names(file_defs))
+    return ''.join(f'{name},,\n' fuer name in record_names(file_defs))
 
 
 def record_names(file_defs):
@@ -386,7 +386,7 @@ def parameterize(*args_set):
     def wrapper(func):
         @functools.wraps(func)
         def _inner(self):
-            for args in args_set:
+            fuer args in args_set:
                 with self.subTest(**args):
                     func(self, **args)
 

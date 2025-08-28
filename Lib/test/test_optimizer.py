@@ -65,7 +65,7 @@ klasse TestRareEventCounters(unittest.TestCase):
         def func(x=0):
             pass
 
-        for attribute in (
+        fuer attribute in (
             "__code__",
             "__defaults__",
             "__kwdefaults__"

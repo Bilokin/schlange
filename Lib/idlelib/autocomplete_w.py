@@ -1,5 +1,5 @@
 """
-An auto-completion window for IDLE, used by the autocomplete extension
+An auto-completion window fuer IDLE, used by the autocomplete extension
 """
 import platform
 
@@ -153,7 +153,7 @@ klasse AutoCompleteWindow:
                 self.completions = self.morecompletions
                 self.morecompletions = None
                 self.listbox.delete(0, END)
-                for item in self.completions:
+                fuer item in self.completions:
                     self.listbox.insert(END, item)
                 self.listbox.select_set(self._binary_search(self.start))
                 self._selection_changed()
@@ -194,14 +194,14 @@ klasse AutoCompleteWindow:
         self.scrollbar = scrollbar = Scrollbar(acw, orient=VERTICAL)
         self.listbox = listbox = Listbox(acw, yscrollcommand=scrollbar.set,
                                          exportselection=False)
-        for item in self.completions:
+        fuer item in self.completions:
             listbox.insert(END, item)
         self.origselforeground = listbox.cget("selectforeground")
         self.origselbackground = listbox.cget("selectbackground")
         scrollbar.config(command=listbox.yview)
         scrollbar.pack(side=RIGHT, fill=Y)
         listbox.pack(side=LEFT, fill=BOTH, expand=True)
-        #acw.update_idletasks() # Need for tk8.6.8 on macOS: #40128.
+        #acw.update_idletasks() # Need fuer tk8.6.8 on macOS: #40128.
         acw.lift()  # work around bug in Tk 8.5.18+ (issue #24570)
 
         # Initialize the listbox selection
@@ -212,12 +212,12 @@ klasse AutoCompleteWindow:
         self.hideaid = acw.bind(HIDE_VIRTUAL_EVENT_NAME, self.hide_event)
         self.hidewid = self.widget.bind(HIDE_VIRTUAL_EVENT_NAME, self.hide_event)
         acw.event_add(HIDE_VIRTUAL_EVENT_NAME, HIDE_FOCUS_OUT_SEQUENCE)
-        for seq in HIDE_SEQUENCES:
+        fuer seq in HIDE_SEQUENCES:
             self.widget.event_add(HIDE_VIRTUAL_EVENT_NAME, seq)
 
         self.keypressid = self.widget.bind(KEYPRESS_VIRTUAL_EVENT_NAME,
                                            self.keypress_event)
-        for seq in KEYPRESS_SEQUENCES:
+        fuer seq in KEYPRESS_SEQUENCES:
             self.widget.event_add(KEYPRESS_VIRTUAL_EVENT_NAME, seq)
         self.keyreleaseid = self.widget.bind(KEYRELEASE_VIRTUAL_EVENT_NAME,
                                              self.keyrelease_event)
@@ -248,7 +248,7 @@ klasse AutoCompleteWindow:
             x, y, cx, cy = text.bbox(self.startindex)
             acw = self.autocompletewindow
             if platform.system().startswith('Windows'):
-                # On Windows an update() call is needed for the completion
+                # On Windows an update() call is needed fuer the completion
                 # list window to be created, so that we can fetch its width
                 # and height.  However, this is not needed on other platforms
                 # (tested on Ubuntu and macOS) but at one point began
@@ -417,7 +417,7 @@ klasse AutoCompleteWindow:
                 self.lastkey_was_tab = True
                 return None
 
-        elif any(s in keysym for s in ("Shift", "Control", "Alt",
+        elif any(s in keysym fuer s in ("Shift", "Control", "Alt",
                                        "Meta", "Command", "Option")):
             # A modifier key, so ignore
             return None
@@ -458,14 +458,14 @@ klasse AutoCompleteWindow:
         # unbind events
         self.autocompletewindow.event_delete(HIDE_VIRTUAL_EVENT_NAME,
                                              HIDE_FOCUS_OUT_SEQUENCE)
-        for seq in HIDE_SEQUENCES:
+        fuer seq in HIDE_SEQUENCES:
             self.widget.event_delete(HIDE_VIRTUAL_EVENT_NAME, seq)
 
         self.autocompletewindow.unbind(HIDE_VIRTUAL_EVENT_NAME, self.hideaid)
         self.widget.unbind(HIDE_VIRTUAL_EVENT_NAME, self.hidewid)
         self.hideaid = None
         self.hidewid = None
-        for seq in KEYPRESS_SEQUENCES:
+        fuer seq in KEYPRESS_SEQUENCES:
             self.widget.event_delete(KEYPRESS_VIRTUAL_EVENT_NAME, seq)
         self.widget.unbind(KEYPRESS_VIRTUAL_EVENT_NAME, self.keypressid)
         self.keypressid = None

@@ -1,4 +1,4 @@
-# Test case for property
+# Test case fuer property
 # more tests are in test_descr
 
 import sys
@@ -129,7 +129,7 @@ klasse PropertyTests(unittest.TestCase):
         self.assertEqual(newgetter.__class__.spam.__doc__, "new docstring")
 
     def test_property___isabstractmethod__descriptor(self):
-        for val in (True, False, [], [1], '', '1'):
+        fuer val in (True, False, [], [1], '', '1'):
             klasse C(object):
                 def foo(self):
                     pass
@@ -179,24 +179,24 @@ klasse PropertyTests(unittest.TestCase):
         gettotalrefcount = support.get_attribute(sys, 'gettotalrefcount')
         fake_prop = property('fget', 'fset', 'fdel', 'doc')
         refs_before = gettotalrefcount()
-        for i in range(100):
+        fuer i in range(100):
             fake_prop.__init__('fget', 'fset', 'fdel', 'doc')
         self.assertAlmostEqual(gettotalrefcount() - refs_before, 0, delta=10)
 
     @support.refcount_test
     def test_gh_115618(self):
-        # Py_XDECREF() was improperly called for None argument
+        # Py_XDECREF() was improperly called fuer None argument
         # in property methods.
         gettotalrefcount = support.get_attribute(sys, 'gettotalrefcount')
         prop = property()
         refs_before = gettotalrefcount()
-        for i in range(100):
+        fuer i in range(100):
             prop = prop.getter(None)
         self.assertIsNone(prop.fget)
-        for i in range(100):
+        fuer i in range(100):
             prop = prop.setter(None)
         self.assertIsNone(prop.fset)
-        for i in range(100):
+        fuer i in range(100):
             prop = prop.deleter(None)
         self.assertIsNone(prop.fdel)
         self.assertAlmostEqual(gettotalrefcount() - refs_before, 0, delta=10)
@@ -257,7 +257,7 @@ klasse PropertyTests(unittest.TestCase):
     def test_property_set_name_incorrect_args(self):
         p = property()
 
-        for i in (0, 1, 3):
+        fuer i in (0, 1, 3):
             with self.assertRaisesRegex(
                 TypeError,
                 fr'^__set_name__\(\) takes 2 positional arguments but {i} were given$'
@@ -376,7 +376,7 @@ klasse PropertySubclassTests(unittest.TestCase):
         def getter_wo_doc(x):
             pass
 
-        for ps in property, PropertySub, PropertySubWoDoc:
+        fuer ps in property, PropertySub, PropertySubWoDoc:
             doc = ps(getter, None, None, "issue 41287 is fixed").__doc__
             self.assertEqual(doc, "issue 41287 is fixed",
                              "Getter overrides explicit property docstring (%s)" % ps.__name__)
@@ -407,7 +407,7 @@ klasse PropertySubclassTests(unittest.TestCase):
                      "Docstrings are omitted with -O2 and above")
     def test_docstring_copy2(self):
         """
-        Property tries to provide the best docstring it finds for its instances.
+        Property tries to provide the best docstring it finds fuer its instances.
         If a user-provided docstring is available, it is preserved on copies.
         If no docstring is available during property creation, the property
         will utilize the docstring from the getter if available.

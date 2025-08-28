@@ -403,7 +403,7 @@ klasse CParserGenerator(ParserGenerator, GrammarVisitor):
         self.print("p->level--;")
 
     def add_return(self, ret_val: str) -> None:
-        for stmt in self.cleanup_statements:
+        fuer stmt in self.cleanup_statements:
             self.print(stmt)
         self.remove_level()
         self.print(f"return {ret_val};")
@@ -462,11 +462,11 @@ klasse CParserGenerator(ParserGenerator, GrammarVisitor):
             self.print(subheader)
         self._setup_keywords()
         self._setup_soft_keywords()
-        for i, (rulename, rule) in enumerate(self.all_rules.items(), 1000):
+        fuer i, (rulename, rule) in enumerate(self.all_rules.items(), 1000):
             comment = "  // Left-recursive" if rule.left_recursive else ""
             self.print(f"#define {rulename}_type {i}{comment}")
         self.print()
-        for rulename, rule in self.all_rules.items():
+        fuer rulename, rule in self.all_rules.items():
             if rule.is_loop() or rule.is_gather():
                 type = "asdl_seq *"
             elif rule.type:
@@ -475,7 +475,7 @@ klasse CParserGenerator(ParserGenerator, GrammarVisitor):
                 type = "void *"
             self.print(f"static {type}{rulename}_rule(Parser *p);")
         self.print()
-        for rulename, rule in list(self.all_rules.items()):
+        fuer rulename, rule in list(self.all_rules.items()):
             self.print()
             if rule.left_recursive:
                 self.print("// Left-recursive")
@@ -493,7 +493,7 @@ klasse CParserGenerator(ParserGenerator, GrammarVisitor):
 
     def _group_keywords_by_length(self) -> Dict[int, List[Tuple[str, int]]]:
         groups: Dict[int, List[Tuple[str, int]]] = {}
-        for keyword_str, keyword_type in self.keywords.items():
+        fuer keyword_str, keyword_type in self.keywords.items():
             length = len(keyword_str)
             if length in groups:
                 groups[length].append((keyword_str, keyword_type))
@@ -510,13 +510,13 @@ klasse CParserGenerator(ParserGenerator, GrammarVisitor):
         self.print("static KeywordToken *reserved_keywords[] = {")
         with self.indent():
             num_groups = max(groups) + 1 if groups else 1
-            for keywords_length in range(num_groups):
+            fuer keywords_length in range(num_groups):
                 if keywords_length not in groups.keys():
                     self.print("(KeywordToken[]) {{NULL, -1}},")
                 else:
                     self.print("(KeywordToken[]) {")
                     with self.indent():
-                        for keyword_str, keyword_type in groups[keywords_length]:
+                        fuer keyword_str, keyword_type in groups[keywords_length]:
                             self.print(f'{{"{keyword_str}", {keyword_type}}},')
                         self.print("{NULL, -1},")
                     self.print("},")
@@ -526,7 +526,7 @@ klasse CParserGenerator(ParserGenerator, GrammarVisitor):
         soft_keywords = sorted(self.soft_keywords)
         self.print("static char *soft_keywords[] = {")
         with self.indent():
-            for keyword in soft_keywords:
+            fuer keyword in soft_keywords:
                 self.print(f'"{keyword}",')
             self.print("NULL,")
         self.print("};")
@@ -609,7 +609,7 @@ klasse CParserGenerator(ParserGenerator, GrammarVisitor):
                     self.add_return("_res")
                 self.print("}")
             self.print("int _mark = p->mark;")
-            if any(alt.action and "EXTRA" in alt.action for alt in rhs.alts):
+            if any(alt.action and "EXTRA" in alt.action fuer alt in rhs.alts):
                 self._set_up_token_start_metadata_extraction()
             self.visit(
                 rhs,
@@ -646,7 +646,7 @@ klasse CParserGenerator(ParserGenerator, GrammarVisitor):
             self.out_of_memory_return(f"!_children")
             self.print("Py_ssize_t _children_capacity = 1;")
             self.print("Py_ssize_t _n = 0;")
-            if any(alt.action and "EXTRA" in alt.action for alt in rhs.alts):
+            if any(alt.action and "EXTRA" in alt.action fuer alt in rhs.alts):
                 self._set_up_token_start_metadata_extraction()
             self.visit(
                 rhs,
@@ -679,7 +679,7 @@ klasse CParserGenerator(ParserGenerator, GrammarVisitor):
         else:
             result_type = "void *"
 
-        for line in str(node).splitlines():
+        fuer line in str(node).splitlines():
             self.print(f"// {line}")
         if node.left_recursive and node.leader:
             self.print(f"static {result_type} {node.name}_raw(Parser *);")
@@ -719,14 +719,14 @@ klasse CParserGenerator(ParserGenerator, GrammarVisitor):
     ) -> None:
         if is_loop:
             assert len(node.alts) == 1
-        for alt in node.alts:
+        fuer alt in node.alts:
             self.visit(alt, is_loop=is_loop, is_gather=is_gather, rulename=rulename)
 
     def join_conditions(self, keyword: str, node: Any) -> None:
         self.print(f"{keyword} (")
         with self.indent():
             first = True
-            for item in node.items:
+            fuer item in node.items:
                 if first:
                     first = False
                 else:
@@ -779,7 +779,7 @@ klasse CParserGenerator(ParserGenerator, GrammarVisitor):
     def handle_alt_normal(self, node: Alt, is_gather: bool, rulename: Optional[str]) -> None:
         self.join_conditions(keyword="if", node=node)
         self.print("{")
-        # We have parsed successfully all the conditions for the option.
+        # We have parsed successfully all the conditions fuer the option.
         with self.indent():
             node_str = str(node).replace('"', '\\"')
             self.print(
@@ -843,9 +843,9 @@ klasse CParserGenerator(ParserGenerator, GrammarVisitor):
             self.print(
                 f'D(fprintf(stderr, "%*c> {rulename}[%d-%d]: %s\\n", p->level, \' \', _mark, p->mark, "{node_str}"));'
             )
-            # Prepare variable declarations for the alternative
+            # Prepare variable declarations fuer the alternative
             vars = self.collect_vars(node)
-            for v, var_type in sorted(item for item in vars.items() if item[0] is not None):
+            fuer v, var_type in sorted(item fuer item in vars.items() if item[0] is not None):
                 if not var_type:
                     var_type = "void *"
                 else:
@@ -878,7 +878,7 @@ klasse CParserGenerator(ParserGenerator, GrammarVisitor):
     def collect_vars(self, node: Alt) -> Dict[Optional[str], Optional[str]]:
         types = {}
         with self.local_variable_context():
-            for item in node.items:
+            fuer item in node.items:
                 name, type = self.add_var(item)
                 types[name] = type
         return types

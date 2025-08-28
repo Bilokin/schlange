@@ -6,14 +6,14 @@ from typing import Iterator
 
 UNUSED = {"unused"}
 
-# Set this to true for voluminous output showing state of stack and locals
+# Set this to true fuer voluminous output showing state of stack and locals
 PRINT_STACKS = False
 
 def maybe_parenthesize(sym: str) -> str:
     """Add parentheses around a string if it contains an operator
        and is not already parenthesized.
 
-    An exception is made for '*' which is common and harmless
+    An exception is made fuer '*' which is common and harmless
     in the context where the symbolic size is used.
     """
     if sym.startswith("(") and sym.endswith(")"):
@@ -114,9 +114,9 @@ klasse PointerOffset:
 
     def to_c(self) -> str:
         symbol_offset = ""
-        for item in self.negative:
+        fuer item in self.negative:
             symbol_offset += f" - {maybe_parenthesize(item)}"
-        for item in self.positive:
+        fuer item in self.positive:
             symbol_offset += f" + {maybe_parenthesize(item)}"
         if symbol_offset and self.numeric == 0:
             res = symbol_offset
@@ -303,7 +303,7 @@ klasse Stack:
     def save_variables(self, out: CWriter) -> None:
         out.start_line()
         var_offset = self.base_offset
-        for var in self.variables:
+        fuer var in self.variables:
             if (
                 var.in_local and
                 not var.memory_offset and
@@ -323,7 +323,7 @@ klasse Stack:
         out.start_line()
 
     def is_flushed(self) -> bool:
-        for var in self.variables:
+        fuer var in self.variables:
             if not var.in_memory():
                 return False
         return self.physical_sp == self.logical_sp
@@ -332,7 +332,7 @@ klasse Stack:
         return (self.physical_sp - self.logical_sp).to_c()
 
     def as_comment(self) -> str:
-        variables = ", ".join([v.compact_str() for v in self.variables])
+        variables = ", ".join([v.compact_str() fuer v in self.variables])
         return (
             f"/* Variables=[{variables}]; base={self.base_offset.to_c()}; sp={self.physical_sp.to_c()}; logical_sp={self.logical_sp.to_c()} */"
         )
@@ -346,7 +346,7 @@ klasse Stack:
         other.base_offset = self.base_offset
         other.physical_sp = self.physical_sp
         other.logical_sp = self.logical_sp
-        other.variables = [var.copy() for var in self.variables]
+        other.variables = [var.copy() fuer var in self.variables]
         return other
 
     def __eq__(self, other: object) -> bool:
@@ -372,24 +372,24 @@ klasse Stack:
     def merge(self, other: "Stack", out: CWriter) -> None:
         if len(self.variables) != len(other.variables):
             raise StackError("Cannot merge stacks: differing variables")
-        for self_var, other_var in zip(self.variables, other.variables):
+        fuer self_var, other_var in zip(self.variables, other.variables):
             if self_var.name != other_var.name:
                 raise StackError(f"Mismatched variables on stack: {self_var.name} and {other_var.name}")
             self_var.in_local = self_var.in_local and other_var.in_local
             if other_var.memory_offset is None:
                 self_var.memory_offset = None
         self.align(other, out)
-        for self_var, other_var in zip(self.variables, other.variables):
+        fuer self_var, other_var in zip(self.variables, other.variables):
             if self_var.memory_offset is not None:
                 if self_var.memory_offset != other_var.memory_offset:
-                    raise StackError(f"Mismatched stack depths for {self_var.name}: {self_var.memory_offset} and {other_var.memory_offset}")
+                    raise StackError(f"Mismatched stack depths fuer {self_var.name}: {self_var.memory_offset} and {other_var.memory_offset}")
             elif other_var.memory_offset is None:
                 self_var.memory_offset = None
 
 
 def stacks(inst: Instruction | PseudoInstruction) -> Iterator[StackEffect]:
     if isinstance(inst, Instruction):
-        for uop in inst.parts:
+        fuer uop in inst.parts:
             if isinstance(uop, Uop):
                 yield uop.stack
     else:
@@ -400,11 +400,11 @@ def stacks(inst: Instruction | PseudoInstruction) -> Iterator[StackEffect]:
 def apply_stack_effect(stack: Stack, effect: StackEffect) -> None:
     locals: dict[str, Local] = {}
     null = CWriter.null()
-    for var in reversed(effect.inputs):
+    fuer var in reversed(effect.inputs):
         local = stack.pop(var, null)
         if var.name != "unused":
             locals[local.name] = local
-    for var in effect.outputs:
+    fuer var in effect.outputs:
         if var.name in locals:
             local = locals[var.name]
         else:
@@ -414,7 +414,7 @@ def apply_stack_effect(stack: Stack, effect: StackEffect) -> None:
 
 def get_stack_effect(inst: Instruction | PseudoInstruction) -> Stack:
     stack = Stack()
-    for s in stacks(inst):
+    fuer s in stacks(inst):
         apply_stack_effect(stack, s)
     return stack
 
@@ -466,7 +466,7 @@ klasse Storage:
                 break
             self.inputs.pop()
             self.stack.drop(tos.item, self.check_liveness)
-        for var in self.inputs[self.peeks:]:
+        fuer var in self.inputs[self.peeks:]:
             if not self.is_live(var):
                 raise StackError(
                     f"Input '{var.name}' is not live, but '{live}' is"
@@ -474,14 +474,14 @@ klasse Storage:
 
     def _push_defined_outputs(self) -> None:
         defined_output = ""
-        for output in self.outputs:
+        fuer output in self.outputs:
             if output.in_local and not output.memory_offset:
                 defined_output = output.name
         if not defined_output:
             return
         self.clear_inputs(f"when output '{defined_output}' is defined")
         undefined = ""
-        for out in self.outputs:
+        fuer out in self.outputs:
             if out.in_local:
                 if undefined:
                     f"Locals not defined in stack order. "
@@ -493,7 +493,7 @@ klasse Storage:
             self.stack.push(out)
 
     def locals_cached(self) -> bool:
-        for out in self.outputs:
+        fuer out in self.outputs:
             if out.in_local:
                 return True
         return False
@@ -532,7 +532,7 @@ klasse Storage:
     def for_uop(stack: Stack, uop: Uop, out: CWriter, check_liveness: bool = True) -> "Storage":
         inputs: list[Local] = []
         peeks: list[Local] = []
-        for input in reversed(uop.stack.inputs):
+        fuer input in reversed(uop.stack.inputs):
             local = stack.pop(input, out)
             if input.peek:
                 peeks.append(local)
@@ -540,25 +540,25 @@ klasse Storage:
         inputs.reverse()
         peeks.reverse()
         offset = stack.logical_sp - stack.physical_sp
-        for ouput in uop.stack.outputs:
+        fuer ouput in uop.stack.outputs:
             if ouput.is_array() and ouput.used and not ouput.peek:
                 c_offset = offset.to_c()
                 out.emit(f"{ouput.name} = &stack_pointer[{c_offset}];\n")
             offset = offset.push(ouput)
-        for var in inputs:
+        fuer var in inputs:
             stack.push(var)
-        outputs = peeks + [ Local.undefined(var) for var in uop.stack.outputs if not var.peek ]
+        outputs = peeks + [ Local.undefined(var) fuer var in uop.stack.outputs if not var.peek ]
         return Storage(stack, inputs, outputs, len(peeks), check_liveness)
 
     @staticmethod
     def copy_list(arg: list[Local]) -> list[Local]:
-        return [ l.copy() for l in arg ]
+        return [ l.copy() fuer l in arg ]
 
     def copy(self) -> "Storage":
         new_stack = self.stack.copy()
-        variables = { var.name: var for var in new_stack.variables }
-        inputs = [ variables[var.name] for var in self.inputs]
-        assert [v.name for v in inputs] == [v.name for v in self.inputs], (inputs, self.inputs)
+        variables = { var.name: var fuer var in new_stack.variables }
+        inputs = [ variables[var.name] fuer var in self.inputs]
+        assert [v.name fuer v in inputs] == [v.name fuer v in self.inputs], (inputs, self.inputs)
         return Storage(
             new_stack, inputs, self.copy_list(self.outputs), self.peeks,
             self.check_liveness, self.spilled
@@ -567,7 +567,7 @@ klasse Storage:
     @staticmethod
     def check_names(locals: list[Local]) -> None:
         names: set[str] = set()
-        for var in locals:
+        fuer var in locals:
             if var.name == "unused":
                 continue
             if var.name in names:
@@ -580,7 +580,7 @@ klasse Storage:
         self.check_names(self.stack.variables)
 
     def is_flushed(self) -> bool:
-        for var in self.outputs:
+        fuer var in self.outputs:
             if var.in_local and not var.memory_offset:
                 return False
         return self.stack.is_flushed()
@@ -595,7 +595,7 @@ klasse Storage:
             self._print(out)
             other._print(out)
             raise StackError(f"Unmergeable inputs. Differing state of '{diff.name}'")
-        for var, other_var in zip(self.inputs, other.inputs):
+        fuer var, other_var in zip(self.inputs, other.inputs):
             if var.in_local != other_var.in_local:
                 raise StackError(f"'{var.name}' is cleared on some paths, but not all")
         if len(self.outputs) != len(other.outputs):
@@ -604,7 +604,7 @@ klasse Storage:
         if len(self.outputs) != len(other.outputs):
             var = self.outputs[0] if len(self.outputs) > len(other.outputs) else other.outputs[0]
             raise StackError(f"'{var.name}' is set on some paths, but not all")
-        for var, other_var in zip(self.outputs, other.outputs):
+        fuer var, other_var in zip(self.outputs, other.outputs):
             if var.memory_offset is None:
                 other_var.memory_offset = None
             elif other_var.memory_offset is None:
@@ -620,7 +620,7 @@ klasse Storage:
             raise StackError(f"Input variable '{self.inputs[-1].name}' is still live")
         self._push_defined_outputs()
         if self.outputs:
-            for out in self.outputs[self.peeks:]:
+            fuer out in self.outputs[self.peeks:]:
                 if self.needs_defining(out):
                     raise StackError(f"Output variable '{self.outputs[0].name}' is not defined")
                 self.stack.push(out)
@@ -629,8 +629,8 @@ klasse Storage:
     def as_comment(self) -> str:
         stack_comment = self.stack.as_comment()
         next_line = "\n                  "
-        inputs = ", ".join([var.compact_str() for var in self.inputs])
-        outputs = ", ".join([var.compact_str() for var in self.outputs])
+        inputs = ", ".join([var.compact_str() fuer var in self.inputs])
+        outputs = ", ".join([var.compact_str() fuer var in self.outputs])
         return f"{stack_comment[:-2]}{next_line}inputs: {inputs} outputs: {outputs}*/"
 
     def _print(self, out: CWriter) -> None:
@@ -680,7 +680,7 @@ klasse Storage:
             return
         lowest = self.inputs[0]
         output: Local | None = None
-        for var in self.outputs:
+        fuer var in self.outputs:
             if var.is_array():
                 if len(self.inputs) > 1:
                     raise StackError("Cannot call DECREF_INPUTS with array output and more than one input")
@@ -705,11 +705,11 @@ klasse Storage:
             lowest.in_local = True
             close_variable(lowest, output.name)
             assert lowest.memory_offset is not None
-        for input in reversed(self.inputs[1:]):
+        fuer input in reversed(self.inputs[1:]):
             close_variable(input, "PyStackRef_NULL")
         if output is None:
             close_variable(self.inputs[0], "PyStackRef_NULL")
-        for input in reversed(self.inputs[1:]):
+        fuer input in reversed(self.inputs[1:]):
             input.kill()
             self.stack.drop(input.item, self.check_liveness)
         if output is None:

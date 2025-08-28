@@ -93,10 +93,10 @@ def fmt_summary(filename, item, *, showfwd=None):
             fields = data
             data = f'({len(data)}) {{ '
             indent = ',\n' + ' ' * (MIN_LINE + len(data))
-            data += ', '.join(f.name for f in fields[:5])
+            data += ', '.join(f.name fuer f in fields[:5])
             fields = fields[5:]
             while fields:
-                data = f'{data}{indent}{", ".join(f.name for f in fields[:5])}'
+                data = f'{data}{indent}{", ".join(f.name fuer f in fields[:5])}'
                 fields = fields[5:]
             data += ' }'
     elif kind is KIND.ENUM:
@@ -104,7 +104,7 @@ def fmt_summary(filename, item, *, showfwd=None):
             isforward = True
         else:
             names = [d if isinstance(d, str) else d.name
-                     for d in data]
+                     fuer d in data]
             data = f'({len(data)}) {{ '
             indent = ',\n' + ' ' * (MIN_LINE + len(data))
             data += ', '.join(names[:5])
@@ -179,10 +179,10 @@ def cmd_parse(filenames, *,
         do_fmt = FORMATS[fmt]
     except KeyError:
         raise ValueError(f'unsupported fmt {fmt!r}')
-    for filename, relfile in main_for_filenames(filenames, iter_filenames, relroot):
-        for item in _iter_parsed(filename, **kwargs):
+    fuer filename, relfile in main_for_filenames(filenames, iter_filenames, relroot):
+        fuer item in _iter_parsed(filename, **kwargs):
             item = item.fix_filename(relroot, fixroot=False, normalize=False)
-            for line in do_fmt(relfile, item, showfwd=showfwd):
+            fuer line in do_fmt(relfile, item, showfwd=showfwd):
                 print(line)
 
 
@@ -224,7 +224,7 @@ def parse_args(argv=sys.argv[1:], prog=sys.argv[0], *, subset='parse'):
 
     processors = add_commands_cli(
         parser,
-        commands={k: v[1] for k, v in COMMANDS.items()},
+        commands={k: v[1] fuer k, v in COMMANDS.items()},
         commonspecs=[
             add_verbosity_cli,
             add_traceback_cli,

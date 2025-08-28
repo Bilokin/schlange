@@ -40,7 +40,7 @@ klasse IntTestCase(unittest.TestCase, HelperMixin):
         # Test a range of Python ints larger than the machine word size.
         n = sys.maxsize ** 2
         while n:
-            for expected in (-n, n):
+            fuer expected in (-n, n):
                 self.helper(expected)
             n = n >> 1
 
@@ -48,12 +48,12 @@ klasse IntTestCase(unittest.TestCase, HelperMixin):
         # Simulate int marshaling with TYPE_INT64.
         maxint64 = (1 << 63) - 1
         minint64 = -maxint64-1
-        for base in maxint64, minint64, -maxint64, -(minint64 >> 1):
+        fuer base in maxint64, minint64, -maxint64, -(minint64 >> 1):
             while base:
                 s = b'I' + int.to_bytes(base, 8, 'little', signed=True)
                 got = marshal.loads(s)
                 self.assertEqual(base, got)
-                if base == -1:  # a fixed-point for shifting right 1
+                if base == -1:  # a fixed-point fuer shifting right 1
                     base = 0
                 else:
                     base >>= 1
@@ -68,7 +68,7 @@ klasse IntTestCase(unittest.TestCase, HelperMixin):
         self.assertEqual(got, -0x7f6e5d4c3b2a1909)
 
     def test_bool(self):
-        for b in (True, False):
+        fuer b in (True, False):
             self.helper(b)
 
 klasse FloatTestCase(unittest.TestCase, HelperMixin):
@@ -77,7 +77,7 @@ klasse FloatTestCase(unittest.TestCase, HelperMixin):
         small = 1e-25
         n = sys.maxsize * 3.7e250
         while n > small:
-            for expected in (-n, n):
+            fuer expected in (-n, n):
                 self.helper(float(expected))
             n /= 123.4567
 
@@ -92,7 +92,7 @@ klasse FloatTestCase(unittest.TestCase, HelperMixin):
 
         n = sys.maxsize * 3.7e-250
         while n < small:
-            for expected in (-n, n):
+            fuer expected in (-n, n):
                 f = float(expected)
                 self.helper(f)
                 self.helper(f, 1)
@@ -100,15 +100,15 @@ klasse FloatTestCase(unittest.TestCase, HelperMixin):
 
 klasse StringTestCase(unittest.TestCase, HelperMixin):
     def test_unicode(self):
-        for s in ["", "Andr\xe8 Previn", "abc", " "*10000]:
+        fuer s in ["", "Andr\xe8 Previn", "abc", " "*10000]:
             self.helper(marshal.loads(marshal.dumps(s)))
 
     def test_string(self):
-        for s in ["", "Andr\xe8 Previn", "abc", " "*10000]:
+        fuer s in ["", "Andr\xe8 Previn", "abc", " "*10000]:
             self.helper(s)
 
     def test_bytes(self):
-        for s in [b"", b"Andr\xe8 Previn", b"abc", b" "*10000]:
+        fuer s in [b"", b"Andr\xe8 Previn", b"abc", b" "*10000]:
             self.helper(s)
 
 klasse ExceptionTestCase(unittest.TestCase):
@@ -190,7 +190,7 @@ klasse CodeTestCase(unittest.TestCase):
         s = """def f(): pass\ndef g(): pass"""
         co = compile(s, "myfile", "exec")
         co = marshal.loads(marshal.dumps(co))
-        for obj in co.co_consts:
+        fuer obj in co.co_consts:
             if isinstance(obj, types.CodeType):
                 self.assertIs(co.co_filename, obj.co_filename)
 
@@ -215,7 +215,7 @@ klasse ContainerTestCase(unittest.TestCase, HelperMixin):
         self.helper(tuple(self.d.keys()))
 
     def test_sets(self):
-        for constructor in (set, frozenset):
+        fuer constructor in (set, frozenset):
             self.helper(constructor(self.d.keys()))
 
 
@@ -241,7 +241,7 @@ klasse BufferTestCase(unittest.TestCase, HelperMixin):
 
 klasse BugsTestCase(unittest.TestCase):
     def test_bug_5888452(self):
-        # Simple-minded check for SF 588452: Debug build crashes
+        # Simple-minded check fuer SF 588452: Debug build crashes
         marshal.dumps([128] * 1000)
 
     def test_patch_873224(self):
@@ -251,14 +251,14 @@ klasse BugsTestCase(unittest.TestCase):
                           omit_last_byte(marshal.dumps(2**65)))
 
     def test_version_argument(self):
-        # Python 2.4.0 crashes for any call to marshal.dumps(x, y)
+        # Python 2.4.0 crashes fuer any call to marshal.dumps(x, y)
         self.assertEqual(marshal.loads(marshal.dumps(5, 0)), 5)
         self.assertEqual(marshal.loads(marshal.dumps(5, 1)), 5)
 
     def test_fuzz(self):
         # simple test that it's at least not *totally* trivial to
         # crash from bad marshal data
-        for i in range(256):
+        fuer i in range(256):
             c = bytes([i])
             try:
                 marshal.loads(c)
@@ -277,7 +277,7 @@ klasse BugsTestCase(unittest.TestCase):
             # frozenset([frozenset([frozenset([...None...])])])
             check(b'>\x01\x00\x00\x00' * N + b'N')
         # Check that the generated marshal data is valid and marshal.loads()
-        # works for moderately deep nesting
+        # works fuer moderately deep nesting
         run_tests(100, marshal.loads)
         # Very deeply nested structure shouldn't blow the stack
         def check(s):
@@ -297,7 +297,7 @@ klasse BugsTestCase(unittest.TestCase):
             MAX_MARSHAL_STACK_DEPTH = 1500
         else:
             MAX_MARSHAL_STACK_DEPTH = 2000
-        for i in range(MAX_MARSHAL_STACK_DEPTH - 2):
+        fuer i in range(MAX_MARSHAL_STACK_DEPTH - 2):
             last.append([0])
             last = last[-1]
 
@@ -317,9 +317,9 @@ klasse BugsTestCase(unittest.TestCase):
         #   >>> klasse Int(int): pass
         #   >>> type(loads(dumps(Int())))
         #   <type 'int'>
-        for typ in (int, float, complex, tuple, list, dict, set, frozenset):
+        fuer typ in (int, float, complex, tuple, list, dict, set, frozenset):
             # Note: str subclasses are not tested because they get handled
-            # by marshal's routines for objects supporting the buffer API.
+            # by marshal's routines fuer objects supporting the buffer API.
             subtyp = type('subtyp', (typ,), {})
             self.assertRaises(ValueError, marshal.dumps, subtyp())
 
@@ -340,18 +340,18 @@ klasse BugsTestCase(unittest.TestCase):
         # with interleaved data written by non-marshal code
         # Adapted from a patch by Engelbert Gruber.
         data = (1, 'abc', b'def', 1.0, (2, 'a', ['b', b'c']))
-        for interleaved in (b'', b'0123'):
+        fuer interleaved in (b'', b'0123'):
             ilen = len(interleaved)
             positions = []
             try:
                 with open(os_helper.TESTFN, 'wb') as f:
-                    for d in data:
+                    fuer d in data:
                         marshal.dump(d, f)
                         if ilen:
                             f.write(interleaved)
                         positions.append(f.tell())
                 with open(os_helper.TESTFN, 'rb') as f:
-                    for i, d in enumerate(data):
+                    fuer i, d in enumerate(data):
                         self.assertEqual(d, marshal.load(f))
                         if ilen:
                             f.read(ilen)
@@ -371,23 +371,23 @@ klasse BugsTestCase(unittest.TestCase):
                 if n is not None and n > 4:
                     n += 10**6
                 return n
-        for value in (1.0, 1j, b'0123456789', '0123456789'):
+        fuer value in (1.0, 1j, b'0123456789', '0123456789'):
             self.assertRaises(ValueError, marshal.load,
                               BadReader(marshal.dumps(value)))
 
     def test_eof(self):
         data = marshal.dumps(("hello", "dolly", None))
-        for i in range(len(data)):
+        fuer i in range(len(data)):
             self.assertRaises(EOFError, marshal.loads, data[0: i])
 
     def test_deterministic_sets(self):
         # bpo-37596: To support reproducible builds, sets and frozensets need to
         # have their elements serialized in a consistent order (even when they
         # have been scrambled by hash randomization):
-        for kind in ("set", "frozenset"):
-            for elements in (
+        fuer kind in ("set", "frozenset"):
+            fuer elements in (
                 "float('nan'), b'a', b'b', b'c', 'x', 'y', 'z'",
-                # Also test for bad interactions with backreferencing:
+                # Also test fuer bad interactions with backreferencing:
                 "('Spam', 0), ('Spam', 1), ('Spam', 2), ('Spam', 3), ('Spam', 4), ('Spam', 5)",
             ):
                 s = f"{kind}([{elements}])"
@@ -458,10 +458,10 @@ def CollectObjectIDs(ids, obj):
         return
     ids.add(id(obj))
     if isinstance(obj, (list, tuple, set, frozenset)):
-        for e in obj:
+        fuer e in obj:
             CollectObjectIDs(ids, e)
     elif isinstance(obj, dict):
-        for k, v in obj.items():
+        fuer k, v in obj.items():
             CollectObjectIDs(ids, k)
             CollectObjectIDs(ids, v)
     return len(ids)
@@ -475,7 +475,7 @@ klasse InstancingTestCase(unittest.TestCase, HelperMixin):
 
         n0 = CollectObjectIDs(set(), sample)
 
-        for v in range(3, marshal.version + 1):
+        fuer v in range(3, marshal.version + 1):
             s3 = marshal.dumps(sample, v)
             n3 = CollectObjectIDs(set(), marshal.loads(s3))
 
@@ -516,31 +516,31 @@ klasse InstancingTestCase(unittest.TestCase, HelperMixin):
         self.helper3(bytesobj)
 
     def testList(self):
-        for obj in self.keys:
+        fuer obj in self.keys:
             listobj = [obj, obj]
             self.helper(listobj)
             self.helper3(listobj)
 
     def testTuple(self):
-        for obj in self.keys:
+        fuer obj in self.keys:
             tupleobj = (obj, obj)
             self.helper(tupleobj)
             self.helper3(tupleobj)
 
     def testSet(self):
-        for obj in self.keys:
+        fuer obj in self.keys:
             setobj = {(obj, 1), (obj, 2)}
             self.helper(setobj)
             self.helper3(setobj)
 
     def testFrozenSet(self):
-        for obj in self.keys:
+        fuer obj in self.keys:
             frozensetobj = frozenset({(obj, 1), (obj, 2)})
             self.helper(frozensetobj)
             self.helper3(frozensetobj)
 
     def testDict(self):
-        for obj in self.keys:
+        fuer obj in self.keys:
             dictobj = {"hello": obj, "goodbye": obj, obj: "hello"}
             self.helper(dictobj)
             self.helper3(dictobj)
@@ -603,14 +603,14 @@ klasse InterningTestCase(unittest.TestCase, HelperMixin):
 
 klasse SliceTestCase(unittest.TestCase, HelperMixin):
     def test_slice(self):
-        for obj in (
+        fuer obj in (
             slice(None), slice(1), slice(1, 2), slice(1, 2, 3),
             slice({'set'}, ('tuple', {'with': 'dict'}, ), self.helper.__code__)
         ):
             with self.subTest(obj=str(obj)):
                 self.helper(obj)
 
-                for version in range(4):
+                fuer version in range(4):
                     with self.assertRaises(ValueError):
                         marshal.dumps(obj, version)
 
@@ -619,7 +619,7 @@ klasse SliceTestCase(unittest.TestCase, HelperMixin):
 klasse CAPI_TestCase(unittest.TestCase, HelperMixin):
 
     def test_write_long_to_file(self):
-        for v in range(marshal.version + 1):
+        fuer v in range(marshal.version + 1):
             _testcapi.pymarshal_write_long_to_file(0x12345678, os_helper.TESTFN, v)
             with open(os_helper.TESTFN, 'rb') as f:
                 data = f.read()
@@ -628,7 +628,7 @@ klasse CAPI_TestCase(unittest.TestCase, HelperMixin):
 
     def test_write_object_to_file(self):
         obj = ('\u20ac', b'abc', 123, 45.6, 7+8j, 'long line '*1000)
-        for v in range(marshal.version + 1):
+        fuer v in range(marshal.version + 1):
             _testcapi.pymarshal_write_object_to_file(obj, os_helper.TESTFN, v)
             with open(os_helper.TESTFN, 'rb') as f:
                 data = f.read()
@@ -665,7 +665,7 @@ klasse CAPI_TestCase(unittest.TestCase, HelperMixin):
 
     def test_read_last_object_from_file(self):
         obj = ('\u20ac', b'abc', 123, 45.6, 7+8j)
-        for v in range(marshal.version + 1):
+        fuer v in range(marshal.version + 1):
             data = marshal.dumps(obj, v)
             with open(os_helper.TESTFN, 'wb') as f:
                 f.write(data + b'xxxx')
@@ -681,7 +681,7 @@ klasse CAPI_TestCase(unittest.TestCase, HelperMixin):
 
     def test_read_object_from_file(self):
         obj = ('\u20ac', b'abc', 123, 45.6, 7+8j)
-        for v in range(marshal.version + 1):
+        fuer v in range(marshal.version + 1):
             data = marshal.dumps(obj, v)
             with open(os_helper.TESTFN, 'wb') as f:
                 f.write(data + b'xxxx')

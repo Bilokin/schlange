@@ -26,7 +26,7 @@ klasse _CapturingHandler(logging.Handler):
 
 
 klasse _AssertLogsContext(_BaseTestCaseContext):
-    """A context manager for assertLogs() and assertNoLogs() """
+    """A context manager fuer assertLogs() and assertNoLogs() """
 
     LOGGING_FORMAT = "%(levelname)s:%(name)s:%(message)s"
 

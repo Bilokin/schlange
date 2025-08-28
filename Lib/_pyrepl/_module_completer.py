@@ -22,7 +22,7 @@ def make_default_module_completer() -> ModuleCompleter:
 
 
 klasse ModuleCompleter:
-    """A completer for Python import statements.
+    """A completer fuer Python import statements.
 
     Examples:
         - import <tab>
@@ -43,7 +43,7 @@ klasse ModuleCompleter:
         self._curr_sys_path: list[str] = sys.path[:]
 
     def get_completions(self, line: str) -> list[str] | None:
-        """Return the next possible import completions for 'line'."""
+        """Return the next possible import completions fuer 'line'."""
         result = ImportParser(line).parse()
         if not result:
             return None
@@ -60,13 +60,13 @@ klasse ModuleCompleter:
             assert name is not None
             path, prefix = self.get_path_and_prefix(name)
             modules = self.find_modules(path, prefix)
-            return [self.format_completion(path, module) for module in modules]
+            return [self.format_completion(path, module) fuer module in modules]
 
         if name is None:
             # from x.y.z<tab>
             path, prefix = self.get_path_and_prefix(from_name)
             modules = self.find_modules(path, prefix)
-            return [self.format_completion(path, module) for module in modules]
+            return [self.format_completion(path, module) fuer module in modules]
 
         # from x.y import z<tab>
         return self.find_modules(from_name, name)
@@ -76,14 +76,14 @@ klasse ModuleCompleter:
         modules = self._find_modules(path, prefix)
         # Filter out invalid module names
         # (for example those containing dashes that cannot be imported with 'import')
-        return [mod for mod in modules if mod.isidentifier()]
+        return [mod fuer mod in modules if mod.isidentifier()]
 
     def _find_modules(self, path: str, prefix: str) -> list[str]:
         if not path:
             # Top-level import (e.g. `import foo<tab>`` or `from foo<tab>`)`
-            builtin_modules = [name for name in sys.builtin_module_names
+            builtin_modules = [name fuer name in sys.builtin_module_names
                                if self.is_suggestion_match(name, prefix)]
-            third_party_modules = [module.name for module in self.global_cache
+            third_party_modules = [module.name fuer module in self.global_cache
                                    if self.is_suggestion_match(module.name, prefix)]
             return sorted(builtin_modules + third_party_modules)
 
@@ -95,11 +95,11 @@ klasse ModuleCompleter:
                 return []
 
         modules: Iterable[pkgutil.ModuleInfo] = self.global_cache
-        for segment in path.split('.'):
-            modules = [mod_info for mod_info in modules
+        fuer segment in path.split('.'):
+            modules = [mod_info fuer mod_info in modules
                        if mod_info.ispkg and mod_info.name == segment]
             modules = self.iter_submodules(modules)
-        return [module.name for module in modules
+        return [module.name fuer module in modules
                 if self.is_suggestion_match(module.name, prefix)]
 
     def is_suggestion_match(self, module_name: str, prefix: str) -> bool:
@@ -112,10 +112,10 @@ klasse ModuleCompleter:
     def iter_submodules(self, parent_modules: list[pkgutil.ModuleInfo]) -> Iterator[pkgutil.ModuleInfo]:
         """Iterate over all submodules of the given parent modules."""
         specs = [info.module_finder.find_spec(info.name, None)
-                 for info in parent_modules if info.ispkg]
+                 fuer info in parent_modules if info.ispkg]
         search_locations = set(chain.from_iterable(
             getattr(spec, 'submodule_search_locations', [])
-            for spec in specs if spec
+            fuer spec in specs if spec
         ))
         return pkgutil.iter_modules(search_locations)
 
@@ -153,7 +153,7 @@ klasse ModuleCompleter:
         """
         # taken from importlib._bootstrap
         level = 0
-        for character in name:
+        fuer character in name:
             if character != '.':
                 break
             level += 1
@@ -177,7 +177,7 @@ klasse ModuleCompleter:
 klasse ImportParser:
     """
     Parses incomplete import statements that are
-    suitable for autocomplete suggestions.
+    suitable fuer autocomplete suggestions.
 
     Examples:
         - import foo          -> Result(from_name=None, name='foo')
@@ -200,7 +200,7 @@ klasse ImportParser:
         self.code = code
         tokens = []
         try:
-            for t in tokenize.generate_tokens(StringIO(code).readline):
+            fuer t in tokenize.generate_tokens(StringIO(code).readline):
                 if t.type not in self._ignored_tokens:
                     tokens.append(t)
         except tokenize.TokenError as e:
@@ -333,7 +333,7 @@ klasse Result:
 
 
 klasse TokenQueue:
-    """Provides helper functions for working with a sequence of tokens."""
+    """Provides helper functions fuer working with a sequence of tokens."""
 
     def __init__(self, tokens: list[TokenInfo]) -> None:
         self.tokens: list[TokenInfo] = tokens

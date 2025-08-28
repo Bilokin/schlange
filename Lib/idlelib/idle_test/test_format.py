@@ -61,9 +61,9 @@ klasse FindTest(unittest.TestCase):
         # up to but not including the stop line
         text = self.text
         text.insert('1.0', inserttext)
-        for line in range(1, stopline):
+        fuer line in range(1, stopline):
             linelength = int(text.index("%d.end" % line).split('.')[1])
-            for col in (0, linelength//2, linelength):
+            fuer col in (0, linelength//2, linelength):
                 tempindex = "%d.%d" % (line, col)
                 self.assertEqual(ft.find_paragraph(text, tempindex), expected)
         text.delete('1.0', 'end')
@@ -193,21 +193,21 @@ klasse ReformatCommentTest(unittest.TestCase):
 
         # reformat_comment formats to a minimum of 20 characters
         test_string = (
-            "    \"\"\"this is a test of a reformat for a triple quoted string"
-            " will it reformat to less than 70 characters for me?\"\"\"")
+            "    \"\"\"this is a test of a reformat fuer a triple quoted string"
+            " will it reformat to less than 70 characters fuer me?\"\"\"")
         result = ft.reformat_comment(test_string, 70, "    ")
         expected = (
-            "    \"\"\"this is a test of a reformat for a triple quoted string will it\n"
-            "    reformat to less than 70 characters for me?\"\"\"")
+            "    \"\"\"this is a test of a reformat fuer a triple quoted string will it\n"
+            "    reformat to less than 70 characters fuer me?\"\"\"")
         Equal(result, expected)
 
         test_comment = (
-            "# this is a test of a reformat for a triple quoted string will "
-            "it reformat to less than 70 characters for me?")
+            "# this is a test of a reformat fuer a triple quoted string will "
+            "it reformat to less than 70 characters fuer me?")
         result = ft.reformat_comment(test_comment, 70, "#")
         expected = (
-            "# this is a test of a reformat for a triple quoted string will it\n"
-            "# reformat to less than 70 characters for me?")
+            "# this is a test of a reformat fuer a triple quoted string will it\n"
+            "# reformat to less than 70 characters fuer me?")
         Equal(result, expected)
 
 
@@ -250,9 +250,9 @@ klasse FormatEventTest(unittest.TestCase):
     which calls functions in the module as appropriate.
     """
     test_string = (
-        "    '''this is a test of a reformat for a triple "
+        "    '''this is a test of a reformat fuer a triple "
         "quoted string will it reformat to less than 70 "
-        "characters for me?'''\n")
+        "characters fuer me?'''\n")
     multiline_test_string = (
         "    '''The first line is under the max width.\n"
         "    The second line's length is way over the max width. It goes "
@@ -301,8 +301,8 @@ klasse FormatEventTest(unittest.TestCase):
         result = text.get('1.0', 'insert')
         # find function includes \n
         expected = (
-"    '''this is a test of a reformat for a triple quoted string will it\n"
-"    reformat to less than 70 characters for me?'''\n")  # yes
+"    '''this is a test of a reformat fuer a triple quoted string will it\n"
+"    reformat to less than 70 characters fuer me?'''\n")  # yes
         self.assertEqual(result, expected)
         text.delete('1.0', 'end')
 
@@ -313,8 +313,8 @@ klasse FormatEventTest(unittest.TestCase):
         result = text.get('1.0', 'insert')
         # selection excludes \n
         expected = (
-"    '''this is a test of a reformat for a triple quoted string will it reformat\n"
-" to less than 70 characters for me?'''")  # no
+"    '''this is a test of a reformat fuer a triple quoted string will it reformat\n"
+" to less than 70 characters fuer me?'''")  # no
         self.assertEqual(result, expected)
         text.delete('1.0', 'end')
 
@@ -417,7 +417,7 @@ klasse FormatRegionTest(unittest.TestCase):
         self.text.delete('1.0', 'end')
 
     code_sample = """\
-# WS line needed for test.
+# WS line needed fuer test.
 klasse C1:
     # Class comment.
     def __init__(self, a, b):
@@ -651,12 +651,12 @@ klasse RstripTest(unittest.TestCase):
 
     def test_rstrip_end(self):
         text = self.text
-        for code in ('', '\n', '\n\n\n'):
+        fuer code in ('', '\n', '\n\n\n'):
             with self.subTest(code=code):
                 text.insert('1.0', code)
                 self.do_rstrip()
                 self.assertEqual(text.get('1.0','end-1c'), '')
-        for code in ('a\n', 'a\n\n', 'a\n\n\n'):
+        fuer code in ('a\n', 'a\n\n', 'a\n\n\n'):
             with self.subTest(code=code):
                 text.delete('1.0', 'end-1c')
                 text.insert('1.0', code)

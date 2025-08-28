@@ -23,7 +23,7 @@ klasse BuiltinStaticTypesTests(unittest.TestCase):
     def test_tp_bases_is_set(self):
         # PyTypeObject.tp_bases is documented as public API.
         # See https://github.com/python/cpython/issues/105020.
-        for typeobj in self.TYPES:
+        fuer typeobj in self.TYPES:
             with self.subTest(typeobj):
                 bases = _testcapi.type_get_tp_bases(typeobj)
                 self.assertIsNot(bases, None)
@@ -31,7 +31,7 @@ klasse BuiltinStaticTypesTests(unittest.TestCase):
     def test_tp_mro_is_set(self):
         # PyTypeObject.tp_bases is documented as public API.
         # See https://github.com/python/cpython/issues/105020.
-        for typeobj in self.TYPES:
+        fuer typeobj in self.TYPES:
             with self.subTest(typeobj):
                 mro = _testcapi.type_get_tp_mro(typeobj)
                 self.assertIsNot(mro, None)
@@ -48,7 +48,7 @@ klasse TypeTests(unittest.TestCase):
 
         from collections import OrderedDict
         ht = _testcapi.get_heaptype_for_name()
-        for cls, fullname, modname, qualname, name in (
+        fuer cls, fullname, modname, qualname, name in (
             (int,
              'int',
              'builtins',
@@ -157,7 +157,7 @@ klasse TypeTests(unittest.TestCase):
         found = get_base_by_token(Z, tokenA1)
         self.assertIs(found, A1)
 
-        # searching for NULL token is an error
+        # searching fuer NULL token is an error
         with self.assertRaises(SystemError):
             get_base_by_token(Z, 0)
         with self.assertRaises(SystemError):
@@ -262,7 +262,7 @@ klasse TypeTests(unittest.TestCase):
         # gh-128923: test that a manually allocated and initailized heap type
         # works correctly
         ManualHeapType = _testcapi.ManualHeapType
-        for i in range(100):
+        fuer i in range(100):
             self.assertIsInstance(ManualHeapType(), ManualHeapType)
 
     def test_extension_managed_dict_type(self):

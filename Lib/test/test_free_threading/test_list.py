@@ -23,28 +23,28 @@ klasse TestList(TestCase):
         barrier = Barrier(NTHREAD + 1)
         def writer_func(l):
             barrier.wait()
-            for i in range(OBJECT_COUNT):
+            fuer i in range(OBJECT_COUNT):
                 l.append(C(i + OBJECT_COUNT))
 
         def reader_func(l):
             barrier.wait()
             while True:
                 count = len(l)
-                for i, x in enumerate(l):
+                fuer i, x in enumerate(l):
                     self.assertEqual(x.v, i + OBJECT_COUNT)
                 if count == OBJECT_COUNT:
                     break
 
         writer = Thread(target=writer_func, args=(l,))
         readers = []
-        for x in range(NTHREAD):
+        fuer x in range(NTHREAD):
             reader = Thread(target=reader_func, args=(l,))
             readers.append(reader)
             reader.start()
 
         writer.start()
         writer.join()
-        for reader in readers:
+        fuer reader in readers:
             reader.join()
 
     def test_racing_iter_extend(self):
@@ -53,41 +53,41 @@ klasse TestList(TestCase):
         barrier = Barrier(NTHREAD + 1)
         def writer_func():
             barrier.wait()
-            for i in range(OBJECT_COUNT):
+            fuer i in range(OBJECT_COUNT):
                 l.extend([C(i + OBJECT_COUNT)])
 
         def reader_func():
             barrier.wait()
             while True:
                 count = len(l)
-                for i, x in enumerate(l):
+                fuer i, x in enumerate(l):
                     self.assertEqual(x.v, i + OBJECT_COUNT)
                 if count == OBJECT_COUNT:
                     break
 
         writer = Thread(target=writer_func)
         readers = []
-        for x in range(NTHREAD):
+        fuer x in range(NTHREAD):
             reader = Thread(target=reader_func)
             readers.append(reader)
             reader.start()
 
         writer.start()
         writer.join()
-        for reader in readers:
+        fuer reader in readers:
             reader.join()
 
     def test_store_list_int(self):
         def copy_back_and_forth(b, l):
             b.wait()
-            for _ in range(100):
+            fuer _ in range(100):
                 l[0] = l[1]
                 l[1] = l[0]
 
         l = [0, 1]
         barrier = Barrier(NTHREAD)
         threads = [Thread(target=copy_back_and_forth, args=(barrier, l))
-                   for _ in range(NTHREAD)]
+                   fuer _ in range(NTHREAD)]
         with threading_helper.start_threads(threads):
             pass
 

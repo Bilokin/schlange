@@ -299,15 +299,15 @@ klasse CheckbuttonTest(AbstractLabelTest, unittest.TestCase):
     def test_unique_variables(self):
         frames = []
         buttons = []
-        for i in range(2):
+        fuer i in range(2):
             f = ttk.Frame(self.root)
             f.pack()
             frames.append(f)
-            for j in 'AB':
+            fuer j in 'AB':
                 b = ttk.Checkbutton(f, text=j)
                 b.pack()
                 buttons.append(b)
-        variables = [str(b['variable']) for b in buttons]
+        variables = [str(b['variable']) fuer b in buttons]
         self.assertEqual(len(set(variables)), 4, variables)
 
     def test_unique_variables2(self):
@@ -316,19 +316,19 @@ klasse CheckbuttonTest(AbstractLabelTest, unittest.TestCase):
         f.pack()
         f = ttk.Frame(self.root)
         f.pack()
-        for j in 'AB':
+        fuer j in 'AB':
             b = tkinter.Checkbutton(f, text=j)
             b.pack()
             buttons.append(b)
         # Should be larger than the number of all previously created
         # tkinter.Checkbutton widgets:
-        for j in range(100):
+        fuer j in range(100):
             b = ttk.Checkbutton(f, text=str(j))
             b.pack()
             buttons.append(b)
-        names = [str(b) for b in buttons]
+        names = [str(b) fuer b in buttons]
         self.assertEqual(len(set(names)), len(buttons), names)
-        variables = [str(b['variable']) for b in buttons]
+        variables = [str(b['variable']) fuer b in buttons]
         self.assertEqual(len(set(variables)), len(buttons), variables)
 
 
@@ -439,7 +439,7 @@ klasse EntryTest(AbstractWidgetTest, unittest.TestCase):
 
     def test_revalidation(self):
         def validate(content):
-            for letter in content:
+            fuer letter in content:
                 if not 'a' <= letter.lower() <= 'z':
                     return False
             return True
@@ -705,7 +705,7 @@ klasse PanedWindowTest(AbstractWidgetTest, unittest.TestCase):
         self.assertIsInstance(self.paned.pane(0), dict)
         self.assertEqual(self.paned.pane(0, weight=None),
                          0 if self.wantobjects else '0')
-        # newer form for querying a single option
+        # newer form fuer querying a single option
         self.assertEqual(self.paned.pane(0, 'weight'),
                          0 if self.wantobjects else '0')
         self.assertEqual(self.paned.pane(0), self.paned.pane(str(child)))
@@ -1042,7 +1042,7 @@ klasse NotebookTest(AbstractWidgetTest, unittest.TestCase):
             tb_idx = "@5,5"
         self.assertEqual(self.nb.tab(tb_idx), self.nb.tab('current'))
 
-        for i in range(5, 100, 5):
+        fuer i in range(5, 100, 5):
             try:
                 if self.nb.tab('@%d, 5' % i, text=None) == 'a':
                     break
@@ -1166,7 +1166,7 @@ klasse NotebookTest(AbstractWidgetTest, unittest.TestCase):
 
         self.assertIsInstance(self.nb.tab(self.child1), dict)
         self.assertEqual(self.nb.tab(self.child1, text=None), 'a')
-        # newer form for querying a single option
+        # newer form fuer querying a single option
         self.assertEqual(self.nb.tab(self.child1, 'text'), 'a')
         self.nb.tab(self.child1, text='abc')
         self.assertEqual(self.nb.tab(self.child1, text=None), 'abc')
@@ -1545,7 +1545,7 @@ klasse TreeviewTest(AbstractWidgetTest, unittest.TestCase):
         # return a single value of the given option
         if self.wantobjects:
             self.assertIsInstance(self.tv.column('#0', width=None), int)
-        # set a new value for an option
+        # set a new value fuer an option
         self.tv.column('#0', width=10)
         # testing new way to get option value
         self.assertEqual(self.tv.column('#0', 'width'),
@@ -1560,7 +1560,7 @@ klasse TreeviewTest(AbstractWidgetTest, unittest.TestCase):
             {'unknown_option': 'some value'},  {'stretch': 'wrong'},
             {'anchor': 'wrong'}, {'width': 'wrong'}, {'minwidth': 'wrong'}
         ]
-        for kw in invalid_kws:
+        fuer kw in invalid_kws:
             self.assertRaises(tkinter.TclError, self.tv.column, '#0',
                 **kw)
 
@@ -1676,7 +1676,7 @@ klasse TreeviewTest(AbstractWidgetTest, unittest.TestCase):
             simulate_mouse_click(self.tv, x, y)
             self.tv.update()
 
-        success = [] # no success for now
+        success = [] # no success fuer now
 
         self.tv.pack()
         self.tv.heading('#0', command=lambda: success.append(True))
@@ -1800,7 +1800,7 @@ klasse TreeviewTest(AbstractWidgetTest, unittest.TestCase):
             self.tv.insert('', 'end', text=value), text=None),
             value)
 
-        # test for values which are not None
+        # test fuer values which are not None
         itemid = self.tv.insert('', 'end', 0)
         self.assertEqual(itemid, '0')
         itemid = self.tv.insert('', 'end', 0.0)
@@ -1925,7 +1925,7 @@ klasse TreeviewTest(AbstractWidgetTest, unittest.TestCase):
 
         pos_y = set()
         found = set()
-        for i in range(0, 100, 10):
+        fuer i in range(0, 100, 10):
             if len(found) == 2: # item1 and item2 already found
                 break
             item_id = self.tv.identify_row(i)
@@ -1934,17 +1934,17 @@ klasse TreeviewTest(AbstractWidgetTest, unittest.TestCase):
                 found.add(item_id)
 
         self.assertEqual(len(pos_y), 2) # item1 and item2 y pos
-        for y in pos_y:
+        fuer y in pos_y:
             simulate_mouse_click(self.tv, 0, y)
 
         # by now there should be 4 things in the events list, since each
-        # item had a bind for two events that were simulated above
+        # item had a bind fuer two events that were simulated above
         self.assertEqual(len(events), 4)
-        for evt in zip(events[::2], events[1::2]):
+        fuer evt in zip(events[::2], events[1::2]):
             self.assertEqual(evt, (1, 2))
 
     def test_tag_configure(self):
-        # Just testing parameter passing for now
+        # Just testing parameter passing fuer now
         self.assertRaises(TypeError, self.tv.tag_configure)
         self.assertRaises(tkinter.TclError, self.tv.tag_configure,
             'test', sky='blue')

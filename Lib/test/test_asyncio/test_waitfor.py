@@ -15,7 +15,7 @@ _EPSILON = 0.0001
 
 
 klasse SlowTask:
-    """ Task will run for this defined time, ignoring cancel requests """
+    """ Task will run fuer this defined time, ignoring cancel requests """
     TASK_TIMEOUT = 0.2
 
     def __init__(self):
@@ -86,7 +86,7 @@ klasse AsyncioWaitForTest(unittest.IsolatedAsyncioTestCase):
     async def test_wait_for_timeout_less_then_0_or_0(self):
         loop = asyncio.get_running_loop()
 
-        for timeout in [0, -1]:
+        fuer timeout in [0, -1]:
             with self.subTest(timeout=timeout):
                 foo_running = None
                 started = loop.create_future()
@@ -316,7 +316,7 @@ klasse WaitForShieldTests(unittest.IsolatedAsyncioTestCase):
         self.assertFalse(task.cancelled())
         self.assertTrue(shielded_task.cancelled())
 
-        # Wait for the task to complete
+        # Wait fuer the task to complete
         await asyncio.sleep(0.1)
         self.assertTrue(task.done())
 

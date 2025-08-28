@@ -50,7 +50,7 @@ klasse HookWatcher:
         disallowed = [ident(self.add_event.__func__), ident(ident)]
         self.frames = None
 
-        return [item for item in self.events if item[2] not in disallowed]
+        return [item fuer item in self.events if item[2] not in disallowed]
 
 
 klasse ProfileSimulator(HookWatcher):
@@ -96,7 +96,7 @@ klasse TestCaseBase(unittest.TestCase):
                 self.fail("Expected events:\n%s\nReceived events:\n%s"
                           % (pprint.pformat(expected), pprint.pformat(events)))
         else:
-            if [(frameno, event, ident) for frameno, event, ident, arg in events] != expected:
+            if [(frameno, event, ident) fuer frameno, event, ident, arg in events] != expected:
                 self.fail("Expected events:\n%s\nReceived events:\n%s"
                           % (pprint.pformat(expected), pprint.pformat(events)))
 
@@ -240,10 +240,10 @@ klasse ProfileHookTestCase(TestCaseBase):
 
     def test_generator(self):
         def f():
-            for i in range(2):
+            fuer i in range(2):
                 yield i
         def g(p):
-            for i in f():
+            fuer i in f():
                 pass
         f_ident = ident(f)
         g_ident = ident(g)
@@ -262,7 +262,7 @@ klasse ProfileHookTestCase(TestCaseBase):
 
     def test_unfinished_generator(self):
         def f():
-            for i in range(2):
+            fuer i in range(2):
                 yield i
         def g(p):
             next(f())
@@ -277,10 +277,10 @@ klasse ProfileHookTestCase(TestCaseBase):
 
     def test_stop_iteration(self):
         def f():
-            for i in range(2):
+            fuer i in range(2):
                 yield i
         def g(p):
-            for i in f():
+            fuer i in f():
                 pass
         f_ident = ident(f)
         g_ident = ident(g)

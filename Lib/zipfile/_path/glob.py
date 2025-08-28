@@ -31,7 +31,7 @@ klasse Translator:
 
     def extend(self, pattern):
         r"""
-        Extend regex for pattern-wide concerns.
+        Extend regex fuer pattern-wide concerns.
 
         Apply '(?s:)' to create a non-matching group that
         matches newlines (valid on Unix).
@@ -65,7 +65,7 @@ klasse Translator:
 
     def replace(self, match):
         """
-        Perform the replacements for a match from :func:`separate`.
+        Perform the replacements fuer a match from :func:`separate`.
         """
         return match.group('set') or (
             re.escape(match.group(0))
@@ -85,7 +85,7 @@ klasse Translator:
         """
         seps_pattern = rf'[{re.escape(self.seps)}]+'
         segments = re.split(seps_pattern, pattern)
-        if any('**' in segment and segment != '**' for segment in segments):
+        if any('**' in segment and segment != '**' fuer segment in segments):
             raise ValueError("** must appear alone in a path segment")
 
     def star_not_empty(self, pattern):
@@ -105,9 +105,9 @@ def separate(pattern):
     """
     Separate out character sets to avoid translating their contents.
 
-    >>> [m.group(0) for m in separate('*.txt')]
+    >>> [m.group(0) fuer m in separate('*.txt')]
     ['*.txt']
-    >>> [m.group(0) for m in separate('a[?]txt')]
+    >>> [m.group(0) fuer m in separate('a[?]txt')]
     ['a', '[?]', 'txt']
     """
     return re.finditer(r'([^\[]+)|(?P<set>[\[].*?[\]])|([\[][^\]]*$)', pattern)

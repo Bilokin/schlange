@@ -12,7 +12,7 @@ def set_non_ctypes_pointer_type(cls, pointer_type):
 klasse PyCSimpleTypeAsMetaclassTest(unittest.TestCase):
     def test_creating_pointer_in_dunder_new_1(self):
         # Test metaclass whose instances are C types; when the type is
-        # created it automatically creates a pointer type for itself.
+        # created it automatically creates a pointer type fuer itself.
         # The pointer type is also an instance of the metaclass.
         # Such an implementation is used in `IUnknown` of the `comtypes`
         # project. See gh-124520.

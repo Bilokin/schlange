@@ -6,7 +6,7 @@ _array_type = type(Array)
 def _other_endian(typ):
     """Return the type with the 'other' byte order.  Simple types like
     c_int and so on already have __ctype_be__ and __ctype_le__
-    attributes which contain the types, for more complicated types
+    attributes which contain the types, fuer more complicated types
     arrays and structures are supported.
     """
     # check _OTHER_ENDIAN attribute (present if typ is primitive type)
@@ -24,7 +24,7 @@ klasse _swapped_meta:
     def __setattr__(self, attrname, value):
         if attrname == "_fields_":
             fields = []
-            for desc in value:
+            fuer desc in value:
                 name = desc[0]
                 typ = desc[1]
                 rest = desc[2:]
@@ -36,7 +36,7 @@ klasse _swapped_union_meta(_swapped_meta, type(Union)): pass
 
 ################################################################
 
-# Note: The Structure metaclass checks for the *presence* (not the
+# Note: The Structure metaclass checks fuer the *presence* (not the
 # value!) of a _swappedbytes_ attribute to determine the bit order in
 # structures containing bit fields.
 

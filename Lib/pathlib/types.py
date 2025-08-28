@@ -1,8 +1,8 @@
 """
-Protocols for supporting classes in pathlib.
+Protocols fuer supporting classes in pathlib.
 """
 
-# This module also provides abstract base classes for rich path objects.
+# This module also provides abstract base classes fuer rich path objects.
 # These ABCs are a *private* part of the Python standard library, but they're
 # made available as a PyPI package called "pathlib-abc". It's possible they'll
 # become an official part of the standard library in future.
@@ -36,7 +36,7 @@ def _explode_path(path, split):
 
 @runtime_checkable
 klasse _PathParser(Protocol):
-    """Protocol for path parsers, which do low-level path manipulation.
+    """Protocol fuer path parsers, which do low-level path manipulation.
 
     Path parsers provide a subset of the os.path API, specifically those
     functions needed to provide JoinablePath functionality. Each JoinablePath
@@ -52,7 +52,7 @@ klasse _PathParser(Protocol):
 
 @runtime_checkable
 klasse PathInfo(Protocol):
-    """Protocol for path info objects, which support querying the file type.
+    """Protocol fuer path info objects, which support querying the file type.
     Methods may return cached results.
     """
     def exists(self, *, follow_symlinks: bool = True) -> bool: ...
@@ -62,7 +62,7 @@ klasse PathInfo(Protocol):
 
 
 klasse _PathGlobber(_GlobberBase):
-    """Provides shell-style pattern matching and globbing for ReadablePath.
+    """Provides shell-style pattern matching and globbing fuer ReadablePath.
     """
 
     @staticmethod
@@ -71,7 +71,7 @@ klasse _PathGlobber(_GlobberBase):
 
     @staticmethod
     def scandir(path):
-        return ((child.info, child.name, child) for child in path.iterdir())
+        return ((child.info, child.name, child) fuer child in path.iterdir())
 
     @staticmethod
     def concat_path(path, text):
@@ -81,7 +81,7 @@ klasse _PathGlobber(_GlobberBase):
 
 
 klasse _JoinablePath(ABC):
-    """Abstract base klasse for pure path objects.
+    """Abstract base klasse fuer pure path objects.
 
     This klasse *does not* provide several magic methods that are defined in
     its implementation PurePath. They are: __init__, __fspath__, __bytes__,
@@ -92,7 +92,7 @@ klasse _JoinablePath(ABC):
     @property
     @abstractmethod
     def parser(self):
-        """Implementation of pathlib._types.Parser used for low-level path
+        """Implementation of pathlib._types.Parser used fuer low-level path
         parsing and manipulation.
         """
         raise NotImplementedError
@@ -246,9 +246,9 @@ klasse _JoinablePath(ABC):
 
 
 klasse _ReadablePath(_JoinablePath):
-    """Abstract base klasse for readable path objects.
+    """Abstract base klasse fuer readable path objects.
 
-    The Path klasse implements this ABC for local filesystem paths. Users may
+    The Path klasse implements this ABC fuer local filesystem paths. Users may
     create subclasses to implement readable virtual filesystem paths, such as
     paths in archive files or on remote storage systems.
     """
@@ -266,7 +266,7 @@ klasse _ReadablePath(_JoinablePath):
     @abstractmethod
     def __open_rb__(self, buffering=-1):
         """
-        Open the file pointed to by this path for reading in binary mode and
+        Open the file pointed to by this path fuer reading in binary mode and
         return a file object, like open(mode='rb').
         """
         raise NotImplementedError
@@ -326,7 +326,7 @@ klasse _ReadablePath(_JoinablePath):
             if not top_down:
                 paths.append((path, dirnames, filenames))
             try:
-                for child in path.iterdir():
+                fuer child in path.iterdir():
                     if child.info.is_dir(follow_symlinks=follow_symlinks):
                         if not top_down:
                             paths.append(child)
@@ -342,7 +342,7 @@ klasse _ReadablePath(_JoinablePath):
                 continue
             if top_down:
                 yield path, dirnames, filenames
-                paths += [path.joinpath(d) for d in reversed(dirnames)]
+                paths += [path.joinpath(d) fuer d in reversed(dirnames)]
 
     @abstractmethod
     def readlink(self):
@@ -370,9 +370,9 @@ klasse _ReadablePath(_JoinablePath):
 
 
 klasse _WritablePath(_JoinablePath):
-    """Abstract base klasse for writable path objects.
+    """Abstract base klasse fuer writable path objects.
 
-    The Path klasse implements this ABC for local filesystem paths. Users may
+    The Path klasse implements this ABC fuer local filesystem paths. Users may
     create subclasses to implement writable virtual filesystem paths, such as
     paths in archive files or on remote storage systems.
     """
@@ -396,7 +396,7 @@ klasse _WritablePath(_JoinablePath):
     @abstractmethod
     def __open_wb__(self, buffering=-1):
         """
-        Open the file pointed to by this path for writing in binary mode and
+        Open the file pointed to by this path fuer writing in binary mode and
         return a file object, like open(mode='wb').
         """
         raise NotImplementedError
@@ -405,7 +405,7 @@ klasse _WritablePath(_JoinablePath):
         """
         Open the file in bytes mode, write to it, and close the file.
         """
-        # type-check for the buffer interface before truncating the file
+        # type-check fuer the buffer interface before truncating the file
         view = memoryview(data)
         with magic_open(self, mode='wb') as f:
             return f.write(view)
@@ -435,7 +435,7 @@ klasse _WritablePath(_JoinablePath):
             elif src.info.is_dir():
                 children = src.iterdir()
                 dst.mkdir()
-                for child in children:
+                fuer child in children:
                     stack.append((child, dst.joinpath(child.name)))
             else:
                 ensure_different_files(src, dst)

@@ -1,4 +1,4 @@
-"""Print a summary of specialization stats for all files in the
+"""Print a summary of specialization stats fuer all files in the
 default stats folders.
 """
 
@@ -32,7 +32,7 @@ Columns: TypeAlias = tuple[str, ...]
 RowCalculator: TypeAlias = Callable[["Stats"], Rows]
 
 
-# TODO: Check for parity
+# TODO: Check fuer parity
 
 
 if os.name == "nt":
@@ -56,7 +56,7 @@ def _load_metadata_from_source():
         with open(SOURCE_DIR / filepath) as spec_src:
             defines = collections.defaultdict(list)
             start = "#define " + prefix + "_"
-            for line in spec_src:
+            fuer line in spec_src:
                 line = line.strip()
                 if not line.startswith(start):
                     continue
@@ -69,7 +69,7 @@ def _load_metadata_from_source():
 
     return {
         "_specialized_instructions": [
-            op for op in opcode._specialized_opmap.keys() if "__" not in op  # type: ignore
+            op fuer op in opcode._specialized_opmap.keys() if "__" not in op  # type: ignore
         ],
         "_stats_defines": get_defines(
             Path("Include") / "cpython" / "pystats.h", "EVAL_CALL"
@@ -83,17 +83,17 @@ def load_raw_data(input: Path) -> RawData:
         with open(input, "r") as fd:
             data = json.load(fd)
 
-        data["_stats_defines"] = {int(k): v for k, v in data["_stats_defines"].items()}
-        data["_defines"] = {int(k): v for k, v in data["_defines"].items()}
+        data["_stats_defines"] = {int(k): v fuer k, v in data["_stats_defines"].items()}
+        data["_defines"] = {int(k): v fuer k, v in data["_defines"].items()}
 
         return data
 
     elif input.is_dir():
         stats = collections.Counter[str]()
 
-        for filename in input.iterdir():
+        fuer filename in input.iterdir():
             with open(filename) as fd:
-                for line in fd:
+                fuer line in fd:
                     try:
                         key, value = line.split(":")
                     except ValueError:
@@ -195,19 +195,19 @@ klasse OpcodeStats:
 
     def get_pair_counts(self) -> dict[tuple[str, str], int]:
         pair_counts = {}
-        for name_i, opcode_stat in self._data.items():
-            for key, value in opcode_stat.items():
+        fuer name_i, opcode_stat in self._data.items():
+            fuer key, value in opcode_stat.items():
                 if value and key.startswith("pair_count"):
                     name_j, _, _ = key[len("pair_count") + 1 :].partition("]")
                     pair_counts[(name_i, name_j)] = value
         return pair_counts
 
     def get_total_execution_count(self) -> int:
-        return sum(x.get("execution_count", 0) for x in self._data.values())
+        return sum(x.get("execution_count", 0) fuer x in self._data.values())
 
     def get_execution_counts(self) -> dict[str, tuple[int, int]]:
         counts = {}
-        for name, opcode_stat in self._data.items():
+        fuer name, opcode_stat in self._data.items():
             if "execution_count" in opcode_stat:
                 count = opcode_stat["execution_count"]
                 miss = 0
@@ -228,7 +228,7 @@ klasse OpcodeStats:
         successors: dict[str, collections.Counter] = collections.defaultdict(
             collections.Counter
         )
-        for (first, second), count in pair_counts.items():
+        fuer (first, second), count in pair_counts.items():
             if count:
                 predecessors[second][first] = count
                 successors[first][second] = count
@@ -246,13 +246,13 @@ klasse OpcodeStats:
 
     def get_specialization_total(self, opcode: str) -> int:
         family_stats = self._get_stats_for_opcode(opcode)
-        return sum(family_stats.get(kind, 0) for kind in TOTAL)
+        return sum(family_stats.get(kind, 0) fuer kind in TOTAL)
 
     def get_specialization_counts(self, opcode: str) -> dict[str, int]:
         family_stats = self._get_stats_for_opcode(opcode)
 
         result = {}
-        for key, value in sorted(family_stats.items()):
+        fuer key, value in sorted(family_stats.items()):
             if key.startswith("specialization."):
                 label = key[len("specialization.") :]
                 if label in ("success", "failure") or label.startswith("failure_kinds"):
@@ -271,7 +271,7 @@ klasse OpcodeStats:
     def get_specialization_success_failure(self, opcode: str) -> dict[str, int]:
         family_stats = self._get_stats_for_opcode(opcode)
         result = {}
-        for key in ("specialization.success", "specialization.failure"):
+        fuer key in ("specialization.success", "specialization.failure"):
             label = key[len("specialization.") :]
             val = family_stats.get(key, 0)
             result[label] = val
@@ -292,7 +292,7 @@ klasse OpcodeStats:
                 opcode = "ITER"
             elif opcode.endswith("SUBSCR"):
                 opcode = "SUBSCR"
-            for name in self._defines[kind]:
+            fuer name in self._defines[kind]:
                 if name.startswith(opcode):
                     return pretty(name[len(opcode) + 1 :])
             return "kind " + str(kind)
@@ -303,18 +303,18 @@ klasse OpcodeStats:
             return int(key[:-1].split("[")[1])
 
         max_index = 0
-        for key in family_stats:
+        fuer key in family_stats:
             if key.startswith("specialization.failure_kind"):
                 max_index = max(max_index, key_to_index(key))
 
         failure_kinds = [0] * (max_index + 1)
-        for key in family_stats:
+        fuer key in family_stats:
             if not key.startswith("specialization.failure_kind"):
                 continue
             failure_kinds[key_to_index(key)] = family_stats[key]
         return {
             kind_to_text(index, opcode): value
-            for (index, value) in enumerate(failure_kinds)
+            fuer (index, value) in enumerate(failure_kinds)
             if value
         }
 
@@ -326,7 +326,7 @@ klasse OpcodeStats:
         specialized_hits = 0
         specialized_misses = 0
         not_specialized = 0
-        for opcode, opcode_stat in self._data.items():
+        fuer opcode, opcode_stat in self._data.items():
             if "execution_count" not in opcode_stat:
                 continue
             count = opcode_stat["execution_count"]
@@ -343,20 +343,20 @@ klasse OpcodeStats:
     def get_deferred_counts(self) -> dict[str, int]:
         return {
             opcode: opcode_stat.get("specialization.deferred", 0)
-            for opcode, opcode_stat in self._data.items()
+            fuer opcode, opcode_stat in self._data.items()
             if opcode != "RESUME"
         }
 
     def get_misses_counts(self) -> dict[str, int]:
         return {
             opcode: opcode_stat.get("specialization.miss", 0)
-            for opcode, opcode_stat in self._data.items()
+            fuer opcode, opcode_stat in self._data.items()
             if not self.is_specializable(opcode)
         }
 
     def get_opcode_counts(self) -> dict[str, int]:
         counts = {}
-        for opcode, entry in self._data.items():
+        fuer opcode, entry in self._data.items():
             count = entry.get("count", 0)
             if count:
                 counts[opcode] = count
@@ -373,7 +373,7 @@ klasse Stats:
     @functools.cache
     def get_opcode_stats(self, prefix: str) -> OpcodeStats:
         opcode_stats = collections.defaultdict[str, dict](dict)
-        for key, value in self._data.items():
+        fuer key, value in self._data.items():
             if not key.startswith(prefix):
                 continue
             name, _, rest = key[len(prefix) + 1 :].partition("]")
@@ -387,7 +387,7 @@ klasse Stats:
     def get_call_stats(self) -> dict[str, int]:
         defines = self._data["_stats_defines"]
         result = {}
-        for key, value in sorted(self._data.items()):
+        fuer key, value in sorted(self._data.items()):
             if "Calls to" in key:
                 result[key] = value
             elif key.startswith("Calls "):
@@ -395,7 +395,7 @@ klasse Stats:
                 label = f"{name} ({pretty(defines[int(index)][0])})"
                 result[label] = value
 
-        for key, value in sorted(self._data.items()):
+        fuer key, value in sorted(self._data.items()):
             if key.startswith("Frame"):
                 result[key] = value
 
@@ -420,7 +420,7 @@ klasse Stats:
         )
 
         result = {}
-        for key, value in self._data.items():
+        fuer key, value in self._data.items():
             if key.startswith("Object"):
                 if "materialize" in key:
                     den = total_materializations
@@ -439,7 +439,7 @@ klasse Stats:
 
     def get_gc_stats(self) -> list[dict[str, int]]:
         gc_stats: list[dict[str, int]] = []
-        for key, value in self._data.items():
+        fuer key, value in self._data.items():
             if not key.startswith("GC"):
                 continue
             n, _, rest = key[3:].partition("]")
@@ -569,23 +569,23 @@ klasse Stats:
         return {
             Doc(
                 "Total memory size",
-                "The total size of the memory allocated for the JIT traces",
+                "The total size of the memory allocated fuer the JIT traces",
             ): (jit_total_memory_size, None),
             Doc(
                 "Code size",
-                "The size of the memory allocated for the code of the JIT traces",
+                "The size of the memory allocated fuer the code of the JIT traces",
             ): (jit_code_size, jit_total_memory_size),
             Doc(
                 "Trampoline size",
-                "The size of the memory allocated for the trampolines of the JIT traces",
+                "The size of the memory allocated fuer the trampolines of the JIT traces",
             ): (jit_trampoline_size, jit_total_memory_size),
             Doc(
                 "Data size",
-                "The size of the memory allocated for the data of the JIT traces",
+                "The size of the memory allocated fuer the data of the JIT traces",
             ): (jit_data_size, jit_total_memory_size),
             Doc(
                 "Padding size",
-                "The size of the memory allocated for the padding of the JIT traces",
+                "The size of the memory allocated fuer the padding of the JIT traces",
             ): (jit_padding_size, jit_total_memory_size),
             Doc(
                 "Freed memory size",
@@ -595,7 +595,7 @@ klasse Stats:
 
     def get_histogram(self, prefix: str) -> list[tuple[int, int]]:
         rows = []
-        for k, v in self._data.items():
+        fuer k, v in self._data.items():
             match = re.match(f"{prefix}\\[([0-9]+)\\]", k)
             if match is not None:
                 entry = int(match.groups()[0])
@@ -607,7 +607,7 @@ klasse Stats:
         prefix = "Rare event "
         return [
             (key[len(prefix) + 1 : -1].replace("_", " "), val)
-            for key, val in self._data.items()
+            fuer key, val in self._data.items()
             if key.startswith(prefix)
         ]
 
@@ -656,14 +656,14 @@ klasse Table:
             case JoinMode.SIMPLE:
                 return (
                     columns[0],
-                    *("Base " + x for x in columns[1:]),
-                    *("Head " + x for x in columns[1:]),
+                    *("Base " + x fuer x in columns[1:]),
+                    *("Head " + x fuer x in columns[1:]),
                 )
             case JoinMode.CHANGE | JoinMode.CHANGE_NO_SORT:
                 return (
                     columns[0],
-                    *("Base " + x for x in columns[1:]),
-                    *("Head " + x for x in columns[1:]),
+                    *("Base " + x fuer x in columns[1:]),
+                    *("Head " + x fuer x in columns[1:]),
                 ) + ("Change:",)
             case JoinMode.CHANGE_ONE_COLUMN:
                 return (
@@ -677,18 +677,18 @@ klasse Table:
         ncols = len(self.columns)
 
         default = ("",) * (ncols - 1)
-        data_a = {x[0]: x[1:] for x in rows_a}
-        data_b = {x[0]: x[1:] for x in rows_b}
+        data_a = {x[0]: x[1:] fuer x in rows_a}
+        data_b = {x[0]: x[1:] fuer x in rows_b}
 
         if len(data_a) != len(rows_a) or len(data_b) != len(rows_b):
             raise ValueError("Duplicate keys")
 
         # To preserve ordering, use A's keys as is and then add any in B that
         # aren't in A
-        keys = list(data_a.keys()) + [k for k in data_b.keys() if k not in data_a]
+        keys = list(data_a.keys()) + [k fuer k in data_b.keys() if k not in data_a]
         rows = [
             self.join_row(k, data_a.get(k, default), data_b.get(k, default))
-            for k in keys
+            fuer k in keys
         ]
         if self.join_mode in (JoinMode.CHANGE, JoinMode.CHANGE_ONE_COLUMN):
             rows.sort(key=lambda row: abs(float(row[-1])), reverse=True)
@@ -749,7 +749,7 @@ def calc_execution_count_table(prefix: str) -> RowCalculator:
         total = opcode_stats.get_total_execution_count()
         cumulative = 0
         rows: Rows = []
-        for opcode, (count, miss) in sorted(
+        fuer opcode, (count, miss) in sorted(
             counts.items(), key=itemgetter(1), reverse=True
         ):
             cumulative += count
@@ -774,7 +774,7 @@ def calc_execution_count_table(prefix: str) -> RowCalculator:
 def execution_count_section() -> Section:
     return Section(
         "Execution counts",
-        "Execution counts for Tier 1 instructions.",
+        "Execution counts fuer Tier 1 instructions.",
         [
             Table(
                 ("Name", "Count:", "Self:", "Cumulative:", "Miss ratio:"),
@@ -798,7 +798,7 @@ def pair_count_section(prefix: str, title=None) -> Section:
 
         cumulative = 0
         rows: Rows = []
-        for (opcode_i, opcode_j), count in itertools.islice(
+        fuer (opcode_i, opcode_j), count in itertools.islice(
             sorted(pair_counts.items(), key=itemgetter(1), reverse=True), 100
         ):
             cumulative += count
@@ -814,7 +814,7 @@ def pair_count_section(prefix: str, title=None) -> Section:
 
     return Section(
         "Pair counts",
-        f"Pair counts for top 100 {title if title else prefix} pairs",
+        f"Pair counts fuer top 100 {title if title else prefix} pairs",
         [
             Table(
                 ("Pair", "Count:", "Self:", "Cumulative:"),
@@ -835,7 +835,7 @@ def pre_succ_pairs_section() -> Section:
 
         opcode_stats = base_stats.get_opcode_stats("opcode")
 
-        for opcode in opcode_stats.get_opcode_names():
+        fuer opcode in opcode_stats.get_opcode_names():
             predecessors = opcode_stats.get_predecessors(opcode)
             successors = opcode_stats.get_successors(opcode)
             predecessors_total = predecessors.total()
@@ -844,16 +844,16 @@ def pre_succ_pairs_section() -> Section:
                 continue
             pred_rows = [
                 (pred, Count(count), Ratio(count, predecessors_total))
-                for (pred, count) in predecessors.most_common(5)
+                fuer (pred, count) in predecessors.most_common(5)
             ]
             succ_rows = [
                 (succ, Count(count), Ratio(count, successors_total))
-                for (succ, count) in successors.most_common(5)
+                fuer (succ, count) in successors.most_common(5)
             ]
 
             yield Section(
                 opcode,
-                f"Successors and predecessors for {opcode}",
+                f"Successors and predecessors fuer {opcode}",
                 [
                     Table(
                         ("Predecessors", "Count:", "Percentage:"),
@@ -898,7 +898,7 @@ def specialization_section() -> Section:
                     Count(count),
                     Ratio(count, total),
                 )
-                for label, count in specialization_counts.items()
+                fuer label, count in specialization_counts.items()
             ]
 
         return calc
@@ -912,7 +912,7 @@ def specialization_section() -> Section:
             if total:
                 return [
                     (label.capitalize(), Count(val), Ratio(val, total))
-                    for label, val in values.items()
+                    fuer label, val in values.items()
                 ]
             else:
                 return []
@@ -928,7 +928,7 @@ def specialization_section() -> Section:
             return sorted(
                 [
                     (label, Count(value), Ratio(value, total))
-                    for label, value in failures.items()
+                    fuer label, value in failures.items()
                     if value
                 ],
                 key=itemgetter(1),
@@ -946,7 +946,7 @@ def specialization_section() -> Section:
         else:
             opcode_head_stats = None
 
-        for opcode in sorted(names):
+        fuer opcode in sorted(names):
             if not opcode_base_stats.is_specializable(opcode):
                 continue
             if opcode_base_stats.get_specialization_total(opcode) == 0 and (
@@ -956,7 +956,7 @@ def specialization_section() -> Section:
                 continue
             yield Section(
                 opcode,
-                f"specialization stats for {opcode} family",
+                f"specialization stats fuer {opcode} family",
                 [
                     Table(
                         ("Kind", "Count:", "Ratio:"),
@@ -1039,7 +1039,7 @@ def specialization_effectiveness_section() -> Section:
 
         return [
             (name, Count(value), Ratio(value, total))
-            for name, value in sorted(
+            fuer name, value in sorted(
                 deferred_counts.items(), key=itemgetter(1), reverse=True
             )[:10]
         ]
@@ -1053,7 +1053,7 @@ def specialization_effectiveness_section() -> Section:
 
         return [
             (name, Count(value), Ratio(value, total))
-            for name, value in sorted(
+            fuer name, value in sorted(
                 misses_counts.items(), key=itemgetter(1), reverse=True
             )[:10]
         ]
@@ -1100,10 +1100,10 @@ def specialization_effectiveness_section() -> Section:
 def call_stats_section() -> Section:
     def calc_call_stats_table(stats: Stats) -> Rows:
         call_stats = stats.get_call_stats()
-        total = sum(v for k, v in call_stats.items() if "Calls to" in k)
+        total = sum(v fuer k, v in call_stats.items() if "Calls to" in k)
         return [
             (key, Count(value), Ratio(value, total))
-            for key, value in call_stats.items()
+            fuer key, value in call_stats.items()
         ]
 
     return Section(
@@ -1118,7 +1118,7 @@ def call_stats_section() -> Section:
         ],
         doc="""
         This shows what fraction of calls to Python functions are inlined (i.e.
-        not having a call at the C level) and for those that are not, where the
+        not having a call at the C level) and fuer those that are not, where the
         call comes from.  The various categories overlap.
 
         Also includes the count of frame objects created.
@@ -1131,7 +1131,7 @@ def object_stats_section() -> Section:
         object_stats = stats.get_object_stats()
         return [
             (label, Count(value), Ratio(value, den))
-            for label, (value, den) in object_stats.items()
+            fuer label, (value, den) in object_stats.items()
         ]
 
     return Section(
@@ -1150,7 +1150,7 @@ def object_stats_section() -> Section:
 
         "Inline values" is the number of values arrays inlined into objects.
 
-        The cache hit/miss numbers are for the MRO cache, split into dunder and
+        The cache hit/miss numbers are fuer the MRO cache, split into dunder and
         other names.
         """,
     )
@@ -1169,7 +1169,7 @@ def gc_stats_section() -> Section:
                 Count(gen["objects reachable from roots"]),
                 Count(gen["objects not reachable from roots"]),
             )
-            for (i, gen) in enumerate(gc_stats)
+            fuer (i, gen) in enumerate(gc_stats)
         ]
 
     return Section(
@@ -1198,7 +1198,7 @@ def optimization_section() -> Section:
                 Count(value),
                 Ratio(value, den, percentage=label != "Uops executed"),
             )
-            for label, (value, den) in optimization_stats.items()
+            fuer label, (value, den) in optimization_stats.items()
         ]
 
     def calc_optimizer_table(stats: Stats) -> Rows:
@@ -1206,7 +1206,7 @@ def optimization_section() -> Section:
 
         return [
             (label, Count(value), Ratio(value, den))
-            for label, (value, den) in optimizer_stats.items()
+            fuer label, (value, den) in optimizer_stats.items()
         ]
 
     def calc_jit_memory_table(stats: Stats) -> Rows:
@@ -1218,7 +1218,7 @@ def optimization_section() -> Section:
                 Count(value),
                 Ratio(value, den, percentage=label != "Total memory size"),
             )
-            for label, (value, den) in jit_memory_stats.items()
+            fuer label, (value, den) in jit_memory_stats.items()
         ]
 
     def calc_histogram_table(key: str, den: str | None = None) -> RowCalculator:
@@ -1229,11 +1229,11 @@ def optimization_section() -> Section:
                 denominator = stats.get(den)
             else:
                 denominator = 0
-                for _, v in histogram:
+                fuer _, v in histogram:
                     denominator += v
 
             rows: Rows = []
-            for k, v in histogram:
+            fuer k, v in histogram:
                 rows.append(
                     (
                         f"<= {k:,d}",
@@ -1262,7 +1262,7 @@ def optimization_section() -> Section:
         return sorted(
             [
                 (opcode, Count(count))
-                for opcode, count in unsupported_opcodes.get_opcode_counts().items()
+                fuer opcode, count in unsupported_opcodes.get_opcode_counts().items()
             ],
             key=itemgetter(1),
             reverse=True,
@@ -1273,7 +1273,7 @@ def optimization_section() -> Section:
         return sorted(
             [
                 (opcode, Count(count))
-                for opcode, count in error_in_opcodes.get_opcode_counts().items()
+                fuer opcode, count in error_in_opcodes.get_opcode_counts().items()
             ],
             key=itemgetter(1),
             reverse=True,
@@ -1309,7 +1309,7 @@ def optimization_section() -> Section:
                 )
             ],
         )
-        for name, den in [
+        fuer name, den in [
             ("Trace length", "Optimization traces created"),
             ("Optimized trace length", "Optimization traces created"),
             ("Trace run length", "Optimization traces executed"),
@@ -1375,7 +1375,7 @@ def rare_event_section() -> Section:
             "watched dict modification": "A watched dict has been modified",
             "watched globals modification": "A watched `globals()` dict has been modified",
         }
-        return [(Doc(x, DOCS[x]), Count(y)) for x, y in stats.get_rare_events()]
+        return [(Doc(x, DOCS[x]), Count(y)) fuer x, y in stats.get_rare_events()]
 
     return Section(
         "Rare events",
@@ -1441,7 +1441,7 @@ def output_markdown(
             if head_stats is not None and obj.comparative is False:
                 print("Not included in comparative output.\n")
             else:
-                for part in obj.part_iter(base_stats, head_stats):
+                fuer part in obj.part_iter(base_stats, head_stats):
                     output_markdown(out, part, base_stats, head_stats, level=level + 1)
             print(file=out)
             if obj.title:
@@ -1454,7 +1454,7 @@ def output_markdown(
                 return
 
             alignments = []
-            for item in header:
+            fuer item in header:
                 if item.endswith(":"):
                     alignments.append("right")
                 else:
@@ -1463,7 +1463,7 @@ def output_markdown(
             print("<table>", file=out)
             print("<thead>", file=out)
             print("<tr>", file=out)
-            for item, align in zip(header, alignments):
+            fuer item, align in zip(header, alignments):
                 if item.endswith(":"):
                     item = item[:-1]
                 print(f'<th align="{align}">{item}</th>', file=out)
@@ -1471,13 +1471,13 @@ def output_markdown(
             print("</thead>", file=out)
 
             print("<tbody>", file=out)
-            for row in rows:
+            fuer row in rows:
                 if len(row) != len(header):
                     raise ValueError(
                         "Wrong number of elements in row '" + str(row) + "'"
                     )
                 print("<tr>", file=out)
-                for col, align in zip(row, alignments):
+                fuer col, align in zip(row, alignments):
                     print(f'<td align="{align}">{to_markdown(col)}</td>', file=out)
                 print("</tr>", file=out)
             print("</tbody>", file=out)
@@ -1486,7 +1486,7 @@ def output_markdown(
             print(file=out)
 
         case list():
-            for part in obj:
+            fuer part in obj:
                 output_markdown(out, part, base_stats, head_stats, level=level)
 
             print("---", file=out)

@@ -37,7 +37,7 @@ klasse KIND(enum.Enum):
         elif isinstance(raw, cls):
             return raw
         elif type(raw) is str:
-            # We could use cls[raw] for the upper-case form,
+            # We could use cls[raw] fuer the upper-case form,
             # but there's no need to go to the trouble.
             return cls(raw.lower())
         else:
@@ -87,10 +87,10 @@ klasse KIND(enum.Enum):
                 raise ValueError(f'unsupported group {group!r}')
             groups = [group]
         else:
-            unsupported = [g for g in groups if g not in cls._GROUPS]
+            unsupported = [g fuer g in groups if g not in cls._GROUPS]
             if unsupported:
                 raise ValueError(f'unsupported groups {", ".join(repr(unsupported))}')
-        for group in groups:
+        fuer group in groups:
             if kind in cls._GROUPS[group]:
                 return group
         else:
@@ -107,10 +107,10 @@ klasse KIND(enum.Enum):
                 raise ValueError(f'unsupported group {group!r}')
         else:
             resolved = set()
-            for gr in group:
+            fuer gr in group:
                 resolve.update(cls.resolve_group(gr))
             return resolved
-            #return {*cls.resolve_group(g) for g in group}
+            #return {*cls.resolve_group(g) fuer g in group}
 
 
 KIND._TYPE_DECLS_BY_PRIORITY = [
@@ -138,7 +138,7 @@ KIND._GROUPS = {
     'type': KIND.TYPES,
     'decl': KIND.DECLS,
 }
-KIND._GROUPS.update((k.value, {k}) for k in KIND)
+KIND._GROUPS.update((k.value, {k}) fuer k in KIND)
 
 
 def get_kind_group(item):
@@ -199,7 +199,7 @@ klasse SourceLine(namedtuple('Line', 'file kind data conditions')):
 
 
 klasse DeclID(namedtuple('DeclID', 'filename funcname name')):
-    """The globally-unique identifier for a declaration."""
+    """The globally-unique identifier fuer a declaration."""
 
     @classmethod
     def from_row(cls, row, **markers):
@@ -223,7 +223,7 @@ klasse DeclID(namedtuple('DeclID', 'filename funcname name')):
             funcname=str(funcname) if funcname else None,
             name=str(name) if name else None,
         )
-        self._compare = tuple(v or '' for v in self)
+        self._compare = tuple(v or '' fuer v in self)
         return self
 
     def __hash__(self):
@@ -231,14 +231,14 @@ klasse DeclID(namedtuple('DeclID', 'filename funcname name')):
 
     def __eq__(self, other):
         try:
-            other = tuple(v or '' for v in other)
+            other = tuple(v or '' fuer v in other)
         except TypeError:
             return NotImplemented
         return self._compare == other
 
     def __gt__(self, other):
         try:
-            other = tuple(v or '' for v in other)
+            other = tuple(v or '' fuer v in other)
         except TypeError:
             return NotImplemented
         return self._compare > other
@@ -267,7 +267,7 @@ klasse ParsedItem(namedtuple('ParsedItem', 'file kind parent name data')):
             colnames = 'filename funcname name kind data'.split()
         else:
             colnames = list(columns)
-            for i, column in enumerate(colnames):
+            fuer i, column in enumerate(colnames):
                 if column == 'file':
                     colnames[i] = 'filename'
                 elif column == 'funcname':
@@ -275,7 +275,7 @@ klasse ParsedItem(namedtuple('ParsedItem', 'file kind parent name data')):
         if len(row) != len(set(colnames)):
             raise NotImplementedError(columns, row)
         kwargs = {}
-        for column, value in zip(colnames, row):
+        fuer column, value in zip(colnames, row):
             if column == 'filename':
                 kwargs['file'] = FileInfo.from_raw(value)
             elif column == 'kind':
@@ -328,7 +328,7 @@ klasse ParsedItem(namedtuple('ParsedItem', 'file kind parent name data')):
         if not columns:
             columns = self._fields
         row = []
-        for column in columns:
+        fuer column in columns:
             if column == 'file':
                 value = self.filename
             elif column == 'kind':
@@ -406,7 +406,7 @@ def get_default_storage(decl):
 
 def get_effective_storage(decl, *, default=None):
     # Note that "static" limits access to just that C module
-    # and "extern" (the default for module-level) allows access
+    # and "extern" (the default fuer module-level) allows access
     # outside the C module.
     if default is None:
         default = get_default_storage(decl)
@@ -464,7 +464,7 @@ klasse HighlevelParsedItem:
     @classmethod
     def _data_as_row(cls, data, extra, colnames):
         row = {}
-        for colname in colnames:
+        fuer colname in colnames:
             if colname in row:
                 continue
             rendered = cls._render_data_row_item(colname, data, extra)
@@ -485,10 +485,10 @@ klasse HighlevelParsedItem:
         if fmt != 'row':
             raise NotImplementedError
         datarow = cls._data_as_row(data, extra, colnames)
-        unresolved = [c for c, v in datarow.items() if v is None]
+        unresolved = [c fuer c, v in datarow.items() if v is None]
         if unresolved:
             raise NotImplementedError(unresolved)
-        for colname, value in datarow.items():
+        fuer colname, value in datarow.items():
             if type(value) != str:
                 if colname == 'kind':
                     datarow[colname] = value.value
@@ -524,7 +524,7 @@ klasse HighlevelParsedItem:
         colnames = {}  # {requested -> actual}
         columns = list(columns or cls.FIELDS)
         datacolumns = []
-        for i, colname in enumerate(columns):
+        fuer i, colname in enumerate(columns):
             if colname == 'file':
                 columns[i] = 'filename'
                 colnames['file'] = 'filename'
@@ -558,7 +558,7 @@ klasse HighlevelParsedItem:
 
     def __repr__(self):
         args = [f'{n}={getattr(self, n)!r}'
-                for n in ['file', 'name', 'data', 'parent', *(self._extra or ())]]
+                fuer n in ['file', 'name', 'data', 'parent', *(self._extra or ())]]
         return f'{type(self).__name__}({", ".join(args)})'
 
     def __str__(self):
@@ -642,7 +642,7 @@ klasse HighlevelParsedItem:
         def data_as_row(data, ext, cols):
             return self._render_data_row('row', data, ext, cols)
         rowdata = self._as_row(colnames, datacolumns, data_as_row)
-        for column, value in rowdata.items():
+        fuer column, value in rowdata.items():
             colname = colnames.get(column)
             if not colname:
                 continue
@@ -667,7 +667,7 @@ klasse HighlevelParsedItem:
         except NotImplementedError:
             data = None
         row = data or {}
-        for column, colname in colnames.items():
+        fuer column, colname in colnames.items():
             if colname == 'filename':
                 value = self.file.filename if self.file else None
             elif colname == 'line':
@@ -729,7 +729,7 @@ def _fmt_full(parsed, data=None):
         # XXX Show other prefixes (e.g. global, public)
         prefix = suffix = ''
     yield f'{prefix}{parsed.kind.value} {parsed.name!r}{suffix}'
-    for column, info in parsed.render_rowdata().items():
+    fuer column, info in parsed.render_rowdata().items():
         if column == 'kind':
             continue
         if column == 'name':
@@ -754,7 +754,7 @@ def _fmt_full(parsed, data=None):
                 yield f'\t{column}:\t{data!r}'
             else:
                 yield f'\t{column}:'
-                for line in data:
+                fuer line in data:
                     yield f'\t\t- {line}'
         else:
             yield f'\t{column}:\t{info}'
@@ -1214,7 +1214,7 @@ klasse _StructUnion(TypeDeclaration):
         if not data:
             # XXX There should be some!  Forward?
             return None, None
-        return [Member.from_data(v, i) for i, v in enumerate(data)], None
+        return [Member.from_data(v, i) fuer i, v in enumerate(data)], None
 
     @classmethod
     def _raw_data(self, data):
@@ -1224,13 +1224,13 @@ klasse _StructUnion(TypeDeclaration):
     @classmethod
     def _format_data(cls, fmt, data, extra):
         if fmt in ('line', 'brief'):
-            members = ', '.join(f'<{m}>' for m in data)
+            members = ', '.join(f'<{m}>' fuer m in data)
             yield f'[{members}]'
         elif fmt == 'full':
-            for member in data:
+            fuer member in data:
                 yield f'{member}'
         elif fmt == 'row':
-            members = ', '.join(f'<{m}>' for m in data)
+            members = ', '.join(f'<{m}>' fuer m in data)
             yield f'[{members}]'
         else:
             raise NotImplementedError(fmt)
@@ -1239,12 +1239,12 @@ klasse _StructUnion(TypeDeclaration):
     def _unformat_data(cls, datastr, fmt=None):
         if fmt in ('line', 'brief'):
             members = [Member.from_str(m[1:-1])
-                       for m in datastr[1:-1].split(', ')]
+                       fuer m in datastr[1:-1].split(', ')]
             return members, None
         #elif fmt == 'full':
         elif fmt == 'row':
             members = [Member.from_str(m.rstrip('>').lstrip('<'))
-                       for m in datastr[1:-1].split('>, <')]
+                       fuer m in datastr[1:-1].split('>, <')]
             return members, None
         else:
             raise NotImplementedError(fmt)
@@ -1274,7 +1274,7 @@ klasse Enum(TypeDeclaration):
             # XXX There should be some!  Forward?
             return None, None
         enumerators = [e if isinstance(e, str) else e.name
-                       for e in data]
+                       fuer e in data]
         return enumerators, None
 
     @classmethod
@@ -1287,7 +1287,7 @@ klasse Enum(TypeDeclaration):
         if fmt in ('line', 'brief'):
             yield repr(data)
         elif fmt == 'full':
-            for enumerator in data:
+            fuer enumerator in data:
                 yield f'{enumerator}'
         elif fmt == 'row':
             # XXX This won't work with CSV...
@@ -1355,7 +1355,7 @@ klasse Statement(HighlevelParsedItem):
 
 ###
 
-KIND_CLASSES = {cls.kind: cls for cls in [
+KIND_CLASSES = {cls.kind: cls fuer cls in [
     Variable,
     Function,
     TypeDef,
@@ -1395,7 +1395,7 @@ klasse Declarations:
     @classmethod
     def from_parsed(cls, items):
         decls = (resolve_parsed(item)
-                 for item in items
+                 fuer item in items
                  if item.kind is not KIND.STATEMENT)
         return cls.from_decls(decls)
 
@@ -1406,7 +1406,7 @@ klasse Declarations:
         elif isinstance(raw, Declaration):
             raw = (
                 raw.filename if cls._is_public(raw) else None,
-                # `raw.parent` is always None for types and functions.
+                # `raw.parent` is always None fuer types and functions.
                 raw.parent if raw.kind is KIND.VARIABLE else None,
                 raw.name,
             )
@@ -1451,7 +1451,7 @@ klasse Declarations:
     @classmethod
     def _is_public(cls, decl):
         # For .c files don't we need info from .h files to make this decision?
-        # XXX Check for "extern".
+        # XXX Check fuer "extern".
         # For now we treat all decls a "private" (have filename set).
         return False
 
@@ -1472,7 +1472,7 @@ klasse Declarations:
         # XXX always validate?
 
     def validate(self):
-        for key, decl in self._decls.items():
+        fuer key, decl in self._decls.items():
             if type(key) is not tuple or len(key) != 3:
                 raise ValueError(f'expected 3-tuple key, got {key!r} (for decl {decl!r})')
             filename, funcname, name = key
@@ -1496,7 +1496,7 @@ klasse Declarations:
         yield from self._decls
 
     def __getitem__(self, key):
-        # XXX Be more exact for the 3-tuple case?
+        # XXX Be more exact fuer the 3-tuple case?
         if type(key) not in (str, tuple):
             raise KeyError(f'unsupported key {key!r}')
         resolved, extra = self._resolve_key(key)
@@ -1572,7 +1572,7 @@ klasse Declarations:
         return self._find(**implicit, **explicit)
 
     def _find(self, filename=None, funcname=None, name=None, kind=None):
-        for decl in self._decls.values():
+        fuer decl in self._decls.values():
             if filename and decl.filename != filename:
                 continue
             if funcname:
@@ -1606,11 +1606,11 @@ klasse Declarations:
     def _extend(self, decls):
         decls = iter(decls)
         # Check only the first item.
-        for decl in decls:
+        fuer decl in decls:
             if isinstance(decl, Declaration):
                 self._add_decl(decl)
                 # Add the rest without checking.
-                for decl in decls:
+                fuer decl in decls:
                     self._add_decl(decl)
             elif isinstance(decl, HighlevelParsedItem):
                 raise NotImplementedError(decl)
@@ -1623,6 +1623,6 @@ klasse Declarations:
                     raise NotImplementedError(decl)
                 self._add_decl(decl, key)
                 # Add the rest without checking.
-                for key, decl in decls:
+                fuer key, decl in decls:
                     self._add_decl(decl, key)
             # The iterator will be exhausted at this point.

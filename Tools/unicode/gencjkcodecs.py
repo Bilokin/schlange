@@ -14,7 +14,7 @@ codecs = {
 
 TEMPLATE = string.Template("""\
 #
-# $encoding.py: Python Unicode Codec for $ENCODING
+# $encoding.py: Python Unicode Codec fuer $ENCODING
 #
 # Written by Hye-Shik Chang <perky@FreeBSD.org>
 #
@@ -55,8 +55,8 @@ def getregentry():
 """)
 
 def gencodecs(prefix):
-    for loc, encodings in codecs.items():
-        for enc in encodings:
+    fuer loc, encodings in codecs.items():
+        fuer enc in encodings:
             code = TEMPLATE.substitute(ENCODING=enc.upper(),
                                        encoding=enc.lower(),
                                        owner=loc)

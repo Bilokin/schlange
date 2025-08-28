@@ -33,7 +33,7 @@ klasse GetpassGetuserTest(unittest.TestCase):
             pass
         self.assertEqual(
             environ.get.call_args_list,
-            [mock.call(x) for x in ('LOGNAME', 'USER', 'LNAME', 'USERNAME')])
+            [mock.call(x) fuer x in ('LOGNAME', 'USER', 'LNAME', 'USERNAME')])
 
     def test_username_falls_back_to_pwd(self, environ):
         expected_name = 'some_name'

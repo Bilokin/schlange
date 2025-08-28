@@ -14,8 +14,8 @@ using the built-in `compile()` function.
 
 Additionally various helper functions are provided that make working with
 the trees simpler.  The main intention of the helper functions and this
-module in general is to provide an easy to use interface for libraries
-that work tightly with the python syntax (template engines for example).
+module in general is to provide an easy to use interface fuer libraries
+that work tightly with the python syntax (template engines fuer example).
 
 :copyright: Copyright 2008 by Armin Ronacher.
 :license: Python License.
@@ -42,7 +42,7 @@ def parse(source, filename='<unknown>', mode='exec', *,
         if major != 3:
             raise ValueError(f"Unsupported major version: {major}")
         feature_version = minor
-    # Else it should be an int giving the minor version for 3.x.
+    # Else it should be an int giving the minor version fuer 3.x.
     return compile(source, filename, mode, flags,
                    _feature_version=feature_version, optimize=optimize)
 
@@ -121,7 +121,7 @@ def dump(
     """
     Return a formatted dump of the tree in node.  This is mainly useful for
     debugging purposes.  If annotate_fields is true (by default),
-    the returned string will show the names and the values for fields.
+    the returned string will show the names and the values fuer fields.
     If annotate_fields is false, the result string will be more compact by
     omitting unambiguous field names.  Attributes such as line
     numbers and column offsets are not dumped by default.  If this is wanted,
@@ -129,7 +129,7 @@ def dump(
     integer or string, then the tree will be pretty-printed with that indent
     level. None (the default) selects the single line representation.
     If show_empty is False, then empty lists and fields that are None
-    will be omitted from the output for better readability.
+    will be omitted from the output fuer better readability.
     """
     def _format(node, level=0):
         if indent is not None:
@@ -145,7 +145,7 @@ def dump(
             args_buffer = []
             allsimple = True
             keywords = annotate_fields
-            for name in node._fields:
+            fuer name in node._fields:
                 try:
                     value = getattr(node, name)
                 except AttributeError:
@@ -177,7 +177,7 @@ def dump(
                 else:
                     args.append(value)
             if include_attributes and node._attributes:
-                for name in node._attributes:
+                fuer name in node._attributes:
                     try:
                         value = getattr(node, name)
                     except AttributeError:
@@ -193,7 +193,7 @@ def dump(
         elif isinstance(node, list):
             if not node:
                 return '[]', True
-            return '[%s%s]' % (prefix, sep.join(_format(x, level)[0] for x in node)), False
+            return '[%s%s]' % (prefix, sep.join(_format(x, level)[0] fuer x in node)), False
         return repr(node), True
 
     if not isinstance(node, AST):
@@ -208,7 +208,7 @@ def copy_location(new_node, old_node):
     Copy source location (`lineno`, `col_offset`, `end_lineno`, and `end_col_offset`
     attributes) from *old_node* to *new_node* if possible, and return *new_node*.
     """
-    for attr in 'lineno', 'col_offset', 'end_lineno', 'end_col_offset':
+    fuer attr in 'lineno', 'col_offset', 'end_lineno', 'end_col_offset':
         if attr in old_node._attributes and attr in new_node._attributes:
             value = getattr(old_node, attr, None)
             # end_lineno and end_col_offset are optional attributes, and they
@@ -223,8 +223,8 @@ def copy_location(new_node, old_node):
 def fix_missing_locations(node):
     """
     When you compile a node tree with compile(), the compiler expects lineno and
-    col_offset attributes for every node that supports them.  This is rather
-    tedious to fill in for generated nodes, so this helper adds these attributes
+    col_offset attributes fuer every node that supports them.  This is rather
+    tedious to fill in fuer generated nodes, so this helper adds these attributes
     recursively where not already set, by setting them to the values of the
     parent node.  It works recursively starting at *node*.
     """
@@ -249,7 +249,7 @@ def fix_missing_locations(node):
                 node.end_col_offset = end_col_offset
             else:
                 end_col_offset = node.end_col_offset
-        for child in iter_child_nodes(node):
+        fuer child in iter_child_nodes(node):
             _fix(child, lineno, col_offset, end_lineno, end_col_offset)
     _fix(node, 1, 0, 1, 0)
     return node
@@ -261,7 +261,7 @@ def increment_lineno(node, n=1):
     starting at *node* by *n*. This is useful to "move code" to a different
     location in a file.
     """
-    for child in walk(node):
+    fuer child in walk(node):
         # TypeIgnore is a special case where lineno is not an attribute
         # but rather a field of the node itself.
         if isinstance(child, TypeIgnore):
@@ -280,10 +280,10 @@ def increment_lineno(node, n=1):
 
 def iter_fields(node):
     """
-    Yield a tuple of ``(fieldname, value)`` for each field in ``node._fields``
+    Yield a tuple of ``(fieldname, value)`` fuer each field in ``node._fields``
     that is present on *node*.
     """
-    for field in node._fields:
+    fuer field in node._fields:
         try:
             yield field, getattr(node, field)
         except AttributeError:
@@ -295,18 +295,18 @@ def iter_child_nodes(node):
     Yield all direct child nodes of *node*, that is, all fields that are nodes
     and all items of fields that are lists of nodes.
     """
-    for name, field in iter_fields(node):
+    fuer name, field in iter_fields(node):
         if isinstance(field, AST):
             yield field
         elif isinstance(field, list):
-            for item in field:
+            fuer item in field:
                 if isinstance(item, AST):
                     yield item
 
 
 def get_docstring(node, clean=True):
     """
-    Return the docstring for the given node or None if no docstring can
+    Return the docstring fuer the given node or None if no docstring can
     be found.  If the node provided does not have docstrings a TypeError
     will be raised.
 
@@ -341,7 +341,7 @@ def _splitlines_no_ff(source, maxlines=None):
         _line_pattern = re.compile(r"(.*?(?:\r\n|\n|\r|$))")
 
     lines = []
-    for lineno, match in enumerate(_line_pattern.finditer(source), 1):
+    fuer lineno, match in enumerate(_line_pattern.finditer(source), 1):
         if maxlines is not None and lineno > maxlines:
             break
         lines.append(match[0])
@@ -351,7 +351,7 @@ def _splitlines_no_ff(source, maxlines=None):
 def _pad_whitespace(source):
     r"""Replace all chars except '\f\t' in a line with spaces."""
     result = ''
-    for c in source:
+    fuer c in source:
         if c in '\f\t':
             result += c
         else:
@@ -443,7 +443,7 @@ def compare(
             # the value as a list.
             if len(a) != len(b):
                 return False
-            for a_item, b_item in zip(a, b):
+            fuer a_item, b_item in zip(a, b):
                 if not _compare(a_item, b_item):
                     return False
             else:
@@ -454,7 +454,7 @@ def compare(
     def _compare_fields(a, b):
         if a._fields != b._fields:
             return False
-        for field in a._fields:
+        fuer field in a._fields:
             a_field = getattr(a, field, sentinel)
             b_field = getattr(b, field, sentinel)
             if a_field is sentinel and b_field is sentinel:
@@ -472,7 +472,7 @@ def compare(
         if a._attributes != b._attributes:
             return False
         # Attributes are always ints.
-        for attr in a._attributes:
+        fuer attr in a._attributes:
             a_attr = getattr(a, attr, sentinel)
             b_attr = getattr(b, attr, sentinel)
             if a_attr is sentinel and b_attr is sentinel:
@@ -495,16 +495,16 @@ def compare(
 klasse NodeVisitor(object):
     """
     A node visitor base klasse that walks the abstract syntax tree and calls a
-    visitor function for every node found.  This function may return a value
+    visitor function fuer every node found.  This function may return a value
     which is forwarded by the `visit` method.
 
     This klasse is meant to be subclassed, with the subclass adding visitor
     methods.
 
-    Per default the visitor functions for the nodes are ``'visit_'`` +
+    Per default the visitor functions fuer the nodes are ``'visit_'`` +
     klasse name of the node.  So a `TryFinally` node visit function would
     be `visit_TryFinally`.  This behavior can be changed by overriding
-    the `visit` method.  If no visitor function exists for a node
+    the `visit` method.  If no visitor function exists fuer a node
     (return value `None`) the `generic_visit` visitor is used instead.
 
     Don't use the `NodeVisitor` if you want to apply changes to nodes during
@@ -519,10 +519,10 @@ klasse NodeVisitor(object):
         return visitor(node)
 
     def generic_visit(self, node):
-        """Called if no explicit visitor function exists for a node."""
-        for field, value in iter_fields(node):
+        """Called if no explicit visitor function exists fuer a node."""
+        fuer field, value in iter_fields(node):
             if isinstance(value, list):
-                for item in value:
+                fuer item in value:
                     if isinstance(item, AST):
                         self.visit(item)
             elif isinstance(value, AST):
@@ -554,7 +554,7 @@ klasse NodeTransformer(NodeVisitor):
 
     Keep in mind that if the node you're operating on has child nodes you must
     either transform the child nodes yourself or call the :meth:`generic_visit`
-    method for the node first.
+    method fuer the node first.
 
     For nodes that were part of a collection of statements (that applies to all
     statement nodes), the visitor may also return a list of nodes rather than
@@ -566,10 +566,10 @@ klasse NodeTransformer(NodeVisitor):
     """
 
     def generic_visit(self, node):
-        for field, old_value in iter_fields(node):
+        fuer field, old_value in iter_fields(node):
             if isinstance(old_value, list):
                 new_values = []
-                for value in old_value:
+                fuer value in old_value:
                     if isinstance(value, AST):
                         value = self.visit(value)
                         if value is None:
@@ -602,7 +602,7 @@ klasse ExtSlice(slice):
 
 # If the ast module is loaded more than once, only add deprecated methods once
 if not hasattr(Tuple, 'dims'):
-    # The following code is for backward compatibility.
+    # The following code is fuer backward compatibility.
     # It will be removed in future.
 
     def _dims_getter(self):
@@ -660,7 +660,7 @@ def main(args=None):
                              '(for example, 3.10)')
     parser.add_argument('-O', '--optimize',
                         type=int, default=-1, metavar='LEVEL',
-                        help='optimization level for parser (default -1)')
+                        help='optimization level fuer parser (default -1)')
     parser.add_argument('--show-empty', default=False, action='store_true',
                         help='show empty lists and fields in dump output')
     args = parser.parse_args(args)
@@ -679,7 +679,7 @@ def main(args=None):
         try:
             major, minor = map(int, args.feature_version.split('.', 1))
         except ValueError:
-            parser.error('Invalid format for --feature-version; '
+            parser.error('Invalid format fuer --feature-version; '
                          'expected format 3.x (for example, 3.10)')
 
         feature_version = (major, minor)

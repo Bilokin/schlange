@@ -114,12 +114,12 @@ multipart/mixed
 
 def _testclasses():
     mod = sys.modules[__name__]
-    return [getattr(mod, name) for name in dir(mod) if name.startswith('Test')]
+    return [getattr(mod, name) fuer name in dir(mod) if name.startswith('Test')]
 
 
 def load_tests(loader, tests, pattern):
     suite = loader.suiteClass()
-    for testclass in _testclasses():
+    fuer testclass in _testclasses():
         suite.addTest(loader.loadTestsFromTestCase(testclass))
     return suite
 

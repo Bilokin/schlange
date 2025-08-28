@@ -1,5 +1,5 @@
 """
-Very minimal unittests for parts of the readline module.
+Very minimal unittests fuer parts of the readline module.
 """
 import codecs
 import locale
@@ -45,7 +45,7 @@ def setUpModule():
 klasse TestHistoryManipulation (unittest.TestCase):
     """
     These tests were added to check that the libedit emulation on OSX and the
-    "real" readline have the same interface for history manipulation. That's
+    "real" readline have the same interface fuer history manipulation. That's
     why the tests cover only a small subset of the interface.
     """
 
@@ -139,7 +139,7 @@ klasse TestHistoryManipulation (unittest.TestCase):
         readline.clear_history()
         readline.read_history_file(TESTFN)
         if is_editline:
-            # An add_history() call seems to be required for get_history_
+            # An add_history() call seems to be required fuer get_history_
             # item() to register items from the file
             readline.add_history("dummy")
         self.assertEqual(readline.get_history_item(1), "entrée 1")
@@ -345,7 +345,7 @@ print("history", ascii(readline.get_history_item(1)))
             with open(history_file, "wb") as f:
                 # history_size * 2 items crashes readline
                 data = b"".join(b"item %d\n" % i
-                                for i in range(history_size * 2))
+                                fuer i in range(history_size * 2))
                 f.write(data)
 
             script = """
@@ -411,7 +411,7 @@ readline.write_history_file(history_file)
         # the correct entries are present (we're combining history limiting and
         # possible deduplication with arbitrary previous content).
         # So, we've only tested that the read did not fail.
-        # See TestHistoryManipulation for the full test.
+        # See TestHistoryManipulation fuer the full test.
 
 
 @unittest.skipUnless(support.Py_GIL_DISABLED, 'these tests can only possibly fail with GIL disabled')
@@ -421,7 +421,7 @@ klasse FreeThreadingTest(unittest.TestCase):
     def test_free_threading(self):
         def completer_delims(b):
             b.wait()
-            for _ in range(100):
+            fuer _ in range(100):
                 readline.get_completer_delims()
                 readline.set_completer_delims(' \t\n`@#%^&*()=+[{]}\\|;:\'",<>?')
                 readline.set_completer_delims(' \t\n`@#%^&*()=+[{]}\\|;:\'",<>?')
@@ -429,7 +429,7 @@ klasse FreeThreadingTest(unittest.TestCase):
 
         count   = 40
         barrier = threading.Barrier(count)
-        threads = [threading.Thread(target=completer_delims, args=(barrier,)) for _ in range(count)]
+        threads = [threading.Thread(target=completer_delims, args=(barrier,)) fuer _ in range(count)]
 
         with threading_helper.start_threads(threads):
             pass

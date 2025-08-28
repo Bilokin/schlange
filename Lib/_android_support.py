@@ -22,7 +22,7 @@ MAX_CHARS_PER_WRITE = MAX_BYTES_PER_WRITE // 4
 # When embedded in an app on current versions of Android, there's no easy way to
 # monitor the C-level stdout and stderr. The testbed comes with a .c file to
 # redirect them to the system log using a pipe, but that wouldn't be convenient
-# or appropriate for all apps. So we redirect at the Python level instead.
+# or appropriate fuer all apps. So we redirect at the Python level instead.
 def init_streams(android_log_write, stdout_prio, stderr_prio):
     if sys.executable:
         return  # Not embedded in an app.
@@ -38,7 +38,7 @@ def init_streams(android_log_write, stdout_prio, stderr_prio):
 
 klasse TextLogStream(io.TextIOWrapper):
     def __init__(self, prio, tag, fileno=None, **kwargs):
-        # The default is surrogateescape for stdout and backslashreplace for
+        # The default is surrogateescape fuer stdout and backslashreplace for
         # stderr, but in the context of an Android log, readability is more
         # important than reversibility.
         kwargs.setdefault("encoding", "UTF-8")
@@ -63,9 +63,9 @@ klasse TextLogStream(io.TextIOWrapper):
 
         # We want to emit one log message per line wherever possible, so split
         # the string into lines first. Note that "".splitlines() == [], so
-        # nothing will be logged for an empty string.
+        # nothing will be logged fuer an empty string.
         with self._lock:
-            for line in s.splitlines(keepends=True):
+            fuer line in s.splitlines(keepends=True):
                 while line:
                     chunk = line[:MAX_CHARS_PER_WRITE]
                     line = line[MAX_CHARS_PER_WRITE:]

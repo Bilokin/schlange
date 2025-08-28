@@ -8,11 +8,11 @@ def run_in_threads(targets):
     """Run `targets` in separate threads"""
     threads = [
         threading.Thread(target=target)
-        for target in targets
+        fuer target in targets
     ]
-    for thread in threads:
+    fuer thread in threads:
         thread.start()
-    for thread in threads:
+    fuer thread in threads:
         thread.join()
 
 
@@ -32,11 +32,11 @@ klasse TestSlots(TestCase):
         iters = 20_000
 
         def writer():
-            for _ in range(iters):
+            fuer _ in range(iters):
                 spam.eggs += 1
 
         def reader():
-            for _ in range(iters):
+            fuer _ in range(iters):
                 eggs = spam.eggs
                 assert type(eggs) is int
                 assert 0 <= eggs <= iters
@@ -48,15 +48,15 @@ klasse TestSlots(TestCase):
         spam_new = _testcapi._test_structmembersType_NewAPI()
 
         def writer():
-            for _ in range(1_000):
-                # different code paths for True and False
+            fuer _ in range(1_000):
+                # different code paths fuer True and False
                 spam_old.T_BOOL = True
                 spam_new.T_BOOL = True
                 spam_old.T_BOOL = False
                 spam_new.T_BOOL = False
 
         def reader():
-            for _ in range(1_000):
+            fuer _ in range(1_000):
                 spam_old.T_BOOL
                 spam_new.T_BOOL
 
@@ -67,12 +67,12 @@ klasse TestSlots(TestCase):
         spam_new = _testcapi._test_structmembersType_NewAPI()
 
         def writer():
-            for _ in range(1_000):
+            fuer _ in range(1_000):
                 spam_old.T_BYTE = 0
                 spam_new.T_BYTE = 0
 
         def reader():
-            for _ in range(1_000):
+            fuer _ in range(1_000):
                 spam_old.T_BYTE
                 spam_new.T_BYTE
 
@@ -83,12 +83,12 @@ klasse TestSlots(TestCase):
         spam_new = _testcapi._test_structmembersType_NewAPI()
 
         def writer():
-            for _ in range(1_000):
+            fuer _ in range(1_000):
                 spam_old.T_UBYTE = 0
                 spam_new.T_UBYTE = 0
 
         def reader():
-            for _ in range(1_000):
+            fuer _ in range(1_000):
                 spam_old.T_UBYTE
                 spam_new.T_UBYTE
 
@@ -99,12 +99,12 @@ klasse TestSlots(TestCase):
         spam_new = _testcapi._test_structmembersType_NewAPI()
 
         def writer():
-            for _ in range(1_000):
+            fuer _ in range(1_000):
                 spam_old.T_SHORT = 0
                 spam_new.T_SHORT = 0
 
         def reader():
-            for _ in range(1_000):
+            fuer _ in range(1_000):
                 spam_old.T_SHORT
                 spam_new.T_SHORT
 
@@ -115,12 +115,12 @@ klasse TestSlots(TestCase):
         spam_new = _testcapi._test_structmembersType_NewAPI()
 
         def writer():
-            for _ in range(1_000):
+            fuer _ in range(1_000):
                 spam_old.T_USHORT = 0
                 spam_new.T_USHORT = 0
 
         def reader():
-            for _ in range(1_000):
+            fuer _ in range(1_000):
                 spam_old.T_USHORT
                 spam_new.T_USHORT
 
@@ -131,12 +131,12 @@ klasse TestSlots(TestCase):
         spam_new = _testcapi._test_structmembersType_NewAPI()
 
         def writer():
-            for _ in range(1_000):
+            fuer _ in range(1_000):
                 spam_old.T_INT = 0
                 spam_new.T_INT = 0
 
         def reader():
-            for _ in range(1_000):
+            fuer _ in range(1_000):
                 spam_old.T_INT
                 spam_new.T_INT
 
@@ -147,12 +147,12 @@ klasse TestSlots(TestCase):
         spam_new = _testcapi._test_structmembersType_NewAPI()
 
         def writer():
-            for _ in range(1_000):
+            fuer _ in range(1_000):
                 spam_old.T_UINT = 0
                 spam_new.T_UINT = 0
 
         def reader():
-            for _ in range(1_000):
+            fuer _ in range(1_000):
                 spam_old.T_UINT
                 spam_new.T_UINT
 
@@ -163,12 +163,12 @@ klasse TestSlots(TestCase):
         spam_new = _testcapi._test_structmembersType_NewAPI()
 
         def writer():
-            for _ in range(1_000):
+            fuer _ in range(1_000):
                 spam_old.T_LONG = 0
                 spam_new.T_LONG = 0
 
         def reader():
-            for _ in range(1_000):
+            fuer _ in range(1_000):
                 spam_old.T_LONG
                 spam_new.T_LONG
 
@@ -179,12 +179,12 @@ klasse TestSlots(TestCase):
         spam_new = _testcapi._test_structmembersType_NewAPI()
 
         def writer():
-            for _ in range(1_000):
+            fuer _ in range(1_000):
                 spam_old.T_ULONG = 0
                 spam_new.T_ULONG = 0
 
         def reader():
-            for _ in range(1_000):
+            fuer _ in range(1_000):
                 spam_old.T_ULONG
                 spam_new.T_ULONG
 
@@ -195,12 +195,12 @@ klasse TestSlots(TestCase):
         spam_new = _testcapi._test_structmembersType_NewAPI()
 
         def writer():
-            for _ in range(1_000):
+            fuer _ in range(1_000):
                 spam_old.T_PYSSIZET = 0
                 spam_new.T_PYSSIZET = 0
 
         def reader():
-            for _ in range(1_000):
+            fuer _ in range(1_000):
                 spam_old.T_PYSSIZET
                 spam_new.T_PYSSIZET
 
@@ -211,12 +211,12 @@ klasse TestSlots(TestCase):
         spam_new = _testcapi._test_structmembersType_NewAPI()
 
         def writer():
-            for _ in range(1_000):
+            fuer _ in range(1_000):
                 spam_old.T_FLOAT = 0.0
                 spam_new.T_FLOAT = 0.0
 
         def reader():
-            for _ in range(1_000):
+            fuer _ in range(1_000):
                 spam_old.T_FLOAT
                 spam_new.T_FLOAT
 
@@ -227,12 +227,12 @@ klasse TestSlots(TestCase):
         spam_new = _testcapi._test_structmembersType_NewAPI()
 
         def writer():
-            for _ in range(1_000):
+            fuer _ in range(1_000):
                 spam_old.T_DOUBLE = 0.0
                 spam_new.T_DOUBLE = 0.0
 
         def reader():
-            for _ in range(1_000):
+            fuer _ in range(1_000):
                 spam_old.T_DOUBLE
                 spam_new.T_DOUBLE
 
@@ -243,12 +243,12 @@ klasse TestSlots(TestCase):
         spam_new = _testcapi._test_structmembersType_NewAPI()
 
         def writer():
-            for _ in range(1_000):
+            fuer _ in range(1_000):
                 spam_old.T_LONGLONG = 0
                 spam_new.T_LONGLONG = 0
 
         def reader():
-            for _ in range(1_000):
+            fuer _ in range(1_000):
                 spam_old.T_LONGLONG
                 spam_new.T_LONGLONG
 
@@ -259,12 +259,12 @@ klasse TestSlots(TestCase):
         spam_new = _testcapi._test_structmembersType_NewAPI()
 
         def writer():
-            for _ in range(1_000):
+            fuer _ in range(1_000):
                 spam_old.T_ULONGLONG = 0
                 spam_new.T_ULONGLONG = 0
 
         def reader():
-            for _ in range(1_000):
+            fuer _ in range(1_000):
                 spam_old.T_ULONGLONG
                 spam_new.T_ULONGLONG
 
@@ -275,12 +275,12 @@ klasse TestSlots(TestCase):
         spam_new = _testcapi._test_structmembersType_NewAPI()
 
         def writer():
-            for _ in range(1_000):
+            fuer _ in range(1_000):
                 spam_old.T_CHAR = "c"
                 spam_new.T_CHAR = "c"
 
         def reader():
-            for _ in range(1_000):
+            fuer _ in range(1_000):
                 spam_old.T_CHAR
                 spam_new.T_CHAR
 

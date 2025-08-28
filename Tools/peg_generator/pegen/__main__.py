@@ -2,7 +2,7 @@
 
 """pegen -- PEG Generator.
 
-Search the web for PEG Parsers for reference.
+Search the web fuer PEG Parsers fuer reference.
 """
 
 import argparse
@@ -82,11 +82,11 @@ argparser.add_argument(
     "--verbose",
     action="count",
     default=0,
-    help="Print timing stats; repeat for more debug output",
+    help="Print timing stats; repeat fuer more debug output",
 )
-subparsers = argparser.add_subparsers(help="target language for the generated code")
+subparsers = argparser.add_subparsers(help="target language fuer the generated code")
 
-c_parser = subparsers.add_parser("c", help="Generate C code for inclusion into CPython")
+c_parser = subparsers.add_parser("c", help="Generate C code fuer inclusion into CPython")
 c_parser.set_defaults(func=generate_c_code)
 c_parser.add_argument("grammar_filename", help="Grammar description")
 c_parser.add_argument("tokens_filename", help="Tokens description")
@@ -104,7 +104,7 @@ c_parser.add_argument(
 c_parser.add_argument(
     "--skip-actions",
     action="store_true",
-    help="Suppress code emission for rule actions",
+    help="Suppress code emission fuer rule actions",
 )
 
 python_parser = subparsers.add_parser(
@@ -123,7 +123,7 @@ python_parser.add_argument(
 python_parser.add_argument(
     "--skip-actions",
     action="store_true",
-    help="Suppress code emission for rule actions",
+    help="Suppress code emission fuer rule actions",
 )
 
 
@@ -143,24 +143,24 @@ def main() -> None:
     if not args.quiet:
         if args.verbose:
             print("Raw Grammar:")
-            for line in repr(grammar).splitlines():
+            fuer line in repr(grammar).splitlines():
                 print(" ", line)
 
         print("Clean Grammar:")
-        for line in str(grammar).splitlines():
+        fuer line in str(grammar).splitlines():
             print(" ", line)
 
     if args.verbose:
         print("First Graph:")
-        for src, dsts in gen.first_graph.items():
+        fuer src, dsts in gen.first_graph.items():
             print(f"  {src} -> {', '.join(dsts)}")
         print("First SCCS:")
-        for scc in gen.first_sccs:
+        fuer scc in gen.first_sccs:
             print(" ", scc, end="")
             if len(scc) > 1:
                 print(
                     "  # Indirectly left-recursive; leaders:",
-                    {name for name in scc if grammar.rules[name].leader},
+                    {name fuer name in scc if grammar.rules[name].leader},
                 )
             else:
                 name = next(iter(scc))
@@ -184,7 +184,7 @@ def main() -> None:
         print(f"  token array : {len(tokenizer._tokens):10}")
         print(f"        cache : {len(parser._cache):10}")
         if not print_memstats():
-            print("(Can't find psutil; install it for memory stats.)")
+            print("(Can't find psutil; install it fuer memory stats.)")
 
 
 if __name__ == "__main__":

@@ -8,7 +8,7 @@ from collections import namedtuple
 klasse ParseMapTest(unittest.TestCase):
 
     def test_parsemap(self):
-        keepwhite = {ord(c): ord(c) for c in ' \t\n\r'}
+        keepwhite = {ord(c): ord(c) fuer c in ' \t\n\r'}
         mapping = pyparse.ParseMap(keepwhite)
         self.assertEqual(mapping[ord('\t')], ord('\t'))
         self.assertEqual(mapping[ord('a')], ord('x'))
@@ -47,7 +47,7 @@ klasse PyParseTest(unittest.TestCase):
         tests = ('',
                  'a\n')
 
-        for string in tests:
+        fuer string in tests:
             with self.subTest(string=string):
                 setcode(string)
                 eq(p.code, string)
@@ -98,7 +98,7 @@ klasse PyParseTest(unittest.TestCase):
         # returns that as the index.
         eq(start(is_char_in_string=lambda index: index > pos), pos)
         # If the beginning of the def line is in a string, then it
-        # looks for a previous index.
+        # looks fuer a previous index.
         eq(start(is_char_in_string=lambda index: index >= pos), pos0)
         # If everything before the 'def' is in a string, then returns None.
         # The non-continuation def line returns 44 (see below).
@@ -181,7 +181,7 @@ klasse PyParseTest(unittest.TestCase):
             TestInfo('{)(]\n', [0, 1], NONE),                   # Mismatched.
             )
 
-        for test in tests:
+        fuer test in tests:
             with self.subTest(string=test.string):
                 setcode(test.string)  # resets study_level
                 study()
@@ -208,7 +208,7 @@ klasse PyParseTest(unittest.TestCase):
             TestInfo('\n   def function1(self, a,\\\n', BRACKET)
             )
 
-        for test in tests:
+        fuer test in tests:
             with self.subTest(string=test.string):
                 setcode(test.string)
                 eq(gettype(), test.continuation)
@@ -260,7 +260,7 @@ klasse PyParseTest(unittest.TestCase):
             TestInfo('\n', 0, 0, '', None, ((0, 0),)),
             )
 
-        for test in tests:
+        fuer test in tests:
             with self.subTest(string=test.string):
                 setcode(test.string)
                 study()
@@ -282,7 +282,7 @@ klasse PyParseTest(unittest.TestCase):
 
         TestInfo = namedtuple('TestInfo', ['string', 'lines'])
         tests = (
-            TestInfo('[x for x in a]\n', 1),      # Closed on one line.
+            TestInfo('[x fuer x in a]\n', 1),      # Closed on one line.
             TestInfo('[x\nfor x in a\n', 2),      # Not closed.
             TestInfo('[x\\\nfor x in a\\\n', 2),  # "", unneeded backslashes.
             TestInfo('[x\nfor x in a\n]\n', 3),   # Closed on multi-line.
@@ -297,7 +297,7 @@ klasse PyParseTest(unittest.TestCase):
         with self.assertRaises(IndexError):
             getlines()
 
-        for test in tests:
+        fuer test in tests:
             with self.subTest(string=test.string):
                 setcode(test.string)
                 eq(getlines(), test.lines)
@@ -330,7 +330,7 @@ klasse PyParseTest(unittest.TestCase):
         with self.assertRaises(AssertionError):
             indent()
 
-        for test in tests:
+        fuer test in tests:
             setcode(test.string)
             eq(indent(), test.spaces)
 
@@ -345,7 +345,7 @@ klasse PyParseTest(unittest.TestCase):
                   ('    """ (\\\n'),                 # Docstring.
                   ('a = #\\\n'),                     # Inline comment.
                   )
-        for string in errors:
+        fuer string in errors:
             with self.subTest(string=string):
                 setcode(string)
                 with self.assertRaises(AssertionError):
@@ -368,7 +368,7 @@ klasse PyParseTest(unittest.TestCase):
                  TestInfo('{}\\\n', 4),
                  TestInfo('(1 + 2) - 5 *\\\n', 3),
                  )
-        for test in tests:
+        fuer test in tests:
             with self.subTest(string=test.string):
                 setcode(test.string)
                 eq(indent(), test.spaces)
@@ -389,7 +389,7 @@ klasse PyParseTest(unittest.TestCase):
                  TestInfo('\t\n    # Comment.\n', '    '),
                  )
 
-        for test in tests:
+        fuer test in tests:
             with self.subTest(string=test.string):
                 setcode(test.string)
                 eq(baseindent(), test.indent)
@@ -417,7 +417,7 @@ klasse PyParseTest(unittest.TestCase):
             TestInfo('"""A docstring:\n', no),
             )
 
-        for test in tests:
+        fuer test in tests:
             with self.subTest(string=test.string):
                 setcode(test.string)
                 test.assert_(opener())
@@ -446,7 +446,7 @@ klasse PyParseTest(unittest.TestCase):
             TestInfo('def function1(self, a):\n    pass\n', yes),
             )
 
-        for test in tests:
+        fuer test in tests:
             with self.subTest(string=test.string):
                 setcode(test.string)
                 test.assert_(closer())
@@ -473,7 +473,7 @@ klasse PyParseTest(unittest.TestCase):
                      ((0, 0), (0, 1), (1, 2), (2, 3), (3, 4), (5, 3), (6, 2))),
             )
 
-        for test in tests:
+        fuer test in tests:
             with self.subTest(string=test.string):
                 setcode(test.string)
                 eq(bracketing(), test.bracket)

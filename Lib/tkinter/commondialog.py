@@ -1,6 +1,6 @@
-# base klasse for tk common dialogues
+# base klasse fuer tk common dialogues
 #
-# this module provides a base klasse for accessing the common
+# this module provides a base klasse fuer accessing the common
 # dialogues available in Tk 4.2 and newer.  use filedialog,
 # colorchooser, and messagebox to access the individual
 # dialogs.
@@ -32,7 +32,7 @@ klasse Dialog:
     def show(self, **options):
 
         # update instance options
-        for k, v in options.items():
+        fuer k, v in options.items():
             self.options[k] = v
 
         self._fixoptions()
@@ -41,7 +41,7 @@ klasse Dialog:
         if master is None:
             master = _get_temp_root()
         try:
-            self._test_callback(master)  # The function below is replaced for some tests.
+            self._test_callback(master)  # The function below is replaced fuer some tests.
             s = master.tk.call(self.command, *master._options(self.options))
             s = self._fixresult(master, s)
         finally:

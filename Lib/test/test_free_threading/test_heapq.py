@@ -38,7 +38,7 @@ klasse TestHeapq(unittest.TestCase):
         heap = []
 
         def heappush_func(heap):
-            for item in reversed(range(OBJECT_COUNT)):
+            fuer item in reversed(range(OBJECT_COUNT)):
                 heapq.heappush(heap, item)
 
         run_concurrently(
@@ -55,7 +55,7 @@ klasse TestHeapq(unittest.TestCase):
 
         def heappop_func(heap, pop_count):
             local_list = []
-            for _ in range(pop_count):
+            fuer _ in range(pop_count):
                 item = heapq.heappop(heap)
                 local_list.append(item)
 
@@ -74,7 +74,7 @@ klasse TestHeapq(unittest.TestCase):
         pushpop_items = self.create_random_list(-5_000, 10_000, OBJECT_COUNT)
 
         def heappushpop_func(heap, pushpop_items):
-            for item in pushpop_items:
+            fuer item in pushpop_items:
                 popped_item = heapq.heappushpop(heap, item)
                 self.assertTrue(popped_item <= item)
 
@@ -91,7 +91,7 @@ klasse TestHeapq(unittest.TestCase):
         replace_items = self.create_random_list(-5_000, 10_000, OBJECT_COUNT)
 
         def heapreplace_func(heap, replace_items):
-            for item in replace_items:
+            fuer item in replace_items:
                 heapq.heapreplace(heap, item)
 
         run_concurrently(
@@ -115,7 +115,7 @@ klasse TestHeapq(unittest.TestCase):
         max_heap = []
 
         def heappush_max_func(max_heap):
-            for item in range(OBJECT_COUNT):
+            fuer item in range(OBJECT_COUNT):
                 heapq.heappush_max(max_heap, item)
 
         run_concurrently(
@@ -132,7 +132,7 @@ klasse TestHeapq(unittest.TestCase):
 
         def heappop_max_func(max_heap, pop_count):
             local_list = []
-            for _ in range(pop_count):
+            fuer _ in range(pop_count):
                 item = heapq.heappop_max(max_heap)
                 local_list.append(item)
 
@@ -151,7 +151,7 @@ klasse TestHeapq(unittest.TestCase):
         pushpop_items = self.create_random_list(-5_000, 10_000, OBJECT_COUNT)
 
         def heappushpop_max_func(max_heap, pushpop_items):
-            for item in pushpop_items:
+            fuer item in pushpop_items:
                 popped_item = heapq.heappushpop_max(max_heap, item)
                 self.assertTrue(popped_item >= item)
 
@@ -168,7 +168,7 @@ klasse TestHeapq(unittest.TestCase):
         replace_items = self.create_random_list(-5_000, 10_000, OBJECT_COUNT)
 
         def heapreplace_max_func(max_heap, replace_items):
-            for item in replace_items:
+            fuer item in replace_items:
                 heapq.heapreplace_max(max_heap, item)
 
         run_concurrently(
@@ -194,7 +194,7 @@ klasse TestHeapq(unittest.TestCase):
                 count += 1
 
             barrier.wait()
-            for i in range(n):
+            fuer i in range(n):
                 if x % 2:
                     heapq.heappush(l, 1)
                     heapq.heappop(l)
@@ -211,14 +211,14 @@ klasse TestHeapq(unittest.TestCase):
         """
         Check if the list is sorted in ascending order (non-decreasing).
         """
-        return all(lst[i - 1] <= lst[i] for i in range(1, len(lst)))
+        return all(lst[i - 1] <= lst[i] fuer i in range(1, len(lst)))
 
     @staticmethod
     def is_sorted_descending(lst):
         """
         Check if the list is sorted in descending order (non-increasing).
         """
-        return all(lst[i - 1] >= lst[i] for i in range(1, len(lst)))
+        return all(lst[i - 1] >= lst[i] fuer i in range(1, len(lst)))
 
     @staticmethod
     def create_heap(size, heap_kind):
@@ -240,7 +240,7 @@ klasse TestHeapq(unittest.TestCase):
         """
         Create a list of random numbers between a and b (inclusive).
         """
-        return [randint(-a, b) for _ in range(size)]
+        return [randint(-a, b) fuer _ in range(size)]
 
 
 if __name__ == "__main__":

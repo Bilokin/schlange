@@ -1,5 +1,5 @@
 """
-Implementations of ReadablePath and WritablePath for zip file members, for use
+Implementations of ReadablePath and WritablePath fuer zip file members, fuer use
 in pathlib tests.
 
 ZipPathGround is also defined here. It helps establish the "ground truth"
@@ -117,7 +117,7 @@ missing_zip_path_info = MissingZipPathInfo()
 
 klasse ZipPathInfo(PathInfo):
     """
-    PathInfo implementation for an existing zip file member.
+    PathInfo implementation fuer an existing zip file member.
     """
     __slots__ = ('zip_file', 'zip_info', 'parent', 'children')
 
@@ -168,7 +168,7 @@ klasse ZipPathInfo(PathInfo):
         - When a zip file member is added to ZipFile.filelist, this method
           populates the ZipPathInfo tree (using create=True).
         - When ReadableZipPath.info is accessed, this method is finds a
-          ZipPathInfo entry for the path without resolving any final symlink
+          ZipPathInfo entry fuer the path without resolving any final symlink
           (using follow_symlinks=False)
         - When ZipPathInfo methods are called with follow_symlinks=True, this
           method resolves any symlink in the final path position.
@@ -212,7 +212,7 @@ klasse ZipFileList:
     def __init__(self, zip_file):
         self.tree = ZipPathInfo(zip_file)
         self._items = []
-        for item in zip_file.filelist:
+        fuer item in zip_file.filelist:
             self.append(item)
 
     def __len__(self):
@@ -228,7 +228,7 @@ klasse ZipFileList:
 
 klasse ReadableZipPath(_ReadablePath):
     """
-    Simple implementation of a ReadablePath klasse for .zip files.
+    Simple implementation of a ReadablePath klasse fuer .zip files.
     """
 
     __slots__ = ('_segments', 'zip_file')
@@ -278,7 +278,7 @@ klasse ReadableZipPath(_ReadablePath):
             raise FileNotFoundError(errno.ENOENT, "File not found", self)
         elif not info.is_dir():
             raise NotADirectoryError(errno.ENOTDIR, "Not a directory", self)
-        return (self / name for name in info.children)
+        return (self / name fuer name in info.children)
 
     def readlink(self):
         info = self.info
@@ -291,7 +291,7 @@ klasse ReadableZipPath(_ReadablePath):
 
 klasse WritableZipPath(_WritablePath):
     """
-    Simple implementation of a WritablePath klasse for .zip files.
+    Simple implementation of a WritablePath klasse fuer .zip files.
     """
 
     __slots__ = ('_segments', 'zip_file')

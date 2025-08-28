@@ -1,4 +1,4 @@
-"""Interfaces for launching and remotely controlling web browsers."""
+"""Interfaces fuer launching and remotely controlling web browsers."""
 # Maintained by Georg Brandl.
 
 import os
@@ -38,7 +38,7 @@ def register(name, klass, instance=None, *, preferred=False):
 
 
 def get(using=None):
-    """Return a browser launcher instance appropriate for the environment."""
+    """Return a browser launcher instance appropriate fuer the environment."""
     if _tryorder is None:
         with _lock:
             if _tryorder is None:
@@ -47,7 +47,7 @@ def get(using=None):
         alternatives = [using]
     else:
         alternatives = _tryorder
-    for browser in alternatives:
+    fuer browser in alternatives:
         if '%s' in browser:
             # User gave us a command line, split it into name and args
             browser = shlex.split(browser)
@@ -88,7 +88,7 @@ def open(url, new=0, autoraise=True):
         with _lock:
             if _tryorder is None:
                 register_standard_browsers()
-    for name in _tryorder:
+    fuer name in _tryorder:
         browser = get(name)
         if browser.open(url, new, autoraise):
             return True
@@ -120,7 +120,7 @@ def _synthesize(browser, *, preferred=False):
     browser in this way.
 
     If we can't create a controller in this way, or if there is no
-    executable for the requested browser, return [None, None].
+    executable fuer the requested browser, return [None, None].
 
     """
     cmd = browser.split()[0]
@@ -146,7 +146,7 @@ def _synthesize(browser, *, preferred=False):
 # General parent classes
 
 klasse BaseBrowser:
-    """Parent klasse for all browsers. Do not use directly."""
+    """Parent klasse fuer all browsers. Do not use directly."""
 
     args = ['%s']
 
@@ -165,7 +165,7 @@ klasse BaseBrowser:
 
 
 klasse GenericBrowser(BaseBrowser):
-    """Class for all browsers started with a command
+    """Class fuer all browsers started with a command
        and without remote functionality."""
 
     def __init__(self, name):
@@ -181,7 +181,7 @@ klasse GenericBrowser(BaseBrowser):
     def open(self, url, new=0, autoraise=True):
         sys.audit("webbrowser.open", url)
         cmdline = [self.name] + [arg.replace("%s", url)
-                                 for arg in self.args]
+                                 fuer arg in self.args]
         try:
             if sys.platform[:3] == 'win':
                 p = subprocess.Popen(cmdline)
@@ -193,12 +193,12 @@ klasse GenericBrowser(BaseBrowser):
 
 
 klasse BackgroundBrowser(GenericBrowser):
-    """Class for all browsers which are to be started in the
+    """Class fuer all browsers which are to be started in the
        background."""
 
     def open(self, url, new=0, autoraise=True):
         cmdline = [self.name] + [arg.replace("%s", url)
-                                 for arg in self.args]
+                                 fuer arg in self.args]
         sys.audit("webbrowser.open", url)
         try:
             if sys.platform[:3] == 'win':
@@ -212,15 +212,15 @@ klasse BackgroundBrowser(GenericBrowser):
 
 
 klasse UnixBrowser(BaseBrowser):
-    """Parent klasse for all Unix browsers with remote functionality."""
+    """Parent klasse fuer all Unix browsers with remote functionality."""
 
     raise_opts = None
     background = False
     redirect_stdout = True
     # In remote_args, %s will be replaced with the requested URL.  %action will
     # be replaced depending on the value of 'new' passed to open.
-    # remote_action is used for new=0 (open).  If newwin is not None, it is
-    # used for new=1 (open_new).  If newtab is not None, it is used for
+    # remote_action is used fuer new=0 (open).  If newwin is not None, it is
+    # used fuer new=1 (open_new).  If newtab is not None, it is used for
     # new=3 (open_new_tab).  After both substitutions are made, any empty
     # strings in the transformed remote_args list will be removed.
     remote_args = ['%action', '%s']
@@ -231,7 +231,7 @@ klasse UnixBrowser(BaseBrowser):
     def _invoke(self, args, remote, autoraise, url=None):
         raise_opt = []
         if remote and self.raise_opts:
-            # use autoraise argument only for remote invocation
+            # use autoraise argument only fuer remote invocation
             autoraise = int(autoraise)
             opt = self.raise_opts[autoraise]
             if opt:
@@ -242,7 +242,7 @@ klasse UnixBrowser(BaseBrowser):
         if remote or self.background:
             inout = subprocess.DEVNULL
         else:
-            # for TTY browsers, we need stdin/out
+            # fuer TTY browsers, we need stdin/out
             inout = None
         p = subprocess.Popen(cmdline, close_fds=True, stdin=inout,
                              stdout=(self.redirect_stdout and inout or None),
@@ -280,19 +280,19 @@ klasse UnixBrowser(BaseBrowser):
                         f"expected 0, 1, or 2, got {new}")
 
         args = [arg.replace("%s", url).replace("%action", action)
-                for arg in self.remote_args]
-        args = [arg for arg in args if arg]
+                fuer arg in self.remote_args]
+        args = [arg fuer arg in args if arg]
         success = self._invoke(args, True, autoraise, url)
         if not success:
             # remote invocation failed, try straight way
-            args = [arg.replace("%s", url) for arg in self.args]
+            args = [arg.replace("%s", url) fuer arg in self.args]
             return self._invoke(args, False, False)
         else:
             return True
 
 
 klasse Mozilla(UnixBrowser):
-    """Launcher klasse for Mozilla browsers."""
+    """Launcher klasse fuer Mozilla browsers."""
 
     remote_args = ['%action', '%s']
     remote_action = ""
@@ -302,7 +302,7 @@ klasse Mozilla(UnixBrowser):
 
 
 klasse Epiphany(UnixBrowser):
-    """Launcher klasse for Epiphany browser."""
+    """Launcher klasse fuer Epiphany browser."""
 
     raise_opts = ["-noraise", ""]
     remote_args = ['%action', '%s']
@@ -312,7 +312,7 @@ klasse Epiphany(UnixBrowser):
 
 
 klasse Chrome(UnixBrowser):
-    """Launcher klasse for Google Chrome browser."""
+    """Launcher klasse fuer Google Chrome browser."""
 
     remote_args = ['%action', '%s']
     remote_action = ""
@@ -325,7 +325,7 @@ Chromium = Chrome
 
 
 klasse Opera(UnixBrowser):
-    """Launcher klasse for Opera browser."""
+    """Launcher klasse fuer Opera browser."""
 
     remote_args = ['%action', '%s']
     remote_action = ""
@@ -335,7 +335,7 @@ klasse Opera(UnixBrowser):
 
 
 klasse Elinks(UnixBrowser):
-    """Launcher klasse for Elinks browsers."""
+    """Launcher klasse fuer Elinks browsers."""
 
     remote_args = ['-remote', 'openURL(%s%action)']
     remote_action = ""
@@ -349,10 +349,10 @@ klasse Elinks(UnixBrowser):
 
 
 klasse Konqueror(BaseBrowser):
-    """Controller for the KDE File Manager (kfm, or Konqueror).
+    """Controller fuer the KDE File Manager (kfm, or Konqueror).
 
     See the output of ``kfmclient --commands``
-    for more information on the Konqueror remote-control interface.
+    fuer more information on the Konqueror remote-control interface.
     """
 
     def open(self, url, new=0, autoraise=True):
@@ -402,7 +402,7 @@ klasse Konqueror(BaseBrowser):
 
 
 klasse Edge(UnixBrowser):
-    """Launcher klasse for Microsoft Edge browser."""
+    """Launcher klasse fuer Microsoft Edge browser."""
 
     remote_args = ['%action', '%s']
     remote_action = ""
@@ -412,7 +412,7 @@ klasse Edge(UnixBrowser):
 
 
 #
-# Platform support for Unix
+# Platform support fuer Unix
 #
 
 # These are the right tests because all these Unix browsers require either
@@ -424,7 +424,7 @@ def register_X_browsers():
     if shutil.which("xdg-open"):
         register("xdg-open", None, BackgroundBrowser("xdg-open"))
 
-    # Opens an appropriate browser for the URL scheme according to
+    # Opens an appropriate browser fuer the URL scheme according to
     # freedesktop.org settings (GNOME, KDE, XFCE, etc.)
     if shutil.which("gio"):
         register("gio", None, BackgroundBrowser(["gio", "open", "--", "%s"]))
@@ -443,12 +443,12 @@ def register_X_browsers():
             shutil.which("kfmclient")):
         register("kfmclient", Konqueror, Konqueror("kfmclient"))
 
-    # Common symbolic link for the default X11 browser
+    # Common symbolic link fuer the default X11 browser
     if shutil.which("x-www-browser"):
         register("x-www-browser", None, BackgroundBrowser("x-www-browser"))
 
     # The Mozilla browsers
-    for browser in ("firefox", "iceweasel", "seamonkey", "mozilla-firefox",
+    fuer browser in ("firefox", "iceweasel", "seamonkey", "mozilla-firefox",
                     "mozilla"):
         if shutil.which(browser):
             register(browser, None, Mozilla(browser))
@@ -464,7 +464,7 @@ def register_X_browsers():
         register("epiphany", None, Epiphany("epiphany"))
 
     # Google Chrome/Chromium browsers
-    for browser in ("google-chrome", "chrome", "chromium", "chromium-browser"):
+    fuer browser in ("google-chrome", "chrome", "chromium", "chromium-browser"):
         if shutil.which(browser):
             register(browser, None, Chrome(browser))
 
@@ -506,7 +506,7 @@ def register_standard_browsers():
         # location in 32-bit Windows
         edge32 = os.path.join(os.environ.get("PROGRAMFILES", "C:\\Program Files"),
                               "Microsoft\\Edge\\Application\\msedge.exe")
-        for browser in ("firefox", "seamonkey", "mozilla", "chrome",
+        fuer browser in ("firefox", "seamonkey", "mozilla", "chrome",
                         "opera", edge64, edge32):
             if shutil.which(browser):
                 register(browser, None, BackgroundBrowser(browser))
@@ -515,7 +515,7 @@ def register_standard_browsers():
     else:
         # Prefer X browsers if present
         #
-        # NOTE: Do not check for X11 browser on macOS,
+        # NOTE: Do not check fuer X11 browser on macOS,
         # XQuartz installation sets a DISPLAY environment variable and will
         # autostart when someone tries to access the display. Mac users in
         # general don't need an X11 browser.
@@ -535,7 +535,7 @@ def register_standard_browsers():
 
         # Also try console browsers
         if os.environ.get("TERM"):
-            # Common symbolic link for the default text-based browser
+            # Common symbolic link fuer the default text-based browser
             if shutil.which("www-browser"):
                 register("www-browser", None, GenericBrowser("www-browser"))
             # The Links/elinks browsers <http://links.twibright.com/>
@@ -550,7 +550,7 @@ def register_standard_browsers():
             if shutil.which("w3m"):
                 register("w3m", None, GenericBrowser("w3m"))
 
-    # OK, now that we know what the default preference orders for each
+    # OK, now that we know what the default preference orders fuer each
     # platform are, allow user to override them with the BROWSER variable.
     if "BROWSER" in os.environ:
         userchoices = os.environ["BROWSER"].split(os.pathsep)
@@ -558,8 +558,8 @@ def register_standard_browsers():
 
         # Treat choices in same way as if passed into get() but do register
         # and prepend to _tryorder
-        for cmdline in userchoices:
-            if all(x not in cmdline for x in " \t"):
+        fuer cmdline in userchoices:
+            if all(x not in cmdline fuer x in " \t"):
                 # Assume this is the name of a registered command, use
                 # that unless it is a GenericBrowser.
                 try:
@@ -581,7 +581,7 @@ def register_standard_browsers():
 
 
 #
-# Platform support for Windows
+# Platform support fuer Windows
 #
 
 if sys.platform[:3] == "win":
@@ -592,13 +592,13 @@ if sys.platform[:3] == "win":
                 os.startfile(url)
             except OSError:
                 # [Error 22] No application is associated with the specified
-                # file for this operation: '<URL>'
+                # file fuer this operation: '<URL>'
                 return False
             else:
                 return True
 
 #
-# Platform support for macOS
+# Platform support fuer macOS
 #
 
 if sys.platform == 'darwin':
@@ -653,7 +653,7 @@ if sys.platform == 'darwin':
             return not rc
 
 #
-# Platform support for iOS
+# Platform support fuer iOS
 #
 if sys.platform == "ios":
     from _ios_support import objc

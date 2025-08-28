@@ -1,7 +1,7 @@
 import ast
 
 klasse ASTTestMixin:
-    """Test mixing to have basic assertions for AST nodes."""
+    """Test mixing to have basic assertions fuer AST nodes."""
 
     def assertASTEqual(self, ast1, ast2):
         # Ensure the comparisons start at an AST node
@@ -15,9 +15,9 @@ klasse ASTTestMixin:
             if type(a) is not type(b):
                 self.fail(f"{type(a)!r} is not {type(b)!r}")
             if isinstance(a, ast.AST):
-                for field in a._fields:
+                fuer field in a._fields:
                     if isinstance(a, ast.Constant) and field == "kind":
-                        # Skip the 'kind' field for ast.Constant
+                        # Skip the 'kind' field fuer ast.Constant
                         continue
                     value1 = getattr(a, field, missing)
                     value2 = getattr(b, field, missing)
@@ -27,7 +27,7 @@ klasse ASTTestMixin:
                         traverse_compare(value1, value2)
             elif isinstance(a, list):
                 try:
-                    for node1, node2 in zip(a, b, strict=True):
+                    fuer node1, node2 in zip(a, b, strict=True):
                         traverse_compare(node1, node2)
                 except ValueError:
                     # Attempt a "pretty" error ala assertSequenceEqual()

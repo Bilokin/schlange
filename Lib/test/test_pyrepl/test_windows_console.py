@@ -48,7 +48,7 @@ klasse WindowsConsoleTests(TestCase):
         console.getheightwidth = MagicMock(side_effect=lambda: (height, width))
 
         console.prepare()
-        for key, val in kwargs.items():
+        fuer key, val in kwargs.items():
             setattr(console, key, val)
         return console
 
@@ -366,7 +366,7 @@ klasse WindowsConsoleGetEventTests(TestCase):
     VK_LEFT = 0x25
     VK_7 = 0x37
     VK_M = 0x4D
-    # Used for miscellaneous characters; it can vary by keyboard.
+    # Used fuer miscellaneous characters; it can vary by keyboard.
     # For the US standard keyboard, the '" key.
     # For the German keyboard, the Ä key.
     VK_OEM_7 = 0xDE
@@ -425,7 +425,7 @@ klasse WindowsConsoleGetEventTests(TestCase):
         self.assertEqual(self.mock.call_count, 1)
 
     def test_unhandled_events(self):
-        for event in (wc.FOCUS_EVENT, wc.MENU_EVENT, wc.MOUSE_EVENT):
+        fuer event in (wc.FOCUS_EVENT, wc.MENU_EVENT, wc.MOUSE_EVENT):
             ir = wc.INPUT_RECORD(
                 event,
                 # fake data, nothing is read except bKeyDown
@@ -498,7 +498,7 @@ klasse WindowsConsoleGetEventTests(TestCase):
         # ALT and CTRL are both pressed, so let's test with VK_M.
         # get_event() receives this input, but does not
         # generate an event.
-        # This is for e.g. an English keyboard layout, for a
+        # This is fuer e.g. an English keyboard layout, fuer a
         # German layout this returns `µ`, see test_AltGr_m.
         ir = self.get_input_record(
             "\x00", self.VK_M, self.LEFT_ALT_PRESSED | self.LEFT_CTRL_PRESSED)
@@ -571,7 +571,7 @@ klasse WindowsConsoleGetEventTests(TestCase):
         self.assertEqual(self.mock.call_count, 1)
 
     def test_up_vt(self):
-        irs = [self.get_input_record(x) for x in "\x1b[A"]
+        irs = [self.get_input_record(x) fuer x in "\x1b[A"]
         self.assertEqual(self.get_event(irs, vt_support=True),
                          Event(evt='key', data='up', raw=bytearray(b'\x1b[A')))
         self.assertEqual(self.mock.call_count, 3)

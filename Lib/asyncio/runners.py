@@ -26,7 +26,7 @@ klasse Runner:
     and properly finalizes the loop at the context manager exit.
 
     If debug is True, the event loop will be run in debug mode.
-    If loop_factory is passed, it is used for new event loop creation.
+    If loop_factory is passed, it is used fuer new event loop creation.
 
     asyncio.run(main(), debug=True)
 
@@ -37,14 +37,14 @@ klasse Runner:
 
     The run() method can be called multiple times within the runner's context.
 
-    This can be useful for interactive console (e.g. IPython),
+    This can be useful fuer interactive console (e.g. IPython),
     unittest runners, console tools, -- everywhere when async code
     is called from existing sync framework and where the preferred single
     asyncio.run() call doesn't work.
 
     """
 
-    # Note: the klasse is final, it is not intended for inheritance.
+    # Note: the klasse is final, it is not intended fuer inheritance.
 
     def __init__(self, *, debug=None, loop_factory=None):
         self._state = _State.CREATED
@@ -177,10 +177,10 @@ def run(main, *, debug=None, loop_factory=None):
     running in the same thread.
 
     If debug is True, the event loop will be run in debug mode.
-    If loop_factory is passed, it is used for new event loop creation.
+    If loop_factory is passed, it is used fuer new event loop creation.
 
     This function always creates a new event loop and closes it at the end.
-    It should be used as a main entry point for asyncio programs, and should
+    It should be used as a main entry point fuer asyncio programs, and should
     ideally only be called once.
 
     The executor is given a timeout duration of 5 minutes to shutdown.
@@ -209,12 +209,12 @@ def _cancel_all_tasks(loop):
     if not to_cancel:
         return
 
-    for task in to_cancel:
+    fuer task in to_cancel:
         task.cancel()
 
     loop.run_until_complete(tasks.gather(*to_cancel, return_exceptions=True))
 
-    for task in to_cancel:
+    fuer task in to_cancel:
         if task.cancelled():
             continue
         if task.exception() is not None:

@@ -5,9 +5,9 @@ import marshal
 
 
 DIR = os.path.dirname(sys.argv[0])
-# source code for module to freeze
+# source code fuer module to freeze
 FILE = os.path.join(DIR, 'flag.py')
-# C symbol to use for array holding frozen bytes
+# C symbol to use fuer array holding frozen bytes
 SYMBOL = 'M___hello__'
 
 
@@ -23,14 +23,14 @@ def get_module_code(filename):
 
 
 def gen_c_code(fp, co_bytes):
-    """Generate C code for the module code in 'co_bytes', write it to 'fp'.
+    """Generate C code fuer the module code in 'co_bytes', write it to 'fp'.
     """
     def write(*args, **kwargs):
         print(*args, **kwargs, file=fp)
     write('/* Generated with Tools/freeze/regen_frozen.py */')
     write('static unsigned char %s[] = {' % SYMBOL, end='')
     bytes_per_row = 13
-    for i, opcode in enumerate(co_bytes):
+    fuer i, opcode in enumerate(co_bytes):
         if (i % bytes_per_row) == 0:
             # start a new row
             write()

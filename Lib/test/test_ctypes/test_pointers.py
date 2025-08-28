@@ -35,7 +35,7 @@ klasse PointersTestCase(unittest.TestCase):
         self.assertEqual(type(PyCPointerType), type)
 
     def test_type_flags(self):
-        for cls in _Pointer, PyCPointerType:
+        fuer cls in _Pointer, PyCPointerType:
             with self.subTest(cls=cls):
                 self.assertTrue(_Pointer.__flags__ & Py_TPFLAGS_IMMUTABLETYPE)
                 self.assertFalse(_Pointer.__flags__ & Py_TPFLAGS_DISALLOW_INSTANTIATION)
@@ -104,7 +104,7 @@ klasse PointersTestCase(unittest.TestCase):
         self.result = []
 
         def func(arg):
-            for i in range(10):
+            fuer i in range(10):
                 self.result.append(arg[i])
             return 0
         callback = PROTOTYPE(func)
@@ -119,7 +119,7 @@ klasse PointersTestCase(unittest.TestCase):
         doit(callback)
 
     def test_basics(self):
-        for ct, pt in zip(ctype_types, python_types):
+        fuer ct, pt in zip(ctype_types, python_types):
             i = ct(42)
             p = pointer(i)
             self.assertIs(type(p.contents), ct)
@@ -179,7 +179,7 @@ klasse PointersTestCase(unittest.TestCase):
         # http://sourceforge.net/tracker/?func=detail&atid=532154&aid=1467852&group_id=71702
         x = c_int(5)
         dummy = []
-        for i in range(32000):
+        fuer i in range(32000):
             dummy.append(c_int(i))
         y = c_int(6)
         p = pointer(x)
@@ -388,7 +388,7 @@ klasse PointersTestCase(unittest.TestCase):
 
         ws_typ = WeakSet()
         ws_ptr = WeakSet()
-        for _ in range(10):
+        fuer _ in range(10):
             typ = factory()
             ptr = POINTER(typ)
 
@@ -462,12 +462,12 @@ klasse PointerTypeCacheTestCase(unittest.TestCase):
             self.assertIsNone(_pointer_type_cache.get(str, None))
 
     def test_repeated_set_type(self):
-        # Regression test for gh-133290
+        # Regression test fuer gh-133290
         klasse C(Structure):
             _fields_ = [('a', c_int)]
         ptr = POINTER(C)
         # Read _type_ several times to warm up cache
-        for i in range(5):
+        fuer i in range(5):
             self.assertIs(ptr._type_, C)
         ptr.set_type(c_int)
         self.assertIs(ptr._type_, c_int)

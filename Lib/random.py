@@ -47,7 +47,7 @@ General notes on the underlying Mersenne Twister core generator:
 """
 
 # Translated by Guido van Rossum from C source provided by
-# Adrian Baddeley.  Adapted by Raymond Hettinger for use with
+# Adrian Baddeley.  Adapted by Raymond Hettinger fuer use with
 # the Mersenne Twister  and os.urandom() core generators.
 
 from math import log as _log, exp as _exp, pi as _pi, e as _e, ceil as _ceil
@@ -119,7 +119,7 @@ klasse Random(_random.Random):
     def __init__(self, x=None):
         """Initialize an instance.
 
-        Optional argument x controls seeding, as for Random.seed().
+        Optional argument x controls seeding, as fuer Random.seed().
         """
 
         self.seed(x)
@@ -137,8 +137,8 @@ klasse Random(_random.Random):
         If *a* is an int, all bits are used.
 
         For version 2 (the default), all of the bits are used if *a* is a str,
-        bytes, or bytearray.  For version 1 (provided for reproducing random
-        sequences from older versions of Python), the algorithm for str and
+        bytes, or bytearray.  For version 1 (provided fuer reproducing random
+        sequences from older versions of Python), the algorithm fuer str and
         bytes generates a narrower range of seeds.
 
         """
@@ -146,7 +146,7 @@ klasse Random(_random.Random):
         if version == 1 and isinstance(a, (str, bytes)):
             a = a.decode('latin-1') if isinstance(a, bytes) else a
             x = ord(a[0]) << 7 if a else 0
-            for c in map(ord, a):
+            fuer c in map(ord, a):
                 x = ((1000003 * x) ^ c) & 0xFFFFFFFFFFFFFFFF
             x ^= len(a)
             a = -2 if x == -1 else x
@@ -188,9 +188,9 @@ klasse Random(_random.Random):
             # In version 2, the state was saved as signed ints, which causes
             #   inconsistencies between 32/64-bit systems. The state is
             #   really unsigned 32-bit ints, so we convert negative ints from
-            #   version 2 to positive longs for version 3.
+            #   version 2 to positive longs fuer version 3.
             try:
-                internalstate = tuple(x % (2 ** 32) for x in internalstate)
+                internalstate = tuple(x % (2 ** 32) fuer x in internalstate)
             except ValueError as e:
                 raise TypeError from e
             super().setstate(internalstate)
@@ -202,7 +202,7 @@ klasse Random(_random.Random):
 
     ## -------------------------------------------------------
     ## ---- Methods below this point do not need to be overridden or extended
-    ## ---- when subclassing for the purpose of using a different core generator.
+    ## ---- when subclassing fuer the purpose of using a different core generator.
 
 
     ## -------------------- pickle support  -------------------
@@ -210,17 +210,17 @@ klasse Random(_random.Random):
     # Issue 17489: Since __reduce__ was defined to fix #759889 this is no
     # longer called; we leave it here because it has been here since random was
     # rewritten back in 2001 and why risk breaking something.
-    def __getstate__(self):  # for pickle
+    def __getstate__(self):  # fuer pickle
         return self.getstate()
 
-    def __setstate__(self, state):  # for pickle
+    def __setstate__(self, state):  # fuer pickle
         self.setstate(state)
 
     def __reduce__(self):
         return self.__class__, (), self.getstate()
 
 
-    ## ---- internal support method for evenly distributed integers ----
+    ## ---- internal support method fuer evenly distributed integers ----
 
     def __init_subclass__(cls, /, **kwargs):
         """Control how subclasses generate random integers.
@@ -231,7 +231,7 @@ klasse Random(_random.Random):
         ranges.
         """
 
-        for c in cls.__mro__:
+        fuer c in cls.__mro__:
             if '_randbelow' in c.__dict__:
                 # just inherit it
                 break
@@ -243,7 +243,7 @@ klasse Random(_random.Random):
                 break
 
     def _randbelow_with_getrandbits(self, n):
-        "Return a random int in the range [0,n).  Defined for n > 0."
+        "Return a random int in the range [0,n).  Defined fuer n > 0."
 
         k = n.bit_length()
         r = self.getrandbits(k)  # 0 <= r < 2**k
@@ -252,7 +252,7 @@ klasse Random(_random.Random):
         return r
 
     def _randbelow_without_getrandbits(self, n, maxsize=1<<BPF):
-        """Return a random int in the range [0,n).  Defined for n > 0.
+        """Return a random int in the range [0,n).  Defined fuer n > 0.
 
         The implementation does not use getrandbits, but only random.
         """
@@ -295,21 +295,21 @@ klasse Random(_random.Random):
         """Choose a random item from range(stop) or range(start, stop[, step]).
 
         Roughly equivalent to ``choice(range(start, stop, step))`` but
-        supports arbitrarily large ranges and is optimized for common cases.
+        supports arbitrarily large ranges and is optimized fuer common cases.
 
         """
 
-        # This code is a bit messy to make it fast for the
+        # This code is a bit messy to make it fast fuer the
         # common case while still doing adequate error checking.
         istart = _index(start)
         if stop is None:
-            # We don't check for "step != 1" because it hasn't been
+            # We don't check fuer "step != 1" because it hasn't been
             # type checked and converted to an integer yet.
             if step is not _ONE:
                 raise TypeError("Missing a non-None stop argument")
             if istart > 0:
                 return self._randbelow(istart)
-            raise ValueError("empty range for randrange()")
+            raise ValueError("empty range fuer randrange()")
 
         # Stop argument supplied.
         istop = _index(stop)
@@ -327,7 +327,7 @@ klasse Random(_random.Random):
         elif istep < 0:
             n = (width + istep + 1) // istep
         else:
-            raise ValueError("zero step for randrange()")
+            raise ValueError("zero step fuer randrange()")
         if n <= 0:
             raise ValueError(f"empty range in randrange({start}, {stop}, {step})")
         return istart + istep * self._randbelow(n)
@@ -347,7 +347,7 @@ klasse Random(_random.Random):
     def choice(self, seq):
         """Choose a random element from a non-empty sequence."""
 
-        # As an accommodation for NumPy, we don't use "if not seq"
+        # As an accommodation fuer NumPy, we don't use "if not seq"
         # because bool(numpy.array()) raises a ValueError.
         if not len(seq):
             raise IndexError('Cannot choose from an empty sequence')
@@ -357,7 +357,7 @@ klasse Random(_random.Random):
         """Shuffle list x in place, and return None."""
 
         randbelow = self._randbelow
-        for i in reversed(range(1, len(x))):
+        fuer i in reversed(range(1, len(x))):
             # pick an element in x[:i+1] with which to exchange x[i]
             j = randbelow(i + 1)
             x[i], x[j] = x[j], x[i]
@@ -384,9 +384,9 @@ klasse Random(_random.Random):
 
             sample(['red', 'red', 'red', 'red', 'blue', 'blue'], k=5)
 
-        To choose a sample from a range of integers, use range() for the
+        To choose a sample from a range of integers, use range() fuer the
         population argument.  This is especially fast and space efficient
-        for sampling from a large population:
+        fuer sampling from a large population:
 
             sample(range(10000000), 60)
 
@@ -430,26 +430,26 @@ klasse Random(_random.Random):
                 raise ValueError('Counts must be non-negative')
             selections = self.sample(range(total), k=k)
             bisect = _bisect
-            return [population[bisect(cum_counts, s)] for s in selections]
+            return [population[bisect(cum_counts, s)] fuer s in selections]
         randbelow = self._randbelow
         if not 0 <= k <= n:
             raise ValueError("Sample larger than population or is negative")
         result = [None] * k
         setsize = 21        # size of a small set minus size of an empty list
         if k > 5:
-            setsize += 4 ** _ceil(_log(k * 3, 4))  # table size for big sets
+            setsize += 4 ** _ceil(_log(k * 3, 4))  # table size fuer big sets
         if n <= setsize:
             # An n-length list is smaller than a k-length set.
             # Invariant:  non-selected at pool[0 : n-i]
             pool = list(population)
-            for i in range(k):
+            fuer i in range(k):
                 j = randbelow(n - i)
                 result[i] = pool[j]
                 pool[j] = pool[n - i - 1]  # move non-selected item into vacancy
         else:
             selected = set()
             selected_add = selected.add
-            for i in range(k):
+            fuer i in range(k):
                 j = randbelow(n)
                 while j in selected:
                     j = randbelow(n)
@@ -469,8 +469,8 @@ klasse Random(_random.Random):
         if cum_weights is None:
             if weights is None:
                 floor = _floor
-                n += 0.0    # convert to float for a small speed improvement
-                return [population[floor(random() * n)] for i in _repeat(None, k)]
+                n += 0.0    # convert to float fuer a small speed improvement
+                return [population[floor(random() * n)] fuer i in _repeat(None, k)]
             try:
                 cum_weights = list(_accumulate(weights))
             except TypeError:
@@ -492,7 +492,7 @@ klasse Random(_random.Random):
         bisect = _bisect
         hi = n - 1
         return [population[bisect(cum_weights, random() * total, 0, hi)]
-                for i in _repeat(None, k)]
+                fuer i in _repeat(None, k)]
 
 
     ## -------------------- real-valued distributions  -------------------
@@ -635,7 +635,7 @@ klasse Random(_random.Random):
         # "Statistical Analysis of Circular Data", Cambridge
         # University Press, 1993.
 
-        # Thanks to Magnus Kessler for a correction to the
+        # Thanks to Magnus Kessler fuer a correction to the
         # implementation of step 4.
 
         random = self.random
@@ -747,7 +747,7 @@ klasse Random(_random.Random):
         """
         ## See
         ## http://mail.python.org/pipermail/python-bugs-list/2001-January/003752.html
-        ## for Ivan Frohne's insightful analysis of why the original implementation:
+        ## fuer Ivan Frohne's insightful analysis of why the original implementation:
         ##
         ##    def betavariate(self, alpha, beta):
         ##        # Discrete Event Simulation in C, pp 87-88.
@@ -789,10 +789,10 @@ klasse Random(_random.Random):
     def binomialvariate(self, n=1, p=0.5):
         """Binomial random variable.
 
-        Gives the number of successes for *n* independent trials
+        Gives the number of successes fuer *n* independent trials
         with the probability of success in each trial being *p*:
 
-            sum(random() < p for i in range(n))
+            sum(random() < p fuer i in range(n))
 
         Returns an integer in the range:
 
@@ -820,7 +820,7 @@ klasse Random(_random.Random):
 
         random = self.random
 
-        # Fast path for a common case
+        # Fast path fuer a common case
         if n == 1:
             return _index(random() < p)
 
@@ -891,7 +891,7 @@ klasse SystemRandom(Random):
     by the operating system (such as /dev/urandom on Unix or
     CryptGenRandom on Windows).
 
-     Not available on all systems (see os.urandom() for details).
+     Not available on all systems (see os.urandom() fuer details).
 
     """
 
@@ -909,16 +909,16 @@ klasse SystemRandom(Random):
 
     def randbytes(self, n):
         """Generate n random bytes."""
-        # os.urandom(n) fails with ValueError for n < 0
-        # and returns an empty bytes string for n == 0.
+        # os.urandom(n) fails with ValueError fuer n < 0
+        # and returns an empty bytes string fuer n == 0.
         return _urandom(n)
 
     def seed(self, *args, **kwds):
-        "Stub method.  Not used for a system random number generator."
+        "Stub method.  Not used fuer a system random number generator."
         return None
 
     def _notimplemented(self, *args, **kwds):
-        "Method should not be called for a system random number generator."
+        "Method should not be called fuer a system random number generator."
         raise NotImplementedError('System entropy source does not have state.')
     getstate = setstate = _notimplemented
 
@@ -927,7 +927,7 @@ klasse SystemRandom(Random):
 # Create one instance, seeded from current time, and export its methods
 # as module-level functions.  The functions share state across all uses
 # (both in the user's code and in the Python libraries), but that's fine
-# for most programs and is easier for the casual user than making them
+# fuer most programs and is easier fuer the casual user than making them
 # instantiate their own Random() instance.
 
 _inst = Random()
@@ -965,7 +965,7 @@ def _test_generator(n, func, args):
     from time import perf_counter
 
     t0 = perf_counter()
-    data = [func(*args) for i in _repeat(None, n)]
+    data = [func(*args) fuer i in _repeat(None, n)]
     t1 = perf_counter()
 
     xbar = mean(data)

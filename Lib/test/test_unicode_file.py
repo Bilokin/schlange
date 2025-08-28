@@ -49,7 +49,7 @@ klasse TestUnicodeFiles(unittest.TestCase):
         # Normalize the unicode strings, as round-tripping the name via the OS
         # may return a different (but equivalent) value.
         base = unicodedata.normalize("NFD", base)
-        file_list = [unicodedata.normalize("NFD", f) for f in file_list]
+        file_list = [unicodedata.normalize("NFD", f) fuer f in file_list]
 
         self.assertIn(base, file_list)
 

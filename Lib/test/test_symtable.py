@@ -88,7 +88,7 @@ async def glob_assigned_async_meth_pep_695_ignore[T](): pass
 
 klasse ComplexClass:
     a_var = 1234
-    a_genexpr = (x for x in [])
+    a_genexpr = (x fuer x in [])
     a_lambda = lambda x: x
 
     type a_type_alias = int
@@ -172,7 +172,7 @@ klasse ComplexClass:
 
 
 def find_block(block, name):
-    for ch in block.get_children():
+    fuer ch in block.get_children():
         if ch.get_name() == name:
             return ch
 
@@ -289,7 +289,7 @@ klasse SymtableTest(unittest.TestCase):
         self.assertFalse(self.spam.lookup("x").is_referenced())
 
     def test_parameters(self):
-        for sym in ("a", "var", "kw"):
+        fuer sym in ("a", "var", "kw"):
             self.assertTrue(self.spam.lookup(sym).is_parameter())
         self.assertFalse(self.spam.lookup("x").is_parameter())
 
@@ -341,7 +341,7 @@ klasse SymtableTest(unittest.TestCase):
         st5 = symtable.symtable('global x\nx: int', 'test', 'exec')
         self.assertTrue(st5.lookup("x").is_global())
 
-        # Test that annotations for nonlocals are valid after the
+        # Test that annotations fuer nonlocals are valid after the
         # variable is declared as nonlocal.
         st6 = symtable.symtable('def g():\n'
                                 '    x = 2\n'
@@ -403,17 +403,17 @@ klasse SymtableTest(unittest.TestCase):
 
         # statements with 'genexpr' inside it
         GENEXPRS = (
-            'x = (x for x in [])',
-            'x = (x async for x in [])',
-            'type x[genexpr = (x for x in [])] = (x for x in [])',
-            'type x[genexpr = (x async for x in [])] = (x async for x in [])',
-            'genexpr = (x for x in [])',
-            'genexpr = (x async for x in [])',
-            'type genexpr[genexpr = (x for x in [])] = (x for x in [])',
-            'type genexpr[genexpr = (x async for x in [])] = (x async for x in [])',
+            'x = (x fuer x in [])',
+            'x = (x async fuer x in [])',
+            'type x[genexpr = (x fuer x in [])] = (x fuer x in [])',
+            'type x[genexpr = (x async fuer x in [])] = (x async fuer x in [])',
+            'genexpr = (x fuer x in [])',
+            'genexpr = (x async fuer x in [])',
+            'type genexpr[genexpr = (x fuer x in [])] = (x fuer x in [])',
+            'type genexpr[genexpr = (x async fuer x in [])] = (x async fuer x in [])',
         )
 
-        for gen in GENEXPRS:
+        fuer gen in GENEXPRS:
             # test generator expression
             with self.subTest(gen=gen):
                 check_body(gen, ())
@@ -423,8 +423,8 @@ klasse SymtableTest(unittest.TestCase):
                 check_body('\n'.join((gen, 'genexpr = 1')), ())
                 check_body('\n'.join(('genexpr = 1', gen)), ())
 
-        for paramlist in ('()', '(x)', '(x, y)', '(z: T)'):
-            for func in (
+        fuer paramlist in ('()', '(x)', '(x, y)', '(z: T)'):
+            fuer func in (
                 f'def genexpr{paramlist}:pass',
                 f'async def genexpr{paramlist}:pass',
                 f'def genexpr[T]{paramlist}:pass',
@@ -434,7 +434,7 @@ klasse SymtableTest(unittest.TestCase):
                     # test function named 'genexpr'
                     check_body(func, ('genexpr',))
 
-                for gen in GENEXPRS:
+                fuer gen in GENEXPRS:
                     with self.subTest(gen=gen, func=func):
                         # test generator expression + function named 'genexpr'
                         check_body('\n'.join((gen, func)), ('genexpr',))
@@ -451,7 +451,7 @@ klasse SymtableTest(unittest.TestCase):
                 self.assertEqual(e.lineno, 1)
                 self.assertEqual(e.offset, offset)
             else:
-                self.fail("no SyntaxError for %r" % (brokencode,))
+                self.fail("no SyntaxError fuer %r" % (brokencode,))
         checkfilename("def f(x): foo)(", 14)  # parse-time
         checkfilename("def f(x): global x", 11)  # symtable-build-time
         symtable.symtable("pass", b"spam", "exec")
@@ -481,8 +481,8 @@ klasse SymtableTest(unittest.TestCase):
         self.assertIsNotNone(find_block(top, "\u017d"))
 
     def test_symtable_repr(self):
-        self.assertEqual(str(self.top), "<SymbolTable for module ?>")
-        self.assertEqual(str(self.spam), "<Function SymbolTable for spam in ?>")
+        self.assertEqual(str(self.top), "<SymbolTable fuer module ?>")
+        self.assertEqual(str(self.spam), "<Function SymbolTable fuer spam in ?>")
 
     def test_symbol_repr(self):
         self.assertEqual(repr(self.spam.lookup("glob")),
@@ -502,11 +502,11 @@ klasse SymtableTest(unittest.TestCase):
         self.assertEqual(repr(self.GenericMine.lookup("T")),
                          "<symbol 'T': LOCAL, DEF_LOCAL|DEF_TYPE_PARAM>")
 
-        st1 = symtable.symtable("[x for x in [1]]", "?", "exec")
+        st1 = symtable.symtable("[x fuer x in [1]]", "?", "exec")
         self.assertEqual(repr(st1.lookup("x")),
                          "<symbol 'x': LOCAL, USE|DEF_LOCAL|DEF_COMP_ITER>")
 
-        st2 = symtable.symtable("[(lambda: x) for x in [1]]", "?", "exec")
+        st2 = symtable.symtable("[(lambda: x) fuer x in [1]]", "?", "exec")
         self.assertEqual(repr(st2.lookup("x")),
                          "<symbol 'x': CELL, DEF_LOCAL|DEF_COMP_ITER|DEF_COMP_CELL>")
 
@@ -517,7 +517,7 @@ klasse SymtableTest(unittest.TestCase):
                                 "       def method():\n"
                                 "           return x\n",
                                 "?", "exec")
-        # child 0 is for __annotate__
+        # child 0 is fuer __annotate__
         func_f = st3.get_children()[1]
         class_A = func_f.get_children()[0]
         self.assertEqual(repr(class_A.lookup('x')),
@@ -554,7 +554,7 @@ klasse SymtableTest(unittest.TestCase):
         self.assertEqual(st.get_children(), [])
 
     def test_genexpr(self):
-        st = symtable.symtable("(x for x in a)", "?", "exec")
+        st = symtable.symtable("(x fuer x in a)", "?", "exec")
         self.assertEqual(len(st.get_children()), 1)
         st = st.get_children()[0]
         self.assertIs(st.get_type(), symtable.SymbolTableType.FUNCTION)
@@ -564,7 +564,7 @@ klasse SymtableTest(unittest.TestCase):
         self.assertEqual(st.get_children(), [])
 
     def test_nested_genexpr(self):
-        st = symtable.symtable("((y for y in x) for x in a)", "?", "exec")
+        st = symtable.symtable("((y fuer y in x) fuer x in a)", "?", "exec")
         self.assertEqual(len(st.get_children()), 1)
         st = st.get_children()[0]
         self.assertIs(st.get_type(), symtable.SymbolTableType.FUNCTION)
@@ -583,22 +583,22 @@ klasse SymtableTest(unittest.TestCase):
 klasse ComprehensionTests(unittest.TestCase):
     def get_identifiers_recursive(self, st, res):
         res.extend(st.get_identifiers())
-        for ch in st.get_children():
+        fuer ch in st.get_children():
             self.get_identifiers_recursive(ch, res)
 
     def test_loopvar_in_only_one_scope(self):
         # ensure that the loop variable appears only once in the symtable
         comps = [
-            "[x for x in [1]]",
-            "{x for x in [1]}",
-            "{x:x*x for x in [1]}",
+            "[x fuer x in [1]]",
+            "{x fuer x in [1]}",
+            "{x:x*x fuer x in [1]}",
         ]
-        for comp in comps:
+        fuer comp in comps:
             with self.subTest(comp=comp):
                 st = symtable.symtable(comp, "?", "exec")
                 ids = []
                 self.get_identifiers_recursive(st, ids)
-                self.assertEqual(len([x for x in ids if x == 'x']), 1)
+                self.assertEqual(len([x fuer x in ids if x == 'x']), 1)
 
 
 klasse CommandLineTest(unittest.TestCase):
@@ -615,11 +615,11 @@ klasse CommandLineTest(unittest.TestCase):
         self.assertIn('\n\n', out)
         self.assertNotIn('\n\n\n', out)
         lines = out.splitlines()
-        self.assertIn(f"symbol table for module from file {filename!r}:", lines)
+        self.assertIn(f"symbol table fuer module from file {filename!r}:", lines)
         self.assertIn("    local symbol 'glob': def_local", lines)
         self.assertIn("        global_implicit symbol 'glob': use", lines)
         self.assertIn("    local symbol 'spam': def_local", lines)
-        self.assertIn("    symbol table for function 'spam':", lines)
+        self.assertIn("    symbol table fuer function 'spam':", lines)
 
     def test_stdin(self):
         with support.captured_stdin() as stdin:
@@ -633,7 +633,7 @@ klasse CommandLineTest(unittest.TestCase):
                 symtable.main(['-'])
             self.assertEqual(stdout.getvalue(), out)
         lines = out.splitlines()
-        self.assertIn("symbol table for module from file '<stdin>':", lines)
+        self.assertIn("symbol table fuer module from file '<stdin>':", lines)
 
 
 if __name__ == '__main__':

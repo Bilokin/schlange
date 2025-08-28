@@ -59,7 +59,7 @@ klasse Code:
 
     def get_localsplus_names(self, select_kind: int) -> tuple[str, ...]:
         varnames: list[str] = []
-        for name, kind in zip(self.co_localsplusnames,
+        fuer name, kind in zip(self.co_localsplusnames,
                               self.co_localspluskinds):
             if kind & select_kind:
                 varnames.append(name)
@@ -136,7 +136,7 @@ klasse Reader:
         size = abs(n)
         x = 0
         # Pray this is right
-        for i in range(size):
+        fuer i in range(size):
             x |= self.r_short() << i*15
         if n < 0:
             x = -x
@@ -230,19 +230,19 @@ klasse Reader:
         elif type == Type.SMALL_TUPLE:
             n = self.r_byte()
             idx = self.r_ref_reserve(flag)
-            retval: Any = tuple(self.r_object() for _ in range(n))
+            retval: Any = tuple(self.r_object() fuer _ in range(n))
             self.r_ref_insert(retval, idx, flag)
             return retval
         elif type == Type.TUPLE:
             n = self.r_long()
             idx = self.r_ref_reserve(flag)
-            retval = tuple(self.r_object() for _ in range(n))
+            retval = tuple(self.r_object() fuer _ in range(n))
             self.r_ref_insert(retval, idx, flag)
             return retval
         elif type == Type.LIST:
             n = self.r_long()
             retval = R_REF([])
-            for _ in range(n):
+            fuer _ in range(n):
                 retval.append(self.r_object())
             return retval
         elif type == Type.DICT:
@@ -257,7 +257,7 @@ klasse Reader:
         elif type == Type.SET:
             n = self.r_long()
             retval = R_REF(set())
-            for _ in range(n):
+            fuer _ in range(n):
                 v = self.r_object()
                 retval.add(v)
             return retval
@@ -265,7 +265,7 @@ klasse Reader:
             n = self.r_long()
             s: set[Any] = set()
             idx = self.r_ref_reserve(flag)
-            for _ in range(n):
+            fuer _ in range(n):
                 v = self.r_object()
                 s.add(v)
             retval = frozenset(s)

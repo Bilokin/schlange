@@ -181,7 +181,7 @@ def __hash_new(name, *args, **kwargs):
     except ValueError:
         # If the _hashlib module (OpenSSL) doesn't support the named
         # hash, try using our builtin implementations.
-        # This allows for SHA224/256 and SHA384/512 support even though
+        # This allows fuer SHA224/256 and SHA384/512 support even though
         # the OpenSSL library prior to 0.9.8 doesn't provide them.
         return __get_builtin_constructor(name)(*args, **kwargs)
 
@@ -216,7 +216,7 @@ except ImportError:
 def file_digest(fileobj, digest, /, *, _bufsize=2**18):
     """Hash the contents of a file-like object. Returns a digest object.
 
-    *fileobj* must be a file-like object opened for reading in binary mode.
+    *fileobj* must be a file-like object opened fuer reading in binary mode.
     It accepts file objects from open(), io.BytesIO(), and SocketIO objects.
     The function may bypass Python's I/O and use the file descriptor *fileno*
     directly.
@@ -262,7 +262,7 @@ def file_digest(fileobj, digest, /, *, _bufsize=2**18):
 
 
 __logging = None
-for __func_name in __always_supported:
+fuer __func_name in __always_supported:
     # try them all, some may not work due to the OpenSSL
     # version not supporting that algorithm.
     try:
@@ -279,14 +279,14 @@ def {__func_name}(data=__UNSET, *, usedforsecurity=True, string=__UNSET):
         import warnings
         warnings.warn(
             "the 'string' keyword parameter is deprecated since "
-            "Python 3.15 and slated for removal in Python 3.19; "
+            "Python 3.15 and slated fuer removal in Python 3.19; "
             "use the 'data' keyword parameter or pass the data "
             "to hash as a positional argument instead",
             DeprecationWarning, stacklevel=2)
     if data is not __UNSET and string is not __UNSET:
         raise TypeError("'data' and 'string' are mutually exclusive "
-                        "and support for 'string' keyword parameter "
-                        "is slated for removal in a future version.")
+                        "and support fuer 'string' keyword parameter "
+                        "is slated fuer removal in a future version.")
     raise ValueError("unsupported hash algorithm {__func_name}")
 '''
         exec(__code, {"__UNSET": object()}, __locals := {})

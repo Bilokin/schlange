@@ -28,7 +28,7 @@ _strace_flags=["--trace=%file,%desc"]
 
 
 klasse AutoFileTests:
-    # file tests for which a test file is automatically set up
+    # file tests fuer which a test file is automatically set up
 
     def setUp(self):
         self.f = self.FileIO(TESTFN, 'w')
@@ -70,7 +70,7 @@ klasse AutoFileTests:
         self.assertEqual(f.closed, False)
 
         # verify the attributes are readonly
-        for attr in 'mode', 'closed':
+        fuer attr in 'mode', 'closed':
             self.assertRaises((AttributeError, TypeError),
                               setattr, f, attr, 'oops')
 
@@ -210,7 +210,7 @@ klasse AutoFileTests:
         self.assertFalse(f.isatty())
         self.assertFalse(f.closed)
         #self.assertEqual(f.name, TESTFN)
-        self.assertRaises(ValueError, f.read, 10) # Open for reading
+        self.assertRaises(ValueError, f.read, 10) # Open fuer reading
         f.close()
         self.assertTrue(f.closed)
         f = self.FileIO(TESTFN, 'r')
@@ -227,7 +227,7 @@ klasse AutoFileTests:
         self.f.close()
         self.assertTrue(self.f.closed)
 
-        for methodname in methods:
+        fuer methodname in methods:
             method = getattr(self.f, methodname)
             # should raise on closed file
             self.assertRaises(ValueError, method)
@@ -382,8 +382,8 @@ klasse AutoFileTests:
                                                       prelude=prelude,
                                                       cleanup=cleanup)
 
-                # Some system calls (ex. mmap) can be used for both File I/O and
-                # memory allocation. Filter out the ones used for memory
+                # Some system calls (ex. mmap) can be used fuer both File I/O and
+                # memory allocation. Filter out the ones used fuer memory
                 # allocation.
                 syscalls = strace_helper.filter_memory(syscalls)
 
@@ -402,18 +402,18 @@ klasse AutoFileTests:
                 fd_str = syscalls[0].returncode
 
                 # All other calls should contain the fd in their argument set.
-                for ev in syscalls[1:]:
+                fuer ev in syscalls[1:]:
                     self.assertIn(
                         fd_str,
                         ev.args,
-                        f"Looking for file descriptor in arguments|ev={ev}"
+                        f"Looking fuer file descriptor in arguments|ev={ev}"
                     )
 
                 # There are a number of related syscalls used to implement
                 # behaviors in a libc (ex. fstat, newfstatat, statx, open, openat).
                 # Allow any that use the same substring.
                 def count_similarname(name):
-                    return len([ev for ev in syscalls if name in ev.syscall])
+                    return len([ev fuer ev in syscalls if name in ev.syscall])
 
                 checks = [
                     # Should open and close the file exactly once
@@ -433,7 +433,7 @@ klasse AutoFileTests:
                 if extra_checks:
                     checks += extra_checks
 
-                for call, count in checks:
+                fuer call, count in checks:
                     self.assertEqual(
                         count_similarname(call),
                         count,
@@ -554,7 +554,7 @@ klasse OtherFileTests:
 
     def testInvalidModeStrings(self):
         # check invalid mode strings
-        for mode in ("", "aU", "wU+", "rw", "rt"):
+        fuer mode in ("", "aU", "wU+", "rw", "rt"):
             try:
                 f = self.FileIO(TESTFN, mode)
             except ValueError:
@@ -564,10 +564,10 @@ klasse OtherFileTests:
                 self.fail('%r is an invalid file mode' % mode)
 
     def testModeStrings(self):
-        # test that the mode attribute is correct for various mode strings
+        # test that the mode attribute is correct fuer various mode strings
         # given as init args
         try:
-            for modes in [('w', 'wb'), ('wb', 'wb'), ('wb+', 'rb+'),
+            fuer modes in [('w', 'wb'), ('wb', 'wb'), ('wb+', 'rb+'),
                           ('w+b', 'rb+'), ('a', 'ab'), ('ab', 'ab'),
                           ('ab+', 'ab+'), ('a+b', 'ab+'), ('r', 'rb'),
                           ('rb', 'rb'), ('rb+', 'rb+'), ('r+b', 'rb+')]:
@@ -579,7 +579,7 @@ klasse OtherFileTests:
                 os.unlink(TESTFN)
 
     def testUnicodeOpen(self):
-        # verify repr works for unicode too
+        # verify repr works fuer unicode too
         f = self.FileIO(str(TESTFN), "w")
         f.close()
         os.unlink(TESTFN)
@@ -597,7 +597,7 @@ klasse OtherFileTests:
             os.unlink(TESTFN_ASCII)
 
     @unittest.skipIf(sys.getfilesystemencoding() != 'utf-8',
-                     "test only works for utf-8 filesystems")
+                     "test only works fuer utf-8 filesystems")
     def testUtf8BytesOpen(self):
         # Opening a UTF-8 bytes filename
         try:
@@ -626,7 +626,7 @@ klasse OtherFileTests:
             self.assertRaises(OSError, msvcrt.get_osfhandle, make_bad_fd())
 
     def testBooleanFd(self):
-        for fd in False, True:
+        fuer fd in False, True:
             with self.assertWarnsRegex(RuntimeWarning,
                     'bool is used as a file descriptor') as cm:
                 f = self.FileIO(fd, closefd=False)
@@ -634,7 +634,7 @@ klasse OtherFileTests:
             self.assertEqual(cm.filename, __file__)
 
     def testBadModeArgument(self):
-        # verify that we get a sensible error message for bad mode argument
+        # verify that we get a sensible error message fuer bad mode argument
         bad_mode = "qwerty"
         try:
             f = self.FileIO(TESTFN, bad_mode)
@@ -642,12 +642,12 @@ klasse OtherFileTests:
             if msg.args[0] != 0:
                 s = str(msg)
                 if TESTFN in s or bad_mode not in s:
-                    self.fail("bad error message for invalid mode: %s" % s)
+                    self.fail("bad error message fuer invalid mode: %s" % s)
             # if msg.args[0] == 0, we're probably on Windows where there may be
             # no obvious way to discover why open() failed.
         else:
             f.close()
-            self.fail("no error for invalid mode: %s" % bad_mode)
+            self.fail("no error fuer invalid mode: %s" % bad_mode)
 
     def testTruncate(self):
         f = self.FileIO(TESTFN, 'w')
@@ -672,7 +672,7 @@ klasse OtherFileTests:
             f = self.FileIO(TESTFN,'r+')
             data = f.read(5)
             if data != bytes(range(5)):
-                self.fail("Read on file opened for update failed %r" % data)
+                self.fail("Read on file opened fuer update failed %r" % data)
             if f.tell() != 5:
                 self.fail("File pos after read wrong %d" % f.tell())
 

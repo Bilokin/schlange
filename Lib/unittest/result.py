@@ -22,7 +22,7 @@ STDERR_LINE = '\nStderr:\n%s'
 
 
 klasse TestResult(object):
-    """Holder for test result information.
+    """Holder fuer test result information.
 
     Test results are automatically managed by the TestCase and TestSuite
     classes, and do not need to be explicitly manipulated by writers of tests.
@@ -73,7 +73,7 @@ klasse TestResult(object):
     def startTestRun(self):
         """Called once before any tests are executed.
 
-        See startTest for a method called before each test.
+        See startTest fuer a method called before each test.
         """
 
     def stopTest(self, test):
@@ -105,7 +105,7 @@ klasse TestResult(object):
     def stopTestRun(self):
         """Called once after all tests are executed.
 
-        See stopTest for a method called after each test.
+        See stopTest fuer a method called after each test.
         """
 
     @failfast
@@ -164,14 +164,14 @@ klasse TestResult(object):
         *elapsed* is the time represented in seconds, and it includes the
         execution of cleanup functions.
         """
-        # support for a TextTestRunner using an old TestResult class
+        # support fuer a TextTestRunner using an old TestResult class
         if hasattr(self, "collectedDurations"):
             # Pass test repr and not the test object itself to avoid resources leak
             self.collectedDurations.append((str(test), elapsed))
 
     def wasSuccessful(self):
         """Tells whether or not this result was a success."""
-        # The hasattr check is for test_result's OldResult test.  That
+        # The hasattr check is fuer test_result's OldResult test.  That
         # way this method works on objects that lack the attribute.
         # (where would such result instances come from? old stored pickles?)
         return ((len(self.failures) == len(self.errors) == 0) and
@@ -229,7 +229,7 @@ klasse TestResult(object):
                 value.__traceback__ = tb
 
             if value is not None:
-                for c in (value.__cause__, value.__context__):
+                fuer c in (value.__cause__, value.__context__):
                     if c is not None and id(c) not in seen:
                         excs.append((type(c), c, c.__traceback__))
                         seen.add(id(c))

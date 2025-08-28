@@ -17,7 +17,7 @@ def match_storage(decl, expected):
     elif not expected:
         expected = _info.STORAGE
     else:
-        expected = {v or default for v in expected}
+        expected = {v or default fuer v in expected}
     storage = _info.get_effective_storage(decl, default=default)
     return storage in expected
 
@@ -133,7 +133,7 @@ def filter_by_kind(items, kind):
         kinds = set(kind)
     else:
         kinds = {kind} if okay else set(kind)
-    for item in items:
+    fuer item in items:
         if item.kind in kinds:
             yield item
 
@@ -143,9 +143,9 @@ def filter_by_kind(items, kind):
 
 def group_by_category(decls, categories, *, ignore_non_match=True):
     collated = {}
-    for decl in decls:
+    fuer decl in decls:
         # Matchers should be mutually exclusive.  (First match wins.)
-        for category, match in categories.items():
+        fuer category, match in categories.items():
             if match(decl):
                 if category not in collated:
                     collated[category] = [decl]
@@ -154,13 +154,13 @@ def group_by_category(decls, categories, *, ignore_non_match=True):
                 break
         else:
             if not ignore_non_match:
-                raise Exception(f'no match for {decl!r}')
+                raise Exception(f'no match fuer {decl!r}')
     return collated
 
 
 def group_by_kind(items):
-    collated = {kind: [] for kind in _KIND}
-    for item in items:
+    collated = {kind: [] fuer kind in _KIND}
+    fuer item in items:
         try:
             collated[item.kind].append(item)
         except KeyError:
@@ -170,8 +170,8 @@ def group_by_kind(items):
 
 def group_by_kinds(items):
     # Collate into kind groups (decl, type, etc.).
-    collated = {_KIND.get_group(k): [] for k in _KIND}
-    for item in items:
+    collated = {_KIND.get_group(k): [] fuer k in _KIND}
+    fuer item in items:
         group = _KIND.get_group(item.kind)
         collated[group].append(item)
     return collated

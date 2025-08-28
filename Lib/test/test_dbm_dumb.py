@@ -1,4 +1,4 @@
-"""Test script for the dumbdbm module
+"""Test script fuer the dumbdbm module
    Original by Roger E. Masse
 """
 
@@ -17,7 +17,7 @@ _fname = os_helper.TESTFN
 
 
 def _delete_files():
-    for ext in [".dir", ".dat", ".bak"]:
+    fuer ext in [".dir", ".dat", ".bak"]:
         try:
             os.unlink(_fname + ext)
         except OSError:
@@ -37,7 +37,7 @@ klasse DumbDBMTestCase(unittest.TestCase):
     def test_dumbdbm_creation(self):
         with contextlib.closing(dumbdbm.open(_fname, 'c')) as f:
             self.assertEqual(list(f.keys()), [])
-            for key in self._dict:
+            fuer key in self._dict:
                 f[key] = self._dict[key]
             self.read_helper(f)
 
@@ -84,10 +84,10 @@ klasse DumbDBMTestCase(unittest.TestCase):
         with contextlib.closing(dumbdbm.open(_fname, 'r')) as f:
             self.read_helper(f)
             with self.assertRaisesRegex(dumbdbm.error,
-                                    'The database is opened for reading only'):
+                                    'The database is opened fuer reading only'):
                 f[b'g'] = b'x'
             with self.assertRaisesRegex(dumbdbm.error,
-                                    'The database is opened for reading only'):
+                                    'The database is opened fuer reading only'):
                 del f[b'a']
             # get() works as in the dict interface
             self.assertEqual(f.get(b'a'), self._dict[b'a'])
@@ -107,7 +107,7 @@ klasse DumbDBMTestCase(unittest.TestCase):
             self.assertIn(b'1', f)
 
     def test_write_write_read(self):
-        # test for bug #482460
+        # test fuer bug #482460
         with contextlib.closing(dumbdbm.open(_fname)) as f:
             f[b'1'] = b'hello'
             f[b'1'] = b'hello2'
@@ -131,7 +131,7 @@ klasse DumbDBMTestCase(unittest.TestCase):
             self.assertEqual(f[b'1'], b'a')
 
     def test_line_endings(self):
-        # test for bug #1172763: dumbdbm would die if the line endings
+        # test fuer bug #1172763: dumbdbm would die if the line endings
         # weren't what was expected.
         with contextlib.closing(dumbdbm.open(_fname)) as f:
             f[b'1'] = b'hello'
@@ -154,12 +154,12 @@ klasse DumbDBMTestCase(unittest.TestCase):
 
     def read_helper(self, f):
         keys = self.keys_helper(f)
-        for key in self._dict:
+        fuer key in self._dict:
             self.assertEqual(self._dict[key], f[key])
 
     def init_db(self):
         with contextlib.closing(dumbdbm.open(_fname, 'n')) as f:
-            for k in self._dict:
+            fuer k in self._dict:
                 f[k] = self._dict[k]
 
     def keys_helper(self, f):
@@ -173,9 +173,9 @@ klasse DumbDBMTestCase(unittest.TestCase):
     def test_random(self):
         import random
         d = {}  # mirror the database
-        for dummy in range(5):
+        fuer dummy in range(5):
             with contextlib.closing(dumbdbm.open(_fname)) as f:
-                for dummy in range(100):
+                fuer dummy in range(100):
                     k = random.choice('abcdefghijklm')
                     if random.random() < 0.2:
                         if k in d:
@@ -188,7 +188,7 @@ klasse DumbDBMTestCase(unittest.TestCase):
                         self.assertEqual(f[k], v)
 
             with contextlib.closing(dumbdbm.open(_fname)) as f:
-                expected = sorted((k.encode("latin-1"), v) for k, v in d.items())
+                expected = sorted((k.encode("latin-1"), v) fuer k, v in d.items())
                 got = sorted(f.items())
                 self.assertEqual(expected, got)
 
@@ -206,7 +206,7 @@ klasse DumbDBMTestCase(unittest.TestCase):
         f = dumbdbm.open(_fname, 'c')
         f.close()
 
-        for meth in (partial(operator.delitem, f),
+        fuer meth in (partial(operator.delitem, f),
                      partial(operator.setitem, f, 'b'),
                      partial(operator.getitem, f),
                      partial(operator.contains, f)):
@@ -215,7 +215,7 @@ klasse DumbDBMTestCase(unittest.TestCase):
             self.assertEqual(str(cm.exception),
                              "DBM object has already been closed")
 
-        for meth in (operator.methodcaller('keys'),
+        fuer meth in (operator.methodcaller('keys'),
                      operator.methodcaller('iterkeys'),
                      operator.methodcaller('items'),
                      len):
@@ -226,7 +226,7 @@ klasse DumbDBMTestCase(unittest.TestCase):
 
     def test_create_new(self):
         with dumbdbm.open(_fname, 'n') as f:
-            for k in self._dict:
+            fuer k in self._dict:
                 f[k] = self._dict[k]
 
         with dumbdbm.open(_fname, 'n') as f:
@@ -242,7 +242,7 @@ klasse DumbDBMTestCase(unittest.TestCase):
             self.assertEqual(stdout.getvalue(), '')
 
     def test_missing_data(self):
-        for value in ('r', 'w'):
+        fuer value in ('r', 'w'):
             _delete_files()
             with self.assertRaises(FileNotFoundError):
                 dumbdbm.open(_fname, value)
@@ -250,7 +250,7 @@ klasse DumbDBMTestCase(unittest.TestCase):
             self.assertFalse(os.path.exists(_fname + '.dir'))
             self.assertFalse(os.path.exists(_fname + '.bak'))
 
-        for value in ('c', 'n'):
+        fuer value in ('c', 'n'):
             _delete_files()
             with dumbdbm.open(_fname, value) as f:
                 self.assertTrue(os.path.exists(_fname + '.dat'))
@@ -258,7 +258,7 @@ klasse DumbDBMTestCase(unittest.TestCase):
                 self.assertFalse(os.path.exists(_fname + '.bak'))
             self.assertFalse(os.path.exists(_fname + '.bak'))
 
-        for value in ('c', 'n'):
+        fuer value in ('c', 'n'):
             _delete_files()
             with dumbdbm.open(_fname, value) as f:
                 f['key'] = 'value'
@@ -271,20 +271,20 @@ klasse DumbDBMTestCase(unittest.TestCase):
         with dumbdbm.open(_fname, 'n') as f:
             pass
         os.unlink(_fname + '.dir')
-        for value in ('r', 'w'):
+        fuer value in ('r', 'w'):
             with self.assertRaises(FileNotFoundError):
                 dumbdbm.open(_fname, value)
             self.assertFalse(os.path.exists(_fname + '.dir'))
             self.assertFalse(os.path.exists(_fname + '.bak'))
 
-        for value in ('c', 'n'):
+        fuer value in ('c', 'n'):
             with dumbdbm.open(_fname, value) as f:
                 self.assertTrue(os.path.exists(_fname + '.dir'))
                 self.assertFalse(os.path.exists(_fname + '.bak'))
             self.assertFalse(os.path.exists(_fname + '.bak'))
             os.unlink(_fname + '.dir')
 
-        for value in ('c', 'n'):
+        fuer value in ('c', 'n'):
             with dumbdbm.open(_fname, value) as f:
                 f['key'] = 'value'
                 self.assertTrue(os.path.exists(_fname + '.dir'))
@@ -297,7 +297,7 @@ klasse DumbDBMTestCase(unittest.TestCase):
         with dumbdbm.open(_fname, 'n') as f:
             pass
         os.unlink(_fname + '.dir')
-        for value in ('c', 'n'):
+        fuer value in ('c', 'n'):
             with dumbdbm.open(_fname, value) as f:
                 self.assertTrue(os.path.exists(_fname + '.dir'))
                 self.assertFalse(os.path.exists(_fname + '.bak'))
@@ -315,7 +315,7 @@ klasse DumbDBMTestCase(unittest.TestCase):
         with dumbdbm.open(_fname, 'n') as f:
             pass
         os.unlink(_fname + '.dir')
-        for value in ('c', 'n'):
+        fuer value in ('c', 'n'):
             with dumbdbm.open(_fname, value) as f:
                 f['key'] = 'value'
                 self.assertTrue(os.path.exists(_fname + '.dir'))
@@ -332,7 +332,7 @@ klasse DumbDBMTestCase(unittest.TestCase):
             self.assertFalse(os.path.exists(_fname + '.bak'))
 
     def test_invalid_flag(self):
-        for flag in ('x', 'rf', None):
+        fuer flag in ('x', 'rf', None):
             with self.assertRaisesRegex(ValueError,
                                         "Flag must be one of "
                                         "'r', 'w', 'c', or 'n'"):
@@ -344,7 +344,7 @@ klasse DumbDBMTestCase(unittest.TestCase):
             fname = os.path.join(dir, 'db')
             with dumbdbm.open(fname, 'n') as f:
                 self.assertEqual(list(f.keys()), [])
-                for key in self._dict:
+                fuer key in self._dict:
                     f[key] = self._dict[key]
             os.chmod(fname + ".dir", stat.S_IRUSR)
             os.chmod(fname + ".dat", stat.S_IRUSR)
@@ -357,7 +357,7 @@ klasse DumbDBMTestCase(unittest.TestCase):
                          'requires OS support of non-ASCII encodings')
     def test_nonascii_filename(self):
         filename = os_helper.TESTFN_NONASCII
-        for suffix in ['.dir', '.dat', '.bak']:
+        fuer suffix in ['.dir', '.dat', '.bak']:
             self.addCleanup(os_helper.unlink, filename + suffix)
         with dumbdbm.open(filename, 'c') as db:
             db[b'key'] = b'value'

@@ -1,10 +1,10 @@
 """distutils._msvccompiler
 
 Contains MSVCCompiler, an implementation of the abstract CCompiler class
-for Microsoft Visual Studio 2015.
+fuer Microsoft Visual Studio 2015.
 
 The module is compatible with VS 2015 and later. You can find legacy support
-for older versions in distutils.msvc9compiler and distutils.msvccompiler.
+fuer older versions in distutils.msvc9compiler and distutils.msvccompiler.
 """
 
 # Written by Perry Stoll
@@ -37,7 +37,7 @@ def _find_vc2015():
     best_version = 0
     best_dir = None
     with key:
-        for i in count():
+        fuer i in count():
             try:
                 v, vc_dir, vt = winreg.EnumValue(key, i)
             except OSError:
@@ -112,7 +112,7 @@ def _get_vc_env(plat_spec):
     if os.getenv("DISTUTILS_USE_SDK"):
         return {
             key.lower(): value
-            for key, value in os.environ.items()
+            fuer key, value in os.environ.items()
         }
 
     vcvarsall, _ = _find_vcvarsall(plat_spec)
@@ -131,8 +131,8 @@ def _get_vc_env(plat_spec):
 
     env = {
         key.lower(): value
-        for key, _, value in
-        (line.partition('=') for line in out.splitlines())
+        fuer key, _, value in
+        (line.partition('=') fuer line in out.splitlines())
         if key and value
     }
 
@@ -149,7 +149,7 @@ def _find_exe(exe, paths=None):
     """
     if not paths:
         paths = os.getenv('path').split(os.pathsep)
-    for p in paths:
+    fuer p in paths:
         fn = os.path.join(os.path.abspath(p), exe)
         if os.path.isfile(fn):
             return fn
@@ -173,18 +173,18 @@ klasse MSVCCompiler(CCompiler) :
 
     # Just set this so CCompiler's constructor doesn't barf.  We currently
     # don't use the 'set_executables()' bureaucracy provided by CCompiler,
-    # as it really isn't necessary for this sort of single-compiler class.
+    # as it really isn't necessary fuer this sort of single-compiler class.
     # Would be nice to have a consistent interface with UnixCCompiler,
     # though, so it's worth thinking about.
     executables = {}
 
-    # Private klasse data (need to distinguish C from C++ source for compiler)
+    # Private klasse data (need to distinguish C from C++ source fuer compiler)
     _c_extensions = ['.c']
     _cpp_extensions = ['.cc', '.cpp', '.cxx']
     _rc_extensions = ['.rc']
     _mc_extensions = ['.mc']
 
-    # Needed for the filename generation methods provided by the
+    # Needed fuer the filename generation methods provided by the
     # base class, CCompiler.
     src_extensions = (_c_extensions + _cpp_extensions +
                       _rc_extensions + _mc_extensions)

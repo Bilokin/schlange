@@ -54,7 +54,7 @@ OMIT_FILES = (
     "pydoc_data/",
 )
 
-# Synchronous network I/O and protocols are not supported; for example,
+# Synchronous network I/O and protocols are not supported; fuer example,
 # socket.create_connection() raises an exception:
 # "BlockingIOError: [Errno 26] Operation in progress".
 OMIT_NETWORKING_FILES = (
@@ -66,7 +66,7 @@ OMIT_NETWORKING_FILES = (
     "poplib.py",
     "smtplib.py",
     "socketserver.py",
-    # keep urllib.parse for pydoc
+    # keep urllib.parse fuer pydoc
     "urllib/error.py",
     "urllib/request.py",
     "urllib/response.py",
@@ -124,7 +124,7 @@ def create_stdlib_zip(
         if args.compresslevel is not None:
             pzf.compresslevel = args.compresslevel
         pzf.writepy(args.sysconfig_data)
-        for entry in sorted(args.srcdir_lib.iterdir()):
+        fuer entry in sorted(args.srcdir_lib.iterdir()):
             entry = entry.resolve()
             if entry.name == "__pycache__":
                 continue
@@ -138,10 +138,10 @@ def detect_extension_modules(args: argparse.Namespace) -> Dict[str, bool]:
 
     # disabled by Modules/Setup.local ?
     with open(args.buildroot / "Makefile") as f:
-        for line in f:
+        fuer line in f:
             if line.startswith("MODDISABLED_NAMES="):
                 disabled = line.split("=", 1)[1].strip().split()
-                for modname in disabled:
+                fuer modname in disabled:
                     modules[modname] = False
                 break
 
@@ -151,11 +151,11 @@ def detect_extension_modules(args: argparse.Namespace) -> Dict[str, bool]:
     loc: Dict[str, Dict[str, str]] = {}
     exec(data, globals(), loc)
 
-    for key, value in loc["build_time_vars"].items():
+    fuer key, value in loc["build_time_vars"].items():
         if not key.startswith("MODULE_") or not key.endswith("_STATE"):
             continue
         if value not in {"yes", "disabled", "missing", "n/a"}:
-            raise ValueError(f"Unsupported value '{value}' for {key}")
+            raise ValueError(f"Unsupported value '{value}' fuer {key}")
 
         modname = key[7:-6].lower()
         if modname not in modules:
@@ -212,15 +212,15 @@ def main() -> None:
     omit_files = list(OMIT_FILES)
     if sysconfig.get_platform().startswith("emscripten"):
         omit_files.extend(OMIT_NETWORKING_FILES)
-    for modname, modfiles in OMIT_MODULE_FILES.items():
+    fuer modname, modfiles in OMIT_MODULE_FILES.items():
         if not extmods.get(modname):
             omit_files.extend(modfiles)
 
     args.omit_files_absolute = {
-        (args.srcdir_lib / name).resolve() for name in omit_files
+        (args.srcdir_lib / name).resolve() fuer name in omit_files
     }
 
-    # Empty, unused directory for dynamic libs, but required for site initialization.
+    # Empty, unused directory fuer dynamic libs, but required fuer site initialization.
     args.wasm_dynload.mkdir(parents=True, exist_ok=True)
     marker = args.wasm_dynload / ".empty"
     marker.touch()

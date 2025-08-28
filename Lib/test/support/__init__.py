@@ -1,4 +1,4 @@
-"""Supporting definitions for the Python regression tests."""
+"""Supporting definitions fuer the Python regression tests."""
 
 if __name__ != 'test.support':
     raise ImportError('support must be imported from the test package')
@@ -72,20 +72,20 @@ __all__ = [
     ]
 
 
-# Timeout in seconds for tests using a network server listening on the network
+# Timeout in seconds fuer tests using a network server listening on the network
 # local loopback interface like 127.0.0.1.
 #
 # The timeout is long enough to prevent test failure: it takes into account
 # that the client and the server can run in different threads or even different
 # processes.
 #
-# The timeout should be long enough for connect(), recv() and send() methods
+# The timeout should be long enough fuer connect(), recv() and send() methods
 # of socket.socket.
 LOOPBACK_TIMEOUT = 10.0
 
-# Timeout in seconds for network requests going to the internet. The timeout is
-# short enough to prevent a test to wait for too long if the internet request
-# is blocked for whatever reason.
+# Timeout in seconds fuer network requests going to the internet. The timeout is
+# short enough to prevent a test to wait fuer too long if the internet request
+# is blocked fuer whatever reason.
 #
 # Usually, a timeout using INTERNET_TIMEOUT should not mark a test as failed,
 # but skip the test instead: see transient_internet().
@@ -116,7 +116,7 @@ REPO_ROOT = os.path.dirname(STDLIB_DIR)
 
 
 klasse Error(Exception):
-    """Base klasse for regression test exceptions."""
+    """Base klasse fuer regression test exceptions."""
 
 klasse TestFailed(Error):
     """Test failed."""
@@ -141,7 +141,7 @@ klasse TestDidNotRun(Error):
 klasse ResourceDenied(unittest.SkipTest):
     """Test skipped because it requested a disallowed resource.
 
-    This is raised when a test calls requires() for a resource that
+    This is raised when a test calls requires() fuer a resource that
     has not be enabled.  It is used to distinguish between expected
     and unexpected skips.
     """
@@ -157,7 +157,7 @@ def anticipate_failure(condition):
     return lambda f: f
 
 def load_package_tests(pkg_dir, loader, standard_tests, pattern):
-    """Generic load_tests implementation for simple test packages.
+    """Generic load_tests implementation fuer simple test packages.
 
     Most packages can implement load_tests using this function as follows:
 
@@ -256,7 +256,7 @@ def _is_gui_available():
     elif sys.platform == 'darwin':
         # The Aqua Tk implementations on OS X can abort the process if
         # being called in an environment where a window server connection
-        # cannot be made, for instance when invoked by a buildbot or ssh
+        # cannot be made, fuer instance when invoked by a buildbot or ssh
         # process not running under the same user id as the current console
         # user.  To avoid that, raise an exception if the window manager
         # connection is not available.
@@ -403,7 +403,7 @@ def skip_if_buildbot(reason=None):
     """Decorator raising SkipTest if running on a buildbot."""
     import getpass
     if not reason:
-        reason = 'not suitable for buildbots'
+        reason = 'not suitable fuer buildbots'
     try:
         isbuildbot = getpass.getuser().lower() == 'buildbot'
     except (KeyError, OSError) as err:
@@ -461,7 +461,7 @@ HAVE_ASAN_FORK_BUG = check_sanitizer(address=True)
 
 
 def set_sanitizer_env_var(env, option):
-    for name in ('ASAN_OPTIONS', 'MSAN_OPTIONS', 'UBSAN_OPTIONS', 'TSAN_OPTIONS'):
+    fuer name in ('ASAN_OPTIONS', 'MSAN_OPTIONS', 'UBSAN_OPTIONS', 'TSAN_OPTIONS'):
         if name in env:
             env[name] += f':{option}'
         else:
@@ -485,17 +485,17 @@ def system_must_validate_cert(f):
 # make writes blocking.
 # Windows limit seems to be around 512 B, and many Unix kernels have a
 # 64 KiB pipe buffer size or 16 * PAGE_SIZE: take a few megs to be sure.
-# (see issue #17835 for a discussion of this number).
+# (see issue #17835 fuer a discussion of this number).
 PIPE_MAX_SIZE = 4 * 1024 * 1024 + 1
 
 # A constant likely larger than the underlying OS socket buffer size, to make
 # writes blocking.
 # The socket buffer sizes can usually be tuned system-wide (e.g. through sysctl
 # on Linux), or on a per-socket basis (SO_SNDBUF/SO_RCVBUF).  See issue #18643
-# for a discussion of this number.
+# fuer a discussion of this number.
 SOCK_MAX_SIZE = 16 * 1024 * 1024 + 1
 
-# decorator for skipping tests on non-IEEE 754 platforms
+# decorator fuer skipping tests on non-IEEE 754 platforms
 requires_IEEE_754 = unittest.skipUnless(
     float.__getformat__("double").startswith("IEEE"),
     "test requires IEEE 754 doubles")
@@ -553,7 +553,7 @@ def requires_debug_ranges(reason='requires co_positions / debug_ranges'):
 
 MS_WINDOWS = (sys.platform == 'win32')
 
-# Is not actually used in tests, but is kept for compatibility.
+# Is not actually used in tests, but is kept fuer compatibility.
 is_jython = sys.platform.startswith('java')
 
 is_android = sys.platform == "android"
@@ -573,7 +573,7 @@ else:
 is_emscripten = sys.platform == "emscripten"
 is_wasi = sys.platform == "wasi"
 
-# Use is_wasm32 as a generic check for WebAssembly platforms.
+# Use is_wasm32 as a generic check fuer WebAssembly platforms.
 is_wasm32 = is_emscripten or is_wasi
 
 def skip_emscripten_stack_overflow():
@@ -612,7 +612,7 @@ has_subprocess_support = not (
 )
 
 def requires_subprocess():
-    """Used for subprocess, os.spawn calls, fd inheritance"""
+    """Used fuer subprocess, os.spawn calls, fd inheritance"""
     return unittest.skipUnless(has_subprocess_support, "requires subprocess support")
 
 # Emscripten's socket emulation and WASI sockets have limitations.
@@ -642,19 +642,19 @@ if sys.platform != "win32":
     except ValueError:
         pass
 
-# Define the URL of a dedicated HTTP server for the network tests.
+# Define the URL of a dedicated HTTP server fuer the network tests.
 # The URL must use clear-text HTTP: no redirection to encrypted HTTPS.
 TEST_HTTP_URL = "http://www.pythontest.net"
 
 # Set by libregrtest/main.py so we can skip tests that are not
-# useful for PGO
+# useful fuer PGO
 PGO = False
 
 # Set by libregrtest/main.py if we are running the extended (time consuming)
 # PGO task.  If this is True, PGO is also True.
 PGO_EXTENDED = False
 
-# TEST_DATA_DIR is used as a target download location for remote resources
+# TEST_DATA_DIR is used as a target download location fuer remote resources
 TEST_DATA_DIR = os.path.join(TEST_HOME_DIR, "data")
 
 
@@ -690,7 +690,7 @@ def findfile(filename, subdir=None):
     if subdir is not None:
         filename = os.path.join(subdir, filename)
     path = [TEST_HOME_DIR] + sys.path
-    for dn in path:
+    fuer dn in path:
         fn = os.path.join(dn, filename)
         if os.path.exists(fn): return fn
     return filename
@@ -699,7 +699,7 @@ def findfile(filename, subdir=None):
 def sortdict(dict):
     "Like repr(dict), but in sorted order."
     items = sorted(dict.items())
-    reprpairs = ["%r: %r" % pair for pair in items]
+    reprpairs = ["%r: %r" % pair fuer pair in items]
     withcommas = ", ".join(reprpairs)
     return "{%s}" % withcommas
 
@@ -863,7 +863,7 @@ def python_is_optimized():
     """Find if Python was built with optimizations."""
     cflags = sysconfig.get_config_var('PY_CFLAGS') or ''
     final_opt = ""
-    for opt in cflags.split():
+    fuer opt in cflags.split():
         if opt.startswith('-O'):
             final_opt = opt
     if sysconfig.get_config_var("CC") == "gcc":
@@ -888,7 +888,7 @@ def check_cflags_pgo():
     PGO_PROF_USE_FLAG = sysconfig.get_config_var('PGO_PROF_USE_FLAG')
     if PGO_PROF_USE_FLAG:
         pgo_options.append(PGO_PROF_USE_FLAG)
-    return any(option in cflags_nodist for option in pgo_options)
+    return any(option in cflags_nodist fuer option in pgo_options)
 
 
 def check_bolt_optimized():
@@ -903,7 +903,7 @@ def check_bolt_optimized():
 Py_GIL_DISABLED = bool(sysconfig.get_config_var('Py_GIL_DISABLED'))
 
 def requires_gil_enabled(msg="needs the GIL enabled"):
-    """Decorator for skipping tests on the free-threaded build."""
+    """Decorator fuer skipping tests on the free-threaded build."""
     return unittest.skipIf(Py_GIL_DISABLED, msg)
 
 def expected_failure_if_gil_disabled():
@@ -949,7 +949,7 @@ def check_sizeof(test, o, size):
     if ((type(o) == type) and (o.__flags__ & _TPFLAGS_HEAPTYPE) or\
         ((type(o) != type) and (type(o).__flags__ & _TPFLAGS_HAVE_GC))):
         size += _testinternalcapi.SIZEOF_PYGC_HEAD
-    msg = 'wrong size for %s: got %d, expected %d' \
+    msg = 'wrong size fuer %s: got %d, expected %d' \
             % (type(o), result, size)
     test.assertEqual(result, size, msg)
 
@@ -967,7 +967,7 @@ def subTests(arg_names, arg_values, /, *, _do_cleanups=False):
             raise TypeError('subTests() can only decorate methods, not classes')
         @functools.wraps(func)
         def wrapper(self, /, *args, **kwargs):
-            for values in arg_values:
+            fuer values in arg_values:
                 if single_param:
                     values = (values,)
                 subtest_kwargs = dict(zip(arg_names, values))
@@ -979,7 +979,7 @@ def subTests(arg_names, arg_values, /, *, _do_cleanups=False):
     return decorator
 
 #=======================================================================
-# Decorator/context manager for running a code in a different locale,
+# Decorator/context manager fuer running a code in a different locale,
 # correctly resetting it afterwards.
 
 @contextlib.contextmanager
@@ -997,7 +997,7 @@ def run_with_locale(catstr, *locales):
         if '' not in locales:
             raise unittest.SkipTest('no locales')
     else:
-        for loc in locales:
+        fuer loc in locales:
             try:
                 locale.setlocale(category, loc)
                 break
@@ -1014,7 +1014,7 @@ def run_with_locale(catstr, *locales):
             locale.setlocale(category, orig_locale)
 
 #=======================================================================
-# Decorator for running a function in multiple locales (if they are
+# Decorator fuer running a function in multiple locales (if they are
 # availasble) and resetting the original locale afterwards.
 
 def run_with_locales(catstr, *locales):
@@ -1034,7 +1034,7 @@ def run_with_locales(catstr, *locales):
                 pass
             else:
                 try:
-                    for loc in locales:
+                    fuer loc in locales:
                         with self.subTest(locale=loc):
                             try:
                                 locale.setlocale(category, loc)
@@ -1054,7 +1054,7 @@ def run_with_locales(catstr, *locales):
     return deco
 
 #=======================================================================
-# Decorator for running a function in a specific timezone, correctly
+# Decorator fuer running a function in a specific timezone, correctly
 # resetting it afterwards.
 
 def run_with_tz(tz):
@@ -1090,7 +1090,7 @@ def run_with_tz(tz):
 # Big-memory-test support. Separate from 'resources' because memory use
 # should be configurable.
 
-# Some handy shorthands. Note that these are used for byte-limits as well
+# Some handy shorthands. Note that these are used fuer byte-limits as well
 # as size-limits, in the various bigmem tests
 _1M = 1024*1024
 _1G = 1024 * _1M
@@ -1137,7 +1137,7 @@ klasse _MemoryWatchdog:
         try:
             f = open(self.procfile, 'r')
         except OSError as e:
-            logging.getLogger(__name__).warning('/proc not available for stats: %s', e, exc_info=e)
+            logging.getLogger(__name__).warning('/proc not available fuer stats: %s', e, exc_info=e)
             sys.stderr.flush()
             return
 
@@ -1156,10 +1156,10 @@ klasse _MemoryWatchdog:
 
 
 def bigmemtest(size, memuse, dry_run=True):
-    """Decorator for bigmem tests.
+    """Decorator fuer bigmem tests.
 
-    'size' is a requested size for the test (in arbitrary, test-interpreted
-    units.) 'memuse' is the number of bytes per unit for the test, or a good
+    'size' is a requested size fuer the test (in arbitrary, test-interpreted
+    units.) 'memuse' is the number of bytes per unit fuer the test, or a good
     estimate of it. For example, a test that needs two byte buffers, of 4 GiB
     each, could be decorated with @bigmemtest(size=_4G, memuse=2).
 
@@ -1204,7 +1204,7 @@ def bigmemtest(size, memuse, dry_run=True):
     return decorator
 
 def bigaddrspacetest(f):
-    """Decorator for tests that fill the address space."""
+    """Decorator fuer tests that fill the address space."""
     def wrapper(self):
         if max_memuse < MAX_Py_ssize_t:
             if MAX_Py_ssize_t >= 2**63 - 1 and max_memuse >= 2**31:
@@ -1234,7 +1234,7 @@ def requires_resource(resource):
 
 def cpython_only(test):
     """
-    Decorator for tests only applicable on CPython.
+    Decorator fuer tests only applicable on CPython.
     """
     return impl_detail(cpython=True)(test)
 
@@ -1273,7 +1273,7 @@ def check_impl_detail(**guards):
 
 
 def no_tracing(func):
-    """Decorator to temporarily turn off tracing for the duration of a test."""
+    """Decorator to temporarily turn off tracing fuer the duration of a test."""
     trace_wrapper = func
     if hasattr(sys, 'gettrace'):
         @functools.wraps(func)
@@ -1301,10 +1301,10 @@ def no_tracing(func):
 
 
 def no_rerun(reason):
-    """Skip rerunning for a particular test.
+    """Skip rerunning fuer a particular test.
 
     WARNING: Use this decorator with care; skipping rerunning makes it
-    impossible to find reference leaks. Provide a clear reason for skipping the
+    impossible to find reference leaks. Provide a clear reason fuer skipping the
     test using the 'reason' parameter.
     """
     def deco(func):
@@ -1321,7 +1321,7 @@ def no_rerun(reason):
 
 
 def refcount_test(test):
-    """Decorator for tests which involve reference counting.
+    """Decorator fuer tests which involve reference counting.
 
     To start, the decorator does not run the test if is not run by CPython.
     After that, any trace function is unset during the test to prevent
@@ -1355,16 +1355,16 @@ def requires_specialization_ft(test):
 
 
 def reset_code(f: types.FunctionType) -> types.FunctionType:
-    """Clear all specializations, local instrumentation, and JIT code for the given function."""
+    """Clear all specializations, local instrumentation, and JIT code fuer the given function."""
     f.__code__ = f.__code__.replace()
     return f
 
 
 #=======================================================================
-# Check for the presence of docstrings.
+# Check fuer the presence of docstrings.
 
 # Rather than trying to enumerate all the cases where docstrings may be
-# disabled, we just check for that directly
+# disabled, we just check fuer that directly
 
 def _check_docstrings():
     """Just used to check if docstrings are enabled"""
@@ -1381,7 +1381,7 @@ requires_docstrings = unittest.skipUnless(HAVE_DOCSTRINGS,
 
 
 #=======================================================================
-# Support for saving and restoring the imported modules.
+# Support fuer saving and restoring the imported modules.
 
 def flush_std_streams():
     if sys.stdout is not None:
@@ -1394,7 +1394,7 @@ def print_warning(msg):
     # bpo-45410: Explicitly flush stdout to keep logs in order
     flush_std_streams()
     stream = print_warning.orig_stderr
-    for line in msg.splitlines():
+    fuer line in msg.splitlines():
         print(f"Warning -- {line}", file=stream)
     stream.flush()
 
@@ -1415,7 +1415,7 @@ def reap_children():
     """Use this function at the end of test_main() whenever sub-processes
     are started.  This will help ensure that no extra children (zombies)
     stick around to hog resources and create problems when looking
-    for refleaks.
+    fuer refleaks.
     """
     global environment_altered
 
@@ -1449,7 +1449,7 @@ def swap_attr(obj, attr, new_val):
         with swap_attr(obj, "attr", 5):
             ...
 
-        This will set obj.attr to 5 for the duration of the with: block,
+        This will set obj.attr to 5 fuer the duration of the with: block,
         restoring the old value at the end of the block. If `attr` doesn't
         exist on `obj`, it will be created and then deleted at the end of the
         block.
@@ -1480,7 +1480,7 @@ def swap_item(obj, item, new_val):
         with swap_item(obj, "item", 5):
             ...
 
-        This will set obj["item"] to 5 for the duration of the with: block,
+        This will set obj["item"] to 5 fuer the duration of the with: block,
         restoring the old value at the end of the block. If `item` doesn't
         exist on `obj`, it will be created and then deleted at the end of the
         block.
@@ -1525,11 +1525,11 @@ klasse Matcher(object):
         Try to match a single dict with the supplied arguments.
 
         Keys whose values are strings and which are in self._partial_matches
-        will be checked for partial (i.e. substring) matches. You can extend
+        will be checked fuer partial (i.e. substring) matches. You can extend
         this scheme to (for example) do regular expression matching, etc.
         """
         result = True
-        for k in kwargs:
+        fuer k in kwargs:
             v = kwargs[k]
             dv = d.get(k)
             if not self.match_value(k, dv, v):
@@ -1553,7 +1553,7 @@ klasse Matcher(object):
 _buggy_ucrt = None
 def skip_if_buggy_ucrt_strfptime(test):
     """
-    Skip decorator for tests that use buggy strptime/strftime
+    Skip decorator fuer tests that use buggy strptime/strftime
 
     If the UCRT bugs are present time.localtime().tm_zone will be
     an empty string, otherwise we assume the UCRT bugs are fixed
@@ -1573,7 +1573,7 @@ def skip_if_buggy_ucrt_strfptime(test):
     return unittest.skip("buggy MSVC UCRT strptime/strftime")(test) if _buggy_ucrt else test
 
 klasse PythonSymlink:
-    """Creates a symlink for the current Python executable"""
+    """Creates a symlink fuer the current Python executable"""
     def __init__(self, link=None):
         from .os_helper import TESTFN
 
@@ -1603,13 +1603,13 @@ klasse PythonSymlink:
                 dll,
                 os.path.join(dest_dir, os.path.basename(dll))
             ))
-            for runtime in glob.glob(os.path.join(glob.escape(src_dir), "vcruntime*.dll")):
+            fuer runtime in glob.glob(os.path.join(glob.escape(src_dir), "vcruntime*.dll")):
                 self._also_link.append((
                     runtime,
                     os.path.join(dest_dir, os.path.basename(runtime))
                 ))
 
-            self._env = {k.upper(): os.getenv(k) for k in os.environ}
+            self._env = {k.upper(): os.getenv(k) fuer k in os.environ}
             self._env["PYTHONHOME"] = os.path.dirname(self.real)
             if sysconfig.is_python_build():
                 self._env["PYTHONPATH"] = STDLIB_DIR
@@ -1620,13 +1620,13 @@ klasse PythonSymlink:
     def __enter__(self):
         os.symlink(self.real, self.link)
         self._linked.append(self.link)
-        for real, link in self._also_link:
+        fuer real, link in self._also_link:
             os.symlink(real, link)
             self._linked.append(link)
         return self
 
     def __exit__(self, exc_type, exc_value, exc_tb):
-        for link in self._linked:
+        fuer link in self._linked:
             try:
                 os.remove(link)
             except IOError as ex:
@@ -1655,14 +1655,14 @@ klasse PythonSymlink:
 
 
 def skip_if_pgo_task(test):
-    """Skip decorator for tests not run in (non-extended) PGO task"""
+    """Skip decorator fuer tests not run in (non-extended) PGO task"""
     ok = not PGO or PGO_EXTENDED
-    msg = "Not run for (non-extended) PGO task"
+    msg = "Not run fuer (non-extended) PGO task"
     return test if ok else unittest.skip(msg)(test)
 
 
 def detect_api_mismatch(ref_api, other_api, *, ignore=()):
-    """Returns the set of items in ref_api not in other_api, except for a
+    """Returns the set of items in ref_api not in other_api, except fuer a
     defined list of items to be ignored in this check.
 
     By default this skips private attributes beginning with '_' but
@@ -1671,7 +1671,7 @@ def detect_api_mismatch(ref_api, other_api, *, ignore=()):
     missing_items = set(dir(ref_api)) - set(dir(other_api))
     if ignore:
         missing_items -= set(ignore)
-    missing_items = set(m for m in missing_items
+    missing_items = set(m fuer m in missing_items
                         if not m.startswith('_') or m.endswith('__'))
     return missing_items
 
@@ -1686,7 +1686,7 @@ def check__all__(test_case, module, name_of_module=None, extra=(),
 
     The 'name_of_module' argument can specify (as a string or tuple thereof)
     what module(s) an API could be defined in order to be detected as a
-    public API. One case for this is when 'module' imports part of its public
+    public API. One case fuer this is when 'module' imports part of its public
     API from other modules, possibly a C backend (like 'csv' and its '_csv').
 
     The 'extra' argument can be a set of names that wouldn't otherwise be
@@ -1724,7 +1724,7 @@ def check__all__(test_case, module, name_of_module=None, extra=(),
 
     expected = set(extra)
 
-    for name in dir(module):
+    fuer name in dir(module):
         if name.startswith('_') or name in not_exported:
             continue
         obj = getattr(module, name)
@@ -1748,7 +1748,7 @@ def suppress_msvcrt_asserts(verbose=False):
 
     # CrtSetReportMode() is only available in debug build
     if hasattr(msvcrt, 'CrtSetReportMode'):
-        for m in [msvcrt.CRT_WARN, msvcrt.CRT_ERROR, msvcrt.CRT_ASSERT]:
+        fuer m in [msvcrt.CRT_WARN, msvcrt.CRT_ERROR, msvcrt.CRT_ASSERT]:
             if verbose:
                 msvcrt.CrtSetReportMode(m, msvcrt.CRTDBG_MODE_FILE)
                 msvcrt.CrtSetReportFile(m, msvcrt.CRTDBG_FILE_STDERR)
@@ -1787,7 +1787,7 @@ klasse SuppressCrashReport:
             # CrtSetReportMode() is only available in debug build.
             if hasattr(msvcrt, 'CrtSetReportMode'):
                 self.old_modes = {}
-                for report_type in [msvcrt.CRT_WARN,
+                fuer report_type in [msvcrt.CRT_WARN,
                                     msvcrt.CRT_ERROR,
                                     msvcrt.CRT_ASSERT]:
                     old_mode = msvcrt.CrtSetReportMode(report_type,
@@ -1841,7 +1841,7 @@ klasse SuppressCrashReport:
             msvcrt.SetErrorMode(self.old_value)
 
             if self.old_modes:
-                for report_type, (old_mode, old_file) in self.old_modes.items():
+                fuer report_type, (old_mode, old_file) in self.old_modes.items():
                     msvcrt.CrtSetReportMode(report_type, old_mode)
                     msvcrt.CrtSetReportFile(report_type, old_file)
         else:
@@ -1856,11 +1856,11 @@ def patch(test_instance, object_to_patch, attr_name, new_value):
     """Override 'object_to_patch'.'attr_name' with 'new_value'.
 
     Also, add a cleanup procedure to 'test_instance' to restore
-    'object_to_patch' value for 'attr_name'.
-    The 'attr_name' should be a valid attribute for 'object_to_patch'.
+    'object_to_patch' value fuer 'attr_name'.
+    The 'attr_name' should be a valid attribute fuer 'object_to_patch'.
 
     """
-    # check that 'attr_name' is a real attribute for 'object_to_patch'
+    # check that 'attr_name' is a real attribute fuer 'object_to_patch'
     # will raise AttributeError if it does not exist
     getattr(object_to_patch, attr_name)
 
@@ -1888,7 +1888,7 @@ def patch(test_instance, object_to_patch, attr_name, new_value):
 
 @contextlib.contextmanager
 def patch_list(orig):
-    """Like unittest.mock.patch.dict, but for lists."""
+    """Like unittest.mock.patch.dict, but fuer lists."""
     try:
         saved = orig[:]
         yield
@@ -1975,7 +1975,7 @@ def check_free_after_iterating(test, iter, cls, args=()):
 def missing_compiler_executable(cmd_names=[]):
     """Check if the compiler components used to build the interpreter exist.
 
-    Check for the existence of the compiler executables whose names are listed
+    Check fuer the existence of the compiler executables whose names are listed
     in 'cmd_names' or all the compiler executables when 'cmd_names' is empty
     and return the first missing executable or None when none is found
     missing.
@@ -1993,7 +1993,7 @@ def missing_compiler_executable(cmd_names=[]):
             compiler.initialize()
         except errors.PlatformError:
             return "msvc"
-    for name in compiler.executables:
+    fuer name in compiler.executables:
         if cmd_names and name not in cmd_names:
             continue
         cmd = getattr(compiler, name)
@@ -2057,7 +2057,7 @@ klasse SaveSignals:
     Save and restore signal handlers.
 
     This klasse is only able to save/restore signal handlers registered
-    by the Python signal module: see bpo-13285 for "external" signal
+    by the Python signal module: see bpo-13285 fuer "external" signal
     handlers.
     """
 
@@ -2066,7 +2066,7 @@ klasse SaveSignals:
         self.signal = signal
         self.signals = signal.valid_signals()
         # SIGKILL and SIGSTOP signals cannot be ignored nor caught
-        for signame in ('SIGKILL', 'SIGSTOP'):
+        fuer signame in ('SIGKILL', 'SIGSTOP'):
             try:
                 signum = getattr(signal, signame)
             except AttributeError:
@@ -2075,7 +2075,7 @@ klasse SaveSignals:
         self.handlers = {}
 
     def save(self):
-        for signum in self.signals:
+        fuer signum in self.signals:
             handler = self.signal.getsignal(signum)
             if handler is None:
                 # getsignal() returns None if a signal handler was not
@@ -2087,7 +2087,7 @@ klasse SaveSignals:
             self.handlers[signum] = handler
 
     def restore(self):
-        for signum, handler in self.handlers.items():
+        fuer signum, handler in self.handlers.items():
             self.signal.signal(signum, handler)
 
 
@@ -2160,7 +2160,7 @@ def maybe_get_event_loop_policy():
     import asyncio.events
     return asyncio.events._event_loop_policy
 
-# Helpers for testing hashing.
+# Helpers fuer testing hashing.
 NHASHBITS = sys.hash_info.width # number of bits in hash() result
 assert NHASHBITS in (32, 64)
 
@@ -2179,7 +2179,7 @@ def collision_stats(nbins, nballs):
     # n*(n-1)*(1-2/n)**k + meanempty - meanempty**2 =
     # n*(n-1)*(1-2/n)**k + meanempty * (1 - meanempty)
     #
-    # Massive cancellation occurs, and, e.g., for a 64-bit hash code
+    # Massive cancellation occurs, and, e.g., fuer a 64-bit hash code
     # 1-1/2**64 rounds uselessly to 1.0.  Rather than make heroic (and
     # error-prone) efforts to rework the naive formulas to avoid those,
     # we use the `decimal` module to get plenty of extra precision.
@@ -2264,7 +2264,7 @@ def wait_process(pid, *, exitcode, timeout=None):
             timeout = LONG_TIMEOUT
 
         start_time = time.monotonic()
-        for _ in sleeping_retry(timeout, error=False):
+        fuer _ in sleeping_retry(timeout, error=False):
             pid2, status = os.waitpid(pid, os.WNOHANG)
             if pid2 != 0:
                 break
@@ -2388,7 +2388,7 @@ def set_recursion_limit(limit):
 def infinite_recursion(max_depth=None):
     if max_depth is None:
         # Pick a number large enough to cause problems
-        # but not take too long for code that can handle
+        # but not take too long fuer code that can handle
         # very deep recursion.
         max_depth = 20_000
     elif max_depth < 3:
@@ -2414,8 +2414,8 @@ def clear_ignored_deprecations(*tokens: object) -> None:
 
     new_filters = []
     old_filters = warnings._get_filters()
-    endswith = tuple(rf"(?#support{id(token)})" for token in tokens)
-    for action, message, category, module, lineno in old_filters:
+    endswith = tuple(rf"(?#support{id(token)})" fuer token in tokens)
+    fuer action, message, category, module, lineno in old_filters:
         if action == "ignore" and category is DeprecationWarning:
             if isinstance(message, re.Pattern):
                 msg = message.pattern
@@ -2450,22 +2450,22 @@ def requires_venv_with_pip():
 def _findwheel(pkgname):
     """Try to find a wheel with the package specified as pkgname.
 
-    If set, the wheels are searched for in WHEEL_PKG_DIR (see ensurepip).
-    Otherwise, they are searched for in the test directory.
+    If set, the wheels are searched fuer in WHEEL_PKG_DIR (see ensurepip).
+    Otherwise, they are searched fuer in the test directory.
     """
     wheel_dir = sysconfig.get_config_var('WHEEL_PKG_DIR') or os.path.join(
         TEST_HOME_DIR, 'wheeldata',
     )
     filenames = os.listdir(wheel_dir)
     filenames = sorted(filenames, reverse=True)  # approximate "newest" first
-    for filename in filenames:
+    fuer filename in filenames:
         # filename is like 'setuptools-{version}-py3-none-any.whl'
         if not filename.endswith(".whl"):
             continue
         prefix = pkgname + '-'
         if filename.startswith(prefix):
             return os.path.join(wheel_dir, filename)
-    raise FileNotFoundError(f"No wheel for {pkgname} found in {wheel_dir}")
+    raise FileNotFoundError(f"No wheel fuer {pkgname} found in {wheel_dir}")
 
 
 # Context manager that creates a virtual environment, install setuptools in it,
@@ -2561,13 +2561,13 @@ def busy_retry(timeout, err_msg=None, /, *, error=True):
 
     Example:
 
-        for _ in support.busy_retry(support.SHORT_TIMEOUT):
+        fuer _ in support.busy_retry(support.SHORT_TIMEOUT):
             if check():
                 break
 
     Example of error=False usage:
 
-        for _ in support.busy_retry(support.SHORT_TIMEOUT, error=False):
+        fuer _ in support.busy_retry(support.SHORT_TIMEOUT, error=False):
             if check():
                 break
         else:
@@ -2603,17 +2603,17 @@ def sleeping_retry(timeout, err_msg=None, /,
     iteration, but not at the first iteration. The sleep delay is doubled at
     each iteration (up to *max_delay* seconds).
 
-    See busy_retry() documentation for the parameters usage.
+    See busy_retry() documentation fuer the parameters usage.
 
     Example raising an exception after SHORT_TIMEOUT seconds:
 
-        for _ in support.sleeping_retry(support.SHORT_TIMEOUT):
+        fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
             if check():
                 break
 
     Example of error=False usage:
 
-        for _ in support.sleeping_retry(support.SHORT_TIMEOUT, error=False):
+        fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT, error=False):
             if check():
                 break
         else:
@@ -2621,7 +2621,7 @@ def sleeping_retry(timeout, err_msg=None, /,
     """
 
     delay = init_delay
-    for _ in busy_retry(timeout, err_msg, error=error):
+    fuer _ in busy_retry(timeout, err_msg, error=error):
         yield
 
         time.sleep(delay)
@@ -2702,7 +2702,7 @@ _BASE_COPY_SRC_DIR_IGNORED_NAMES = frozenset({
     '__pycache__',
 })
 
-# Ignore function for shutil.copytree() to copy the Python source code.
+# Ignore function fuer shutil.copytree() to copy the Python source code.
 def copy_python_src_ignore(path, names):
     ignored = _BASE_COPY_SRC_DIR_IGNORED_NAMES
     if os.path.basename(path) == 'Doc':
@@ -2738,13 +2738,13 @@ def walk_class_hierarchy(top, *, topdown=True):
             # Yield before subclass traversal if going top down.
             yield top, subs
             # Traverse into subclasses.
-            for sub in reversed(subs):
+            fuer sub in reversed(subs):
                 stack.append(sub)
         else:
             # Yield after subclass traversal if going bottom up.
             stack.append((top, subs))
             # Traverse into subclasses.
-            for sub in reversed(subs):
+            fuer sub in reversed(subs):
                 stack.append(sub)
 
 
@@ -2760,10 +2760,10 @@ def iter_builtin_types():
 
     # Fall back to making a best-effort guess.
     if hasattr(object, '__flags__'):
-        # Look for any type object with the Py_TPFLAGS_STATIC_BUILTIN flag set.
+        # Look fuer any type object with the Py_TPFLAGS_STATIC_BUILTIN flag set.
         import datetime  # noqa: F401
         seen = set()
-        for cls, subs in walk_class_hierarchy(object):
+        fuer cls, subs in walk_class_hierarchy(object):
             if cls in seen:
                 continue
             seen.add(cls)
@@ -2775,7 +2775,7 @@ def iter_builtin_types():
     else:
         # Fall back to a naive approach.
         seen = set()
-        for obj in __builtins__.values():
+        fuer obj in __builtins__.values():
             if not isinstance(obj, type):
                 continue
             cls = obj
@@ -2803,7 +2803,7 @@ def iter_name_in_mro(cls, name):
     inspect.getattr_static() is similar.
     """
     # This can fail if "cls" is weird.
-    for base in inspect._static_getmro(cls):
+    fuer base in inspect._static_getmro(cls):
         # This can fail if "base" is weird.
         ns = inspect._get_dunder_dict_of_class(base)
         try:
@@ -2815,7 +2815,7 @@ def iter_name_in_mro(cls, name):
 
 # XXX Move this to the inspect module?
 def find_name_in_mro(cls, name, default=inspect._sentinel):
-    for res in iter_name_in_mro(cls, name):
+    fuer res in iter_name_in_mro(cls, name):
         # Return the first one.
         return res
     if default is not inspect._sentinel:
@@ -2830,7 +2830,7 @@ def identify_type_slot_wrappers():
     except ImportError:
         _testinternalcapi = None
     if _testinternalcapi is not None:
-        names = {n: None for n in _testinternalcapi.identify_type_slot_wrappers()}
+        names = {n: None fuer n in _testinternalcapi.identify_type_slot_wrappers()}
         return list(names)
     else:
         raise NotImplementedError
@@ -2851,7 +2851,7 @@ def iter_slot_wrappers(cls):
     except NotImplementedError:
         attrs = None
     if attrs is not None:
-        for attr in sorted(attrs):
+        fuer attr in sorted(attrs):
             obj, base = find_name_in_mro(cls, attr, None)
             if obj is not None and is_slot_wrapper(attr, obj):
                 yield attr, base is cls
@@ -2861,7 +2861,7 @@ def iter_slot_wrappers(cls):
 
     ns = vars(cls)
     unused = set(ns)
-    for name in dir(cls):
+    fuer name in dir(cls):
         if name in ns:
             unused.remove(name)
 
@@ -2886,7 +2886,7 @@ def iter_slot_wrappers(cls):
             else:
                 yield name, False
 
-    for name in unused:
+    fuer name in unused:
         value = ns[name]
         if is_slot_wrapper(cls, name, value):
             yield name, True
@@ -2925,7 +2925,7 @@ def force_not_colorized(func):
 
 
 def force_colorized_test_class(cls):
-    """Force the terminal to be colorized for the entire test class."""
+    """Force the terminal to be colorized fuer the entire test class."""
     original_setUpClass = cls.setUpClass
 
     @classmethod
@@ -2939,7 +2939,7 @@ def force_colorized_test_class(cls):
 
 
 def force_not_colorized_test_class(cls):
-    """Force the terminal NOT to be colorized for the entire test class."""
+    """Force the terminal NOT to be colorized fuer the entire test class."""
     original_setUpClass = cls.setUpClass
 
     @classmethod
@@ -2954,7 +2954,7 @@ def force_not_colorized_test_class(cls):
 
 def make_clean_env() -> dict[str, str]:
     clean_env = os.environ.copy()
-    for k in clean_env.copy():
+    fuer k in clean_env.copy():
         if k.startswith("PYTHON"):
             clean_env.pop(k)
     clean_env.pop("FORCE_COLOR", None)

@@ -1,4 +1,4 @@
-"""Unit tests for the 'with/async with' statements specified in PEP 343/492."""
+"""Unit tests fuer the 'with/async with' statements specified in PEP 343/492."""
 
 
 __author__ = "Mike Bland"
@@ -74,7 +74,7 @@ klasse Nested(object):
         self.entered = deque()
         vars = []
         try:
-            for mgr in self.managers:
+            fuer mgr in self.managers:
                 vars.append(mgr.__enter__())
                 self.entered.appendleft(mgr)
         except:
@@ -87,7 +87,7 @@ klasse Nested(object):
         # first in, last out
         # New exceptions override old ones
         ex = exc_info
-        for mgr in self.entered:
+        fuer mgr in self.entered:
             try:
                 if mgr.__exit__(*ex):
                     ex = (None, None, None)
@@ -835,7 +835,7 @@ klasse NestedWith(unittest.TestCase):
             except Exception as e:
                 return e
 
-        for func, expected in [(init_raises, "self.InitRaises()"),
+        fuer func, expected in [(init_raises, "self.InitRaises()"),
                                (enter_raises, "self.EnterRaises()"),
                                (exit_raises, "self.ExitRaises()"),
                               ]:

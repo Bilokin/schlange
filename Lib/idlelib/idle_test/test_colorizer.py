@@ -33,7 +33,7 @@ source = textwrap.dedent("""\
     def'
     '''abc\\
     def'''
-    # All valid prefixes for unicode and byte strings should be colored.
+    # All valid prefixes fuer unicode and byte strings should be colored.
     r'x', u'x', R'x', U'x', f'x', F'x'
     fr'x', Fr'x', fR'x', FR'x', rf'x', rF'x', Rf'x', RF'x'
     b'x',B'x', br'x',Br'x',bR'x',BR'x', rb'x', rB'x',Rb'x',RB'x'
@@ -204,7 +204,7 @@ klasse ColorDelegatorTest(unittest.TestCase):
 
     def test_LoadTagDefs(self):
         highlight = partial(config.idleConf.GetHighlight, theme='IDLE Classic')
-        for tag, colors in self.color.tagdefs.items():
+        fuer tag, colors in self.color.tagdefs.items():
             with self.subTest(tag=tag):
                 self.assertIn('background', colors)
                 self.assertIn('foreground', colors)
@@ -214,8 +214,8 @@ klasse ColorDelegatorTest(unittest.TestCase):
     def test_config_colors(self):
         text = self.text
         highlight = partial(config.idleConf.GetHighlight, theme='IDLE Classic')
-        for tag in self.color.tagdefs:
-            for plane in ('background', 'foreground'):
+        fuer tag in self.color.tagdefs:
+            fuer plane in ('background', 'foreground'):
                 with self.subTest(tag=tag, plane=plane):
                     if tag in ('SYNC', 'TODO'):
                         self.assertEqual(text.tag_cget(tag, plane), '')
@@ -410,19 +410,19 @@ klasse ColorDelegatorTest(unittest.TestCase):
         # Nothing marked to do therefore no tags in text.
         text.tag_remove('TODO', '1.0', 'end')
         color.recolorize_main()
-        for tag in text.tag_names():
+        fuer tag in text.tag_names():
             with self.subTest(tag=tag):
                 eq(text.tag_ranges(tag), ())
 
-        # Source marked for processing.
+        # Source marked fuer processing.
         text.tag_add('TODO', '1.0', 'end')
         # Check some indexes.
         color.recolorize_main()
-        for index, expected_tags in expected:
+        fuer index, expected_tags in expected:
             with self.subTest(index=index):
                 eq(text.tag_names(index), expected_tags)
 
-        # Check for some tags for ranges.
+        # Check fuer some tags fuer ranges.
         eq(text.tag_nextrange('TODO', '1.0'), ())
         eq(text.tag_nextrange('KEYWORD', '1.0'), ('1.0', '1.2'))
         eq(text.tag_nextrange('COMMENT', '2.0'), ('2.22', '2.43'))
@@ -455,9 +455,9 @@ klasse ColorDelegatorTest(unittest.TestCase):
 
         # Make a dict with highlighting tag ranges in the Text widget.
         text_tag_ranges = {}
-        for tag in set(text.tag_names()) - {'sel', 'TODO', 'SYNC'}:
-            indexes = [rng.string for rng in text.tag_ranges(tag)]
-            for index_pair in zip(indexes[::2], indexes[1::2]):
+        fuer tag in set(text.tag_names()) - {'sel', 'TODO', 'SYNC'}:
+            indexes = [rng.string fuer rng in text.tag_ranges(tag)]
+            fuer index_pair in zip(indexes[::2], indexes[1::2]):
                 text_tag_ranges.setdefault(tag, []).append(index_pair)
 
         self.assertEqual(text_tag_ranges, tag_ranges)
@@ -608,12 +608,12 @@ klasse ColorDelegatorTest(unittest.TestCase):
         text.tag_add("ERROR", "1.0")
         text.tag_add("TODO", "1.0")
         text.tag_add("hit", "1.0")
-        for tag in color.tagdefs:
+        fuer tag in color.tagdefs:
             with self.subTest(tag=tag):
                 self.assertNotEqual(text.tag_ranges(tag), ())
 
         color.removecolors()
-        for tag in color.tagdefs:
+        fuer tag in color.tagdefs:
             with self.subTest(tag=tag):
                 self.assertEqual(text.tag_ranges(tag), ())
 

@@ -81,7 +81,7 @@ TEST_PY_ENV = dict(
 
 TEST_PY_DEFAULTS = "\n".join([
     "[defaults]",
-    *[f"{k[3:].lower()}={v}" for k, v in TEST_PY_ENV.items()],
+    *[f"{k[3:].lower()}={v}" fuer k, v in TEST_PY_ENV.items()],
 ])
 
 
@@ -101,20 +101,20 @@ def create_registry_data(root, data):
         if isinstance(value, dict):
             # For a dict, we recursively create keys
             with winreg.CreateKeyEx(root, key) as hkey:
-                for k, v in value.items():
+                fuer k, v in value.items():
                     _create_registry_data(hkey, k, v)
         elif isinstance(value, str):
             # For strings, we set values. 'key' may be None in this case
             winreg.SetValueEx(root, key, None, winreg.REG_SZ, value)
         else:
-            raise TypeError("don't know how to create data for '{}'".format(value))
+            raise TypeError("don't know how to create data fuer '{}'".format(value))
 
-    for k, v in data.items():
+    fuer k, v in data.items():
         _create_registry_data(root, k, v)
 
 
 def enum_keys(root):
-    for i in itertools.count():
+    fuer i in itertools.count():
         try:
             yield winreg.EnumKey(root, i)
         except OSError as ex:
@@ -125,7 +125,7 @@ def enum_keys(root):
 
 def delete_registry_data(root, keys):
     ACCESS = winreg.KEY_WRITE | winreg.KEY_ENUMERATE_SUB_KEYS
-    for key in list(keys):
+    fuer key in list(keys):
         with winreg.OpenKey(root, key, access=ACCESS) as hkey:
             delete_registry_data(hkey, enum_keys(hkey))
         winreg.DeleteKey(root, key)
@@ -133,7 +133,7 @@ def delete_registry_data(root, keys):
 
 def is_installed(tag):
     key = rf"Software\Python\PythonCore\{tag}\InstallPath"
-    for root, flag in [
+    fuer root, flag in [
         (winreg.HKEY_CURRENT_USER, 0),
         (winreg.HKEY_LOCAL_MACHINE, winreg.KEY_WOW64_64KEY),
         (winreg.HKEY_LOCAL_MACHINE, winreg.KEY_WOW64_32KEY),
@@ -175,7 +175,7 @@ klasse RunPyMixin:
         if sysconfig.is_python_build():
             py_exe = Path(sys.executable).parent / PY_EXE
         else:
-            for p in os.getenv("PATH").split(";"):
+            fuer p in os.getenv("PATH").split(";"):
                 if p:
                     py_exe = Path(p) / PY_EXE
                     if py_exe.is_file():
@@ -206,7 +206,7 @@ klasse RunPyMixin:
 
         if not py_exe:
             raise unittest.SkipTest(
-                "cannot locate '{}' for test".format(PY_EXE)
+                "cannot locate '{}' fuer test".format(PY_EXE)
             )
         return py_exe
 
@@ -221,11 +221,11 @@ klasse RunPyMixin:
 
         ignore = {"VIRTUAL_ENV", "PY_PYTHON", "PY_PYTHON2", "PY_PYTHON3"}
         env = {
-            **{k.upper(): v for k, v in os.environ.items() if k.upper() not in ignore},
+            **{k.upper(): v fuer k, v in os.environ.items() if k.upper() not in ignore},
             "PYLAUNCHER_DEBUG": "1",
             "PYLAUNCHER_DRYRUN": "1",
             "PYLAUNCHER_LIMIT_TO_COMPANY": "",
-            **{k.upper(): v for k, v in (env or {}).items()},
+            **{k.upper(): v fuer k, v in (env or {}).items()},
         }
         if not argv:
             argv = [self.py_exe, *args]
@@ -254,7 +254,7 @@ klasse RunPyMixin:
             self.assertEqual(expect_returncode, p.returncode)
         data = {
             s.partition(":")[0]: s.partition(":")[2].lstrip()
-            for s in err.splitlines()
+            fuer s in err.splitlines()
             if not s.startswith("#") and ":" in s
         }
         data["stdout"] = out
@@ -319,7 +319,7 @@ klasse TestLauncher(unittest.TestCase, RunPyMixin):
         self.assertEqual("True", data["SearchInfo.help"])
 
     def test_list_option(self):
-        for opt, v1, v2 in [
+        fuer opt, v1, v2 in [
             ("-0", "True", "False"),
             ("-0p", "False", "True"),
             ("--list", "True", "False"),
@@ -334,19 +334,19 @@ klasse TestLauncher(unittest.TestCase, RunPyMixin):
         data = self.run_py(["--list"])
         found = {}
         expect = {}
-        for line in data["stdout"].splitlines():
+        fuer line in data["stdout"].splitlines():
             m = re.match(r"\s*(.+?)\s+?(\*\s+)?(.+)$", line)
             if m:
                 found[m.group(1)] = m.group(3)
-        for company in TEST_DATA:
+        fuer company in TEST_DATA:
             company_data = TEST_DATA[company]
-            tags = [t for t in company_data if isinstance(company_data[t], dict)]
-            for tag in tags:
+            tags = [t fuer t in company_data if isinstance(company_data[t], dict)]
+            fuer tag in tags:
                 arg = f"-V:{company}/{tag}"
                 expect[arg] = company_data[tag]["DisplayName"]
             expect.pop(f"-V:{company}/ignored", None)
 
-        actual = {k: v for k, v in found.items() if k in expect}
+        actual = {k: v fuer k, v in found.items() if k in expect}
         try:
             self.assertDictEqual(expect, actual)
         except:
@@ -359,14 +359,14 @@ klasse TestLauncher(unittest.TestCase, RunPyMixin):
         data = self.run_py(["--list-paths"])
         found = {}
         expect = {}
-        for line in data["stdout"].splitlines():
+        fuer line in data["stdout"].splitlines():
             m = re.match(r"\s*(.+?)\s+?(\*\s+)?(.+)$", line)
             if m:
                 found[m.group(1)] = m.group(3)
-        for company in TEST_DATA:
+        fuer company in TEST_DATA:
             company_data = TEST_DATA[company]
-            tags = [t for t in company_data if isinstance(company_data[t], dict)]
-            for tag in tags:
+            tags = [t fuer t in company_data if isinstance(company_data[t], dict)]
+            fuer tag in tags:
                 arg = f"-V:{company}/{tag}"
                 install = company_data[tag]["InstallPath"]
                 try:
@@ -380,7 +380,7 @@ klasse TestLauncher(unittest.TestCase, RunPyMixin):
 
             expect.pop(f"-V:{company}/ignored", None)
 
-        actual = {k: v for k, v in found.items() if k in expect}
+        actual = {k: v fuer k, v in found.items() if k in expect}
         try:
             self.assertDictEqual(expect, actual)
         except:
@@ -449,7 +449,7 @@ klasse TestLauncher(unittest.TestCase, RunPyMixin):
         try:
             data = self.run_py(["-3-32"], allow_fail=True)
         except subprocess.CalledProcessError:
-            if not any(is_installed(f"3.{i}-32") for i in range(5, 11)):
+            if not any(is_installed(f"3.{i}-32") fuer i in range(5, 11)):
                 raise unittest.SkipTest("requires at least one 32-bit Python 3.x install")
             raise
         self.assertEqual("PythonCore", data["env.company"])
@@ -506,7 +506,7 @@ klasse TestLauncher(unittest.TestCase, RunPyMixin):
 
     def test_py_default_short_argv0(self):
         with self.py_ini(TEST_PY_DEFAULTS):
-            for argv0 in ['"py.exe"', 'py.exe', '"py"', 'py']:
+            fuer argv0 in ['"py.exe"', 'py.exe', '"py"', 'py']:
                 with self.subTest(argv0):
                     data = self.run_py(["--version"], argv=f'{argv0} --version')
                     self.assertEqual("PythonTestSuite", data["SearchInfo.company"])
@@ -516,7 +516,7 @@ klasse TestLauncher(unittest.TestCase, RunPyMixin):
     def test_py_default_in_list(self):
         data = self.run_py(["-0"], env=TEST_PY_ENV)
         default = None
-        for line in data["stdout"].splitlines():
+        fuer line in data["stdout"].splitlines():
             m = re.match(r"\s*-V:(.+?)\s+?\*\s+(.+)$", line)
             if m:
                 default = m.group(1)
@@ -526,7 +526,7 @@ klasse TestLauncher(unittest.TestCase, RunPyMixin):
     def test_virtualenv_in_list(self):
         with self.fake_venv() as (venv_exe, env):
             data = self.run_py(["-0p"], env=env)
-            for line in data["stdout"].splitlines():
+            fuer line in data["stdout"].splitlines():
                 m = re.match(r"\s*\*\s+(.+)$", line)
                 if m:
                     self.assertEqual(str(venv_exe), m.group(1))
@@ -538,7 +538,7 @@ klasse TestLauncher(unittest.TestCase, RunPyMixin):
                 self.fail("did not find active venv path")
 
             data = self.run_py(["-0"], env=env)
-            for line in data["stdout"].splitlines():
+            fuer line in data["stdout"].splitlines():
                 m = re.match(r"\s*\*\s+(.+)$", line)
                 if m:
                     self.assertEqual("Active venv", m.group(1))
@@ -790,7 +790,7 @@ klasse TestLauncher(unittest.TestCase, RunPyMixin):
     def test_shebang_executable_extension(self):
         with self.script('#! /usr/bin/env python3.99') as script:
             data = self.run_py([script], expect_returncode=103)
-        expect = "# Search PATH for python3.99.exe"
-        actual = [line.strip() for line in data["stderr"].splitlines()
+        expect = "# Search PATH fuer python3.99.exe"
+        actual = [line.strip() fuer line in data["stderr"].splitlines()
                   if line.startswith("# Search PATH")]
         self.assertEqual([expect], actual)

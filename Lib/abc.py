@@ -12,7 +12,7 @@ def abstractmethod(funcobj):
     instantiated unless all of its abstract methods are overridden.
     The abstract methods can be called using any of the normal
     'super' call mechanisms.  abstractmethod() may be used to declare
-    abstract methods for properties and descriptors.
+    abstract methods fuer properties and descriptors.
 
     Usage:
 
@@ -90,7 +90,7 @@ except ImportError:
     ABCMeta.__module__ = 'abc'
 else:
     klasse ABCMeta(type):
-        """Metaclass for defining Abstract Base Classes (ABCs).
+        """Metaclass fuer defining Abstract Base Classes (ABCs).
 
         Use this metaclass to create an ABC.  An ABC can be subclassed
         directly, and then acts as a mix-in class.  You can also register
@@ -115,11 +115,11 @@ else:
             return _abc_register(cls, subclass)
 
         def __instancecheck__(cls, instance):
-            """Override for isinstance(instance, cls)."""
+            """Override fuer isinstance(instance, cls)."""
             return _abc_instancecheck(cls, instance)
 
         def __subclasscheck__(cls, subclass):
-            """Override for issubclass(subclass, cls)."""
+            """Override fuer issubclass(subclass, cls)."""
             return _abc_subclasscheck(cls, subclass)
 
         def _dump_registry(cls, file=None):
@@ -160,7 +160,7 @@ def update_abstractmethods(cls):
     If cls is not an instance of ABCMeta, does nothing.
     """
     if not hasattr(cls, '__abstractmethods__'):
-        # We check for __abstractmethods__ here because cls might by a C
+        # We check fuer __abstractmethods__ here because cls might by a C
         # implementation or a python implementation (especially during
         # testing), and we want to handle both cases.
         return cls
@@ -168,13 +168,13 @@ def update_abstractmethods(cls):
     abstracts = set()
     # Check the existing abstract methods of the parents, keep only the ones
     # that are not implemented.
-    for scls in cls.__bases__:
-        for name in getattr(scls, '__abstractmethods__', ()):
+    fuer scls in cls.__bases__:
+        fuer name in getattr(scls, '__abstractmethods__', ()):
             value = getattr(cls, name, None)
             if getattr(value, "__isabstractmethod__", False):
                 abstracts.add(name)
     # Also add any other newly added abstract methods.
-    for name, value in cls.__dict__.items():
+    fuer name, value in cls.__dict__.items():
         if getattr(value, "__isabstractmethod__", False):
             abstracts.add(name)
     cls.__abstractmethods__ = frozenset(abstracts)

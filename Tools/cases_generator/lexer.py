@@ -1,4 +1,4 @@
-# Parser for C code
+# Parser fuer C code
 # Originally by Mark Shannon (mark@hotpy.org)
 # https://gist.github.com/markshannon/db7ab649440b5af765451bb77c7dba34
 
@@ -8,7 +8,7 @@ from collections.abc import Iterator
 
 
 def choice(*opts: str) -> str:
-    return "|".join("(%s)" % opt for opt in opts)
+    return "|".join("(%s)" % opt fuer opt in opts)
 
 
 # Regexes
@@ -73,10 +73,10 @@ SEMI = r";"
 COLON = r":"
 BACKSLASH = r"\\"
 
-operators = {op: pattern for op, pattern in globals().items() if op == op.upper()}
-for op in operators:
+operators = {op: pattern fuer op, pattern in globals().items() if op == op.upper()}
+fuer op in operators:
     globals()[op] = op
-opmap = {pattern.replace("\\", "") or "\\": op for op, pattern in operators.items()}
+opmap = {pattern.replace("\\", "") or "\\": op fuer op, pattern in operators.items()}
 
 # Macros
 macro = r"#.*\n"
@@ -221,7 +221,7 @@ LABEL = "LABEL"
 kwds.append(LABEL)
 SPILLED = "SPILLED"
 kwds.append(SPILLED)
-keywords = {name.lower(): name for name in kwds}
+keywords = {name.lower(): name fuer name in kwds}
 
 ANNOTATION = "ANNOTATION"
 annotations = {
@@ -293,7 +293,7 @@ klasse Token:
 
 def tokenize(src: str, line: int = 1, filename: str = "") -> Iterator[Token]:
     linestart = -1
-    for m in matcher.finditer(src):
+    fuer m in matcher.finditer(src):
         start, end = m.span()
         macro_body = ""
         text = m.group(0)
@@ -362,7 +362,7 @@ def tokenize(src: str, line: int = 1, filename: str = "") -> Iterator[Token]:
 def to_text(tkns: list[Token], dedent: int = 0) -> str:
     res: list[str] = []
     line, col = -1, 1 + dedent
-    for tkn in tkns:
+    fuer tkn in tkns:
         if line == -1:
             line, _ = tkn.begin
         l, c = tkn.begin
@@ -391,5 +391,5 @@ if __name__ == "__main__":
     else:
         src = open(filename).read()
     # print(to_text(tokenize(src)))
-    for tkn in tokenize(src, filename=filename):
+    fuer tkn in tokenize(src, filename=filename):
         print(tkn)

@@ -1,5 +1,5 @@
 """
-Simple implementation of JoinablePath, for use in pathlib tests.
+Simple implementation of JoinablePath, fuer use in pathlib tests.
 """
 
 import ntpath

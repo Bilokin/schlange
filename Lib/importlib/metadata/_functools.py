@@ -22,7 +22,7 @@ def method_cache(method, cache_wrapper=None):
     >>> a = MyClass()
     >>> a.method(3)
     3
-    >>> for x in range(75):
+    >>> fuer x in range(75):
     ...     res = a.method(x)
     >>> a.calls
     75
@@ -30,10 +30,10 @@ def method_cache(method, cache_wrapper=None):
     Note that the apparent behavior will be exactly like that of lru_cache
     except that the cache is stored on each instance, so values in one
     instance will not flush values from another, and when an instance is
-    deleted, so are the cached values for that instance.
+    deleted, so are the cached values fuer that instance.
 
     >>> b = MyClass()
-    >>> for x in range(35):
+    >>> fuer x in range(35):
     ...     res = b.method(x)
     >>> b.calls
     35
@@ -50,7 +50,7 @@ def method_cache(method, cache_wrapper=None):
 
     >>> a.method.cache_clear()
 
-    Same for a method that hasn't yet been called.
+    Same fuer a method that hasn't yet been called.
 
     >>> c = MyClass()
     >>> c.method.cache_clear()
@@ -68,7 +68,7 @@ def method_cache(method, cache_wrapper=None):
 
     See also
     http://code.activestate.com/recipes/577452-a-memoize-decorator-for-instance-methods/
-    for another implementation and additional justification.
+    fuer another implementation and additional justification.
     """
     cache_wrapper = cache_wrapper or functools.lru_cache()
 

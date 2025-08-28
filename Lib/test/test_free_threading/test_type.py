@@ -21,13 +21,13 @@ klasse A:
 klasse TestType(TestCase):
     def test_attr_cache(self):
         def read(id0):
-            for _ in range(ITERS):
-                for _ in range(BOTTOM, TOP):
+            fuer _ in range(ITERS):
+                fuer _ in range(BOTTOM, TOP):
                     A.attr
 
         def write(id0):
-            for _ in range(ITERS):
-                for _ in range(BOTTOM, TOP):
+            fuer _ in range(ITERS):
+                fuer _ in range(BOTTOM, TOP):
                     # Make _PyType_Lookup cache hot first
                     A.attr
                     A.attr
@@ -46,13 +46,13 @@ klasse TestType(TestCase):
             x = 0
 
         def writer_func():
-            for _ in range(3000):
+            fuer _ in range(3000):
                 C.x
                 C.x
                 C.x += 1
 
         def reader_func():
-            for _ in range(3000):
+            fuer _ in range(3000):
                 # We should always see a greater value read from the type than the
                 # dictionary
                 a = C.__dict__['x']
@@ -69,13 +69,13 @@ klasse TestType(TestCase):
             pass
 
         def writer_func():
-            for _ in range(3000):
+            fuer _ in range(3000):
                 D.x
                 D.x
                 C.x += 1
 
         def reader_func():
-            for _ in range(3000):
+            fuer _ in range(3000):
                 # We should always see a greater value read from the type than the
                 # dictionary
                 a = C.__dict__['x']
@@ -96,7 +96,7 @@ klasse TestType(TestCase):
         thing = Foo()
         def work():
             foo = thing
-            for _ in range(loops):
+            fuer _ in range(loops):
                 foo.__class__ = Bar
                 type(foo)
                 foo.__class__ = Foo
@@ -104,12 +104,12 @@ klasse TestType(TestCase):
 
 
         threads = []
-        for i in range(NTHREADS):
+        fuer i in range(NTHREADS):
             thread = threading.Thread(target=work)
             thread.start()
             threads.append(thread)
 
-        for thread in threads:
+        fuer thread in threads:
             thread.join()
 
     def test_object_class_change(self):
@@ -132,11 +132,11 @@ klasse TestType(TestCase):
             pass
 
         def writer():
-            for _ in range(1000):
+            fuer _ in range(1000):
                 Foo.__name__ = 'Bar'
 
         def reader():
-            for _ in range(1000):
+            fuer _ in range(1000):
                 Foo.__name__
 
         self.run_one(writer, reader)
@@ -152,14 +152,14 @@ klasse TestType(TestCase):
 
         writer = Thread(target=wrap_target(writer_func))
         readers = []
-        for x in range(NTHREADS - 1):
+        fuer x in range(NTHREADS - 1):
             reader = Thread(target=wrap_target(reader_func))
             readers.append(reader)
             reader.start()
 
         writer.start()
         writer.join()
-        for reader in readers:
+        fuer reader in readers:
             reader.join()
 
 if __name__ == "__main__":

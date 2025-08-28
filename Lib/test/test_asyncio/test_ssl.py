@@ -199,7 +199,7 @@ klasse TestSSL(test_utils.TestCase):
     def test_create_server_ssl_1(self, size):
         CNT = 0           # number of clients that were successful
         TOTAL_CNT = size  # total number of clients that test will create
-        TIMEOUT = support.LONG_TIMEOUT  # timeout for this test
+        TIMEOUT = support.LONG_TIMEOUT  # timeout fuer this test
 
         A_DATA = b'A' * 1024 * BUF_MULTIPLIER
         B_DATA = b'B' * 1024 * BUF_MULTIPLIER
@@ -274,7 +274,7 @@ klasse TestSSL(test_utils.TestCase):
                 addr = srv_socks[0].getsockname()
 
                 tasks = []
-                for _ in range(TOTAL_CNT):
+                fuer _ in range(TOTAL_CNT):
                     tasks.append(test_client(addr))
 
                 await asyncio.wait_for(asyncio.gather(*tasks), TIMEOUT)
@@ -288,7 +288,7 @@ klasse TestSSL(test_utils.TestCase):
 
         self.assertEqual(CNT, TOTAL_CNT)
 
-        for client in clients:
+        fuer client in clients:
             client.stop()
 
     def test_create_connection_ssl_1(self):
@@ -376,7 +376,7 @@ klasse TestSSL(test_utils.TestCase):
                                  max_clients=TOTAL_CNT,
                                  backlog=TOTAL_CNT) as srv:
                 tasks = []
-                for _ in range(TOTAL_CNT):
+                fuer _ in range(TOTAL_CNT):
                     tasks.append(coro(srv.addr))
 
                 self.loop.run_until_complete(_gather(*tasks))
@@ -800,7 +800,7 @@ klasse TestSSL(test_utils.TestCase):
                 asyncio.wait_for(client(srv.addr),
                                  timeout=support.SHORT_TIMEOUT))
 
-        # No garbage is left for SSL client from loop.create_connection, even
+        # No garbage is left fuer SSL client from loop.create_connection, even
         # if user stores the SSLTransport in corresponding protocol instance
         client_context = weakref.ref(client_context)
         self.assertIsNone(client_context())
@@ -891,7 +891,7 @@ klasse TestSSL(test_utils.TestCase):
             new_tr.close()
 
             # connection_made() should be called only once -- when
-            # we establish connection for the first time. Start TLS
+            # we establish connection fuer the first time. Start TLS
             # doesn't call connection_made() on application protocols.
             self.assertEqual(client_con_made_calls, 1)
 
@@ -1043,7 +1043,7 @@ klasse TestSSL(test_utils.TestCase):
     def test_create_server_ssl_over_ssl(self, size):
         CNT = 0           # number of clients that were successful
         TOTAL_CNT = size  # total number of clients that test will create
-        TIMEOUT = support.LONG_TIMEOUT  # timeout for this test
+        TIMEOUT = support.LONG_TIMEOUT  # timeout fuer this test
 
         A_DATA = b'A' * 1024 * BUF_MULTIPLIER
         B_DATA = b'B' * 1024 * BUF_MULTIPLIER
@@ -1168,7 +1168,7 @@ klasse TestSSL(test_utils.TestCase):
                 addr = srv_socks[0].getsockname()
 
                 tasks = []
-                for _ in range(TOTAL_CNT):
+                fuer _ in range(TOTAL_CNT):
                     tasks.append(test_client(addr))
 
                 await asyncio.wait_for(asyncio.gather(*tasks), TIMEOUT)
@@ -1182,7 +1182,7 @@ klasse TestSSL(test_utils.TestCase):
 
         self.assertEqual(CNT, TOTAL_CNT)
 
-        for client in clients:
+        fuer client in clients:
             client.stop()
 
     def test_shutdown_cleanly(self):
@@ -1240,7 +1240,7 @@ klasse TestSSL(test_utils.TestCase):
                                  max_clients=TOTAL_CNT,
                                  backlog=TOTAL_CNT) as srv:
                 tasks = []
-                for _ in range(TOTAL_CNT):
+                fuer _ in range(TOTAL_CNT):
                     tasks.append(coro(srv.addr))
 
                 self.loop.run_until_complete(
@@ -1293,7 +1293,7 @@ klasse TestSSL(test_utils.TestCase):
             self.assertEqual(data, b'pong')
 
             sslprotocol.pause_writing()
-            for _ in range(SIZE):
+            fuer _ in range(SIZE):
                 writer.write(b'x' * CHUNK)
 
             writer.close()
@@ -1350,9 +1350,9 @@ klasse TestSSL(test_utils.TestCase):
             sslobj.write(b'pong')
             sock.send(outgoing.read())
 
-            time.sleep(0.2)  # wait for the peer to fill its backlog
+            time.sleep(0.2)  # wait fuer the peer to fill its backlog
 
-            # send close_notify but don't wait for response
+            # send close_notify but don't wait fuer response
             with self.assertRaises(ssl.SSLWantReadError):
                 sslobj.unwrap()
             sock.send(outgoing.read())
@@ -1380,7 +1380,7 @@ klasse TestSSL(test_utils.TestCase):
             self.assertEqual(sock.recv_all(4), b'ping')
             sock.send(b'pong')
 
-            time.sleep(0.2)  # wait for the peer to fill its backlog
+            time.sleep(0.2)  # wait fuer the peer to fill its backlog
 
             # send EOF
             sock.shutdown(socket.SHUT_WR)
@@ -1404,7 +1404,7 @@ klasse TestSSL(test_utils.TestCase):
             self.assertEqual(data, b'pong')
 
             # fill write backlog in a hacky way - renegotiation won't help
-            for _ in range(SIZE):
+            fuer _ in range(SIZE):
                 writer.transport._test__append_write_backlog(b'x' * CHUNK)
 
             try:
@@ -1481,9 +1481,9 @@ klasse TestSSL(test_utils.TestCase):
             sslobj.write(b'pong')
             sock.send(outgoing.read())
 
-            time.sleep(0.2)  # wait for the peer to fill its backlog
+            time.sleep(0.2)  # wait fuer the peer to fill its backlog
 
-            # send close_notify but don't wait for response
+            # send close_notify but don't wait fuer response
             with self.assertRaises(ssl.SSLWantReadError):
                 sslobj.unwrap()
             sock.send(outgoing.read())
@@ -1511,7 +1511,7 @@ klasse TestSSL(test_utils.TestCase):
             self.assertEqual(sock.recv_all(4), b'ping')
             sock.send(b'pong')
 
-            time.sleep(0.2)  # wait for the peer to fill its backlog
+            time.sleep(0.2)  # wait fuer the peer to fill its backlog
 
             # send EOF
             sock.shutdown(socket.SHUT_WR)
@@ -1535,7 +1535,7 @@ klasse TestSSL(test_utils.TestCase):
             self.assertEqual(data, b'pong')
 
             # fill write backlog in a hacky way - renegotiation won't help
-            for _ in range(SIZE*2):
+            fuer _ in range(SIZE*2):
                 writer.transport._test__append_write_backlog(b'x' * CHUNK)
 
             try:

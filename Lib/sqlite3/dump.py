@@ -20,7 +20,7 @@ def _iterdump(connection, *, filter=None):
     Returns an iterator to the dump of the database in an SQL text format.
 
     Used to produce an SQL dump of the database.  Useful to save an in-memory
-    database for later restoration.  This function should not be called
+    database fuer later restoration.  This function should not be called
     directly but instead called from the Connection method, iterdump().
     """
 
@@ -40,7 +40,7 @@ def _iterdump(connection, *, filter=None):
     else:
         filter_name_clause = ""
         params = []
-    # sqlite_master table contains the SQL CREATE statements for the database.
+    # sqlite_master table contains the SQL CREATE statements fuer the database.
     q = f"""
         SELECT "name", "type", "sql"
         FROM "sqlite_master"
@@ -51,13 +51,13 @@ def _iterdump(connection, *, filter=None):
         """
     schema_res = cu.execute(q, params)
     sqlite_sequence = []
-    for table_name, type, sql in schema_res.fetchall():
+    fuer table_name, type, sql in schema_res.fetchall():
         if table_name == 'sqlite_sequence':
             rows = cu.execute('SELECT * FROM "sqlite_sequence";')
             sqlite_sequence = ['DELETE FROM "sqlite_sequence"']
             sqlite_sequence += [
                 f'INSERT INTO "sqlite_sequence" VALUES({_quote_value(table_name)},{seq_value})'
-                for table_name, seq_value in rows.fetchall()
+                fuer table_name, seq_value in rows.fetchall()
             ]
             continue
         elif table_name == 'sqlite_stat1':
@@ -76,18 +76,18 @@ def _iterdump(connection, *, filter=None):
         else:
             yield('{0};'.format(sql))
 
-        # Build the insert statement for each row of the current table
+        # Build the insert statement fuer each row of the current table
         table_name_ident = _quote_name(table_name)
         res = cu.execute(f'PRAGMA table_info({table_name_ident})')
-        column_names = [str(table_info[1]) for table_info in res.fetchall()]
+        column_names = [str(table_info[1]) fuer table_info in res.fetchall()]
         q = "SELECT 'INSERT INTO {0} VALUES('{1}')' FROM {0};".format(
             table_name_ident,
             "','".join(
-                "||quote({0})||".format(_quote_name(col)) for col in column_names
+                "||quote({0})||".format(_quote_name(col)) fuer col in column_names
             )
         )
         query_res = cu.execute(q)
-        for row in query_res:
+        fuer row in query_res:
             yield("{0};".format(row[0]))
 
     # Now when the type is 'index', 'trigger', or 'view'
@@ -99,7 +99,7 @@ def _iterdump(connection, *, filter=None):
             {filter_name_clause}
         """
     schema_res = cu.execute(q, params)
-    for name, type, sql in schema_res.fetchall():
+    fuer name, type, sql in schema_res.fetchall():
         yield('{0};'.format(sql))
 
     if writeable_schema:
@@ -107,7 +107,7 @@ def _iterdump(connection, *, filter=None):
 
     # gh-79009: Yield statements concerning the sqlite_sequence table at the
     # end of the transaction.
-    for row in sqlite_sequence:
+    fuer row in sqlite_sequence:
         yield('{0};'.format(row))
 
     yield('COMMIT;')

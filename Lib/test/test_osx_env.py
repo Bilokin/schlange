@@ -1,5 +1,5 @@
 """
-Test suite for OS X interpreter environment variables.
+Test suite fuer OS X interpreter environment variables.
 """
 
 from test.support.os_helper import EnvironmentVarGuard

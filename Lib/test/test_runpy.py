@@ -30,7 +30,7 @@ from runpy import _run_code, _run_module_code, run_module, run_path
 # Note: This module can't safely test _run_module_as_main as it
 # runs its tests in the current process, which would mess with the
 # real __main__ module (usually test.regrtest)
-# See test_cmd_line_script for a test that executes that code path
+# See test_cmd_line_script fuer a test that executes that code path
 
 
 # Set up the test code and expected results
@@ -93,7 +93,7 @@ klasse CodeExecutionMixin:
         result_ns = result_ns.copy()
         expected_ns = expected_ns.copy()
         # Impls are permitted to add extra names, so filter them out
-        for k in list(result_ns):
+        fuer k in list(result_ns):
             if k.startswith("__") and k.endswith("__"):
                 if k not in expected_ns:
                     result_ns.pop(k)
@@ -107,11 +107,11 @@ klasse CodeExecutionMixin:
             self.assertIsNone(result_spec)
         else:
             # If an expected loader is set, we just check we got the right
-            # type, rather than checking for full equality
+            # type, rather than checking fuer full equality
             if expected_spec.loader is not None:
                 self.assertEqual(type(result_spec.loader),
                                  type(expected_spec.loader))
-            for attr in self.CHECKED_SPEC_ATTRIBUTES:
+            fuer attr in self.CHECKED_SPEC_ATTRIBUTES:
                 k = "__spec__." + attr
                 actual = (k, getattr(result_spec, attr))
                 expected = (k, getattr(expected_spec, attr))
@@ -119,7 +119,7 @@ klasse CodeExecutionMixin:
         # For the rest, we still don't use direct dict comparison on the
         # namespace, as the diffs are too hard to debug if anything breaks
         self.assertEqual(set(result_ns), set(expected_ns))
-        for k in result_ns:
+        fuer k in result_ns:
             actual = (k, result_ns[k])
             expected = (k, expected_ns[k])
             self.assertEqual(actual, expected)
@@ -152,7 +152,7 @@ klasse CodeExecutionMixin:
 
 
 klasse ExecutionLayerTestCase(unittest.TestCase, CodeExecutionMixin):
-    """Unit tests for runpy._run_code and runpy._run_module_code"""
+    """Unit tests fuer runpy._run_code and runpy._run_module_code"""
 
     def test_run_code(self):
         expected_ns = example_namespace.copy()
@@ -191,7 +191,7 @@ klasse ExecutionLayerTestCase(unittest.TestCase, CodeExecutionMixin):
 
 # TODO: Use self.addCleanup to get rid of a lot of try-finally blocks
 klasse RunModuleTestCase(unittest.TestCase, CodeExecutionMixin):
-    """Unit tests for runpy.run_module"""
+    """Unit tests fuer runpy.run_module"""
 
     def expect_import_error(self, mod_name):
         try:
@@ -199,7 +199,7 @@ klasse RunModuleTestCase(unittest.TestCase, CodeExecutionMixin):
         except ImportError:
             pass
         else:
-            self.fail("Expected import error for " + mod_name)
+            self.fail("Expected import error fuer " + mod_name)
 
     def test_invalid_names(self):
         # Builtin module
@@ -242,7 +242,7 @@ klasse RunModuleTestCase(unittest.TestCase, CodeExecutionMixin):
         if depth:
             namespace_flags = [parent_namespaces] * depth
             namespace_flags[-1] = namespace
-            for namespace_flag in namespace_flags:
+            fuer namespace_flag in namespace_flags:
                 sub_dir = os.path.join(sub_dir, pkg_name)
                 pkg_fname = self._add_pkg_dir(sub_dir, namespace_flag)
                 if verbose > 1: print("  Next level in:", sub_dir)
@@ -257,19 +257,19 @@ klasse RunModuleTestCase(unittest.TestCase, CodeExecutionMixin):
         return pkg_dir, mod_fname, mod_name, mod_spec
 
     def _del_pkg(self, top):
-        for entry in list(sys.modules):
+        fuer entry in list(sys.modules):
             if entry.startswith("__runpy_pkg__"):
                 del sys.modules[entry]
         if verbose > 1: print("  Removed sys.modules entries")
         del sys.path[0]
         if verbose > 1: print("  Removed sys.path entry")
-        for root, dirs, files in os.walk(top, topdown=False):
-            for name in files:
+        fuer root, dirs, files in os.walk(top, topdown=False):
+            fuer name in files:
                 try:
                     os.remove(os.path.join(root, name))
                 except OSError as ex:
                     if verbose > 1: print(ex) # Persist with cleaning up
-            for name in dirs:
+            fuer name in dirs:
                 fullname = os.path.join(root, name)
                 try:
                     os.rmdir(fullname)
@@ -379,7 +379,7 @@ klasse RunModuleTestCase(unittest.TestCase, CodeExecutionMixin):
             raise ValueError("Relative module test needs depth > 1")
         pkg_name = "__runpy_pkg__"
         module_dir = base_dir
-        for i in range(depth):
+        fuer i in range(depth):
             parent_dir = module_dir
             module_dir = os.path.join(module_dir, pkg_name)
         # Add sibling module
@@ -438,17 +438,17 @@ from ..uncle.cousin import nephew
         if verbose > 1: print("Module executed successfully")
 
     def test_run_module(self):
-        for depth in range(4):
+        fuer depth in range(4):
             if verbose > 1: print("Testing package depth:", depth)
             self._check_module(depth)
 
     def test_run_module_in_namespace_package(self):
-        for depth in range(1, 4):
+        fuer depth in range(1, 4):
             if verbose > 1: print("Testing package depth:", depth)
             self._check_module(depth, namespace=True, parent_namespaces=True)
 
     def test_run_package(self):
-        for depth in range(1, 4):
+        fuer depth in range(1, 4):
             if verbose > 1: print("Testing package depth:", depth)
             self._check_package(depth)
 
@@ -461,7 +461,7 @@ from ..uncle.cousin import nephew
         init = os.path.join(pkg_dir, "__runpy_pkg__", "__init__.py")
 
         exceptions = (ImportError, AttributeError, TypeError, ValueError)
-        for exception in exceptions:
+        fuer exception in exceptions:
             name = exception.__name__
             with self.subTest(name):
                 source = "raise {0}('{0} in __init__.py.')".format(name)
@@ -506,43 +506,43 @@ from ..uncle.cousin import nephew
             run_module(package)
 
     def test_run_package_in_namespace_package(self):
-        for depth in range(1, 4):
+        fuer depth in range(1, 4):
             if verbose > 1: print("Testing package depth:", depth)
             self._check_package(depth, parent_namespaces=True)
 
     def test_run_namespace_package(self):
-        for depth in range(1, 4):
+        fuer depth in range(1, 4):
             if verbose > 1: print("Testing package depth:", depth)
             self._check_package(depth, namespace=True)
 
     def test_run_namespace_package_in_namespace_package(self):
-        for depth in range(1, 4):
+        fuer depth in range(1, 4):
             if verbose > 1: print("Testing package depth:", depth)
             self._check_package(depth, namespace=True, parent_namespaces=True)
 
     def test_run_module_alter_sys(self):
-        for depth in range(4):
+        fuer depth in range(4):
             if verbose > 1: print("Testing package depth:", depth)
             self._check_module(depth, alter_sys=True)
 
     def test_run_package_alter_sys(self):
-        for depth in range(1, 4):
+        fuer depth in range(1, 4):
             if verbose > 1: print("Testing package depth:", depth)
             self._check_package(depth, alter_sys=True)
 
     def test_explicit_relative_import(self):
-        for depth in range(2, 5):
+        fuer depth in range(2, 5):
             if verbose > 1: print("Testing relative imports at depth:", depth)
             self._check_relative_imports(depth)
 
     def test_main_relative_import(self):
-        for depth in range(2, 5):
+        fuer depth in range(2, 5):
             if verbose > 1: print("Testing main relative imports at depth:", depth)
             self._check_relative_imports(depth, "__main__")
 
     def test_run_name(self):
         depth = 1
-        run_name = "And now for something completely different"
+        run_name = "And now fuer something completely different"
         pkg_dir, mod_fname, mod_name, mod_spec = (
                self._make_pkg(example_source, depth))
         forget(mod_name)
@@ -571,12 +571,12 @@ from ..uncle.cousin import nephew
         module_suffixes = ["uncle.cousin.nephew", base_name + ".sibling"]
         expected_packages = set()
         expected_modules = set()
-        for depth in range(1, max_depth):
+        fuer depth in range(1, max_depth):
             pkg_name = ".".join([base_name] * depth)
             expected_packages.add(pkg_name)
-            for name in package_suffixes:
+            fuer name in package_suffixes:
                 expected_packages.add(pkg_name + "." + name)
-            for name in module_suffixes:
+            fuer name in module_suffixes:
                 expected_modules.add(pkg_name + "." + name)
         pkg_name = ".".join([base_name] * max_depth)
         expected_packages.add(pkg_name)
@@ -584,9 +584,9 @@ from ..uncle.cousin import nephew
         pkg_dir, mod_fname, mod_name, mod_spec = (
                self._make_pkg("", max_depth))
         self.addCleanup(self._del_pkg, pkg_dir)
-        for depth in range(2, max_depth+1):
+        fuer depth in range(2, max_depth+1):
             self._add_relative_modules(pkg_dir, "", depth)
-        for moduleinfo in pkgutil.walk_packages([pkg_dir]):
+        fuer moduleinfo in pkgutil.walk_packages([pkg_dir]):
             self.assertIsInstance(moduleinfo, pkgutil.ModuleInfo)
             self.assertIsInstance(moduleinfo.module_finder,
                                   importlib.machinery.FileFinder)
@@ -598,7 +598,7 @@ from ..uncle.cousin import nephew
         self.assertEqual(len(expected_modules), 0, expected_modules)
 
 klasse RunPathTestCase(unittest.TestCase, CodeExecutionMixin):
-    """Unit tests for runpy.run_path"""
+    """Unit tests fuer runpy.run_path"""
 
     def _make_test_script(self, script_dir, script_basename,
                           source=None, omit_suffix=False):

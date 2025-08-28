@@ -64,7 +64,7 @@ klasse CommonTest(seq_tests.CommonTest):
     @skip_emscripten_stack_overflow()
     def test_repr_deep(self):
         a = self.type2test([])
-        for i in range(200_000):
+        fuer i in range(200_000):
             a = self.type2test([a])
         self.assertRaises(RecursionError, repr, a)
 
@@ -152,7 +152,7 @@ klasse CommonTest(seq_tests.CommonTest):
         l = [0, 1]
         a = self.type2test(l)
 
-        for i in range(-3, 4):
+        fuer i in range(-3, 4):
             a[:i] = l[:i]
             self.assertEqual(a, l)
             a2 = a[:]
@@ -163,7 +163,7 @@ klasse CommonTest(seq_tests.CommonTest):
             a2 = a[:]
             a2[i:] = a[i:]
             self.assertEqual(a2, a)
-            for j in range(-3, 4):
+            fuer j in range(-3, 4):
                 a[i:j] = l[i:j]
                 self.assertEqual(a, l)
                 a2 = a[:]
@@ -368,7 +368,7 @@ klasse CommonTest(seq_tests.CommonTest):
         d = self.type2test(['a', 'b', BadCmp2(), 'c'])
         e = self.type2test(d)
         self.assertRaises(BadExc, d.remove, 'c')
-        for x, y in zip(d, e):
+        fuer x, y in zip(d, e):
             # verify that original order and values are retained.
             self.assertIs(x, y)
 
@@ -387,7 +387,7 @@ klasse CommonTest(seq_tests.CommonTest):
                 del self.victim[:]
                 return False
         a = self.type2test()
-        a[:] = [EvilCmp(a) for _ in range(100)]
+        a[:] = [EvilCmp(a) fuer _ in range(100)]
         # This used to seg fault before patch #1005778
         self.assertRaises(ValueError, a.index, None)
 
@@ -567,7 +567,7 @@ klasse CommonTest(seq_tests.CommonTest):
         a = self.type2test([1, 2, 3])
         exhit = iter(a)
         empit = iter(a)
-        for x in exhit:  # exhaust the iterator
+        fuer x in exhit:  # exhaust the iterator
             next(empit)  # not exhausted
         a.append(9)
         self.assertEqual(list(exhit), [])
@@ -576,5 +576,5 @@ klasse CommonTest(seq_tests.CommonTest):
 
         # gh-115733: Crash when iterating over exhausted iterator
         exhit = iter(self.type2test([1, 2, 3]))
-        for _ in exhit:
+        fuer _ in exhit:
             next(exhit, 1)

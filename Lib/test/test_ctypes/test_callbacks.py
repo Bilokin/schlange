@@ -95,7 +95,7 @@ klasse Callbacks(unittest.TestCase):
 
     def test_pyobject(self):
         o = ()
-        for o in (), [], object():
+        fuer o in (), [], object():
             initial = sys.getrefcount(o)
             # This call leaks a reference to 'o'...
             self.check_type(py_object, o)
@@ -106,9 +106,9 @@ klasse Callbacks(unittest.TestCase):
             self.assertEqual((after, o), (before, o))
 
     def test_unsupported_restype_1(self):
-        # Only "fundamental" result types are supported for callback
+        # Only "fundamental" result types are supported fuer callback
         # functions, the type must have a non-NULL stginfo->setfunc.
-        # POINTER(c_double), for example, is not supported.
+        # POINTER(c_double), fuer example, is not supported.
 
         prototype = self.functype.__func__(POINTER(c_double))
         # The type is checked when the prototype is called
@@ -126,10 +126,10 @@ klasse Callbacks(unittest.TestCase):
             def __init__(self):
                 self.v = proto(self.func)
 
-        for i in range(32):
+        fuer i in range(32):
             X()
         gc.collect()
-        live = [x for x in gc.get_objects()
+        live = [x fuer x in gc.get_objects()
                 if isinstance(x, X)]
         self.assertEqual(len(live), 0)
 
@@ -150,7 +150,7 @@ klasse Callbacks(unittest.TestCase):
             return c
         dll = cdll[_ctypes_test.__file__]
         with support.captured_stdout() as out:
-            # With no fix for i38748, the next line will raise OSError and cause the test to fail.
+            # With no fix fuer i38748, the next line will raise OSError and cause the test to fail.
             self.assertEqual(dll._test_i38748_runCallback(callback, 5, 10), 15)
             self.assertEqual(out.getvalue(), "a=5, b=10, c=15\n")
 

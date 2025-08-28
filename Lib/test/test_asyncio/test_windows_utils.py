@@ -1,4 +1,4 @@
-"""Tests for window_utils"""
+"""Tests fuer window_utils"""
 
 import sys
 import unittest
@@ -94,7 +94,7 @@ klasse PopenTests(unittest.TestCase):
                                 stdout=windows_utils.PIPE,
                                 stderr=windows_utils.PIPE)
 
-        for f in [p.stdin, p.stdout, p.stderr]:
+        fuer f in [p.stdin, p.stdout, p.stderr]:
             self.assertIsInstance(f, windows_utils.PipeHandle)
 
         ovin = _overlapped.Overlapped()
@@ -106,7 +106,7 @@ klasse PopenTests(unittest.TestCase):
         overr.ReadFile(p.stderr.handle, 100)
 
         events = [ovin.event, ovout.event, overr.event]
-        # Super-long timeout for slow buildbots.
+        # Super-long timeout fuer slow buildbots.
         res = _winapi.WaitForMultipleObjects(events, True,
                                              int(support.SHORT_TIMEOUT * 1000))
         self.assertEqual(res, _winapi.WAIT_OBJECT_0)
@@ -120,7 +120,7 @@ klasse PopenTests(unittest.TestCase):
 
         self.assertGreater(len(out), 0)
         self.assertGreater(len(err), 0)
-        # allow for partial reads...
+        # allow fuer partial reads...
         self.assertStartsWith(msg.upper().rstrip(), out)
         self.assertStartsWith(b"stderr", err)
 

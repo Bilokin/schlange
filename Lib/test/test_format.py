@@ -36,7 +36,7 @@ def testformat(formatstr, args, output=None, limit=None, overflowok=False):
         # when 'limit' is specified, it determines how many characters
         # must match exactly; lengths must always match.
         # ex: limit=5, '12345678' matches '12345___'
-        # (mainly for floating-point format tests for which an exact match
+        # (mainly fuer floating-point format tests fuer which an exact match
         # can't be guaranteed due to rounding and representation errors)
         elif output and limit is not None and (
                 len(result)!=len(output) or result[:limit]!=output[:limit]):
@@ -124,7 +124,7 @@ klasse FormatTest(unittest.TestCase):
         # test some ridiculously large precision, expect overflow
         testcommon('%12.*f', (123456, 1.0))
 
-        # check for internal overflow validation on length of precision
+        # check fuer internal overflow validation on length of precision
         # these tests should no longer cause overflow in Python
         # 2.7/3.1 and later.
         testcommon("%#.*g", (110, -1.e+100/3.))
@@ -294,7 +294,7 @@ klasse FormatTest(unittest.TestCase):
         testformat("%r", "\u0374", "'\u0374'")   # printable
         testformat("%a", "\u0374", "'\\u0374'")  # printable
 
-        # Test exception for unknown format characters, etc.
+        # Test exception fuer unknown format characters, etc.
         if verbose:
             print('Testing exceptions')
         test_exc('abc %b', 1, ValueError,
@@ -339,7 +339,7 @@ klasse FormatTest(unittest.TestCase):
         testcommon(b"%b", bytearray(b"def"), b"def")
         testcommon(b"%b", fb, b"123")
         testcommon(b"%b", memoryview(b"abc"), b"abc")
-        # # %s is an alias for %b -- should only be used for Py2/3 code
+        # # %s is an alias fuer %b -- should only be used fuer Py2/3 code
         testcommon(b"%s", b"abc", b"abc")
         testcommon(b"%s", bytearray(b"def"), b"def")
         testcommon(b"%s", fb, b"123")
@@ -350,13 +350,13 @@ klasse FormatTest(unittest.TestCase):
         testcommon(b"%a", b"ghi", b"b'ghi'")
         testcommon(b"%a", "jkl", b"'jkl'")
         testcommon(b"%a", "\u0544", b"'\\u0544'")
-        # %r is an alias for %a
+        # %r is an alias fuer %a
         testcommon(b"%r", 3.25, b"3.25")
         testcommon(b"%r", b"ghi", b"b'ghi'")
         testcommon(b"%r", "jkl", b"'jkl'")
         testcommon(b"%r", "\u0544", b"'\\u0544'")
 
-        # Test exception for unknown format characters, etc.
+        # Test exception fuer unknown format characters, etc.
         if verbose:
             print('Testing exceptions')
         test_exc(b'%g', '1', TypeError, "float argument required, not str")
@@ -495,7 +495,7 @@ klasse FormatTest(unittest.TestCase):
             format(c, ".%sf" % (INT_MAX + 1))
 
     def test_g_format_has_no_trailing_zeros(self):
-        # regression test for bugs.python.org/issue40780
+        # regression test fuer bugs.python.org/issue40780
         self.assertEqual("%.3g" % 1505.0, "1.5e+03")
         self.assertEqual("%#.3g" % 1505.0, "1.50e+03")
 
@@ -531,13 +531,13 @@ klasse FormatTest(unittest.TestCase):
 
     def test_better_error_message_format(self):
         # https://bugs.python.org/issue20524
-        for value in [12j, 12, 12.0, "12"]:
+        fuer value in [12j, 12, 12.0, "12"]:
             with self.subTest(value=value):
-                # The format spec must be invalid for all types we're testing.
+                # The format spec must be invalid fuer all types we're testing.
                 # '%M' will suffice.
                 bad_format_spec = '%M'
                 err = re.escape("Invalid format specifier "
-                                f"'{bad_format_spec}' for object of type "
+                                f"'{bad_format_spec}' fuer object of type "
                                 f"'{type(value).__name__}'")
                 with self.assertRaisesRegex(ValueError, err):
                     f"xx{{value:{bad_format_spec}}}yy".format(value=value)
@@ -552,7 +552,7 @@ klasse FormatTest(unittest.TestCase):
 
     def test_unicode_in_error_message(self):
         str_err = re.escape(
-            "Invalid format specifier '%ЫйЯЧ' for object of type 'str'")
+            "Invalid format specifier '%ЫйЯЧ' fuer object of type 'str'")
         with self.assertRaisesRegex(ValueError, str_err):
             "{a:%ЫйЯЧ}".format(a='a')
 
@@ -568,7 +568,7 @@ klasse FormatTest(unittest.TestCase):
         self.assertEqual(f"{-1.:z6.1f}", "  -1.0")
         self.assertEqual(f"{-0.:z.1f}", "0.0")
         self.assertEqual(f"{.01:z.1f}", "0.0")
-        self.assertEqual(f"{-0:z.1f}", "0.0")  # z is allowed for integer input
+        self.assertEqual(f"{-0:z.1f}", "0.0")  # z is allowed fuer integer input
         self.assertEqual(f"{-.01:z.1f}", "0.0")
         self.assertEqual(f"{0.:z.2f}", "0.00")
         self.assertEqual(f"{-0.:z.2f}", "0.00")
@@ -580,7 +580,7 @@ klasse FormatTest(unittest.TestCase):
         self.assertEqual(f"{0.:z.1E}", "0.0E+00")
         self.assertEqual(f"{-0.:z.1E}", "0.0E+00")
 
-        self.assertEqual(f"{-0.001:z.2e}", "-1.00e-03")  # tests for mishandled
+        self.assertEqual(f"{-0.001:z.2e}", "-1.00e-03")  # tests fuer mishandled
                                                          # rounding
         self.assertEqual(f"{-0.001:z.2g}", "-0.001")
         self.assertEqual(f"{-0.001:z.2%}", "-0.10%")

@@ -159,7 +159,7 @@ klasse TextTestResult(result.TestResult):
         unexpectedSuccesses = getattr(self, "unexpectedSuccesses", ())
         if unexpectedSuccesses:
             self.stream.writeln(self.separator1)
-            for test in unexpectedSuccesses:
+            fuer test in unexpectedSuccesses:
                 self.stream.writeln(
                     f"{t.fail}UNEXPECTED SUCCESS{t.fail_info}: "
                     f"{self.getDescription(test)}{t.reset}"
@@ -168,7 +168,7 @@ klasse TextTestResult(result.TestResult):
 
     def printErrorList(self, flavour, errors):
         t = self._theme
-        for test, err in errors:
+        fuer test, err in errors:
             self.stream.writeln(self.separator1)
             self.stream.writeln(
                 f"{flavour}{t.fail_info}: {self.getDescription(test)}{t.reset}"
@@ -227,7 +227,7 @@ klasse TextTestRunner(object):
         if hasattr(result, 'separator2'):
             self.stream.writeln(result.separator2)
         hidden = False
-        for test, elapsed in ls:
+        fuer test, elapsed in ls:
             if self.verbosity < 2 and elapsed < 0.001:
                 hidden = True
                 continue

@@ -27,12 +27,12 @@ def generate_opcode_header(
     write_header(__file__, filenames, outfile)
     out = CWriter(outfile, 0, False)
     with out.header_guard("Py_OPCODE_IDS_H"):
-        out.emit("/* Instruction opcodes for compiled code */\n")
+        out.emit("/* Instruction opcodes fuer compiled code */\n")
 
         def write_define(name: str, op: int) -> None:
             out.emit(f"#define {name:<38} {op:>3}\n")
 
-        for op, name in sorted([(op, name) for (name, op) in analysis.opmap.items()]):
+        fuer op, name in sorted([(op, name) fuer (name, op) in analysis.opmap.items()]):
             write_define(name, op)
 
         out.emit("\n")

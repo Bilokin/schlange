@@ -1,4 +1,4 @@
-"""Tests for queues.py"""
+"""Tests fuer queues.py"""
 
 import asyncio
 import unittest
@@ -82,10 +82,10 @@ klasse QueueBasicTests(unittest.IsolatedAsyncioTestCase):
 
     async def test_order(self):
         q = asyncio.Queue()
-        for i in [1, 3, 2]:
+        fuer i in [1, 3, 2]:
             await q.put(i)
 
-        items = [await q.get() for _ in range(3)]
+        items = [await q.get() fuer _ in range(3)]
         self.assertEqual([1, 3, 2], items)
 
     async def test_maxsize(self):
@@ -94,13 +94,13 @@ klasse QueueBasicTests(unittest.IsolatedAsyncioTestCase):
         have_been_put = []
 
         async def putter():
-            for i in range(3):
+            fuer i in range(3):
                 await q.put(i)
                 have_been_put.append(i)
             return True
 
         t = asyncio.create_task(putter())
-        for i in range(2):
+        fuer i in range(2):
             await asyncio.sleep(0)
 
         # The putter is blocked after putting two items.
@@ -191,11 +191,11 @@ klasse QueueGetTests(unittest.IsolatedAsyncioTestCase):
 
     async def test_why_are_getters_waiting(self):
         async def consumer(queue, num_expected):
-            for _ in range(num_expected):
+            fuer _ in range(num_expected):
                 await queue.get()
 
         async def producer(queue, num_items):
-            for i in range(num_items):
+            fuer i in range(num_items):
                 await queue.put(i)
 
         producer_num_items = 5
@@ -383,7 +383,7 @@ klasse QueuePutTests(unittest.IsolatedAsyncioTestCase):
         async def getter():
             await asyncio.sleep(0)
             num = queue.qsize()
-            for _ in range(num):
+            fuer _ in range(num):
                 queue.get_nowait()
 
         async with asyncio.TaskGroup() as tg:
@@ -398,7 +398,7 @@ klasse QueuePutTests(unittest.IsolatedAsyncioTestCase):
         queue = asyncio.Queue(maxsize=1)
         queue.put_nowait(1)
 
-        # Task waiting for space to put an item in the queue.
+        # Task waiting fuer space to put an item in the queue.
         put_task = asyncio.create_task(queue.put(1))
         await asyncio.sleep(0)
 
@@ -415,7 +415,7 @@ klasse QueuePutTests(unittest.IsolatedAsyncioTestCase):
         queue = asyncio.Queue(1)
         queue.put_nowait(1)
 
-        # Task waiting for space to put a item in the queue.
+        # Task waiting fuer space to put a item in the queue.
         put_task = asyncio.create_task(queue.put(1))
         await asyncio.sleep(0)
 
@@ -436,10 +436,10 @@ klasse LifoQueueTests(unittest.IsolatedAsyncioTestCase):
 
     async def test_order(self):
         q = asyncio.LifoQueue()
-        for i in [1, 3, 2]:
+        fuer i in [1, 3, 2]:
             await q.put(i)
 
-        items = [await q.get() for _ in range(3)]
+        items = [await q.get() fuer _ in range(3)]
         self.assertEqual([2, 3, 1], items)
 
 
@@ -447,10 +447,10 @@ klasse PriorityQueueTests(unittest.IsolatedAsyncioTestCase):
 
     async def test_order(self):
         q = asyncio.PriorityQueue()
-        for i in [1, 3, 2]:
+        fuer i in [1, 3, 2]:
             await q.put(i)
 
-        items = [await q.get() for _ in range(3)]
+        items = [await q.get() fuer _ in range(3)]
         self.assertEqual([1, 2, 3], items)
 
 
@@ -464,7 +464,7 @@ klasse _QueueJoinTestMixin:
 
     async def test_task_done(self):
         q = self.q_class()
-        for i in range(100):
+        fuer i in range(100):
             q.put_nowait(i)
 
         accumulator = 0
@@ -483,21 +483,21 @@ klasse _QueueJoinTestMixin:
 
         async with asyncio.TaskGroup() as tg:
             tasks = [tg.create_task(worker())
-                     for index in range(2)]
+                     fuer index in range(2)]
 
             await q.join()
             self.assertEqual(sum(range(100)), accumulator)
 
             # close running generators
             running = False
-            for i in range(len(tasks)):
+            fuer i in range(len(tasks)):
                 q.put_nowait(0)
 
     async def test_join_empty_queue(self):
         q = self.q_class()
 
         # Test that a queue join()s successfully, and before anything else
-        # (done twice for insurance).
+        # (done twice fuer insurance).
 
         await q.join()
         await q.join()

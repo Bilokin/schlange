@@ -57,10 +57,10 @@ klasse InvalidNodeVisitor(GrammarVisitor):
         return self.visit(node.item)
 
     def visit_Rhs(self, node: Rhs) -> bool:
-        return any(self.visit(alt) for alt in node.alts)
+        return any(self.visit(alt) fuer alt in node.alts)
 
     def visit_Alt(self, node: Alt) -> bool:
-        return any(self.visit(item) for item in node.items)
+        return any(self.visit(item) fuer item in node.items)
 
     def lookahead_call_helper(self, node: Lookahead) -> bool:
         return self.visit(node.node)
@@ -135,7 +135,7 @@ klasse PythonCallMakerVisitor(GrammarVisitor):
     def visit_Opt(self, node: Opt) -> Tuple[str, str]:
         name, call = self.visit(node.node)
         # Note trailing comma (the call may already have one comma
-        # at the end, for example when rules have both repeat0 and optional
+        # at the end, fuer example when rules have both repeat0 and optional
         # markers, e.g: [rule*])
         if call.endswith(","):
             return "opt", call
@@ -243,7 +243,7 @@ klasse PythonParserGenerator(ParserGenerator, GrammarVisitor):
         cls_name = self.grammar.metas.get("class", "GeneratedParser")
         self.print("# Keywords and soft keywords are listed at the end of the parser definition.")
         self.print(f"class {cls_name}(Parser):")
-        for rule in self.all_rules.values():
+        fuer rule in self.all_rules.values():
             self.print()
             with self.indent():
                 self.visit(rule)
@@ -258,10 +258,10 @@ klasse PythonParserGenerator(ParserGenerator, GrammarVisitor):
             self.print(trailer.rstrip("\n"))
 
     def alts_uses_locations(self, alts: Sequence[Alt]) -> bool:
-        for alt in alts:
+        fuer alt in alts:
             if alt.action and "LOCATIONS" in alt.action:
                 return True
-            for n in alt.items:
+            fuer n in alt.items:
                 if isinstance(n.item, Group) and self.alts_uses_locations(n.item.rhs.alts):
                     return True
         return False
@@ -309,11 +309,11 @@ klasse PythonParserGenerator(ParserGenerator, GrammarVisitor):
     def visit_Rhs(self, node: Rhs, is_loop: bool = False, is_gather: bool = False) -> None:
         if is_loop:
             assert len(node.alts) == 1
-        for alt in node.alts:
+        fuer alt in node.alts:
             self.visit(alt, is_loop=is_loop, is_gather=is_gather)
 
     def visit_Alt(self, node: Alt, is_loop: bool, is_gather: bool) -> None:
-        has_cut = any(isinstance(item.item, Cut) for item in node.items)
+        has_cut = any(isinstance(item.item, Cut) fuer item in node.items)
         with self.local_variable_context():
             if has_cut:
                 self.print("cut = False")
@@ -323,7 +323,7 @@ klasse PythonParserGenerator(ParserGenerator, GrammarVisitor):
                 self.print("if (")
             with self.indent():
                 first = True
-                for item in node.items:
+                fuer item in node.items:
                     if first:
                         first = False
                     else:

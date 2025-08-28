@@ -52,7 +52,7 @@ klasse OperatorTestCase:
         operator = self.module
         actual_all = set(operator.__all__)
         computed_all = set()
-        for name in vars(operator):
+        fuer name in vars(operator):
             if name.startswith('__'):
                 continue
             value = getattr(operator, name)
@@ -629,8 +629,8 @@ klasse OperatorTestCase:
     def test_dunder_is_original(self):
         operator = self.module
 
-        names = [name for name in dir(operator) if not name.startswith('_')]
-        for name in names:
+        names = [name fuer name in dir(operator) if not name.startswith('_')]
+        fuer name in names:
             orig = getattr(operator, name)
             dunder = getattr(operator, '__' + name.strip('_') + '__', None)
             if dunder:
@@ -688,7 +688,7 @@ klasse OperatorPickleTestCase:
         a.t = A()
         a.t.u = A()
         a.t.u.v = 'V'
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             with self.subTest(proto=proto):
                 f = attrgetter('x')
                 f2 = self.copy(f, proto)
@@ -708,7 +708,7 @@ klasse OperatorPickleTestCase:
     def test_itemgetter(self):
         itemgetter = self.module.itemgetter
         a = 'ABCDE'
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             with self.subTest(proto=proto):
                 f = itemgetter(2)
                 f2 = self.copy(f, proto)
@@ -730,7 +730,7 @@ klasse OperatorPickleTestCase:
             def baz(*args, **kwds):
                 return kwds['name'], kwds['self']
         a = A()
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             with self.subTest(proto=proto):
                 f = methodcaller('bar')
                 f2 = self.copy(f, proto)

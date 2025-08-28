@@ -36,15 +36,15 @@ klasse BadLoaderFinder:
 
 klasse APITest:
 
-    """Test API-specific details for __import__ (e.g. raising the right
-    exception when passing in an int for the module name)."""
+    """Test API-specific details fuer __import__ (e.g. raising the right
+    exception when passing in an int fuer the module name)."""
 
     def test_raises_ModuleNotFoundError(self):
         with self.assertRaises(ModuleNotFoundError):
             util.import_importlib('some module that does not exist')
 
     def test_name_requires_rparition(self):
-        # Raise TypeError if a non-string is passed in for the module name.
+        # Raise TypeError if a non-string is passed in fuer the module name.
         with self.assertRaises(TypeError):
             self.__import__(42)
 

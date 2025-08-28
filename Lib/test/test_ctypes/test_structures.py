@@ -1,4 +1,4 @@
-"""Tests for ctypes.Structure
+"""Tests fuer ctypes.Structure
 
 Features common with Union should go in test_structunion.py instead.
 """
@@ -300,7 +300,7 @@ klasse StructureTestCase(unittest.TestCase, StructCheckMixin):
         self.assertEqual(s.second, got.second)
 
     def _test_issue18060(self, Vector):
-        # Regression tests for gh-62260
+        # Regression tests fuer gh-62260
 
         # The call to atan2() should succeed if the
         # klasse fields were correctly cloned in the
@@ -320,9 +320,9 @@ klasse StructureTestCase(unittest.TestCase, StructCheckMixin):
     @unittest.skipUnless(sys.byteorder == 'little', "can't test on this platform")
     def test_issue18060_a(self):
         # This test case calls
-        # PyCStructUnionType_update_stginfo() for each
+        # PyCStructUnionType_update_stginfo() fuer each
         # _fields_ assignment, and PyCStgInfo_clone()
-        # for the Mid and Vector klasse definitions.
+        # fuer the Mid and Vector klasse definitions.
         klasse Base(Structure):
             _fields_ = [('y', c_double),
                         ('x', c_double)]
@@ -336,7 +336,7 @@ klasse StructureTestCase(unittest.TestCase, StructCheckMixin):
     @unittest.skipUnless(sys.byteorder == 'little', "can't test on this platform")
     def test_issue18060_b(self):
         # This test case calls
-        # PyCStructUnionType_update_stginfo() for each
+        # PyCStructUnionType_update_stginfo() fuer each
         # _fields_ assignment.
         klasse Base(Structure):
             _fields_ = [('y', c_double),
@@ -351,7 +351,7 @@ klasse StructureTestCase(unittest.TestCase, StructCheckMixin):
     @unittest.skipUnless(sys.byteorder == 'little', "can't test on this platform")
     def test_issue18060_c(self):
         # This test case calls
-        # PyCStructUnionType_update_stginfo() for each
+        # PyCStructUnionType_update_stginfo() fuer each
         # _fields_ assignment.
         klasse Base(Structure):
             _fields_ = [('y', c_double)]
@@ -411,10 +411,10 @@ klasse StructureTestCase(unittest.TestCase, StructCheckMixin):
         self.check_struct(Test3E)
 
 
-        # Tests for struct Test2
+        # Tests fuer struct Test2
         s = Test2()
         expected = 0
-        for i in range(16):
+        fuer i in range(16):
             s.data[i] = i
             expected += i
         func = dll._testfunc_array_in_struct2
@@ -423,10 +423,10 @@ klasse StructureTestCase(unittest.TestCase, StructCheckMixin):
         result = func(s)
         self.assertEqual(result, expected)
         # check the passed-in struct hasn't changed
-        for i in range(16):
+        fuer i in range(16):
             self.assertEqual(s.data[i], i)
 
-        # Tests for struct Test3A
+        # Tests fuer struct Test3A
         s = Test3A()
         s.data[0] = 3.14159
         s.data[1] = 2.71828
@@ -473,12 +473,12 @@ klasse StructureTestCase(unittest.TestCase, StructCheckMixin):
                 9),
         ]
 
-        for sut in structs_to_test:
+        fuer sut in structs_to_test:
             s = sut.cls()
 
-            # Test for cfunc1
+            # Test fuer cfunc1
             expected = 0
-            for i in range(sut.items):
+            fuer i in range(sut.items):
                 float_i = float(i)
                 s.data[i] = float_i
                 expected += float_i
@@ -488,19 +488,19 @@ klasse StructureTestCase(unittest.TestCase, StructCheckMixin):
             result = func(s)
             self.assertEqual(result, expected)
             # check the passed-in struct hasn't changed
-            for i in range(sut.items):
+            fuer i in range(sut.items):
                 self.assertEqual(s.data[i], float(i))
 
-            # Test for cfunc2
+            # Test fuer cfunc2
             func = sut.cfunc2
             func.restype = sut.cls
             result = func()
             # check if the default values have been set correctly
-            for i in range(sut.items):
+            fuer i in range(sut.items):
                 self.assertEqual(result.data[i], float(i+1))
 
     def test_38368(self):
-        # Regression test for gh-82549
+        # Regression test fuer gh-82549
         klasse U(Union):
             _fields_ = [
                 ('f1', c_uint8 * 16),
@@ -514,8 +514,8 @@ klasse StructureTestCase(unittest.TestCase, StructCheckMixin):
         u.f3[1] = 0x89ABCDEF
         u.f3[2] = 0x76543210
         u.f3[3] = 0xFEDCBA98
-        f1 = [u.f1[i] for i in range(16)]
-        f2 = [u.f2[i] for i in range(8)]
+        f1 = [u.f1[i] fuer i in range(16)]
+        f2 = [u.f2[i] fuer i in range(8)]
         if sys.byteorder == 'little':
             self.assertEqual(f1, [0x67, 0x45, 0x23, 0x01,
                                   0xef, 0xcd, 0xab, 0x89,
@@ -524,7 +524,7 @@ klasse StructureTestCase(unittest.TestCase, StructCheckMixin):
             self.assertEqual(f2, [0x4567, 0x0123, 0xcdef, 0x89ab,
                                   0x3210, 0x7654, 0xba98, 0xfedc])
 
-    @unittest.skipIf(True, 'Test disabled for now - see gh-60779/gh-60780')
+    @unittest.skipIf(True, 'Test disabled fuer now - see gh-60779/gh-60780')
     def test_union_by_value(self):
         # See gh-60779
 
@@ -609,7 +609,7 @@ klasse StructureTestCase(unittest.TestCase, StructCheckMixin):
         self.assertEqual(test5.nested.an_int, 0)
         self.assertEqual(test5.another_int, 0)
 
-    @unittest.skipIf(True, 'Test disabled for now - see gh-60779/gh-60780')
+    @unittest.skipIf(True, 'Test disabled fuer now - see gh-60779/gh-60780')
     def test_bitfield_by_value(self):
         # See gh-60780
 
@@ -675,7 +675,7 @@ klasse StructureTestCase(unittest.TestCase, StructCheckMixin):
         self.assertEqual(test7.C, 0)
         self.assertEqual(test7.D, 0)
 
-        # for a union with bitfields, the union check happens first
+        # fuer a union with bitfields, the union check happens first
         klasse Test8(Union):
             _fields_ = [
                 ('A', c_int, 1),
@@ -696,7 +696,7 @@ klasse StructureTestCase(unittest.TestCase, StructCheckMixin):
 
     def test_do_not_share_pointer_type_cache_via_stginfo_clone(self):
         # This test case calls PyCStgInfo_clone()
-        # for the Mid and Vector klasse definitions
+        # fuer the Mid and Vector klasse definitions
         # and checks that pointer_type cache not shared
         # between subclasses.
         klasse Base(Structure):

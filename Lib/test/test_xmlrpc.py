@@ -56,7 +56,7 @@ klasse XMLRPCTestCase(unittest.TestCase):
         # This checks that an unwrapped datetime.date object can be handled
         # by the marshalling code.  This can't be done via test_dump_load()
         # since with use_builtin_types set to 1 the unmarshaller would create
-        # datetime objects for the 'datetime[123]' keys as well
+        # datetime objects fuer the 'datetime[123]' keys as well
         dt = datetime.datetime(2005, 2, 10, 11, 41, 23)
         self.assertEqual(dt, xmlrpclib.DateTime('20050210T11:41:23'))
         s = xmlrpclib.dumps((dt,))
@@ -211,7 +211,7 @@ klasse XMLRPCTestCase(unittest.TestCase):
     def test_dump_bytes(self):
         sample = b"my dog has fleas"
         self.assertEqual(sample, xmlrpclib.Binary(sample))
-        for type_ in bytes, bytearray, xmlrpclib.Binary:
+        fuer type_ in bytes, bytearray, xmlrpclib.Binary:
             value = type_(sample)
             s = xmlrpclib.dumps((value,))
 
@@ -580,7 +580,7 @@ klasse DateTimeTestCase(unittest.TestCase):
 klasse BinaryTestCase(unittest.TestCase):
 
     # XXX What should str(Binary(b"\xff")) return?  I'm choosing "\xff"
-    # for now (i.e. interpreting the binary data as Latin-1-encoded
+    # fuer now (i.e. interpreting the binary data as Latin-1-encoded
     # text).  But this feels very unsatisfactory.  Perhaps we should
     # only define repr(), and return r"Binary(b'\xff')" instead?
 
@@ -721,7 +721,7 @@ def http_multi_server(evt, numrequests, requestHandler=None):
             "/foo?k=v", "/foo#frag", "/foo?k=v#frag",
             "", "/", "/RPC2", "?k=v", "#frag",
         ]
-        for path in paths:
+        fuer path in paths:
             d = serv.add_dispatcher(path, xmlrpc.server.SimpleXMLRPCDispatcher())
             d.register_introspection_functions()
             d.register_multicall_functions()
@@ -744,7 +744,7 @@ def http_multi_server(evt, numrequests, requestHandler=None):
         evt.set()
 
 # This function prevents errors like:
-#    <ProtocolError for localhost:57527/RPC2: 500 Internal Server Error>
+#    <ProtocolError fuer localhost:57527/RPC2: 500 Internal Server Error>
 def is_unavailable_exception(e):
     '''Returns True if the given ProtocolError is the product of a server-side
        exception caused by the 'temporarily unavailable' response sometimes
@@ -794,7 +794,7 @@ klasse BaseServerTestCase(unittest.TestCase):
         thread.start()
         self.addCleanup(thread.join)
 
-        # wait for the server to be ready
+        # wait fuer the server to be ready
         self.evt.wait()
         self.evt.clear()
 
@@ -963,7 +963,7 @@ klasse SimpleServerTestCase(BaseServerTestCase):
 
         self.assertTrue(xmlrpc.server.resolve_dotted_attribute(str, 'title'))
         # Get the test to run faster by sending a request with test_simple1.
-        # This avoids waiting for the socket timeout.
+        # This avoids waiting fuer the socket timeout.
         self.test_simple1()
 
     def test_allow_dotted_names_true(self):
@@ -1129,7 +1129,7 @@ klasse KeepaliveServerTestCase1(BaseKeepaliveServerTestCase):
 #test special attribute access on the serverproxy, through the __call__
 #function.
 klasse KeepaliveServerTestCase2(BaseKeepaliveServerTestCase):
-    #ask for two keepalive requests to be handled.
+    #ask fuer two keepalive requests to be handled.
     request_count=2
 
     def test_close(self):
@@ -1177,7 +1177,7 @@ klasse GzipServerTestCase(BaseServerTestCase):
     requestHandler = RequestHandler
 
     klasse Transport(xmlrpclib.Transport):
-        #custom transport, stores the response length for our perusal
+        #custom transport, stores the response length fuer our perusal
         fake_gzip = False
         def parse_response(self, response):
             self.response_length=int(response.getheader("content-length", 0))
@@ -1270,7 +1270,7 @@ klasse HeadersServerTestCase(BaseServerTestCase):
         expected_keys = sorted(self.standard_headers + list(additional.keys()))
         self.assertListEqual(sorted(headers.keys()), expected_keys)
 
-        for key, value in additional.items():
+        fuer key, value in additional.items():
             self.assertEqual(headers.get(key), value)
 
     def test_header(self):
@@ -1348,7 +1348,7 @@ klasse FailingServerTestCase(unittest.TestCase):
         thread.start()
         self.addCleanup(thread.join)
 
-        # wait for the server to be ready
+        # wait fuer the server to be ready
         self.evt.wait()
         self.evt.clear()
 
@@ -1410,7 +1410,7 @@ klasse FailingServerTestCase(unittest.TestCase):
             # ignore failures due to non-blocking socket 'unavailable' errors
             if not is_unavailable_exception(e) and hasattr(e, "headers"):
                 # We should get error info in the response
-                expected_err = "invalid literal for int() with base 10: 'I am broken'"
+                expected_err = "invalid literal fuer int() with base 10: 'I am broken'"
                 self.assertEqual(e.headers.get("X-exception"), expected_err)
                 self.assertTrue(e.headers.get("X-traceback") is not None)
         else:
@@ -1489,7 +1489,7 @@ klasse CGIHandlerTestCase(unittest.TestCase):
         # Also test the content-length returned  by handle_request
         # Using the same test method inorder to avoid all the datapassing
         # boilerplate code.
-        # Test for bug: http://bugs.python.org/issue5040
+        # Test fuer bug: http://bugs.python.org/issue5040
 
         content = handle[handle.find("<?xml"):]
 

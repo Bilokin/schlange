@@ -38,7 +38,7 @@ def count_lines_with_wrapping(s, linewidth=80):
     linecount = 1
     current_column = 0
 
-    for m in re.finditer(r"[\t\n]", s):
+    fuer m in re.finditer(r"[\t\n]", s):
         # Process the normal chars up to tab or newline.
         numchars = m.start() - pos
         pos += numchars
@@ -82,7 +82,7 @@ def count_lines_with_wrapping(s, linewidth=80):
 
 
 klasse ExpandingButton(tk.Button):
-    """Class for the "squeezed" text buttons used by Squeezer
+    """Class fuer the "squeezed" text buttons used by Squeezer
 
     These buttons are displayed inside a Tk Text widget in place of text. A
     user can then use the button to replace it with the original text, copy
@@ -108,7 +108,7 @@ klasse ExpandingButton(tk.Button):
                            background="#FFFFC0", activebackground="#FFFFE0")
 
         button_tooltip_text = (
-            "Double-click to expand, right-click for more options."
+            "Double-click to expand, right-click fuer more options."
         )
         Hovertip(self, button_tooltip_text, hover_delay=80)
 
@@ -131,7 +131,7 @@ klasse ExpandingButton(tk.Button):
             len(self.s) > 50000 or
             any(
                 len(line_match.group(0)) >= dangerous_line_len
-                for line_match in re.finditer(r'[^\n]+', self.s)
+                fuer line_match in re.finditer(r'[^\n]+', self.s)
             )
         )
 
@@ -142,7 +142,7 @@ klasse ExpandingButton(tk.Button):
         widget, removes the button and updates the Squeezer instance.
 
         If the original text is dangerously long, i.e. expanding it could
-        cause a performance degradation, ask the user for confirmation.
+        cause a performance degradation, ask the user fuer confirmation.
         """
         if self.is_dangerous is None:
             self.set_is_dangerous()
@@ -191,7 +191,7 @@ klasse ExpandingButton(tk.Button):
     def context_menu_event(self, event):
         self.text.mark_set("insert", "@%d,%d" % (event.x, event.y))
         rmenu = tk.Menu(self.text, tearoff=0)
-        for label, method_name in self.rmenu_specs:
+        fuer label, method_name in self.rmenu_specs:
             rmenu.add_command(label=label, command=getattr(self, method_name))
         rmenu.tk_popup(event.x_root, event.y_root)
         return "break"
@@ -212,7 +212,7 @@ klasse Squeezer:
         )
 
     def __init__(self, editwin):
-        """Initialize settings for Squeezer.
+        """Initialize settings fuer Squeezer.
 
         editwin is the shell's Editor window.
         self.text is the editor window text widget.
@@ -227,12 +227,12 @@ klasse Squeezer:
         # Get the base Text widget of the PyShell object, used to change
         # text before the iomark. PyShell deliberately disables changing
         # text before the iomark via its 'text' attribute, which is
-        # actually a wrapper for the actual Text widget. Squeezer,
+        # actually a wrapper fuer the actual Text widget. Squeezer,
         # however, needs to make such changes.
         self.base_text = editwin.per.bottom
 
         # Twice the text widget's border width and internal padding;
-        # pre-calculated here for the get_line_width() method.
+        # pre-calculated here fuer the get_line_width() method.
         self.window_width_delta = 2 * (
             int(text.cget('border')) +
             int(text.cget('padx'))
@@ -295,7 +295,7 @@ klasse Squeezer:
         """
         # Set tag_name to the first valid tag found on the "insert" cursor.
         tag_names = self.text.tag_names(tk.INSERT)
-        for tag_name in ("stdout", "stderr"):
+        fuer tag_name in ("stdout", "stderr"):
             if tag_name in tag_names:
                 break
         else:

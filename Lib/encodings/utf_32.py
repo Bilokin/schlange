@@ -31,7 +31,7 @@ klasse IncrementalEncoder(codecs.IncrementalEncoder):
 
     def getstate(self):
         # state info we return to the caller:
-        # 0: stream is in natural order for this platform
+        # 0: stream is in natural order fuer this platform
         # 2: endianness hasn't been determined yet
         # (we're never writing in unnatural order)
         return (2 if self.encoder is None else 0)
@@ -72,7 +72,7 @@ klasse IncrementalDecoder(codecs.BufferedIncrementalDecoder):
         # as it isn't passed along to the caller
         state = codecs.BufferedIncrementalDecoder.getstate(self)[0]
         # additional state info we pass to the caller:
-        # 0: stream is in natural order for this platform
+        # 0: stream is in natural order fuer this platform
         # 1: stream is in unnatural order
         # 2: endianness hasn't been determined yet
         if self.decoder is None:

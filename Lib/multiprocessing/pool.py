@@ -1,5 +1,5 @@
 #
-# Module providing the `Pool` klasse for managing a process pool
+# Module providing the `Pool` klasse fuer managing a process pool
 #
 # multiprocessing/pool.py
 #
@@ -140,7 +140,7 @@ def worker(inqueue, outqueue, initializer=None, initargs=(), maxtasks=None,
     util.debug('worker exiting after %d tasks' % completed)
 
 def _helper_reraises_exception(ex):
-    'Pickle-able helper function for use by _guarded_task_generation.'
+    'Pickle-able helper function fuer use by _guarded_task_generation.'
     raise ex
 
 #
@@ -149,7 +149,7 @@ def _helper_reraises_exception(ex):
 
 klasse _PoolCache(dict):
     """
-    Class that implements a cache for the Pool klasse that will notify
+    Class that implements a cache fuer the Pool klasse that will notify
     the pool management threads every time the cache is emptied. The
     notification is done by the use of a queue that is provided when
     instantiating the cache.
@@ -214,10 +214,10 @@ klasse Pool(object):
         try:
             self._repopulate_pool()
         except Exception:
-            for p in self._pool:
+            fuer p in self._pool:
                 if p.exitcode is None:
                     p.terminate()
-            for p in self._pool:
+            fuer p in self._pool:
                 p.join()
             raise
 
@@ -283,7 +283,7 @@ klasse Pool(object):
 
     @staticmethod
     def _get_worker_sentinels(workers):
-        return [worker.sentinel for worker in
+        return [worker.sentinel fuer worker in
                 workers if hasattr(worker, "sentinel")]
 
     @staticmethod
@@ -292,7 +292,7 @@ klasse Pool(object):
         their specified lifetime.  Returns True if any workers were cleaned up.
         """
         cleaned = False
-        for i in reversed(range(len(pool))):
+        fuer i in reversed(range(len(pool))):
             worker = pool[i]
             if worker.exitcode is not None:
                 # worker exited
@@ -316,9 +316,9 @@ klasse Pool(object):
                                 outqueue, initializer, initargs,
                                 maxtasksperchild, wrap_exception):
         """Bring the number of pool processes up to the specified number,
-        for use after reaping workers which have exited.
+        fuer use after reaping workers which have exited.
         """
-        for i in range(processes - len(pool)):
+        fuer i in range(processes - len(pool)):
             w = Process(ctx, target=worker,
                         args=(inqueue, outqueue,
                               initializer,
@@ -334,7 +334,7 @@ klasse Pool(object):
     def _maintain_pool(ctx, Process, processes, pool, inqueue, outqueue,
                        initializer, initargs, maxtasksperchild,
                        wrap_exception):
-        """Clean up any exited workers and start replacements for them.
+        """Clean up any exited workers and start replacements fuer them.
         """
         if Pool._join_exited_workers(pool):
             Pool._repopulate_pool_static(ctx, Process, processes, pool,
@@ -383,12 +383,12 @@ klasse Pool(object):
                                callback, error_callback)
 
     def _guarded_task_generation(self, result_job, func, iterable):
-        '''Provides a generator of tasks for imap and imap_unordered with
-        appropriate handling for iterables which throw exceptions during
+        '''Provides a generator of tasks fuer imap and imap_unordered with
+        appropriate handling fuer iterables which throw exceptions during
         iteration.'''
         try:
             i = -1
-            for i, x in enumerate(iterable):
+            fuer i, x in enumerate(iterable):
                 yield (result_job, i, func, (x,), {})
         except Exception as e:
             yield (result_job, i+1, _helper_reraises_exception, (e,), {})
@@ -420,7 +420,7 @@ klasse Pool(object):
                                                   task_batches),
                     result._set_length
                 ))
-            return (item for chunk in result for item in chunk)
+            return (item fuer chunk in result fuer item in chunk)
 
     def imap_unordered(self, func, iterable, chunksize=1):
         '''
@@ -448,7 +448,7 @@ klasse Pool(object):
                                                   task_batches),
                     result._set_length
                 ))
-            return (item for chunk in result for item in chunk)
+            return (item fuer chunk in result fuer item in chunk)
 
     def apply_async(self, func, args=(), kwds={}, callback=None,
             error_callback=None):
@@ -528,11 +528,11 @@ klasse Pool(object):
     def _handle_tasks(taskqueue, put, outqueue, pool, cache):
         thread = threading.current_thread()
 
-        for taskseq, set_length in iter(taskqueue.get, None):
+        fuer taskseq, set_length in iter(taskqueue.get, None):
             task = None
             try:
                 # iterating taskseq cannot fail
-                for task in taskseq:
+                fuer task in taskseq:
                     if thread._state != RUN:
                         util.debug('task handler found thread._state != RUN')
                         break
@@ -563,7 +563,7 @@ klasse Pool(object):
 
             # tell workers there is no more work
             util.debug('task handler sending sentinel to workers')
-            for p in pool:
+            fuer p in pool:
                 put(None)
         except OSError:
             util.debug('task handler got OSError when sending sentinels')
@@ -620,7 +620,7 @@ klasse Pool(object):
             # attempts to add the sentinel (None) to outqueue may
             # block.  There is guaranteed to be no more than 2 sentinels.
             try:
-                for i in range(10):
+                fuer i in range(10):
                     if not outqueue._reader.poll():
                         break
                     get()
@@ -665,7 +665,7 @@ klasse Pool(object):
         self._worker_handler.join()
         self._task_handler.join()
         self._result_handler.join()
-        for p in self._pool:
+        fuer p in self._pool:
             p.join()
 
     @staticmethod
@@ -702,7 +702,7 @@ klasse Pool(object):
         change_notifier.put(None)
         outqueue.put(None)                  # sentinel
 
-        # We must wait for the worker handler to exit before terminating
+        # We must wait fuer the worker handler to exit before terminating
         # workers because we don't want workers to be restarted behind our back.
         util.debug('joining worker handler')
         if threading.current_thread() is not worker_handler:
@@ -711,7 +711,7 @@ klasse Pool(object):
         # Terminate workers which haven't already finished.
         if pool and hasattr(pool[0], 'terminate'):
             util.debug('terminating workers')
-            for p in pool:
+            fuer p in pool:
                 if p.exitcode is None:
                     p.terminate()
 
@@ -725,7 +725,7 @@ klasse Pool(object):
 
         if pool and hasattr(pool[0], 'terminate'):
             util.debug('joining pool workers')
-            for p in pool:
+            fuer p in pool:
                 if p.is_alive():
                     # worker has not yet exited
                     util.debug('cleaning up worker %d' % p.pid)
@@ -950,7 +950,7 @@ klasse ThreadPool(Pool):
                 inqueue.get(block=False)
         except queue.Empty:
             pass
-        for i in range(size):
+        fuer i in range(size):
             inqueue.put(None)
 
     def _wait_for_updates(self, sentinels, change_notifier, timeout):

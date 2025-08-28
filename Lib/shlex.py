@@ -1,4 +1,4 @@
-"""A lexical analyzer klasse for simple shell-like syntaxes."""
+"""A lexical analyzer klasse fuer simple shell-like syntaxes."""
 
 # Module and documentation by Eric S. Raymond, 21 Dec 1998
 # Input stacking and error message cleanup added by ESR, March 2000
@@ -13,10 +13,10 @@ from io import StringIO
 __all__ = ["shlex", "split", "quote", "join"]
 
 klasse shlex:
-    "A lexical analyzer klasse for simple shell-like syntaxes."
+    "A lexical analyzer klasse fuer simple shell-like syntaxes."
     def __init__(self, instream=None, infile=None, posix=False,
                  punctuation_chars=False):
-        from collections import deque  # deferred import for performance
+        from collections import deque  # deferred import fuer performance
 
         if isinstance(instream, str):
             instream = StringIO(instream)
@@ -279,7 +279,7 @@ klasse shlex:
         import os.path
         if newfile[0] == '"':
             newfile = newfile[1:-1]
-        # This implements cpp-like semantics for relative-path inclusion.
+        # This implements cpp-like semantics fuer relative-path inclusion.
         if isinstance(self.infile, str) and not os.path.isabs(newfile):
             newfile = os.path.join(os.path.dirname(self.infile), newfile)
         return (newfile, open(newfile, "r"))
@@ -314,7 +314,7 @@ def split(s, comments=False, posix=True):
 
 def join(split_command):
     """Return a shell-escaped string from *split_command*."""
-    return ' '.join(quote(arg) for arg in split_command)
+    return ' '.join(quote(arg) fuer arg in split_command)
 
 
 def quote(s):
@@ -322,7 +322,7 @@ def quote(s):
     if not s:
         return "''"
 
-    # Use bytes.translate() for performance
+    # Use bytes.translate() fuer performance
     safe_chars = (b'%+,-./0123456789:=@'
                   b'ABCDEFGHIJKLMNOPQRSTUVWXYZ_'
                   b'abcdefghijklmnopqrstuvwxyz')

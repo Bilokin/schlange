@@ -23,7 +23,7 @@ from plistlib import UID
 ALL_FORMATS=(plistlib.FMT_XML, plistlib.FMT_BINARY)
 
 # The testdata is generated using Mac/Tools/plistlib_generate_testdata.py
-# (which using PyObjC to control the Cocoa classes for generating plists)
+# (which using PyObjC to control the Cocoa classes fuer generating plists)
 TESTDATA={
     plistlib.FMT_XML: binascii.a2b_base64(b'''
         PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPCFET0NU
@@ -460,7 +460,7 @@ klasse TestPlistlib(unittest.TestCase):
     def test_invalid_type(self):
         pl = [ object() ]
 
-        for fmt in ALL_FORMATS:
+        fuer fmt in ALL_FORMATS:
             with self.subTest(fmt=fmt):
                 self.assertRaises(TypeError, plistlib.dumps, pl, fmt=fmt)
 
@@ -473,9 +473,9 @@ klasse TestPlistlib(unittest.TestCase):
             UID(-19)
 
     def test_int(self):
-        for pl in [0, 2**8-1, 2**8, 2**16-1, 2**16, 2**32-1, 2**32,
+        fuer pl in [0, 2**8-1, 2**8, 2**16-1, 2**16, 2**32-1, 2**32,
                    2**63-1, 2**64-1, 1, -2**63]:
-            for fmt in ALL_FORMATS:
+            fuer fmt in ALL_FORMATS:
                 with self.subTest(pl=pl, fmt=fmt):
                     data = plistlib.dumps(pl, fmt=fmt)
                     pl2 = plistlib.loads(data)
@@ -484,15 +484,15 @@ klasse TestPlistlib(unittest.TestCase):
                     data2 = plistlib.dumps(pl2, fmt=fmt)
                     self.assertEqual(data, data2)
 
-        for fmt in ALL_FORMATS:
-            for pl in (2 ** 64 + 1, 2 ** 127-1, -2**64, -2 ** 127):
+        fuer fmt in ALL_FORMATS:
+            fuer pl in (2 ** 64 + 1, 2 ** 127-1, -2**64, -2 ** 127):
                 with self.subTest(pl=pl, fmt=fmt):
                     self.assertRaises(OverflowError, plistlib.dumps,
                                       pl, fmt=fmt)
 
     def test_bytearray(self):
-        for pl in (b'<binary gunk>', b"<lots of binary gunk>\0\1\2\3" * 10):
-            for fmt in ALL_FORMATS:
+        fuer pl in (b'<binary gunk>', b"<lots of binary gunk>\0\1\2\3" * 10):
+            fuer fmt in ALL_FORMATS:
                 with self.subTest(pl=pl, fmt=fmt):
                     data = plistlib.dumps(bytearray(pl), fmt=fmt)
                     pl2 = plistlib.loads(data)
@@ -566,7 +566,7 @@ klasse TestPlistlib(unittest.TestCase):
         self.assertEqual(operator.index(UID(1)), 1)
 
     def test_uid_pickle(self):
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             self.assertEqual(pickle.loads(pickle.dumps(UID(19), protocol=proto)), UID(19))
 
     def test_uid_copy(self):
@@ -574,7 +574,7 @@ klasse TestPlistlib(unittest.TestCase):
         self.assertEqual(copy.deepcopy(UID(1)), UID(1))
 
     def test_appleformatting(self):
-        for fmt in ALL_FORMATS:
+        fuer fmt in ALL_FORMATS:
             with self.subTest(fmt=fmt):
                 pl = plistlib.loads(TESTDATA[fmt])
                 data = plistlib.dumps(pl, fmt=fmt)
@@ -584,7 +584,7 @@ klasse TestPlistlib(unittest.TestCase):
 
     def test_appleformattingfromliteral(self):
         self.maxDiff = None
-        for fmt in ALL_FORMATS:
+        fuer fmt in ALL_FORMATS:
             with self.subTest(fmt=fmt):
                 pl = self._create(fmt=fmt)
                 pl2 = plistlib.loads(TESTDATA[fmt], fmt=fmt)
@@ -595,7 +595,7 @@ klasse TestPlistlib(unittest.TestCase):
                     "generated data was not identical to Apple's output")
 
     def test_bytesio(self):
-        for fmt in ALL_FORMATS:
+        fuer fmt in ALL_FORMATS:
             with self.subTest(fmt=fmt):
                 b = BytesIO()
                 pl = self._create(fmt=fmt)
@@ -611,8 +611,8 @@ klasse TestPlistlib(unittest.TestCase):
         pl['a'] = 2
         pl['c'] = 3
 
-        for fmt in ALL_FORMATS:
-            for sort_keys in (False, True):
+        fuer fmt in ALL_FORMATS:
+            fuer sort_keys in (False, True):
                 with self.subTest(fmt=fmt, sort_keys=sort_keys):
                     b = BytesIO()
 
@@ -632,8 +632,8 @@ klasse TestPlistlib(unittest.TestCase):
         pl['a'] = 2
         pl['c'] = 3
 
-        for fmt in ALL_FORMATS:
-            for sort_keys in (False, True):
+        fuer fmt in ALL_FORMATS:
+            fuer sort_keys in (False, True):
                 with self.subTest(fmt=fmt, sort_keys=sort_keys):
                     data = plistlib.dumps(pl, fmt=fmt, sort_keys=sort_keys)
                     pl2 = plistlib.loads(data, dict_type=collections.OrderedDict)
@@ -647,7 +647,7 @@ klasse TestPlistlib(unittest.TestCase):
     def test_keys_no_string(self):
         pl = { 42: 'aNumber' }
 
-        for fmt in ALL_FORMATS:
+        fuer fmt in ALL_FORMATS:
             with self.subTest(fmt=fmt):
                 self.assertRaises(TypeError, plistlib.dumps, pl, fmt=fmt)
 
@@ -660,7 +660,7 @@ klasse TestPlistlib(unittest.TestCase):
             'snake': 'aWord',
         }
 
-        for fmt in ALL_FORMATS:
+        fuer fmt in ALL_FORMATS:
             with self.subTest(fmt=fmt):
                 data = plistlib.dumps(
                     pl, fmt=fmt, skipkeys=True, sort_keys=False)
@@ -682,7 +682,7 @@ klasse TestPlistlib(unittest.TestCase):
             'third': (3, 4),
         }
 
-        for fmt in ALL_FORMATS:
+        fuer fmt in ALL_FORMATS:
             with self.subTest(fmt=fmt):
                 data = plistlib.dumps(pl, fmt=fmt)
                 pl2 = plistlib.loads(data)
@@ -701,7 +701,7 @@ klasse TestPlistlib(unittest.TestCase):
             'third': [3, 4],
         }
 
-        for fmt in ALL_FORMATS:
+        fuer fmt in ALL_FORMATS:
             with self.subTest(fmt=fmt):
                 data = plistlib.dumps(pl, fmt=fmt)
                 pl2 = plistlib.loads(data)
@@ -719,7 +719,7 @@ klasse TestPlistlib(unittest.TestCase):
             'third': {'b': 2 },
         }
 
-        for fmt in ALL_FORMATS:
+        fuer fmt in ALL_FORMATS:
             with self.subTest(fmt=fmt):
                 data = plistlib.dumps(pl, fmt=fmt)
                 pl2 = plistlib.loads(data)
@@ -731,7 +731,7 @@ klasse TestPlistlib(unittest.TestCase):
                 self.assertIsNot(pl2['first'], pl2['second'])
 
     def test_controlcharacters(self):
-        for i in range(128):
+        fuer i in range(128):
             c = chr(i)
             testString = "string containing %s" % c
             if i >= 32 or c in "\r\n\t":
@@ -746,13 +746,13 @@ klasse TestPlistlib(unittest.TestCase):
 
     def test_non_bmp_characters(self):
         pl = {'python': '\U0001f40d'}
-        for fmt in ALL_FORMATS:
+        fuer fmt in ALL_FORMATS:
             with self.subTest(fmt=fmt):
                 data = plistlib.dumps(pl, fmt=fmt)
                 self.assertEqual(plistlib.loads(data), pl)
 
     def test_lone_surrogates(self):
-        for fmt in ALL_FORMATS:
+        fuer fmt in ALL_FORMATS:
             with self.subTest(fmt=fmt):
                 with self.assertRaises(UnicodeEncodeError):
                     plistlib.dumps('\ud8ff', fmt=fmt)
@@ -760,7 +760,7 @@ klasse TestPlistlib(unittest.TestCase):
                     plistlib.dumps('\udcff', fmt=fmt)
 
     def test_nondictroot(self):
-        for fmt in ALL_FORMATS:
+        fuer fmt in ALL_FORMATS:
             with self.subTest(fmt=fmt):
                 test1 = "abc"
                 test2 = [1, 2, 3, "abc"]
@@ -770,14 +770,14 @@ klasse TestPlistlib(unittest.TestCase):
                 self.assertEqual(test2, result2)
 
     def test_invalidarray(self):
-        for i in ["<key>key inside an array</key>",
+        fuer i in ["<key>key inside an array</key>",
                   "<key>key inside an array2</key><real>3</real>",
                   "<true/><key>key inside an array3</key>"]:
             self.assertRaises(ValueError, plistlib.loads,
                               ("<plist><array>%s</array></plist>"%i).encode())
 
     def test_invaliddict(self):
-        for i in ["<key><true/>k</key><string>compound key</string>",
+        fuer i in ["<key><true/>k</key><string>compound key</string>",
                   "<key>single key</key>",
                   "<string>missing key</string>",
                   "<key>k1</key><string>v1</string><real>5.3</real>"
@@ -811,7 +811,7 @@ klasse TestPlistlib(unittest.TestCase):
     def test_xml_encodings(self):
         base = TESTDATA[plistlib.FMT_XML]
 
-        for xml_encoding, encoding, bom in [
+        fuer xml_encoding, encoding, bom in [
                     (b'utf-8', 'utf-8', codecs.BOM_UTF8),
                     (b'utf-16', 'utf-16-le', codecs.BOM_UTF16_LE),
                     (b'utf-16', 'utf-16-be', codecs.BOM_UTF16_BE),
@@ -862,7 +862,7 @@ klasse TestPlistlib(unittest.TestCase):
     def test_dump_aware_datetime(self):
         dt = datetime.datetime(2345, 6, 7, 8, 9, 10,
                                tzinfo=zoneinfo.ZoneInfo("America/Los_Angeles"))
-        for fmt in ALL_FORMATS:
+        fuer fmt in ALL_FORMATS:
             s = plistlib.dumps(dt, fmt=fmt, aware_datetime=True)
             loaded_dt = plistlib.loads(s, fmt=fmt, aware_datetime=True)
             self.assertEqual(loaded_dt.tzinfo, datetime.UTC)
@@ -870,7 +870,7 @@ klasse TestPlistlib(unittest.TestCase):
 
     def test_dump_utc_aware_datetime(self):
         dt = datetime.datetime(2345, 6, 7, 8, 9, 10, tzinfo=datetime.UTC)
-        for fmt in ALL_FORMATS:
+        fuer fmt in ALL_FORMATS:
             s = plistlib.dumps(dt, fmt=fmt, aware_datetime=True)
             loaded_dt = plistlib.loads(s, fmt=fmt, aware_datetime=True)
             self.assertEqual(loaded_dt.tzinfo, datetime.UTC)
@@ -894,7 +894,7 @@ klasse TestPlistlib(unittest.TestCase):
         # to having different time as compared to the current machine's
         # timezone, which is UTC.
         dt = datetime.datetime(2003, 6, 7, 8, tzinfo=None)
-        for fmt in ALL_FORMATS:
+        fuer fmt in ALL_FORMATS:
             s = plistlib.dumps(dt, fmt=fmt, aware_datetime=True)
             parsed = plistlib.loads(s, aware_datetime=False)
             expected = dt.astimezone(datetime.UTC).replace(tzinfo=None)
@@ -908,7 +908,7 @@ klasse TestBinaryPlistlib(unittest.TestCase):
         data = [b'bplist00']
         offset = 8
         offsets = []
-        for x in objects:
+        fuer x in objects:
             offsets.append(offset.to_bytes(offset_size, 'big'))
             data.append(x)
             offset += len(x)
@@ -932,7 +932,7 @@ klasse TestBinaryPlistlib(unittest.TestCase):
 
     def test_dump_duplicates(self):
         # Test effectiveness of saving duplicated objects
-        for x in (None, False, True, 12345, 123.45, 'abcde', 'абвгд', b'abcde',
+        fuer x in (None, False, True, 12345, 123.45, 'abcde', 'абвгд', b'abcde',
                   datetime.datetime(2004, 10, 26, 10, 33, 33),
                   bytearray(b'abcde'), [12, 345], (12, 345), {'12': 345}):
             with self.subTest(x=x):
@@ -940,7 +940,7 @@ klasse TestBinaryPlistlib(unittest.TestCase):
                 self.assertLess(len(data), 1100, repr(data))
 
     def test_identity(self):
-        for x in (None, False, True, 12345, 123.45, 'abcde', b'abcde',
+        fuer x in (None, False, True, 12345, 123.45, 'abcde', b'abcde',
                   datetime.datetime(2004, 10, 26, 10, 33, 33),
                   bytearray(b'abcde'), [12, 345], (12, 345), {'12': 345}):
             with self.subTest(x=x):
@@ -970,14 +970,14 @@ klasse TestBinaryPlistlib(unittest.TestCase):
         self.assertIs(b['x'], b)
 
     def test_deep_nesting(self):
-        for N in [50, 300, 100_000]:
-            chunks = [b'\xa1' + (i + 1).to_bytes(4, 'big') for i in range(N)]
+        fuer N in [50, 300, 100_000]:
+            chunks = [b'\xa1' + (i + 1).to_bytes(4, 'big') fuer i in range(N)]
             try:
                 result = self.decode(*chunks, b'\x54seed', offset_size=4, ref_size=4)
             except RecursionError:
                 self.assertGreater(N, sys.getrecursionlimit())
             else:
-                for i in range(N):
+                fuer i in range(N):
                     self.assertIsInstance(result, list)
                     self.assertEqual(len(result), 1)
                     result = result[0]
@@ -985,7 +985,7 @@ klasse TestBinaryPlistlib(unittest.TestCase):
 
     def test_large_timestamp(self):
         # Issue #26709: 32-bit timestamp out of range
-        for ts in -2**31-1, 2**31:
+        fuer ts in -2**31-1, 2**31:
             with self.subTest(ts=ts):
                 d = (datetime.datetime(1970, 1, 1, 0, 0) +
                      datetime.timedelta(seconds=ts))
@@ -1011,15 +1011,15 @@ klasse TestBinaryPlistlib(unittest.TestCase):
     def test_unsupported(self):
         unsupported = [*range(1, 8), *range(10, 15),
                        0x20, 0x21, *range(0x24, 0x33), *range(0x34, 0x40)]
-        for i in [0x70, 0x90, 0xb0, 0xc0, 0xe0, 0xf0]:
-            unsupported.extend(i + j for j in range(16))
-        for token in unsupported:
+        fuer i in [0x70, 0x90, 0xb0, 0xc0, 0xe0, 0xf0]:
+            unsupported.extend(i + j fuer j in range(16))
+        fuer token in unsupported:
             with self.subTest(f'token {token:02x}'):
                 with self.assertRaises(plistlib.InvalidFileException):
                     self.decode(bytes([token]) + b'\x00'*16)
 
     def test_invalid_binary(self):
-        for name, data in INVALID_BINARY_PLISTS:
+        fuer name, data in INVALID_BINARY_PLISTS:
             with self.subTest(name):
                 with self.assertRaises(plistlib.InvalidFileException):
                     plistlib.loads(b'bplist00' + data, fmt=plistlib.FMT_BINARY)
@@ -1084,7 +1084,7 @@ klasse MiscTestCase(unittest.TestCase):
         not_exported = {"PlistFormat", "PLISTHEADER"}
         support.check__all__(self, plistlib, not_exported=not_exported)
 
-@unittest.skipUnless(sys.platform == "darwin", "plutil utility is for Mac os")
+@unittest.skipUnless(sys.platform == "darwin", "plutil utility is fuer Mac os")
 klasse TestPlutil(unittest.TestCase):
     file_name = "plutil_test.plist"
     properties = {

@@ -161,19 +161,19 @@ klasse QueryTestCase(unittest.TestCase):
     def test_basic(self):
         # Verify .isrecursive() and .isreadable() w/o recursion
         pp = pprint.PrettyPrinter()
-        for safe in (2, 2.0, 2j, "abc", [3], (2,2), {3: 3}, b"def",
+        fuer safe in (2, 2.0, 2j, "abc", [3], (2,2), {3: 3}, b"def",
                      bytearray(b"ghi"), True, False, None, ...,
                      self.a, self.b):
             # module-level convenience functions
             self.assertFalse(pprint.isrecursive(safe),
-                             "expected not isrecursive for %r" % (safe,))
+                             "expected not isrecursive fuer %r" % (safe,))
             self.assertTrue(pprint.isreadable(safe),
-                            "expected isreadable for %r" % (safe,))
+                            "expected isreadable fuer %r" % (safe,))
             # PrettyPrinter methods
             self.assertFalse(pp.isrecursive(safe),
-                             "expected not isrecursive for %r" % (safe,))
+                             "expected not isrecursive fuer %r" % (safe,))
             self.assertTrue(pp.isreadable(safe),
-                            "expected isreadable for %r" % (safe,))
+                            "expected isreadable fuer %r" % (safe,))
 
     def test_stdout_is_None(self):
         with contextlib.redirect_stdout(None):
@@ -199,7 +199,7 @@ klasse QueryTestCase(unittest.TestCase):
 
         pp = pprint.PrettyPrinter()
 
-        for icky in self.a, self.b, self.d, (self.d, self.d), self.e, self.v, self.m, self.dv:
+        fuer icky in self.a, self.b, self.d, (self.d, self.d), self.e, self.v, self.m, self.dv:
             self.assertTrue(pprint.isrecursive(icky), "expected isrecursive")
             self.assertFalse(pprint.isreadable(icky), "expected not isreadable")
             self.assertTrue(pp.isrecursive(icky), "expected isrecursive")
@@ -211,32 +211,32 @@ klasse QueryTestCase(unittest.TestCase):
         del self.a[:]
         del self.b[:]
 
-        for safe in self.a, self.b, self.d, (self.d, self.d), self.e, self.v, self.m, self.dv:
+        fuer safe in self.a, self.b, self.d, (self.d, self.d), self.e, self.v, self.m, self.dv:
             # module-level convenience functions
             self.assertFalse(pprint.isrecursive(safe),
-                             "expected not isrecursive for %r" % (safe,))
+                             "expected not isrecursive fuer %r" % (safe,))
             self.assertTrue(pprint.isreadable(safe),
-                            "expected isreadable for %r" % (safe,))
+                            "expected isreadable fuer %r" % (safe,))
             # PrettyPrinter methods
             self.assertFalse(pp.isrecursive(safe),
-                             "expected not isrecursive for %r" % (safe,))
+                             "expected not isrecursive fuer %r" % (safe,))
             self.assertTrue(pp.isreadable(safe),
-                            "expected isreadable for %r" % (safe,))
+                            "expected isreadable fuer %r" % (safe,))
 
     def test_unreadable(self):
         # Not recursive but not readable anyway
         pp = pprint.PrettyPrinter()
-        for unreadable in object(), int, pprint, pprint.isrecursive:
+        fuer unreadable in object(), int, pprint, pprint.isrecursive:
             # module-level convenience functions
             self.assertFalse(pprint.isrecursive(unreadable),
-                             "expected not isrecursive for %r" % (unreadable,))
+                             "expected not isrecursive fuer %r" % (unreadable,))
             self.assertFalse(pprint.isreadable(unreadable),
-                             "expected not isreadable for %r" % (unreadable,))
+                             "expected not isreadable fuer %r" % (unreadable,))
             # PrettyPrinter methods
             self.assertFalse(pp.isrecursive(unreadable),
-                             "expected not isrecursive for %r" % (unreadable,))
+                             "expected not isrecursive fuer %r" % (unreadable,))
             self.assertFalse(pp.isreadable(unreadable),
-                             "expected not isreadable for %r" % (unreadable,))
+                             "expected not isreadable fuer %r" % (unreadable,))
 
     def test_same_as_repr(self):
         # Simple objects, small containers and classes that override __repr__
@@ -244,11 +244,11 @@ klasse QueryTestCase(unittest.TestCase):
         # For those the result should be the same as repr().
         # Ahem.  The docs don't say anything about that -- this appears to
         # be testing an implementation quirk.  Starting in Python 2.5, it's
-        # not true for dicts:  pprint always sorts dicts by key now; before,
+        # not true fuer dicts:  pprint always sorts dicts by key now; before,
         # it sorted a dict display if and only if the display required
         # multiple lines.  For that reason, dicts with more than one element
         # aren't tested here.
-        for simple in (0, 0, 0+0j, 0.0, "", b"", bytearray(),
+        fuer simple in (0, 0, 0+0j, 0.0, "", b"", bytearray(),
                        (), tuple2(), tuple3(),
                        [], list2(), list3(),
                        set(), set2(), set3(),
@@ -280,9 +280,9 @@ klasse QueryTestCase(unittest.TestCase):
 
     def test_container_repr_override_called(self):
         N = 1000
-        # Ensure that __repr__ override is called for subclasses of containers
+        # Ensure that __repr__ override is called fuer subclasses of containers
 
-        for cont in (list_custom_repr(),
+        fuer cont in (list_custom_repr(),
                      list_custom_repr([1,2,3]),
                      list_custom_repr(range(N)),
                      tuple_custom_repr(),
@@ -327,7 +327,7 @@ klasse QueryTestCase(unittest.TestCase):
  'main_code_runtime_us': 0,
  'read_io_runtime_us': 0,
  'write_io_runtime_us': 43690}"""
-        for type in [dict, dict2]:
+        fuer type in [dict, dict2]:
             self.assertEqual(pprint.pformat(type(o)), exp)
 
         o = range(100)
@@ -337,12 +337,12 @@ klasse QueryTestCase(unittest.TestCase):
 
         o = range(100)
         exp = 'dict_values([%s])' % ',\n '.join(map(str, o))
-        values = {v: v for v in o}.values()
+        values = {v: v fuer v in o}.values()
         self.assertEqual(pprint.pformat(values), exp)
 
         o = range(100)
-        exp = 'dict_items([%s])' % ',\n '.join("(%s, %s)" % (i, i) for i in o)
-        items = {v: v for v in o}.items()
+        exp = 'dict_items([%s])' % ',\n '.join("(%s, %s)" % (i, i) fuer i in o)
+        items = {v: v fuer v in o}.items()
         self.assertEqual(pprint.pformat(items), exp)
 
         o = range(100)
@@ -352,12 +352,12 @@ klasse QueryTestCase(unittest.TestCase):
 
         o = range(100)
         exp = 'odict_values([%s])' % ',\n '.join(map(str, o))
-        values = collections.OrderedDict({v: v for v in o}).values()
+        values = collections.OrderedDict({v: v fuer v in o}).values()
         self.assertEqual(pprint.pformat(values), exp)
 
         o = range(100)
-        exp = 'odict_items([%s])' % ',\n '.join("(%s, %s)" % (i, i) for i in o)
-        items = collections.OrderedDict({v: v for v in o}).items()
+        exp = 'odict_items([%s])' % ',\n '.join("(%s, %s)" % (i, i) fuer i in o)
+        items = collections.OrderedDict({v: v fuer v in o}).items()
         self.assertEqual(pprint.pformat(items), exp)
 
         o = range(100)
@@ -382,18 +382,18 @@ klasse QueryTestCase(unittest.TestCase):
 
         o = range(100)
         exp = '[%s]' % ',\n '.join(map(str, o))
-        for type in [list, list2]:
+        fuer type in [list, list2]:
             self.assertEqual(pprint.pformat(type(o)), exp)
 
         o = tuple(range(100))
         exp = '(%s)' % ',\n '.join(map(str, o))
-        for type in [tuple, tuple2]:
+        fuer type in [tuple, tuple2]:
             self.assertEqual(pprint.pformat(type(o)), exp)
 
         # indent parameter
         o = range(100)
         exp = '[   %s]' % ',\n    '.join(map(str, o))
-        for type in [list, list2]:
+        fuer type in [list, list2]:
             self.assertEqual(pprint.pformat(type(o), indent=4), exp)
 
     def test_nested_indentations(self):
@@ -474,7 +474,7 @@ klasse QueryTestCase(unittest.TestCase):
         # The next one is kind of goofy.  The sorted order depends on the
         # alphabetic order of type names:  "int" < "str" < "tuple".  Before
         # Python 2.5, this was in the test_same_as_repr() test.  It's worth
-        # keeping around for now because it's one of few tests of pprint
+        # keeping around fuer now because it's one of few tests of pprint
         # against a crazy mix of types.
         self.assertEqual(pprint.pformat({"xy\tab\n": (3,), 5: [[]], (): {}}),
             r"{5: [[]], 'xy\tab\n': (3,), (): {}}")
@@ -556,13 +556,13 @@ mappingproxy(OrderedDict([('the', 0),
                           ('dog', 8)]))""")
 
     def test_dict_views(self):
-        for dict_class in (dict, collections.OrderedDict, collections.Counter):
+        fuer dict_class in (dict, collections.OrderedDict, collections.Counter):
             empty = dict_class({})
             short = dict_class(dict(zip('edcba', 'edcba')))
-            long = dict_class(dict((chr(x), chr(x)) for x in range(90, 64, -1)))
+            long = dict_class(dict((chr(x), chr(x)) fuer x in range(90, 64, -1)))
             lengths = {"empty": empty, "short": short, "long": long}
             prefix = "odict" if dict_class is collections.OrderedDict else "dict"
-            for name, d in lengths.items():
+            fuer name, d in lengths.items():
                 with self.subTest(length=name, prefix=prefix):
                     is_short = len(d) < 6
                     joiner = ", " if is_short else ",\n "
@@ -571,39 +571,39 @@ mappingproxy(OrderedDict([('the', 0),
                     i = d.items()
                     self.assertEqual(pprint.pformat(k, sort_dicts=True),
                                      prefix + "_keys([%s])" %
-                                     joiner.join(repr(key) for key in sorted(k)))
+                                     joiner.join(repr(key) fuer key in sorted(k)))
                     self.assertEqual(pprint.pformat(v, sort_dicts=True),
                                      prefix + "_values([%s])" %
-                                     joiner.join(repr(val) for val in sorted(v)))
+                                     joiner.join(repr(val) fuer val in sorted(v)))
                     self.assertEqual(pprint.pformat(i, sort_dicts=True),
                                      prefix + "_items([%s])" %
-                                     joiner.join(repr(item) for item in sorted(i)))
+                                     joiner.join(repr(item) fuer item in sorted(i)))
                     self.assertEqual(pprint.pformat(k, sort_dicts=False),
                                      prefix + "_keys([%s])" %
-                                     joiner.join(repr(key) for key in k))
+                                     joiner.join(repr(key) fuer key in k))
                     self.assertEqual(pprint.pformat(v, sort_dicts=False),
                                      prefix + "_values([%s])" %
-                                     joiner.join(repr(val) for val in v))
+                                     joiner.join(repr(val) fuer val in v))
                     self.assertEqual(pprint.pformat(i, sort_dicts=False),
                                      prefix + "_items([%s])" %
-                                     joiner.join(repr(item) for item in i))
+                                     joiner.join(repr(item) fuer item in i))
 
     def test_abc_views(self):
         empty = {}
         short = dict(zip('edcba', 'edcba'))
-        long = dict((chr(x), chr(x)) for x in range(90, 64, -1))
+        long = dict((chr(x), chr(x)) fuer x in range(90, 64, -1))
         lengths = {"empty": empty, "short": short, "long": long}
         # Test that a subclass that doesn't replace __repr__ works with different lengths
         klasse MV(MappingView): pass
 
-        for name, d in lengths.items():
+        fuer name, d in lengths.items():
             with self.subTest(length=name, name="Views"):
                 is_short = len(d) < 6
                 joiner = ", " if is_short else ",\n "
                 i = d.items()
                 s = sorted(i)
-                joined_items = "({%s})" % joiner.join(["%r: %r" % (k, v) for (k, v) in i])
-                sorted_items = "({%s})" % joiner.join(["%r: %r" % (k, v) for (k, v) in s])
+                joined_items = "({%s})" % joiner.join(["%r: %r" % (k, v) fuer (k, v) in i])
+                sorted_items = "({%s})" % joiner.join(["%r: %r" % (k, v) fuer (k, v) in s])
                 self.assertEqual(pprint.pformat(KeysView(d), sort_dicts=True),
                                  KeysView.__name__ + sorted_items)
                 self.assertEqual(pprint.pformat(ItemsView(d), sort_dicts=True),
@@ -884,7 +884,7 @@ frozenset2({0,
         #
         # However, as the docs point out: "Since sets only define
         # partial ordering (subset relationships), the output of the
-        # list.sort() method is undefined for lists of sets."
+        # list.sort() method is undefined fuer lists of sets."
         #
         # >>> frozenset({0}) < frozenset({1})
         # False
@@ -892,7 +892,7 @@ frozenset2({0,
         # False
         #
         # In this test we list all possible invariants of the result
-        # for unordered frozensets.
+        # fuer unordered frozensets.
         #
         # This test has a long history, see:
         # - https://github.com/python/cpython/commit/969fe57baa0eb80332990f9cda936a33e13fabef
@@ -923,7 +923,7 @@ frozenset2({0,
 
         # Multiline, unordered:
         def check(res, invariants):
-            self.assertIn(res, [textwrap.dedent(i).strip() for i in invariants])
+            self.assertIn(res, [textwrap.dedent(i).strip() fuer i in invariants])
 
         # Inner-most frozensets are singleline, result is multiline, unordered:
         fs1 = frozenset(('regular string', 'other string'))
@@ -1003,9 +1003,9 @@ frozenset2({0,
         self.assertEqual(pprint.pformat(nested_list, depth=1), lv1_list)
 
     def test_sort_unorderable_values(self):
-        # Issue 3976:  sorted pprints fail for unorderable values.
+        # Issue 3976:  sorted pprints fail fuer unorderable values.
         n = 20
-        keys = [Unorderable() for i in range(n)]
+        keys = [Unorderable() fuer i in range(n)]
         random.shuffle(keys)
         skeys = sorted(keys, key=id)
         clean = lambda s: s.replace(' ', '').replace('\n','')
@@ -1015,11 +1015,11 @@ frozenset2({0,
         self.assertEqual(clean(pprint.pformat(frozenset(keys))),
             'frozenset({' + ','.join(map(repr, skeys)) + '})')
         self.assertEqual(clean(pprint.pformat(dict.fromkeys(keys))),
-            '{' + ','.join('%r:None' % k for k in skeys) + '}')
+            '{' + ','.join('%r:None' % k fuer k in skeys) + '}')
         self.assertEqual(clean(pprint.pformat(dict.fromkeys(keys).keys())),
-            'dict_keys([' + ','.join('%r' % k for k in skeys) + '])')
+            'dict_keys([' + ','.join('%r' % k fuer k in skeys) + '])')
         self.assertEqual(clean(pprint.pformat(dict.fromkeys(keys).items())),
-            'dict_items([' + ','.join('(%r,None)' % k for k in skeys) + '])')
+            'dict_items([' + ','.join('(%r,None)' % k fuer k in skeys) + '])')
 
         # Issue 10017: TypeError on user-defined types as dict keys.
         self.assertEqual(pprint.pformat({Unorderable: 0, 1: 0}),
@@ -1104,15 +1104,15 @@ frozenset2({0,
         self.assertEqual(pprint.pformat(''), "''")
         # Check that the pprint is a usable repr
         special *= 10
-        for width in range(3, 40):
+        fuer width in range(3, 40):
             formatted = pprint.pformat(special, width=width)
             self.assertEqual(eval(formatted), special)
             formatted = pprint.pformat([special] * 2, width=width)
             self.assertEqual(eval(formatted), [special] * 2)
 
     def test_compact(self):
-        o = ([list(range(i * i)) for i in range(5)] +
-             [list(range(i)) for i in range(6)])
+        o = ([list(range(i * i)) fuer i in range(5)] +
+             [list(range(i)) fuer i in range(6)])
         expected = """\
 [[], [0], [0, 1, 2, 3],
  [0, 1, 2, 3, 4, 5, 6, 7, 8],
@@ -1126,9 +1126,9 @@ frozenset2({0,
         levels = 20
         number = 10
         o = [0] * number
-        for i in range(levels - 1):
+        fuer i in range(levels - 1):
             o = [o]
-        for w in range(levels * 2 + 1, levels + 3 * number - 1):
+        fuer w in range(levels * 2 + 1, levels + 3 * number - 1):
             lines = pprint.pformat(o, width=w, compact=True).splitlines()
             maxwidth = max(map(len, lines))
             self.assertLessEqual(maxwidth, w)
@@ -1185,7 +1185,7 @@ frozenset2({0,
 [[[[[[b'\\x00\\x01\\x02\\x03\\x04\\x05\\x06\\x07'
       b'\\x08\\t\\n\\x0b\\x0c\\r\\x0e\\x0f']]]]]]""")
         # Check that the pprint is a usable repr
-        for width in range(1, 64):
+        fuer width in range(1, 64):
             formatted = pprint.pformat(special, width=width)
             self.assertEqual(eval(formatted), special)
             formatted = pprint.pformat([special] * 2, width=width)

@@ -1,11 +1,11 @@
-"""Tokenization help for Python programs.
+"""Tokenization help fuer Python programs.
 
 tokenize(readline) is a generator that breaks a stream of bytes into
 Python tokens.  It decodes the bytes according to PEP-0263 for
 determining source file encoding.
 
 It accepts a readline-like method which is called repeatedly to get the
-next line of input (or b"" for EOF).  It generates 5-tuples with these
+next line of input (or b"" fuer EOF).  It generates 5-tuples with these
 members:
 
     the token type (see token.py)
@@ -15,7 +15,7 @@ members:
     the original line (string)
 
 It is designed to match the working of the Python tokenizer exactly, except
-that it produces COMMENT tokens for comments and gives type OP for all
+that it produces COMMENT tokens fuer comments and gives type OP fuer all
 operators.  Additionally, all token lists start with an ENCODING token
 which tells you which encoding was used to decode the bytes stream.
 """
@@ -61,7 +61,7 @@ def group(*choices): return '(' + '|'.join(choices) + ')'
 def any(*choices): return group(*choices) + '*'
 def maybe(*choices): return group(*choices) + '?'
 
-# Note: we use unicode matching for names ("\w") but ascii matching for
+# Note: we use unicode matching fuer names ("\w") but ascii matching for
 # number literals.
 Whitespace = r'[ \f\t]*'
 Comment = r'#[^\r\n]*'
@@ -89,11 +89,11 @@ def _all_string_prefixes():
     _valid_string_prefixes = ['b', 'r', 'u', 'f', 't', 'br', 'fr', 'tr']
     # if we add binary f-strings, add: ['fb', 'fbr']
     result = {''}
-    for prefix in _valid_string_prefixes:
-        for t in _itertools.permutations(prefix):
+    fuer prefix in _valid_string_prefixes:
+        fuer t in _itertools.permutations(prefix):
             # create a list with upper and lower versions of each
             #  character
-            for u in _itertools.product(*[(c, c.upper()) for c in t]):
+            fuer u in _itertools.product(*[(c, c.upper()) fuer c in t]):
                 result.add(''.join(u))
     return result
 
@@ -139,7 +139,7 @@ PseudoToken = Whitespace + group(PseudoExtras, Number, Funny, ContStr, Name)
 #  to match the remainder of that string. _prefix can be empty, for
 #  a normal single or triple quoted string (with no prefix).
 endpats = {}
-for _prefix in _all_string_prefixes():
+fuer _prefix in _all_string_prefixes():
     endpats[_prefix + "'"] = Single
     endpats[_prefix + '"'] = Double
     endpats[_prefix + "'''"] = Single3
@@ -150,10 +150,10 @@ del _prefix
 #  including the opening quotes.
 single_quoted = set()
 triple_quoted = set()
-for t in _all_string_prefixes():
-    for u in (t + '"', t + "'"):
+fuer t in _all_string_prefixes():
+    fuer u in (t + '"', t + "'"):
         single_quoted.add(u)
-    for u in (t + '"""', t + "'''"):
+    fuer u in (t + '"""', t + "'''"):
         triple_quoted.add(u)
 del t, u
 
@@ -202,7 +202,7 @@ klasse Untokenizer:
     def escape_brackets(self, token):
         characters = []
         consume_until_next_bracket = False
-        for character in token:
+        fuer character in token:
             if character == "}":
                 if consume_until_next_bracket:
                     consume_until_next_bracket = False
@@ -210,7 +210,7 @@ klasse Untokenizer:
                     characters.append(character)
             if character == "{":
                 n_backslashes = sum(
-                    1 for char in _itertools.takewhile(
+                    1 fuer char in _itertools.takewhile(
                         "\\".__eq__,
                         characters[-2::-1]
                     )
@@ -226,7 +226,7 @@ klasse Untokenizer:
         it = iter(iterable)
         indents = []
         startline = False
-        for t in it:
+        fuer t in it:
             if len(t) == 2:
                 self.compat(t, it)
                 break
@@ -276,7 +276,7 @@ klasse Untokenizer:
         prevstring = False
         in_fstring_or_tstring = 0
 
-        for tok in _itertools.chain([token], iterable):
+        fuer tok in _itertools.chain([token], iterable):
             toknum, tokval = tok[:2]
             if toknum == ENCODING:
                 self.encoding = tokval
@@ -394,7 +394,7 @@ def detect_encoding(readline):
         except UnicodeDecodeError:
             msg = "invalid or missing encoding declaration"
             if filename is not None:
-                msg = '{} for {!r}'.format(msg, filename)
+                msg = '{} fuer {!r}'.format(msg, filename)
             raise SyntaxError(msg)
 
         match = cookie_re.match(line_string)
@@ -408,7 +408,7 @@ def detect_encoding(readline):
             if filename is None:
                 msg = "unknown encoding: " + encoding
             else:
-                msg = "unknown encoding for {!r}: {}".format(filename,
+                msg = "unknown encoding fuer {!r}: {}".format(filename,
                         encoding)
             raise SyntaxError(msg)
 
@@ -418,7 +418,7 @@ def detect_encoding(readline):
                 if filename is None:
                     msg = 'encoding problem: utf-8'
                 else:
-                    msg = 'encoding problem for {!r}: utf-8'.format(filename)
+                    msg = 'encoding problem fuer {!r}: utf-8'.format(filename)
                 raise SyntaxError(msg)
             encoding += '-sig'
         return encoding
@@ -539,7 +539,7 @@ def _main(args=None):
 
 
         # Output the tokenization
-        for token in tokens:
+        fuer token in tokens:
             token_type = token.type
             if args.exact:
                 token_type = token.exact_type
@@ -566,7 +566,7 @@ def _transform_msg(msg):
     """Transform error messages from the C tokenizer into the Python tokenize
 
     The C tokenizer is more picky than the Python one, so we need to massage
-    the error messages a bit for backwards compatibility.
+    the error messages a bit fuer backwards compatibility.
     """
     if "unterminated triple-quoted string literal" in msg:
         return "EOF in multi-line string"
@@ -579,7 +579,7 @@ def _generate_tokens_from_c_tokenizer(source, encoding=None, extra_tokens=False)
     else:
         it = _tokenize.TokenizerIter(source, encoding=encoding, extra_tokens=extra_tokens)
     try:
-        for info in it:
+        fuer info in it:
             yield TokenInfo._make(info)
     except SyntaxError as e:
         if type(e) != SyntaxError:

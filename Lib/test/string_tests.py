@@ -16,8 +16,8 @@ klasse Sequence:
 
 
 klasse BaseTest:
-    # These tests are for buffers of values (bytes) and not
-    # specific to character interpretation, used for bytes objects
+    # These tests are fuer buffers of values (bytes) and not
+    # specific to character interpretation, used fuer bytes objects
     # and various string implementations
 
     # The type to be tested
@@ -36,13 +36,13 @@ klasse BaseTest:
         if isinstance(obj, str):
             return self.__class__.type2test(obj)
         elif isinstance(obj, list):
-            return [self.fixtype(x) for x in obj]
+            return [self.fixtype(x) fuer x in obj]
         elif isinstance(obj, tuple):
-            return tuple([self.fixtype(x) for x in obj])
+            return tuple([self.fixtype(x) fuer x in obj])
         elif isinstance(obj, dict):
             return dict([
                (self.fixtype(key), self.fixtype(value))
-               for (key, value) in obj.items()
+               fuer (key, value) in obj.items()
             ])
         else:
             return obj
@@ -55,7 +55,7 @@ klasse BaseTest:
         result = self.fixtype(result)
         obj = self.fixtype(obj)
         args = self.fixtype(args)
-        kwargs = {k: self.fixtype(v) for k,v in kwargs.items()}
+        kwargs = {k: self.fixtype(v) fuer k,v in kwargs.items()}
         realresult = getattr(obj, methodname)(*args, **kwargs)
         self.assertEqual(
             result,
@@ -134,16 +134,16 @@ klasse BaseTest:
         digits = 7
         base = len(charset)
         teststrings = set()
-        for i in range(base ** digits):
+        fuer i in range(base ** digits):
             entry = []
-            for j in range(digits):
+            fuer j in range(digits):
                 i, m = divmod(i, base)
                 entry.append(charset[m])
             teststrings.add(''.join(entry))
-        teststrings = [self.fixtype(ts) for ts in teststrings]
-        for i in teststrings:
+        teststrings = [self.fixtype(ts) fuer ts in teststrings]
+        fuer i in teststrings:
             n = len(i)
-            for j in teststrings:
+            fuer j in teststrings:
                 r1 = i.count(j)
                 if j:
                     r2, rem = divmod(n - len(i.replace(j, self.fixtype(''))),
@@ -151,8 +151,8 @@ klasse BaseTest:
                 else:
                     r2, rem = len(i)+1, 0
                 if rem or r1 != r2:
-                    self.assertEqual(rem, 0, '%s != 0 for %s' % (rem, i))
-                    self.assertEqual(r1, r2, '%s != %s for %s' % (r1, r2, i))
+                    self.assertEqual(rem, 0, '%s != 0 fuer %s' % (rem, i))
+                    self.assertEqual(r1, r2, '%s != %s fuer %s' % (r1, r2, i))
 
     def test_count_keyword(self):
         self.assertEqual('aa'.replace('a', 'b', 0), 'aa'.replace('a', 'b', count=0))
@@ -201,15 +201,15 @@ klasse BaseTest:
         digits = 5
         base = len(charset)
         teststrings = set()
-        for i in range(base ** digits):
+        fuer i in range(base ** digits):
             entry = []
-            for j in range(digits):
+            fuer j in range(digits):
                 i, m = divmod(i, base)
                 entry.append(charset[m])
             teststrings.add(''.join(entry))
-        teststrings = [self.fixtype(ts) for ts in teststrings]
-        for i in teststrings:
-            for j in teststrings:
+        teststrings = [self.fixtype(ts) fuer ts in teststrings]
+        fuer i in teststrings:
+            fuer j in teststrings:
                 loc = i.find(j)
                 r1 = (loc != -1)
                 r2 = j in i
@@ -248,15 +248,15 @@ klasse BaseTest:
         digits = 5
         base = len(charset)
         teststrings = set()
-        for i in range(base ** digits):
+        fuer i in range(base ** digits):
             entry = []
-            for j in range(digits):
+            fuer j in range(digits):
                 i, m = divmod(i, base)
                 entry.append(charset[m])
             teststrings.add(''.join(entry))
-        teststrings = [self.fixtype(ts) for ts in teststrings]
-        for i in teststrings:
-            for j in teststrings:
+        teststrings = [self.fixtype(ts) fuer ts in teststrings]
+        fuer i in teststrings:
+            fuer j in teststrings:
                 loc = i.rfind(j)
                 r1 = (loc != -1)
                 r2 = j in i
@@ -322,9 +322,9 @@ klasse BaseTest:
             self.checkraises(TypeError, 'hello', 'rindex', 42)
 
     def test_find_periodic_pattern(self):
-        """Cover the special path for periodic patterns."""
+        """Cover the special path fuer periodic patterns."""
         def reference_find(p, s):
-            for i in range(len(s)):
+            fuer i in range(len(s)):
                 if s.startswith(p, i):
                     return i
             if p == '' and s == '':
@@ -343,30 +343,30 @@ klasse BaseTest:
                                 text, 'find', p)
 
         rr = random.randrange
-        for _ in range(1000):
+        fuer _ in range(1000):
             check_pattern(rr)
 
         # Test that empty string always work:
         check_pattern(lambda *args: 0)
 
     def test_find_many_lengths(self):
-        haystack_repeats = [a * 10**e for e in range(6) for a in (1,2,5)]
-        haystacks = [(n, self.fixtype("abcab"*n + "da")) for n in haystack_repeats]
+        haystack_repeats = [a * 10**e fuer e in range(6) fuer a in (1,2,5)]
+        haystacks = [(n, self.fixtype("abcab"*n + "da")) fuer n in haystack_repeats]
 
-        needle_repeats = [a * 10**e for e in range(6) for a in (1, 3)]
-        needles = [(m, self.fixtype("abcab"*m + "da")) for m in needle_repeats]
+        needle_repeats = [a * 10**e fuer e in range(6) fuer a in (1, 3)]
+        needles = [(m, self.fixtype("abcab"*m + "da")) fuer m in needle_repeats]
 
-        for n, haystack1 in haystacks:
+        fuer n, haystack1 in haystacks:
             haystack2 = haystack1[:-1]
-            for m, needle in needles:
+            fuer m, needle in needles:
                 answer1 = 5 * (n - m) if m <= n else -1
                 self.assertEqual(haystack1.find(needle), answer1, msg=(n,m))
                 self.assertEqual(haystack2.find(needle), -1, msg=(n,m))
 
     def test_adaptive_find(self):
-        # This would be very slow for the naive algorithm,
+        # This would be very slow fuer the naive algorithm,
         # but str.find() should be O(n + m).
-        for N in 1000, 10_000, 100_000, 1_000_000:
+        fuer N in 1000, 10_000, 100_000, 1_000_000:
             A, B = 'a' * N, 'b' * N
             haystack = A + A + B + A + A
             needle = A + B + B + A
@@ -377,7 +377,7 @@ klasse BaseTest:
 
     def test_find_with_memory(self):
         # Test the "Skip with memory" path in the two-way algorithm.
-        for N in 1000, 3000, 10_000, 30_000:
+        fuer N in 1000, 3000, 10_000, 30_000:
             needle = 'ab' * N
             haystack = ('ab'*(N-1) + 'b') * 2
             self.checkequal(-1, haystack, 'find', needle)
@@ -390,14 +390,14 @@ klasse BaseTest:
         N = 2**8 + 100
 
         # first check the periodic case
-        # here, the shift for 'b' is N + 1.
+        # here, the shift fuer 'b' is N + 1.
         pattern1 = 'a' * N + 'b' + 'a' * N
         text1 = 'babbaa' * N + pattern1
         self.checkequal(len(text1)-len(pattern1),
                         text1, 'find', pattern1)
 
         # now check the non-periodic case
-        # here, the shift for 'd' is 3*(N+1)+1
+        # here, the shift fuer 'd' is 3*(N+1)+1
         pattern2 = 'ddd' + 'abc' * N + "eee"
         text2 = pattern2[:-1] + "ddeede" * 2 * N + pattern2 + "de" * N
         self.checkequal(len(text2) - N*len("de") - len(pattern2),
@@ -755,7 +755,7 @@ klasse BaseTest:
         self.checkequal('', '', 'replace', '', '')
         self.checkequal('abc', 'abc', 'replace', 'ab', '--', 0)
         self.checkequal('abc', 'abc', 'replace', 'xy', '--')
-        # Next three for SF bug 422088: [OSF1 alpha] string.replace(); died with
+        # Next three fuer SF bug 422088: [OSF1 alpha] string.replace(); died with
         # MemoryError due to empty result (platform malloc issue when requesting
         # 0 bytes).
         self.checkequal('', '123', 'replace', '123', '')
@@ -791,7 +791,7 @@ klasse BaseTest:
     @unittest.skipIf(sys.maxsize > (1 << 32) or struct.calcsize('P') != 4,
                      'only applies to 32-bit platforms')
     def test_replace_overflow(self):
-        # Check for overflow checking on 32 bit machines
+        # Check fuer overflow checking on 32 bit machines
         A2_16 = "A" * (2**16)
         self.checkraises(OverflowError, A2_16, "replace", "", A2_16)
         self.checkraises(OverflowError, A2_16, "replace", "A", A2_16)
@@ -872,7 +872,7 @@ klasse BaseTest:
         self.checkequal(['a'] + [aaa[4:]], aaa, 'split', None, 1)
         self.checkequal(['a']*19 + ['a '], aaa, 'split', None, 19)
 
-        for b in ('arf\tbarf', 'arf\nbarf', 'arf\rbarf',
+        fuer b in ('arf\tbarf', 'arf\nbarf', 'arf\rbarf',
                   'arf\fbarf', 'arf\vbarf'):
             self.checkequal(['arf', 'barf'], b, 'split')
             self.checkequal(['arf', 'barf'], b, 'split', None)
@@ -912,7 +912,7 @@ klasse BaseTest:
         self.checkequal([aaa[:-4]] + ['a'], aaa, 'rsplit', None, 1)
         self.checkequal([' a  a'] + ['a']*18, aaa, 'rsplit', None, 18)
 
-        for b in ('arf\tbarf', 'arf\nbarf', 'arf\rbarf',
+        fuer b in ('arf\tbarf', 'arf\nbarf', 'arf\rbarf',
                   'arf\fbarf', 'arf\vbarf'):
             self.checkequal(['arf', 'barf'], b, 'rsplit')
             self.checkequal(['arf', 'barf'], b, 'rsplit', None)
@@ -1070,7 +1070,7 @@ klasse BaseTest:
         self.checkequal(False, '\xe9', 'isascii')
         # bytes.isascii() and bytearray.isascii() has optimization which
         # check 4 or 8 bytes at once.  So check some alignments.
-        for p in range(8):
+        fuer p in range(8):
             self.checkequal(True, ' '*p + '\x7f', 'isascii')
             self.checkequal(False, ' '*p + '\x80', 'isascii')
             self.checkequal(True, ' '*p + '\x7f' + ' '*8, 'isascii')
@@ -1121,7 +1121,7 @@ klasse StringLikeTest(BaseTest):
         # SF bug 1054139:  += optimization was not invalidating cached hash value
         a = self.type2test('DNSSEC')
         b = self.type2test('')
-        for c in a:
+        fuer c in a:
             b += c
             hash(b)
         self.assertEqual(hash(a), hash(b))
@@ -1266,7 +1266,7 @@ klasse StringLikeTest(BaseTest):
 
         self.checkraises(TypeError, 'abc', '__getitem__', 'def')
 
-        for idx_type in ('def', object()):
+        fuer idx_type in ('def', object()):
             expected_msg = "string indices must be integers, not '{}'".format(type(idx_type).__name__)
             self.checkraises(TypeError, 'abc', '__getitem__', idx_type, expected_msg=expected_msg)
 
@@ -1287,10 +1287,10 @@ klasse StringLikeTest(BaseTest):
         # Test extended slicing by comparing with list slicing.
         s = string.ascii_letters + string.digits
         indices = (0, None, 1, 3, 41, sys.maxsize, -1, -2, -37)
-        for start in indices:
-            for stop in indices:
+        fuer start in indices:
+            fuer stop in indices:
                 # Skip step 0 (invalid)
-                for step in indices[1:]:
+                fuer step in indices[1:]:
                     L = list(s)[start:stop:step]
                     self.checkequal("".join(L), s, '__getitem__',
                                     slice(start, stop, step))
@@ -1319,7 +1319,7 @@ klasse StringLikeTest(BaseTest):
         self.checkequal('z', 'a', 'join', UserList(['z']))
         self.checkequal('a.b.c', '.', 'join', ['a', 'b', 'c'])
         self.assertRaises(TypeError, '.'.join, ['a', 'b', 3])
-        for i in [5, 25, 125]:
+        fuer i in [5, 25, 125]:
             self.checkequal(((('a' * i) + '-') * i)[:-1], '-', 'join',
                  ['a' * i] * i)
             self.checkequal(((('a' * i) + '-') * i)[:-1], '-', 'join',
@@ -1355,7 +1355,7 @@ klasse StringLikeTest(BaseTest):
         self.checkequal('10', "%d", '__mod__', 10)
         self.checkequal('\x7f', "%c", '__mod__', 0x7f)
 
-        for ordinal in (-100, 0x200000):
+        fuer ordinal in (-100, 0x200000):
             # unicode raises ValueError, str raises OverflowError
             self.checkraises((ValueError, OverflowError), '%c', '__mod__', ordinal)
 
@@ -1414,10 +1414,10 @@ klasse StringLikeTest(BaseTest):
 
     def test_floatformatting(self):
         # float formatting
-        for prec in range(100):
+        fuer prec in range(100):
             format = '%%.%if' % prec
             value = 0.01
-            for x in range(60):
+            fuer x in range(60):
                 value = value * 3.14159265359 / 3.0 * 10.0
                 self.checkcall(format, "__mod__", value)
 
@@ -1535,10 +1535,10 @@ klasse MixinStrUnicodeTest:
     # Additional tests that only work with str.
 
     def test_bug1001011(self):
-        # Make sure join returns a NEW object for single item sequences
+        # Make sure join returns a NEW object fuer single item sequences
         # involving a subclass.
         # Make sure that it is of the appropriate type.
-        # Check the optimisation still occurs for standard objects.
+        # Check the optimisation still occurs fuer standard objects.
         t = self.type2test
         klasse subclass(t):
             pass

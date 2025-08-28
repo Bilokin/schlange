@@ -2,17 +2,17 @@
 import textwrap
 from test.support.bytecode_helper import CodegenTestCase
 
-# Tests for the code-generation stage of the compiler.
+# Tests fuer the code-generation stage of the compiler.
 # Examine the un-optimized code generated from the AST.
 
 klasse IsolatedCodeGenTests(CodegenTestCase):
 
     def assertInstructionsMatch_recursive(self, insts, expected_insts):
-        expected_nested = [i for i in expected_insts if isinstance(i, list)]
-        expected_insts = [i for i in expected_insts if not isinstance(i, list)]
+        expected_nested = [i fuer i in expected_insts if isinstance(i, list)]
+        expected_insts = [i fuer i in expected_insts if not isinstance(i, list)]
         self.assertInstructionsMatch(insts, expected_insts)
         self.assertEqual(len(insts.get_nested()), len(expected_nested))
-        for n_insts, n_expected in zip(insts.get_nested(), expected_nested):
+        fuer n_insts, n_expected in zip(insts.get_nested(), expected_nested):
             self.assertInstructionsMatch_recursive(n_insts, n_expected)
 
     def codegen_test(self, snippet, expected_insts):

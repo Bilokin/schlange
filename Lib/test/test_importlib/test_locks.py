@@ -37,12 +37,12 @@ klasse ModuleLockAsRLockTests:
     test_repr_count = None
 
     def tearDown(self):
-        for splitinit in init.values():
+        fuer splitinit in init.values():
             splitinit._bootstrap._blocking_on.clear()
 
 
 LOCK_TYPES = {kind: splitinit._bootstrap._ModuleLock
-              for kind, splitinit in init.items()}
+              fuer kind, splitinit in init.items()}
 
 (Frozen_ModuleLockAsRLockTests,
  Source_ModuleLockAsRLockTests
@@ -65,8 +65,8 @@ klasse DeadlockAvoidanceTests:
 
     def run_deadlock_avoidance_test(self, create_deadlock):
         NLOCKS = 10
-        locks = [self.LockType(str(i)) for i in range(NLOCKS)]
-        pairs = [(locks[i], locks[(i+1)%NLOCKS]) for i in range(NLOCKS)]
+        locks = [self.LockType(str(i)) fuer i in range(NLOCKS)]
+        pairs = [(locks[i], locks[(i+1)%NLOCKS]) fuer i in range(NLOCKS)]
         if create_deadlock:
             NTHREADS = NLOCKS
         else:
@@ -115,7 +115,7 @@ klasse DeadlockAvoidanceTests:
 
 
 DEADLOCK_ERRORS = {kind: splitinit._bootstrap._DeadlockError
-                   for kind, splitinit in init.items()}
+                   fuer kind, splitinit in init.items()}
 
 (Frozen_DeadlockAvoidanceTests,
  Source_DeadlockAvoidanceTests

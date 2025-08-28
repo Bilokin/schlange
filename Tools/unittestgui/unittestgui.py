@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-GUI framework and application for use with Python unit testing framework.
+GUI framework and application fuer use with Python unit testing framework.
 Execute tests written using the framework provided by the 'unittest' module.
 
-Updated for unittest test discovery by Mark Roddy and Python 3
+Updated fuer unittest test discovery by Mark Roddy and Python 3
 support by Brian Curtin.
 
 Based on the original by Steve Purcell, from:
@@ -69,7 +69,7 @@ klasse BaseGUITestRunner(object):
         pass
 
     def getDirectoryToDiscover(self):
-        "Override to prompt user for directory to perform test discovery"
+        "Override to prompt user fuer directory to perform test discovery"
         pass
 
     def runClicked(self):
@@ -100,7 +100,7 @@ klasse BaseGUITestRunner(object):
         try:
             # Explicitly use 'None' value if no top level directory is
             # specified (indicated by empty string) as discover() explicitly
-            # checks for a 'None' to determine if no tld has been specified
+            # checks fuer a 'None' to determine if no tld has been specified
             top_level_dir = self.top_level_dir or None
             tests = unittest.defaultTestLoader.discover(directory, self.test_file_glob_pattern, top_level_dir)
             self.test_suite = tests
@@ -193,7 +193,7 @@ klasse RollbackImporter:
         self.previousModules = sys.modules.copy()
 
     def rollbackImports(self):
-        for modname in sys.modules.copy().keys():
+        fuer modname in sys.modules.copy().keys():
             if not modname in self.previousModules:
                 # Force reload when modname next imported
                 del(sys.modules[modname])
@@ -205,7 +205,7 @@ klasse RollbackImporter:
 
 klasse DiscoverSettingsDialog(simpledialog.Dialog):
     """
-    Dialog box for prompting test discovery settings
+    Dialog box fuer prompting test discovery settings
     """
 
     def __init__(self, master, top_level_dir, test_file_glob_pattern, *args, **kwargs):
@@ -253,7 +253,7 @@ klasse TkTestRunner(BaseGUITestRunner):
         self.statusVar = tk.StringVar()
         self.statusVar.set("Idle")
 
-        #tk vars for tracking counts of test result types
+        #tk vars fuer tracking counts of test result types
         self.runCountVar = tk.IntVar()
         self.failCountVar = tk.IntVar()
         self.errorCountVar = tk.IntVar()
@@ -329,7 +329,7 @@ klasse TkTestRunner(BaseGUITestRunner):
                   command=self.settingsClicked).pack(side=tk.BOTTOM, fill=tk.X)
 
         # Area with labels reporting results
-        for label, var in (('Run:', self.runCountVar),
+        fuer label, var in (('Run:', self.runCountVar),
                            ('Failures:', self.failCountVar),
                            ('Errors:', self.errorCountVar),
                            ('Skipped:', self.skipCountVar),

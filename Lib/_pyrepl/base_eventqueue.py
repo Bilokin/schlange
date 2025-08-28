@@ -5,7 +5,7 @@
 #
 #
 # Permission to use, copy, modify, and distribute this software and
-# its documentation for any purpose is hereby granted without fee,
+# its documentation fuer any purpose is hereby granted without fee,
 # provided that the above copyright notice appear in all copies and
 # that both that copyright notice and this permission notice appear in
 # supporting documentation.
@@ -19,9 +19,9 @@
 # CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 """
-OS-independent base for an event and VT sequence scanner
+OS-independent base fuer an event and VT sequence scanner
 
-See unix_eventqueue and windows_eventqueue for subclasses.
+See unix_eventqueue and windows_eventqueue fuer subclasses.
 """
 
 from collections import deque
@@ -97,7 +97,7 @@ klasse BaseEventQueue:
             trace('unrecognized escape sequence, propagating...')
             self.keymap = self.compiled_keymap
             self.insert(Event('key', '\033', b'\033'))
-            for _c in self.flush_buf()[1:]:
+            fuer _c in self.flush_buf()[1:]:
                 self.push(_c)
 
         else:

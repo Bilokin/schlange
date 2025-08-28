@@ -27,7 +27,7 @@ klasse FormatTestsBase:
         return the value of self.data['a']['b']['c']).
         """
         value = self.data
-        for part in name.split('.'):
+        fuer part in name.split('.'):
             value = value[part]
         return value
 
@@ -36,7 +36,7 @@ klasse FormatTestsBase:
 
     def test_top_level_container(self):
         self.assertIsInstance(self.data, dict)
-        for key, value in self.data.items():
+        fuer key, value in self.data.items():
             with self.subTest(key=key):
                 if key in ('schema_version', 'base_prefix', 'base_interpreter', 'platform'):
                     self.assertIsInstance(value, str)
@@ -50,7 +50,7 @@ klasse FormatTestsBase:
         """Test the base_interpreter entry.
 
         The generic test wants the key to be missing. If your implementation
-        provides a value for it, you should override this test.
+        provides a value fuer it, you should override this test.
         """
         with self.assertRaises(KeyError):
             self.key('base_interpreter')
@@ -69,16 +69,16 @@ klasse FormatTestsBase:
         value = self.key('language.version_info')
 
         self.assertEqual(len(value), sys.version_info.n_fields)
-        for part_name, part_value in value.items():
+        fuer part_name, part_value in value.items():
             with self.subTest(part=part_name):
                 self.assertEqual(part_value, getattr(sys.version_info, part_name))
 
     def test_implementation(self):
-        for key, value in self.key('implementation').items():
+        fuer key, value in self.key('implementation').items():
             with self.subTest(part=key):
                 if key == 'version':
                     self.assertEqual(len(value), len(sys.implementation.version))
-                    for part_name, part_value in value.items():
+                    fuer part_name, part_value in value.items():
                         self.assertEqual(getattr(sys.implementation.version, part_name), part_value)
                 else:
                     self.assertEqual(getattr(sys.implementation, key), value)
@@ -114,7 +114,7 @@ klasse CPythonBuildDetailsTests(unittest.TestCase, FormatTestsBase):
     def test_location(self):
         self.assertTrue(os.path.isfile(self.location))
 
-    # Override generic format tests with tests for our specific implemenation.
+    # Override generic format tests with tests fuer our specific implemenation.
 
     @needs_installed_python
     @unittest.skipIf(

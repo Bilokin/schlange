@@ -21,7 +21,7 @@ def declare_parser(
     codegen: CodeGen,
 ) -> str:
     """
-    Generates the code template for a static local PyArg_Parser variable,
+    Generates the code template fuer a static local PyArg_Parser variable,
     with an initializer.  For core code (incl. builtin modules) the
     kwtuple field is also statically initialized.  Otherwise
     it is initialized at runtime.
@@ -35,7 +35,7 @@ def declare_parser(
         format_ = ''
 
     num_keywords = len([
-        p for p in f.parameters.values()
+        p fuer p in f.parameters.values()
         if not p.is_positional_only() and not p.is_vararg()
     ])
 
@@ -57,7 +57,7 @@ def declare_parser(
                             condition=condition)
     else:
         # XXX Why do we not statically allocate the tuple
-        # for non-builtin modules?
+        # fuer non-builtin modules?
         declarations = """
             #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
 
@@ -200,7 +200,7 @@ klasse ParseArgsCodeGen:
     self_parameter_converter: self_converter
     converters: list[CConverter]
 
-    # Is 'defining_class' used for the first parameter?
+    # Is 'defining_class' used fuer the first parameter?
     requires_defining_class: bool
 
     # Use METH_FASTCALL calling convention?
@@ -249,13 +249,13 @@ klasse ParseArgsCodeGen:
             self.requires_defining_class = True
             del self.parameters[0]
 
-        for i, p in enumerate(self.parameters):
+        fuer i, p in enumerate(self.parameters):
             if p.is_vararg():
                 self.varpos = p
                 del self.parameters[i]
                 break
 
-        self.converters = [p.converter for p in self.parameters]
+        self.converters = [p.converter fuer p in self.parameters]
 
         if self.func.critical_section:
             self.codegen.add_include('pycore_critical_section.h',
@@ -269,7 +269,7 @@ klasse ParseArgsCodeGen:
         self.min_pos = 0
         self.max_pos = 0
         self.min_kw_only = 0
-        for i, p in enumerate(self.parameters, 1):
+        fuer i, p in enumerate(self.parameters, 1):
             if p.is_keyword_only():
                 assert not p.is_positional_only()
                 if not p.is_optional():
@@ -317,7 +317,7 @@ klasse ParseArgsCodeGen:
                 self.docstring_definition = GETSET_DOCSTRING_PROTOTYPE_STRVAR
         elif self.func.kind is SETTER:
             if self.func.docstring:
-                fail("docstrings are only supported for @getter, not @setter")
+                fail("docstrings are only supported fuer @getter, not @setter")
             self.return_value_declaration = "int {return_value};"
             self.methoddef_define = SETTERDEF_PROTOTYPE_DEFINE
         else:
@@ -328,9 +328,9 @@ klasse ParseArgsCodeGen:
         self.limited_capi = self.codegen.limited_capi
         if self.limited_capi and (
                 (self.varpos and self.pos_only < len(self.parameters)) or
-                (any(p.is_optional() for p in self.parameters) and
-                 any(p.is_keyword_only() and not p.is_optional() for p in self.parameters)) or
-                any(c.broken_limited_capi for c in self.converters)):
+                (any(p.is_optional() fuer p in self.parameters) and
+                 any(p.is_keyword_only() and not p.is_optional() fuer p in self.parameters)) or
+                any(c.broken_limited_capi fuer c in self.converters)):
             warn(f"Function {self.func.full_name} cannot use limited C API")
             self.limited_capi = False
 
@@ -362,7 +362,7 @@ klasse ParseArgsCodeGen:
                 return return_value;
             }}
         """)
-        for field in preamble, *fields, finale:
+        fuer field in preamble, *fields, finale:
             lines.append(field)
         code = libclinic.linear_format("\n".join(lines),
                                        parser_declarations=self.declarations)
@@ -421,7 +421,7 @@ klasse ParseArgsCodeGen:
                 self.impl_definition = meth_o_prototype
             else:
                 # SLIGHT HACK
-                # use impl_parameters for the parser here!
+                # use impl_parameters fuer the parser here!
                 self.parser_prototype = meth_o_prototype
                 self.parser_body()
 
@@ -537,7 +537,7 @@ klasse ParseArgsCodeGen:
 
         has_optional = False
         use_parser_code = True
-        for i, p in enumerate(self.parameters):
+        fuer i, p in enumerate(self.parameters):
             displayname = p.get_displayname(i+1)
             argname = argname_fmt % i
             parsearg: str | None
@@ -565,7 +565,7 @@ klasse ParseArgsCodeGen:
             if self.varpos:
                 parser_code.append(libclinic.normalize_snippet(self._parse_vararg(), indent=4))
         else:
-            for parameter in self.parameters:
+            fuer parameter in self.parameters:
                 parameter.converter.use_converter()
 
             if self.limited_capi:
@@ -594,7 +594,7 @@ klasse ParseArgsCodeGen:
         parsearg: str | None
         deprecated_positionals: dict[int, Parameter] = {}
         deprecated_keywords: dict[int, Parameter] = {}
-        for i, p in enumerate(self.parameters):
+        fuer i, p in enumerate(self.parameters):
             if p.deprecated_positional:
                 deprecated_positionals[i] = p
             if p.deprecated_keyword:
@@ -667,7 +667,7 @@ klasse ParseArgsCodeGen:
                 parser_code.append(code)
 
             add_label: str | None = None
-            for i, p in enumerate(self.parameters):
+            fuer i, p in enumerate(self.parameters):
                 if isinstance(p.converter, defining_class_converter):
                     raise ValueError("defining_class should be the first "
                                     "parameter (after clang)")
@@ -729,7 +729,7 @@ klasse ParseArgsCodeGen:
             if self.varpos:
                 parser_code.append(libclinic.normalize_snippet(self._parse_vararg(), indent=4))
         else:
-            for parameter in self.parameters:
+            fuer parameter in self.parameters:
                 parameter.converter.use_converter()
 
             self.declarations = declare_parser(self.func, codegen=self.codegen,
@@ -788,8 +788,8 @@ klasse ParseArgsCodeGen:
         converters = self.converters
         if self.varpos:
             converters = converters + [self.varpos.converter]
-        for converter in converters:
-            for include in converter.get_includes():
+        fuer converter in converters:
+            fuer include in converter.get_includes():
                 self.codegen.add_include(
                     include.filename,
                     include.reason,
@@ -899,8 +899,8 @@ klasse ParseArgsCodeGen:
         # make sure we didn't forget to assign something,
         # and wrap each non-empty value in \n's
         d2 = {}
-        for name, value in d.items():
-            assert value is not None, "got a None value for template " + repr(name)
+        fuer name, value in d.items():
+            assert value is not None, "got a None value fuer template " + repr(name)
             if value:
                 value = '\n' + value + '\n'
             d2[name] = value
@@ -918,7 +918,7 @@ klasse ParseArgsCodeGen:
         self.impl_definition = IMPL_DEFINITION_PROTOTYPE
 
         # parser_body_fields remembers the fields passed in to the
-        # previous call to parser_body. this is used for an awful hack.
+        # previous call to parser_body. this is used fuer an awful hack.
         self.parser_body_fields: tuple[str, ...] = ()
 
         if not self.parameters and not self.varpos:

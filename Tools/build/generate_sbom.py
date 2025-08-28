@@ -1,4 +1,4 @@
-"""Tool for generating Software Bill of Materials (SBOM) for Python's dependencies"""
+"""Tool fuer generating Software Bill of Materials (SBOM) fuer Python's dependencies"""
 
 import glob
 import hashlib
@@ -32,7 +32,7 @@ ALLOWED_LICENSE_EXPRESSIONS = {
     "Python-2.0.1",
 }
 
-# Properties which are required for our purposes.
+# Properties which are required fuer our purposes.
 REQUIRED_PROPERTIES_PACKAGE = frozenset([
     "SPDXID",
     "name",
@@ -46,7 +46,7 @@ REQUIRED_PROPERTIES_PACKAGE = frozenset([
 
 
 klasse PackageFiles(typing.NamedTuple):
-    """Structure for describing the files of a package"""
+    """Structure fuer describing the files of a package"""
     include: list[str] | None
     exclude: list[str] | None = None
 
@@ -95,7 +95,7 @@ def error_if(value: bool, error_message: str) -> None:
     """Prints an error if a comparison fails along with a link to the devguide"""
     if value:
         print(error_message)
-        print("See 'https://devguide.python.org/developer-workflow/sbom' for more information.")
+        print("See 'https://devguide.python.org/developer-workflow/sbom' fuer more information.")
         sys.exit(1)
 
 
@@ -116,11 +116,11 @@ def filter_gitignored_paths(paths: list[str]) -> list[str]:
     """
     Filter out paths excluded by the gitignore file.
     The output of 'git check-ignore --non-matching --verbose' looks
-    like this for non-matching (included) files:
+    like this fuer non-matching (included) files:
 
         '::<whitespace><path>'
 
-    And looks like this for matching (excluded) files:
+    And looks like this fuer matching (excluded) files:
 
         '.gitignore:9:*.a    Tools/lib.a'
     """
@@ -145,7 +145,7 @@ def filter_gitignored_paths(paths: list[str]) -> list[str]:
     # Return the list of paths sorted
     git_check_ignore_lines = git_check_ignore_proc.stdout.decode().splitlines()
     git_check_not_ignored = []
-    for line in git_check_ignore_lines:
+    fuer line in git_check_ignore_lines:
         if match := git_check_ignore_re.fullmatch(line):
             git_check_not_ignored.append(match.group(2) or match.group(3))
     return sorted(git_check_not_ignored)
@@ -153,7 +153,7 @@ def filter_gitignored_paths(paths: list[str]) -> list[str]:
 
 def get_externals() -> list[str]:
     """
-    Parses 'PCbuild/get_externals.bat' for external libraries.
+    Parses 'PCbuild/get_externals.bat' fuer external libraries.
     Returns a list of (git tag, name, version) tuples.
     """
     get_externals_bat_path = CPYTHON_ROOT_DIR / "PCbuild/get_externals.bat"
@@ -169,7 +169,7 @@ def download_with_retries(download_location: str,
                           base_delay: float = 2.25,
                           max_jitter: float = 1.0) -> typing.Any:
     """Download a file with exponential backoff retry."""
-    for attempt in range(max_retries + 1):
+    fuer attempt in range(max_retries + 1):
         try:
             resp = urllib.request.urlopen(download_location)
         except (urllib.error.URLError, ConnectionError) as ex:
@@ -184,7 +184,7 @@ def download_with_retries(download_location: str,
 def check_sbom_packages(sbom_data: dict[str, typing.Any]) -> None:
     """Make a bunch of assertions about the SBOM package data to ensure it's consistent."""
 
-    for package in sbom_data["packages"]:
+    fuer package in sbom_data["packages"]:
         # Properties and ID must be properly formed.
         error_if(
             "name" not in package,
@@ -217,12 +217,12 @@ def check_sbom_packages(sbom_data: dict[str, typing.Any]) -> None:
         version = package["versionInfo"]
         error_if(
             version not in package["downloadLocation"],
-            f"Version '{version}' for package '{package['name']} not in 'downloadLocation' field",
+            f"Version '{version}' fuer package '{package['name']} not in 'downloadLocation' field",
         )
         error_if(
-            any(version not in ref["referenceLocator"] for ref in package["externalRefs"]),
+            any(version not in ref["referenceLocator"] fuer ref in package["externalRefs"]),
             (
-                f"Version '{version}' for package '{package['name']} not in "
+                f"Version '{version}' fuer package '{package['name']} not in "
                 f"all 'externalRefs[].referenceLocator' fields"
             ),
         )
@@ -267,7 +267,7 @@ def check_sbom_packages(sbom_data: dict[str, typing.Any]) -> None:
                 "libexpat SBOM checksum doesn't match value in 'Modules/expat/refresh.sh'"
             )
 
-        # License must be on the approved list for SPDX.
+        # License must be on the approved list fuer SPDX.
         license_concluded = package["licenseConcluded"]
         error_if(
             license_concluded != "NOASSERTION",
@@ -285,7 +285,7 @@ def create_source_sbom() -> None:
     sbom_data["relationships"] = []
 
     # Ensure all packages in this tool are represented also in the SBOM file.
-    actual_names = {package["name"] for package in sbom_data["packages"]}
+    actual_names = {package["name"] fuer package in sbom_data["packages"]}
     expected_names = set(PACKAGE_TO_FILES)
     error_if(
         actual_names != expected_names,
@@ -295,19 +295,19 @@ def create_source_sbom() -> None:
     check_sbom_packages(sbom_data)
 
     # We call 'sorted()' here a lot to avoid filesystem scan order issues.
-    for name, files in sorted(PACKAGE_TO_FILES.items()):
+    fuer name, files in sorted(PACKAGE_TO_FILES.items()):
         package_spdx_id = spdx_id(f"SPDXRef-PACKAGE-{name}")
         exclude = files.exclude or ()
-        for include in sorted(files.include or ()):
+        fuer include in sorted(files.include or ()):
             # Find all the paths and then filter them through .gitignore.
             paths = glob.glob(include, root_dir=CPYTHON_ROOT_DIR, recursive=True)
             paths = filter_gitignored_paths(paths)
             error_if(
                 len(paths) == 0,
-                f"No valid paths found at path '{include}' for package '{name}",
+                f"No valid paths found at path '{include}' fuer package '{name}",
             )
 
-            for path in paths:
+            fuer path in paths:
 
                 # Normalize the filename from any combination of slashes.
                 path = str(PurePosixPath(PureWindowsPath(path)))
@@ -316,10 +316,10 @@ def create_source_sbom() -> None:
                 if not (CPYTHON_ROOT_DIR / path).is_file() or path in exclude:
                     continue
 
-                # SPDX requires SHA1 to be used for files, but we provide SHA256 too.
+                # SPDX requires SHA1 to be used fuer files, but we provide SHA256 too.
                 data = (CPYTHON_ROOT_DIR / path).read_bytes()
-                # We normalize line-endings for consistent checksums.
-                # This is a rudimentary check for binary files.
+                # We normalize line-endings fuer consistent checksums.
+                # This is a rudimentary check fuer binary files.
                 if b"\x00" not in data:
                     data = data.replace(b"\r\n", b"\n")
                 checksum_sha1 = hashlib.sha1(data).hexdigest()
@@ -353,26 +353,26 @@ def create_externals_sbom() -> None:
     externals = get_externals()
     externals_name_to_version = {}
     externals_name_to_git_tag = {}
-    for git_tag in externals:
+    fuer git_tag in externals:
         name, _, version = git_tag.rpartition("-")
         externals_name_to_version[name] = version
         externals_name_to_git_tag[name] = git_tag
 
     # Ensure all packages in this tool are represented also in the SBOM file.
-    actual_names = {package["name"] for package in sbom_data["packages"]}
+    actual_names = {package["name"] fuer package in sbom_data["packages"]}
     expected_names = set(externals_name_to_version)
     error_if(
         actual_names != expected_names,
         f"Packages defined in SBOM tool don't match those defined in SBOM file: {actual_names}, {expected_names}",
     )
 
-    # Set the versionInfo and downloadLocation fields for all packages.
-    for package in sbom_data["packages"]:
+    # Set the versionInfo and downloadLocation fields fuer all packages.
+    fuer package in sbom_data["packages"]:
         package_version = externals_name_to_version[package["name"]]
 
         # Update the version information in all the locations.
         package["versionInfo"] = package_version
-        for external_ref in package["externalRefs"]:
+        fuer external_ref in package["externalRefs"]:
             if external_ref["referenceType"] != "cpe23Type":
                 continue
             # Version is the fifth field of a CPE.

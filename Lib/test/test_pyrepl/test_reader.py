@@ -15,7 +15,7 @@ from _colorize import default_theme
 
 
 overrides = {"reset": "z", "soft_keyword": "K"}
-colors = {overrides.get(k, k[0].lower()): v for k, v in default_theme.syntax.items()}
+colors = {overrides.get(k, k[0].lower()): v fuer k, v in default_theme.syntax.items()}
 
 
 @force_not_colorized_test_class
@@ -242,7 +242,7 @@ klasse TestReader(ScreenEqualMixin, TestCase):
         events = itertools.chain(
             code_to_events(code),
             [
-                # Two tabs for completion
+                # Two tabs fuer completion
                 Event(evt="key", data="\t", raw=bytearray(b"\t")),
                 Event(evt="key", data="\t", raw=bytearray(b"\t")),
                 Event(evt="key", data="\x03", raw=bytearray(b"\x03")),  # Ctrl-C
@@ -306,7 +306,7 @@ klasse TestReader(ScreenEqualMixin, TestCase):
         events = itertools.chain(
             code_to_events(code),
             [
-                # Two tabs for completion
+                # Two tabs fuer completion
                 Event(evt="key", data="\t", raw=bytearray(b"\t")),
                 Event(evt="key", data="\t", raw=bytearray(b"\t")),
             ],

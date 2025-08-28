@@ -1,4 +1,4 @@
-"""Generate 10,000 unique examples for the Levenshtein short-circuit tests."""
+"""Generate 10,000 unique examples fuer the Levenshtein short-circuit tests."""
 
 import argparse
 import json
@@ -50,14 +50,14 @@ def main():
 
     examples = set()
     # Create a lot of non-empty examples, which should end up with a Gauss-like
-    # distribution for even costs (moves) and odd costs (case substitutions).
+    # distribution fuer even costs (moves) and odd costs (case substitutions).
     while len(examples) < 9990:
         a = ''.join(choices("abcABC", k=randrange(1, 10)))
         b = ''.join(choices("abcABC", k=randrange(1, 10)))
         expected = levenshtein(a, b)
         examples.add((a, b, expected))
-    # Create one empty case each for strings between 0 and 9 in length.
-    for i in range(10):
+    # Create one empty case each fuer strings between 0 and 9 in length.
+    fuer i in range(10):
         b = ''.join(choices("abcABC", k=i))
         expected = levenshtein("", b)
         examples.add(("", b, expected))

@@ -1,4 +1,4 @@
-# helper to the helper for testing skip_file_prefixes.
+# helper to the helper fuer testing skip_file_prefixes.
 
 import os
 

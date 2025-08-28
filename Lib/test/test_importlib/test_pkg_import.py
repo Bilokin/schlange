@@ -19,7 +19,7 @@ klasse TestImport(unittest.TestCase):
         unittest.TestCase.__init__(self, *args, **kw)
 
     def remove_modules(self):
-        for module_name in (self.package_name, self.module_name):
+        fuer module_name in (self.package_name, self.module_name):
             if module_name in sys.modules:
                 del sys.modules[module_name]
 

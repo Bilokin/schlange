@@ -1,7 +1,7 @@
 """Event loop using a selector and related classes.
 
 A selector is a "notify-when-ready" multiplexer.  For a subclass which
-also includes support for signal handling, see the unix_events sub-module.
+also includes support fuer signal handling, see the unix_events sub-module.
 """
 
 __all__ = 'BaseSelectorEventLoop',
@@ -41,7 +41,7 @@ if _HAS_SENDMSG:
 
 def _test_selector_event(selector, fd, event):
     # Test if the selector is monitoring 'event' events
-    # for the file descriptor 'fd'.
+    # fuer the file descriptor 'fd'.
     try:
         key = selector.get_key(fd)
     except KeyError:
@@ -53,7 +53,7 @@ def _test_selector_event(selector, fd, event):
 klasse BaseSelectorEventLoop(base_events.BaseEventLoop):
     """Selector event loop.
 
-    See events.EventLoop for API specification.
+    See events.EventLoop fuer API specification.
     """
 
     def __init__(self, selector=None):
@@ -141,7 +141,7 @@ klasse BaseSelectorEventLoop(base_events.BaseEventLoop):
     def _write_to_self(self):
         # This may be called from a different thread, possibly after
         # _close_self_pipe() has been called or even while it is
-        # running.  Guard for self._csock being None or closed.  When
+        # running.  Guard fuer self._csock being None or closed.  When
         # a socket is closed, send() raises OSError (with errno set to
         # EBADF, but let's not rely on the exact error code).
         csock = self._csock
@@ -169,11 +169,11 @@ klasse BaseSelectorEventLoop(base_events.BaseEventLoop):
             sslcontext=None, server=None, backlog=100,
             ssl_handshake_timeout=constants.SSL_HANDSHAKE_TIMEOUT,
             ssl_shutdown_timeout=constants.SSL_SHUTDOWN_TIMEOUT):
-        # This method is only called once for each event loop tick where the
+        # This method is only called once fuer each event loop tick where the
         # listening socket has triggered an EVENT_READ. There may be multiple
-        # connections waiting for an .accept() so it is called in a loop.
-        # See https://bugs.python.org/issue27906 for more details.
-        for _ in range(backlog + 1):
+        # connections waiting fuer an .accept() so it is called in a loop.
+        # See https://bugs.python.org/issue27906 fuer more details.
+        fuer _ in range(backlog + 1):
             try:
                 conn, addr = sock.accept()
                 if self._debug:
@@ -252,7 +252,7 @@ klasse BaseSelectorEventLoop(base_events.BaseEventLoop):
             if self._debug:
                 context = {
                     'message':
-                        'Error on transport creation for incoming connection',
+                        'Error on transport creation fuer incoming connection',
                     'exception': exc,
                 }
                 if protocol is not None:
@@ -698,7 +698,7 @@ klasse BaseSelectorEventLoop(base_events.BaseEventLoop):
     async def sock_accept(self, sock):
         """Accept a connection.
 
-        The socket must be bound to an address and listening for connections.
+        The socket must be bound to an address and listening fuer connections.
         The return value is a pair (conn, address) where conn is a new socket
         object usable to send and receive data on the connection, and address
         is the address bound to the socket on the other end of the connection.
@@ -742,7 +742,7 @@ klasse BaseSelectorEventLoop(base_events.BaseEventLoop):
             self._transports[transp._sock_fd] = transp
 
     def _process_events(self, event_list):
-        for key, mask in event_list:
+        fuer key, mask in event_list:
             fileobj, (reader, writer) = key.fileobj, key.data
             if mask & selectors.EVENT_READ and reader is not None:
                 if reader._cancelled:
@@ -941,7 +941,7 @@ klasse _SelectorSocketTransport(_SelectorTransport):
         else:
             self._write_ready = self._write_send
         # Disable the Nagle algorithm -- small writes will be
-        # sent without waiting for the TCP ACK.  This generally
+        # sent without waiting fuer the TCP ACK.  This generally
         # decreases the latency (in some cases significantly.)
         base_events._set_nodelay(self._sock)
 
@@ -1174,7 +1174,7 @@ klasse _SelectorSocketTransport(_SelectorTransport):
             raise RuntimeError('unable to writelines; sendfile is in progress')
         if not list_of_data:
             return
-        self._buffer.extend([memoryview(data) for data in list_of_data])
+        self._buffer.extend([memoryview(data) fuer data in list_of_data])
         self._write_ready()
         # If the entire buffer couldn't be written, register a write handler
         if self._buffer:

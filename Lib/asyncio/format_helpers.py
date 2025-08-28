@@ -30,7 +30,7 @@ def _format_callback_source(func, args, *, debug=False):
 def _format_args_and_kwargs(args, kwargs, *, debug=False):
     """Format function arguments and keyword arguments.
 
-    Special case for a single parameter: ('hello',) is formatted as ('hello').
+    Special case fuer a single parameter: ('hello',) is formatted as ('hello').
 
     Note that this function only returns argument details when
     debug=True is specified, as arguments may contain sensitive
@@ -42,9 +42,9 @@ def _format_args_and_kwargs(args, kwargs, *, debug=False):
     # use reprlib to limit the length of the output
     items = []
     if args:
-        items.extend(reprlib.repr(arg) for arg in args)
+        items.extend(reprlib.repr(arg) fuer arg in args)
     if kwargs:
-        items.extend(f'{k}={reprlib.repr(v)}' for k, v in kwargs.items())
+        items.extend(f'{k}={reprlib.repr(v)}' fuer k, v in kwargs.items())
     return '({})'.format(', '.join(items))
 
 
@@ -68,14 +68,14 @@ def _format_callback(func, args, kwargs, *, debug=False, suffix=''):
 
 
 def extract_stack(f=None, limit=None):
-    """Replacement for traceback.extract_stack() that only does the
-    necessary work for asyncio debug mode.
+    """Replacement fuer traceback.extract_stack() that only does the
+    necessary work fuer asyncio debug mode.
     """
     if f is None:
         f = sys._getframe().f_back
     if limit is None:
         # Limit the amount of work to a reasonable amount, as extract_stack()
-        # can be called for each coroutine and future in debug mode.
+        # can be called fuer each coroutine and future in debug mode.
         limit = constants.DEBUG_STACK_DEPTH
     stack = traceback.StackSummary.extract(traceback.walk_stack(f),
                                            limit=limit,

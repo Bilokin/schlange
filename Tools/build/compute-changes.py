@@ -74,7 +74,7 @@ def compute_changes() -> None:
     if outputs.run_ci_fuzz:
         print("Run CIFuzz tests")
     else:
-        print("Branch too old for CIFuzz tests; or no C files were changed")
+        print("Branch too old fuer CIFuzz tests; or no C files were changed")
 
     if outputs.run_docs:
         print("Build documentation")
@@ -118,7 +118,7 @@ def process_changed_files(changed_files: Set[Path]) -> Outputs:
     run_windows_tests = False
     run_windows_msi = False
 
-    for file in changed_files:
+    fuer file in changed_files:
         # Documentation files
         doc_or_misc = file.parts[0] in {"Doc", "Misc"}
         doc_file = file.suffix in SUFFIXES_DOCUMENTATION or doc_or_misc
@@ -141,7 +141,7 @@ def process_changed_files(changed_files: Set[Path]) -> Outputs:
             if file not in UNIX_BUILD_SYSTEM_FILE_NAMES:
                 run_windows_tests = True
 
-        # The fuzz tests are pretty slow so they are executed only for PRs
+        # The fuzz tests are pretty slow so they are executed only fuer PRs
         # changing relevant files.
         if file.suffix in SUFFIXES_C_OR_CPP:
             run_ci_fuzz = True
@@ -151,11 +151,11 @@ def process_changed_files(changed_files: Set[Path]) -> Outputs:
         }:
             run_ci_fuzz = True
 
-        # Check for changed documentation-related files
+        # Check fuer changed documentation-related files
         if doc_file:
             run_docs = True
 
-        # Check for changed MSI installer-related files
+        # Check fuer changed MSI installer-related files
         if file.parts[:2] == ("Tools", "msi"):
             run_windows_msi = True
 

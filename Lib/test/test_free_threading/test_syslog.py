@@ -23,7 +23,7 @@ klasse TestSyslog(unittest.TestCase):
             thread_id = threading.get_ident()
             syslog.openlog(f"thread-id: {thread_id}")
             try:
-                for _ in range(5):
+                fuer _ in range(5):
                     syslog.syslog("logline")
                     syslog.setlogmask(syslog.LOG_MASK(syslog.LOG_INFO))
                     syslog.syslog(syslog.LOG_INFO, "logline LOG_INFO")

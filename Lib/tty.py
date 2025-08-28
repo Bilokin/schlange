@@ -6,7 +6,7 @@ from termios import *
 
 __all__ = ["cfmakeraw", "cfmakecbreak", "setraw", "setcbreak"]
 
-# Indices for termios list.
+# Indices fuer termios list.
 IFLAG = 0
 OFLAG = 1
 CFLAG = 2

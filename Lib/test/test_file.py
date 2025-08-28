@@ -14,7 +14,7 @@ from test.support import warnings_helper
 from collections import UserList
 
 klasse AutoFileTests:
-    # file tests for which a test file is automatically set up
+    # file tests fuer which a test file is automatically set up
 
     def setUp(self):
         self.f = self.open(TESTFN, 'wb')
@@ -116,7 +116,7 @@ klasse AutoFileTests:
         self.f.__exit__(None, None, None)
         self.assertTrue(self.f.closed)
 
-        for methodname, args in methods:
+        fuer methodname, args in methods:
             method = getattr(self.f, methodname)
             # should raise on closed file
             self.assertRaises(ValueError, method, *args)
@@ -147,7 +147,7 @@ klasse OtherFileTests:
     def testModeStrings(self):
         # check invalid mode strings
         self.open(TESTFN, 'wb').close()
-        for mode in ("", "aU", "wU+", "U+", "+U", "rU+"):
+        fuer mode in ("", "aU", "wU+", "U+", "+U", "rU+"):
             try:
                 f = self.open(TESTFN, mode)
             except ValueError:
@@ -173,7 +173,7 @@ klasse OtherFileTests:
             sys.stdin.truncate()
 
     def testBadModeArgument(self):
-        # verify that we get a sensible error message for bad mode argument
+        # verify that we get a sensible error message fuer bad mode argument
         bad_mode = "qwerty"
         try:
             f = self.open(TESTFN, bad_mode)
@@ -181,12 +181,12 @@ klasse OtherFileTests:
             if msg.args[0] != 0:
                 s = str(msg)
                 if TESTFN in s or bad_mode not in s:
-                    self.fail("bad error message for invalid mode: %s" % s)
+                    self.fail("bad error message fuer invalid mode: %s" % s)
             # if msg.args[0] == 0, we're probably on Windows where there may be
             # no obvious way to discover why open() failed.
         else:
             f.close()
-            self.fail("no error for invalid mode: %s" % bad_mode)
+            self.fail("no error fuer invalid mode: %s" % bad_mode)
 
     def _checkBufferSize(self, s):
         try:
@@ -205,7 +205,7 @@ klasse OtherFileTests:
     def testSetBufferSize(self):
         # make sure that explicitly setting the buffer size doesn't cause
         # misbehaviour especially with repeated close() calls
-        for s in (-1, 0, 512):
+        fuer s in (-1, 0, 512):
             with warnings_helper.check_no_warnings(self,
                                            message='line buffering',
                                            category=RuntimeWarning):
@@ -239,7 +239,7 @@ klasse OtherFileTests:
             f = self.open(TESTFN,'rb+')
             data = f.read(5)
             if data != b'12345':
-                self.fail("Read on file opened for update failed %r" % data)
+                self.fail("Read on file opened fuer update failed %r" % data)
             if f.tell() != 5:
                 self.fail("File pos after read wrong %d" % f.tell())
 
@@ -278,8 +278,8 @@ klasse OtherFileTests:
         bag.write(filler * nchunks)
         bag.writelines(testlines)
         bag.close()
-        # Test for appropriate errors mixing read* and iteration
-        for methodname, args in methods:
+        # Test fuer appropriate errors mixing read* and iteration
+        fuer methodname, args in methods:
             f = self.open(TESTFN, 'rb')
             self.assertEqual(next(f), filler)
             meth = getattr(f, methodname)
@@ -291,10 +291,10 @@ klasse OtherFileTests:
         # iteration buffer (currently 8192,) but we can test it in a
         # flexible manner.  Each line in the bag o' ham is 4 bytes
         # ("h", "a", "m", "\n"), so 4096 lines of that should get us
-        # exactly on the buffer boundary for any power-of-2 buffersize
+        # exactly on the buffer boundary fuer any power-of-2 buffersize
         # between 4 and 16384 (inclusive).
         f = self.open(TESTFN, 'rb')
-        for i in range(nchunks):
+        fuer i in range(nchunks):
             next(f)
         testline = testlines.pop(0)
         try:
@@ -339,7 +339,7 @@ klasse OtherFileTests:
         # Reading after iteration hit EOF shouldn't hurt either
         f = self.open(TESTFN, 'rb')
         try:
-            for line in f:
+            fuer line in f:
                 pass
             try:
                 f.readline()

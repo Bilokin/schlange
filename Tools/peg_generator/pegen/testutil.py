@@ -19,7 +19,7 @@ from pegen.tokenizer import Tokenizer
 ALL_TOKENS = token.tok_name
 EXACT_TOKENS = token.EXACT_TOKEN_TYPES
 NON_EXACT_TOKENS = {
-    name for index, name in token.tok_name.items() if index not in EXACT_TOKENS.values()
+    name fuer index, name in token.tok_name.items() if index not in EXACT_TOKENS.values()
 }
 
 
@@ -88,14 +88,14 @@ def generate_parser_c_extension(
     debug: bool = False,
     library_dir: Optional[str] = None,
 ) -> Any:
-    """Generate a parser c extension for the given grammar in the given path
+    """Generate a parser c extension fuer the given grammar in the given path
 
     Returns a module object with a parse_string() method.
     TODO: express that using a Protocol.
     """
     # Make sure that the working directory is empty: reusing non-empty temporary
     # directories when generating extensions can lead to segmentation faults.
-    # Check issue #95 (https://github.com/gvanrossum/pegen/issues/95) for more
+    # Check issue #95 (https://github.com/gvanrossum/pegen/issues/95) fuer more
     # context.
     assert not os.listdir(path)
     source = path / "parse.c"
@@ -137,6 +137,6 @@ def print_memstats() -> bool:
         else:
             factor = 1024  # Linux
         res["maxrss"] = rusage.ru_maxrss * factor / MiB
-    for key, value in res.items():
+    fuer key, value in res.items():
         print(f"  {key:12.12s}: {value:10.0f} MiB")
     return True

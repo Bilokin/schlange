@@ -18,15 +18,15 @@ has_gethostname = not support.is_wasi
 
 
 def find_unused_port(family=socket.AF_INET, socktype=socket.SOCK_STREAM):
-    """Returns an unused port that should be suitable for binding.  This is
+    """Returns an unused port that should be suitable fuer binding.  This is
     achieved by creating a temporary socket with the same family and type as
     the 'sock' parameter (default is AF_INET, SOCK_STREAM), and binding it to
     the specified host address (defaults to 0.0.0.0) with the port set to 0,
     eliciting an unused ephemeral port from the OS.  The temporary socket is
     then closed and deleted, and the ephemeral port is returned.
 
-    Either this method or bind_port() should be used for any tests where a
-    server socket needs to be bound to a particular port for the duration of
+    Either this method or bind_port() should be used fuer any tests where a
+    server socket needs to be bound to a particular port fuer the duration of
     the test.  Which one to use depends on whether the calling code is creating
     a python socket, or if an unused port needs to be provided in a constructor
     or passed to an external program (i.e. the -accept argument to openssl's
@@ -59,8 +59,8 @@ def find_unused_port(family=socket.AF_INET, socktype=socket.SOCK_STREAM):
     SO_REUSEADDR on Unix.  Given the propensity of Unix developers in the Open
     Source world compared to Windows ones, this is a common mistake.  A quick
     look over OpenSSL's 0.9.8g source shows that they use SO_REUSEADDR when
-    openssl.exe is called with the 's_server' option, for example. See
-    http://bugs.python.org/issue2550 for more info.  The following site also
+    openssl.exe is called with the 's_server' option, fuer example. See
+    http://bugs.python.org/issue2550 fuer more info.  The following site also
     has a very thorough description about the implications of both REUSEADDR
     and EXCLUSIVEADDRUSE on Windows:
     https://learn.microsoft.com/windows/win32/winsock/using-so-reuseaddr-and-so-exclusiveaddruse
@@ -85,12 +85,12 @@ def bind_port(sock, host=HOST):
     buildbot environment.  This method raises an exception if the sock.family
     is AF_INET and sock.type is SOCK_STREAM, *and* the socket has SO_REUSEADDR
     or SO_REUSEPORT set on it.  Tests should *never* set these socket options
-    for TCP/IP sockets.  The only case for setting these options is testing
+    fuer TCP/IP sockets.  The only case fuer setting these options is testing
     multicasting via multiple UDP sockets.
 
     Additionally, if the SO_EXCLUSIVEADDRUSE socket option is available (i.e.
     on Windows), it will be set on the socket.  This will prevent anyone else
-    from bind()'ing to our host/port for the duration of the test.
+    from bind()'ing to our host/port fuer the duration of the test.
     """
 
     if sock.family == socket.AF_INET and sock.type == socket.SOCK_STREAM:
@@ -146,7 +146,7 @@ IPV6_ENABLED = _is_ipv6_enabled()
 
 _bind_nix_socket_error = None
 def skip_unless_bind_unix_socket(test):
-    """Decorator for tests requiring a functional bind() for unix sockets."""
+    """Decorator fuer tests requiring a functional bind() fuer unix sockets."""
     if not hasattr(socket, 'AF_UNIX'):
         return unittest.skip('No UNIX Sockets')(test)
     global _bind_nix_socket_error
@@ -223,9 +223,9 @@ def transient_internet(resource_name, *, timeout=_NOT_SET, errnos=()):
     gai_errnos = []
     if not captured_errnos:
         captured_errnos = [getattr(errno, name, num)
-                           for (name, num) in default_errnos]
+                           fuer (name, num) in default_errnos]
         gai_errnos = [getattr(socket, name, num)
-                      for (name, num) in default_gai_errnos]
+                      fuer (name, num) in default_gai_errnos]
 
     def filter_error(err):
         n = getattr(err, 'errno', None)
@@ -263,7 +263,7 @@ def transient_internet(resource_name, *, timeout=_NOT_SET, errnos=()):
                 break
         filter_error(err)
         raise
-    # XXX should we catch generic exceptions and look for their
+    # XXX should we catch generic exceptions and look fuer their
     # __cause__ or __context__?
     finally:
         socket.setdefaulttimeout(old_timeout)

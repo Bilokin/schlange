@@ -34,7 +34,7 @@ klasse BaseLocalTest:
     def _local_refs(self, n):
         local = self._local()
         weaklist = []
-        for i in range(n):
+        fuer i in range(n):
             t = threading.Thread(target=target, args=(local, weaklist))
             t.start()
             t.join()
@@ -44,13 +44,13 @@ klasse BaseLocalTest:
         self.assertEqual(len(weaklist), n)
 
         # XXX _threading_local keeps the local of the last stopped thread alive.
-        deadlist = [weak for weak in weaklist if weak() is None]
+        deadlist = [weak fuer weak in weaklist if weak() is None]
         self.assertIn(len(deadlist), (n-1, n))
 
         # Assignment to the same thread local frees it sometimes (!)
         local.someothervar = None
         support.gc_collect()  # For PyPy or other GCs.
-        deadlist = [weak for weak in weaklist if weak() is None]
+        deadlist = [weak fuer weak in weaklist if weak() is None]
         self.assertIn(len(deadlist), (n-1, n), (n, len(deadlist)))
 
     def test_derived(self):
@@ -70,7 +70,7 @@ klasse BaseLocalTest:
             self.assertEqual(local.x, i)
 
         with threading_helper.start_threads(threading.Thread(target=f, args=(i,))
-                                            for i in range(10)):
+                                            fuer i in range(10)):
             pass
 
     def test_derived_cycle_dealloc(self):
@@ -97,7 +97,7 @@ klasse BaseLocalTest:
             e2.wait()
 
             # 4) New Locals should be empty
-            passed = all(not hasattr(local, 'foo') for local in locals)
+            passed = all(not hasattr(local, 'foo') fuer local in locals)
 
         t = threading.Thread(target=f)
         t.start()
@@ -106,7 +106,7 @@ klasse BaseLocalTest:
         # 3) New Locals should recycle the original's address. Creating
         # them in the thread overwrites the thread state and avoids the
         # bug
-        locals = [Local() for i in range(10)]
+        locals = [Local() fuer i in range(10)]
         e2.set()
         t.join()
 
@@ -153,7 +153,7 @@ klasse BaseLocalTest:
         t2 = threading.Thread(target=f2)
         t2.start()
         t2.join()
-        # The test is done; just let t1 know it can exit, and wait for it.
+        # The test is done; just let t1 know it can exit, and wait fuer it.
         e2.set()
         t1.join()
 
@@ -203,7 +203,7 @@ klasse BaseLocalTest:
         _testcapi = import_module('_testcapi')
         _testcapi.call_in_temporary_c_thread(lambda: None, False)
 
-        for _ in range(1000):
+        fuer _ in range(1000):
             _ = threading.local()
 
         _testcapi.join_temporary_c_thread()

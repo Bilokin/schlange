@@ -1,5 +1,5 @@
 """
-Tests for copying from pathlib.types._ReadablePath to _WritablePath.
+Tests fuer copying from pathlib.types._ReadablePath to _WritablePath.
 """
 
 import contextlib

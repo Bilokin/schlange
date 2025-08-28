@@ -81,7 +81,7 @@ SETTER: Final = FunctionKind.SETTER
 @dc.dataclass(repr=False)
 klasse Function:
     """
-    Mutable duck type for inspect.Function.
+    Mutable duck type fuer inspect.Function.
 
     docstring - a str containing
         * embedded line breaks
@@ -144,7 +144,7 @@ klasse Function:
         if not self.__render_parameters__:
             l: list[Parameter] = []
             self.__render_parameters__ = l
-            for p in self.parameters.values():
+            fuer p in self.parameters.values():
                 p = p.copy()
                 p.converter.pre_render()
                 l.append(p)
@@ -169,12 +169,12 @@ klasse Function:
 
     @property
     def docstring_line_width(self) -> int:
-        """Return the maximum line width for docstring lines.
+        """Return the maximum line width fuer docstring lines.
 
         Pydoc adds indentation when displaying functions and methods.
         To keep the total width of within 80 characters, we use a
-        maximum of 76 characters for global functions and classes,
-        and 72 characters for methods.
+        maximum of 76 characters fuer global functions and classes,
+        and 72 characters fuer methods.
         """
         if self.cls is not None and not self.kind.new_or_init:
             return 72
@@ -187,7 +187,7 @@ klasse Function:
         f = dc.replace(self, **overrides)
         f.parameters = {
             name: value.copy(function=f)
-            for name, value in f.parameters.items()
+            fuer name, value in f.parameters.items()
         }
         return f
 
@@ -250,7 +250,7 @@ klasse Parameter:
 
     def render_docstring(self) -> str:
         lines = [f"  {self.name}"]
-        lines.extend(f"    {line}" for line in self.docstring.split("\n"))
+        lines.extend(f"    {line}" fuer line in self.docstring.split("\n"))
         return "\n".join(lines).rstrip()
 
 
@@ -269,7 +269,7 @@ def permute_left_option_groups(
     """
     yield tuple()
     accumulator: list[Parameter] = []
-    for group in reversed(l):
+    fuer group in reversed(l):
         accumulator = list(group) + accumulator
         yield tuple(accumulator)
 
@@ -286,7 +286,7 @@ def permute_right_option_groups(
     """
     yield tuple()
     accumulator: list[Parameter] = []
-    for group in l:
+    fuer group in l:
         accumulator.extend(group)
         yield tuple(accumulator)
 
@@ -298,7 +298,7 @@ def permute_optional_groups(
 ) -> tuple[ParamTuple, ...]:
     """
     Generator function that computes the set of acceptable
-    argument lists for the provided iterables of
+    argument lists fuer the provided iterables of
     argument groups.  (Actually it generates a tuple of tuples.)
 
     Algorithm: prefer left options over right options.
@@ -312,8 +312,8 @@ def permute_optional_groups(
 
     accumulator: list[ParamTuple] = []
     counts = set()
-    for r in permute_right_option_groups(right):
-        for l in permute_left_option_groups(left):
+    fuer r in permute_right_option_groups(right):
+        fuer l in permute_left_option_groups(left):
             t = l + required + r
             if len(t) in counts:
                 continue

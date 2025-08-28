@@ -80,8 +80,8 @@ klasse FTP:
     The first four arguments are all strings, and have default value ''.
     The parameter ´timeout´ must be numeric and defaults to None if not
     passed, meaning that no timeout will be set on any ftp socket(s).
-    If a timeout is passed, then this is now the default timeout for all ftp
-    socket operations for this instance.
+    If a timeout is passed, then this is now the default timeout fuer all ftp
+    socket operations fuer this instance.
     The last parameter is the encoding of filenames, which defaults to utf-8.
 
     Then use self.connect() with optional host and port argument.
@@ -90,7 +90,7 @@ klasse FTP:
     or ftp.retrbinary() with slightly different arguments.
     To upload a file, use ftp.storlines() or ftp.storbinary(),
     which have an open file as argument (see their definitions
-    below for details).
+    below fuer details).
     The download/upload functions first issue appropriate TYPE
     and PORT or PASV commands.
     '''
@@ -141,7 +141,7 @@ klasse FTP:
          - host: hostname to connect to (string, default previous host)
          - port: port to connect to (integer, default previous port)
          - timeout: the timeout to set against the ftp socket(s)
-         - source_address: a 2-tuple (host, port) for the socket to bind
+         - source_address: a 2-tuple (host, port) fuer the socket to bind
            to as its source address before connecting.
         '''
         if host != '':
@@ -179,12 +179,12 @@ klasse FTP:
     debug = set_debuglevel
 
     def set_pasv(self, val):
-        '''Use passive or active mode for data transfers.
+        '''Use passive or active mode fuer data transfers.
         With a false argument, use the normal PORT mode,
         With a true argument, use the PASV command.'''
         self.passiveserver = val
 
-    # Internal: "sanitize" a string for printing
+    # Internal: "sanitize" a string fuer printing
     def sanitize(self, s):
         if s[:5] in {'pass ', 'PASS '}:
             i = len(s.rstrip('\r\n'))
@@ -309,7 +309,7 @@ klasse FTP:
         return self.voidcmd(cmd)
 
     def makeport(self):
-        '''Create a new socket and send a PORT command for it.'''
+        '''Create a new socket and send a PORT command fuer it.'''
         sock = socket.create_server(("", 0), family=self.af, backlog=1)
         port = sock.getsockname()[1] # Get proper port
         host = self.sock.getsockname()[0] # Get proper host
@@ -339,7 +339,7 @@ klasse FTP:
         If the transfer is active, send a port command and the
         transfer command, and accept the connection.  If the server is
         passive, send a pasv command, connect to it, and start the
-        transfer command.  Either way, return the socket for the
+        transfer command.  Either way, return the socket fuer the
         connection and the expected size of the transfer.  The
         expected size may be None if it could not be determined.
 
@@ -361,7 +361,7 @@ klasse FTP:
                 # a LIST or STOR command, before the 150 reply
                 # (and way before the 226 reply). This seems to
                 # be in violation of the protocol (which only allows
-                # 1xx or error messages for LIST), so we just discard
+                # 1xx or error messages fuer LIST), so we just discard
                 # this response.
                 if resp[0] == '2':
                     resp = self.getresp()
@@ -419,7 +419,7 @@ klasse FTP:
         return resp
 
     def retrbinary(self, cmd, callback, blocksize=8192, rest=None):
-        """Retrieve data in binary mode.  A new port is created for you.
+        """Retrieve data in binary mode.  A new port is created fuer you.
 
         Args:
           cmd: A RETR command.
@@ -442,12 +442,12 @@ klasse FTP:
         return self.voidresp()
 
     def retrlines(self, cmd, callback = None):
-        """Retrieve data in line mode.  A new port is created for you.
+        """Retrieve data in line mode.  A new port is created fuer you.
 
         Args:
           cmd: A RETR, LIST, or NLST command.
           callback: An optional single parameter callable that is called
-                    for each line with the trailing CRLF stripped.
+                    fuer each line with the trailing CRLF stripped.
                     [default: print_line()]
 
         Returns:
@@ -477,7 +477,7 @@ klasse FTP:
         return self.voidresp()
 
     def storbinary(self, cmd, fp, blocksize=8192, callback=None, rest=None):
-        """Store a file in binary mode.  A new port is created for you.
+        """Store a file in binary mode.  A new port is created fuer you.
 
         Args:
           cmd: A STOR command.
@@ -503,7 +503,7 @@ klasse FTP:
         return self.voidresp()
 
     def storlines(self, cmd, fp, callback=None):
-        """Store a file in line mode.  A new port is created for you.
+        """Store a file in line mode.  A new port is created fuer you.
 
         Args:
           cmd: A STOR command.
@@ -541,7 +541,7 @@ klasse FTP:
     def nlst(self, *args):
         '''Return a list of files in a given directory (default the current).'''
         cmd = 'NLST'
-        for arg in args:
+        fuer arg in args:
             cmd = cmd + (' ' + arg)
         files = []
         self.retrlines(cmd, files.append)
@@ -552,12 +552,12 @@ klasse FTP:
         By default list current directory to stdout.
         Optional last argument is callback function; all
         non-empty arguments before it are concatenated to the
-        LIST command.  (This *should* only be used for a pathname.)'''
+        LIST command.  (This *should* only be used fuer a pathname.)'''
         cmd = 'LIST'
         func = None
         if args[-1:] and not isinstance(args[-1], str):
             args, func = args[:-1], args[-1]
-        for arg in args:
+        fuer arg in args:
             if arg:
                 cmd = cmd + (' ' + arg)
         self.retrlines(cmd, func)
@@ -569,7 +569,7 @@ klasse FTP:
         of information desired (e.g. ["type", "size", "perm"]).
 
         Return a generator object yielding a tuple of two elements
-        for every file found in path.
+        fuer every file found in path.
         First element is the file name, the second one is a dictionary
         including a variable number of "facts" depending on the server
         and whether "facts" argument has been provided.
@@ -582,10 +582,10 @@ klasse FTP:
             cmd = "MLSD"
         lines = []
         self.retrlines(cmd, lines.append)
-        for line in lines:
+        fuer line in lines:
             facts_found, _, name = line.rstrip(CRLF).partition(' ')
             entry = {}
-            for fact in facts_found[:-1].split(";"):
+            fuer fact in facts_found[:-1].split(";"):
                 key, _, value = fact.partition("=")
                 entry[key.lower()] = value
             yield (name, entry)
@@ -682,7 +682,7 @@ else:
         connection before authenticating.
 
         Securing the data connection requires user to explicitly ask
-        for it by calling prot_p() method.
+        fuer it by calling prot_p() method.
 
         Usage example:
         >>> from ftplib import FTP_TLS
@@ -790,7 +790,7 @@ else:
 _150_re = None
 
 def parse150(resp):
-    '''Parse the '150' response for a RETR request.
+    '''Parse the '150' response fuer a RETR request.
     Returns the expected transfer size or None; size is not guaranteed to
     be present in the 150 message.
     '''
@@ -810,7 +810,7 @@ def parse150(resp):
 _227_re = None
 
 def parse227(resp):
-    '''Parse the '227' response for a PASV request.
+    '''Parse the '227' response fuer a PASV request.
     Raises error_proto if it does not contain '(h1,h2,h3,h4,p1,p2)'
     Return ('host.addr.as.numbers', port#) tuple.'''
     if resp[:3] != '227':
@@ -829,7 +829,7 @@ def parse227(resp):
 
 
 def parse229(resp, peer):
-    '''Parse the '229' response for an EPSV request.
+    '''Parse the '229' response fuer an EPSV request.
     Raises error_proto if it does not contain '(|||port|)'
     Return ('host.addr.as.numbers', port#) tuple.'''
     if resp[:3] != '229':
@@ -850,7 +850,7 @@ def parse229(resp, peer):
 
 
 def parse257(resp):
-    '''Parse the '257' response for a MKD or PWD request.
+    '''Parse the '257' response fuer a MKD or PWD request.
     This is a response to a MKD or PWD request: a directory name.
     Returns the directoryname in the 257 reply.'''
     if resp[:3] != '257':
@@ -942,10 +942,10 @@ def test():
         try:
             userid, acct, passwd = netrcobj.authenticators(host)
         except (KeyError, TypeError):
-            # no account for host
+            # no account fuer host
             print("No account -- using anonymous login.", file=sys.stderr)
     ftp.login(userid, passwd, acct)
-    for file in sys.argv[2:]:
+    fuer file in sys.argv[2:]:
         if file[:2] == '-l':
             ftp.dir(file[2:])
         elif file[:2] == '-d':

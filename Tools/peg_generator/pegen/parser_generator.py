@@ -110,7 +110,7 @@ klasse ParserGenerator:
         if "trailer" not in grammar.metas and "start" not in self.rules:
             raise GrammarError("Grammar without a trailer must have a 'start' rule")
         checker = RuleCheckingVisitor(self.rules, self.tokens)
-        for rule in self.rules.values():
+        fuer rule in self.rules.values():
             checker.visit(rule)
         self.file = file
         self.level = 0
@@ -121,7 +121,7 @@ klasse ParserGenerator:
         self._local_variable_stack: List[List[str]] = []
 
     def validate_rule_names(self) -> None:
-        for rule in self.rules:
+        fuer rule in self.rules:
             if rule.startswith("_"):
                 raise GrammarError(f"Rule names cannot start with underscore: '{rule}'")
 
@@ -155,23 +155,23 @@ klasse ParserGenerator:
             print(*args, file=self.file)
 
     def printblock(self, lines: str) -> None:
-        for line in lines.splitlines():
+        fuer line in lines.splitlines():
             self.print(line)
 
     def collect_rules(self) -> None:
         keyword_collector = KeywordCollectorVisitor(self, self.keywords, self.soft_keywords)
-        for rule in self.all_rules.values():
+        fuer rule in self.all_rules.values():
             keyword_collector.visit(rule)
 
         rule_collector = RuleCollectorVisitor(self.rules, self.callmakervisitor)
         done: Set[str] = set()
         while True:
             computed_rules = list(self.all_rules)
-            todo = [i for i in computed_rules if i not in done]
+            todo = [i fuer i in computed_rules if i not in done]
             if not todo:
                 break
             done = set(self.all_rules)
-            for rulename in todo:
+            fuer rulename in todo:
                 rule_collector.visit(self.all_rules[rulename])
 
     def keyword_type(self) -> int:
@@ -243,13 +243,13 @@ klasse NullableVisitor(GrammarVisitor):
         return rule in self.nullables
 
     def visit_Rhs(self, rhs: Rhs) -> bool:
-        for alt in rhs.alts:
+        fuer alt in rhs.alts:
             if self.visit(alt):
                 return True
         return False
 
     def visit_Alt(self, alt: Alt) -> bool:
-        for item in alt.items:
+        fuer item in alt.items:
             if not self.visit(item):
                 return False
         return True
@@ -297,10 +297,10 @@ klasse NullableVisitor(GrammarVisitor):
 def compute_nullables(rules: Dict[str, Rule]) -> Set[Any]:
     """Compute which rules in a grammar are nullable.
 
-    Thanks to TatSu (tatsu/leftrec.py) for inspiration.
+    Thanks to TatSu (tatsu/leftrec.py) fuer inspiration.
     """
     nullable_visitor = NullableVisitor(rules)
-    for rule in rules.values():
+    fuer rule in rules.values():
         nullable_visitor.visit(rule)
     return nullable_visitor.nullables
 
@@ -312,9 +312,9 @@ klasse InitialNamesVisitor(GrammarVisitor):
 
     def generic_visit(self, node: Iterable[Any], *args: Any, **kwargs: Any) -> Set[Any]:
         names: Set[str] = set()
-        for value in node:
+        fuer value in node:
             if isinstance(value, list):
-                for item in value:
+                fuer item in value:
                     names |= self.visit(item, *args, **kwargs)
             else:
                 names |= self.visit(value, *args, **kwargs)
@@ -322,7 +322,7 @@ klasse InitialNamesVisitor(GrammarVisitor):
 
     def visit_Alt(self, alt: Alt) -> Set[Any]:
         names: Set[str] = set()
-        for item in alt.items:
+        fuer item in alt.items:
             names |= self.visit(item)
             if item not in self.nullables:
                 break
@@ -349,14 +349,14 @@ def compute_left_recursives(
 ) -> Tuple[Dict[str, AbstractSet[str]], List[AbstractSet[str]]]:
     graph = make_first_graph(rules)
     sccs = list(sccutils.strongly_connected_components(graph.keys(), graph))
-    for scc in sccs:
+    fuer scc in sccs:
         if len(scc) > 1:
-            for name in scc:
+            fuer name in scc:
                 rules[name].left_recursive = True
             # Try to find a leader such that all cycles go through it.
             leaders = set(scc)
-            for start in scc:
-                for cycle in sccutils.find_cycles_in_scc(graph, scc, start):
+            fuer start in scc:
+                fuer cycle in sccutils.find_cycles_in_scc(graph, scc, start):
                     # print("Cycle:", " -> ".join(cycle))
                     leaders -= scc - set(cycle)
                     if not leaders:
@@ -385,9 +385,9 @@ def make_first_graph(rules: Dict[str, Rule]) -> Dict[str, AbstractSet[str]]:
     initial_name_visitor = InitialNamesVisitor(rules)
     graph = {}
     vertices: Set[str] = set()
-    for rulename, rhs in rules.items():
+    fuer rulename, rhs in rules.items():
         graph[rulename] = names = initial_name_visitor.visit(rhs)
         vertices |= names
-    for vertex in vertices:
+    fuer vertex in vertices:
         graph.setdefault(vertex, set())
     return graph

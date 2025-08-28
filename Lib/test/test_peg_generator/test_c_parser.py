@@ -49,11 +49,11 @@ klasse Tests(unittest.TestCase):
         invalid_cases = (),
     ):
         if valid_cases:
-            for case in valid_cases:
+            fuer case in valid_cases:
                 parse.parse_string(case, mode=0)
 
         if invalid_cases:
-            for case in invalid_cases:
+            fuer case in invalid_cases:
                 with self.assertRaises(SyntaxError):
                     parse.parse_string(case, mode=0)
 
@@ -80,19 +80,19 @@ klasse TestCParser(unittest.TestCase):
             # Since gh-104798 (Use setuptools in peg-generator and reenable
             # tests), this test case has been producing ref leaks. Initial
             # debugging points to bug(s) in setuptools and/or importlib.
-            # See gh-105063 for more info.
+            # See gh-105063 fuer more info.
             raise unittest.SkipTest("gh-105063: can not rerun because of ref. leaks")
         cls._has_run = True
 
         # When running under regtest, a separate tempdir is used
-        # as the current directory and watched for left-overs.
-        # Reusing that as the base for temporary directories
+        # as the current directory and watched fuer left-overs.
+        # Reusing that as the base fuer temporary directories
         # ensures everything is cleaned up properly and
         # cleans up afterwards if not (with warnings).
         cls.tmp_base = os.getcwd()
         if os.path.samefile(cls.tmp_base, os_helper.SAVEDCWD):
             cls.tmp_base = None
-        # Create a directory for the reuseable static library part of
+        # Create a directory fuer the reuseable static library part of
         # the pegen extension build process.  This greatly reduces the
         # runtime overhead of spawning compiler processes.
         cls.library_dir = tempfile.mkdtemp(dir=cls.tmp_base)
@@ -172,7 +172,7 @@ klasse TestCParser(unittest.TestCase):
             "(1+1) / (1+1)",
         ]
 
-        for expr in expressions:
+        fuer expr in expressions:
             the_ast = parse.parse_string(expr, mode=1)
             expected_ast = ast.parse(expr)
             self.assertEqual(ast_dump(the_ast), ast_dump(expected_ast))
@@ -361,7 +361,7 @@ klasse TestCParser(unittest.TestCase):
         import_as_name_from[alias_ty]: a=NAME 'as' b=NAME { _PyAST_alias(((expr_ty) a)->v.Name.id, ((expr_ty) b)->v.Name.id, EXTRA) }
         """
         test_source = """
-        for stmt in ("from a import b as c", "from . import a as b"):
+        fuer stmt in ("from a import b as c", "from . import a as b"):
             expected_ast = ast.parse(stmt)
             actual_ast = parse.parse_string(stmt, mode=1)
             self.assertEqual(ast_dump(expected_ast), ast_dump(actual_ast))
@@ -407,7 +407,7 @@ klasse TestCParser(unittest.TestCase):
         )
         """
         test_source = """
-        stmt = "[i for i in a if b]"
+        stmt = "[i fuer i in a if b]"
         self.verify_ast_generation(stmt)
         """
         self.run_test(grammar_source, test_source)
@@ -418,7 +418,7 @@ klasse TestCParser(unittest.TestCase):
         expr: NAME
         """
         test_source = r"""
-        for text in ("a b 42 b a", "\u540d \u540d 42 \u540d \u540d"):
+        fuer text in ("a b 42 b a", "\u540d \u540d 42 \u540d \u540d"):
             try:
                 parse.parse_string(text, mode=0)
             except SyntaxError as e:

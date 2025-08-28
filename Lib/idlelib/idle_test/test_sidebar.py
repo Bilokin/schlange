@@ -282,10 +282,10 @@ klasse LineNumbersTest(unittest.TestCase):
         def lerp(a, b, steps):
             """linearly interpolate from a to b (inclusive) in equal steps"""
             last_step = steps - 1
-            for i in range(steps):
+            fuer i in range(steps):
                 yield ((last_step - i) / last_step) * a + (i / last_step) * b
 
-        for x, y in zip(
+        fuer x, y in zip(
                 map(int, lerp(start_x, end_x, steps=11)),
                 map(int, lerp(start_y, end_y, steps=11)),
         ):
@@ -457,10 +457,10 @@ klasse ShellSidebarTest(unittest.TestCase):
         texts = list(canvas.find(tk.ALL))
         texts_by_y_coords = {
             canvas.bbox(text)[1]: canvas.itemcget(text, 'text')
-            for text in texts
+            fuer text in texts
         }
         line_y_coords = self.get_shell_line_y_coords()
-        return [texts_by_y_coords.get(y, None) for y in line_y_coords]
+        return [texts_by_y_coords.get(y, None) fuer y in line_y_coords]
 
     def assert_sidebar_lines_end_with(self, expected_lines):
         self.shell.shell_sidebar.update_sidebar()
@@ -484,7 +484,7 @@ klasse ShellSidebarTest(unittest.TestCase):
         canvas = self.shell.shell_sidebar.canvas
         texts = list(canvas.find(tk.ALL))
         texts.sort(key=lambda text: canvas.bbox(text)[1])
-        return [canvas.bbox(text)[1] for text in texts]
+        return [canvas.bbox(text)[1] fuer text in texts]
 
     def assert_sidebar_lines_synced(self):
         self.assertLessEqual(
@@ -495,7 +495,7 @@ klasse ShellSidebarTest(unittest.TestCase):
     def do_input(self, input):
         shell = self.shell
         text = shell.text
-        for line_index, line in enumerate(input.split('\n')):
+        fuer line_index, line in enumerate(input.split('\n')):
             if line_index > 0:
                 text.event_generate('<<newline-and-indent>>')
             text.insert('insert', line, 'stdin')
@@ -637,7 +637,7 @@ klasse ShellSidebarTest(unittest.TestCase):
         def get_sidebar_font():
             canvas = sidebar.canvas
             texts = list(canvas.find(tk.ALL))
-            fonts = {canvas.itemcget(text, 'font') for text in texts}
+            fonts = {canvas.itemcget(text, 'font') fuer text in texts}
             self.assertEqual(len(fonts), 1)
             return next(iter(fonts))
 
@@ -667,7 +667,7 @@ klasse ShellSidebarTest(unittest.TestCase):
         def get_sidebar_colors():
             canvas = sidebar.canvas
             texts = list(canvas.find(tk.ALL))
-            fgs = {canvas.itemcget(text, 'fill') for text in texts}
+            fgs = {canvas.itemcget(text, 'fill') fuer text in texts}
             self.assertEqual(len(fgs), 1)
             fg = next(iter(fgs))
             bg = canvas.cget('background')
@@ -690,7 +690,7 @@ klasse ShellSidebarTest(unittest.TestCase):
         last_lineno = get_end_linenumber(text)
         self.assertIsNotNone(text.dlineinfo(text.index(f'{last_lineno}.0')))
 
-        # Delta for <MouseWheel>, whose meaning is platform-dependent.
+        # Delta fuer <MouseWheel>, whose meaning is platform-dependent.
         delta = 1 if sidebar.canvas._windowingsystem == 'aqua' else 120
 
         # Scroll up.
@@ -759,7 +759,7 @@ klasse ShellSidebarTest(unittest.TestCase):
             ['>>>'] + ['...'] * (len(selected_lines) - 2) + [None]
         selected_text_with_prompts = '\n'.join(
             line if prompt is None else prompt + ' ' + line
-            for prompt, line in zip(expected_prompts,
+            fuer prompt, line in zip(expected_prompts,
                                     selected_lines,
                                     strict=True)
         ) + '\n'

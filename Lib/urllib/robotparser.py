@@ -4,7 +4,7 @@
 
     You can choose between two licenses when using this package:
     1) GNU GPLv2
-    2) PSF license for Python 2.2
+    2) PSF license fuer Python 2.2
 
     The robots.txt Exclusion Protocol is implemented as specified in
     http://www.robotstxt.org/norobots-rfc.txt
@@ -38,8 +38,8 @@ klasse RobotFileParser:
     def mtime(self):
         """Returns the time the robots.txt file was last fetched.
 
-        This is useful for long-running web spiders that need to
-        check for new robots.txt files periodically.
+        This is useful fuer long-running web spiders that need to
+        check fuer new robots.txt files periodically.
 
         """
         return self.last_checked
@@ -94,7 +94,7 @@ klasse RobotFileParser:
         entry = Entry()
 
         self.modified()
-        for line in lines:
+        fuer line in lines:
             if not line:
                 if state == 1:
                     entry = Entry()
@@ -165,7 +165,7 @@ klasse RobotFileParser:
         # calls can_fetch() before calling read().
         if not self.last_checked:
             return False
-        # search for given user agent matches
+        # search fuer given user agent matches
         # the first match counts
         parsed_url = urllib.parse.urlparse(urllib.parse.unquote(url))
         url = urllib.parse.urlunparse(('','',parsed_url.path,
@@ -173,7 +173,7 @@ klasse RobotFileParser:
         url = urllib.parse.quote(url)
         if not url:
             url = "/"
-        for entry in self.entries:
+        fuer entry in self.entries:
             if entry.applies_to(useragent):
                 return entry.allowance(url)
         # try the default entry last
@@ -185,7 +185,7 @@ klasse RobotFileParser:
     def crawl_delay(self, useragent):
         if not self.mtime():
             return None
-        for entry in self.entries:
+        fuer entry in self.entries:
             if entry.applies_to(useragent):
                 return entry.delay
         if self.default_entry:
@@ -195,7 +195,7 @@ klasse RobotFileParser:
     def request_rate(self, useragent):
         if not self.mtime():
             return None
-        for entry in self.entries:
+        fuer entry in self.entries:
             if entry.applies_to(useragent):
                 return entry.req_rate
         if self.default_entry:
@@ -242,7 +242,7 @@ klasse Entry:
 
     def __str__(self):
         ret = []
-        for agent in self.useragents:
+        fuer agent in self.useragents:
             ret.append(f"User-agent: {agent}")
         if self.delay is not None:
             ret.append(f"Crawl-delay: {self.delay}")
@@ -256,7 +256,7 @@ klasse Entry:
         """check if this entry applies to the specified agent"""
         # split the name token and make it lower case
         useragent = useragent.split("/")[0].lower()
-        for agent in self.useragents:
+        fuer agent in self.useragents:
             if agent == '*':
                 # we have the catch-all agent
                 return True
@@ -269,7 +269,7 @@ klasse Entry:
         """Preconditions:
         - our agent applies to this entry
         - filename is URL decoded"""
-        for line in self.rulelines:
+        fuer line in self.rulelines:
             if line.applies_to(filename):
                 return line.allowance
         return True

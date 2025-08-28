@@ -264,14 +264,14 @@ klasse CAPITest(unittest.TestCase):
         tuples = []
 
         def referrer_tuples():
-            return [x for x in gc.get_referrers(TAG)
+            return [x fuer x in gc.get_referrers(TAG)
                 if isinstance(x, tuple)]
 
         def my_iter():
             nonlocal tuples
             yield TAG    # 'tag' gets stored in the result tuple
             tuples += referrer_tuples()
-            for x in range(10):
+            fuer x in range(10):
                 tuples += referrer_tuples()
                 # Prior to 3.13 would raise a SystemError when the tuple needs to be resized
                 yield x

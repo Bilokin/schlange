@@ -108,7 +108,7 @@ klasse BasicWrapTestCase(unittest.TestCase):
 
     def test_callbacks_2(self):
         # Can also use simple datatypes as argument type specifiers
-        # for the callback function.
+        # fuer the callback function.
         # In this case the call receives an instance of that type
         f = dll._testfunc_callback_i_if
         f.restype = c_int
@@ -199,7 +199,7 @@ klasse BasicWrapTestCase(unittest.TestCase):
 
         a = A()
         a._as_parameter_ = a
-        for c_type in (
+        fuer c_type in (
             ctypes.c_wchar_p,
             ctypes.c_char_p,
             ctypes.c_void_p,

@@ -60,7 +60,7 @@ klasse ModuleBrowserTest(unittest.TestCase):
 
     def test_is_browseable_extension(self):
         path = "/path/to/file"
-        for ext in py_extensions:
+        fuer ext in py_extensions:
             with self.subTest(ext=ext):
                 filename = f'{path}{ext}'
                 actual = browser.is_browseable_extension(filename)
@@ -68,7 +68,7 @@ klasse ModuleBrowserTest(unittest.TestCase):
                 self.assertEqual(actual, expected)
 
 
-# Nested tree same as in test_pyclbr.py except for supers on C0. C1.
+# Nested tree same as in test_pyclbr.py except fuer supers on C0. C1.
 mb = pyclbr
 module, fname = 'test', 'test.py'
 C0 = mb.Class(module, 'C0', ['base'], fname, 1, end_lineno=9)

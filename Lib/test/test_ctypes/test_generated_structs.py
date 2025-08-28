@@ -32,8 +32,8 @@ TEST_PATTERN = 0xae7596db
 klasse c_bool(ctypes.c_bool):
     _c_name = '_Bool'
 
-# To do it for all the other types, use some metaprogramming:
-for c_name, ctypes_name in {
+# To do it fuer all the other types, use some metaprogramming:
+fuer c_name, ctypes_name in {
     'signed char': 'c_byte',
     'short': 'c_short',
     'int': 'c_int',
@@ -45,8 +45,8 @@ for c_name, ctypes_name in {
     'unsigned long': 'c_ulong',
     'unsigned long long': 'c_ulonglong',
     **{f'{u}int{n}_t': f'c_{u}int{n}'
-       for u in ('', 'u')
-       for n in (8, 16, 32, 64)}
+       fuer u in ('', 'u')
+       fuer n in (8, 16, 32, 64)}
 }.items():
     ctype = getattr(ctypes, ctypes_name)
     newtype = type(ctypes_name, (ctype,), {'_c_name': c_name})
@@ -147,7 +147,7 @@ klasse Packed4(Structure):
     def _maybe_skip():
         # `_pack_` enables MSVC-style packing, but keeps platform-specific
         # alignments.
-        # The C code we generate for GCC/clang currently uses
+        # The C code we generate fuer GCC/clang currently uses
         # `__attribute__((ms_struct))`, which activates MSVC layout *and*
         # alignments, that is, sizeof(basic type) == alignment(basic type).
         # On a Pentium, int64 is 32-bit aligned, so the two won't match.
@@ -233,7 +233,7 @@ klasse Bits_MSVC(Structure):
                 ("R", c_short, 6),
                 ("S", c_short, 7)]
 
-# Skipped for now -- we don't always match the alignment
+# Skipped fuer now -- we don't always match the alignment
 #@register()
 klasse IntBits_Union(Union):
     _fields_ = [("A", c_int, 1),
@@ -246,7 +246,7 @@ klasse IntBits_Union(Union):
                 ("H", c_int, 8),
                 ("I", c_int, 9)]
 
-# Skipped for now -- we don't always match the alignment
+# Skipped fuer now -- we don't always match the alignment
 #@register()
 klasse BitsUnion(Union):
     _fields_ = [*IntBits_Union._fields_,
@@ -271,8 +271,8 @@ klasse U64Bits(Structure):
                 ("b", c_uint64, 62),
                 ("c", c_uint64, 1)]
 
-for n in 8, 16, 32, 64:
-    for signedness in '', 'u':
+fuer n in 8, 16, 32, 64:
+    fuer signedness in '', 'u':
         ctype = globals()[f'c_{signedness}int{n}']
 
         @register(f'Struct331_{signedness}{n}', set_name=True)
@@ -449,7 +449,7 @@ klasse GeneratedTest(unittest.TestCase, StructCheckMixin):
         - name (str)
         - size (int)
         - alignment (int)
-        - for each field, three snapshots of memory, as bytes:
+        - fuer each field, three snapshots of memory, as bytes:
             - memory after the field is set to -1
             - memory after the field is set to 1
             - memory after the field is set to 0
@@ -461,7 +461,7 @@ klasse GeneratedTest(unittest.TestCase, StructCheckMixin):
         This does depend on the C compiler keeping padding bits unchanged.
         Common compilers seem to do so.
         """
-        for name, cls in TESTCASES.items():
+        fuer name, cls in TESTCASES.items():
             with self.subTest(name=name):
                 self.check_struct_or_union(cls)
                 if _maybe_skip := getattr(cls, '_maybe_skip', None):
@@ -476,8 +476,8 @@ klasse GeneratedTest(unittest.TestCase, StructCheckMixin):
                     self.assertEqual(alignment(cls), next(expected))
                 obj = cls()
                 ptr = pointer(obj)
-                for field in iterfields(cls):
-                    for value in -1, 1, TEST_PATTERN, 0:
+                fuer field in iterfields(cls):
+                    fuer value in -1, 1, TEST_PATTERN, 0:
                         with self.subTest(field=field.full_name, value=value):
                             field.set_to(obj, value)
                             py_mem = string_at(ptr, sizeof(obj))
@@ -501,7 +501,7 @@ klasse GeneratedTest(unittest.TestCase, StructCheckMixin):
 
 
 # The rest of this file is generating C code from a ctypes type.
-# This is only meant for (and tested with) the known inputs in this file!
+# This is only meant fuer (and tested with) the known inputs in this file!
 
 def c_str_repr(string):
     """Return a string as a C literal"""
@@ -550,7 +550,7 @@ def dump_ctype(tp, struct_or_union_tag='', variable_name='', semi=''):
         else:
             a = ''
         lines = [f'{struct_or_union(tp)}{a}{maybe_space(struct_or_union_tag)} ' +'{']
-        for fielddesc in tp._fields_:
+        fuer fielddesc in tp._fields_:
             f_name, f_tp, f_bits = unpack_field_desc(*fielddesc)
             if f_name in getattr(tp, '_anonymous_', ()):
                 f_name = ''
@@ -565,7 +565,7 @@ def dump_ctype(tp, struct_or_union_tag='', variable_name='', semi=''):
             sub_lines, sub_requires = dump_ctype(
                 f_tp, variable_name=f_name, semi=subsemi)
             requires.update(sub_requires)
-            for line in sub_lines:
+            fuer line in sub_lines:
                 lines.append('    ' + line)
         lines.append(f'}}{maybe_space(variable_name)}{semi}')
         return [*pushes, *lines, *reversed(pops)], requires
@@ -618,7 +618,7 @@ klasse FieldInfo:
 
     def set_to(self, obj, new):
         """Set the field on a given Structure/Union instance"""
-        for attr_name in self.attr_path[:-1]:
+        fuer attr_name in self.attr_path[:-1]:
             obj = getattr(obj, attr_name)
         setattr(obj, self.attr_path[-1], new)
 
@@ -635,7 +635,7 @@ klasse FieldInfo:
             desc = self.descriptor
         except AttributeError:
             desc = '???'
-        return f'<{type(self).__name__} for {qname}: {desc}>'
+        return f'<{type(self).__name__} fuer {qname}: {desc}>'
 
 def iterfields(tp, parent=None):
     """Get *leaf* fields of a structure or union, as FieldInfo"""
@@ -644,7 +644,7 @@ def iterfields(tp, parent=None):
     except AttributeError:
         yield parent
     else:
-        for fielddesc in fields:
+        fuer fielddesc in fields:
             f_name, f_tp, f_bits = unpack_field_desc(*fielddesc)
             descriptor = getattr(tp, f_name)
             byte_offset = descriptor.byte_offset
@@ -712,16 +712,16 @@ if __name__ == '__main__':
                 return NULL;
             }
     """)
-    for name, cls in TESTCASES.items():
+    fuer name, cls in TESTCASES.items():
         output("""
             if (PyUnicode_CompareWithASCIIString(name, %s) == 0) {
             """ % c_str_repr(name))
         lines, requires = dump_ctype(cls, struct_or_union_tag=name, semi=';')
         if requires:
             output(f"""
-            #if {" && ".join(f'({r})' for r in sorted(requires))}
+            #if {" && ".join(f'({r})' fuer r in sorted(requires))}
             """)
-        for line in lines:
+        fuer line in lines:
             output('                ' + line)
         typename = f'{struct_or_union(cls)} {name}'
         output(f"""
@@ -731,7 +731,7 @@ if __name__ == '__main__':
                 APPEND(PyLong_FromLong(sizeof({typename})));
                 APPEND(PyLong_FromLong(_Alignof({typename})));
         """.rstrip())
-        for field in iterfields(cls):
+        fuer field in iterfields(cls):
             f_tp = dump_simple_ctype(field.tp)
             output(f"""\
                 TEST_FIELD({f_tp}, value.{field.full_name});

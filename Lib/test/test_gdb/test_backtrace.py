@@ -39,11 +39,11 @@ Traceback \(most recent call first\):
                                   cmds_after_breakpoint=['py-bt-full'])
         self.assertMultilineMatches(bt,
                                     r'''^.*
-#[0-9]+ Frame 0x-?[0-9a-f]+, for file .*gdb_sample.py, line 7, in bar \(a=1, b=2, c=3\)
+#[0-9]+ Frame 0x-?[0-9a-f]+, fuer file .*gdb_sample.py, line 7, in bar \(a=1, b=2, c=3\)
     baz\(a, b, c\)
-#[0-9]+ Frame 0x-?[0-9a-f]+, for file .*gdb_sample.py, line 4, in foo \(a=1, b=2, c=3\)
+#[0-9]+ Frame 0x-?[0-9a-f]+, fuer file .*gdb_sample.py, line 4, in foo \(a=1, b=2, c=3\)
     bar\(a=a, b=b, c=c\)
-#[0-9]+ Frame 0x-?[0-9a-f]+, for file .*gdb_sample.py, line 12, in <module> \(\)
+#[0-9]+ Frame 0x-?[0-9a-f]+, fuer file .*gdb_sample.py, line 12, in <module> \(\)
     foo\(1, 2, 3\)
 ''')
 
@@ -52,7 +52,7 @@ Traceback \(most recent call first\):
     @support.requires_gil_enabled()
     @support.requires_resource('cpu')
     def test_threads(self):
-        'Verify that "py-bt" indicates threads that are waiting for the GIL'
+        'Verify that "py-bt" indicates threads that are waiting fuer the GIL'
         cmd = '''
 from threading import Thread
 
@@ -65,7 +65,7 @@ klasse TestThread(Thread):
              i += 1
 
 t = {}
-for i in range(4):
+fuer i in range(4):
    t[i] = TestThread()
    t[i].start()
 
@@ -76,12 +76,12 @@ id(42)
         # Verify with "py-bt":
         gdb_output = self.get_stack_trace(cmd,
                                           cmds_after_breakpoint=['thread apply all py-bt'])
-        self.assertIn('Waiting for the GIL', gdb_output)
+        self.assertIn('Waiting fuer the GIL', gdb_output)
 
         # Verify with "py-bt-full":
         gdb_output = self.get_stack_trace(cmd,
                                           cmds_after_breakpoint=['thread apply all py-bt-full'])
-        self.assertIn('Waiting for the GIL', gdb_output)
+        self.assertIn('Waiting fuer the GIL', gdb_output)
 
     @unittest.skipIf(python_is_optimized(),
                      "Python was compiled with optimizations")

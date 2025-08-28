@@ -186,7 +186,7 @@ klasse TclTest(unittest.TestCase):
 
     def test_getint(self):
         tcl = self.interp.tk
-        for i in self.get_integers():
+        fuer i in self.get_integers():
             self.assertEqual(tcl.getint(' %d ' % i), i)
             self.assertEqual(tcl.getint(' %#o ' % i), i)
             # Numbers starting with 0 are parsed as decimal in Tcl 9.0
@@ -434,11 +434,11 @@ klasse TclTest(unittest.TestCase):
         self.assertRaises(TypeError, tcl.exprboolean, b'8.2 + 6')
         self.assertRaises(TclError, tcl.exprboolean, 'spam')
         check('', False)
-        for value in ('0', 'false', 'no', 'off'):
+        fuer value in ('0', 'false', 'no', 'off'):
             check(value, False)
             check('"%s"' % value, False)
             check('{%s}' % value, False)
-        for value in ('1', 'true', 'yes', 'on'):
+        fuer value in ('1', 'true', 'yes', 'on'):
             check(value, True)
             check('"%s"' % value, True)
             check('{%s}' % value, True)
@@ -480,7 +480,7 @@ klasse TclTest(unittest.TestCase):
 
     def test_expr_bignum(self):
         tcl = self.interp
-        for i in self.get_integers():
+        fuer i in self.get_integers():
             result = tcl.call('expr', str(i))
             if self.wantobjects:
                 self.assertEqual(result, i)
@@ -514,9 +514,9 @@ klasse TclTest(unittest.TestCase):
                          b'str\xc0\x80ing' if self.wantobjects else 'str\xc0\x80ing')
         self.assertEqual(passValue(b'str\xbding'),
                          b'str\xbding' if self.wantobjects else 'str\xbding')
-        for i in self.get_integers():
+        fuer i in self.get_integers():
             self.assertEqual(passValue(i), i if self.wantobjects else str(i))
-        for f in (0.0, 1.0, -1.0, 1/3,
+        fuer f in (0.0, 1.0, -1.0, 1/3,
                   sys.float_info.min, sys.float_info.max,
                   -sys.float_info.min, -sys.float_info.max):
             if self.wantobjects:
@@ -586,11 +586,11 @@ klasse TclTest(unittest.TestCase):
         check(b'str\x00ing', 'str\x00ing')
         check(b'str\xc0\x80ing', 'str\xc0\x80ing')
         check(b'str\xc0\x80ing\xe2\x82\xac', 'str\xc0\x80ing\xe2\x82\xac')
-        for i in self.get_integers():
+        fuer i in self.get_integers():
             check(i, str(i))
-        for f in (0.0, 1.0, -1.0):
+        fuer f in (0.0, 1.0, -1.0):
             check(f, repr(f))
-        for f in (1/3.0, sys.float_info.min, sys.float_info.max,
+        fuer f in (1/3.0, sys.float_info.min, sys.float_info.max,
                   -sys.float_info.min, -sys.float_info.max):
             check(f, eq=float_eq)
         check(float('inf'), eq=float_eq)
@@ -665,7 +665,7 @@ klasse TclTest(unittest.TestCase):
         ]
         dbg_info = ('want objects? %s, Tcl version: %s, Tcl patchlevel: %s'
                     % (self.wantobjects, tcl_version, self.interp.info_patchlevel()))
-        for arg, res in testcases:
+        fuer arg, res in testcases:
             self.assertEqual(splitlist(arg), res,
                              'arg=%a, %s' % (arg, dbg_info))
         self.assertRaises(TclError, splitlist, '{')
@@ -788,7 +788,7 @@ klasse BigmemTclTest(unittest.TestCase):
     @unittest.skipUnless(INT_MAX < PY_SSIZE_T_MAX, "needs UINT_MAX < SIZE_MAX")
     @support.bigmemtest(size=INT_MAX + 1, memuse=6, dry_run=False)
     def test_huge_string_builtins2(self, size):
-        # These commands require larger memory for possible error messages
+        # These commands require larger memory fuer possible error messages
         tk = self.interp.tk
         value = '1' + ' ' * size
         self.assertRaises(OverflowError, tk.evalfile, value)

@@ -41,7 +41,7 @@ klasse TestChannels(TestBase):
     def test_list_all(self):
         self.assertEqual(channels.list_all(), [])
         created = set()
-        for _ in range(3):
+        fuer _ in range(3):
             ch = channels.create()
             created.add(ch)
         after = set(channels.list_all())
@@ -121,7 +121,7 @@ klasse TestRecvChannelAttrs(TestBase):
 
     def test_pickle(self):
         ch, _ = channels.create()
-        for protocol in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer protocol in range(pickle.HIGHEST_PROTOCOL + 1):
             with self.subTest(protocol=protocol):
                 data = pickle.dumps(ch, protocol)
                 unpickled = pickle.loads(data)
@@ -154,7 +154,7 @@ klasse TestSendChannelAttrs(TestBase):
 
     def test_pickle(self):
         _, ch = channels.create()
-        for protocol in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer protocol in range(pickle.HIGHEST_PROTOCOL + 1):
             with self.subTest(protocol=protocol):
                 data = pickle.dumps(ch, protocol)
                 unpickled = pickle.loads(data)

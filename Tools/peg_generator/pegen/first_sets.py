@@ -40,14 +40,14 @@ klasse FirstSetCalculator(GrammarVisitor):
         self.in_process: Set[str] = set()
 
     def calculate(self) -> Dict[str, Set[str]]:
-        for name, rule in self.rules.items():
+        fuer name, rule in self.rules.items():
             self.visit(rule)
         return self.first_sets
 
     def visit_Alt(self, item: Alt) -> Set[str]:
         result: Set[str] = set()
         to_remove: Set[str] = set()
-        for other in item.items:
+        fuer other in item.items:
             new_terminals = self.visit(other)
             if isinstance(other.item, NegativeLookahead):
                 to_remove |= new_terminals
@@ -115,7 +115,7 @@ klasse FirstSetCalculator(GrammarVisitor):
 
     def visit_Rhs(self, item: Rhs) -> Set[str]:
         result: Set[str] = set()
-        for alt in item.alts:
+        fuer alt in item.alts:
             result |= self.visit(alt)
         return result
 

@@ -5,8 +5,8 @@ import asyncio
 
 
 def tearDownModule():
-    # not needed for the test file but added for uniformness with all other
-    # asyncio test files for the sake of unified cleanup
+    # not needed fuer the test file but added fuer uniformness with all other
+    # asyncio test files fuer the sake of unified cleanup
     asyncio.events._set_event_loop_policy(None)
 
 

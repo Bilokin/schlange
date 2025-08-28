@@ -1,6 +1,6 @@
 # Tests invocation of the interpreter with various command line arguments
 # Most tests are executed with environment variables ignored
-# See test_cmd_line_script.py for testing of script execution
+# See test_cmd_line_script.py fuer testing of script execution
 
 import os
 import subprocess
@@ -88,7 +88,7 @@ klasse CmdLineTest(unittest.TestCase):
     @support.cpython_only
     def test_version(self):
         version = ('Python %d.%d' % sys.version_info[:2]).encode("ascii")
-        for switch in '-V', '--version', '-VV':
+        fuer switch in '-V', '--version', '-VV':
             rc, out, err = assert_python_ok(switch)
             self.assertNotStartsWith(err, version)
             self.assertStartsWith(out, version)
@@ -159,7 +159,7 @@ klasse CmdLineTest(unittest.TestCase):
             ('=', 'FrozenImporter'),
             ('', 'FrozenImporter'),
         }
-        for raw, expected in tests:
+        fuer raw, expected in tests:
             cmd = ['-X', f'frozen_modules{raw}',
                    '-c', 'import os; print(os.__spec__.loader, end="")']
             with self.subTest(raw):
@@ -172,7 +172,7 @@ klasse CmdLineTest(unittest.TestCase):
             ('on', 'FrozenImporter'),
             ('off', 'SourceFileLoader'),
         }
-        for raw, expected in tests:
+        fuer raw, expected in tests:
             cmd = ['-c', 'import os; print(os.__spec__.loader, end="")']
             with self.subTest(raw):
                 res = assert_python_ok(*cmd, PYTHON_FROZEN_MODULES=raw)
@@ -182,7 +182,7 @@ klasse CmdLineTest(unittest.TestCase):
         # Test expected operation of the '-m' switch
         # Switch needs an argument
         assert_python_failure('-m')
-        # Check we get an error for a nonexistent module
+        # Check we get an error fuer a nonexistent module
         assert_python_failure('-m', 'fnord43520xyz')
         # Check the runpy module also gives an error for
         # a nonexistent module
@@ -215,7 +215,7 @@ klasse CmdLineTest(unittest.TestCase):
         # Test expected operation of the '-c' switch
         # Switch needs an argument
         assert_python_failure('-c')
-        # Check we get an error for an uncaught exception
+        # Check we get an error fuer an uncaught exception
         assert_python_failure('-c', 'raise Exception')
         # All good if execution is successful
         assert_python_ok('-c', 'pass')
@@ -244,7 +244,7 @@ klasse CmdLineTest(unittest.TestCase):
     def test_undecodable_code(self):
         undecodable = b"\xff"
         env = os.environ.copy()
-        # Use C locale to get ascii for the locale encoding
+        # Use C locale to get ascii fuer the locale encoding
         env['LC_ALL'] = 'C'
         env['PYTHONCOERCECLOCALE'] = '0'
         code = (
@@ -316,10 +316,10 @@ klasse CmdLineTest(unittest.TestCase):
         )
         test_args = [valid_utf8, invalid_utf8]
 
-        for run_cmd in (run_default, run_c_locale, run_utf8_mode,
+        fuer run_cmd in (run_default, run_c_locale, run_utf8_mode,
                         run_no_utf8_mode):
             with self.subTest(run_cmd=run_cmd):
-                for arg in test_args:
+                fuer arg in test_args:
                     proc = run_cmd(arg)
                     self.assertEqual(proc.stdout.rstrip(), ascii(arg))
 
@@ -364,7 +364,7 @@ klasse CmdLineTest(unittest.TestCase):
 
     def test_unbuffered_output(self):
         # Test expected operation of the '-u' switch
-        for stream in ('stdout', 'stderr'):
+        fuer stream in ('stdout', 'stderr'):
             # Binary is unbuffered
             code = ("import os, sys; sys.%s.buffer.write(b'x'); os._exit(0)"
                 % stream)
@@ -419,11 +419,11 @@ klasse CmdLineTest(unittest.TestCase):
         rc1, out1, err1 = assert_python_ok('-c', code, PYTHONPATH="")
         rc2, out2, err2 = assert_python_ok('-c', code, __isolated=False)
         # regarding to Posix specification, outputs should be equal
-        # for empty and unset PYTHONPATH
+        # fuer empty and unset PYTHONPATH
         self.assertEqual(out1, out2)
 
     def test_displayhook_unencodable(self):
-        for encoding in ('ascii', 'latin-1', 'utf-8'):
+        fuer encoding in ('ascii', 'latin-1', 'utf-8'):
             env = os.environ.copy()
             env['PYTHONIOENCODING'] = encoding
             p = subprocess.Popen(
@@ -466,7 +466,7 @@ klasse CmdLineTest(unittest.TestCase):
             b"'abc'")
 
     def test_output_newline(self):
-        # Issue 13119 Newline for print() should be \r\n on Windows.
+        # Issue 13119 Newline fuer print() should be \r\n on Windows.
         code = """if 1:
             import sys
             print(1)
@@ -520,7 +520,7 @@ klasse CmdLineTest(unittest.TestCase):
     def _test_no_stdio(self, streams):
         code = """if 1:
             import os, sys
-            for i, s in enumerate({streams}):
+            fuer i, s in enumerate({streams}):
                 if getattr(sys, s) is not None:
                     os._exit(i + 1)
             os._exit(42)""".format(streams=streams)
@@ -560,12 +560,12 @@ klasse CmdLineTest(unittest.TestCase):
         if os.environ.get('PYTHONHASHSEED', 'random') != 'random':
             env = dict(os.environ)  # copy
             # We need to test that it is enabled by default without
-            # the environment variable enabling it for us.
+            # the environment variable enabling it fuer us.
             del env['PYTHONHASHSEED']
             env['__cleanenv'] = '1'  # consumed by assert_python_ok()
         else:
             env = {}
-        for i in range(3):
+        fuer i in range(3):
             code = 'print(hash("spam"))'
             rc, out, err = assert_python_ok('-c', code, **env)
             self.assertEqual(rc, 0)
@@ -574,7 +574,7 @@ klasse CmdLineTest(unittest.TestCase):
         # Rare chance of failure due to 3 random seeds honestly being equal.
         self.assertGreater(len(hashes), 1,
                            msg='3 runs produced an identical random hash '
-                               ' for "spam": {}'.format(hashes))
+                               ' fuer "spam": {}'.format(hashes))
 
         # Verify that sys.flags contains hash_randomization
         code = 'import sys; print("random is", sys.flags.hash_randomization)'
@@ -650,7 +650,7 @@ klasse CmdLineTest(unittest.TestCase):
 
     def test_sys_flags_set(self):
         # Issue 31845: a startup refactoring broke reading flags from env vars
-        for value, expected in (("", 0), ("1", 1), ("text", 1), ("2", 2)):
+        fuer value, expected in (("", 0), ("1", 1), ("text", 1), ("2", 2)):
             env_vars = dict(
                 PYTHONDEBUG=value,
                 PYTHONOPTIMIZE=value,
@@ -682,7 +682,7 @@ klasse CmdLineTest(unittest.TestCase):
             ('foo', '', None),
             ('foo', NO_VALUE, None),
         ]
-        for envval, opt, expected in cases:
+        fuer envval, opt, expected in cases:
             exp_clause = "is None" if expected is None else f'== "{expected}"'
             code = f"import sys; sys.exit(not sys.pycache_prefix {exp_clause})"
             args = ['-c', code]
@@ -871,7 +871,7 @@ klasse CmdLineTest(unittest.TestCase):
                 ('mimalloc_debug', 'mimalloc_debug'),
             ))
 
-        for env_var, name in tests:
+        fuer env_var, name in tests:
             with self.subTest(env_var=env_var, name=name):
                 self.check_pythonmalloc(env_var, name)
 
@@ -919,7 +919,7 @@ klasse CmdLineTest(unittest.TestCase):
         code = "import sys; print(sys.flags.gil)"
         environ = dict(os.environ)
 
-        for env, opt, expected, msg in cases:
+        fuer env, opt, expected, msg in cases:
             with self.subTest(msg, env=env, opt=opt):
                 environ.pop('PYTHON_GIL', None)
                 if env is not None:
@@ -1135,7 +1135,7 @@ klasse CmdLineTest(unittest.TestCase):
                 '',
             ),
         ]
-        for code, expected in test_cases:
+        fuer code, expected in test_cases:
             # Run the auto-dedent case
             args1 = sys.executable, '-c', code
             proc1 = subprocess.run(args1, stdout=subprocess.PIPE)
@@ -1184,7 +1184,7 @@ klasse CmdLineTest(unittest.TestCase):
         # os is not imported at startup
         code = 'import os; import os'
 
-        for case in 'importtime', 'importtime=1', 'importtime=true':
+        fuer case in 'importtime', 'importtime=1', 'importtime=true':
             res = assert_python_ok('-X', case, '-c', code)
             res_err = res.err.decode('utf-8')
             self.assertRegex(res_err, r'import time: \s*\d+ \| \s*\d+ \| \s*os')
@@ -1200,7 +1200,7 @@ klasse CmdLineTest(unittest.TestCase):
 
     def res2int(self, res):
         out = res.out.strip().decode("utf-8")
-        return tuple(int(i) for i in out.split())
+        return tuple(int(i) fuer i in out.split())
 
     @unittest.skipUnless(support.Py_GIL_DISABLED,
                          "PYTHON_TLBC and -X tlbc"

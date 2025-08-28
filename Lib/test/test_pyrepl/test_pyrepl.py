@@ -135,7 +135,7 @@ klasse ReplTestCase(TestCase):
             os.close(master_fd)
             process.kill()
             process.wait(timeout=timeout)
-            self.fail(f"Timeout while waiting for output, got: {''.join(output)}")
+            self.fail(f"Timeout while waiting fuer output, got: {''.join(output)}")
 
         os.close(master_fd)
         try:
@@ -222,7 +222,7 @@ klasse TestCursorPosition(TestCase):
         reader, _ = handle_all_events(events)
         self.assertEqual(reader.pos, 1)
 
-        # 1 for simple character
+        # 1 fuer simple character
         self.assertEqual(reader.cxy, (1, 0))
 
     def test_cursor_position_double_width_character(self):
@@ -231,7 +231,7 @@ klasse TestCursorPosition(TestCase):
         reader, _ = handle_all_events(events)
         self.assertEqual(reader.pos, 1)
 
-        # 2 for wide character
+        # 2 fuer wide character
         self.assertEqual(reader.cxy, (2, 0))
 
     def test_cursor_position_double_width_character_move_left(self):
@@ -258,7 +258,7 @@ klasse TestCursorPosition(TestCase):
         reader, _ = handle_all_events(events)
         self.assertEqual(reader.pos, 1)
 
-        # 2 for wide character
+        # 2 fuer wide character
         self.assertEqual(reader.cxy, (2, 0))
 
     def test_cursor_position_double_width_characters_move_up(self):
@@ -324,8 +324,8 @@ klasse TestCursorPosition(TestCase):
         reader, _ = handle_all_events(events)
         self.assertEqual(reader.pos, 10)
 
-        # 1 for quote, 1 for space, 2 per wide character,
-        # 1 for semicolon, 1 for space, 2 per wide character
+        # 1 fuer quote, 1 fuer space, 2 per wide character,
+        # 1 fuer semicolon, 1 fuer space, 2 per wide character
         self.assertEqual(reader.cxy, (16, 0))
 
     def test_cursor_position_move_up_to_eol(self):
@@ -352,13 +352,13 @@ klasse TestCursorPosition(TestCase):
         reader, _ = handle_all_events(events)
 
         # Cursor should be at end of line 1, even though line 2 is shorter
-        # for _ in _:
+        # fuer _ in _:
         #   hello
         #   h
         #   hel
         self.assertEqual(
             reader.pos, len(first_line) + len(second_line) + 1
-        )  # +1 for newline
+        )  # +1 fuer newline
         self.assertEqual(reader.cxy, (len(second_line), 1))
 
     def test_cursor_position_move_down_to_eol(self):
@@ -386,7 +386,7 @@ klasse TestCursorPosition(TestCase):
         reader, _ = handle_all_events(events)
 
         # Cursor should be at end of line 3, even though line 2 is shorter
-        # for _ in _:
+        # fuer _ in _:
         #   hello
         #   h
         #   hel
@@ -810,7 +810,7 @@ klasse TestPyReplOutput(ScreenEqualMixin, TestCase):
         reader = self.prepare_reader(events)
         multiline_input(reader)
 
-        # search for "imp" in history
+        # search fuer "imp" in history
         output = multiline_input(reader)
         self.assertEqual(output, "import os")
         self.assert_screen_equal(reader, "import os", clean=True)
@@ -965,7 +965,7 @@ klasse TestPyReplModuleCompleter(TestCase):
             ("from importlib import res\t\n", "from importlib import resources"),
             ("from importlib.res\t import a\t\n", "from importlib.resources import abc"),
         )
-        for code, expected in cases:
+        fuer code, expected in cases:
             with self.subTest(code=code):
                 events = code_to_events(code)
                 reader = self.prepare_reader(events, namespace={})
@@ -984,7 +984,7 @@ klasse TestPyReplModuleCompleter(TestCase):
             ("import _\t\n", "import _private"),
             ("from _\t\n", "from _private"),
         )
-        for code, expected in cases:
+        fuer code, expected in cases:
             with self.subTest(code=code):
                 events = code_to_events(code)
                 reader = self.prepare_reader(events, namespace={})
@@ -1005,7 +1005,7 @@ klasse TestPyReplModuleCompleter(TestCase):
             # Return private methods if explicitly specified
             ("from foo import _\t\n", "from foo import _private"),
         )
-        for code, expected in cases:
+        fuer code, expected in cases:
             with self.subTest(code=code):
                 events = code_to_events(code)
                 reader = self.prepare_reader(events, namespace={})
@@ -1025,7 +1025,7 @@ klasse TestPyReplModuleCompleter(TestCase):
             ("import bui\t\n", "import builtins"),
             ("from bui\t\n", "from builtins"),
         )
-        for code, expected in cases:
+        fuer code, expected in cases:
             with self.subTest(code=code):
                 events = code_to_events(code)
                 reader = self.prepare_reader(events, namespace={})
@@ -1039,7 +1039,7 @@ klasse TestPyReplModuleCompleter(TestCase):
             ("_pyrepl", "from .readl\t\n", "from .readline"),
             ("_pyrepl", "from . import readl\t\n", "from . import readline"),
         )
-        for package, code, expected in cases:
+        fuer package, code, expected in cases:
             with self.subTest(code=code):
                 events = code_to_events(code)
                 reader = self.prepare_reader(events, namespace={"__package__": package})
@@ -1056,7 +1056,7 @@ klasse TestPyReplModuleCompleter(TestCase):
             # 'invalid-name' contains a dash and should not be completed
             ("import invalid\t\n", "import invalid"),
         )
-        for code, expected in cases:
+        fuer code, expected in cases:
             with self.subTest(code=code):
                 events = code_to_events(code)
                 reader = self.prepare_reader(events, namespace={})
@@ -1069,7 +1069,7 @@ klasse TestPyReplModuleCompleter(TestCase):
             ("from pri\t\n", "from pri"),
             ("from typing import Na\t\n", "from typing import Na"),
         )
-        for code, expected in cases:
+        fuer code, expected in cases:
             with self.subTest(code=code):
                 events = code_to_events(code)
                 reader = self.prepare_reader(events, namespace={})
@@ -1094,7 +1094,7 @@ klasse TestPyReplModuleCompleter(TestCase):
             ('foo.bar.baz', ('foo.bar', 'baz')),
         )
         completer = ModuleCompleter()
-        for name, expected in cases:
+        fuer name, expected in cases:
             with self.subTest(name=name):
                 self.assertEqual(completer.get_path_and_prefix(name), expected)
 
@@ -1136,7 +1136,7 @@ klasse TestPyReplModuleCompleter(TestCase):
             ('from foo import (a, c', ('foo', 'c')),
             ('from foo import (a as b, c', ('foo', 'c')),
         )
-        for code, parsed in cases:
+        fuer code, parsed in cases:
             parser = ImportParser(code)
             actual = parser.parse()
             with self.subTest(code=code):
@@ -1198,7 +1198,7 @@ klasse TestPyReplModuleCompleter(TestCase):
             'from foo import from',
             'from foo import as',
         )
-        for code in cases:
+        fuer code in cases:
             parser = ImportParser(code)
             actual = parser.parse()
             with self.subTest(code=code):
@@ -1215,7 +1215,7 @@ klasse TestPasteEvent(TestCase):
         # fmt: off
         code = (
             "def a():\n"
-            "  for x in range(10):\n"
+            "  fuer x in range(10):\n"
             "    if x%2:\n"
             "      print(x)\n"
             "    else:\n"
@@ -1295,7 +1295,7 @@ klasse TestPasteEvent(TestCase):
 
         output_code = (
             "def a():\n"
-            "    for x in range(10):\n"
+            "    fuer x in range(10):\n"
             "        if x%2:\n"
             "            print(x)\n"
             "            else:"
@@ -1312,7 +1312,7 @@ klasse TestPasteEvent(TestCase):
         # fmt: off
         input_code = (
             "def a():\n"
-            "  for x in range(10):\n"
+            "  fuer x in range(10):\n"
             "\n"
             "    if x%2:\n"
             "      print(x)\n"
@@ -1323,7 +1323,7 @@ klasse TestPasteEvent(TestCase):
 
         output_code = (
             "def a():\n"
-            "  for x in range(10):\n"
+            "  fuer x in range(10):\n"
             "\n"
             "    if x%2:\n"
             "      print(x)\n"
@@ -1437,7 +1437,7 @@ klasse TestMain(ReplTestCase):
             startup = blue / "startup.py"
             startup.write_text("BAR = 64", encoding="utf-8")
             commands = [
-                "print(f'^{" + var + "=}')" for var in expectations
+                "print(f'^{" + var + "=}')" fuer var in expectations
             ] + ["exit()"]
             if pythonstartup:
                 clean_env["PYTHONSTARTUP"] = str(startup)
@@ -1468,7 +1468,7 @@ klasse TestMain(ReplTestCase):
                 )
 
         self.assertEqual(exit_code, 0)
-        for var, expected in expectations.items():
+        fuer var, expected in expectations.items():
             with self.subTest(var=var, expected=expected):
                 if m := re.search(rf"\^{var}=(.+?)[\r\n]", output):
                     self._assertMatchOK(var, expected, actual=m.group(1))
@@ -1548,7 +1548,7 @@ klasse TestMain(ReplTestCase):
         env["PYTHON_BASIC_REPL"] = "1"
         output, exit_code = self.run_repl(basic_commands, env=env)
         self.assertEqual(exit_code, 0)
-        self.assertIn("Type help() for interactive help", output)
+        self.assertIn("Type help() fuer interactive help", output)
         self.assertNotIn("Exception", output)
         self.assertNotIn("Traceback", output)
 
@@ -1574,7 +1574,7 @@ klasse TestMain(ReplTestCase):
             excluded_lines = fp.readlines()
         excluded_lines = list(filter(None, map(str.strip, excluded_lines)))
 
-        for filename in ['?', 'unknown-filename', '<foo>', '<...>']:
+        fuer filename in ['?', 'unknown-filename', '<foo>', '<...>']:
             self._test_no_pyrepl_source_in_exc(filename, excluded_lines)
 
     def _test_no_pyrepl_source_in_exc(self, filename, excluded_lines):
@@ -1585,7 +1585,7 @@ klasse TestMain(ReplTestCase):
             output, _ = self.run_repl(commands, env=env)
             self.assertIn("Traceback (most recent call last)", output)
             self.assertIn("NameError: name 'spam' is not defined", output)
-            for line in excluded_lines:
+            fuer line in excluded_lines:
                 with self.subTest(line=line):
                     self.assertNotIn(line, output)
 
@@ -1653,7 +1653,7 @@ klasse TestMain(ReplTestCase):
     @force_not_colorized
     def test_proper_tracebacklimit(self):
         env = os.environ.copy()
-        for set_tracebacklimit in [True, False]:
+        fuer set_tracebacklimit in [True, False]:
             commands = ("import sys\n" +
                         ("sys.tracebacklimit = 1\n" if set_tracebacklimit else "") +
                         "def x1(): 1/0\n\n"
@@ -1662,7 +1662,7 @@ klasse TestMain(ReplTestCase):
                         "x3()\n"
                         "exit()\n")
 
-            for basic_repl in [True, False]:
+            fuer basic_repl in [True, False]:
                 if basic_repl:
                     env["PYTHON_BASIC_REPL"] = "1"
                 else:
@@ -1778,7 +1778,7 @@ klasse TestMain(ReplTestCase):
         self.assertEqual(len(matches), 3)
 
     def test_detect_pip_usage_in_repl(self):
-        for pip_cmd in ("pip", "pip3", "python -m pip", "python3 -m pip"):
+        fuer pip_cmd in ("pip", "pip3", "python -m pip", "python3 -m pip"):
             with self.subTest(pip_cmd=pip_cmd):
                 output, exit_code = self.run_repl([f"{pip_cmd} install sampleproject", "exit"])
                 self.assertIn("SyntaxError", output)

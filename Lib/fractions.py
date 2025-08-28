@@ -16,7 +16,7 @@ __all__ = ['Fraction']
 # Constants related to the hash implementation;  hash(x) is based
 # on the reduction of x modulo the prime _PyHASH_MODULUS.
 _PyHASH_MODULUS = sys.hash_info.modulus
-# Value to be used for rationals that reduce to infinity modulo
+# Value to be used fuer rationals that reduce to infinity modulo
 # _PyHASH_MODULUS.
 _PyHASH_INF = sys.hash_info.inf
 
@@ -25,7 +25,7 @@ def _hash_algorithm(numerator, denominator):
 
     # To make sure that the hash of a Fraction agrees with the hash
     # of a numerically equal integer, float or Decimal instance, we
-    # follow the rules for numeric hashes outlined in the
+    # follow the rules fuer numeric hashes outlined in the
     # documentation.  (See library docs, 'Built-in Types').
 
     try:
@@ -38,7 +38,7 @@ def _hash_algorithm(numerator, denominator):
         # the hash is
         #    (|N| * dinv) % P
         # where N is self._numerator and P is _PyHASH_MODULUS.  That's
-        # optimized here in two ways:  first, for a non-negative int i,
+        # optimized here in two ways:  first, fuer a non-negative int i,
         # hash(i) == i % P, but the int hash implementation doesn't need
         # to divide, and is faster than doing % P explicitly.  So we do
         #    hash(|N| * dinv)
@@ -48,7 +48,7 @@ def _hash_algorithm(numerator, denominator):
         # be done with an int hash() call.  If 0 <= i < P, hash(i) == i,
         # so this nested hash() call wastes a bit of time making a
         # redundant copy when |N| < P, but can save an arbitrarily large
-        # amount of computation for large |N|.
+        # amount of computation fuer large |N|.
         hash_ = hash(hash(abs(numerator)) * dinv)
     result = hash_ if numerator >= 0 else -hash_
     return -2 if result == -1 else result
@@ -56,7 +56,7 @@ def _hash_algorithm(numerator, denominator):
 _RATIONAL_FORMAT = re.compile(r"""
     \A\s*                                  # optional whitespace at the start,
     (?P<sign>[-+]?)                        # an optional sign, then
-    (?=\d|\.\d)                            # lookahead for digit or .digit
+    (?=\d|\.\d)                            # lookahead fuer digit or .digit
     (?P<num>\d*|\d+(_\d+)*)                # numerator (possibly empty)
     (?:                                    # followed by
        (?:\s*/\s*(?P<denom>\d+(_\d+)*))?   # an optional denominator
@@ -68,7 +68,7 @@ _RATIONAL_FORMAT = re.compile(r"""
 """, re.VERBOSE | re.IGNORECASE)
 
 
-# Helpers for formatting
+# Helpers fuer formatting
 
 def _round_to_exponent(n, d, exponent, no_neg_zero=False):
     """Round a rational number to the nearest multiple of a given power of 10.
@@ -89,7 +89,7 @@ def _round_to_exponent(n, d, exponent, no_neg_zero=False):
     else:
         n *= 10**-exponent
 
-    # The divmod quotient is correct for round-ties-towards-positive-infinity;
+    # The divmod quotient is correct fuer round-ties-towards-positive-infinity;
     # In the case of a tie, we zero out the least significant bit of q.
     q, r = divmod(n + (d >> 1), d)
     if r == 0 and d & 1 == 0:
@@ -108,19 +108,19 @@ def _round_to_figures(n, d, figures):
     value (-1)**sign * significand * 10**exponent.
 
     In the special case where n = 0, returns a significand of zero and
-    an exponent of 1 - figures, for compatibility with formatting.
+    an exponent of 1 - figures, fuer compatibility with formatting.
     Otherwise, the returned significand satisfies
     10**(figures - 1) <= significand < 10**figures.
 
     d must be positive, but n and d need not be relatively prime.
     figures must be positive.
     """
-    # Special case for n == 0.
+    # Special case fuer n == 0.
     if n == 0:
         return False, 0, 1 - figures
 
     # Find integer m satisfying 10**(m - 1) <= abs(n)/d <= 10**m. (If abs(n)/d
-    # is a power of 10, either of the two possible values for m is fine.)
+    # is a power of 10, either of the two possible values fuer m is fine.)
     str_n, str_d = str(abs(n)), str(d)
     m = len(str_n) - len(str_d) + (str_d <= str_n)
 
@@ -138,7 +138,7 @@ def _round_to_figures(n, d, figures):
     return sign, significand, exponent
 
 
-# Pattern for matching non-float-style format specifications.
+# Pattern fuer matching non-float-style format specifications.
 _GENERAL_FORMAT_SPECIFICATION_MATCHER = re.compile(r"""
     (?:
         (?P<fill>.)?
@@ -155,7 +155,7 @@ _GENERAL_FORMAT_SPECIFICATION_MATCHER = re.compile(r"""
 """, re.DOTALL | re.VERBOSE).fullmatch
 
 
-# Pattern for matching float-style format specifications;
+# Pattern fuer matching float-style format specifications;
 # supports 'e', 'E', 'f', 'F', 'g', 'G' and '%' presentation types.
 _FLOAT_FORMAT_SPECIFICATION_MATCHER = re.compile(r"""
     (?:
@@ -171,7 +171,7 @@ _FLOAT_FORMAT_SPECIFICATION_MATCHER = re.compile(r"""
     (?P<minimumwidth>[0-9]+)?
     (?P<thousands_sep>[,_])?
     (?:\.
-        (?=[,_0-9])  # lookahead for digit or separator
+        (?=[,_0-9])  # lookahead fuer digit or separator
         (?P<precision>[0-9]+)?
         (?P<frac_separators>[,_])?
     )?
@@ -253,7 +253,7 @@ klasse Fraction(numbers.Rational):
                 # Handle construction from strings.
                 m = _RATIONAL_FORMAT.match(numerator)
                 if m is None:
-                    raise ValueError('Invalid literal for Fraction: %r' %
+                    raise ValueError('Invalid literal fuer Fraction: %r' %
                                      numerator)
                 numerator = int(m.group('num') or '0')
                 denom = m.group('denom')
@@ -360,7 +360,7 @@ klasse Fraction(numbers.Rational):
 
     @classmethod
     def _from_coprime_ints(cls, numerator, denominator, /):
-        """Convert a pair of ints to a rational number, for internal use.
+        """Convert a pair of ints to a rational number, fuer internal use.
 
         The ratio of integers should be in lowest terms and the denominator
         should be positive.
@@ -396,7 +396,7 @@ klasse Fraction(numbers.Rational):
         # approximation* to x to be a rational number p/q such that:
         #
         #   (1) p/q >= x, and
-        #   (2) if p/q > r/s >= x then s > q, for any rational r/s.
+        #   (2) if p/q > r/s >= x then s > q, fuer any rational r/s.
         #
         # Define *best lower approximation* similarly.  Then it can be
         # proved that a rational number is a best upper or lower
@@ -459,7 +459,7 @@ klasse Fraction(numbers.Rational):
             return '%s/%s' % (self._numerator, self._denominator)
 
     def _format_general(self, match):
-        """Helper method for __format__.
+        """Helper method fuer __format__.
 
         Handles fill, alignment, signs, and thousands separators in the
         case of no presentation type.
@@ -493,7 +493,7 @@ klasse Fraction(numbers.Rational):
             return sign + padding + body
 
     def _format_float_style(self, match):
-        """Helper method for __format__; handles float presentation types."""
+        """Helper method fuer __format__; handles float presentation types."""
         fill = match["fill"] or " "
         align = match["align"] or ">"
         pos_sign = "" if match["sign"] == "-" else match["sign"]
@@ -562,7 +562,7 @@ klasse Fraction(numbers.Rational):
         separator = "" if trim_point and not frac_part else "."
         if frac_sep:
             frac_part = frac_sep.join(frac_part[pos:pos + 3]
-                                      for pos in range(0, len(frac_part), 3))
+                                      fuer pos in range(0, len(frac_part), 3))
         trailing = separator + frac_part + suffix
 
         # Do zero padding if required.
@@ -579,7 +579,7 @@ klasse Fraction(numbers.Rational):
             first_pos = 1 + (len(leading) - 1) % 3
             leading = leading[:first_pos] + "".join(
                 thousands_sep + leading[pos : pos + 3]
-                for pos in range(first_pos, len(leading), 3)
+                fuer pos in range(first_pos, len(leading), 3)
             )
 
         # We now have a sign and a body. Pad with fill character if necessary
@@ -657,7 +657,7 @@ klasse Fraction(numbers.Rational):
                 return NotImplemented
 
 
-        There are 5 different cases for a mixed-type addition on
+        There are 5 different cases fuer a mixed-type addition on
         Fraction. I'll refer to all of the above code that doesn't
         refer to Fraction, float, or complex as "boilerplate". 'r'
         will be an instance of Fraction, which is a subtype of
@@ -766,7 +766,7 @@ klasse Fraction(numbers.Rational):
     # We should special-case g == 1 (and g2 == 1), since 60.8% of
     # randomly-chosen integers are coprime:
     # https://en.wikipedia.org/wiki/Coprime_integers#Probability_of_coprimality
-    # Note, that g2 == 1 always for fractions, obtained from floats: here
+    # Note, that g2 == 1 always fuer fractions, obtained from floats: here
     # g is a power of 2 and the unnormalized numerator t is an odd integer.
     #
     # 2) Consider multiplication
@@ -787,8 +787,8 @@ klasse Fraction(numbers.Rational):
     # fractions are normalized.  It's also coprime with (db//g1), because
     # common factors are removed by g1 == gcd(na, db).
     #
-    # As for addition/subtraction, we should special-case g1 == 1
-    # and g2 == 1 for same reason.  That happens also for multiplying
+    # As fuer addition/subtraction, we should special-case g1 == 1
+    # and g2 == 1 fuer same reason.  That happens also fuer multiplying
     # rationals, obtained from floats.
 
     def _add(a, b):
@@ -1009,7 +1009,7 @@ klasse Fraction(numbers.Rational):
         if isinstance(b, float):
             if math.isnan(b) or math.isinf(b):
                 # comparisons with an infinity or nan should behave in
-                # the same way for any finite a, so treat a as zero.
+                # the same way fuer any finite a, so treat a as zero.
                 return 0.0 == b
             else:
                 return a == a.from_float(b)
@@ -1019,7 +1019,7 @@ klasse Fraction(numbers.Rational):
             return NotImplemented
 
     def _richcmp(self, other, op):
-        """Helper for comparison operators, for internal use only.
+        """Helper fuer comparison operators, fuer internal use only.
 
         Implement comparison between a Rational instance `self`, and
         either another Rational instance or a float `other`.  If
@@ -1062,7 +1062,7 @@ klasse Fraction(numbers.Rational):
         # object which is not a bool.
         return bool(a._numerator)
 
-    # support for pickling, copy, and deepcopy
+    # support fuer pickling, copy, and deepcopy
 
     def __reduce__(self):
         return (self.__class__, (self._numerator, self._denominator))

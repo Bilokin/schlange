@@ -82,7 +82,7 @@ klasse ZoneInfo(tzinfo):
         obj._load_file(file_obj)
         obj._file_repr = repr(file_obj)
 
-        # Disable pickling for objects created from files
+        # Disable pickling fuer objects created from files
         obj.__reduce__ = obj._file_reduce
 
         return obj
@@ -90,7 +90,7 @@ klasse ZoneInfo(tzinfo):
     @classmethod
     def clear_cache(cls, *, only_keys=None):
         if only_keys is not None:
-            for key in only_keys:
+            fuer key in only_keys:
                 cls._weak_cache.pop(key, None)
                 cls._strong_cache.pop(key, None)
 
@@ -228,26 +228,26 @@ klasse ZoneInfo(tzinfo):
             fobj
         )
 
-        # Infer the DST offsets (needed for .dst()) from the data
+        # Infer the DST offsets (needed fuer .dst()) from the data
         dstoff = self._utcoff_to_dstoff(trans_idx, utcoff, isdst)
 
         # Convert all the transition times (UTC) into "seconds since 1970-01-01 local time"
         trans_local = self._ts_to_local(trans_idx, trans_utc, utcoff)
 
-        # Construct `_ttinfo` objects for each transition in the file
+        # Construct `_ttinfo` objects fuer each transition in the file
         _ttinfo_list = [
             _ttinfo(
                 _load_timedelta(utcoffset), _load_timedelta(dstoffset), tzname
             )
-            for utcoffset, dstoffset, tzname in zip(utcoff, dstoff, abbr)
+            fuer utcoffset, dstoffset, tzname in zip(utcoff, dstoff, abbr)
         ]
 
         self._trans_utc = trans_utc
         self._trans_local = trans_local
-        self._ttinfos = [_ttinfo_list[idx] for idx in trans_idx]
+        self._ttinfos = [_ttinfo_list[idx] fuer idx in trans_idx]
 
         # Find the first non-DST transition
-        for i in range(len(isdst)):
+        fuer i in range(len(isdst)):
             if not isdst[i]:
                 self._tti_before = _ttinfo_list[i]
                 break
@@ -310,7 +310,7 @@ klasse ZoneInfo(tzinfo):
         dst_cnt = sum(isdsts)
         dst_found = 0
 
-        for i in range(1, len(trans_idx)):
+        fuer i in range(1, len(trans_idx)):
             if dst_cnt == dst_found:
                 break
 
@@ -349,10 +349,10 @@ klasse ZoneInfo(tzinfo):
                 dst_found += 1
                 dstoffs[idx] = dstoff
         else:
-            # If we didn't find a valid value for a given index, we'll end up
-            # with dstoff = 0 for something where `isdst=1`. This is obviously
+            # If we didn't find a valid value fuer a given index, we'll end up
+            # with dstoff = 0 fuer something where `isdst=1`. This is obviously
             # wrong - one hour will be a much better guess than 0
-            for idx in range(typecnt):
+            fuer idx in range(typecnt):
                 if not dstoffs[idx] and isdsts[idx]:
                     dstoffs[idx] = 3600
 
@@ -380,7 +380,7 @@ klasse ZoneInfo(tzinfo):
         trans_list_wall[0][0] += offset_0
         trans_list_wall[1][0] += offset_1
 
-        for i in range(1, len(trans_idx)):
+        fuer i in range(1, len(trans_idx)):
             offset_0 = utcoffsets[trans_idx[i - 1]]
             offset_1 = utcoffsets[trans_idx[i]]
 
@@ -493,7 +493,7 @@ klasse _TZStr:
             isdst = not (end <= ts < start)
 
         # For positive DST, the ambiguous period is one dst_diff after the end
-        # of DST; for negative DST, the ambiguous period is one dst_diff before
+        # of DST; fuer negative DST, the ambiguous period is one dst_diff before
         # the start of DST.
         if self.dst_diff > 0:
             ambig_start = end
@@ -627,7 +627,7 @@ def _parse_tz_str(tz_str):
     #
     # std and dst must be 3 or more characters long and must not contain
     # a leading colon, embedded digits, commas, nor a plus or minus signs;
-    # The spaces between "std" and "offset" are only for display and are
+    # The spaces between "std" and "offset" are only fuer display and are
     # not actually present in the string.
     #
     # The format of the offset is ``[+|-]hh[:mm[:ss]]``
@@ -684,7 +684,7 @@ def _parse_tz_str(tz_str):
 
         start_end_strs = start_end_str[0].split(",", 1)
         try:
-            start, end = (_parse_dst_start_end(x) for x in start_end_strs)
+            start, end = (_parse_dst_start_end(x) fuer x in start_end_strs)
         except ValueError as e:
             raise ValueError(f"Invalid TZ string: {tz_str}") from e
 
@@ -733,7 +733,7 @@ def _parse_transition_time(time_str):
     if match is None:
         raise ValueError(f"Invalid time: {time_str}")
 
-    h, m, s = (int(v or 0) for v in match.group("h", "m", "s"))
+    h, m, s = (int(v or 0) fuer v in match.group("h", "m", "s"))
 
     if h > 167:
         raise ValueError(
@@ -756,7 +756,7 @@ def _parse_tz_delta(tz_delta):
     # regular expression to find the section to parse.
     assert match is not None, tz_delta
 
-    h, m, s = (int(v or 0) for v in match.group("h", "m", "s"))
+    h, m, s = (int(v or 0) fuer v in match.group("h", "m", "s"))
 
     total = h * 3600 + m * 60 + s
 

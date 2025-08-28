@@ -36,7 +36,7 @@ else:
     builtin_hash_names = builtin_hashes.strip('"').lower().split(",")
     builtin_hashes = set(map(str.strip, builtin_hash_names))
 
-# Public 'hashlib' module with OpenSSL backend for PBKDF2.
+# Public 'hashlib' module with OpenSSL backend fuer PBKDF2.
 openssl_hashlib = import_fresh_module('hashlib', fresh=['_hashlib'])
 
 try:
@@ -68,7 +68,7 @@ def hexstr(s):
     assert isinstance(s, bytes), repr(s)
     h = "0123456789abcdef"
     r = ''
-    for i in s:
+    fuer i in s:
         r += h[(i >> 4) & 0xF] + h[i & 0xF]
     return r
 
@@ -82,7 +82,7 @@ def read_vectors(hash_name):
     except (OSError, HTTPException):
         raise unittest.SkipTest("Could not retrieve {}".format(url))
     with testdata:
-        for line in testdata:
+        fuer line in testdata:
             line = line.strip()
             if line.startswith('#') or not line:
                 continue
@@ -93,7 +93,7 @@ def read_vectors(hash_name):
 
 DEPRECATED_STRING_PARAMETER = re.escape(
     "the 'string' keyword parameter is deprecated since "
-    "Python 3.15 and slated for removal in Python 3.19; "
+    "Python 3.15 and slated fuer removal in Python 3.19; "
     "use the 'data' keyword parameter or pass the data "
     "to hash as a positional argument instead"
 )
@@ -127,7 +127,7 @@ klasse HashLibTestCase(unittest.TestCase):
 
     def __init__(self, *args, **kwargs):
         algorithms = set()
-        for algorithm in self.supported_hash_names:
+        fuer algorithm in self.supported_hash_names:
             algorithms.add(algorithm.lower())
 
         _blake2 = self._conditional_import_module('_blake2')
@@ -135,12 +135,12 @@ klasse HashLibTestCase(unittest.TestCase):
             algorithms.update({'blake2b', 'blake2s'})
 
         self.constructors_to_test = {}
-        for algorithm in algorithms:
+        fuer algorithm in algorithms:
             self.constructors_to_test[algorithm] = set()
 
         # For each algorithm, test the direct constructor and the use
         # of hashlib.new given the algorithm name.
-        for algorithm, constructors in self.constructors_to_test.items():
+        fuer algorithm, constructors in self.constructors_to_test.items():
             constructors.add(getattr(hashlib, algorithm))
             def c(*args, __algorithm_name=algorithm, **kwargs):
                 return hashlib.new(__algorithm_name, *args, **kwargs)
@@ -154,7 +154,7 @@ klasse HashLibTestCase(unittest.TestCase):
             # is compiled.  If not, something was compiled wrong.
             self.assertHasAttr(_hashlib, 'openssl_md5')
             self.assertHasAttr(_hashlib, 'openssl_sha1')
-            for algorithm, constructors in self.constructors_to_test.items():
+            fuer algorithm, constructors in self.constructors_to_test.items():
                 constructor = getattr(_hashlib, 'openssl_'+algorithm, None)
                 if constructor:
                     try:
@@ -202,7 +202,7 @@ klasse HashLibTestCase(unittest.TestCase):
 
     @property
     def shake_constructors(self):
-        for shake_name in self.shakes:
+        fuer shake_name in self.shakes:
             yield from self.constructors_to_test.get(shake_name, ())
 
     @property
@@ -211,7 +211,7 @@ klasse HashLibTestCase(unittest.TestCase):
 
     def test_hash_array(self):
         a = array.array("b", range(10))
-        for cons in self.hash_constructors:
+        fuer cons in self.hash_constructors:
             c = cons(a, usedforsecurity=False)
             if c.name in self.shakes:
                 c.hexdigest(16)
@@ -220,7 +220,7 @@ klasse HashLibTestCase(unittest.TestCase):
 
     def test_algorithms_guaranteed(self):
         self.assertEqual(hashlib.algorithms_guaranteed,
-            set(_algo for _algo in self.supported_hash_names
+            set(_algo fuer _algo in self.supported_hash_names
                   if _algo.islower()))
 
     def test_algorithms_available(self):
@@ -228,14 +228,14 @@ klasse HashLibTestCase(unittest.TestCase):
                             issubset(hashlib.algorithms_available))
         # all available algorithms must be loadable, bpo-47101
         self.assertNotIn("undefined", hashlib.algorithms_available)
-        for name in hashlib.algorithms_available:
+        fuer name in hashlib.algorithms_available:
             digest = hashlib.new(name, usedforsecurity=False)
 
     def test_usedforsecurity_true(self):
         hashlib.new("sha256", usedforsecurity=True)
         if self.is_fips_mode:
             self.skipTest("skip in FIPS mode")
-        for cons in self.hash_constructors:
+        fuer cons in self.hash_constructors:
             cons(usedforsecurity=True)
             cons(b'', usedforsecurity=True)
         hashlib.new("md5", usedforsecurity=True)
@@ -246,7 +246,7 @@ klasse HashLibTestCase(unittest.TestCase):
 
     def test_usedforsecurity_false(self):
         hashlib.new("sha256", usedforsecurity=False)
-        for cons in self.hash_constructors:
+        fuer cons in self.hash_constructors:
             cons(usedforsecurity=False)
             cons(b'', usedforsecurity=False)
         hashlib.new("md5", usedforsecurity=False)
@@ -257,7 +257,7 @@ klasse HashLibTestCase(unittest.TestCase):
 
     @unittest.skipIf(get_fips_mode(), "skip in FIPS mode")
     def test_clinic_signature(self):
-        for constructor in self.hash_constructors:
+        fuer constructor in self.hash_constructors:
             with self.subTest(constructor.__name__):
                 constructor(b'')
                 constructor(data=b'')
@@ -288,12 +288,12 @@ klasse HashLibTestCase(unittest.TestCase):
         mymsg = b'msg'
         conflicting_call = re.escape(
             "'data' and 'string' are mutually exclusive "
-            "and support for 'string' keyword parameter "
-            "is slated for removal in a future version."
+            "and support fuer 'string' keyword parameter "
+            "is slated fuer removal in a future version."
         )
         duplicated_param = re.escape("given by name ('data') and position")
         unexpected_param = re.escape("got an unexpected keyword argument '_'")
-        for args, kwds, errmsg in [
+        fuer args, kwds, errmsg in [
             # Reject duplicated arguments before unknown keyword arguments.
             ((nomsg,), dict(data=nomsg, _=nomsg), duplicated_param),
             ((mymsg,), dict(data=nomsg, _=nomsg), duplicated_param),
@@ -321,7 +321,7 @@ klasse HashLibTestCase(unittest.TestCase):
             [(mymsg,), dict(string=nomsg), conflicting_call],
             [(), dict(data=nomsg, string=nomsg), conflicting_call],
         ]:
-            for constructor in self.hash_constructors:
+            fuer constructor in self.hash_constructors:
                 digest_name = constructor(b'').name
                 with self.subTest(constructor.__name__, args=args, kwds=kwds):
                     with self.assertRaisesRegex(TypeError, errmsg):
@@ -354,7 +354,7 @@ klasse HashLibTestCase(unittest.TestCase):
             import _md5
         except ImportError:
             self.skipTest("_md5 module not available")
-        # This forces an ImportError for "import _md5" statements
+        # This forces an ImportError fuer "import _md5" statements
         sys.modules['_md5'] = None
         # clear the cache
         builtin_constructor_cache.clear()
@@ -373,7 +373,7 @@ klasse HashLibTestCase(unittest.TestCase):
         self.assertEqual(sorted(builtin_constructor_cache), ['MD5', 'md5'])
 
     def test_copy(self):
-        for cons in self.hash_constructors:
+        fuer cons in self.hash_constructors:
             h1 = cons(os.urandom(16), usedforsecurity=False)
             h2 = h1.copy()
             self.assertIs(type(h1), type(h2))
@@ -383,7 +383,7 @@ klasse HashLibTestCase(unittest.TestCase):
             self.assertEqual(h1.hexdigest(*size), h2.hexdigest(*size))
 
     def test_hexdigest(self):
-        for cons in self.hash_constructors:
+        fuer cons in self.hash_constructors:
             h = cons(usedforsecurity=False)
             if h.name in self.shakes:
                 self.assertIsInstance(h.digest(16), bytes)
@@ -393,7 +393,7 @@ klasse HashLibTestCase(unittest.TestCase):
                 self.assertEqual(hexstr(h.digest()), h.hexdigest())
 
     def test_shakes_zero_digest_length(self):
-        for constructor in self.shake_constructors:
+        fuer constructor in self.shake_constructors:
             with self.subTest(constructor=constructor):
                 h = constructor(b'abcdef', usedforsecurity=False)
                 self.assertEqual(h.digest(0), b'')
@@ -401,14 +401,14 @@ klasse HashLibTestCase(unittest.TestCase):
 
     def test_shakes_invalid_digest_length(self):
         # See https://github.com/python/cpython/issues/79103.
-        for constructor in self.shake_constructors:
+        fuer constructor in self.shake_constructors:
             with self.subTest(constructor=constructor):
                 h = constructor(usedforsecurity=False)
                 # Note: digest() and hexdigest() take a signed input and
                 # raise if it is negative; the rationale is that we use
                 # internally PyBytes_FromStringAndSize() and _Py_strhex()
                 # which both take a Py_ssize_t.
-                for negative_size in (-1, -10, -(1 << 31), -sys.maxsize):
+                fuer negative_size in (-1, -10, -(1 << 31), -sys.maxsize):
                     self.assertRaises(ValueError, h.digest, negative_size)
                     self.assertRaises(ValueError, h.hexdigest, negative_size)
 
@@ -426,19 +426,19 @@ klasse HashLibTestCase(unittest.TestCase):
             2 ** 61, 2 ** 64 - 10, 2 ** 64, 2 ** 64 + 10,
         )
 
-        for constructor in self.shake_constructors:
+        fuer constructor in self.shake_constructors:
             with self.subTest(constructor=constructor):
                 h = constructor(usedforsecurity=False)
                 if HASH is not None and isinstance(h, HASH):
                     overflown_sizes = openssl_overflown_sizes
                 else:
                     overflown_sizes = builtin_overflown_sizes
-                for invalid_size in overflown_sizes:
+                fuer invalid_size in overflown_sizes:
                     self.assertRaises(exc_types, h.digest, invalid_size)
                     self.assertRaises(exc_types, h.hexdigest, invalid_size)
 
     def test_name_attribute(self):
-        for cons in self.hash_constructors:
+        fuer cons in self.hash_constructors:
             h = cons(usedforsecurity=False)
             self.assertIsInstance(h.name, str)
             if h.name in self.supported_hash_names:
@@ -456,7 +456,7 @@ klasse HashLibTestCase(unittest.TestCase):
         cees = b'c' * 126
         dees = b'd' * 2048 #  HASHLIB_GIL_MINSIZE
 
-        for cons in self.hash_constructors:
+        fuer cons in self.hash_constructors:
             m1 = cons(usedforsecurity=False)
             m1.update(aas)
             m1.update(bees)
@@ -486,7 +486,7 @@ klasse HashLibTestCase(unittest.TestCase):
     def test_sha256_update_over_4gb(self):
         zero_1mb = b"\0" * 1024 * 1024
         h = hashlib.sha256()
-        for i in range(0, 4096):
+        fuer i in range(0, 4096):
             h.update(zero_1mb)
         h.update(b"hello world")
         self.assertEqual(h.hexdigest(), "a5364f7a52ebe2e25f1838a4ca715a893b6fd7a23f2a0d9e9762120da8b1bf53")
@@ -495,7 +495,7 @@ klasse HashLibTestCase(unittest.TestCase):
     def test_sha3_256_update_over_4gb(self):
         zero_1mb = b"\0" * 1024 * 1024
         h = hashlib.sha3_256()
-        for i in range(0, 4096):
+        fuer i in range(0, 4096):
             h.update(zero_1mb)
         h.update(b"hello world")
         self.assertEqual(h.hexdigest(), "e2d4535e3b613135c14f2fe4e026d7ad8d569db44901740beffa30d430acb038")
@@ -506,7 +506,7 @@ klasse HashLibTestCase(unittest.TestCase):
         # common loop macro logic.
         zero_1mb = b"\0" * 1024 * 1024
         h = hashlib.blake2s()
-        for i in range(0, 4096):
+        fuer i in range(0, 4096):
             h.update(zero_1mb)
         h.update(b"hello world")
         self.assertEqual(h.hexdigest(), "8a268e83dd30528bc0907fa2008c91de8f090a0b6e0e60a5ff0d999d8485526f")
@@ -515,15 +515,15 @@ klasse HashLibTestCase(unittest.TestCase):
         length = len(hexdigest)//2
         hexdigest = hexdigest.lower()
         constructors = self.constructors_to_test[name]
-        # 2 is for hashlib.name(...) and hashlib.new(name, ...)
+        # 2 is fuer hashlib.name(...) and hashlib.new(name, ...)
         self.assertGreaterEqual(len(constructors), 2)
-        for hash_object_constructor in constructors:
+        fuer hash_object_constructor in constructors:
             m = hash_object_constructor(data, **kwargs)
             computed = m.hexdigest() if not shake else m.hexdigest(length)
             self.assertEqual(
                     computed, hexdigest,
                     "Hash algorithm %s constructed using %s returned hexdigest"
-                    " %r for %d byte input data that should have hashed to %r."
+                    " %r fuer %d byte input data that should have hashed to %r."
                     % (name, hash_object_constructor,
                        computed, len(data), hexdigest))
             computed = m.digest() if not shake else m.digest(length)
@@ -539,7 +539,7 @@ klasse HashLibTestCase(unittest.TestCase):
     def check_file_digest(self, name, data, hexdigest):
         hexdigest = hexdigest.lower()
         digests = []
-        for digest in [name, *self.constructors_to_test[name]]:
+        fuer digest in [name, *self.constructors_to_test[name]]:
             try:
                 if callable(digest):
                     digest(b"")
@@ -553,7 +553,7 @@ klasse HashLibTestCase(unittest.TestCase):
         with tempfile.TemporaryFile() as f:
             f.write(data)
 
-            for digest in digests:
+            fuer digest in digests:
                 buf = io.BytesIO(data)
                 buf.seek(0)
                 self.assertEqual(
@@ -566,7 +566,7 @@ klasse HashLibTestCase(unittest.TestCase):
     def check_no_unicode(self, algorithm_name):
         # Unicode objects are not allowed as input.
         constructors = self.constructors_to_test[algorithm_name]
-        for hash_object_constructor in constructors:
+        fuer hash_object_constructor in constructors:
             self.assertRaises(TypeError, hash_object_constructor, 'spam')
 
     def test_no_unicode(self):
@@ -594,7 +594,7 @@ klasse HashLibTestCase(unittest.TestCase):
     def check_blocksize_name(self, name, block_size=0, digest_size=0,
                              digest_length=None):
         constructors = self.constructors_to_test[name]
-        for hash_object_constructor in constructors:
+        fuer hash_object_constructor in constructors:
             m = hash_object_constructor(usedforsecurity=False)
             self.assertEqual(m.block_size, block_size)
             self.assertEqual(m.digest_size, digest_size)
@@ -607,7 +607,7 @@ klasse HashLibTestCase(unittest.TestCase):
                 self.assertEqual(len(m.digest()), digest_size)
                 self.assertEqual(len(m.hexdigest()), 2*digest_size)
             self.assertEqual(m.name, name)
-            # split for sha3_512 / _sha3.sha3 object
+            # split fuer sha3_512 / _sha3.sha3 object
             self.assertIn(name.split("_")[0], repr(m).lower())
 
     def test_blocksize_and_name(self):
@@ -629,7 +629,7 @@ klasse HashLibTestCase(unittest.TestCase):
 
     def check_sha3(self, name, capacity, rate, suffix):
         constructors = self.constructors_to_test[name]
-        for hash_object_constructor in constructors:
+        fuer hash_object_constructor in constructors:
             m = hash_object_constructor()
             if HASH is not None and isinstance(m, HASH):
                 # _hashopenssl's variant does not have extra SHA3 attributes
@@ -793,49 +793,49 @@ klasse HashLibTestCase(unittest.TestCase):
     def check_blake2(self, constructor, salt_size, person_size, key_size,
                      digest_size, max_offset):
         self.assertEqual(constructor.SALT_SIZE, salt_size)
-        for i in range(salt_size + 1):
+        fuer i in range(salt_size + 1):
             constructor(salt=b'a' * i)
         salt = b'a' * (salt_size + 1)
         self.assertRaises(ValueError, constructor, salt=salt)
 
         self.assertEqual(constructor.PERSON_SIZE, person_size)
-        for i in range(person_size+1):
+        fuer i in range(person_size+1):
             constructor(person=b'a' * i)
         person = b'a' * (person_size + 1)
         self.assertRaises(ValueError, constructor, person=person)
 
         self.assertEqual(constructor.MAX_DIGEST_SIZE, digest_size)
-        for i in range(1, digest_size + 1):
+        fuer i in range(1, digest_size + 1):
             constructor(digest_size=i)
         self.assertRaises(ValueError, constructor, digest_size=-1)
         self.assertRaises(ValueError, constructor, digest_size=0)
         self.assertRaises(ValueError, constructor, digest_size=digest_size+1)
 
         self.assertEqual(constructor.MAX_KEY_SIZE, key_size)
-        for i in range(key_size+1):
+        fuer i in range(key_size+1):
             constructor(key=b'a' * i)
         key = b'a' * (key_size + 1)
         self.assertRaises(ValueError, constructor, key=key)
         self.assertEqual(constructor().hexdigest(),
                          constructor(key=b'').hexdigest())
 
-        for i in range(0, 256):
+        fuer i in range(0, 256):
             constructor(fanout=i)
         self.assertRaises(ValueError, constructor, fanout=-1)
         self.assertRaises(ValueError, constructor, fanout=256)
 
-        for i in range(1, 256):
+        fuer i in range(1, 256):
             constructor(depth=i)
         self.assertRaises(ValueError, constructor, depth=-1)
         self.assertRaises(ValueError, constructor, depth=0)
         self.assertRaises(ValueError, constructor, depth=256)
 
-        for i in range(0, 256):
+        fuer i in range(0, 256):
             constructor(node_depth=i)
         self.assertRaises(ValueError, constructor, node_depth=-1)
         self.assertRaises(ValueError, constructor, node_depth=256)
 
-        for i in range(0, digest_size + 1):
+        fuer i in range(0, digest_size + 1):
             constructor(inner_size=i)
         self.assertRaises(ValueError, constructor, inner_size=-1)
         self.assertRaises(ValueError, constructor, inner_size=digest_size+1)
@@ -873,14 +873,14 @@ klasse HashLibTestCase(unittest.TestCase):
             a = (0xDEAD4BAD * seed) & mask
             b = 1
             out = bytearray(length)
-            for i in range(length):
+            fuer i in range(length):
                 t = (a + b) & mask
                 a, b = b, t
                 out[i] = (t >> 24) & 0xFF
             return out
         outer = constructor(digest_size=32)
-        for outlen in md_len:
-            for inlen in in_len:
+        fuer outlen in md_len:
+            fuer inlen in in_len:
                 indata = selftest_seq(inlen, inlen)
                 key = selftest_seq(outlen, outlen)
                 unkeyed = constructor(indata, digest_size=outlen)
@@ -930,7 +930,7 @@ klasse HashLibTestCase(unittest.TestCase):
 
     @requires_blake2
     def test_blake2b_vectors(self):
-        for msg, key, md in read_vectors('blake2b'):
+        fuer msg, key, md in read_vectors('blake2b'):
             key = bytes.fromhex(key)
             self.check('blake2b', msg, md, key=key)
 
@@ -973,7 +973,7 @@ klasse HashLibTestCase(unittest.TestCase):
 
     @requires_blake2
     def test_blake2s_vectors(self):
-        for msg, key, md in read_vectors('blake2s'):
+        fuer msg, key, md in read_vectors('blake2s'):
             key = bytes.fromhex(key)
             self.check('blake2s', msg, md, key=key)
 
@@ -984,7 +984,7 @@ klasse HashLibTestCase(unittest.TestCase):
 
     @requires_sha3
     def test_case_sha3_224_vector(self):
-        for msg, md in read_vectors('sha3_224'):
+        fuer msg, md in read_vectors('sha3_224'):
             self.check('sha3_224', msg, md)
 
     @requires_sha3
@@ -994,7 +994,7 @@ klasse HashLibTestCase(unittest.TestCase):
 
     @requires_sha3
     def test_case_sha3_256_vector(self):
-        for msg, md in read_vectors('sha3_256'):
+        fuer msg, md in read_vectors('sha3_256'):
             self.check('sha3_256', msg, md)
 
     @requires_sha3
@@ -1005,7 +1005,7 @@ klasse HashLibTestCase(unittest.TestCase):
 
     @requires_sha3
     def test_case_sha3_384_vector(self):
-        for msg, md in read_vectors('sha3_384'):
+        fuer msg, md in read_vectors('sha3_384'):
             self.check('sha3_384', msg, md)
 
     @requires_sha3
@@ -1016,7 +1016,7 @@ klasse HashLibTestCase(unittest.TestCase):
 
     @requires_sha3
     def test_case_sha3_512_vector(self):
-        for msg, md in read_vectors('sha3_512'):
+        fuer msg, md in read_vectors('sha3_512'):
             self.check('sha3_512', msg, md)
 
     def test_case_shake_128_0(self):
@@ -1026,7 +1026,7 @@ klasse HashLibTestCase(unittest.TestCase):
         self.check('shake_128', b"", "7f9c", True)
 
     def test_case_shake128_vector(self):
-        for msg, md in read_vectors('shake_128'):
+        fuer msg, md in read_vectors('shake_128'):
             self.check('shake_128', msg, md, True)
 
     def test_case_shake_256_0(self):
@@ -1036,17 +1036,17 @@ klasse HashLibTestCase(unittest.TestCase):
         self.check('shake_256', b"", "46b9", True)
 
     def test_case_shake256_vector(self):
-        for msg, md in read_vectors('shake_256'):
+        fuer msg, md in read_vectors('shake_256'):
             self.check('shake_256', msg, md, True)
 
     def test_gil(self):
         # Check things work fine with an input larger than the size required
-        # for multithreaded operation. Currently, all cryptographic modules
+        # fuer multithreaded operation. Currently, all cryptographic modules
         # have the same constant value (2048) but in the future it might not
         # be the case.
         mods = ['_md5', '_sha1', '_sha2', '_sha3', '_blake2', '_hashlib']
         gil_minsize = hashlib_helper.find_gil_minsize(mods)
-        for cons in self.hash_constructors:
+        fuer cons in self.hash_constructors:
             # constructors belong to one of the above modules
             m = cons(usedforsecurity=False)
             m.update(b'1')
@@ -1072,7 +1072,7 @@ klasse HashLibTestCase(unittest.TestCase):
     def test_threaded_hashing_fast(self):
         # Same as test_threaded_hashing_slow() but only tests some functions
         # since otherwise test_hashlib.py becomes too slow during development.
-        for name in ['md5', 'sha1', 'sha256', 'sha3_256', 'blake2s']:
+        fuer name in ['md5', 'sha1', 'sha256', 'sha3_256', 'blake2s']:
             if constructor := getattr(hashlib, name, None):
                 with self.subTest(name):
                     self.do_test_threaded_hashing(constructor, is_shake=False)
@@ -1083,9 +1083,9 @@ klasse HashLibTestCase(unittest.TestCase):
     @threading_helper.reap_threads
     @threading_helper.requires_working_threading()
     def test_threaded_hashing_slow(self):
-        for algorithm, constructors in self.constructors_to_test.items():
+        fuer algorithm, constructors in self.constructors_to_test.items():
             is_shake = algorithm in self.shakes
-            for constructor in constructors:
+            fuer constructor in constructors:
                 with self.subTest(constructor.__name__, is_shake=is_shake):
                     self.do_test_threaded_hashing(constructor, is_shake)
 
@@ -1097,7 +1097,7 @@ klasse HashLibTestCase(unittest.TestCase):
         # updates on the same object from running at once, the resulting
         # hash will be the same as doing it single threaded upfront.
 
-        # The data to hash has length s|M|q^N and the chunk size for the i-th
+        # The data to hash has length s|M|q^N and the chunk size fuer the i-th
         # thread is s|M|q^(N-i), where N is the number of threads, M is a fixed
         # message of small length, and s >= 1 and q >= 2 are small integers.
         smallest_size, num_threads, s, q = 8, 5, 2, 10
@@ -1109,11 +1109,11 @@ klasse HashLibTestCase(unittest.TestCase):
         h2 = constructor(data * num_threads, usedforsecurity=False)
 
         def update(chunk_size):
-            for index in range(0, len(data), chunk_size):
+            fuer index in range(0, len(data), chunk_size):
                 h1.update(data[index:index + chunk_size])
 
         threads = []
-        for thread_num in range(num_threads):
+        fuer thread_num in range(num_threads):
             # chunk_size = len(data) // (q ** thread_num)
             chunk_size = s * smallest_size * q ** (num_threads - thread_num)
             self.assertGreater(chunk_size, 0)
@@ -1121,9 +1121,9 @@ klasse HashLibTestCase(unittest.TestCase):
             thread = threading.Thread(target=update, args=(chunk_size,))
             threads.append(thread)
 
-        for thread in threads:
+        fuer thread in threads:
             thread.start()
-        for thread in threads:
+        fuer thread in threads:
             thread.join()
 
         if is_shake:
@@ -1138,12 +1138,12 @@ klasse HashLibTestCase(unittest.TestCase):
 
     @support.cpython_only
     def test_disallow_instantiation(self):
-        for algorithm, constructors in self.constructors_to_test.items():
+        fuer algorithm, constructors in self.constructors_to_test.items():
             if algorithm.startswith(("sha3_", "shake", "blake")):
                 # _sha3 and _blake types can be instantiated
                 continue
             # all other types have DISALLOW_INSTANTIATION
-            for constructor in constructors:
+            fuer constructor in constructors:
                 # In FIPS mode some algorithms are not available raising ValueError
                 try:
                     h = constructor()
@@ -1159,9 +1159,9 @@ klasse HashLibTestCase(unittest.TestCase):
         support.check_disallow_instantiation(self, HASHXOF)
 
     def test_readonly_types(self):
-        for algorithm, constructors in self.constructors_to_test.items():
+        fuer algorithm, constructors in self.constructors_to_test.items():
             # all other types have DISALLOW_INSTANTIATION
-            for constructor in constructors:
+            fuer constructor in constructors:
                 # In FIPS mode some algorithms are not available raising ValueError
                 try:
                     hash_type = type(constructor())
@@ -1224,10 +1224,10 @@ klasse KDFTests(unittest.TestCase):
     }
 
     def _test_pbkdf2_hmac(self, pbkdf2, supported):
-        for digest_name, results in self.pbkdf2_results.items():
+        fuer digest_name, results in self.pbkdf2_results.items():
             if digest_name not in supported:
                 continue
-            for i, vector in enumerate(self.pbkdf2_test_vectors):
+            fuer i, vector in enumerate(self.pbkdf2_test_vectors):
                 password, salt, rounds, dklen = vector
                 expected, overwrite_dklen = results[i]
                 if overwrite_dklen:
@@ -1284,7 +1284,7 @@ klasse KDFTests(unittest.TestCase):
         data = b'a' * 65536
         d1 = hashlib.sha256()
         with tempfile.NamedTemporaryFile(delete_on_close=False) as fp:
-            for _ in range(10):
+            fuer _ in range(10):
                 d1.update(data)
                 fp.write(data)
             fp.close()
@@ -1328,7 +1328,7 @@ klasse TestScrypt(unittest.TestCase):
    ]
 
     def test_scrypt(self):
-        for password, salt, n, r, p, expected in self.scrypt_test_vectors:
+        fuer password, salt, n, r, p, expected in self.scrypt_test_vectors:
             result = hashlib.scrypt(password, salt=salt, n=n, r=r, p=p)
             self.assertEqual(result, expected)
 
@@ -1357,7 +1357,7 @@ klasse TestScrypt(unittest.TestCase):
             kwargs = dict(salt=b'salt', n=2, r=8, p=1) | kwargs
             return hashlib.scrypt(password, **kwargs)
 
-        for param_name in ('n', 'r', 'p', 'maxmem', 'dklen'):
+        fuer param_name in ('n', 'r', 'p', 'maxmem', 'dklen'):
             param = {param_name: None}
             with self.subTest(**param):
                 self.assertRaises(TypeError, scrypt, **param)
@@ -1373,7 +1373,7 @@ klasse TestScrypt(unittest.TestCase):
         self.assertRaises(ValueError, scrypt, p=0)
 
         self.assertRaises(ValueError, scrypt, maxmem=-1)
-        # OpenSSL hard limit for 'maxmem' is an 'uint64_t' but for now,
+        # OpenSSL hard limit fuer 'maxmem' is an 'uint64_t' but fuer now,
         # we do not use the 'uint64' Clinic converter but the 'long' one.
         self.assertRaises(OverflowError, scrypt, maxmem=(1 << 64))
         # Historically, Python allowed 'maxmem' to be at most INT_MAX,

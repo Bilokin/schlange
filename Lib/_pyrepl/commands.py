@@ -6,7 +6,7 @@
 #
 #
 # Permission to use, copy, modify, and distribute this software and
-# its documentation for any purpose is hereby granted without fee,
+# its documentation fuer any purpose is hereby granted without fee,
 # provided that the above copyright notice appear in all copies and
 # that both that copyright notice and this permission notice appear in
 # supporting documentation.
@@ -47,7 +47,7 @@ klasse Command:
         self, reader: HistoricalReader, event_name: str, event: list[str]
     ) -> None:
         # Reader should really be "any reader" but there's too much usage of
-        # HistoricalReader methods and fields in the code below for us to
+        # HistoricalReader methods and fields in the code below fuer us to
         # refactor at the moment.
 
         self.reader = reader
@@ -151,7 +151,7 @@ klasse kill_line(KillCommand):
         r = self.reader
         b = r.buffer
         eol = r.eol()
-        for c in b[r.pos : eol]:
+        fuer c in b[r.pos : eol]:
             if not c.isspace():
                 self.kill_range(r.pos, eol)
                 return
@@ -168,21 +168,21 @@ klasse unix_line_discard(KillCommand):
 klasse unix_word_rubout(KillCommand):
     def do(self) -> None:
         r = self.reader
-        for i in range(r.get_arg()):
+        fuer i in range(r.get_arg()):
             self.kill_range(r.bow(), r.pos)
 
 
 klasse kill_word(KillCommand):
     def do(self) -> None:
         r = self.reader
-        for i in range(r.get_arg()):
+        fuer i in range(r.get_arg()):
             self.kill_range(r.pos, r.eow())
 
 
 klasse backward_kill_word(KillCommand):
     def do(self) -> None:
         r = self.reader
-        for i in range(r.get_arg()):
+        fuer i in range(r.get_arg()):
             self.kill_range(r.bow(), r.pos)
 
 
@@ -238,7 +238,7 @@ klasse suspend(Command):
         r.console.finish()
         os.kill(os.getpid(), signal.SIGSTOP)
         ## this should probably be done
-        ## in a handler for SIGCONT?
+        ## in a handler fuer SIGCONT?
         r.console.prepare()
         r.pos = p
         # r.posxy = 0, 0  # XXX this is invalid
@@ -249,7 +249,7 @@ klasse suspend(Command):
 klasse up(MotionCommand):
     def do(self) -> None:
         r = self.reader
-        for _ in range(r.get_arg()):
+        fuer _ in range(r.get_arg()):
             x, y = r.pos2xy()
             new_y = y - 1
 
@@ -268,7 +268,7 @@ klasse up(MotionCommand):
                 )  # we're past the end of the previous line
                 or x == r.max_column(y)
                 and any(
-                    not i.isspace() for i in r.buffer[r.bol() :]
+                    not i.isspace() fuer i in r.buffer[r.bol() :]
                 )  # move between eols
             ):
                 x = new_x
@@ -280,7 +280,7 @@ klasse down(MotionCommand):
     def do(self) -> None:
         r = self.reader
         b = r.buffer
-        for _ in range(r.get_arg()):
+        fuer _ in range(r.get_arg()):
             x, y = r.pos2xy()
             new_y = y + 1
 
@@ -300,7 +300,7 @@ klasse down(MotionCommand):
                 )  # we're past the end of the previous line
                 or x == r.max_column(y)
                 and any(
-                    not i.isspace() for i in r.buffer[r.bol() :]
+                    not i.isspace() fuer i in r.buffer[r.bol() :]
                 )  # move between eols
             ):
                 x = new_x
@@ -311,7 +311,7 @@ klasse down(MotionCommand):
 klasse left(MotionCommand):
     def do(self) -> None:
         r = self.reader
-        for _ in range(r.get_arg()):
+        fuer _ in range(r.get_arg()):
             p = r.pos - 1
             if p >= 0:
                 r.pos = p
@@ -323,7 +323,7 @@ klasse right(MotionCommand):
     def do(self) -> None:
         r = self.reader
         b = r.buffer
-        for _ in range(r.get_arg()):
+        fuer _ in range(r.get_arg()):
             p = r.pos + 1
             if p <= len(b):
                 r.pos = p
@@ -354,14 +354,14 @@ klasse end(MotionCommand):
 klasse forward_word(MotionCommand):
     def do(self) -> None:
         r = self.reader
-        for i in range(r.get_arg()):
+        fuer i in range(r.get_arg()):
             r.pos = r.eow()
 
 
 klasse backward_word(MotionCommand):
     def do(self) -> None:
         r = self.reader
-        for i in range(r.get_arg()):
+        fuer i in range(r.get_arg()):
             r.pos = r.bow()
 
 
@@ -407,7 +407,7 @@ klasse backspace(EditCommand):
     def do(self) -> None:
         r = self.reader
         b = r.buffer
-        for i in range(r.get_arg()):
+        fuer i in range(r.get_arg()):
             if r.pos > 0:
                 r.pos -= 1
                 del b[r.pos]
@@ -428,7 +428,7 @@ klasse delete(EditCommand):
             r.update_screen()
             r.console.finish()
             raise EOFError
-        for i in range(r.get_arg()):
+        fuer i in range(r.get_arg()):
             if r.pos != len(b):
                 del b[r.pos]
                 r.dirty = True

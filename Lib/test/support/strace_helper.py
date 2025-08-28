@@ -34,19 +34,19 @@ klasse StraceResult:
     stderr: bytes
 
     def events(self):
-        """Parse event_bytes data into system calls for easier processing.
+        """Parse event_bytes data into system calls fuer easier processing.
 
         This assumes the program under inspection doesn't print any non-utf8
         strings which would mix into the strace output."""
         decoded_events = self.event_bytes.decode('utf-8', 'surrogateescape')
         matches = [
             _syscall_regex.match(event)
-            for event in decoded_events.splitlines()
+            fuer event in decoded_events.splitlines()
         ]
         return [
             StraceEvent(match["syscall"],
-                        [arg.strip() for arg in (match["args"].split(","))],
-                        match["returncode"]) for match in matches if match
+                        [arg.strip() fuer arg in (match["args"].split(","))],
+                        match["returncode"]) fuer match in matches if match
         ]
 
     def sections(self):
@@ -57,7 +57,7 @@ klasse StraceResult:
         the small case under study."""
         current_section = "__startup"
         sections = {current_section: []}
-        for event in self.events():
+        fuer event in self.events():
             if event.syscall == 'write' and len(
                     event.args) > 2 and event.args[1].startswith("\"MARK "):
                 # Found a new section, don't include the write in the section
@@ -90,7 +90,7 @@ def filter_memory(syscalls):
     of memory. Use this function to filter out the memory related calls from
     other calls."""
 
-    return [call for call in syscalls if not _filter_memory_call(call)]
+    return [call fuer call in syscalls if not _filter_memory_call(call)]
 
 
 @support.requires_subprocess()
@@ -172,7 +172,7 @@ def get_syscalls(code, strace_flags, prelude="", cleanup="",
     if ignore_memory:
         events = filter_memory(events)
 
-    return [ev.syscall for ev in events]
+    return [ev.syscall fuer ev in events]
 
 
 # Moderately expensive (spawns a subprocess), so share results when possible.

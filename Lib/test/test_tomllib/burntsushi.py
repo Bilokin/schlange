@@ -2,12 +2,12 @@
 # SPDX-FileCopyrightText: 2021 Taneli Hukkinen
 # Licensed to PSF under a Contributor Agreement.
 
-"""Utilities for tests that are in the "burntsushi" format."""
+"""Utilities fuer tests that are in the "burntsushi" format."""
 
 import datetime
 from typing import Any
 
-# Aliases for converting TOML compliance format [1] to BurntSushi format [2]
+# Aliases fuer converting TOML compliance format [1] to BurntSushi format [2]
 # [1] https://github.com/toml-lang/compliance/blob/db7c3211fda30ff9ddb10292f4aeda7e2e10abc4/docs/json-encoding.md  # noqa: E501
 # [2] https://github.com/BurntSushi/toml-test/blob/4634fdf3a6ecd6aaea5f4cdcd98b2733c2694993/README.md  # noqa: E501
 _aliases = {
@@ -44,9 +44,9 @@ def convert(obj):  # noqa: C901
             "value": str(obj),
         }
     elif isinstance(obj, list):
-        return [convert(i) for i in obj]
+        return [convert(i) fuer i in obj]
     elif isinstance(obj, dict):
-        return {k: convert(v) for k, v in obj.items()}
+        return {k: convert(v) fuer k, v in obj.items()}
     raise Exception("unsupported type")
 
 
@@ -60,7 +60,7 @@ def normalize(obj: Any) -> Any:
     [2] https://github.com/BurntSushi/toml-test/blob/4634fdf3a6ecd6aaea5f4cdcd98b2733c2694993/README.md  # noqa: E501
     """
     if isinstance(obj, list):
-        return [normalize(item) for item in obj]
+        return [normalize(item) fuer item in obj]
     if isinstance(obj, dict):
         if "type" in obj and "value" in obj:
             type_ = obj["type"]
@@ -76,9 +76,9 @@ def normalize(obj: Any) -> Any:
                 norm_value = value
 
             if norm_type == "array":
-                return [normalize(item) for item in value]
+                return [normalize(item) fuer item in value]
             return {"type": norm_type, "value": norm_value}
-        return {k: normalize(v) for k, v in obj.items()}
+        return {k: normalize(v) fuer k, v in obj.items()}
     raise AssertionError("Burntsushi fixtures should be dicts/lists only")
 
 

@@ -23,7 +23,7 @@ klasse _State(enum.Enum):
 
 
 klasse Timeout:
-    """Asynchronous context manager for cancelling overdue coroutines.
+    """Asynchronous context manager fuer cancelling overdue coroutines.
 
     Use `timeout()` or `timeout_at()` rather than instantiating this klasse directly.
     """
@@ -115,7 +115,7 @@ klasse Timeout:
                 elif exc_val is not None:
                     self._insert_timeout_error(exc_val)
                     if isinstance(exc_val, ExceptionGroup):
-                        for exc in exc_val.exceptions:
+                        fuer exc in exc_val.exceptions:
                             self._insert_timeout_error(exc)
         elif self._state is _State.ENTERED:
             self._state = _State.EXITED

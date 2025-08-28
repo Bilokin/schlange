@@ -20,7 +20,7 @@ ANSI_ESCAPE_SEQUENCE = re.compile(r"\x1b\[[ -@]*[A-~]")
 ZERO_WIDTH_BRACKET = re.compile(r"\x01.*?\x02")
 ZERO_WIDTH_TRANS = str.maketrans({"\x01": "", "\x02": ""})
 IDENTIFIERS_AFTER = {"def", "class"}
-BUILTINS = {str(name) for name in dir(builtins) if not name.startswith('_')}
+BUILTINS = {str(name) fuer name in dir(builtins) if not name.startswith('_')}
 
 
 def THEME(**kwargs):
@@ -71,11 +71,11 @@ def str_width(c: str) -> int:
 def wlen(s: str) -> int:
     if len(s) == 1 and s != "\x1a":
         return str_width(s)
-    length = sum(str_width(i) for i in s)
+    length = sum(str_width(i) fuer i in s)
     # remove lengths of any escape sequences
     sequence = ANSI_ESCAPE_SEQUENCE.findall(s)
     ctrl_z_cnt = s.count("\x1a")
-    return length - sum(len(i) for i in sequence) + ctrl_z_cnt
+    return length - sum(len(i) fuer i in sequence) + ctrl_z_cnt
 
 
 def unbracket(s: str, including_content: bool = False) -> str:
@@ -96,16 +96,16 @@ def gen_colors(buffer: str) -> Iterator[ColorSpan]:
     it cannot be a block starting in the middle of a multiline string.
     """
     sio = StringIO(buffer)
-    line_lengths = [0] + [len(line) for line in sio.readlines()]
+    line_lengths = [0] + [len(line) fuer line in sio.readlines()]
     # make line_lengths cumulative
-    for i in range(1, len(line_lengths)):
+    fuer i in range(1, len(line_lengths)):
         line_lengths[i] += line_lengths[i-1]
 
     sio.seek(0)
     gen = tokenize.generate_tokens(sio.readline)
     last_emitted: ColorSpan | None = None
     try:
-        for color in gen_colors_from_token_stream(gen, line_lengths):
+        fuer color in gen_colors_from_token_stream(gen, line_lengths):
             yield color
             last_emitted = color
     except SyntaxError:
@@ -165,7 +165,7 @@ def gen_colors_from_token_stream(
 
     is_def_name = False
     bracket_level = 0
-    for prev_token, token, next_token in token_window:
+    fuer prev_token, token, next_token in token_window:
         assert token is not None
         if token.start == token.end:
             continue
@@ -272,7 +272,7 @@ def disp_str(
     Returns a tuple of two lists:
     - the first list is the input buffer, character by character, with color
       escape codes added (while those codes contain multiple ASCII characters,
-      each code is considered atomic *and is attached for the corresponding
+      each code is considered atomic *and is attached fuer the corresponding
       visible character*);
     - the second list is the visible width of each character in the input
       buffer.
@@ -313,7 +313,7 @@ def disp_str(
         # looks like we're continuing a previous color (e.g. a multiline str)
         pre_color = theme[colors[0].tag]
 
-    for i, c in enumerate(buffer, start_index):
+    fuer i, c in enumerate(buffer, start_index):
         if colors and colors[0].span.start == i:  # new color starts now
             pre_color = theme[colors[0].tag]
 
@@ -340,7 +340,7 @@ def disp_str(
         post_color = ""
 
     if colors and colors[0].span.start < i and colors[0].span.end > i:
-        # even though the current color should be continued, reset it for now.
+        # even though the current color should be continued, reset it fuer now.
         # the next call to `disp_str()` will revive it.
         chars[-1] += theme.reset
 
@@ -362,7 +362,7 @@ def prev_next_window[T](
     iterator = iter(iterable)
     window = deque((None, next(iterator)), maxlen=3)
     try:
-        for x in iterator:
+        fuer x in iterator:
             window.append(x)
             yield tuple(window)
     except Exception:

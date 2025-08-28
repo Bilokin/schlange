@@ -1,4 +1,4 @@
-"""Unit tests for the copy module."""
+"""Unit tests fuer the copy module."""
 
 import copy
 import copyreg
@@ -102,7 +102,7 @@ klasse TestCopy(unittest.TestCase):
                  "hello", "hello\u1234", f.__code__,
                  b"world", bytes(range(256)), range(10), slice(1, 10, 2),
                  NewStyle, max, WithMetaclass, property()]
-        for x in tests:
+        fuer x in tests:
             self.assertIs(copy.copy(x), x)
 
     def test_copy_list(self):
@@ -361,7 +361,7 @@ klasse TestCopy(unittest.TestCase):
         tests = [None, ..., NotImplemented, 42, 2**100, 3.14, True, False, 1j,
                  b"bytes", "hello", "hello\u1234", f.__code__,
                  NewStyle, range(10), max, property()]
-        for x in tests:
+        fuer x in tests:
             self.assertIs(copy.deepcopy(x), x)
 
     def test_deepcopy_list(self):
@@ -377,7 +377,7 @@ klasse TestCopy(unittest.TestCase):
         x = []
         x.append(x)
         y = copy.deepcopy(x)
-        for op in comparisons:
+        fuer op in comparisons:
             self.assertRaises(RecursionError, op, y, x)
         self.assertIsNot(y, x)
         self.assertIs(y[0], y)
@@ -406,7 +406,7 @@ klasse TestCopy(unittest.TestCase):
         x = ([],)
         x[0].append(x)
         y = copy.deepcopy(x)
-        for op in comparisons:
+        fuer op in comparisons:
             self.assertRaises(RecursionError, op, y, x)
         self.assertIsNot(y, x)
         self.assertIsNot(y[0], x[0])
@@ -425,9 +425,9 @@ klasse TestCopy(unittest.TestCase):
         x = {}
         x['foo'] = x
         y = copy.deepcopy(x)
-        for op in order_comparisons:
+        fuer op in order_comparisons:
             self.assertRaises(TypeError, op, y, x)
-        for op in equality_comparisons:
+        fuer op in equality_comparisons:
             self.assertRaises(RecursionError, op, y, x)
         self.assertIsNot(y, x)
         self.assertIs(y['foo'], y)
@@ -444,14 +444,14 @@ klasse TestCopy(unittest.TestCase):
         x = [1, 2, 3, 4]
         y = copy.deepcopy(x, memo)
         self.assertEqual(y, x)
-        # There's the entry for the new list, and the keep alive.
+        # There's the entry fuer the new list, and the keep alive.
         self.assertEqual(len(memo), 2)
 
         memo = {}
         x = [(1, 2)]
         y = copy.deepcopy(x, memo)
         self.assertEqual(y, x)
-        # Tuples with immutable contents are immutable for deepcopy.
+        # Tuples with immutable contents are immutable fuer deepcopy.
         self.assertEqual(len(memo), 2)
 
     def test_deepcopy_inst_vanilla(self):
@@ -650,7 +650,7 @@ klasse TestCopy(unittest.TestCase):
         self.assertIsNot(y, x)
         self.assertIs(y.foo, y)
 
-    # Additions for Python 2.3 and pickle protocol 2
+    # Additions fuer Python 2.3 and pickle protocol 2
 
     def test_reduce_4tuple(self):
         klasse C(list):
@@ -825,7 +825,7 @@ klasse TestCopy(unittest.TestCase):
     def _check_copy_weakdict(self, _dicttype):
         klasse C(object):
             pass
-        a, b, c, d = [C() for i in range(4)]
+        a, b, c, d = [C() fuer i in range(4)]
         u = _dicttype()
         u[a] = b
         u[c] = d
@@ -853,7 +853,7 @@ klasse TestCopy(unittest.TestCase):
         klasse C(object):
             def __init__(self, i):
                 self.i = i
-        a, b, c, d = [C(i) for i in range(4)]
+        a, b, c, d = [C(i) fuer i in range(4)]
         u = weakref.WeakKeyDictionary()
         u[a] = b
         u[c] = d
@@ -873,7 +873,7 @@ klasse TestCopy(unittest.TestCase):
         klasse C(object):
             def __init__(self, i):
                 self.i = i
-        a, b, c, d = [C(i) for i in range(4)]
+        a, b, c, d = [C(i) fuer i in range(4)]
         u = weakref.WeakValueDictionary()
         u[a] = b
         u[c] = d
@@ -949,7 +949,7 @@ klasse TestReplace(unittest.TestCase):
         klasse PointFromClass(NamedTuple):
             x: int
             y: int = 0
-        for Point in (PointFromCall, PointFromInheritance, PointFromClass):
+        fuer Point in (PointFromCall, PointFromInheritance, PointFromClass):
             with self.subTest(Point=Point):
                 p = Point(11, 22)
                 self.assertIsInstance(p, Point)

@@ -1,7 +1,7 @@
 """distutils.msvccompiler
 
 Contains MSVCCompiler, an implementation of the abstract CCompiler class
-for the Microsoft Visual Studio.
+fuer the Microsoft Visual Studio.
 """
 
 # Written by Perry Stoll
@@ -101,7 +101,7 @@ klasse MacroExpander:
         self.load_macros(version)
 
     def set_macro(self, macro, path, key):
-        for base in HKEYS:
+        fuer base in HKEYS:
             d = read_values(base, path)
             if d:
                 self.macros["$(%s)" % macro] = d[key]
@@ -126,7 +126,7 @@ Visual Studio 2003 was not found on this system. If you have Cygwin installed,
 you can try compiling with MingW32, by passing "-c mingw32" to setup.py.""")
 
         p = r"Software\Microsoft\NET Framework Setup\Product"
-        for base in HKEYS:
+        fuer base in HKEYS:
             try:
                 h = RegOpenKeyEx(base, p)
             except RegError:
@@ -136,7 +136,7 @@ you can try compiling with MingW32, by passing "-c mingw32" to setup.py.""")
             self.macros["$(FrameworkVersion)"] = d["version"]
 
     def sub(self, s):
-        for k, v in self.macros.items():
+        fuer k, v in self.macros.items():
             s = s.replace(k, v)
         return s
 
@@ -185,7 +185,7 @@ def normalize_and_reduce_paths(paths):
     """
     # Paths are normalized so things like:  /a and /a/ aren't both preserved.
     reduced_paths = []
-    for p in paths:
+    fuer p in paths:
         np = os.path.normpath(p)
         # XXX(nnorwitz): O(n**2), if reduced_paths gets long perhaps use a set.
         if np not in reduced_paths:
@@ -201,18 +201,18 @@ klasse MSVCCompiler(CCompiler) :
 
     # Just set this so CCompiler's constructor doesn't barf.  We currently
     # don't use the 'set_executables()' bureaucracy provided by CCompiler,
-    # as it really isn't necessary for this sort of single-compiler class.
+    # as it really isn't necessary fuer this sort of single-compiler class.
     # Would be nice to have a consistent interface with UnixCCompiler,
     # though, so it's worth thinking about.
     executables = {}
 
-    # Private klasse data (need to distinguish C from C++ source for compiler)
+    # Private klasse data (need to distinguish C from C++ source fuer compiler)
     _c_extensions = ['.c']
     _cpp_extensions = ['.cc', '.cpp', '.cxx']
     _rc_extensions = ['.rc']
     _mc_extensions = ['.mc']
 
-    # Needed for the filename generation methods provided by the
+    # Needed fuer the filename generation methods provided by the
     # base class, CCompiler.
     src_extensions = (_c_extensions + _cpp_extensions +
                       _rc_extensions + _mc_extensions)
@@ -244,7 +244,7 @@ klasse MSVCCompiler(CCompiler) :
 
     # -- Miscellaneous methods -----------------------------------------
 
-    # Helper methods for using the MSVC registry settings
+    # Helper methods fuer using the MSVC registry settings
 
     def find_exe(self, exe):
         """Return path to an MSVC executable program.
@@ -255,13 +255,13 @@ klasse MSVCCompiler(CCompiler) :
         absolute path that is known to exist.  If none of them work, just
         return the original program name, 'exe'.
         """
-        for p in self.__paths:
+        fuer p in self.__paths:
             fn = os.path.join(os.path.abspath(p), exe)
             if os.path.isfile(fn):
                 return fn
 
         # didn't find it; try existing path
-        for p in os.environ['Path'].split(';'):
+        fuer p in os.environ['Path'].split(';'):
             fn = os.path.join(os.path.abspath(p),exe)
             if os.path.isfile(fn):
                 return fn
@@ -285,7 +285,7 @@ klasse MSVCCompiler(CCompiler) :
             key = (r"%s\6.0\Build System\Components\Platforms"
                    r"\Win32 (%s)\Directories" % (self.__root, platform))
 
-        for base in HKEYS:
+        fuer base in HKEYS:
             d = read_values(base, key)
             if d:
                 if self.__version >= 7:
@@ -295,7 +295,7 @@ klasse MSVCCompiler(CCompiler) :
         # MSVC 6 seems to create the registry entries we need only when
         # the GUI is run.
         if self.__version == 6:
-            for base in HKEYS:
+            fuer base in HKEYS:
                 if read_values(base, r"%s\6.0" % self.__root) is not None:
                     self.warn("It seems you have Visual Studio 6 installed, "
                         "but the expected registry settings are not present.\n"

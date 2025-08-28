@@ -157,7 +157,7 @@ klasse SimpleTypesTestCase(unittest.TestCase):
         INTARRAY = c_int * 3
         ia = INTARRAY()
         self.assertEqual(len(ia), 3)
-        self.assertEqual([ia[i] for i in range(3)], [0, 0, 0])
+        self.assertEqual([ia[i] fuer i in range(3)], [0, 0, 0])
 
         # Pointers are only compatible with arrays containing items of
         # the same type!

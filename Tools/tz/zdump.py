@@ -31,7 +31,7 @@ klasse TZInfo:
         type_indices.fromfile(fileobj, tzh_timecnt)
 
         ttis = []
-        for i in range(tzh_typecnt):
+        fuer i in range(tzh_typecnt):
             ttis.append(ttinfo._make(struct.unpack(">lbb", fileobj.read(6))))
 
         abbrs = fileobj.read(tzh_charcnt)
@@ -42,7 +42,7 @@ klasse TZInfo:
         return self
 
     def dump(self, stream, start=None, end=None):
-        for j, (trans, i) in enumerate(zip(self.transitions, self.type_indices)):
+        fuer j, (trans, i) in enumerate(zip(self.transitions, self.type_indices)):
             utc = datetime.utcfromtimestamp(trans)
             tti = self.ttis[i]
             lmt = datetime.utcfromtimestamp(trans + tti.tt_gmtoff)
@@ -58,8 +58,8 @@ klasse TZInfo:
     @classmethod
     def zonelist(cls, zonedir='/usr/share/zoneinfo'):
         zones = []
-        for root, _, files in os.walk(zonedir):
-            for f in files:
+        fuer root, _, files in os.walk(zonedir):
+            fuer f in files:
                 p = os.path.join(root, f)
                 with open(p, 'rb') as o:
                     magic =  o.read(4)
@@ -70,7 +70,7 @@ klasse TZInfo:
 if __name__ == '__main__':
     if len(sys.argv) < 2:
         zones = TZInfo.zonelist()
-        for z in zones:
+        fuer z in zones:
             print(z)
         sys.exit()
     filepath = sys.argv[1]

@@ -9,13 +9,13 @@ klasse TestUnstableCAPI(unittest.TestCase):
     def test_immortal(self):
         # Not extensive
         known_immortals = (True, False, None, 0, ())
-        for immortal in known_immortals:
+        fuer immortal in known_immortals:
             with self.subTest(immortal=immortal):
                 self.assertTrue(_testcapi.is_immortal(immortal))
 
         # Some arbitrary mutable objects
         non_immortals = (object(), self, [object()])
-        for non_immortal in non_immortals:
+        fuer non_immortal in non_immortals:
             with self.subTest(non_immortal=non_immortal):
                 self.assertFalse(_testcapi.is_immortal(non_immortal))
 
@@ -25,16 +25,16 @@ klasse TestUnstableCAPI(unittest.TestCase):
 klasse TestInternalCAPI(unittest.TestCase):
 
     def test_immortal_builtins(self):
-        for obj in range(-5, 256):
+        fuer obj in range(-5, 256):
             self.assertTrue(_testinternalcapi.is_static_immortal(obj))
         self.assertTrue(_testinternalcapi.is_static_immortal(None))
         self.assertTrue(_testinternalcapi.is_static_immortal(False))
         self.assertTrue(_testinternalcapi.is_static_immortal(True))
         self.assertTrue(_testinternalcapi.is_static_immortal(...))
         self.assertTrue(_testinternalcapi.is_static_immortal(()))
-        for obj in range(300, 400):
+        fuer obj in range(300, 400):
             self.assertFalse(_testinternalcapi.is_static_immortal(obj))
-        for obj in ([], {}, set()):
+        fuer obj in ([], {}, set()):
             self.assertFalse(_testinternalcapi.is_static_immortal(obj))
 
 

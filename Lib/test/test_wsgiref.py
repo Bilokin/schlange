@@ -91,7 +91,7 @@ def compare_generic_iter(make_it, match):
     it = make_it()
     if not iter(it) is it:
         raise AssertionError
-    for item in match:
+    fuer item in match:
         if not next(it) == item:
             raise AssertionError
     try:
@@ -171,7 +171,7 @@ klasse IntegrationTests(TestCase):
             ('200OK', 'AssertionError: Status message must have a space after code'),
         ]
 
-        for status, exc_message in tests:
+        fuer status, exc_message in tests:
             with self.subTest(status=status):
                 out, err = run_amock(create_bad_app(status))
                 self.assertEndsWith(out,
@@ -334,7 +334,7 @@ klasse UtilityTests(TestCase):
         it = make_it()
         self.assertFalse(it.filelike.closed)
 
-        for item in it:
+        fuer item in it:
             pass
 
         self.assertFalse(it.filelike.closed)
@@ -363,7 +363,7 @@ klasse UtilityTests(TestCase):
         self.checkShift('/a/b', '/.', None, '/a/b', '')
 
     def testDefaults(self):
-        for key, value in [
+        fuer key, value in [
             ('SERVER_NAME','127.0.0.1'),
             ('SERVER_PORT', '80'),
             ('SERVER_PROTOCOL','HTTP/1.0'),
@@ -434,18 +434,18 @@ klasse UtilityTests(TestCase):
         self.checkFW("xyz"*50, 120, ["xyz"*40,"xyz"*10])
 
     def testHopByHop(self):
-        for hop in (
+        fuer hop in (
             "Connection Keep-Alive Proxy-Authenticate Proxy-Authorization "
             "TE Trailers Transfer-Encoding Upgrade"
         ).split():
-            for alt in hop, hop.title(), hop.upper(), hop.lower():
+            fuer alt in hop, hop.title(), hop.upper(), hop.lower():
                 self.assertTrue(util.is_hop_by_hop(alt))
 
         # Not comprehensive, just a few random header names
-        for hop in (
+        fuer hop in (
             "Accept Cache-Control Date Pragma Trailer Via Warning"
         ).split():
-            for alt in hop, hop.title(), hop.upper(), hop.lower():
+            fuer alt in hop, hop.title(), hop.upper(), hop.lower():
                 self.assertFalse(util.is_hop_by_hop(alt))
 
 klasse HeaderTests(TestCase):
@@ -464,7 +464,7 @@ klasse HeaderTests(TestCase):
         del h['foo']   # should not raise an error
 
         h['Foo'] = 'bar'
-        for m in h.__contains__, h.get, h.get_all, h.__getitem__:
+        fuer m in h.__contains__, h.get, h.get_all, h.__getitem__:
             self.assertTrue(m('foo'))
             self.assertTrue(m('Foo'))
             self.assertTrue(m('FOO'))
@@ -504,7 +504,7 @@ klasse HeaderTests(TestCase):
         )
 
 klasse ErrorHandler(BaseCGIHandler):
-    """Simple handler subclass for testing BaseHandler"""
+    """Simple handler subclass fuer testing BaseHandler"""
 
     # BaseHandler records the OS environment at import time, but envvars
     # might have been changed later by other tests, which trips up
@@ -519,10 +519,10 @@ klasse ErrorHandler(BaseCGIHandler):
         )
 
 klasse TestHandler(ErrorHandler):
-    """Simple handler subclass for testing BaseHandler, w/error passthru"""
+    """Simple handler subclass fuer testing BaseHandler, w/error passthru"""
 
     def handle_error(self):
-        raise   # for testing, we want to see what's happening
+        raise   # fuer testing, we want to see what's happening
 
 
 klasse HandlerTests(TestCase):
@@ -548,7 +548,7 @@ klasse HandlerTests(TestCase):
 
         # Check that wsgi_xxx attributes are copied to wsgi.xxx variables
         # of handler.environ
-        for attr in ('version', 'multithread', 'multiprocess', 'run_once',
+        fuer attr in ('version', 'multithread', 'multiprocess', 'run_once',
                      'file_wrapper'):
             self.assertEqual(getattr(handler, 'wsgi_' + attr),
                              handler.environ['wsgi.' + attr])
@@ -558,7 +558,7 @@ klasse HandlerTests(TestCase):
         setup_testing_defaults(expected)
         # Handler inherits os_environ variables which are not overridden
         # by SimpleHandler.add_cgi_vars() (SimpleHandler.base_env)
-        for key, value in os_environ.items():
+        fuer key, value in os_environ.items():
             if key not in expected:
                 expected[key] = value
         expected.update({
@@ -586,7 +586,7 @@ klasse HandlerTests(TestCase):
     def testCGIEnviron(self):
         h = BaseCGIHandler(None,None,None,{})
         h.setup_environ()
-        for key in 'wsgi.url_scheme', 'wsgi.input', 'wsgi.errors':
+        fuer key in 'wsgi.url_scheme', 'wsgi.input', 'wsgi.errors':
             self.assertIn(key, h.environ)
 
     def testScheme(self):
@@ -597,7 +597,7 @@ klasse HandlerTests(TestCase):
 
     def testAbstractMethods(self):
         h = BaseHandler()
-        for name in [
+        fuer name in [
             '_flush','get_stdin','get_stderr','add_cgi_vars'
         ]:
             self.assertRaises(NotImplementedError, getattr(h,name))
@@ -709,11 +709,11 @@ klasse HandlerTests(TestCase):
             "Status: 200 OK\r\n" "Content-Length: 0\r\n" "\r\n"
         ).encode("iso-8859-1")
 
-        for ssw in "FooBar/1.0", None:
+        fuer ssw in "FooBar/1.0", None:
             sw = ssw and "Server: %s\r\n" % ssw or ""
 
-            for version in "1.0", "1.1":
-                for proto in "HTTP/0.9", "HTTP/1.0", "HTTP/1.1":
+            fuer version in "1.0", "1.1":
+                fuer proto in "HTTP/0.9", "HTTP/1.0", "HTTP/1.1":
 
                     h = TestHandler(SERVER_PROTOCOL=proto)
                     h.origin_server = False
@@ -798,7 +798,7 @@ klasse HandlerTests(TestCase):
 
     def testClientConnectionTerminations(self):
         environ = {"SERVER_PROTOCOL": "HTTP/1.0"}
-        for exception in (
+        fuer exception in (
             ConnectionAbortedError,
             BrokenPipeError,
             ConnectionResetError,

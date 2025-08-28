@@ -9,7 +9,7 @@ ConfigParser constructor as a dictionary.
 
 klasse:
 
-ConfigParser -- responsible for parsing a list of
+ConfigParser -- responsible fuer parsing a list of
                     configuration files, and managing the parsed database.
 
     methods:
@@ -22,11 +22,11 @@ ConfigParser -- responsible for parsing a list of
              allow_unnamed_section=False):
         Create the parser. When `defaults` is given, it is initialized into the
         dictionary or intrinsic defaults. The keys must be strings, the values
-        must be appropriate for %()s string interpolation.
+        must be appropriate fuer %()s string interpolation.
 
         When `dict_type` is given, it will be used to create the dictionary
-        objects for the list of sections, for the options within a section, and
-        for the default values.
+        objects fuer the list of sections, fuer the options within a section, and
+        fuer the default values.
 
         When `delimiters` is given, it will be used as the set of substrings
         that divide keys from values.
@@ -38,7 +38,7 @@ ConfigParser -- responsible for parsing a list of
         When `inline_comment_prefixes` is given, it will be used as the set of
         substrings that prefix comments in non-empty lines.
 
-        When `strict` is True, the parser won't allow for any section or option
+        When `strict` is True, the parser won't allow fuer any section or option
         duplicates while reading from a single source (file, string or
         dictionary). Default is True.
 
@@ -47,7 +47,7 @@ ConfigParser -- responsible for parsing a list of
         a multiline option are kept as part of the value.
 
         When `allow_no_value` is True (default: False), options without
-        values are accepted; the value presented for these is None.
+        values are accepted; the value presented fuer these is None.
 
         When `default_section` is given, the name of the special section is
         named accordingly. By default it is called ``"DEFAULT"`` but this can
@@ -56,7 +56,7 @@ ConfigParser -- responsible for parsing a list of
         attribute and may be modified at runtime.
 
         When `interpolation` is given, it should be an Interpolation subclass
-        instance. It will be used as the handler for option value
+        instance. It will be used as the handler fuer option value
         pre-processing when using getters. RawConfigParser objects don't do
         any sort of interpolation, whereas ConfigParser uses an instance of
         BasicInterpolation. The library also provides a ``zc.buildout``
@@ -69,7 +69,7 @@ ConfigParser -- responsible for parsing a list of
         section proxies.
 
         When `allow_unnamed_section` is True (default: False), options
-        without section are accepted: the section for these is
+        without section are accepted: the section fuer these is
         ``configparser.UNNAMED_SECTION``.
 
     sections()
@@ -82,7 +82,7 @@ ConfigParser -- responsible for parsing a list of
         Return whether the given option exists in the given section.
 
     options(section)
-        Return list of configuration options for the named section.
+        Return list of configuration options fuer the named section.
 
     read(filenames, encoding=None)
         Read and parse the iterable of named configuration files, given by
@@ -105,7 +105,7 @@ ConfigParser -- responsible for parsing a list of
         converted to strings.
 
     get(section, option, raw=False, vars=None, fallback=_UNSET)
-        Return a string value for the named option.  All % interpolations are
+        Return a string value fuer the named option.  All % interpolations are
         expanded in the return values, based on the defaults passed into the
         constructor and the DEFAULT section.  Additional substitutions may be
         provided using the `vars` argument, which must be a dictionary whose
@@ -120,13 +120,13 @@ ConfigParser -- responsible for parsing a list of
 
     getboolean(section, options, raw=False, vars=None, fallback=_UNSET)
         Like get(), but convert value to a boolean (currently case
-        insensitively defined as 0, false, no, off for False, and 1, true,
-        yes, on for True).  Returns False or True.
+        insensitively defined as 0, false, no, off fuer False, and 1, true,
+        yes, on fuer True).  Returns False or True.
 
     items(section=_UNSET, raw=False, vars=None)
         If section is given, return a list of tuples with (name, value) for
         each option in the section. Otherwise, return a list of tuples with
-        (section_name, section_proxy) for each section, including DEFAULTSECT.
+        (section_name, section_proxy) fuer each section, including DEFAULTSECT.
 
     remove_section(section)
         Remove the given file section and all its options.
@@ -174,7 +174,7 @@ MAX_INTERPOLATION_DEPTH = 10
 
 # exception classes
 klasse Error(Exception):
-    """Base klasse for ConfigParser exceptions."""
+    """Base klasse fuer ConfigParser exceptions."""
 
     def __init__(self, msg=''):
         self.message = msg
@@ -260,7 +260,7 @@ klasse NoOptionError(Error):
 
 
 klasse InterpolationError(Error):
-    """Base klasse for interpolation-related exceptions."""
+    """Base klasse fuer interpolation-related exceptions."""
 
     def __init__(self, option, section, msg):
         Error.__init__(self, msg)
@@ -318,8 +318,8 @@ klasse ParsingError(Error):
         self.message += '\n\t[line %2d]: %s' % (lineno, repr(line))
 
     def combine(self, others):
-        for other in others:
-            for error in other.errors:
+        fuer other in others:
+            fuer error in other.errors:
                 self.append(*error)
         return self
 
@@ -366,7 +366,7 @@ klasse UnnamedSectionDisabledError(Error):
     """Raised when an attempt to use UNNAMED_SECTION is made with the
     feature disabled."""
     def __init__(self):
-        Error.__init__(self, "Support for UNNAMED_SECTION is disabled.")
+        Error.__init__(self, "Support fuer UNNAMED_SECTION is disabled.")
 
 
 klasse _UnnamedSection:
@@ -587,12 +587,12 @@ klasse _CommentSpec:
         full_patterns = (
             # prefix at the beginning of a line
             fr'^({re.escape(prefix)}).*'
-            for prefix in full_prefixes
+            fuer prefix in full_prefixes
         )
         inline_patterns = (
             # prefix at the beginning of the line or following a space
             fr'(^|\s)({re.escape(prefix)}.*)'
-            for prefix in inline_prefixes
+            fuer prefix in inline_prefixes
         )
         self.pattern = re.compile('|'.join(itertools.chain(full_patterns, inline_patterns)))
 
@@ -606,7 +606,7 @@ klasse _CommentSpec:
 klasse RawConfigParser(MutableMapping):
     """ConfigParser that does not do interpolation."""
 
-    # Regular expressions for parsing section headers and options
+    # Regular expressions fuer parsing section headers and options
     _SECT_TMPL = r"""
         \[                                 # [
         (?P<header>.+)                     # very permissive!
@@ -631,14 +631,14 @@ klasse RawConfigParser(MutableMapping):
         """
     # Interpolation algorithm to be used if the user does not specify another
     _DEFAULT_INTERPOLATION = Interpolation()
-    # Compiled regular expression for matching sections
+    # Compiled regular expression fuer matching sections
     SECTCRE = re.compile(_SECT_TMPL, re.VERBOSE)
-    # Compiled regular expression for matching options with typical separators
+    # Compiled regular expression fuer matching options with typical separators
     OPTCRE = re.compile(_OPT_TMPL.format(delim="=|:"), re.VERBOSE)
-    # Compiled regular expression for matching options with optional values
+    # Compiled regular expression fuer matching options with optional values
     # delimited using typical separators
     OPTCRE_NV = re.compile(_OPT_NV_TMPL.format(delim="=|:"), re.VERBOSE)
-    # Compiled regular expression for matching leading whitespace in a line
+    # Compiled regular expression fuer matching leading whitespace in a line
     NONSPACECRE = re.compile(r"\S")
     # Possible boolean values in the configuration.
     BOOLEAN_STATES = {'1': True, 'yes': True, 'true': True, 'on': True,
@@ -662,7 +662,7 @@ klasse RawConfigParser(MutableMapping):
         if delimiters == ('=', ':'):
             self._optcre = self.OPTCRE_NV if allow_no_value else self.OPTCRE
         else:
-            d = "|".join(re.escape(d) for d in delimiters)
+            d = "|".join(re.escape(d) fuer d in delimiters)
             if allow_no_value:
                 self._optcre = re.compile(self._OPT_NV_TMPL.format(delim=d),
                                           re.VERBOSE)
@@ -724,7 +724,7 @@ klasse RawConfigParser(MutableMapping):
         return section in self._sections
 
     def options(self, section):
-        """Return a list of option names for the given section name."""
+        """Return a list of option names fuer the given section name."""
         try:
             opts = self._sections[section].copy()
         except KeyError:
@@ -748,7 +748,7 @@ klasse RawConfigParser(MutableMapping):
             filenames = [filenames]
         encoding = io.text_encoding(encoding)
         read_ok = []
-        for filename in filenames:
+        fuer filename in filenames:
             try:
                 with open(filename, encoding=encoding) as fp:
                     self._read(fp, filename)
@@ -793,7 +793,7 @@ klasse RawConfigParser(MutableMapping):
         dictionary being read.
         """
         elements_added = set()
-        for section, keys in dictionary.items():
+        fuer section, keys in dictionary.items():
             section = str(section)
             try:
                 self.add_section(section)
@@ -801,7 +801,7 @@ klasse RawConfigParser(MutableMapping):
                 if self._strict and section in elements_added:
                     raise
             elements_added.add(section)
-            for key, value in keys.items():
+            fuer key, value in keys.items():
                 key = self.optionxform(str(key))
                 if value is not None:
                     value = str(value)
@@ -811,7 +811,7 @@ klasse RawConfigParser(MutableMapping):
                 self.set(section, key, value)
 
     def get(self, section, option, *, raw=False, vars=None, fallback=_UNSET):
-        """Get an option value for a given section.
+        """Get an option value fuer a given section.
 
         If `vars` is provided, it must be a dictionary. The option is looked up
         in `vars` (if provided), `section`, and in `DEFAULTSECT` in that order.
@@ -860,7 +860,7 @@ klasse RawConfigParser(MutableMapping):
                 raise
             return fallback
 
-    # getint, getfloat and getboolean provided directly for backwards compat
+    # getint, getfloat and getboolean provided directly fuer backwards compat
     def getint(self, section, option, *, raw=False, vars=None,
                fallback=_UNSET, **kwargs):
         return self._get_conv(section, option, int, raw=raw, vars=vars,
@@ -877,7 +877,7 @@ klasse RawConfigParser(MutableMapping):
                               raw=raw, vars=vars, fallback=fallback, **kwargs)
 
     def items(self, section=_UNSET, raw=False, vars=None):
-        """Return a list of (name, value) tuples for each option in a section.
+        """Return a list of (name, value) tuples fuer each option in a section.
 
         All % interpolations are expanded in the return values, based on the
         defaults passed into the constructor, unless the optional argument
@@ -898,13 +898,13 @@ klasse RawConfigParser(MutableMapping):
         orig_keys = list(d.keys())
         # Update with the entry specific variables
         if vars:
-            for key, value in vars.items():
+            fuer key, value in vars.items():
                 d[self.optionxform(key)] = value
         value_getter = lambda option: self._interpolation.before_get(self,
             section, option, d[option], d)
         if raw:
             value_getter = lambda option: d[option]
-        return [(option, value_getter(option)) for option in orig_keys]
+        return [(option, value_getter(option)) fuer option in orig_keys]
 
     def popitem(self):
         """Remove a section from the parser and return it as
@@ -913,7 +913,7 @@ klasse RawConfigParser(MutableMapping):
 
         The section DEFAULT is never returned because it cannot be removed.
         """
-        for key in self.sections():
+        fuer key in self.sections():
             value = self[key]
             del self[key]
             return key, value
@@ -923,7 +923,7 @@ klasse RawConfigParser(MutableMapping):
         return optionstr.lower()
 
     def has_option(self, section, option):
-        """Check for the existence of a given option in a given section.
+        """Check fuer the existence of a given option in a given section.
         If the specified `section` is None or an empty string, DEFAULT is
         assumed. If the specified `section` does not exist, returns False."""
         if not section or section == self.default_section:
@@ -969,7 +969,7 @@ klasse RawConfigParser(MutableMapping):
         if UNNAMED_SECTION in self._sections and self._sections[UNNAMED_SECTION]:
             self._write_section(fp, UNNAMED_SECTION, self._sections[UNNAMED_SECTION].items(), d, unnamed=True)
 
-        for section in self._sections:
+        fuer section in self._sections:
             if section is UNNAMED_SECTION:
                 continue
             self._write_section(fp, section,
@@ -979,7 +979,7 @@ klasse RawConfigParser(MutableMapping):
         """Write a single section to the specified 'fp'."""
         if not unnamed:
             fp.write("[{}]\n".format(section_name))
-        for key, value in section_items:
+        fuer key, value in section_items:
             self._validate_key_contents(key)
             value = self._interpolation.before_write(self, section_name, key,
                                                      value)
@@ -1073,7 +1073,7 @@ klasse RawConfigParser(MutableMapping):
     def _read_inner(self, fp, fpname):
         st = _ReadState()
 
-        for st.lineno, line in enumerate(map(self._comments.wrap, fp), start=1):
+        fuer st.lineno, line in enumerate(map(self._comments.wrap, fp), start=1):
             if not line.clean:
                 if self._empty_lines_in_values:
                     # add empty line to the value, but only if there was no
@@ -1175,8 +1175,8 @@ klasse RawConfigParser(MutableMapping):
         defaults = self.default_section, self._defaults
         all_sections = itertools.chain((defaults,),
                                        self._sections.items())
-        for section, options in all_sections:
-            for name, val in options.items():
+        fuer section, options in all_sections:
+            fuer name, val in options.items():
                 if isinstance(val, list):
                     val = '\n'.join(val).rstrip()
                 options[name] = self._interpolation.before_read(self,
@@ -1186,7 +1186,7 @@ klasse RawConfigParser(MutableMapping):
     def _read_defaults(self, defaults):
         """Read the defaults passed in the initializer.
         Note: values can be non-string."""
-        for key, value in defaults.items():
+        fuer key, value in defaults.items():
             self._defaults[self.optionxform(key)] = value
 
     def _unify_values(self, section, vars):
@@ -1203,7 +1203,7 @@ klasse RawConfigParser(MutableMapping):
         # Update with the entry specific variables
         vardict = {}
         if vars:
-            for key, value in vars.items():
+            fuer key, value in vars.items():
                 if value is not None:
                     value = str(value)
                 vardict[self.optionxform(key)] = value
@@ -1217,24 +1217,24 @@ klasse RawConfigParser(MutableMapping):
         return self.BOOLEAN_STATES[value.lower()]
 
     def _validate_key_contents(self, key):
-        """Raises an InvalidWriteError for any keys containing
+        """Raises an InvalidWriteError fuer any keys containing
         delimiters or that begins with the section header pattern"""
         if re.match(self.SECTCRE, key):
             raise InvalidWriteError(
                 f"Cannot write key {key}; begins with section pattern")
-        for delim in self._delimiters:
+        fuer delim in self._delimiters:
             if delim in key:
                 raise InvalidWriteError(
                     f"Cannot write key {key}; contains delimiter {delim}")
 
     def _validate_value_types(self, *, section="", option="", value=""):
-        """Raises a TypeError for illegal non-string values.
+        """Raises a TypeError fuer illegal non-string values.
 
         Legal non-string values are UNNAMED_SECTION and falsey values if
         they are allowed.
 
         For compatibility reasons this method is not used in classic set()
-        for RawConfigParsers. It is invoked in every case for mapping protocol
+        fuer RawConfigParsers. It is invoked in every case fuer mapping protocol
         access and in ConfigParser.set().
         """
         if section is UNNAMED_SECTION:
@@ -1275,7 +1275,7 @@ klasse ConfigParser(RawConfigParser):
         """Reads the defaults passed in the initializer, implicitly converting
         values to strings like the rest of the API.
 
-        Does not perform interpolation for backwards compatibility.
+        Does not perform interpolation fuer backwards compatibility.
         """
         try:
             hold_interpolation = self._interpolation
@@ -1286,13 +1286,13 @@ klasse ConfigParser(RawConfigParser):
 
 
 klasse SectionProxy(MutableMapping):
-    """A proxy for a single section from a parser."""
+    """A proxy fuer a single section from a parser."""
 
     def __init__(self, parser, name):
         """Creates a view on a section of the specified `name` in `parser`."""
         self._parser = parser
         self._name = name
-        for conv in parser.converters:
+        fuer conv in parser.converters:
             key = 'get' + conv
             getter = functools.partial(self.get, _impl=getattr(parser, key))
             setattr(self, key, getter)
@@ -1358,7 +1358,7 @@ klasse SectionProxy(MutableMapping):
 klasse ConverterMapping(MutableMapping):
     """Enables reuse of get*() methods between the parser and section proxies.
 
-    If a parser klasse implements a getter directly, the value for the given
+    If a parser klasse implements a getter directly, the value fuer the given
     key will be ``None``. The presence of the converter name here enables
     section proxies to find and use the implementation on the parser class.
     """
@@ -1368,7 +1368,7 @@ klasse ConverterMapping(MutableMapping):
     def __init__(self, parser):
         self._parser = parser
         self._data = {}
-        for getter in dir(self._parser):
+        fuer getter in dir(self._parser):
             m = self.GETTERCRE.match(getter)
             if not m or not callable(getattr(self._parser, getter)):
                 continue
@@ -1389,7 +1389,7 @@ klasse ConverterMapping(MutableMapping):
         func = functools.partial(self._parser._get_conv, conv=value)
         func.converter = value
         setattr(self._parser, k, func)
-        for proxy in self._parser.values():
+        fuer proxy in self._parser.values():
             getter = functools.partial(proxy.get, _impl=func)
             setattr(proxy, k, getter)
 
@@ -1399,7 +1399,7 @@ klasse ConverterMapping(MutableMapping):
         except TypeError:
             raise KeyError(key)
         del self._data[key]
-        for inst in itertools.chain((self._parser,), self._parser.values()):
+        fuer inst in itertools.chain((self._parser,), self._parser.values()):
             try:
                 delattr(inst, k)
             except AttributeError:

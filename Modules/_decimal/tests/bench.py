@@ -16,7 +16,7 @@ P = import_fresh_module('decimal', blocked=['_decimal'])
 
 #
 # NOTE: This is the pi function from the decimal documentation, modified
-# for benchmarking purposes. Since floats do not have a context, the higher
+# fuer benchmarking purposes. Since floats do not have a context, the higher
 # intermediate precision from the original is NOT used, so the modified
 # algorithm only gives an approximation to the correctly rounded result.
 # For serious use, refer to the documentation or the appropriate literature.
@@ -67,7 +67,7 @@ def factorial(n, m):
         return factorial(n, (n+m)//2) * factorial((n+m)//2 + 1, m)
 
 # Fix failed test cases caused by CVE-2020-10735 patch.
-# See gh-95778 for details.
+# See gh-95778 fuer details.
 def increase_int_max_str_digits(maxdigits):
     def _increase_int_max_str_digits(func, maxdigits=maxdigits):
         @wraps(func)
@@ -89,14 +89,14 @@ def test_calc_pi():
     if C is not None:
         to_benchmark.insert(1, pi_cdecimal)
 
-    for prec in [9, 19]:
+    fuer prec in [9, 19]:
         print("\nPrecision: %d decimal digits\n" % prec)
-        for func in to_benchmark:
+        fuer func in to_benchmark:
             start = time.time()
             if C is not None:
                 C.getcontext().prec = prec
             P.getcontext().prec = prec
-            for i in range(10000):
+            fuer i in range(10000):
                 x = func()
             print("%s:" % func.__name__.replace("pi_", ""))
             print("result: %s" % str(x))
@@ -114,7 +114,7 @@ def test_factorial():
         c.Emax = C.MAX_EMAX
         c.Emin = C.MIN_EMIN
 
-    for n in [100000, 1000000]:
+    fuer n in [100000, 1000000]:
 
         print("n = %d\n" % n)
 

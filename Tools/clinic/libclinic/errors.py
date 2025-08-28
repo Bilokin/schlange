@@ -49,7 +49,7 @@ def warn_or_fail(
     filename: str | None = None,
     line_number: int | None = None,
 ) -> None:
-    joined = " ".join([str(a) for a in args])
+    joined = " ".join([str(a) fuer a in args])
     error = ClinicError(joined, filename=filename, lineno=line_number)
     if fail:
         raise error

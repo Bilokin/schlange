@@ -1,4 +1,4 @@
-"""Test script for the dbm.open function based on testdumbdbm.py"""
+"""Test script fuer the dbm.open function based on testdumbdbm.py"""
 
 import unittest
 import dbm
@@ -25,7 +25,7 @@ _fname = os.path.join(dirname, os_helper.TESTFN)
 # Iterates over every database module supported by dbm currently available.
 #
 def dbm_iterator():
-    for name in dbm._names:
+    fuer name in dbm._names:
         try:
             mod = __import__(name, fromlist=['open'])
         except ImportError:
@@ -55,12 +55,12 @@ klasse AnyDBMTestCase:
 
     def init_db(self):
         f = dbm.open(_fname, 'n')
-        for k in self._dict:
+        fuer k in self._dict:
             f[k.encode("ascii")] = self._dict[k]
         f.close()
 
     def keys_helper(self, f):
-        keys = sorted(k.decode("ascii") for k in f.keys())
+        keys = sorted(k.decode("ascii") fuer k in f.keys())
         dkeys = sorted(self._dict.keys())
         self.assertEqual(keys, dkeys)
         return keys
@@ -74,7 +74,7 @@ klasse AnyDBMTestCase:
     def test_anydbm_creation(self):
         f = dbm.open(_fname, 'c')
         self.assertEqual(list(f.keys()), [])
-        for key in self._dict:
+        fuer key in self._dict:
             f[key.encode("ascii")] = self._dict[key]
         self.read_helper(f)
         f.close()
@@ -152,10 +152,10 @@ klasse AnyDBMTestCase:
                 self.skipTest("method reorganize not available this dbm submodule")
 
             keys_before = sorted(d.keys())
-            values_before = [d[k] for k in keys_before]
+            values_before = [d[k] fuer k in keys_before]
             d.reorganize()
             keys_after = sorted(d.keys())
-            values_after = [d[k] for k in keys_before]
+            values_after = [d[k] fuer k in keys_before]
             self.assertEqual(keys_before, keys_after)
             self.assertEqual(values_before, values_after)
 
@@ -165,8 +165,8 @@ klasse AnyDBMTestCase:
             if os.path.isfile(db_path):
                 return os.path.getsize(db_path)
             total_size = 0
-            for root, _, filenames in os.walk(db_path):
-                for filename in filenames:
+            fuer root, _, filenames in os.walk(db_path):
+                fuer filename in filenames:
                     file_path = os.path.join(root, filename)
                     total_size += os.path.getsize(file_path)
             return total_size
@@ -177,7 +177,7 @@ klasse AnyDBMTestCase:
             if not hasattr(f, 'reorganize'):
                 self.skipTest("method reorganize not available this dbm submodule")
 
-            for k in self._dict:
+            fuer k in self._dict:
                 f[k.encode('ascii')] = self._dict[k] * 100000
             db_keys = list(f.keys())
 
@@ -187,7 +187,7 @@ klasse AnyDBMTestCase:
         # Delete some elements from the start of the database.
         keys_to_delete = db_keys[:len(db_keys) // 2]
         with dbm.open(_fname, 'c') as f:
-            for k in keys_to_delete:
+            fuer k in keys_to_delete:
                 del f[k]
             f.reorganize()
 
@@ -207,17 +207,17 @@ klasse AnyDBMTestCase:
 
     def read_helper(self, f):
         keys = self.keys_helper(f)
-        for key in self._dict:
+        fuer key in self._dict:
             self.assertEqual(self._dict[key], f[key.encode("ascii")])
 
     def test_keys(self):
         with dbm.open(_fname, 'c') as d:
             self.assertEqual(d.keys(), [])
             a = [(b'a', b'b'), (b'12345678910', b'019237410982340912840198242')]
-            for k, v in a:
+            fuer k, v in a:
                 d[k] = v
-            self.assertEqual(sorted(d.keys()), sorted(k for (k, v) in a))
-            for k, v in a:
+            self.assertEqual(sorted(d.keys()), sorted(k fuer (k, v) in a))
+            fuer k, v in a:
                 self.assertIn(k, d)
                 self.assertEqual(d[k], v)
             self.assertNotIn(b'xxx', d)
@@ -227,15 +227,15 @@ klasse AnyDBMTestCase:
         with dbm.open(_fname, 'c') as d:
             self.assertEqual(d.keys(), [])
             a = [(b'a', b'b'), (b'12345678910', b'019237410982340912840198242')]
-            for k, v in a:
+            fuer k, v in a:
                 d[k] = v
-            for k, _ in a:
+            fuer k, _ in a:
                 self.assertIn(k, d)
             self.assertEqual(len(d), len(a))
 
             d.clear()
             self.assertEqual(len(d), 0)
-            for k, _ in a:
+            fuer k, _ in a:
                 self.assertNotIn(k, d)
 
     def setUp(self):
@@ -251,15 +251,15 @@ klasse WhichDBTestCase(unittest.TestCase):
         _bytes_fname = os.fsencode(_fname)
         fnames = [_fname, os_helper.FakePath(_fname),
                   _bytes_fname, os_helper.FakePath(_bytes_fname)]
-        for module in dbm_iterator():
+        fuer module in dbm_iterator():
             # Check whether whichdb correctly guesses module name
-            # for databases opened with "module" module.
+            # fuer databases opened with "module" module.
             name = module.__name__
             setup_test_dir()
             dbm._defaultmod = module
             # Try with empty files first
             with module.open(_fname, 'c'): pass
-            for path in fnames:
+            fuer path in fnames:
                 self.assertEqual(name, self.dbm.whichdb(path))
             # Now add a key
             with module.open(_fname, 'w') as f:
@@ -268,7 +268,7 @@ klasse WhichDBTestCase(unittest.TestCase):
                 self.assertIn(b"1", f)
                 # and read it
                 self.assertEqual(f[b"1"], b"1")
-            for path in fnames:
+            fuer path in fnames:
                 self.assertEqual(name, self.dbm.whichdb(path))
 
     @unittest.skipUnless(ndbm, reason='Test requires ndbm')
@@ -279,7 +279,7 @@ klasse WhichDBTestCase(unittest.TestCase):
         _bytes_fname = os.fsencode(_fname)
         fnames = [_fname, os_helper.FakePath(_fname),
                   _bytes_fname, os_helper.FakePath(_bytes_fname)]
-        for path in fnames:
+        fuer path in fnames:
             self.assertIsNone(self.dbm.whichdb(path))
 
     @unittest.skipUnless(dbm_sqlite3, reason='Test requires dbm.sqlite3')
@@ -309,7 +309,7 @@ klasse WhichDBTestCase(unittest.TestCase):
         self.dbm = import_helper.import_fresh_module('dbm')
 
 
-for mod in dbm_iterator():
+fuer mod in dbm_iterator():
     assert mod.__name__.startswith('dbm.')
     suffix = mod.__name__[4:]
     testname = f'TestCase_{suffix}'

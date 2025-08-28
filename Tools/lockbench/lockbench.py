@@ -7,9 +7,9 @@
 #
 # Acquisitions (kHz): Reports the total number of lock acquisitions in
 # thousands of acquisitions per second. This is the most important metric,
-# particularly for the 1 thread case because even in multithreaded programs,
-# most locks acquisitions are not contended. Values for 2+ threads are
-# only meaningful for `--disable-gil` builds, because the GIL prevents most
+# particularly fuer the 1 thread case because even in multithreaded programs,
+# most locks acquisitions are not contended. Values fuer 2+ threads are
+# only meaningful fuer `--disable-gil` builds, because the GIL prevents most
 # situations where there is lock contention with short critical sections.
 #
 # Fairness: A measure of how evenly the lock acquisitions are distributed.
@@ -31,17 +31,17 @@ CRITICAL_SECTION_LENGTH = 1
 def jains_fairness(values):
     # Jain's fairness index
     # See https://en.wikipedia.org/wiki/Fairness_measure
-    return (sum(values) ** 2) / (len(values) * sum(x ** 2 for x in values))
+    return (sum(values) ** 2) / (len(values) * sum(x ** 2 fuer x in values))
 
 def main():
     print("Lock Type           Threads           Acquisitions (kHz)   Fairness")
-    for lock_type in ["PyMutex", "PyThread_type_lock"]:
+    fuer lock_type in ["PyMutex", "PyThread_type_lock"]:
         use_pymutex = (lock_type == "PyMutex")
-        for num_threads in range(1, MAX_THREADS + 1):
+        fuer num_threads in range(1, MAX_THREADS + 1):
             acquisitions, thread_iters = benchmark_locks(
                 num_threads, use_pymutex, CRITICAL_SECTION_LENGTH)
 
-            acquisitions /= 1000  # report in kHz for readability
+            acquisitions /= 1000  # report in kHz fuer readability
             fairness = jains_fairness(thread_iters)
 
             print(f"{lock_type: <20}{num_threads: <18}{acquisitions: >5.0f}{fairness: >20.2f}")

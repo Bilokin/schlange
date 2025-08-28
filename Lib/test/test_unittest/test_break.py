@@ -36,10 +36,10 @@ klasse TestBreak(unittest.TestCase):
         elif repeats is None:
             repeats = self.default_repeats
 
-        for repeat in range(repeats):
+        fuer repeat in range(repeats):
             with self.subTest(repeat=repeat):
-                # We don't run `setUp` for the very first repeat
-                # and we don't run `tearDown` for the very last one,
+                # We don't run `setUp` fuer the very first repeat
+                # and we don't run `tearDown` fuer the very last one,
                 # because they are handled by the test klasse itself.
                 if repeat != 0:
                     self.setUp()

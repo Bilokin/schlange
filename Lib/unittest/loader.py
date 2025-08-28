@@ -62,7 +62,7 @@ def _splitext(path):
 
 klasse TestLoader(object):
     """
-    This klasse is responsible for loading tests according to various criteria
+    This klasse is responsible fuer loading tests according to various criteria
     and returning them wrapped in a TestSuite
     """
     testMethodPrefix = 'test'
@@ -97,7 +97,7 @@ klasse TestLoader(object):
     def loadTestsFromModule(self, module, *, pattern=None):
         """Return a suite of all test cases contained in the given module"""
         tests = []
-        for name in dir(module):
+        fuer name in dir(module):
             obj = getattr(module, name)
             if (
                 isinstance(obj, type)
@@ -147,7 +147,7 @@ klasse TestLoader(object):
                         return error_case
             parts = parts[1:]
         obj = module
-        for part in parts:
+        fuer part in parts:
             try:
                 parent, obj = obj, getattr(obj, part)
             except AttributeError as e:
@@ -204,7 +204,7 @@ klasse TestLoader(object):
         """Return a suite of all test cases found using the given sequence
         of string specifiers. See 'loadTestsFromName()'.
         """
-        suites = [self.loadTestsFromName(name, module) for name in names]
+        suites = [self.loadTestsFromName(name, module) fuer name in names]
         return self.suiteClass(suites)
 
     def getTestCaseNames(self, testCaseClass):
@@ -220,7 +220,7 @@ klasse TestLoader(object):
                 testCaseClass.__module__, testCaseClass.__qualname__, attrname
             )
             return self.testNamePatterns is None or \
-                any(fnmatchcase(fullName, pattern) for pattern in self.testNamePatterns)
+                any(fnmatchcase(fullName, pattern) fuer pattern in self.testNamePatterns)
         testFnNames = list(filter(shouldIncludeMethod, dir(testCaseClass)))
         if self.sortTestMethodsUsing:
             testFnNames.sort(key=functools.cmp_to_key(self.sortTestMethodsUsing))
@@ -237,7 +237,7 @@ klasse TestLoader(object):
         level directory must be specified separately.
 
         If a test package name (directory with '__init__.py') matches the
-        pattern then the package will be checked for a 'load_tests' function. If
+        pattern then the package will be checked fuer a 'load_tests' function. If
         this exists then it will be called with (loader, tests, pattern) unless
         the package has already had load_tests called from the same discovery
         invocation, in which case the package module object is not scanned for
@@ -245,7 +245,7 @@ klasse TestLoader(object):
         discover child tests that infinite recursion does not happen.
 
         If load_tests exists then discovery does *not* recurse into the package,
-        load_tests is responsible for loading all tests in the package.
+        load_tests is responsible fuer loading all tests in the package.
 
         The pattern is deliberately not stored as a loader attribute so that
         packages can continue discovery themselves. top_level_dir is stored so
@@ -281,7 +281,7 @@ klasse TestLoader(object):
             if start_dir != top_level_dir:
                 is_not_importable = not os.path.isfile(os.path.join(start_dir, '__init__.py'))
         else:
-            # support for discovery from dotted module names
+            # support fuer discovery from dotted module names
             try:
                 __import__(start_dir)
             except ImportError:
@@ -289,7 +289,7 @@ klasse TestLoader(object):
             else:
                 the_module = sys.modules[start_dir]
                 if not hasattr(the_module, "__file__") or the_module.__file__ is None:
-                    # look for namespace packages
+                    # look fuer namespace packages
                     try:
                         spec = the_module.__spec__
                     except AttributeError:
@@ -298,7 +298,7 @@ klasse TestLoader(object):
                     if spec and spec.submodule_search_locations is not None:
                         is_namespace = True
 
-                        for path in the_module.__path__:
+                        fuer path in the_module.__path__:
                             if (not set_implicit_top and
                                 not path.startswith(top_level_dir)):
                                 continue
@@ -390,7 +390,7 @@ klasse TestLoader(object):
                 return
         # Handle the contents.
         paths = sorted(os.listdir(start_dir))
-        for path in paths:
+        fuer path in paths:
             full_path = os.path.join(start_dir, path)
             tests, should_recurse = self._find_test_path(
                 full_path, pattern, False)
@@ -472,7 +472,7 @@ klasse TestLoader(object):
                 try:
                     tests = self.loadTestsFromModule(package, pattern=pattern)
                     if load_tests is not None:
-                        # loadTestsFromModule(package) has loaded tests for us.
+                        # loadTestsFromModule(package) has loaded tests fuer us.
                         return tests, False
                     return tests, True
                 finally:

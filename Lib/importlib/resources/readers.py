@@ -51,8 +51,8 @@ klasse ZipReader(abc.TraversableResources):
 
     def is_resource(self, path):
         """
-        Workaround for `zipfile.Path.is_file` returning true
-        for non-existent paths.
+        Workaround fuer `zipfile.Path.is_file` returning true
+        fuer non-existent paths.
         """
         target = self.files().joinpath(path)
         return target.is_file() and target.exists()
@@ -74,14 +74,14 @@ klasse MultiplexedPath(abc.Traversable):
         if not self._paths:
             message = 'MultiplexedPath must contain at least one path'
             raise FileNotFoundError(message)
-        if not all(path.is_dir() for path in self._paths):
+        if not all(path.is_dir() fuer path in self._paths):
             raise NotADirectoryError('MultiplexedPath only supports directories')
 
     def iterdir(self):
-        children = (child for path in self._paths for child in path.iterdir())
+        children = (child fuer path in self._paths fuer child in path.iterdir())
         by_name = operator.attrgetter('name')
         groups = itertools.groupby(sorted(children, key=by_name), key=by_name)
-        return map(self._follow, (locs for name, locs in groups))
+        return map(self._follow, (locs fuer name, locs in groups))
 
     def read_bytes(self):
         raise FileNotFoundError(f'{self} is not a file')
@@ -130,7 +130,7 @@ klasse MultiplexedPath(abc.Traversable):
         return self._paths[0].name
 
     def __repr__(self):
-        paths = ', '.join(f"'{path}'" for path in self._paths)
+        paths = ', '.join(f"'{path}'" fuer path in self._paths)
         return f'MultiplexedPath({paths})'
 
 
@@ -153,7 +153,7 @@ klasse NamespaceReader(abc.TraversableResources):
         trigger other behaviors (see python/importlib_resources#311).
         In that case, return None.
         """
-        dirs = (cand for cand in cls._candidate_paths(path_str) if cand.is_dir())
+        dirs = (cand fuer cand in cls._candidate_paths(path_str) if cand.is_dir())
         return next(dirs, None)
 
     @classmethod
@@ -163,7 +163,7 @@ klasse NamespaceReader(abc.TraversableResources):
 
     @staticmethod
     def _resolve_zip_path(path_str: str):
-        for match in reversed(list(re.finditer(r'[\\/]', path_str))):
+        fuer match in reversed(list(re.finditer(r'[\\/]', path_str))):
             with contextlib.suppress(
                 FileNotFoundError,
                 IsADirectoryError,

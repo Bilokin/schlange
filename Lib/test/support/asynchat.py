@@ -13,7 +13,7 @@
 #                         All Rights Reserved
 #
 # Permission to use, copy, modify, and distribute this software and
-# its documentation for any purpose and without fee is hereby
+# its documentation fuer any purpose and without fee is hereby
 # granted, provided that the above copyright notice appear in all
 # copies and that both that copyright notice and this permission
 # notice appear in supporting documentation, and that the name of Sam
@@ -32,16 +32,16 @@
 
 r"""A klasse supporting chat-style (command/response) protocols.
 
-This klasse adds support for 'chat' style protocols - where one side
+This klasse adds support fuer 'chat' style protocols - where one side
 sends a 'command', and the other sends a response (examples would be
 the common internet protocols - smtp, nntp, ftp, etc..).
 
-The handle_read() method looks at the input stream for the current
-'terminator' (usually '\r\n' for single-line responses, '\r\n.\r\n'
-for multi-line output), calling self.found_terminator() on its
+The handle_read() method looks at the input stream fuer the current
+'terminator' (usually '\r\n' fuer single-line responses, '\r\n.\r\n'
+fuer multi-line output), calling self.found_terminator() on its
 receipt.
 
-for example:
+fuer example:
 Say you build an async nntp client using this class.  At the start
 of the connection, you'll have self.terminator set to '\r\n', in
 order to process the single-line greeting.  Just before issuing a
@@ -72,10 +72,10 @@ klasse async_chat(asyncore.dispatcher):
     encoding = 'latin-1'
 
     def __init__(self, sock=None, map=None):
-        # for string terminator matching
+        # fuer string terminator matching
         self.ac_in_buffer = b''
 
-        # we use a list here rather than io.BytesIO for a few reasons...
+        # we use a list here rather than io.BytesIO fuer a few reasons...
         # del lst[:] is faster than bio.truncate(0)
         # lst = [] is faster than bio.truncate(0)
         self.incoming = []
@@ -115,7 +115,7 @@ klasse async_chat(asyncore.dispatcher):
 
     # grab some more data from the socket,
     # throw it to the collector method,
-    # check for the terminator,
+    # check fuer the terminator,
     # if found, transition to the next state.
 
     def handle_read(self):
@@ -132,7 +132,7 @@ klasse async_chat(asyncore.dispatcher):
             data = bytes(str, self.encoding)
         self.ac_in_buffer = self.ac_in_buffer + data
 
-        # Continue to search for self.terminator in self.ac_in_buffer,
+        # Continue to search fuer self.terminator in self.ac_in_buffer,
         # while calling self.collect_incoming_data.  The while loop
         # is necessary because we might read several data+terminator
         # combos with a single recv(4096).
@@ -177,7 +177,7 @@ klasse async_chat(asyncore.dispatcher):
                     # is changed here.
                     self.found_terminator()
                 else:
-                    # check for a prefix of the terminator
+                    # check fuer a prefix of the terminator
                     index = find_prefix_at_end(self.ac_in_buffer, terminator)
                     if index:
                         if index != lb:
@@ -202,7 +202,7 @@ klasse async_chat(asyncore.dispatcher):
                             type(data))
         sabs = self.ac_out_buffer_size
         if len(data) > sabs:
-            for i in range(0, len(data), sabs):
+            fuer i in range(0, len(data), sabs):
                 self.producer_fifo.append(data[i:i+sabs])
         else:
             self.producer_fifo.append(data)
@@ -213,7 +213,7 @@ klasse async_chat(asyncore.dispatcher):
         self.initiate_send()
 
     def readable(self):
-        "predicate for inclusion in the readable for select()"
+        "predicate fuer inclusion in the readable fuer select()"
         # cannot use the old predicate, it violates the claim of the
         # set_terminator method.
 
@@ -221,7 +221,7 @@ klasse async_chat(asyncore.dispatcher):
         return 1
 
     def writable(self):
-        "predicate for inclusion in the writable for select()"
+        "predicate fuer inclusion in the writable fuer select()"
         return self.producer_fifo or (not self.connected)
 
     def close_when_done(self):
@@ -295,7 +295,7 @@ klasse simple_producer:
 # Given 'haystack', see if any prefix of 'needle' is at its end.  This
 # assumes an exact match has already been checked.  Return the number of
 # characters matched.
-# for example:
+# fuer example:
 # f_p_a_e("qwerty\r", "\r\n") => 1
 # f_p_a_e("qwertydkjf", "\r\n") => 0
 # f_p_a_e("qwerty\r\n", "\r\n") => <undefined>

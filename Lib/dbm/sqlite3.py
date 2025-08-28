@@ -108,7 +108,7 @@ klasse _Database(MutableMapping):
     def __iter__(self):
         try:
             with self._execute(ITER_KEYS) as cu:
-                for row in cu:
+                fuer row in cu:
                     yield row[0]
         except sqlite3.Error as exc:
             raise error(str(exc))
@@ -137,10 +137,10 @@ def open(filename, /, flag="r", mode=0o666):
     The 'filename' parameter is the name of the database file.
 
     The optional 'flag' parameter can be one of ...:
-        'r' (default): open an existing database for read only access
-        'w': open an existing database for read/write access
-        'c': create a database if it does not exist; open for read/write access
-        'n': always create a new, empty database; open for read/write access
+        'r' (default): open an existing database fuer read only access
+        'w': open an existing database fuer read/write access
+        'c': create a database if it does not exist; open fuer read/write access
+        'n': always create a new, empty database; open fuer read/write access
 
     The optional 'mode' parameter is the Unix file access mode of the database;
     only used when creating a new database. Default: 0o666.

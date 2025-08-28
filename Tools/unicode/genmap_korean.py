@@ -23,8 +23,8 @@ def main():
     print("Loading Mapping File...")
     decmap = loadmap(mapfile)
     uhcdecmap, ksx1001decmap, cp949encmap = {}, {}, {}
-    for c1, c2map in decmap.items():
-        for c2, code in c2map.items():
+    fuer c1, c2map in decmap.items():
+        fuer c2, code in c2map.items():
             if c1 >= 0xa1 and c2 >= 0xa1:
                 ksx1001decmap.setdefault(c1 & 0x7f, {})
                 ksx1001decmap[c1 & 0x7f][c2 & 0x7f] = c2map[c2]

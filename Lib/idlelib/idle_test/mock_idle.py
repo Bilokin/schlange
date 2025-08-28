@@ -1,6 +1,6 @@
 '''Mock classes that imitate idlelib modules or classes.
 
-Attributes and methods will be added as needed for tests.
+Attributes and methods will be added as needed fuer tests.
 '''
 
 from idlelib.idle_test.mock_tk import Text
@@ -54,7 +54,7 @@ klasse Editor:
 klasse UndoDelegator:
     '''Minimally imitate undo.UndoDelegator class.
     '''
-    # A real undo block is only needed for user interaction.
+    # A real undo block is only needed fuer user interaction.
     def undo_block_start(*args):
         pass
     def undo_block_stop(*args):

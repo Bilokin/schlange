@@ -31,8 +31,8 @@ klasse IOBindingTest(unittest.TestCase):
         cls.editwin._close()
         del cls.editwin
         cls.root.update_idletasks()
-        for id in cls.root.tk.call('after', 'info'):
-            cls.root.after_cancel(id)  # Need for EditorWindow.
+        fuer id in cls.root.tk.call('after', 'info'):
+            cls.root.after_cancel(id)  # Need fuer EditorWindow.
         cls.root.destroy()
         del cls.root
 
@@ -61,13 +61,13 @@ klasse IOBindingTest(unittest.TestCase):
 def _extension_in_filetypes(extension):
     return any(
         f'*{extension}' in filetype_tuple[1]
-        for filetype_tuple in iomenu.IOBinding.filetypes
+        fuer filetype_tuple in iomenu.IOBinding.filetypes
     )
 
 
 klasse FiletypesTest(unittest.TestCase):
     def test_python_source_files(self):
-        for extension in util.py_extensions:
+        fuer extension in util.py_extensions:
             with self.subTest(extension=extension):
                 self.assertTrue(
                     _extension_in_filetypes(extension)

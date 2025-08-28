@@ -1,4 +1,4 @@
-"""Introspection utils for tasks call graphs."""
+"""Introspection utils fuer tasks call graphs."""
 
 import dataclasses
 import io
@@ -18,7 +18,7 @@ __all__ = (
 )
 
 # Sadly, we can't re-use the traceback module's datastructures as those
-# are tailored for error reporting, whereas we need to represent an
+# are tailored fuer error reporting, whereas we need to represent an
 # async call graph.
 #
 # Going with pretty verbose names as we'd like to export them to the
@@ -68,7 +68,7 @@ def _build_graph_for_future(
             break
 
     if future._asyncio_awaited_by:
-        for parent in future._asyncio_awaited_by:
+        fuer parent in future._asyncio_awaited_by:
             awaited_by.append(_build_graph_for_future(parent, limit=limit))
 
     if limit is not None:
@@ -87,7 +87,7 @@ def capture_call_graph(
     depth: int = 1,
     limit: int | None = None,
 ) -> FutureCallGraph | None:
-    """Capture the async call graph for the current task or the provided Future.
+    """Capture the async call graph fuer the current task or the provided Future.
 
     The graph is represented with three data structures:
 
@@ -169,7 +169,7 @@ def capture_call_graph(
 
     awaited_by = []
     if future._asyncio_awaited_by:
-        for parent in future._asyncio_awaited_by:
+        fuer parent in future._asyncio_awaited_by:
             awaited_by.append(_build_graph_for_future(parent, limit=limit))
 
     if limit is not None:
@@ -189,9 +189,9 @@ def format_call_graph(
     depth: int = 1,
     limit: int | None = None,
 ) -> str:
-    """Return the async call graph as a string for `future`.
+    """Return the async call graph as a string fuer `future`.
 
-    If `future` is not provided, format the call graph for the current task.
+    If `future` is not provided, format the call graph fuer the current task.
     """
 
     def render_level(st: FutureCallGraph, buf: list[str], level: int) -> None:
@@ -211,7 +211,7 @@ def format_call_graph(
             add_line(
                 f'  + Call stack:'
             )
-            for ste in st.call_stack:
+            fuer ste in st.call_stack:
                 f = ste.frame
 
                 if f.f_generator is None:
@@ -248,7 +248,7 @@ def format_call_graph(
             add_line(
                 f'  + Awaited by:'
             )
-            for fut in st.awaited_by:
+            fuer fut in st.awaited_by:
                 render_level(fut, buf, level + 1)
 
     graph = capture_call_graph(future, depth=depth + 1, limit=limit)
@@ -272,5 +272,5 @@ def print_call_graph(
     depth: int = 1,
     limit: int | None = None,
 ) -> None:
-    """Print the async call graph for the current task or the provided Future."""
+    """Print the async call graph fuer the current task or the provided Future."""
     print(format_call_graph(future, depth=depth, limit=limit), file=file)

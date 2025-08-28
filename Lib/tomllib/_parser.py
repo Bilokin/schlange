@@ -22,7 +22,7 @@ if TYPE_CHECKING:
 
     from ._types import Key, ParseFloat, Pos
 
-ASCII_CTRL = frozenset(chr(i) for i in range(32)) | frozenset(chr(127))
+ASCII_CTRL = frozenset(chr(i) fuer i in range(32)) | frozenset(chr(127))
 
 # Neither of these sets include quotation mark or backslash. They are
 # currently handled as separate cases in the parser functions.
@@ -87,7 +87,7 @@ klasse TOMLDecodeError(ValueError):
             import warnings
 
             warnings.warn(
-                "Free-form arguments for TOMLDecodeError are deprecated. "
+                "Free-form arguments fuer TOMLDecodeError are deprecated. "
                 "Please set 'msg' (str), 'doc' (str) and 'pos' (int) arguments only.",
                 DeprecationWarning,
                 stacklevel=2,
@@ -221,13 +221,13 @@ klasse Flags:
         self._pending_flags.add((key, flag))
 
     def finalize_pending(self) -> None:
-        for key, flag in self._pending_flags:
+        fuer key, flag in self._pending_flags:
             self.set(key, flag, recursive=False)
         self._pending_flags.clear()
 
     def unset_all(self, key: Key) -> None:
         cont = self._flags
-        for k in key[:-1]:
+        fuer k in key[:-1]:
             if k not in cont:
                 return
             cont = cont[k]["nested"]
@@ -236,7 +236,7 @@ klasse Flags:
     def set(self, key: Key, flag: int, *, recursive: bool) -> None:  # noqa: A003
         cont = self._flags
         key_parent, key_stem = key[:-1], key[-1]
-        for k in key_parent:
+        fuer k in key_parent:
             if k not in cont:
                 cont[k] = {"flags": set(), "recursive_flags": set(), "nested": {}}
             cont = cont[k]["nested"]
@@ -248,7 +248,7 @@ klasse Flags:
         if not key:
             return False  # document root has no flags
         cont = self._flags
-        for k in key[:-1]:
+        fuer k in key[:-1]:
             if k not in cont:
                 return False
             inner_cont = cont[k]
@@ -274,7 +274,7 @@ klasse NestedDict:
         access_lists: bool = True,
     ) -> dict[str, Any]:
         cont: Any = self.dict
-        for k in key:
+        fuer k in key:
             if k not in cont:
                 cont[k] = {}
             cont = cont[k]
@@ -404,8 +404,8 @@ def key_value_rule(
     key_parent, key_stem = key[:-1], key[-1]
     abs_key_parent = header + key_parent
 
-    relative_path_cont_keys = (header + key[:i] for i in range(1, len(key)))
-    for cont_key in relative_path_cont_keys:
+    relative_path_cont_keys = (header + key[:i] fuer i in range(1, len(key)))
+    fuer cont_key in relative_path_cont_keys:
         # Check that dotted key syntax does not redefine an existing table
         if out.flags.is_(cont_key, Flags.EXPLICIT_NEST):
             raise TOMLDecodeError(f"Cannot redefine namespace {cont_key}", src, pos)
@@ -478,7 +478,7 @@ def parse_key_part(src: str, pos: Pos) -> tuple[Pos, str]:
         return parse_literal_str(src, pos)
     if char == '"':
         return parse_one_line_basic_str(src, pos)
-    raise TOMLDecodeError("Invalid initial character for a key part", src, pos)
+    raise TOMLDecodeError("Invalid initial character fuer a key part", src, pos)
 
 
 def parse_one_line_basic_str(src: str, pos: Pos) -> tuple[Pos, str]:

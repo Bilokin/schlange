@@ -2,7 +2,7 @@
 # ElementTree
 # $Id: ElementInclude.py 3375 2008-02-13 08:05:08Z fredrik $
 #
-# limited xinclude support for element trees
+# limited xinclude support fuer element trees
 #
 # history:
 # 2003-08-15 fl   created
@@ -23,7 +23,7 @@
 # and will comply with the following terms and conditions:
 #
 # Permission to use, copy, modify, and distribute this software and
-# its associated documentation for any purpose and without fee is
+# its associated documentation fuer any purpose and without fee is
 # hereby granted, provided that the above copyright notice appears in
 # all copies, and that both that copyright notice and this permission
 # notice appear in supporting documentation, and that the name of
@@ -42,10 +42,10 @@
 # --------------------------------------------------------------------
 
 # Licensed to PSF under a Contributor Agreement.
-# See https://www.python.org/psf/license for licensing details.
+# See https://www.python.org/psf/license fuer licensing details.
 
 ##
-# Limited XInclude support for the ElementTree package.
+# Limited XInclude support fuer the ElementTree package.
 ##
 
 import copy
@@ -77,7 +77,7 @@ klasse LimitedRecursiveIncludeError(FatalIncludeError):
 #
 # @param href Resource reference.
 # @param parse Parse mode.  Either "xml" or "text".
-# @param encoding Optional text encoding (UTF-8 by default for "text").
+# @param encoding Optional text encoding (UTF-8 by default fuer "text").
 # @return The expanded resource.  If the parse mode is "xml", this
 #    is an Element instance.  If the parse mode is "text", this
 #    is a string.  If the loader fails, it can return None
@@ -119,7 +119,7 @@ def include(elem, loader=None, base_url=None,
     if max_depth is None:
         max_depth = -1
     elif max_depth < 0:
-        raise ValueError("expected non-negative depth or None for 'max_depth', got %r" % max_depth)
+        raise ValueError("expected non-negative depth or None fuer 'max_depth', got %r" % max_depth)
 
     if hasattr(elem, 'getroot'):
         elem = elem.getroot()
@@ -130,7 +130,7 @@ def include(elem, loader=None, base_url=None,
 
 
 def _include(elem, loader, base_url, max_depth, _parent_hrefs):
-    # look for xinclude elements
+    # look fuer xinclude elements
     i = 0
     while i < len(elem):
         e = elem[i]

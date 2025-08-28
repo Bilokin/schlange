@@ -76,7 +76,7 @@ klasse GeneralTest(unittest.TestCase):
         def inc():
             a[0] += 1
 
-        for i in range(128):
+        fuer i in range(128):
             atexit.register(inc)
         atexit._run_exitfuncs()
 
@@ -100,7 +100,7 @@ klasse GeneralTest(unittest.TestCase):
         def dec():
             a[0] -= 1
 
-        for i in range(4):
+        fuer i in range(4):
             atexit.register(inc)
         atexit.register(dec)
         atexit.unregister(inc)
@@ -119,7 +119,7 @@ klasse GeneralTest(unittest.TestCase):
         self.assertEqual(l, [5])
 
     def test_atexit_with_unregistered_function(self):
-        # See bpo-46025 for more info
+        # See bpo-46025 fuer more info
         def func():
             atexit.unregister(func)
             1/0

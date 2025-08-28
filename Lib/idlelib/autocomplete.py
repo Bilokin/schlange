@@ -10,12 +10,12 @@ import string
 import sys
 
 # Modified keyword list is used in fetch_completions.
-completion_kwds = [s for s in keyword.kwlist
+completion_kwds = [s fuer s in keyword.kwlist
                      if s not in {'True', 'False', 'None'}]  # In builtins.
 completion_kwds.extend(('match', 'case'))  # Context keywords.
 completion_kwds.sort()
 
-# Two types of completions; defined here for autocomplete_w import below.
+# Two types of completions; defined here fuer autocomplete_w import below.
 ATTRS, FILES = 0, 1
 from idlelib import autocomplete_w
 from idlelib.config import idleConf
@@ -25,8 +25,8 @@ from idlelib.hyperparser import HyperParser
 #       EvalFunc, Complete, WantWin, Mode
 FORCE = True,     False,    True,    None   # Control-Space.
 TAB   = False,    True,     True,    None   # Tab.
-TRY_A = False,    False,    False,   ATTRS  # '.' for attributes.
-TRY_F = False,    False,    False,   FILES  # '/' in quotes for file name.
+TRY_A = False,    False,    False,   ATTRS  # '.' fuer attributes.
+TRY_F = False,    False,    False,   FILES  # '/' in quotes fuer file name.
 
 # This string includes all chars that may be in an identifier.
 # TODO Update this here and elsewhere.
@@ -159,7 +159,7 @@ klasse AutoComplete:
                 complete, mode, wantwin)
 
     def fetch_completions(self, what, mode):
-        """Return a pair of lists of completions for something. The first list
+        """Return a pair of lists of completions fuer something. The first list
         is a sublist of the second. Both are sorted.
 
         If there is a Python subprocess, get the comp. list there.  Otherwise,
@@ -188,7 +188,7 @@ klasse AutoComplete:
                     if "__all__" in bigl:
                         smalll = sorted(eval("__all__", namespace))
                     else:
-                        smalll = [s for s in bigl if s[:1] != '_']
+                        smalll = [s fuer s in bigl if s[:1] != '_']
                 else:
                     try:
                         entity = self.get_entity(what)
@@ -197,7 +197,7 @@ klasse AutoComplete:
                         if "__all__" in bigl:
                             smalll = sorted(entity.__all__)
                         else:
-                            smalll = [s for s in bigl if s[:1] != '_']
+                            smalll = [s fuer s in bigl if s[:1] != '_']
                     except:
                         return [], []
 
@@ -208,7 +208,7 @@ klasse AutoComplete:
                     expandedpath = os.path.expanduser(what)
                     bigl = os.listdir(expandedpath)
                     bigl.sort()
-                    smalll = [s for s in bigl if s[:1] != '.']
+                    smalll = [s fuer s in bigl if s[:1] != '.']
                 except OSError:
                     return [], []
 

@@ -52,9 +52,9 @@ klasse InitializerMixin(ExecutorMixin):
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_initializer(self):
         futures = [self.executor.submit(get_init_status)
-                   for _ in range(self.worker_count)]
+                   fuer _ in range(self.worker_count)]
 
-        for f in futures:
+        fuer f in futures:
             self.assertEqual(f.result(), 'initialized')
 
 
@@ -89,7 +89,7 @@ klasse FailingInitializerMixin(ExecutorMixin):
                     future.result()
 
             # At some point, the executor should break
-            for _ in support.sleeping_retry(support.SHORT_TIMEOUT,
+            fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT,
                                             "executor not broken"):
                 if self.executor._broken:
                     break
@@ -112,7 +112,7 @@ klasse FailingInitializerMixin(ExecutorMixin):
             with self.assertLogs('concurrent.futures', 'CRITICAL') as cm:
                 yield
             output = cm.output
-        self.assertTrue(any(msg in line for line in output),
+        self.assertTrue(any(msg in line fuer line in output),
                         output)
 
 

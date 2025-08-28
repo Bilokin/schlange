@@ -1,5 +1,5 @@
 """
-Internal synchronization coordinator for the sample profiler.
+Internal synchronization coordinator fuer the sample profiler.
 
 This module is used internally by the sample profiler to coordinate
 the startup of target processes. It should not be called directly by users.
@@ -14,7 +14,7 @@ from typing import List, NoReturn
 
 
 klasse CoordinatorError(Exception):
-    """Base exception for coordinator errors."""
+    """Base exception fuer coordinator errors."""
     pass
 
 
@@ -69,7 +69,7 @@ def _validate_arguments(args: List[str]) -> tuple[int, str, List[str]]:
     return sync_port, cwd, target_args
 
 
-# Constants for socket communication
+# Constants fuer socket communication
 _MAX_RETRIES = 3
 _INITIAL_RETRY_DELAY = 0.1
 _SOCKET_TIMEOUT = 2.0
@@ -88,9 +88,9 @@ def _signal_readiness(sync_port: int) -> None:
     """
     last_error = None
 
-    for attempt in range(_MAX_RETRIES):
+    fuer attempt in range(_MAX_RETRIES):
         try:
-            # Use context manager for automatic cleanup
+            # Use context manager fuer automatic cleanup
             with socket.create_connection(("127.0.0.1", sync_port), timeout=_SOCKET_TIMEOUT) as sock:
                 sock.send(_READY_MESSAGE)
                 return
@@ -144,7 +144,7 @@ def _execute_module(module_name: str, module_args: List[str]) -> None:
     except ImportError as e:
         raise TargetError(f"Module '{module_name}' not found: {e}") from e
     except SystemExit:
-        # SystemExit is normal for modules
+        # SystemExit is normal fuer modules
         pass
     except Exception as e:
         raise TargetError(f"Error executing module '{module_name}': {e}") from e
@@ -157,7 +157,7 @@ def _execute_script(script_path: str, script_args: List[str], cwd: str) -> None:
     Args:
         script_path: Path to the script to execute
         script_args: Arguments to pass to the script
-        cwd: Current working directory for path resolution
+        cwd: Current working directory fuer path resolution
 
     Raises:
         TargetError: If script execution fails
@@ -186,7 +186,7 @@ def _execute_script(script_path: str, script_args: List[str], cwd: str) -> None:
     except SyntaxError as e:
         raise TargetError(f"Syntax error in script {script_path}: {e}") from e
     except SystemExit:
-        # SystemExit is normal for scripts
+        # SystemExit is normal fuer scripts
         pass
     except Exception as e:
         raise TargetError(f"Error executing script '{script_path}': {e}") from e

@@ -7,7 +7,7 @@ _testcapi = import_helper.import_module('_testcapi')
 klasse PyAtomicTests(unittest.TestCase):
     pass
 
-for name in sorted(dir(_testcapi)):
+fuer name in sorted(dir(_testcapi)):
     if name.startswith('test_atomic'):
         setattr(PyAtomicTests, name, getattr(_testcapi, name))
 

@@ -12,7 +12,7 @@ is a dictionary.  The keys of the dictionary are the names of the
 klassees and functions defined in the module (including classes that are
 defined via the from XXX import YYY construct).  The values are
 instances of classes Class and Function.  One special key/value pair is
-present for packages: the key '__path__' has a list as its value which
+present fuer packages: the key '__path__' has a list as its value which
 contains the package search path.
 
 Classes and Functions have a common superclass: _Object.  Every instance
@@ -64,7 +64,7 @@ klasse _Object:
             parent.children[name] = self
 
 
-# Odd Function and Class signatures are for back-compatibility.
+# Odd Function and Class signatures are fuer back-compatibility.
 klasse Function(_Object):
     "Information about a Python function, including methods."
     def __init__(self, module, name, file, lineno,
@@ -98,13 +98,13 @@ def _nest_class(ob, class_name, lineno, end_lineno, super=None):
 
 
 def readmodule(module, path=None):
-    """Return Class objects for the top-level classes in module.
+    """Return Class objects fuer the top-level classes in module.
 
     This is the original interface, before Functions were added.
     """
 
     res = {}
-    for key, value in _readmodule(module, path or []).items():
+    fuer key, value in _readmodule(module, path or []).items():
         if isinstance(value, Class):
             res[key] = value
     return res
@@ -112,7 +112,7 @@ def readmodule(module, path=None):
 def readmodule_ex(module, path=None):
     """Return a dictionary with all functions and classes in module.
 
-    Search for module in PATH + sys.path.
+    Search fuer module in PATH + sys.path.
     If possible, include imported superclasses.
     Do this by reading source, without importing (and executing) it.
     """
@@ -120,11 +120,11 @@ def readmodule_ex(module, path=None):
 
 
 def _readmodule(module, path, inpackage=None):
-    """Do the hard work for readmodule[_ex].
+    """Do the hard work fuer readmodule[_ex].
 
     If inpackage is given, it must be the dotted name of the package in
-    which we are searching for a submodule, and then PATH must be the
-    package search path; otherwise, we are searching for a top-level
+    which we are searching fuer a submodule, and then PATH must be the
+    package search path; otherwise, we are searching fuer a top-level
     module, and path is combined with sys.path.
     """
     # Compute the full module name (prepending inpackage if set).
@@ -137,15 +137,15 @@ def _readmodule(module, path, inpackage=None):
     if fullmodule in _modules:
         return _modules[fullmodule]
 
-    # Initialize the dict for this module's contents.
+    # Initialize the dict fuer this module's contents.
     tree = {}
 
-    # Check if it is a built-in module; we don't do much for these.
+    # Check if it is a built-in module; we don't do much fuer these.
     if module in sys.builtin_module_names and inpackage is None:
         _modules[module] = tree
         return tree
 
-    # Check for a dotted module name.
+    # Check fuer a dotted module name.
     i = module.rfind('.')
     if i >= 0:
         package = module[:i]
@@ -157,7 +157,7 @@ def _readmodule(module, path, inpackage=None):
             raise ImportError('No package named {}'.format(package))
         return _readmodule(submodule, parent['__path__'], package)
 
-    # Search the path for the module.
+    # Search the path fuer the module.
     f = None
     if inpackage is not None:
         search_path = path
@@ -194,14 +194,14 @@ klasse _ModuleBrowser(ast.NodeVisitor):
 
     def visit_ClassDef(self, node):
         bases = []
-        for base in node.bases:
+        fuer base in node.bases:
             name = ast.unparse(base)
             if name in self.tree:
                 # We know this super class.
                 bases.append(self.tree[name])
             elif len(names := name.split(".")) > 1:
                 # Super klasse form is module.class:
-                # look in module for class.
+                # look in module fuer class.
                 *_, module, class_ = names
                 if module in _modules:
                     bases.append(_modules[module].get(class_, name))
@@ -234,7 +234,7 @@ klasse _ModuleBrowser(ast.NodeVisitor):
         if node.col_offset != 0:
             return
 
-        for module in node.names:
+        fuer module in node.names:
             try:
                 try:
                     _readmodule(module.name, self.path, self.inpackage)
@@ -256,11 +256,11 @@ klasse _ModuleBrowser(ast.NodeVisitor):
         except (ImportError, SyntaxError):
             return
 
-        for name in node.names:
+        fuer name in node.names:
             if name.name in module:
                 self.tree[name.asname or name.name] = module[name.name]
             elif name.name == "*":
-                for import_name, import_value in module.items():
+                fuer import_name, import_value in module.items():
                     if import_name.startswith("_"):
                         continue
                     self.tree[import_name] = import_value
@@ -273,7 +273,7 @@ def _create_tree(fullmodule, path, fname, source, tree, inpackage):
 
 
 def _main():
-    "Print module output (default this file) for quick visual check."
+    "Print module output (default this file) fuer quick visual check."
     import os
     try:
         mod = sys.argv[1]
@@ -301,7 +301,7 @@ def _main():
         if isinstance(obj, _Object):
             new_objs = sorted(obj.children.values(),
                               key=lineno_key, reverse=True)
-            for ob in new_objs:
+            fuer ob in new_objs:
                 ob.indent = obj.indent + indent_level
             objs.extend(new_objs)
         if isinstance(obj, Class):

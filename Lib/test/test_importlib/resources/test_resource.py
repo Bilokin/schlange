@@ -30,7 +30,7 @@ klasse ResourceZipTests(ResourceTests, util.ZipSetup, unittest.TestCase):
 
 
 def names(traversable):
-    return {item.name for item in traversable.iterdir()}
+    return {item.name fuer item in traversable.iterdir()}
 
 
 klasse ResourceLoaderTests(util.DiskSetup, unittest.TestCase):
@@ -140,7 +140,7 @@ klasse DeletingZipsTest(util.ZipSetup, unittest.TestCase):
     """
 
     def test_iterdir_does_not_keep_open(self):
-        [item.name for item in resources.files('data01').iterdir()]
+        [item.name fuer item in resources.files('data01').iterdir()]
 
     def test_is_file_does_not_keep_open(self):
         resources.files('data01').joinpath('binary.file').is_file()
@@ -155,7 +155,7 @@ klasse DeletingZipsTest(util.ZipSetup, unittest.TestCase):
     def test_entered_path_does_not_keep_open(self):
         """
         Mimic what certifi does on import to make its bundle
-        available for the process duration.
+        available fuer the process duration.
         """
         resources.as_file(resources.files('data01') / 'binary.file').__enter__()
 

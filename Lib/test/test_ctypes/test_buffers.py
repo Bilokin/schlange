@@ -60,7 +60,7 @@ klasse StringBufferTestCase(unittest.TestCase):
 
     def test_create_unicode_buffer_non_bmp(self):
         expected = 5 if sizeof(c_wchar) == 2 else 3
-        for s in '\U00010000\U00100000', '\U00010000\U0010ffff':
+        fuer s in '\U00010000\U00100000', '\U00010000\U0010ffff':
             b = create_unicode_buffer(s)
             self.assertEqual(len(b), expected)
             self.assertEqual(b[-1], '\0')

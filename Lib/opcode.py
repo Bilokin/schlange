@@ -17,23 +17,23 @@ from _opcode_metadata import (_specializations, _specialized_opmap, opmap,  # no
                               HAVE_ARGUMENT, MIN_INSTRUMENTED_OPCODE)  # noqa: F401
 EXTENDED_ARG = opmap['EXTENDED_ARG']
 
-opname = ['<%r>' % (op,) for op in range(max(opmap.values()) + 1)]
-for m in (opmap, _specialized_opmap):
-    for op, i in m.items():
+opname = ['<%r>' % (op,) fuer op in range(max(opmap.values()) + 1)]
+fuer m in (opmap, _specialized_opmap):
+    fuer op, i in m.items():
         opname[i] = op
 
 cmp_op = ('<', '<=', '==', '!=', '>', '>=')
 
 # These lists are documented as part of the dis module's API
-hasarg = [op for op in opmap.values() if _opcode.has_arg(op)]
-hasconst = [op for op in opmap.values() if _opcode.has_const(op)]
-hasname = [op for op in opmap.values() if _opcode.has_name(op)]
-hasjump = [op for op in opmap.values() if _opcode.has_jump(op)]
-hasjrel = hasjump  # for backward compatibility
+hasarg = [op fuer op in opmap.values() if _opcode.has_arg(op)]
+hasconst = [op fuer op in opmap.values() if _opcode.has_const(op)]
+hasname = [op fuer op in opmap.values() if _opcode.has_name(op)]
+hasjump = [op fuer op in opmap.values() if _opcode.has_jump(op)]
+hasjrel = hasjump  # fuer backward compatibility
 hasjabs = []
-hasfree = [op for op in opmap.values() if _opcode.has_free(op)]
-haslocal = [op for op in opmap.values() if _opcode.has_local(op)]
-hasexc = [op for op in opmap.values() if _opcode.has_exc(op)]
+hasfree = [op fuer op in opmap.values() if _opcode.has_free(op)]
+haslocal = [op fuer op in opmap.values() if _opcode.has_local(op)]
+hasexc = [op fuer op in opmap.values() if _opcode.has_exc(op)]
 
 
 _intrinsic_1_descs = _opcode.get_intrinsic1_descs()
@@ -118,5 +118,5 @@ _cache_format = {
 }
 
 _inline_cache_entries = {
-    name : sum(value.values()) for (name, value) in _cache_format.items()
+    name : sum(value.values()) fuer (name, value) in _cache_format.items()
 }

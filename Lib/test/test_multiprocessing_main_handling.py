@@ -18,7 +18,7 @@ from test.support.script_helper import (
     assert_python_ok)
 
 if support.PGO:
-    raise unittest.SkipTest("test is not helpful for PGO")
+    raise unittest.SkipTest("test is not helpful fuer PGO")
 
 # Look up which start methods are available to test
 import multiprocessing
@@ -62,8 +62,8 @@ if __name__ == '__main__':
         pool.map_async(f, [1, 2, 3], callback=results.extend)
 
         # up to 1 min to report the results
-        for _ in support.sleeping_retry(support.LONG_TIMEOUT,
-                                        "Timed out waiting for results"):
+        fuer _ in support.sleeping_retry(support.LONG_TIMEOUT,
+                                        "Timed out waiting fuer results"):
             if results:
                 break
 
@@ -94,8 +94,8 @@ results = []
 with Pool(5) as pool:
     pool.map_async(int, [1, 4, 9], callback=results.extend)
     # up to 1 min to report the results
-    for _ in support.sleeping_retry(support.LONG_TIMEOUT,
-                                    "Timed out waiting for results"):
+    fuer _ in support.sleeping_retry(support.LONG_TIMEOUT,
+                                    "Timed out waiting fuer results"):
         if results:
             break
 
@@ -127,7 +127,7 @@ def _make_test_zip_pkg(zip_dir, zip_basename, pkg_name, script_basename,
 # There's no easy way to pass the script directory in to get
 # -m to work (avoiding that is the whole point of making
 # directories and zipfiles executable!)
-# So we fake it for testing purposes with a custom launch script
+# So we fake it fuer testing purposes with a custom launch script
 launch_source = """\
 import sys, os.path, runpy
 sys.path.insert(0, %s)
@@ -181,7 +181,7 @@ klasse MultiProcessingCmdLineMixin():
     def test_ipython_workaround(self):
         # Some versions of the IPython launch script are missing the
         # __name__ = "__main__" guard, and multiprocessing has long had
-        # a workaround for that case
+        # a workaround fuer that case
         # See https://github.com/ipython/ipython/issues/4698
         source = test_source_main_skipped_in_children
         with os_helper.temp_dir() as script_dir:

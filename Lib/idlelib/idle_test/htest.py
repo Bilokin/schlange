@@ -2,7 +2,7 @@
 
 run(*tests) Create a master Tk() htest window.  Within that, run each
 callable in tests after finding the matching test spec in this file.  If
-tests is empty, run an htest for each spec dict in this file after
+tests is empty, run an htest fuer each spec dict in this file after
 finding the matching callable in the module named in the spec.  Close
 the master window to end testing.
 
@@ -28,7 +28,7 @@ if __name__ == '__main__':
 
 To have wrapper functions ignored by coverage reports, tag the def
 header like so: "def _wrapper(parent):  # htest #".  Use the same tag
-for htest lines in widget code.  Make sure that the 'if __name__' line
+fuer htest lines in widget code.  Make sure that the 'if __name__' line
 matches the above.  Then have make sure that .coveragerc includes the
 following:
 
@@ -156,7 +156,7 @@ GetKeysWindow_spec = {
              'current_key_sequences': [['<Control-Key-g>', '<Key-F3>', '<Control-Key-G>']],
              '_htest': True,
              },
-    'msg': "Test for different key modifier sequences.\n"
+    'msg': "Test fuer different key modifier sequences.\n"
            "<nothing> is invalid.\n"
            "No modifier key is invalid.\n"
            "Shift key with [a-z],[0-9], function key, move key, tab, space "
@@ -218,7 +218,7 @@ _module_browser_spec = {
     'msg': textwrap.dedent("""
         "Inspect names of module, class(with superclass if applicable),
         "methods and functions.  Toggle nested items.  Double clicking
-        "on items prints a traceback for an exception that is ignored.""")
+        "on items prints a traceback fuer an exception that is ignored.""")
     }
 
 _multistatus_bar_spec = {
@@ -231,7 +231,7 @@ _multistatus_bar_spec = {
 PathBrowser_spec = {
     'file': 'pathbrowser',
     'kwds': {'_htest': True},
-    'msg': "Test for correct display of all paths in sys.path.\n"
+    'msg': "Test fuer correct display of all paths in sys.path.\n"
            "Toggle nested items out to the lowest level.\n"
            "Double clicking on an item prints a traceback\n"
            "for an exception that is ignored."
@@ -245,7 +245,7 @@ _percolator_spec = {
            "output to the console or to the IDLE shell.\n"
            "If both the tracers are 'on', the output from the tracer which "
            "was switched 'on' later, should be printed first\n"
-           "Test for actions like text entry, and removal."
+           "Test fuer actions like text entry, and removal."
     }
 
 Query_spec = {
@@ -304,7 +304,7 @@ _sidebar_number_scrolling_spec = {
     'kwds': {},
     'msg': textwrap.dedent("""\
         1. Click on the line numbers and drag down below the edge of the
-        window, moving the mouse a bit and then leaving it there for a
+        window, moving the mouse a bit and then leaving it there fuer a
         while. The text and line numbers should gradually scroll down,
         with the selection updated continuously.
 
@@ -322,7 +322,7 @@ _sidebar_number_scrolling_spec = {
 _stackbrowser_spec = {
     'file': 'stackviewer',
     'kwds': {},
-    'msg': "A stacktrace for a NameError exception.\n"
+    'msg': "A stacktrace fuer a NameError exception.\n"
            "Should have NameError and 1 traceback line."
     }
 
@@ -354,7 +354,7 @@ ViewWindow_spec = {
     'kwds': {'title': 'Test textview',
              'contents': 'The quick brown fox jumps over the lazy dog.\n'*35,
              '_htest': True},
-    'msg': "Test for read-only property of text.\n"
+    'msg': "Test fuer read-only property of text.\n"
            "Select text, scroll window, close"
      }
 
@@ -383,12 +383,12 @@ def run(*tests):
 
     test_list = [] # Make list of (spec, callable) tuples.
     if tests:
-        for test in tests:
+        fuer test in tests:
             test_spec = globals()[test.__name__ + '_spec']
             test_spec['name'] = test.__name__
             test_list.append((test_spec,  test))
     else:
-        for key, dic in globals().items():
+        fuer key, dic in globals().items():
             if key.endswith('_spec'):
                 test_name = key[:-5]
                 test_spec = dic
@@ -418,7 +418,7 @@ def run(*tests):
     def run_test(_=None):
         widget = callable_object(root, **test_kwds)
         try:
-            print(widget.result)  # Only true for query classes(?).
+            print(widget.result)  # Only true fuer query classes(?).
         except AttributeError:
             pass
 

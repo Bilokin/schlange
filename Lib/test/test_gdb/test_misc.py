@@ -61,7 +61,7 @@ klasse PyListTests(DebuggerTests):
         bt = self.get_stack_trace(script=SAMPLE_SCRIPT,
                                   cmds_after_breakpoint=['py-list 1,3'])
 
-        self.assertListing('   1    # Sample script for use by test_gdb\n'
+        self.assertListing('   1    # Sample script fuer use by test_gdb\n'
                            '   2    \n'
                            '   3    def foo(a, b, c):\n',
                            bt)
@@ -94,7 +94,7 @@ klasse StackNavigationTests(DebuggerTests):
                                   cmds_after_breakpoint=['py-up', 'py-up'])
         self.assertMultilineMatches(bt,
                                     r'''^.*
-#[0-9]+ Frame 0x-?[0-9a-f]+, for file <string>, line 12, in baz \(args=\(1, 2, 3\)\)
+#[0-9]+ Frame 0x-?[0-9a-f]+, fuer file <string>, line 12, in baz \(args=\(1, 2, 3\)\)
 #[0-9]+ <built-in method pyobject_vectorcall of module object at remote 0x[0-9a-f]+>
 $''')
 
@@ -123,9 +123,9 @@ $''')
                                   cmds_after_breakpoint=['py-up', 'py-up', 'py-down'])
         self.assertMultilineMatches(bt,
                                     r'''^.*
-#[0-9]+ Frame 0x-?[0-9a-f]+, for file <string>, line 12, in baz \(args=\(1, 2, 3\)\)
+#[0-9]+ Frame 0x-?[0-9a-f]+, fuer file <string>, line 12, in baz \(args=\(1, 2, 3\)\)
 #[0-9]+ <built-in method pyobject_vectorcall of module object at remote 0x[0-9a-f]+>
-#[0-9]+ Frame 0x-?[0-9a-f]+, for file <string>, line 12, in baz \(args=\(1, 2, 3\)\)
+#[0-9]+ Frame 0x-?[0-9a-f]+, fuer file <string>, line 12, in baz \(args=\(1, 2, 3\)\)
 $''')
 
 klasse PyPrintTests(DebuggerTests):
@@ -180,9 +180,9 @@ klasse PyLocalsTests(DebuggerTests):
                                   cmds_after_breakpoint=['py-up', 'py-up', 'py-locals'])
         self.assertMultilineMatches(bt,
                                     r'''^.*
-Locals for foo
+Locals fuer foo
 a = 1
 b = 2
 c = 3
-Locals for <module>
+Locals fuer <module>
 .*$''')

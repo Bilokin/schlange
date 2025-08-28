@@ -6,20 +6,20 @@ import types
 from test.support.bytecode_helper import AssemblerTestCase
 
 
-# Tests for the code-object creation stage of the compiler.
+# Tests fuer the code-object creation stage of the compiler.
 
 klasse IsolatedAssembleTests(AssemblerTestCase):
 
     def complete_metadata(self, metadata, filename="myfile.py"):
         if metadata is None:
             metadata = {}
-        for key in ['name', 'qualname']:
+        fuer key in ['name', 'qualname']:
             metadata.setdefault(key, key)
-        for key in ['consts']:
+        fuer key in ['consts']:
             metadata.setdefault(key, [])
-        for key in ['names', 'varnames', 'cellvars', 'freevars', 'fasthidden']:
+        fuer key in ['names', 'varnames', 'cellvars', 'freevars', 'fasthidden']:
             metadata.setdefault(key, {})
-        for key in ['argcount', 'posonlyargcount', 'kwonlyargcount']:
+        fuer key in ['argcount', 'posonlyargcount', 'kwonlyargcount']:
             metadata.setdefault(key, 0)
         metadata.setdefault('firstlineno', 1)
         metadata.setdefault('filename', filename)
@@ -35,7 +35,7 @@ klasse IsolatedAssembleTests(AssemblerTestCase):
         self.assertIsInstance(co, types.CodeType)
 
         expected_metadata = {}
-        for key, value in metadata.items():
+        fuer key, value in metadata.items():
             if key == "fasthidden":
                 # not exposed on code object
                 continue
@@ -46,11 +46,11 @@ klasse IsolatedAssembleTests(AssemblerTestCase):
             else:
                 expected_metadata[key] = value
 
-        for key, value in expected_metadata.items():
+        fuer key, value in expected_metadata.items():
             self.assertEqual(getattr(co, "co_" + key), value)
 
         f = types.FunctionType(co, {})
-        for args, res in expected.items():
+        fuer args, res in expected.items():
             self.assertEqual(f(*args), res)
 
     def test_simple_expr(self):
@@ -63,7 +63,7 @@ klasse IsolatedAssembleTests(AssemblerTestCase):
             'varnames' : {'x' : 0, 'y' : 1},
         }
 
-        # code for "return (x+y)/2"
+        # code fuer "return (x+y)/2"
         insts = [
             ('RESUME', 0),
             ('LOAD_FAST', 0, 1),   # 'x'
@@ -122,7 +122,7 @@ klasse IsolatedAssembleTests(AssemblerTestCase):
             'consts'   : {2 : 0},
         }
 
-        # code for "try: pass\n except: pass"
+        # code fuer "try: pass\n except: pass"
         insts = [
             ('RESUME', 0),
             ('SETUP_FINALLY', 4),

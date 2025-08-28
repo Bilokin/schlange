@@ -1,7 +1,7 @@
 """distutils.ccompiler
 
 Contains CCompiler, an abstract base klasse that defines the interface
-for the Distutils compiler abstraction model."""
+fuer the Distutils compiler abstraction model."""
 
 import sys, os, re
 from distutils.errors import (
@@ -15,7 +15,7 @@ klasse CCompiler:
     several compiler classes.
 
     The basic idea behind a compiler abstraction klasse is that each
-    instance can be used for all the compile/link steps in building a
+    instance can be used fuer all the compile/link steps in building a
     single project.  Thus, attributes common to all of those compile and
     link steps -- include directories, macros to define, libraries to link
     against, etc. -- are attributes of the compiler instance.  To allow for
@@ -30,21 +30,21 @@ klasse CCompiler:
     # should really, really be one of the keys of the 'compiler_class'
     # dictionary (see below -- used by the 'new_compiler()' factory
     # function) -- authors of new compiler interface classes are
-    # responsible for updating 'compiler_class'!
+    # responsible fuer updating 'compiler_class'!
     compiler_type = None
 
     # XXX things not handled by this compiler abstraction model:
-    #   * client can't provide additional options for a compiler,
+    #   * client can't provide additional options fuer a compiler,
     #     e.g. warning, optimization, debugging flags.  Perhaps this
     #     should be the domain of concrete compiler abstraction classes
     #     (UnixCCompiler, MSVCCompiler, etc.) -- or perhaps the base
-    #     klasse should have methods for the common ones.
+    #     klasse should have methods fuer the common ones.
     #   * can't completely override the include or library searchg
     #     path, ie. no "cc -I -Idir1 -Idir2" or "cc -L -Ldir1 -Ldir2".
     #     I'm not sure how widely supported this is even by Unix
     #     compilers, much less on other platforms.  And I'm even less
-    #     sure how useful it is; maybe for cross-compiling, but
-    #     support for that is a ways off.  (And anyways, cross
+    #     sure how useful it is; maybe fuer cross-compiling, but
+    #     support fuer that is a ways off.  (And anyways, cross
     #     compilers probably have a dedicated binary with the
     #     right paths compiled in.  I hope.)
     #   * can't do really freaky things with the library list/library
@@ -56,7 +56,7 @@ klasse CCompiler:
 
     # Subclasses that rely on the standard filename generation methods
     # implemented below should override these; see the comment near
-    # those methods ('object_filenames()' et. al.) for details:
+    # those methods ('object_filenames()' et. al.) fuer details:
     src_extensions = None               # list of strings
     obj_extension = None                # string
     static_lib_extension = None
@@ -84,7 +84,7 @@ klasse CCompiler:
         self.force = force
         self.verbose = verbose
 
-        # 'output_dir': a common output directory for object, library,
+        # 'output_dir': a common output directory fuer object, library,
         # shared object, and shared library files
         self.output_dir = None
 
@@ -94,14 +94,14 @@ klasse CCompiler:
         # undefinition is a 1-tuple (name,).
         self.macros = []
 
-        # 'include_dirs': a list of directories to search for include files
+        # 'include_dirs': a list of directories to search fuer include files
         self.include_dirs = []
 
         # 'libraries': a list of libraries to include in any link
         # (library names, not filenames: eg. "foo" not "libfoo.a")
         self.libraries = []
 
-        # 'library_dirs': a list of directories to search for libraries
+        # 'library_dirs': a list of directories to search fuer libraries
         self.library_dirs = []
 
         # 'runtime_library_dirs': a list of directories to search for
@@ -112,11 +112,11 @@ klasse CCompiler:
         # named library files) to include on any link
         self.objects = []
 
-        for key in self.executables.keys():
+        fuer key in self.executables.keys():
             self.set_executable(key, self.executables[key])
 
     def set_executables(self, **kwargs):
-        """Define the executables (and options for them) that will be run
+        """Define the executables (and options fuer them) that will be run
         to perform the various stages of compilation.  The exact set of
         executables that may be specified here depends on the compiler
         klasse (via the 'executables' klasse attribute), but most will have:
@@ -135,15 +135,15 @@ klasse CCompiler:
 
         # Note that some CCompiler implementation classes will define class
         # attributes 'cpp', 'cc', etc. with hard-coded executable names;
-        # this is appropriate when a compiler klasse is for exactly one
+        # this is appropriate when a compiler klasse is fuer exactly one
         # compiler/OS combination (eg. MSVCCompiler).  Other compiler
         # classes (UnixCCompiler, in particular) are driven by information
         # discovered at run-time, since there are many different ways to do
         # basically the same things with Unix C compilers.
 
-        for key in kwargs:
+        fuer key in kwargs:
             if key not in self.executables:
-                raise ValueError("unknown executable '%s' for klasse %s" %
+                raise ValueError("unknown executable '%s' fuer klasse %s" %
                       (key, self.__class__.__name__))
             self.set_executable(key, kwargs[key])
 
@@ -155,7 +155,7 @@ klasse CCompiler:
 
     def _find_macro(self, name):
         i = 0
-        for defn in self.macros:
+        fuer defn in self.macros:
             if defn[0] == name:
                 return i
             i += 1
@@ -166,7 +166,7 @@ klasse CCompiler:
         definition, ie. either (name,value) 2-tuple or a (name,) tuple.  Do
         nothing if all definitions are OK, raise TypeError otherwise.
         """
-        for defn in definitions:
+        fuer defn in definitions:
             if not (isinstance(defn, tuple) and
                     (len(defn) in (1, 2) and
                       (isinstance (defn[1], str) or defn[1] is None)) and
@@ -179,7 +179,7 @@ klasse CCompiler:
     # -- Bookkeeping methods -------------------------------------------
 
     def define_macro(self, name, value=None):
-        """Define a preprocessor macro for all compilations driven by this
+        """Define a preprocessor macro fuer all compilations driven by this
         compiler object.  The optional parameter 'value' should be a
         string; if it is not supplied, then the macro will be defined
         without an explicit value and the exact outcome depends on the
@@ -194,7 +194,7 @@ klasse CCompiler:
         self.macros.append((name, value))
 
     def undefine_macro(self, name):
-        """Undefine a preprocessor macro for all compilations driven by
+        """Undefine a preprocessor macro fuer all compilations driven by
         this compiler object.  If the same macro is defined by
         'define_macro()' and undefined by 'undefine_macro()' the last call
         takes precedence (including multiple redefinitions or
@@ -231,7 +231,7 @@ klasse CCompiler:
 
 
     # -- Private utility methods --------------------------------------
-    # (here for the convenience of subclasses)
+    # (here fuer the convenience of subclasses)
 
     # Helper method to prep compiler in subclass compile() methods
 
@@ -242,7 +242,7 @@ klasse CCompiler:
         is a list, and augments it with 'self.macros'; ensures that
         'include_dirs' is a list, and augments it with 'self.include_dirs'.
         Guarantees that the returned values are of the correct type,
-        i.e. for 'output_dir' either string or None, and for 'macros' and
+        i.e. fuer 'output_dir' either string or None, and fuer 'macros' and
         'include_dirs' either list or None.
         """
         if output_dir is None:
@@ -276,7 +276,7 @@ klasse CCompiler:
         """Preprocess a single C/C++ source file, named in 'source'.
         Output will be written to file named 'output_file', or stdout if
         'output_file' not supplied.  'macros' is a list of macro
-        definitions as for 'compile()', which will augment the macros set
+        definitions as fuer 'compile()', which will augment the macros set
         with 'define_macro()' and 'undefine_macro()'.  'include_dirs' is a
         list of directory names that will be added to the default list.
 
@@ -292,13 +292,13 @@ klasse CCompiler:
 
 #    def library_dir_option(self, dir):
 #        """Return the compiler option to add 'dir' to the list of
-#        directories searched for libraries.
+#        directories searched fuer libraries.
 #        """
 #        raise NotImplementedError
 #
 #    def runtime_library_dir_option(self, dir):
 #        """Return the compiler option to add 'dir' to the list of
-#        directories searched for runtime libraries.
+#        directories searched fuer runtime libraries.
 #        """
 #        raise NotImplementedError
 #
@@ -309,9 +309,9 @@ klasse CCompiler:
 #        raise NotImplementedError
 #
 #    def find_library_file (self, dirs, lib, debug=0):
-#        """Search the specified list of directories for a static or shared
+#        """Search the specified list of directories fuer a static or shared
 #        library file 'lib' and return the full path to that file.  If
-#        'debug' true, look for a debugging version (if that makes sense on
+#        'debug' true, look fuer a debugging version (if that makes sense on
 #        the current platform).  Return None if 'lib' wasn't found in any of
 #        the specified directories.
 #        """
@@ -325,7 +325,7 @@ klasse CCompiler:
 
 
 # Map a sys.platform/os.name ('posix', 'nt') to the default compiler
-# type for that platform. Keys are interpreted as re match
+# type fuer that platform. Keys are interpreted as re match
 # patterns. Order is important; platform mappings are preferred over
 # OS names.
 _default_compilers = (
@@ -343,11 +343,11 @@ _default_compilers = (
     )
 
 def get_default_compiler(osname=None, platform=None):
-    """Determine the default compiler to use for the given platform.
+    """Determine the default compiler to use fuer the given platform.
 
        osname should be one of the standard Python OS names (i.e. the
        ones returned by os.name) and platform the common value
-       returned by sys.platform for the platform in question.
+       returned by sys.platform fuer the platform in question.
 
        The default values are os.name and sys.platform in case the
        parameters are not given.
@@ -356,7 +356,7 @@ def get_default_compiler(osname=None, platform=None):
         osname = os.name
     if platform is None:
         platform = sys.platform
-    for pattern, compiler in _default_compilers:
+    fuer pattern, compiler in _default_compilers:
         if re.match(pattern, platform) is not None or \
            re.match(pattern, osname) is not None:
             return compiler
@@ -371,22 +371,22 @@ compiler_class = { 'unix':    ('unixccompiler', 'UnixCCompiler',
                    'msvc':    ('_msvccompiler', 'MSVCCompiler',
                                "Microsoft Visual C++"),
                    'cygwin':  ('cygwinccompiler', 'CygwinCCompiler',
-                               "Cygwin port of GNU C Compiler for Win32"),
+                               "Cygwin port of GNU C Compiler fuer Win32"),
                    'mingw32': ('cygwinccompiler', 'Mingw32CCompiler',
-                               "Mingw32 port of GNU C Compiler for Win32"),
+                               "Mingw32 port of GNU C Compiler fuer Win32"),
                    'bcpp':    ('bcppcompiler', 'BCPPCompiler',
                                "Borland C++ Compiler"),
                  }
 
 
 def new_compiler(plat=None, compiler=None, verbose=0, dry_run=0, force=0):
-    """Generate an instance of some CCompiler subclass for the supplied
+    """Generate an instance of some CCompiler subclass fuer the supplied
     platform/compiler combination.  'plat' defaults to 'os.name'
     (eg. 'posix', 'nt'), and 'compiler' defaults to the default compiler
-    for that platform.  Currently only 'posix' and 'nt' are supported, and
+    fuer that platform.  Currently only 'posix' and 'nt' are supported, and
     the default compilers are "traditional Unix interface" (UnixCCompiler
     class) and Visual C++ (MSVCCompiler class).  Note that it's perfectly
-    possible to ask for a Unix compiler object under Windows, and a
+    possible to ask fuer a Unix compiler object under Windows, and a
     Microsoft compiler object under Unix -- if you supply a value for
     'compiler', 'plat' is ignored.
     """
@@ -432,7 +432,7 @@ def gen_preprocess_options(macros, include_dirs):
     means undefine (-U) macro 'name', and (name,value) means define (-D)
     macro 'name' to 'value'.  'include_dirs' is just a list of directory
     names to be added to the header file search path (-I).  Returns a list
-    of command-line options suitable for either Unix compilers or Visual
+    of command-line options suitable fuer either Unix compilers or Visual
     C++.
     """
     # XXX it would be nice (mainly aesthetic, and so we don't generate
@@ -442,12 +442,12 @@ def gen_preprocess_options(macros, include_dirs):
     # line).  I don't think it's essential, though, since most (all?)
     # Unix C compilers only pay attention to the latest -D or -U
     # mention of a macro on their command line.  Similar situation for
-    # 'include_dirs'.  I'm punting on both for now.  Anyways, weeding out
+    # 'include_dirs'.  I'm punting on both fuer now.  Anyways, weeding out
     # redundancies like this should probably be the province of
     # CCompiler, since the data structures used are inherited from it
     # and therefore common to all CCompiler classes.
     pp_opts = []
-    for macro in macros:
+    fuer macro in macros:
         if not (isinstance(macro, tuple) and 1 <= len(macro) <= 2):
             raise TypeError(
                   "bad macro definition '%s': "
@@ -465,6 +465,6 @@ def gen_preprocess_options(macros, include_dirs):
                 # shell at all costs when we spawn the command!
                 pp_opts.append("-D%s=%s" % macro)
 
-    for dir in include_dirs:
+    fuer dir in include_dirs:
         pp_opts.append("-I%s" % dir)
     return pp_opts

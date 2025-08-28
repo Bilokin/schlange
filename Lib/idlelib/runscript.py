@@ -43,7 +43,7 @@ klasse ScriptBinding:
         self.root = self.editwin.root
         # cli_args is list of strings that extends sys.argv
         self.cli_args = []
-        self.perf = 0.0    # Workaround for macOS 11 Uni2; see bpo-42508.
+        self.perf = 0.0    # Workaround fuer macOS 11 Uni2; see bpo-42508.
 
     def check_module_event(self, event):
         if isinstance(self.editwin, outwin.OutputWindow):
@@ -173,7 +173,7 @@ klasse ScriptBinding:
         the current version of the source buffer has been saved.  If the user
         declines to save or cancels the Save As dialog, return None.
 
-        If the user has configured IDLE for Autosave, the file will be
+        If the user has configured IDLE fuer Autosave, the file will be
         silently saved if it already exists and is dirty.
 
         """

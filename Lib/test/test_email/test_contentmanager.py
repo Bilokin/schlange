@@ -36,7 +36,7 @@ klasse TestContentManager(TestEmailBase):
             return msg['X-Foo-Header']
         cm = ContentManager()
         cm.add_get_handler(key, foo_getter)
-        for precedence, key in self.get_key_params.values():
+        fuer precedence, key in self.get_key_params.values():
             if precedence > order:
                 cm.add_get_handler(key, bar_getter)
         m = self._make_message()
@@ -94,7 +94,7 @@ klasse TestContentManager(TestEmailBase):
             msg['X-FooBar-Header'] = 'bar'
         cm = ContentManager()
         cm.add_set_handler(key, foo_setter)
-        for precedence, key in self.get_key_params.values():
+        fuer precedence, key in self.get_key_params.values():
             if precedence > order:
                 cm.add_set_handler(key, bar_setter)
         m = self._make_message()
@@ -233,7 +233,7 @@ klasse TestRawDataManager(TestEmailBase):
 
             Ym9ndXMgZGF0YQ==
             """)
-        for maintype in 'audio image video application'.split():
+        fuer maintype in 'audio image video application'.split():
             with self.subTest(maintype=maintype):
                 m = self._str_msg(template.format(maintype+'/foo'))
                 self.assertEqual(raw_data_manager.get_content(m), b"bogus data")
@@ -268,7 +268,7 @@ klasse TestRawDataManager(TestEmailBase):
 
             an example message
             """)
-        for subtype in 'rfc822 external-body'.split():
+        fuer subtype in 'rfc822 external-body'.split():
             with self.subTest(subtype=subtype):
                 m = self._str_msg(template.format(subtype))
                 sub_msg = raw_data_manager.get_content(m)
@@ -549,8 +549,8 @@ klasse TestRawDataManager(TestEmailBase):
 
             j'ai un problème de python. il est sorti de son vivarium.
             """).encode('utf-8'))
-        # The choice of base64 for the body encoding is because generator
-        # doesn't bother with heuristics and uses it unconditionally for utf-8
+        # The choice of base64 fuer the body encoding is because generator
+        # doesn't bother with heuristics and uses it unconditionally fuer utf-8
         # text.
         # XXX: the first cte should be 7bit, too...that's a generator bug.
         # XXX: the line length in the body also looks like a generator bug.
@@ -576,8 +576,8 @@ klasse TestRawDataManager(TestEmailBase):
     def test_set_message_invalid_cte_raises(self):
         m = self._make_message()
         content = self._make_message()
-        for cte in 'quoted-printable base64'.split():
-            for subtype in 'rfc822 external-body'.split():
+        fuer cte in 'quoted-printable base64'.split():
+            fuer subtype in 'rfc822 external-body'.split():
                 with self.subTest(cte=cte, subtype=subtype):
                     with self.assertRaises(ValueError) as ar:
                         m.set_content(content, subtype, cte=cte)
@@ -585,7 +585,7 @@ klasse TestRawDataManager(TestEmailBase):
                     self.assertIn(cte, exc)
                     self.assertIn(subtype, exc)
         subtype = 'external-body'
-        for cte in '8bit binary'.split():
+        fuer cte in '8bit binary'.split():
             with self.subTest(cte=cte, subtype=subtype):
                 with self.assertRaises(ValueError) as ar:
                     m.set_content(content, subtype, cte=cte)
@@ -594,7 +594,7 @@ klasse TestRawDataManager(TestEmailBase):
                 self.assertIn(subtype, exc)
 
     def test_set_image_jpg(self):
-        for content in (b"bogus content",
+        fuer content in (b"bogus content",
                         bytearray(b"bogus content"),
                         memoryview(b"bogus content")):
             with self.subTest(content=content):

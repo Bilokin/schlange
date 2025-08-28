@@ -18,7 +18,7 @@ klasse SearchDialogBase:
     (make_button, create_command_buttons).
     These are bound to functions that execute the command.
 
-    Except for command buttons, this base klasse is not limited to items
+    Except fuer command buttons, this base klasse is not limited to items
     common to all three subclasses.  Rather, it is the Find dialog minus
     the "Find Next" command, its execution function, and the
     default_command attribute needed in create_widgets. The other
@@ -34,7 +34,7 @@ klasse SearchDialogBase:
         '''Initialize root, engine, and top attributes.
 
         top (level widget): set in create_widgets() called from open().
-        frame: container for all widgets in dialog.
+        frame: container fuer all widgets in dialog.
         text (Text searched): set in open(), only used in subclasses().
         ent (ry): created in make_entry() called from create_entry().
         row (of grid): 0 in create_widgets(), +1 in make_entry/frame().
@@ -66,7 +66,7 @@ klasse SearchDialogBase:
         self.top.grab_set()
 
     def close(self, event=None):
-        "Put dialog away for later use."
+        "Put dialog away fuer later use."
         if self.top:
             self.top.grab_release()
             self.top.transient('')
@@ -103,8 +103,8 @@ klasse SearchDialogBase:
     def make_entry(self, label_text, var):
         '''Return (entry, label), .
 
-        entry - gridded labeled Entry for text entry.
-        label - Label widget, returned for testing.
+        entry - gridded labeled Entry fuer text entry.
+        label - Label widget, returned fuer testing.
         '''
         label = Label(self.frame, text=label_text)
         label.grid(row=self.row, column=0, sticky="nw")
@@ -120,8 +120,8 @@ klasse SearchDialogBase:
     def make_frame(self,labeltext=None):
         '''Return (frame, label).
 
-        frame - gridded labeled Frame for option or other buttons.
-        label - Label widget, returned for testing.
+        frame - gridded labeled Frame fuer option or other buttons.
+        label - Label widget, returned fuer testing.
         '''
         if labeltext:
             label = Label(self.frame, text=labeltext)
@@ -134,11 +134,11 @@ klasse SearchDialogBase:
         return frame, label
 
     def create_option_buttons(self):
-        '''Return (filled frame, options) for testing.
+        '''Return (filled frame, options) fuer testing.
 
         Options is a list of searchengine booleanvar, label pairs.
         A gridded frame from make_frame is filled with a Checkbutton
-        for each pair, bound to the var, with the corresponding label.
+        fuer each pair, bound to the var, with the corresponding label.
         '''
         frame = self.make_frame("Options")[0]
         engine = self.engine
@@ -147,13 +147,13 @@ klasse SearchDialogBase:
                    (engine.wordvar, "Whole word")]
         if self.needwrapbutton:
             options.append((engine.wrapvar, "Wrap around"))
-        for var, label in options:
+        fuer var, label in options:
             btn = Checkbutton(frame, variable=var, text=label)
             btn.pack(side="left", fill="both")
         return frame, options
 
     def create_other_buttons(self):
-        '''Return (frame, others) for testing.
+        '''Return (frame, others) fuer testing.
 
         Others is a list of value, label pairs.
         A gridded frame from make_frame is filled with radio buttons.
@@ -161,7 +161,7 @@ klasse SearchDialogBase:
         frame = self.make_frame("Direction")[0]
         var = self.engine.backvar
         others = [(1, 'Up'), (0, 'Down')]
-        for val, label in others:
+        fuer val, label in others:
             btn = Radiobutton(frame, variable=var, value=val, text=label)
             btn.pack(side="left", fill="both")
         return frame, others

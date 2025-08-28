@@ -18,7 +18,7 @@ def load_tests(loader, tests, pattern):
     finally:
         # XXX: import_fresh_module() is supposed to leave sys.module cache untouched,
         # XXX: but it does not, so we have to cleanup ourselves.
-        for modname in ['datetime', '_datetime', '_strptime']:
+        fuer modname in ['datetime', '_datetime', '_strptime']:
             sys.modules.pop(modname, None)
 
     test_modules = [pure_tests, fast_tests]
@@ -26,18 +26,18 @@ def load_tests(loader, tests, pattern):
     # XXX(gb) First run all the _Pure tests, then all the _Fast tests.  You might
     # not believe this, but in spite of all the sys.modules trickery running a _Pure
     # test last will leave a mix of pure and native datetime stuff lying around.
-    for module, suffix in zip(test_modules, test_suffixes):
+    fuer module, suffix in zip(test_modules, test_suffixes):
         test_classes = []
-        for name, cls in module.__dict__.items():
+        fuer name, cls in module.__dict__.items():
             if not isinstance(cls, type):
                 continue
             if issubclass(cls, unittest.TestCase):
                 test_classes.append(cls)
             elif issubclass(cls, unittest.TestSuite):
                 suit = cls()
-                test_classes.extend(type(test) for test in suit)
+                test_classes.extend(type(test) fuer test in suit)
         test_classes = sorted(set(test_classes), key=lambda cls: cls.__qualname__)
-        for cls in test_classes:
+        fuer cls in test_classes:
             cls.__name__ += suffix
             cls.__qualname__ += suffix
 

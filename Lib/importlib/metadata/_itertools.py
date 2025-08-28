@@ -9,11 +9,11 @@ def unique_everseen(iterable, key=None):
     seen = set()
     seen_add = seen.add
     if key is None:
-        for element in filterfalse(seen.__contains__, iterable):
+        fuer element in filterfalse(seen.__contains__, iterable):
             seen_add(element)
             yield element
     else:
-        for element in iterable:
+        fuer element in iterable:
             k = key(element)
             if k not in seen:
                 seen_add(k)
@@ -46,7 +46,7 @@ def always_iterable(obj, base_type=(str, bytes)):
         >>> list(always_iterable(obj))
         ['foo']
 
-    If *base_type* is set, objects for which ``isinstance(obj, base_type)``
+    If *base_type* is set, objects fuer which ``isinstance(obj, base_type)``
     returns ``True`` won't be considered iterable.
 
         >>> obj = {'a': 1}
@@ -157,7 +157,7 @@ klasse bucket:
                         self._cache[item_value].append(item)
 
     def __iter__(self):
-        for item in self._it:
+        fuer item in self._it:
             item_value = self._key(item)
             if self._validator(item_value):
                 self._cache[item_value].append(item)

@@ -82,7 +82,7 @@ klasse ExecutorTest:
     def test_map_timeout(self):
         results = []
         try:
-            for i in self.executor.map(time.sleep,
+            fuer i in self.executor.map(time.sleep,
                                        [0, 0, 6],
                                        timeout=5):
                 results.append(i)
@@ -96,7 +96,7 @@ klasse ExecutorTest:
         self.assertIn(results, ([None, None], [None], []))
 
     def test_map_buffersize_type_validation(self):
-        for buffersize in ("foo", 2.0):
+        fuer buffersize in ("foo", 2.0):
             with self.subTest(buffersize=buffersize):
                 with self.assertRaisesRegex(
                     TypeError,
@@ -105,7 +105,7 @@ klasse ExecutorTest:
                     self.executor.map(str, range(4), buffersize=buffersize)
 
     def test_map_buffersize_value_validation(self):
-        for buffersize in (0, -1):
+        fuer buffersize in (0, -1):
             with self.subTest(buffersize=buffersize):
                 with self.assertRaisesRegex(
                     ValueError,
@@ -116,7 +116,7 @@ klasse ExecutorTest:
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_map_buffersize(self):
         ints = range(4)
-        for buffersize in (1, 2, len(ints), len(ints) * 2):
+        fuer buffersize in (1, 2, len(ints), len(ints) * 2):
             with self.subTest(buffersize=buffersize):
                 res = self.executor.map(str, ints, buffersize=buffersize)
                 self.assertListEqual(list(res), ["0", "1", "2", "3"])
@@ -124,7 +124,7 @@ klasse ExecutorTest:
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_map_buffersize_on_multiple_iterables(self):
         ints = range(4)
-        for buffersize in (1, 2, len(ints), len(ints) * 2):
+        fuer buffersize in (1, 2, len(ints), len(ints) * 2):
             with self.subTest(buffersize=buffersize):
                 res = self.executor.map(add, ints, ints, buffersize=buffersize)
                 self.assertListEqual(list(res), [0, 2, 4, 6])
@@ -161,7 +161,7 @@ klasse ExecutorTest:
         ints = iter(range(4))
         buffersize = 2
         self.executor.map(str, ints, buffersize=buffersize)
-        self.executor.shutdown(wait=True)  # wait for tasks to complete
+        self.executor.shutdown(wait=True)  # wait fuer tasks to complete
         self.assertEqual(
             next(ints),
             buffersize,
@@ -202,7 +202,7 @@ klasse ExecutorTest:
             # deallocated while the thread that created it runs -- if the
             # thread is paused waiting on an event, it may not merge the
             # refcount of the queued object. For that reason, we alternate
-            # between running the GC and waiting for the event.
+            # between running the GC and waiting fuer the event.
             wait_time = 0
             collected = False
             while not collected and wait_time <= support.SHORT_TIMEOUT:
@@ -215,7 +215,7 @@ klasse ExecutorTest:
                         "Stale reference not collected within timeout.")
 
     def test_max_workers_negative(self):
-        for number in (0, -1):
+        fuer number in (0, -1):
             with self.assertRaisesRegex(ValueError,
                                         "max_workers must be greater "
                                         "than 0"):
@@ -225,12 +225,12 @@ klasse ExecutorTest:
     def test_free_reference(self):
         # Issue #14406: Result iterator should not keep an internal
         # reference to result objects.
-        for obj in self.executor.map(make_dummy_object, range(10)):
+        fuer obj in self.executor.map(make_dummy_object, range(10)):
             wr = weakref.ref(obj)
             del obj
             support.gc_collect()  # For PyPy or other GCs.
 
-            for _ in support.sleeping_retry(support.SHORT_TIMEOUT):
+            fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
                 if wr() is None:
                     break
 

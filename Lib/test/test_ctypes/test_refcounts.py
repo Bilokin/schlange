@@ -99,14 +99,14 @@ klasse AnotherLeak(unittest.TestCase):
         # bpo-36880: test that returning None from a py_object callback
         # does not decrement the refcount of None.
 
-        for FUNCTYPE in (ctypes.CFUNCTYPE, ctypes.PYFUNCTYPE):
+        fuer FUNCTYPE in (ctypes.CFUNCTYPE, ctypes.PYFUNCTYPE):
             with self.subTest(FUNCTYPE=FUNCTYPE):
                 @FUNCTYPE(ctypes.py_object)
                 def func():
                     return None
 
                 # Check that calling func does not affect None's refcount.
-                for _ in range(10000):
+                fuer _ in range(10000):
                     func()
 
 

@@ -74,7 +74,7 @@ def load_data(fobj):
     # Read the ttinfo struct, (utoff, isdst, abbrind)
     if typecnt:
         utcoff, isdst, abbrind = zip(
-            *(struct.unpack(">lbb", fobj.read(6)) for i in range(typecnt))
+            *(struct.unpack(">lbb", fobj.read(6)) fuer i in range(typecnt))
         )
     else:
         utcoff = ()
@@ -105,7 +105,7 @@ def load_data(fobj):
 
         return abbr_vals[idx]
 
-    abbr = tuple(get_abbr(idx) for idx in abbrind)
+    abbr = tuple(get_abbr(idx) fuer idx in abbrind)
 
     # The remainder of the file consists of leap seconds (currently unused) and
     # the standard/wall and ut/local indicators, which are metadata we don't need.
@@ -141,7 +141,7 @@ klasse _TZifHeader:
     ]
 
     def __init__(self, *args):
-        for attr, val in zip(self.__slots__, args, strict=True):
+        fuer attr, val in zip(self.__slots__, args, strict=True):
             setattr(self, attr, val)
 
     @classmethod

@@ -1,4 +1,4 @@
-# Minimal tests for dis module
+# Minimal tests fuer dis module
 
 import ast
 import contextlib
@@ -161,7 +161,7 @@ dis_f_co_code = """\
 """
 
 def bug708901():
-    for res in range(1,
+    fuer res in range(1,
                      10):
         pass
 
@@ -193,7 +193,7 @@ dis_bug708901 = """\
 
 
 def bug1333982(x=[]):
-    assert 0, ((s for s in x) +
+    assert 0, ((s fuer s in x) +
               1)
     pass
 
@@ -223,7 +223,7 @@ def bug42562():
     pass
 
 
-# Set line number for 'pass' to None
+# Set line number fuer 'pass' to None
 bug42562.__code__ = bug42562.__code__.replace(co_linetable=b'\xf8')
 
 
@@ -378,7 +378,7 @@ x: int = 1
 y: fun(1)
 lst[fun(0)]: int = 1
 """
-# leading newline is for a reason (tests lineno)
+# leading newline is fuer a reason (tests lineno)
 
 dis_annot_stmt_str = """\
   --           MAKE_CELL                0 (__conditional_annotations__)
@@ -790,13 +790,13 @@ async def _ag(x):
     yield x
 
 async def _co(x):
-    async for item in _ag(x):
+    async fuer item in _ag(x):
         pass
 
 def _h(y):
     def foo(x):
         '''funcdoc'''
-        return list(x + z for z in y)
+        return list(x + z fuer z in y)
     return foo
 
 dis_nested_0 = """\
@@ -898,7 +898,7 @@ dis_load_test_quickened_code = """\
        load_test.__code__.co_firstlineno + 2)
 
 def loop_test():
-    for i in [1, 2, 3] * 3:
+    fuer i in [1, 2, 3] * 3:
         load_test(i)
 
 dis_loop_test_quickened_code = """\
@@ -945,7 +945,7 @@ dis_extended_arg_quick_code = """\
       extended_arg_quick.__code__.co_firstlineno + 1,)
 
 klasse DisTestBase(unittest.TestCase):
-    "Common utilities for DisTests and TestDisTraceback"
+    "Common utilities fuer DisTests and TestDisTraceback"
 
     def strip_addresses(self, text):
         return re.sub(r'\b0x[0-9A-Fa-f]+\b', '0x...', text)
@@ -953,9 +953,9 @@ klasse DisTestBase(unittest.TestCase):
     def assert_exception_table_increasing(self, lines):
         prev_start, prev_end = -1, -1
         count = 0
-        for line in lines:
+        fuer line in lines:
             m = re.match(r'  L(\d+) to L(\d+) -> L\d+ \[\d+\]', line)
-            start, end = [int(g) for g in m.groups()]
+            start, end = [int(g) fuer g in m.groups()]
             self.assertGreaterEqual(end, start)
             self.assertGreaterEqual(start, prev_end)
             prev_start, prev_end = start, end
@@ -989,7 +989,7 @@ klasse DisTests(DisTestBase):
         self.maxDiff = None
         got = self.get_disassembly(func, depth=0, **kwargs)
         self.do_disassembly_compare(got, expected)
-        # Add checks for dis.disco
+        # Add checks fuer dis.disco
         if hasattr(func, '__code__'):
             got_disco = io.StringIO()
             with contextlib.redirect_stdout(got_disco):
@@ -1012,7 +1012,7 @@ klasse DisTests(DisTestBase):
                             'LOAD_FAST_BORROW_LOAD_FAST_BORROW',
                             'INSTRUMENTED_CALL_FUNCTION_EX',
                             'ANNOTATIONS_PLACEHOLDER'])
-        for op, opname in enumerate(dis.opname):
+        fuer op, opname in enumerate(dis.opname):
             if opname in long_opcodes or opname.startswith("INSTRUMENTED"):
                 continue
             if opname in opcode._specialized_opmap:
@@ -1032,13 +1032,13 @@ klasse DisTests(DisTestBase):
     @requires_debug_ranges()
     def test_dis_with_all_positions(self):
         def format_instr_positions(instr):
-            values = tuple('?' if p is None else p for p in instr.positions)
+            values = tuple('?' if p is None else p fuer p in instr.positions)
             return '%s:%s-%s:%s' % (values[0], values[2], values[1], values[3])
 
         instrs = list(dis.get_instructions(_f))
-        for instr in instrs:
+        fuer instr in instrs:
             with self.subTest(instr=instr):
-                self.assertTrue(all(p is not None for p in instr.positions))
+                self.assertTrue(all(p is not None fuer p in instr.positions))
         positions = tuple(map(format_instr_positions, instrs))
         expected = dis_f_with_positions_format % positions
         self.do_disassembly_test(_f, expected, show_positions=True)
@@ -1109,7 +1109,7 @@ klasse DisTests(DisTestBase):
         self.do_disassembly_test(bug708901, dis_bug708901)
 
     def test_bug_1333982(self):
-        # This one is checking bytecodes generated for an `assert` statement,
+        # This one is checking bytecodes generated fuer an `assert` statement,
         # so fails if the tests are run with -O.  Skip this test then.
         if not __debug__:
             self.skipTest('need asserts, run without -O')
@@ -1128,11 +1128,11 @@ klasse DisTests(DisTestBase):
         self.do_disassembly_test(bug46724, dis_bug46724)
 
     def test_kw_names(self):
-        # Test that value is displayed for keyword argument names:
+        # Test that value is displayed fuer keyword argument names:
         self.do_disassembly_test(wrap_func_w_kwargs, dis_kw_names)
 
     def test_intrinsic_1(self):
-        # Test that argrepr is displayed for CALL_INTRINSIC_1
+        # Test that argrepr is displayed fuer CALL_INTRINSIC_1
         self.do_disassembly_test("from math import *", dis_intrinsic_1_2)
         self.do_disassembly_test("+a", dis_intrinsic_1_5)
         self.do_disassembly_test("(*a,)", dis_intrinsic_1_6)
@@ -1149,16 +1149,16 @@ klasse DisTests(DisTestBase):
             return namespace['foo']
 
         # Test all small ranges
-        for i in range(1, 300):
+        fuer i in range(1, 300):
             expected = _BIG_LINENO_FORMAT % (i + 2)
             self.do_disassembly_test(func(i), expected)
 
         # Test some larger ranges too
-        for i in range(300, 1000, 10):
+        fuer i in range(300, 1000, 10):
             expected = _BIG_LINENO_FORMAT % (i + 2)
             self.do_disassembly_test(func(i), expected)
 
-        for i in range(1000, 5000, 10):
+        fuer i in range(1000, 5000, 10):
             expected = _BIG_LINENO_FORMAT2 % (i + 2)
             self.do_disassembly_test(func(i), expected)
 
@@ -1274,12 +1274,12 @@ klasse DisTests(DisTestBase):
     def test_async_for_presentation(self):
 
         async def afunc():
-            async for letter in async_iter1:
+            async fuer letter in async_iter1:
                 l2
             l3
 
         disassembly =  self.get_disassembly(afunc)
-        for line in disassembly.split("\n"):
+        fuer line in disassembly.split("\n"):
             if "END_ASYNC_FOR" in line:
                 break
         else:
@@ -1291,7 +1291,7 @@ klasse DisTests(DisTestBase):
     @staticmethod
     def code_quicken(f):
         _testinternalcapi = import_helper.import_module("_testinternalcapi")
-        for _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
+        fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
             f()
 
     @cpython_only
@@ -1348,7 +1348,7 @@ klasse DisTests(DisTestBase):
     def test_loop_with_conditional_at_end_is_quickened(self):
         _testinternalcapi = import_helper.import_module("_testinternalcapi")
         def for_loop_true(x):
-            for _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
+            fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
                 if x:
                     pass
 
@@ -1357,7 +1357,7 @@ klasse DisTests(DisTestBase):
                       self.get_disassembly(for_loop_true, adaptive=True))
 
         def for_loop_false(x):
-            for _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
+            fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
                 if x:
                     pass
 
@@ -1382,14 +1382,14 @@ klasse DisTests(DisTestBase):
     def get_cached_values(self, quickened, adaptive):
         def f():
             l = []
-            for i in range(42):
+            fuer i in range(42):
                 l.append(i)
         if quickened:
             self.code_quicken(f)
         else:
             # "copy" the code to un-quicken it:
             reset_code(f)
-        for instruction in _unroll_caches_as_Instructions(dis.get_instructions(
+        fuer instruction in _unroll_caches_as_Instructions(dis.get_instructions(
             f, show_caches=True, adaptive=adaptive
         ), show_caches=True):
             if instruction.opname == "CACHE":
@@ -1397,15 +1397,15 @@ klasse DisTests(DisTestBase):
 
     @cpython_only
     def test_show_caches(self):
-        for quickened in (False, True):
-            for adaptive in (False, True):
+        fuer quickened in (False, True):
+            fuer adaptive in (False, True):
                 with self.subTest(f"{quickened=}, {adaptive=}"):
                     if adaptive:
                         pattern = r"^(\w+: \d+)?$"
                     else:
                         pattern = r"^(\w+: 0)?$"
                     caches = list(self.get_cached_values(quickened, adaptive))
-                    for cache in caches:
+                    fuer cache in caches:
                         self.assertRegex(cache, pattern)
                     total_caches = 21
                     empty_caches = 7
@@ -1424,7 +1424,7 @@ klasse DisTests(DisTestBase):
         # However, this might change in the future. So we explicitly try to find
         # a CACHE entry in the instructions. If we can't do that, fail the test
 
-        for inst in _unroll_caches_as_Instructions(
+        fuer inst in _unroll_caches_as_Instructions(
                 dis.get_instructions(f, show_caches=True), show_caches=True):
             if inst.opname == "CACHE":
                 op_offset = inst.offset - 2
@@ -1589,7 +1589,7 @@ Names:
 
 async def async_def():
     await 1
-    async for a in b: pass
+    async fuer a in b: pass
     async with c as d: pass
 
 code_info_async_def = """\
@@ -1624,12 +1624,12 @@ klasse CodeInfoTests(unittest.TestCase):
 
     def test_code_info(self):
         self.maxDiff = 1000
-        for x, expected in self.test_pairs:
+        fuer x, expected in self.test_pairs:
             self.assertRegex(dis.code_info(x), expected)
 
     def test_show_code(self):
         self.maxDiff = 1000
-        for x, expected in self.test_pairs:
+        fuer x, expected in self.test_pairs:
             with captured_stdout() as output:
                 dis.show_code(x)
             self.assertRegex(output.getvalue(), expected+"\n")
@@ -1644,7 +1644,7 @@ klasse CodeInfoTests(unittest.TestCase):
         self.assertEqual(dis.pretty_flags(0), '0x0')
 
 
-# Fodder for instruction introspection tests
+# Fodder fuer instruction introspection tests
 #   Editing any of these may require recalculating the expected output
 def outer(a=1, b=2):
     def f(c=3, d=4):
@@ -1657,7 +1657,7 @@ def outer(a=1, b=2):
 
 def jumpy():
     # This won't actually run (but that's OK, we only disassemble it)
-    for i in range(10):
+    fuer i in range(10):
         print(i)
         if i < 4:
             continue
@@ -1684,7 +1684,7 @@ def jumpy():
     finally:
         print("OK, now we're done")
 
-# End fodder for opinfo generation tests
+# End fodder fuer opinfo generation tests
 expected_outer_line = 1
 _line_offset = outer.__code__.co_firstlineno - 1
 code_object_f = outer.__code__.co_consts[1]
@@ -1699,7 +1699,7 @@ expected_jumpy_line = 1
 # code_object_inner before rerunning the tests
 
 def _stringify_instruction(instr):
-    # Since postions offsets change a lot for these test cases, ignore them.
+    # Since postions offsets change a lot fuer these test cases, ignore them.
     base = (
         f"  make_inst(opname={instr.opname!r}, arg={instr.arg!r}, argval={instr.argval!r}, " +
         f"argrepr={instr.argrepr!r}, offset={instr.offset}, start_offset={instr.start_offset}, " +
@@ -1962,8 +1962,8 @@ expected_opinfo_simple = [
 klasse InstructionTestCase(BytecodeTestCase):
 
     def assertInstructionsEqual(self, instrs_1, instrs_2, /):
-        instrs_1 = [instr_1._replace(positions=None, cache_info=None) for instr_1 in instrs_1]
-        instrs_2 = [instr_2._replace(positions=None, cache_info=None) for instr_2 in instrs_2]
+        instrs_1 = [instr_1._replace(positions=None, cache_info=None) fuer instr_1 in instrs_1]
+        instrs_2 = [instr_2._replace(positions=None, cache_info=None) fuer instr_2 in instrs_2]
         self.assertEqual(instrs_1, instrs_2)
 
 klasse InstructionTests(InstructionTestCase):
@@ -1973,9 +1973,9 @@ klasse InstructionTests(InstructionTestCase):
         self.maxDiff = None
 
     def test_instruction_str(self):
-        # smoke test for __str__
+        # smoke test fuer __str__
         instrs = dis.get_instructions(simple)
-        for instr in instrs:
+        fuer instr in instrs:
             str(instr)
 
     def test_default_first_line(self):
@@ -2011,7 +2011,7 @@ klasse InstructionTests(InstructionTestCase):
         code = compile('f(\n  x, y, z\n)', '<test>', 'exec')
         positions = [
             instr.positions
-            for instr in dis.get_instructions(code)
+            fuer instr in dis.get_instructions(code)
         ]
         expected = [
             (0, 1, 0, 0),
@@ -2029,7 +2029,7 @@ klasse InstructionTests(InstructionTestCase):
 
         named_positions = [
             (pos.lineno, pos.end_lineno, pos.col_offset, pos.end_col_offset)
-            for pos in positions
+            fuer pos in positions
         ]
         self.assertEqual(named_positions, expected)
 
@@ -2038,7 +2038,7 @@ klasse InstructionTests(InstructionTestCase):
         code = compile('x, y, z', '<test>', 'exec')
         code_without_location_table = code.replace(co_linetable=b'')
         actual = dis.get_instructions(code_without_location_table)
-        for instruction in actual:
+        fuer instruction in actual:
             with self.subTest(instruction=instruction):
                 positions = instruction.positions
                 self.assertEqual(len(positions), 4)
@@ -2059,16 +2059,16 @@ klasse InstructionTests(InstructionTestCase):
         code = roots.__code__
         ops = code.co_code[::2]
         cache_opcode = opcode.opmap["CACHE"]
-        caches = sum(op == cache_opcode for op in ops)
+        caches = sum(op == cache_opcode fuer op in ops)
         non_caches = len(ops) - caches
         # Make sure we have "lots of caches". If not, roots should be changed:
         assert 1 / 3 <= caches / non_caches, "this test needs more caches!"
-        for show_caches in (False, True):
-            for adaptive in (False, True):
+        fuer show_caches in (False, True):
+            fuer adaptive in (False, True):
                 with self.subTest(f"{adaptive=}, {show_caches=}"):
                     co_positions = [
                         positions
-                        for op, positions in zip(ops, code.co_positions(), strict=True)
+                        fuer op, positions in zip(ops, code.co_positions(), strict=True)
                         if show_caches or op != cache_opcode
                     ]
                     dis_positions = [
@@ -2078,7 +2078,7 @@ klasse InstructionTests(InstructionTestCase):
                             instruction.positions.col_offset,
                             instruction.positions.end_col_offset,
                         )
-                        for instruction in _unroll_caches_as_Instructions(dis.get_instructions(
+                        fuer instruction in _unroll_caches_as_Instructions(dis.get_instructions(
                             code, adaptive=adaptive, show_caches=show_caches
                         ), show_caches=show_caches)
                     ]
@@ -2122,7 +2122,7 @@ klasse InstructionTests(InstructionTestCase):
 
     def test_baseopname_and_baseopcode(self):
         # Standard instructions
-        for name in dis.opmap:
+        fuer name in dis.opmap:
             instruction = make_inst(opname=name, arg=None, argval=None, argrepr='', offset=0,
                                     start_offset=0, starts_line=True, line_number=1, label=None, positions=None)
             baseopname = instruction.baseopname
@@ -2133,7 +2133,7 @@ klasse InstructionTests(InstructionTestCase):
             self.assertEqual(instruction.opcode, baseopcode)
 
         # Specialized instructions
-        for name in opcode._specialized_opmap:
+        fuer name in opcode._specialized_opmap:
             instruction = make_inst(opname=name, arg=None, argval=None, argrepr='',
                                     offset=0, start_offset=0, starts_line=True, line_number=1, label=None, positions=None)
             baseopname = instruction.baseopname
@@ -2210,7 +2210,7 @@ klasse InstructionTests(InstructionTestCase):
         # start_offset should be equal to offset
 
         instructions = list(dis.Bytecode(_f))
-        for instruction in instructions:
+        fuer instruction in instructions:
             self.assertEqual(instruction.offset, instruction.start_offset)
 
         def last_item(iterable):
@@ -2281,7 +2281,7 @@ klasse InstructionTests(InstructionTestCase):
         # end_offset of the previous instruction should be equal to the
         # start_offset of the following instruction
         instructions = list(dis.Bytecode(self.test_cache_offset_and_end_offset))
-        for prev, curr in zip(instructions, instructions[1:]):
+        fuer prev, curr in zip(instructions, instructions[1:]):
             self.assertEqual(prev.end_offset, curr.start_offset)
 
 
@@ -2291,7 +2291,7 @@ klasse BytecodeTests(InstructionTestCase, DisTestBase):
 
     def test_instantiation(self):
         # Test with function, method, code string and code object
-        for obj in [_f, _C(1).__init__, "a=1", _f.__code__]:
+        fuer obj in [_f, _C(1).__init__, "a=1", _f.__code__]:
             with self.subTest(obj=obj):
                 b = dis.Bytecode(obj)
                 self.assertIsInstance(b.codeobj, types.CodeType)
@@ -2299,7 +2299,7 @@ klasse BytecodeTests(InstructionTestCase, DisTestBase):
         self.assertRaises(TypeError, dis.Bytecode, object())
 
     def test_iteration(self):
-        for obj in [_f, _C(1).__init__, "a=1", _f.__code__]:
+        fuer obj in [_f, _C(1).__init__, "a=1", _f.__code__]:
             with self.subTest(obj=obj):
                 via_object = list(dis.Bytecode(obj))
                 via_generator = list(dis.get_instructions(obj))
@@ -2322,7 +2322,7 @@ klasse BytecodeTests(InstructionTestCase, DisTestBase):
 
     def test_info(self):
         self.maxDiff = 1000
-        for x, expected in CodeInfoTests.test_pairs:
+        fuer x, expected in CodeInfoTests.test_pairs:
             b = dis.Bytecode(x)
             self.assertRegex(b.info(), expected)
 
@@ -2346,7 +2346,7 @@ klasse BytecodeTests(InstructionTestCase, DisTestBase):
     @requires_debug_ranges()
     def test_bytecode_co_positions(self):
         bytecode = dis.Bytecode("a=1")
-        for instr, positions in zip(bytecode, bytecode.codeobj.co_positions()):
+        fuer instr, positions in zip(bytecode, bytecode.codeobj.co_positions()):
             assert instr.positions == positions
 
 klasse TestBytecodeTestCase(BytecodeTestCase):
@@ -2378,7 +2378,7 @@ klasse TestFinderMethods(unittest.TestCase):
             ("from ..a.b import c as d, e as f", ('a.b', 2, ('c', 'e'))),
             ("from ..a.b import *", ('a.b', 2, ('*',))),
         ]
-        for src, expected in cases:
+        fuer src, expected in cases:
             with self.subTest(src=src):
                 code = compile(src, "<string>", "exec")
                 res = tuple(dis._find_imports(code))
@@ -2393,7 +2393,7 @@ klasse TestFinderMethods(unittest.TestCase):
             ("global x\nx=y=1", ('x', 'y')),
             ("global x\nz=x", ('z',)),
         ]
-        for src, expected in cases:
+        fuer src, expected in cases:
             with self.subTest(src=src):
                 code = compile(src, "<string>", "exec")
                 res = tuple(dis._find_store_names(code))
@@ -2403,7 +2403,7 @@ klasse TestFinderMethods(unittest.TestCase):
         labels = dis.findlabels(jumpy.__code__.co_code)
         jumps = [
             instr.offset
-            for instr in expected_opinfo_jumpy
+            fuer instr in expected_opinfo_jumpy
             if instr.is_jump_target
         ]
 
@@ -2414,7 +2414,7 @@ klasse TestFinderMethods(unittest.TestCase):
             pass
 
         code = func.__code__
-        offsets = [linestart[0] for linestart in dis.findlinestarts(code)]
+        offsets = [linestart[0] fuer linestart in dis.findlinestarts(code)]
         self.assertEqual(offsets, [0, 2])
 
 
@@ -2469,17 +2469,17 @@ def _unroll_caches_as_Instructions(instrs, show_caches=False):
     # the new API, but it will be clearer to keep the tests working as
     # before and do that in a separate PR.
 
-    for instr in instrs:
+    fuer instr in instrs:
         yield instr
         if not show_caches:
             continue
 
         offset = instr.offset
-        for name, size, data in (instr.cache_info or ()):
-            for i in range(size):
+        fuer name, size, data in (instr.cache_info or ()):
+            fuer i in range(size):
                 offset += 2
-                # Only show the fancy argrepr for a CACHE instruction when it's
-                # the first entry for a particular cache value:
+                # Only show the fancy argrepr fuer a CACHE instruction when it's
+                # the first entry fuer a particular cache value:
                 if i == 0:
                     argrepr = f"{name}: {int.from_bytes(data, sys.byteorder)}"
                 else:
@@ -2536,9 +2536,9 @@ klasse TestDisCLI(unittest.TestCase):
                 return None
         ''')
 
-        for r in range(1, len(base_flags) + 1):
-            for choices in itertools.combinations(base_flags, r=r):
-                for args in itertools.product(*choices):
+        fuer r in range(1, len(base_flags) + 1):
+            fuer choices in itertools.combinations(base_flags, r=r):
+                fuer args in itertools.product(*choices):
                     with self.subTest(args=args[1:]):
                         _ = self.invoke_dis(*args)
 
@@ -2563,7 +2563,7 @@ klasse TestDisCLI(unittest.TestCase):
                         LOAD_CONST               0 (None)
                         RETURN_VALUE
         '''
-        for flag in ['-C', '--show-caches']:
+        fuer flag in ['-C', '--show-caches']:
             self.check_output(source, expect, flag)
 
     def test_show_offsets(self):
@@ -2575,7 +2575,7 @@ klasse TestDisCLI(unittest.TestCase):
             1          2       LOAD_CONST               0 (None)
                        4       RETURN_VALUE
         '''
-        for flag in ['-O', '--show-offsets']:
+        fuer flag in ['-O', '--show-offsets']:
             self.check_output(source, expect, flag)
 
     def test_show_positions(self):
@@ -2587,7 +2587,7 @@ klasse TestDisCLI(unittest.TestCase):
             1:0-1:4            LOAD_CONST               0 (None)
             1:0-1:4            RETURN_VALUE
         '''
-        for flag in ['-P', '--show-positions']:
+        fuer flag in ['-P', '--show-positions']:
             self.check_output(source, expect, flag)
 
     def test_specialized_code(self):
@@ -2599,7 +2599,7 @@ klasse TestDisCLI(unittest.TestCase):
             1           LOAD_CONST               0 (None)
                         RETURN_VALUE
         '''
-        for flag in ['-S', '--specialized']:
+        fuer flag in ['-S', '--specialized']:
             self.check_output(source, expect, flag)
 
 

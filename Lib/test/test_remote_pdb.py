@@ -35,7 +35,7 @@ def kill_on_error(proc):
 
 
 klasse MockSocketFile:
-    """Mock socket file for testing _PdbServer without actual socket connections."""
+    """Mock socket file fuer testing _PdbServer without actual socket connections."""
 
     def __init__(self):
         self.input_queue = []
@@ -66,7 +66,7 @@ klasse MockSocketFile:
     def get_output(self) -> List[dict]:
         """Get the output that was written by the object being tested."""
         results = []
-        for data in self.output_buffer:
+        fuer data in self.output_buffer:
             if isinstance(data, bytes) and data.endswith(b"\n"):
                 try:
                     results.append(json.loads(data.decode().strip()))
@@ -77,7 +77,7 @@ klasse MockSocketFile:
 
 
 klasse PdbClientTestCase(unittest.TestCase):
-    """Tests for the _PdbClient class."""
+    """Tests fuer the _PdbClient class."""
 
     def do_test(
         self,
@@ -104,10 +104,10 @@ klasse PdbClientTestCase(unittest.TestCase):
             expected_state = {}
 
         expected_state.setdefault("write_failed", False)
-        messages = [m for source, m in incoming if source == "server"]
-        prompts = [m["prompt"] for source, m in incoming if source == "user"]
+        messages = [m fuer source, m in incoming if source == "server"]
+        prompts = [m["prompt"] fuer source, m in incoming if source == "user"]
 
-        input_iter = (m for source, m in incoming if source == "user")
+        input_iter = (m fuer source, m in incoming if source == "user")
         completions = []
 
         def mock_input(prompt):
@@ -122,7 +122,7 @@ klasse PdbClientTestCase(unittest.TestCase):
                 readline_mock.get_endidx.return_value = req["endidx"]
                 unittest.mock.seal(readline_mock)
                 with unittest.mock.patch.dict(sys.modules, {"readline": readline_mock}):
-                    for param in itertools.count():
+                    fuer param in itertools.count():
                         prefix = req["line"][req["begidx"] : req["endidx"]]
                         completion = client.complete(prefix, param)
                         if completion is None:
@@ -146,7 +146,7 @@ klasse PdbClientTestCase(unittest.TestCase):
             client_sock.sendall(
                 b"".join(
                     (m if isinstance(m, bytes) else json.dumps(m).encode()) + b"\n"
-                    for m in messages
+                    fuer m in messages
                 )
             )
             client_sock.shutdown(socket.SHUT_WR)
@@ -195,10 +195,10 @@ klasse PdbClientTestCase(unittest.TestCase):
 
             client.cmdloop()
 
-        sent_msgs = [msg.args[0] for msg in server_sock.sendall.mock_calls]
-        for msg in sent_msgs:
+        sent_msgs = [msg.args[0] fuer msg in server_sock.sendall.mock_calls]
+        fuer msg in sent_msgs:
             assert msg.endswith(b"\n")
-        actual_outgoing = [json.loads(msg) for msg in sent_msgs]
+        actual_outgoing = [json.loads(msg) fuer msg in sent_msgs]
 
         self.assertEqual(actual_outgoing, expected_outgoing)
         self.assertEqual(completions, expected_completions)
@@ -206,19 +206,19 @@ klasse PdbClientTestCase(unittest.TestCase):
             self.assertIn(expected_stdout_substring, stdout.getvalue())
         else:
             self.assertEqual(stdout.getvalue(), expected_stdout)
-        input_mock.assert_has_calls([unittest.mock.call(p) for p in prompts])
-        actual_state = {k: getattr(client, k) for k in expected_state}
+        input_mock.assert_has_calls([unittest.mock.call(p) fuer p in prompts])
+        actual_state = {k: getattr(client, k) fuer k in expected_state}
         self.assertEqual(actual_state, expected_state)
 
         if use_interrupt_socket:
             outgoing_signals = [
                 signal.Signals(int.from_bytes(call.args[0]))
-                for call in interrupt_sock.sendall.call_args_list
+                fuer call in interrupt_sock.sendall.call_args_list
             ]
         else:
             assert mock_kill is not None
             outgoing_signals = []
-            for call in mock_kill.call_args_list:
+            fuer call in mock_kill.call_args_list:
                 pid, signum = call.args
                 self.assertEqual(pid, 12345)
                 outgoing_signals.append(signal.Signals(signum))
@@ -279,11 +279,11 @@ klasse PdbClientTestCase(unittest.TestCase):
             expected_stdout="Some message.\n",
         )
 
-    @unittest.skipIf(sys.flags.optimize >= 2, "Help not available for -OO")
+    @unittest.skipIf(sys.flags.optimize >= 2, "Help not available fuer -OO")
     @subTests(
         "help_request,expected_substring",
         [
-            # a request to display help for a command
+            # a request to display help fuer a command
             ({"help": "ll"}, "Usage: ll | longlist"),
             # a request to display a help overview
             ({"help": ""}, "type help <topic>"),
@@ -306,12 +306,12 @@ klasse PdbClientTestCase(unittest.TestCase):
     @subTests(
         "help_request,expected_substring",
         [
-            # a request to display help for a command
-            ({"help": "ll"}, "No help for 'll'"),
+            # a request to display help fuer a command
+            ({"help": "ll"}, "No help fuer 'll'"),
             # a request to display a help overview
             ({"help": ""}, "Undocumented commands"),
             # a request to display the full PDB manual
-            ({"help": "pdb"}, "No help for 'pdb'"),
+            ({"help": "pdb"}, "No help fuer 'pdb'"),
         ],
     )
     def test_handling_help_when_not_available(self, help_request, expected_substring):
@@ -409,7 +409,7 @@ klasse PdbClientTestCase(unittest.TestCase):
         )
 
     def test_handling_unrecognized_prompt_type(self):
-        """Test fallback to "dumb" single-line mode for unknown states."""
+        """Test fallback to "dumb" single-line mode fuer unknown states."""
         incoming = [
             ("server", {"prompt": "Do it? ", "state": "confirm"}),
             ("user", {"prompt": "Do it? ", "input": "! ["}),
@@ -477,7 +477,7 @@ klasse PdbClientTestCase(unittest.TestCase):
         incoming = [
             ("server", {"message": "Some message or other\n", "type": "info"}),
         ]
-        for use_interrupt_socket in [False, True]:
+        fuer use_interrupt_socket in [False, True]:
             with self.subTest(use_interrupt_socket=use_interrupt_socket):
                 self.do_test(
                     incoming=incoming,
@@ -830,7 +830,7 @@ klasse PdbClientTestCase(unittest.TestCase):
 
 
 klasse RemotePdbTestCase(unittest.TestCase):
-    """Tests for the _PdbServer class."""
+    """Tests fuer the _PdbServer class."""
 
     def setUp(self):
         self.sockfile = MockSocketFile()
@@ -840,7 +840,7 @@ klasse RemotePdbTestCase(unittest.TestCase):
         self.pdb.botframe = None
         self.pdb.quitting = False
 
-        # Create a frame for testing
+        # Create a frame fuer testing
         self.test_globals = {'a': 1, 'b': 2, '__pdb_convenience_variables': {'x': 100}}
         self.test_locals = {'c': 3, 'd': 4}
 
@@ -980,7 +980,7 @@ klasse RemotePdbTestCase(unittest.TestCase):
             # Add commands to the queue
             self.pdb.cmdqueue = ['help', 'list']
 
-            # Add a command from the socket for when cmdqueue is empty
+            # Add a command from the socket fuer when cmdqueue is empty
             self.sockfile.add_input({"reply": "next"})
 
             # Add a second command to break the loop
@@ -1004,24 +1004,24 @@ klasse RemotePdbTestCase(unittest.TestCase):
 
             # Check if prompt was sent to client
             outputs = self.sockfile.get_output()
-            prompts = [o for o in outputs if 'prompt' in o]
+            prompts = [o fuer o in outputs if 'prompt' in o]
             self.assertEqual(len(prompts), 2)  # Should have sent 2 prompts
 
 
 @requires_subprocess()
 @unittest.skipIf(is_wasi, "WASI does not support TCP sockets")
 klasse PdbConnectTestCase(unittest.TestCase):
-    """Tests for the _connect mechanism using direct socket communication."""
+    """Tests fuer the _connect mechanism using direct socket communication."""
 
     def setUp(self):
-        # Create a server socket that will wait for the debugger to connect
+        # Create a server socket that will wait fuer the debugger to connect
         self.server_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server_sock.bind(('127.0.0.1', 0))  # Let OS assign port
         self.server_sock.listen(1)
         self.port = self.server_sock.getsockname()[1]
 
     def _create_script(self, script=None):
-        # Create a file for subprocess script
+        # Create a file fuer subprocess script
         if script is None:
             script = textwrap.dedent(
                 f"""
@@ -1120,12 +1120,12 @@ klasse PdbConnectTestCase(unittest.TestCase):
             self.assertIn('message', initial_data)
             self.assertIn('pdb._connect', initial_data['message'])
 
-            # First, look for command_list message
+            # First, look fuer command_list message
             data = client_file.readline()
             command_list = json.loads(data.decode())
             self.assertIn('command_list', command_list)
 
-            # Then, look for the first prompt
+            # Then, look fuer the first prompt
             data = client_file.readline()
             prompt_data = json.loads(data.decode())
             self.assertIn('prompt', prompt_data)
@@ -1134,11 +1134,11 @@ klasse PdbConnectTestCase(unittest.TestCase):
             # Send 'bt' (backtrace) command
             self._send_command(client_file, "bt")
 
-            # Check for response - we should get some stack frames
+            # Check fuer response - we should get some stack frames
             messages = self._read_until_prompt(client_file)
 
             # Extract text messages containing stack info
-            text_msg = [msg['message'] for msg in messages
+            text_msg = [msg['message'] fuer msg in messages
                     if 'message' in msg and 'connect_to_debugger' in msg['message']]
             got_stack_info = bool(text_msg)
 
@@ -1147,7 +1147,7 @@ klasse PdbConnectTestCase(unittest.TestCase):
                 "connect_to_debugger",
             ]
 
-            for stack, msg in zip(expected_stacks, text_msg, strict=True):
+            fuer stack, msg in zip(expected_stacks, text_msg, strict=True):
                 self.assertIn(stack, msg)
 
             self.assertTrue(got_stack_info, "Should have received stack trace information")
@@ -1155,7 +1155,7 @@ klasse PdbConnectTestCase(unittest.TestCase):
             # Send 'c' (continue) command to let the program finish
             self._send_command(client_file, "c")
 
-            # Wait for process to finish
+            # Wait fuer process to finish
             stdout, _ = process.communicate(timeout=SHORT_TIMEOUT)
 
             # Check if we got the expected output
@@ -1173,7 +1173,7 @@ klasse PdbConnectTestCase(unittest.TestCase):
             # Set a breakpoint at the return statement
             self._send_command(client_file, "break bar")
             messages = self._read_until_prompt(client_file)
-            bp_msg = next(msg['message'] for msg in messages if 'message' in msg)
+            bp_msg = next(msg['message'] fuer msg in messages if 'message' in msg)
             self.assertIn("Breakpoint", bp_msg)
 
             # Continue execution until breakpoint
@@ -1181,20 +1181,20 @@ klasse PdbConnectTestCase(unittest.TestCase):
             messages = self._read_until_prompt(client_file)
 
             # Verify we hit the breakpoint
-            hit_msg = next(msg['message'] for msg in messages if 'message' in msg)
+            hit_msg = next(msg['message'] fuer msg in messages if 'message' in msg)
             self.assertIn("bar()", hit_msg)
 
             # Check breakpoint list
             self._send_command(client_file, "b")
             messages = self._read_until_prompt(client_file)
-            list_msg = next(msg['message'] for msg in reversed(messages) if 'message' in msg)
+            list_msg = next(msg['message'] fuer msg in reversed(messages) if 'message' in msg)
             self.assertIn("1   breakpoint", list_msg)
             self.assertIn("breakpoint already hit 1 time", list_msg)
 
             # Clear breakpoint
             self._send_command(client_file, "clear 1")
             messages = self._read_until_prompt(client_file)
-            clear_msg = next(msg['message'] for msg in reversed(messages) if 'message' in msg)
+            clear_msg = next(msg['message'] fuer msg in reversed(messages) if 'message' in msg)
             self.assertIn("Deleted breakpoint", clear_msg)
 
             # Continue to end
@@ -1260,8 +1260,8 @@ klasse PdbConnectTestCase(unittest.TestCase):
             messages = self._read_until_prompt(client_file)
 
             # Verify we got the keyboard interrupt message.
-            interrupt_msgs = [msg['message'] for msg in messages if 'message' in msg]
-            expected_msg = [msg for msg in interrupt_msgs if "bar()" in msg]
+            interrupt_msgs = [msg['message'] fuer msg in messages if 'message' in msg]
+            expected_msg = [msg fuer msg in interrupt_msgs if "bar()" in msg]
             self.assertGreater(len(expected_msg), 0)
 
             # Continue to end as fast as we can
@@ -1353,13 +1353,13 @@ klasse PdbConnectTestCase(unittest.TestCase):
             # Skip initial messages until we get to the prompt
             self._read_until_prompt(client_file)
 
-            # Request help for different commands
+            # Request help fuer different commands
             help_commands = ["help", "help break", "help continue", "help pdb"]
 
-            for cmd in help_commands:
+            fuer cmd in help_commands:
                 self._send_command(client_file, cmd)
 
-                # Look for help message
+                # Look fuer help message
                 data = client_file.readline()
                 message = json.loads(data.decode())
 
@@ -1369,7 +1369,7 @@ klasse PdbConnectTestCase(unittest.TestCase):
                     # Should just contain the command itself
                     self.assertEqual(message['help'], "")
                 else:
-                    # Should contain the specific command we asked for help with
+                    # Should contain the specific command we asked fuer help with
                     command = cmd.split()[1]
                     self.assertEqual(message['help'], command)
 
@@ -1410,7 +1410,7 @@ klasse PdbConnectTestCase(unittest.TestCase):
                 "class TestClass:\n    def __init__(self):\n        self.value = 100\n    def get_value(self):\n        return self.value"
             ]
 
-            for cmd in multi_line_commands:
+            fuer cmd in multi_line_commands:
                 self._send_command(client_file, cmd)
                 self._read_until_prompt(client_file)
 
@@ -1419,7 +1419,7 @@ klasse PdbConnectTestCase(unittest.TestCase):
             messages = self._read_until_prompt(client_file)
 
             # Find the result message
-            result_msg = next(msg['message'] for msg in messages if 'message' in msg)
+            result_msg = next(msg['message'] fuer msg in messages if 'message' in msg)
             self.assertIn("42", result_msg)
 
             # Test creating an instance of the defined class
@@ -1431,7 +1431,7 @@ klasse PdbConnectTestCase(unittest.TestCase):
             messages = self._read_until_prompt(client_file)
 
             # Find the result message
-            result_msg = next(msg['message'] for msg in messages if 'message' in msg)
+            result_msg = next(msg['message'] fuer msg in messages if 'message' in msg)
             self.assertIn("100", result_msg)
 
             # Continue execution to finish
@@ -1462,7 +1462,7 @@ def _supports_remote_attaching():
 @requires_subprocess()
 klasse PdbAttachTestCase(unittest.TestCase):
     def setUp(self):
-        # Create a server socket that will wait for the debugger to connect
+        # Create a server socket that will wait fuer the debugger to connect
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.sock.bind(('127.0.0.1', 0))  # Let OS assign port
         self.sock.listen(1)
@@ -1470,7 +1470,7 @@ klasse PdbAttachTestCase(unittest.TestCase):
         self._create_script()
 
     def _create_script(self, script=None):
-        # Create a file for subprocess script
+        # Create a file fuer subprocess script
         script = textwrap.dedent(
             f"""
             import socket
@@ -1520,7 +1520,7 @@ klasse PdbAttachTestCase(unittest.TestCase):
         self.addCleanup(process.stdout.close)
         self.addCleanup(process.stderr.close)
 
-        # Wait for the process to reach our attachment point
+        # Wait fuer the process to reach our attachment point
         self.sock.settimeout(10)
         conn, _ = self.sock.accept()
         conn.close()
@@ -1543,7 +1543,7 @@ klasse PdbAttachTestCase(unittest.TestCase):
             try:
                 pdb.main()
             except PermissionError:
-                self.skipTest("Insufficient permissions for remote execution")
+                self.skipTest("Insufficient permissions fuer remote execution")
 
         process.wait()
         server_stdout = process.stdout.read()

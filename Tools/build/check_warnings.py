@@ -33,7 +33,7 @@ def parse_warning_ignore_file(file_path: str) -> set[IgnoreRule]:
     files_with_expected_warnings: set[IgnoreRule] = set()
     with Path(file_path).open(encoding="UTF-8") as ignore_rules_file:
         files_with_expected_warnings = set()
-        for i, line in enumerate(ignore_rules_file):
+        fuer i, line in enumerate(ignore_rules_file):
             line = line.strip()
             if line and not line.startswith("#"):
                 line_parts = line.split()
@@ -75,7 +75,7 @@ def extract_warnings_from_compiler_output(
     output type. Removes path prefix from file paths if provided.
     Compatible with GCC and Clang compiler output.
     """
-    # Choose pattern and compile regex for particular compiler output
+    # Choose pattern and compile regex fuer particular compiler output
     if compiler_output_type == "gcc":
         regex_pattern = (
             r"(?P<file>.*):(?P<line>\d+):(?P<column>\d+): warning: "
@@ -92,7 +92,7 @@ def extract_warnings_from_compiler_output(
         )
     compiled_regex = re.compile(regex_pattern)
     compiler_warnings: list[CompileWarning] = []
-    for i, line in enumerate(compiler_output.splitlines(), start=1):
+    fuer i, line in enumerate(compiler_output.splitlines(), start=1):
         if match := compiled_regex.match(line):
             try:
                 compiler_warnings.append({
@@ -117,12 +117,12 @@ def get_warnings_by_file(
 ) -> dict[str, list[CompileWarning]]:
     """
     Returns a dictionary where the key is the file and the data is the
-    warnings in that file. Does not include duplicate warnings for a
+    warnings in that file. Does not include duplicate warnings fuer a
     file from list of provided warnings.
     """
     warnings_by_file = defaultdict(list)
     warnings_added = set()
-    for warning in warnings:
+    fuer warning in warnings:
         warning_key = (
             f"{warning['file']}-{warning['line']}-"
             f"{warning['column']}-{warning['option']}"
@@ -137,11 +137,11 @@ def get_warnings_by_file(
 def is_file_ignored(
     file_path: str, ignore_rules: set[IgnoreRule]
 ) -> IgnoreRule | None:
-    """Return the IgnoreRule object for the file path.
+    """Return the IgnoreRule object fuer the file path.
 
-    Return ``None`` if there is no related rule for that path.
+    Return ``None`` if there is no related rule fuer that path.
     """
-    for rule in ignore_rules:
+    fuer rule in ignore_rules:
         if rule.is_directory:
             if file_path.startswith(rule.file_path):
                 return rule
@@ -160,7 +160,7 @@ def get_unexpected_warnings(
     with expected warnings
     """
     unexpected_warnings = {}
-    for file in files_with_warnings.keys():
+    fuer file in files_with_warnings.keys():
         rule = is_file_ignored(file, ignore_rules)
 
         if rule:
@@ -179,12 +179,12 @@ def get_unexpected_warnings(
 
     if unexpected_warnings:
         print("Unexpected warnings:")
-        for file in unexpected_warnings:
+        fuer file in unexpected_warnings:
             print(
                 f"{file} expected {unexpected_warnings[file][1]} warnings,"
                 f" found {len(unexpected_warnings[file][0])}"
             )
-            for warning in unexpected_warnings[file][0]:
+            fuer warning in unexpected_warnings[file][0]:
                 print(warning)
 
         return 1
@@ -197,12 +197,12 @@ def get_unexpected_improvements(
     files_with_warnings: dict[str, list[CompileWarning]],
 ) -> int:
     """
-    Returns failure status if the number of warnings for a file is greater
-    than the expected number of warnings for that file based on the ignore
+    Returns failure status if the number of warnings fuer a file is greater
+    than the expected number of warnings fuer that file based on the ignore
     rules
     """
     unexpected_improvements = []
-    for rule in ignore_rules:
+    fuer rule in ignore_rules:
         if (
             not rule.ignore_all
             and rule.file_path not in files_with_warnings.keys()
@@ -218,7 +218,7 @@ def get_unexpected_improvements(
 
     if unexpected_improvements:
         print("Unexpected improvements:")
-        for file in unexpected_improvements:
+        fuer file in unexpected_improvements:
             print(f"{file[0]} expected {file[1]} warnings, found {file[2]}")
         return 1
 

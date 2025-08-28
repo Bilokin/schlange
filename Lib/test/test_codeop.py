@@ -1,5 +1,5 @@
 """
-   Test cases for codeop.py
+   Test cases fuer codeop.py
    Nick Mathewson
 """
 import unittest
@@ -24,7 +24,7 @@ klasse CodeopTests(unittest.TestCase):
         '''succeed iff str is the start of an invalid piece of code'''
         try:
             compile_command(str,symbol=symbol)
-            self.fail("No exception raised for invalid code")
+            self.fail("No exception raised fuer invalid code")
         except SyntaxError:
             self.assertTrue(is_syntax)
         except OverflowError:
@@ -88,7 +88,7 @@ klasse CodeopTests(unittest.TestCase):
         av("\n \na**3","eval")
         av("#a\n#b\na**3","eval")
 
-        av("def f():\n try: pass\n finally: [x for x in (1,2)]\n")
+        av("def f():\n try: pass\n finally: [x fuer x in (1,2)]\n")
         av("def f():\n pass\n#foo\n")
         av("@a.b.c\ndef f():\n pass\n")
 
@@ -216,12 +216,12 @@ klasse CodeopTests(unittest.TestCase):
         ai("class a():")
 
         ai("[x for")
-        ai("[x for x in")
-        ai("[x for x in (")
+        ai("[x fuer x in")
+        ai("[x fuer x in (")
 
         ai("(x for")
-        ai("(x for x in")
-        ai("(x for x in (")
+        ai("(x fuer x in")
+        ai("(x fuer x in (")
 
         ai('a = f"""')
         ai('a = \\')
@@ -261,7 +261,7 @@ klasse CodeopTests(unittest.TestCase):
         ai("del [1]")
         ai("del '1'")
 
-        ai("[i for i in range(10)] = (1, 2, 3)")
+        ai("[i fuer i in range(10)] = (1, 2, 3)")
 
     def test_invalid_exec(self):
         ai = self.assertInvalid

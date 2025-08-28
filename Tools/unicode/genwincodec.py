@@ -17,10 +17,10 @@ def genwinmap(codepage):
 
     enc2uni = {}
 
-    for i in list(range(32)) + [127]:
+    fuer i in list(range(32)) + [127]:
         enc2uni[i] = (i, 'CONTROL CHARACTER')
 
-    for i in range(256):
+    fuer i in range(256):
         buf = ctypes.create_unicode_buffer(2)
         ret = MultiByteToWideChar(
             codepage, 0,

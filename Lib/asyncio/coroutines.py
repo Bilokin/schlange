@@ -13,7 +13,7 @@ def _is_debug_mode():
                                   bool(os.environ.get('PYTHONASYNCIODEBUG')))
 
 
-# A marker for iscoroutinefunction.
+# A marker fuer iscoroutinefunction.
 _is_coroutine = object()
 
 

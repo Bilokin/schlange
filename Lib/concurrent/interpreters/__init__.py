@@ -69,7 +69,7 @@ def create():
 def list_all():
     """Return all existing interpreters."""
     return [Interpreter(id, _whence=whence)
-            for id, whence in _interpreters.list_all(require_ready=True)]
+            fuer id, whence in _interpreters.list_all(require_ready=True)]
 
 
 def get_current():
@@ -92,7 +92,7 @@ klasse Interpreter:
 
     Attributes:
 
-    "id" - the unique process-global ID number for the interpreter
+    "id" - the unique process-global ID number fuer the interpreter
     "whence" - indicates where the interpreter was created
 
     If the interpreter wasn't created by this module
@@ -110,7 +110,7 @@ klasse Interpreter:
     }
 
     def __new__(cls, id, /, _whence=None, _ownsref=None):
-        # There is only one instance for any given ID.
+        # There is only one instance fuer any given ID.
         if not isinstance(id, int):
             raise TypeError(f'id must be an int, got {id!r}')
         id = int(id)
@@ -145,7 +145,7 @@ klasse Interpreter:
     def __del__(self):
         self._decref()
 
-    # for pickling:
+    # fuer pickling:
     def __reduce__(self):
         return (type(self), (self._id,))
 

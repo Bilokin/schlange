@@ -1,4 +1,4 @@
-"""Tests for helper functions used by import.c ."""
+"""Tests fuer helper functions used by import.c ."""
 
 from importlib import _bootstrap_external, machinery
 import os.path
@@ -31,7 +31,7 @@ klasse FixUpModuleTests:
 
         expected = {"__file__": path, "__cached__": path}
 
-        for key, val in expected.items():
+        fuer key, val in expected.items():
             with self.subTest(f"{key}: {val}"):
                 self.assertEqual(ns[key], val)
 
@@ -53,7 +53,7 @@ klasse FixUpModuleTests:
 
         expected = {"__file__": path, "__cached__": None}
 
-        for key, val in expected.items():
+        fuer key, val in expected.items():
             with self.subTest(f"{key}: {val}"):
                 self.assertEqual(ns[key], val)
 

@@ -23,17 +23,17 @@ klasse TestSet(TestCase):
             barrier.wait()
             set_reprs.append(repr(s))
 
-        for _ in range(NUM_ITERS):
+        fuer _ in range(NUM_ITERS):
             set_reprs = []
             threads = [Thread(target=clear_set)]
-            for _ in range(NUM_REPR_THREADS):
+            fuer _ in range(NUM_REPR_THREADS):
                 threads.append(Thread(target=repr_set))
-            for t in threads:
+            fuer t in threads:
                 t.start()
-            for t in threads:
+            fuer t in threads:
                 t.join()
 
-            for set_repr in set_reprs:
+            fuer set_repr in set_reprs:
                 self.assertIn(set_repr, ("set()", "{1, 2, 3, 4, 5, 6, 7, 8}"))
 
 

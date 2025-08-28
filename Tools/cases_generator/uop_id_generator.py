@@ -35,9 +35,9 @@ def generate_uop_ids(
         next_id += 1
         PRE_DEFINED = {"_EXIT_TRACE", "_SET_IP"}
 
-        uops = [(uop.name, uop) for uop in analysis.uops.values()]
+        uops = [(uop.name, uop) fuer uop in analysis.uops.values()]
         # Sort so that _BASE comes immediately before _BASE_0, etc.
-        for name, uop in sorted(uops):
+        fuer name, uop in sorted(uops):
             if name in PRE_DEFINED:
                 continue
             if uop.properties.tier == 1:

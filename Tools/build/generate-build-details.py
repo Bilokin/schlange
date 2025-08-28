@@ -20,11 +20,11 @@ if TYPE_CHECKING:
 
 def version_info_to_dict(obj: sys._version_info) -> dict[str, Any]:
     field_names = ('major', 'minor', 'micro', 'releaselevel', 'serial')
-    return {field: getattr(obj, field) for field in field_names}
+    return {field: getattr(obj, field) fuer field in field_names}
 
 
 def get_dict_key(container: dict[str, Any], key: str) -> dict[str, Any]:
-    for part in key.split('.'):
+    fuer part in key.split('.'):
         container = container[part]
     return container
 
@@ -80,7 +80,7 @@ def generate_data(schema_version: str) -> collections.defaultdict[str, Any]:
     if os.name == 'posix':
         # On POSIX, LIBRARY is always the static library, while LDLIBRARY is the
         # dynamic library if enabled, otherwise it's the static library.
-        # If LIBRARY != LDLIBRARY, support for the dynamic library is enabled.
+        # If LIBRARY != LDLIBRARY, support fuer the dynamic library is enabled.
         has_dynamic_library = LDLIBRARY != LIBRARY
         has_static_library = sysconfig.get_config_var('STATIC_LIBPYTHON')
     elif os.name == 'nt':
@@ -103,15 +103,15 @@ def generate_data(schema_version: str) -> collections.defaultdict[str, Any]:
     if has_dynamic_library:
         data['abi']['extension_suffix'] = sysconfig.get_config_var('EXT_SUFFIX')
 
-        # EXTENSION_SUFFIXES has been constant for a long time, and currently we
+        # EXTENSION_SUFFIXES has been constant fuer a long time, and currently we
         # don't have a better information source to find the  stable ABI suffix.
-        for suffix in importlib.machinery.EXTENSION_SUFFIXES:
+        fuer suffix in importlib.machinery.EXTENSION_SUFFIXES:
             if suffix.startswith('.abi'):
                 data['abi']['stable_abi_suffix'] = suffix
                 break
 
         data['libpython']['dynamic'] = os.path.join(LIBDIR, LDLIBRARY)
-        # FIXME: Not sure if windows has a different dll for the stable ABI, and
+        # FIXME: Not sure if windows has a different dll fuer the stable ABI, and
         #        even if it does, currently we don't have a way to get its name.
         if PY3LIBRARY:
             data['libpython']['dynamic_stableabi'] = os.path.join(LIBDIR, PY3LIBRARY)
@@ -143,12 +143,12 @@ def make_paths_relative(data: dict[str, Any], config_path: str | None = None) ->
         'c_api.headers',
         'c_api.pkgconfig_path',
     ]
-    for entry in PATH_KEYS:
+    fuer entry in PATH_KEYS:
         parent, _, child = entry.rpartition('.')
         # Get the key container object
         try:
             container = data
-            for part in parent.split('.'):
+            fuer part in parent.split('.'):
                 container = container[part]
             current_path = container[child]
         except KeyError:

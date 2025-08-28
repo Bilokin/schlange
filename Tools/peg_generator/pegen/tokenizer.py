@@ -12,7 +12,7 @@ def shorttok(tok: tokenize.TokenInfo) -> str:
 
 
 klasse Tokenizer:
-    """Caching wrapper for the tokenize module.
+    """Caching wrapper fuer the tokenize module.
 
     This is pretty tied to Python's syntax.
     """
@@ -65,7 +65,7 @@ klasse Tokenizer:
         return self._tokens[-1]
 
     def get_last_non_whitespace_token(self) -> tokenize.TokenInfo:
-        for tok in reversed(self._tokens[: self._index]):
+        fuer tok in reversed(self._tokens[: self._index]):
             if tok.type != tokenize.ENDMARKER and (
                 tok.type < tokenize.NEWLINE or tok.type > tokenize.DEDENT
             ):
@@ -82,7 +82,7 @@ klasse Tokenizer:
             count = 0
             seen = 0
             with open(self._path) as f:
-                for l in f:
+                fuer l in f:
                     count += 1
                     if count in line_numbers:
                         seen += 1
@@ -90,7 +90,7 @@ klasse Tokenizer:
                         if seen == n:
                             break
 
-        return [lines[n] for n in line_numbers]
+        return [lines[n] fuer n in line_numbers]
 
     def mark(self) -> Mark:
         return self._index

@@ -23,13 +23,13 @@ def t2():
         os._exit(1)
 
 def main():
-    for j in range(NLOOPS):
+    fuer j in range(NLOOPS):
         threads = []
-        for i in range(NTHREADS):
+        fuer i in range(NTHREADS):
             threads.append(threading.Thread(target=t2 if i % 1 else t1))
-        for thread in threads:
+        fuer thread in threads:
             thread.start()
-        for thread in threads:
+        fuer thread in threads:
             thread.join()
         sys.modules.pop('concurrent.futures', None)
         sys.modules.pop('concurrent.futures.thread', None)

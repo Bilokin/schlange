@@ -15,7 +15,7 @@ klasse StubClass:
             return self.__repr
 
         argstr = ", ".join(self.__stub_args)
-        kwargstr = ", ".join(f"{kw}={val}" for kw, val in self.__stub_kwargs.items())
+        kwargstr = ", ".join(f"{kw}={val}" fuer kw, val in self.__stub_kwargs.items())
 
         in_parens = argstr
         if kwargstr:

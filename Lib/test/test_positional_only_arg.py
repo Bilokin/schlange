@@ -1,4 +1,4 @@
-"""Unit tests for the positional only argument syntax specified in PEP 570."""
+"""Unit tests fuer the positional only argument syntax specified in PEP 570."""
 
 import dis
 import pickle
@@ -96,7 +96,7 @@ klasse PositionalOnlyTestCase(unittest.TestCase):
 
     def test_syntax_for_many_positional_only(self):
         # more than 255 positional only arguments, should compile ok
-        fundef = "def f(%s, /):\n  pass\n" % ', '.join('i%d' % i for i in range(300))
+        fundef = "def f(%s, /):\n  pass\n" % ', '.join('i%d' % i fuer i in range(300))
         compile(fundef, "<test>", "single")
 
     def test_pos_only_definition(self):
@@ -352,7 +352,7 @@ klasse PositionalOnlyTestCase(unittest.TestCase):
 
     def test_too_many_arguments(self):
         # more than 255 positional-only arguments, should compile ok
-        fundef = "def f(%s, /):\n  pass\n" % ', '.join('i%d' % i for i in range(300))
+        fundef = "def f(%s, /):\n  pass\n" % ', '.join('i%d' % i fuer i in range(300))
         compile(fundef, "<test>", "single")
 
     def test_serialization(self):
@@ -441,9 +441,9 @@ klasse PositionalOnlyTestCase(unittest.TestCase):
         # without constant folding we end up with
         # COMPARE_OP(is), IS_OP (0)
         # with constant folding we should expect a IS_OP (1)
-        code_obj = next(const for const in g.__code__.co_consts
+        code_obj = next(const fuer const in g.__code__.co_consts
                         if isinstance(const, types.CodeType) and const.co_name == "__annotate__")
-        codes = [(i.opname, i.argval) for i in dis.get_instructions(code_obj)]
+        codes = [(i.opname, i.argval) fuer i in dis.get_instructions(code_obj)]
         self.assertNotIn(('UNARY_NOT', None), codes)
         self.assertIn(('IS_OP', 1), codes)
 

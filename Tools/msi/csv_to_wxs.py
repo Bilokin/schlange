@@ -1,9 +1,9 @@
 '''
 Processes a CSV file containing a list of files into a WXS file with
-components for each listed file.
+components fuer each listed file.
 
 The CSV columns are:
-    source of file, target for file, group name
+    source of file, target fuer file, group name
 
 Usage::
     py txt_to_wxs.py [path to file list .csv] [path to destination .wxs]
@@ -44,19 +44,19 @@ def main(file_source, install_target):
     with open(file_source, 'r', newline='') as f:
         files = list(csv.reader(f))
 
-    assert len(files) == len(set(make_id(f[1]) for f in files)), "Duplicate file IDs exist"
+    assert len(files) == len(set(make_id(f[1]) fuer f in files)), "Duplicate file IDs exist"
 
     directories = defaultdict(set)
     cache_directories = defaultdict(set)
     groups = defaultdict(list)
-    for source, target, group, disk_id, condition in files:
+    fuer source, target, group, disk_id, condition in files:
         target = PureWindowsPath(target)
         groups[group].append((source, target, disk_id, condition))
 
         if target.suffix.lower() in {".py", ".pyw"}:
             cache_directories[group].add(target.parent)
 
-        for dirname in target.parents:
+        fuer dirname in target.parents:
             parent = make_id(dirname.parent)
             if parent and parent != '.':
                 directories[parent].add(dirname.name)
@@ -65,23 +65,23 @@ def main(file_source, install_target):
         '<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">',
         '    <Fragment>',
     ]
-    for dir_parent in sorted(directories):
+    fuer dir_parent in sorted(directories):
         lines.append('        <DirectoryRef Id="{}">'.format(dir_parent))
-        for dir_name in sorted(directories[dir_parent]):
+        fuer dir_name in sorted(directories[dir_parent]):
             lines.append('            <Directory Id="{}_{}" Name="{}" />'.format(dir_parent, make_id(dir_name), dir_name))
         lines.append('        </DirectoryRef>')
-    for dir_parent in (make_id(d) for group in cache_directories.values() for d in group):
+    fuer dir_parent in (make_id(d) fuer group in cache_directories.values() fuer d in group):
         lines.append('        <DirectoryRef Id="{}">'.format(dir_parent))
         lines.append('            <Directory Id="{}___pycache__" Name="__pycache__" />'.format(dir_parent))
         lines.append('        </DirectoryRef>')
     lines.append('    </Fragment>')
 
-    for group in sorted(groups):
+    fuer group in sorted(groups):
         lines.extend([
             '    <Fragment>',
             '        <ComponentGroup Id="{}">'.format(group),
         ])
-        for source, target, disk_id, condition in groups[group]:
+        fuer source, target, disk_id, condition in groups[group]:
             lines.append('            <Component Id="{}" Directory="{}" Guid="*">'.format(make_id(target), make_id(target.parent)))
             if condition:
                 lines.append('                <Condition>{}</Condition>'.format(condition))
@@ -92,15 +92,15 @@ def main(file_source, install_target):
                 lines.append('                <File Id="{}" Name="{}" Source="{}" />'.format(make_id(target), target.name, source))
             lines.append('            </Component>')
 
-        create_folders = {make_id(p) + "___pycache__" for p in cache_directories[group]}
-        remove_folders = {make_id(p2) for p1 in cache_directories[group] for p2 in chain((p1,), p1.parents)}
+        create_folders = {make_id(p) + "___pycache__" fuer p in cache_directories[group]}
+        remove_folders = {make_id(p2) fuer p1 in cache_directories[group] fuer p2 in chain((p1,), p1.parents)}
         create_folders.discard(".")
         remove_folders.discard(".")
         if create_folders or remove_folders:
             lines.append('            <Component Id="{}__pycache__folders" Directory="TARGETDIR" Guid="{}">'.format(group, uuid1()))
-            lines.extend('                <CreateFolder Directory="{}" />'.format(p) for p in create_folders)
-            lines.extend('                <RemoveFile Id="Remove_{0}_files" Name="*" On="uninstall" Directory="{0}" />'.format(p) for p in create_folders)
-            lines.extend('                <RemoveFolder Id="Remove_{0}_folder" On="uninstall" Directory="{0}" />'.format(p) for p in create_folders | remove_folders)
+            lines.extend('                <CreateFolder Directory="{}" />'.format(p) fuer p in create_folders)
+            lines.extend('                <RemoveFile Id="Remove_{0}_files" Name="*" On="uninstall" Directory="{0}" />'.format(p) fuer p in create_folders)
+            lines.extend('                <RemoveFolder Id="Remove_{0}_folder" On="uninstall" Directory="{0}" />'.format(p) fuer p in create_folders | remove_folders)
             lines.append('            </Component>')
 
         lines.extend([
@@ -113,14 +113,14 @@ def main(file_source, install_target):
     # that we can skip rebuilding.
     try:
         with open(install_target, 'r') as f:
-            if all(x.rstrip('\r\n') == y for x, y in zip_longest(f, lines)):
+            if all(x.rstrip('\r\n') == y fuer x, y in zip_longest(f, lines)):
                 print('File is up to date')
                 return
     except IOError:
         pass
 
     with open(install_target, 'w') as f:
-        f.writelines(line + '\n' for line in lines)
+        f.writelines(line + '\n' fuer line in lines)
     print('Wrote {} lines to {}'.format(len(lines), install_target))
 
 if __name__ == '__main__':

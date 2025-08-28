@@ -59,9 +59,9 @@ klasse IntTestCases(unittest.TestCase):
         # Different base:
         self.assertEqual(int("10",16), 16)
         # Test conversion from strings and various anomalies
-        for s, v in L:
-            for sign in "", "+", "-":
-                for prefix in "", " ", "\t", "  \t\t  ":
+        fuer s, v in L:
+            fuer sign in "", "+", "-":
+                fuer prefix in "", " ", "\t", "  \t\t  ":
                     ss = prefix + sign + s
                     vv = v
                     if sign == "-" and v is not ValueError:
@@ -177,7 +177,7 @@ klasse IntTestCases(unittest.TestCase):
         self.assertEqual(int('0O123', 8), 83)
         self.assertEqual(int('0B100', 2), 4)
 
-        # the code has special checks for the first character after the
+        # the code has special checks fuer the first character after the
         #  type prefix
         self.assertRaises(ValueError, int, '0b2', 2)
         self.assertRaises(ValueError, int, '0b02', 2)
@@ -193,7 +193,7 @@ klasse IntTestCases(unittest.TestCase):
         self.assertRaises(ValueError, int, '0X0g', 16)
 
         # SF bug 1334662: int(string, base) wrong answers
-        # Checks for proper evaluation of 2**32 + 1
+        # Checks fuer proper evaluation of 2**32 + 1
         self.assertEqual(int('100000000000000000000000000000001', 2), 4294967297)
         self.assertEqual(int('102002022201221111212', 3), 4294967297)
         self.assertEqual(int('10000000000000001', 4), 4294967297)
@@ -249,16 +249,16 @@ klasse IntTestCases(unittest.TestCase):
         self.assertEqual(int('١٢٣٤٥٦٧٨٩٠', 0), 1234567890)
 
     def test_underscores(self):
-        for lit in VALID_UNDERSCORE_LITERALS:
-            if any(ch in lit for ch in '.eEjJ'):
+        fuer lit in VALID_UNDERSCORE_LITERALS:
+            if any(ch in lit fuer ch in '.eEjJ'):
                 continue
             self.assertEqual(int(lit, 0), eval(lit))
             self.assertEqual(int(lit, 0), int(lit.replace('_', ''), 0))
-        for lit in INVALID_UNDERSCORE_LITERALS:
-            if any(ch in lit for ch in '.eEjJ'):
+        fuer lit in INVALID_UNDERSCORE_LITERALS:
+            if any(ch in lit fuer ch in '.eEjJ'):
                 continue
             self.assertRaises(ValueError, int, lit, 0)
-        # Additional test cases with bases != 0, only for the constructor:
+        # Additional test cases with bases != 0, only fuer the constructor:
         self.assertEqual(int("1_00", 3), 9)
         self.assertEqual(int("0_100"), 100)  # not valid as a literal!
         self.assertEqual(int(b"1_00"), 100)  # byte underscore
@@ -302,7 +302,7 @@ klasse IntTestCases(unittest.TestCase):
         with self.assertRaises(ValueError):
             int('0', base=2**234)
         # Bases 2 through 36 are supported.
-        for base in range(2,37):
+        fuer base in range(2,37):
             self.assertEqual(int('0', base=base), 0)
 
     def test_int_base_bad_types(self):
@@ -320,7 +320,7 @@ klasse IntTestCases(unittest.TestCase):
                 return self.value
 
         # Check out of range bases.
-        for base in 2**100, -2**100, 1, 37:
+        fuer base in 2**100, -2**100, 1, 37:
             with self.assertRaises(ValueError):
                 int('43', base)
 
@@ -330,7 +330,7 @@ klasse IntTestCases(unittest.TestCase):
         self.assertEqual(int('101', base=MyIndexable(36)), 1 + 36**2)
 
     def test_non_numeric_input_types(self):
-        # Test possible non-numeric types for the argument x, including
+        # Test possible non-numeric types fuer the argument x, including
         # subclasses of the explicitly documented accepted types.
         klasse CustomStr(str): pass
         klasse CustomBytes(bytes): pass
@@ -351,7 +351,7 @@ klasse IntTestCases(unittest.TestCase):
         else:
             factories.append(lambda b: array('B', b))
 
-        for f in factories:
+        fuer f in factories:
             x = f(b'100')
             with self.subTest(type(x)):
                 self.assertEqual(int(x), 100)
@@ -392,7 +392,7 @@ klasse IntTestCases(unittest.TestCase):
 
         klasse Classic:
             pass
-        for base in (object, Classic):
+        fuer base in (object, Classic):
             klasse IntOverridesTrunc(base):
                 def __int__(self):
                     return 42
@@ -487,7 +487,7 @@ klasse IntTestCases(unittest.TestCase):
                 else:
                     int(s, base)
             self.assertEqual(cm.exception.args[0],
-                "invalid literal for int() with base %d: %r" %
+                "invalid literal fuer int() with base %d: %r" %
                 (10 if base is None else base, s))
 
         check('\xbd')
@@ -520,7 +520,7 @@ klasse IntTestCases(unittest.TestCase):
 
     @support.cpython_only
     def test_round_with_none_arg_direct_call(self):
-        for val in [(1).__round__(None),
+        fuer val in [(1).__round__(None),
                     round(1),
                     round(1, None)]:
             self.assertEqual(val, 1)
@@ -662,7 +662,7 @@ klasse IntStrDigitLimitsTests(unittest.TestCase):
         """The limit does not apply to power of 2 bases."""
         maxdigits = sys.get_int_max_str_digits()
 
-        for base in (2, 4, 8, 16, 32):
+        fuer base in (2, 4, 8, 16, 32):
             with self.subTest(base=base):
                 self.int_class('1' * (maxdigits + 1), base)
                 assert maxdigits < 100_000
@@ -876,7 +876,7 @@ klasse PyLongModuleTests(unittest.TestCase):
     @unittest.skipUnless(_decimal, "C _decimal module required")
     def test_whitebox_dec_str_to_int_inner_monster(self):
         # I don't think anyone has enough RAM to build a string long enough
-        # for this function to complain. So lie about the string length.
+        # fuer this function to complain. So lie about the string length.
 
         klasse LyingStr(str):
             def __len__(self):
@@ -897,7 +897,7 @@ klasse PyLongModuleTests(unittest.TestCase):
 
     @unittest.skipUnless(_pylong, "_pylong module required")
     def test_pylong_compute_powers(self):
-        # Basic sanity tests. See end of _pylong.py for manual heavy tests.
+        # Basic sanity tests. See end of _pylong.py fuer manual heavy tests.
         def consumer(w, base, limit, need_hi):
             seen = set()
             need = set()
@@ -913,13 +913,13 @@ klasse PyLongModuleTests(unittest.TestCase):
             inner(w)
             d = _pylong.compute_powers(w, base, limit, need_hi=need_hi)
             self.assertEqual(d.keys(), need)
-            for k, v in d.items():
+            fuer k, v in d.items():
                 self.assertEqual(v, base ** k)
 
-        for base in 2, 5:
-            for need_hi in False, True:
-                for limit in 1, 11:
-                    for w in range(250, 550):
+        fuer base in 2, 5:
+            fuer need_hi in False, True:
+                fuer limit in 1, 11:
+                    fuer w in range(250, 550):
                         consumer(w, base, limit, need_hi)
 
 if __name__ == "__main__":

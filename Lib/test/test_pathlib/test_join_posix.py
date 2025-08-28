@@ -1,5 +1,5 @@
 """
-Tests for Posix-flavoured pathlib.types._JoinablePath
+Tests fuer Posix-flavoured pathlib.types._JoinablePath
 """
 
 import os

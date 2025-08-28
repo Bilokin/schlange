@@ -1,5 +1,5 @@
 """
-Interface adapters for low-level readers.
+Interface adapters fuer low-level readers.
 """
 
 import abc
@@ -20,26 +20,26 @@ klasse SimpleReader(abc.ABC):
     @abc.abstractmethod
     def package(self) -> str:
         """
-        The name of the package for which this reader loads resources.
+        The name of the package fuer which this reader loads resources.
         """
 
     @abc.abstractmethod
     def children(self) -> List['SimpleReader']:
         """
-        Obtain an iterable of SimpleReader for available
+        Obtain an iterable of SimpleReader fuer available
         child containers (e.g. directories).
         """
 
     @abc.abstractmethod
     def resources(self) -> List[str]:
         """
-        Obtain available named resources for this virtual package.
+        Obtain available named resources fuer this virtual package.
         """
 
     @abc.abstractmethod
     def open_binary(self, resource: str) -> BinaryIO:
         """
-        Obtain a File-like for a named resource.
+        Obtain a File-like fuer a named resource.
         """
 
     @property
@@ -49,7 +49,7 @@ klasse SimpleReader(abc.ABC):
 
 klasse ResourceContainer(Traversable):
     """
-    Traversable container for a package's resources via its reader.
+    Traversable container fuer a package's resources via its reader.
     """
 
     def __init__(self, reader: SimpleReader):
@@ -62,7 +62,7 @@ klasse ResourceContainer(Traversable):
         return False
 
     def iterdir(self):
-        files = (ResourceHandle(self, name) for name in self.reader.resources)
+        files = (ResourceHandle(self, name) fuer name in self.reader.resources)
         dirs = map(ResourceContainer, self.reader.children())
         return itertools.chain(files, dirs)
 

@@ -18,7 +18,7 @@ klasse Point:
 klasse TestCompiler(unittest.TestCase):
 
     def test_refleaks(self):
-        # Hunting for leaks using -R doesn't catch leaks in the compiler itself,
+        # Hunting fuer leaks using -R doesn't catch leaks in the compiler itself,
         # just the code under test. This test ensures that if there are leaks in
         # the pattern compiler, those runs will fail:
         with open(__file__) as file:
@@ -2778,7 +2778,7 @@ klasse TestPatma(unittest.TestCase):
 
         klasse B(A): ...
 
-        for cls in (A, B):
+        fuer cls in (A, B):
             with self.subTest(cls=cls.__name__):
                 inst = cls(1, 2)
                 w = 0
@@ -2820,7 +2820,7 @@ klasse TestPatma(unittest.TestCase):
                 self.x = x
                 self.y = y
 
-        for cls in (A, G):
+        fuer cls in (A, G):
             with self.subTest(cls=cls.__name__):
                 inst = cls(1, 2)
                 w = 0
@@ -2848,7 +2848,7 @@ klasse TestPatma(unittest.TestCase):
 
         klasse B(A): ...
 
-        for cls in (A, B):
+        fuer cls in (A, B):
             with self.subTest(cls=cls.__name__):
                 inst = cls(1, 2)
                 w = 0
@@ -3128,7 +3128,7 @@ klasse TestSyntaxErrors(unittest.TestCase):
         """)
 
     def test_real_number_wrong_ops(self):
-        for op in ["*", "/", "@", "**", "%", "//"]:
+        fuer op in ["*", "/", "@", "**", "%", "//"]:
             with self.subTest(op=op):
                 self.assert_syntax_error(f"""
                 match ...:
@@ -3401,7 +3401,7 @@ klasse TestSourceLocations(unittest.TestCase):
                         x = 1
             x += 1
 
-        for inst in dis.get_instructions(f):
+        fuer inst in dis.get_instructions(f):
             if inst.opcode in dis.hasjump:
                 self.assertIsNotNone(inst.positions.lineno, "jump without location")
 
@@ -3502,7 +3502,7 @@ klasse TestTracing(unittest.TestCase):
     @support.skip_wasi_stack_overflow()
     def test_parser_deeply_nested_patterns(self):
         # Deeply nested patterns can cause exponential backtracking when parsing.
-        # See gh-93671 for more information.
+        # See gh-93671 fuer more information.
 
         levels = 100
 
@@ -3512,7 +3512,7 @@ klasse TestTracing(unittest.TestCase):
             "[" * levels + "1" + "]" * levels,
         ]
 
-        for pattern in patterns:
+        fuer pattern in patterns:
             with self.subTest(pattern):
                 code = inspect.cleandoc("""
                     match None:
@@ -3545,12 +3545,12 @@ if __name__ == "__main__":
 
         def run_perf(self, count):
             tests = []
-            for attr in vars(TestPatma):
+            fuer attr in vars(TestPatma):
                 if attr.startswith("test_"):
                     tests.append(getattr(self, attr))
             tests *= count
             start = pyperf.perf_counter()
-            for test in tests:
+            fuer test in tests:
                 test()
             return pyperf.perf_counter() - start
 

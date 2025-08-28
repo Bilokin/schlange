@@ -52,9 +52,9 @@ def run_cmd(argv, *,
 
 def preprocess(tool, filename, cwd=None, **kwargs):
     argv = _build_argv(tool, filename, **kwargs)
-    logger.debug(' '.join(shlex.quote(v) for v in argv))
+    logger.debug(' '.join(shlex.quote(v) fuer v in argv))
 
-    # Make sure the OS is supported for this file.
+    # Make sure the OS is supported fuer this file.
     if (_expected := is_os_mismatch(filename)):
         error = None
         raise OSMismatchError(filename, _expected, argv, error, TOOL)
@@ -80,7 +80,7 @@ def _build_argv(
     compiler=None,
 ):
     if includes:
-        includes = tuple(f'-include{i}' for i in includes)
+        includes = tuple(f'-include{i}' fuer i in includes)
         postargs = (includes + postargs) if postargs else includes
 
     compiler = distutils.ccompiler.new_compiler(
@@ -96,7 +96,7 @@ def _build_argv(
     compiler.spawn = _spawn
     compiler.preprocess(
         filename,
-        macros=[tuple(v) for v in macros or ()],
+        macros=[tuple(v) fuer v in macros or ()],
         include_dirs=incldirs or (),
         extra_preargs=preargs or (),
         extra_postargs=postargs or (),

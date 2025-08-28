@@ -71,7 +71,7 @@ klasse Test(unittest.TestCase):
         support.setswitchinterval(1e-9)
         try:
             threads = [threading.Thread(target=opener)]
-            threads += [threading.Thread(target=logger) for k in range(10)]
+            threads += [threading.Thread(target=logger) fuer k in range(10)]
             with threading_helper.start_threads(threads):
                 start.set()
                 time.sleep(0.1)

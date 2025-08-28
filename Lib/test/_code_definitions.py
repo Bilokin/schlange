@@ -43,7 +43,7 @@ def spam_minimal():
 def spam_with_builtins():
     x = 42
     values = (42,)
-    checks = tuple(callable(v) for v in values)
+    checks = tuple(callable(v) fuer v in values)
     res = callable(values), tuple(values), list(values), checks
     print(res)
 
@@ -52,7 +52,7 @@ def spam_with_globals_and_builtins():
     func1 = spam
     func2 = spam_minimal
     funcs = (func1, func2)
-    checks = tuple(callable(f) for f in funcs)
+    checks = tuple(callable(f) fuer f in funcs)
     res = callable(funcs), tuple(funcs), list(funcs), checks
     print(res)
 
@@ -291,7 +291,7 @@ SCRIPT_FUNCTIONS = [
 # generators
 
 def gen_spam_1(*args):
-     for arg in args:
+     fuer arg in args:
          yield arg
 
 
@@ -306,7 +306,7 @@ coro_spam.close()
 
 
 async def asyncgen_spam(*args):
-    for arg in args:
+    fuer arg in args:
         yield arg
 asynccoro_spam = asyncgen_spam(1, 2, 3)
 

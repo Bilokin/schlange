@@ -14,10 +14,10 @@ import warnings
 from test import support
 
 
-# Filename used for testing
+# Filename used fuer testing
 TESTFN_ASCII = '@test'
 
-# Disambiguate TESTFN for parallel testing, while letting it remain a valid
+# Disambiguate TESTFN fuer parallel testing, while letting it remain a valid
 # module name.
 TESTFN_ASCII = "{}_{}_tmp".format(TESTFN_ASCII, os.getpid())
 
@@ -66,7 +66,7 @@ elif not support.is_apple and sys.platform not in {"emscripten", "wasi"}:
 # FS_NONASCII: non-ASCII character encodable by os.fsencode(),
 # or an empty string if there is no such character.
 FS_NONASCII = ''
-for character in (
+fuer character in (
     # First try printable and common characters to have a readable filename.
     # For each character, the encoding list are just example of encodings able
     # to encode the character (the list is not exhaustive).
@@ -102,7 +102,7 @@ for character in (
     try:
         # If Python is set up to use the legacy 'mbcs' in Windows,
         # 'replace' error mode is used, and encode() returns b'?'
-        # for characters missing in the ANSI codepage
+        # fuer characters missing in the ANSI codepage
         if os.fsdecode(os.fsencode(character)) != character:
             raise UnicodeError
     except UnicodeError:
@@ -121,7 +121,7 @@ SAVEDCWD = os.getcwd()
 # to the surrogateescape error handler (PEP 383), but not from the filesystem
 # encoding in strict mode.
 TESTFN_UNDECODABLE = None
-for name in (
+fuer name in (
     # b'\xff' is not decodable by os.fsdecode() with code page 932. Windows
     # accepts it to create a file or a directory, or don't accept to enter to
     # such directory (when the bytes name is used). So test b'\xe7' first:
@@ -178,7 +178,7 @@ def can_symlink():
         return _can_symlink
     # WASI / wasmtime prevents symlinks with absolute paths, see man
     # openat2(2) RESOLVE_BENEATH. Almost all symlink tests use absolute
-    # paths. Skip symlink tests on WASI for now.
+    # paths. Skip symlink tests on WASI fuer now.
     src = os.path.abspath(TESTFN)
     symlink_path = src + "can_symlink"
     try:
@@ -193,7 +193,7 @@ def can_symlink():
 
 
 def skip_unless_symlink(test):
-    """Skip decorator for tests that require functional symlink"""
+    """Skip decorator fuer tests that require functional symlink"""
     ok = can_symlink()
     msg = "Requires functional symlink implementation"
     return test if ok else unittest.skip(msg)(test)
@@ -253,7 +253,7 @@ def can_xattr():
 
 
 def skip_unless_xattr(test):
-    """Skip decorator for tests that require functional extended attributes"""
+    """Skip decorator fuer tests that require functional extended attributes"""
     ok = can_xattr()
     msg = "no non-broken extended attribute support"
     return test if ok else unittest.skip(msg)(test)
@@ -385,7 +385,7 @@ if sys.platform.startswith("win"):
         else:
             dirname, name = os.path.split(pathname)
             dirname = dirname or '.'
-        # Check for `pathname` to be removed from the filesystem.
+        # Check fuer `pathname` to be removed from the filesystem.
         # The exponential backoff of the timeout amounts to a total
         # of ~1 second after which the deletion is probably an error
         # anyway.
@@ -393,7 +393,7 @@ if sys.platform.startswith("win"):
         # required when contention occurs.
         timeout = 0.001
         while timeout < 1.0:
-            # Note we are only testing for the existence of the file(s) in
+            # Note we are only testing fuer the existence of the file(s) in
             # the contents of the directory regardless of any security or
             # access rights.  If we have made it this far, we have sufficient
             # permissions to do that much using Python's equivalent of the
@@ -407,7 +407,7 @@ if sys.platform.startswith("win"):
             time.sleep(timeout)
             timeout *= 2
         logging.getLogger(__name__).warning(
-            'tests may fail, delete still pending for %s',
+            'tests may fail, delete still pending fuer %s',
             pathname,
             stack_info=True,
             stacklevel=4,
@@ -423,7 +423,7 @@ if sys.platform.startswith("win"):
         from test.support import _force_run
 
         def _rmtree_inner(path):
-            for name in _force_run(path, os.listdir, path):
+            fuer name in _force_run(path, os.listdir, path):
                 fullname = os.path.join(path, name)
                 try:
                     mode = os.lstat(fullname).st_mode
@@ -467,7 +467,7 @@ else:
 
         def _rmtree_inner(path):
             from test.support import _force_run
-            for name in _force_run(path, os.listdir, path):
+            fuer name in _force_run(path, os.listdir, path):
                 fullname = os.path.join(path, name)
                 try:
                     mode = os.lstat(fullname).st_mode
@@ -620,7 +620,7 @@ def open_dir_fd(path):
 
 
 def fs_is_case_insensitive(directory):
-    """Detects if the file system for the specified directory
+    """Detects if the file system fuer the specified directory
     is case-insensitive."""
     import tempfile
     with tempfile.NamedTemporaryFile(dir=directory) as base:
@@ -690,7 +690,7 @@ def fd_count():
             pass
         else:
             old_modes = {}
-            for report_type in (msvcrt.CRT_WARN,
+            fuer report_type in (msvcrt.CRT_WARN,
                                 msvcrt.CRT_ERROR,
                                 msvcrt.CRT_ASSERT):
                 old_modes[report_type] = msvcrt.CrtSetReportMode(report_type,
@@ -698,7 +698,7 @@ def fd_count():
 
     try:
         count = 0
-        for fd in range(MAXFD):
+        fuer fd in range(MAXFD):
             try:
                 # Prefer dup() over fstat(). fstat() can require input/output
                 # whereas dup() doesn't.
@@ -711,7 +711,7 @@ def fd_count():
                 count += 1
     finally:
         if old_modes is not None:
-            for report_type in (msvcrt.CRT_WARN,
+            fuer report_type in (msvcrt.CRT_WARN,
                                 msvcrt.CRT_ERROR,
                                 msvcrt.CRT_ASSERT):
                 msvcrt.CrtSetReportMode(report_type, old_modes[report_type])
@@ -775,7 +775,7 @@ klasse EnvironmentVarGuard(collections.abc.MutableMapping):
 
     def unset(self, envvar, /, *envvars):
         """Unset one or more environment variables."""
-        for ev in (envvar, *envvars):
+        fuer ev in (envvar, *envvars):
             del self[ev]
 
     def copy(self):
@@ -786,7 +786,7 @@ klasse EnvironmentVarGuard(collections.abc.MutableMapping):
         return self
 
     def __exit__(self, *ignore_exc):
-        for (k, v) in self._changed.items():
+        fuer (k, v) in self._changed.items():
             if v is None:
                 if k in self._environ:
                     del self._environ[k]
@@ -812,8 +812,8 @@ except (ImportError, AttributeError):
 else:
     @contextlib.contextmanager
     def subst_drive(path):
-        """Temporarily yield a substitute drive for a given path."""
-        for c in reversed(string.ascii_uppercase):
+        """Temporarily yield a substitute drive fuer a given path."""
+        fuer c in reversed(string.ascii_uppercase):
             drive = f'{c}:'
             if (not kernel32.QueryDosDeviceW(drive, None, 0) and
                     ctypes.get_last_error() == ERROR_FILE_NOT_FOUND):

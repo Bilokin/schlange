@@ -11,7 +11,7 @@ from test.support import import_helper
 _testlimitedcapi = import_helper.import_module('_testlimitedcapi')
 
 NULL = None
-BAD_ARGUMENT = re.escape('bad argument type for built-in operation')
+BAD_ARGUMENT = re.escape('bad argument type fuer built-in operation')
 
 
 klasse CAPIUnicodeTest(unittest.TestCase):
@@ -102,7 +102,7 @@ klasse CAPIUnicodeTest(unittest.TestCase):
         """Test PyUnicode_DecodeUTF8()"""
         decodeutf8 = _testlimitedcapi.unicode_decodeutf8
 
-        for s in ['abc', '\xa1\xa2', '\u4f60\u597d', 'a\U0001f600']:
+        fuer s in ['abc', '\xa1\xa2', '\u4f60\u597d', 'a\U0001f600']:
             b = s.encode('utf-8')
             self.assertEqual(decodeutf8(b), s)
             self.assertEqual(decodeutf8(b, 'strict'), s)
@@ -122,7 +122,7 @@ klasse CAPIUnicodeTest(unittest.TestCase):
         """Test PyUnicode_DecodeUTF8Stateful()"""
         decodeutf8stateful = _testlimitedcapi.unicode_decodeutf8stateful
 
-        for s in ['abc', '\xa1\xa2', '\u4f60\u597d', 'a\U0001f600']:
+        fuer s in ['abc', '\xa1\xa2', '\u4f60\u597d', 'a\U0001f600']:
             b = s.encode('utf-8')
             self.assertEqual(decodeutf8stateful(b), (s, len(b)))
             self.assertEqual(decodeutf8stateful(b, 'strict'), (s, len(b)))
@@ -145,7 +145,7 @@ klasse CAPIUnicodeTest(unittest.TestCase):
         """Test PyUnicode_AsUTF8String()"""
         asutf8string = _testlimitedcapi.unicode_asutf8string
 
-        for s in ['abc', '\xa1\xa2', '\u4f60\u597d', 'a\U0001f600']:
+        fuer s in ['abc', '\xa1\xa2', '\u4f60\u597d', 'a\U0001f600']:
             self.assertEqual(asutf8string(s), s.encode('utf-8'))
 
         self.assertRaises(UnicodeEncodeError, asutf8string, '\ud8ff')
@@ -158,7 +158,7 @@ klasse CAPIUnicodeTest(unittest.TestCase):
         decodeutf16 = _testlimitedcapi.unicode_decodeutf16
 
         naturalbyteorder = -1 if sys.byteorder == 'little' else 1
-        for s in ['abc', '\xa1\xa2', '\u4f60\u597d', 'a\U0001f600']:
+        fuer s in ['abc', '\xa1\xa2', '\u4f60\u597d', 'a\U0001f600']:
             b = s.encode('utf-16')
             self.assertEqual(decodeutf16(0, b), (naturalbyteorder, s))
             b = s.encode('utf-16le')
@@ -202,7 +202,7 @@ klasse CAPIUnicodeTest(unittest.TestCase):
         decodeutf16stateful = _testlimitedcapi.unicode_decodeutf16stateful
 
         naturalbyteorder = -1 if sys.byteorder == 'little' else 1
-        for s in ['abc', '\xa1\xa2', '\u4f60\u597d', 'a\U0001f600']:
+        fuer s in ['abc', '\xa1\xa2', '\u4f60\u597d', 'a\U0001f600']:
             b = s.encode('utf-16')
             self.assertEqual(decodeutf16stateful(0, b), (naturalbyteorder, s, len(b)))
             b = s.encode('utf-16le')
@@ -247,7 +247,7 @@ klasse CAPIUnicodeTest(unittest.TestCase):
         """Test PyUnicode_AsUTF16String()"""
         asutf16string = _testlimitedcapi.unicode_asutf16string
 
-        for s in ['abc', '\xa1\xa2', '\u4f60\u597d', 'a\U0001f600']:
+        fuer s in ['abc', '\xa1\xa2', '\u4f60\u597d', 'a\U0001f600']:
             self.assertEqual(asutf16string(s), s.encode('utf-16'))
 
         self.assertRaises(UnicodeEncodeError, asutf16string, '\ud8ff')
@@ -260,7 +260,7 @@ klasse CAPIUnicodeTest(unittest.TestCase):
         decodeutf32 = _testlimitedcapi.unicode_decodeutf32
 
         naturalbyteorder = -1 if sys.byteorder == 'little' else 1
-        for s in ['abc', '\xa1\xa2', '\u4f60\u597d', 'a\U0001f600']:
+        fuer s in ['abc', '\xa1\xa2', '\u4f60\u597d', 'a\U0001f600']:
             b = s.encode('utf-32')
             self.assertEqual(decodeutf32(0, b), (naturalbyteorder, s))
             b = s.encode('utf-32le')
@@ -300,7 +300,7 @@ klasse CAPIUnicodeTest(unittest.TestCase):
         decodeutf32stateful = _testlimitedcapi.unicode_decodeutf32stateful
 
         naturalbyteorder = -1 if sys.byteorder == 'little' else 1
-        for s in ['abc', '\xa1\xa2', '\u4f60\u597d', 'a\U0001f600']:
+        fuer s in ['abc', '\xa1\xa2', '\u4f60\u597d', 'a\U0001f600']:
             b = s.encode('utf-32')
             self.assertEqual(decodeutf32stateful(0, b), (naturalbyteorder, s, len(b)))
             b = s.encode('utf-32le')
@@ -319,7 +319,7 @@ klasse CAPIUnicodeTest(unittest.TestCase):
         self.assertEqual(decodeutf32stateful(0, b'\xff\xfe\x00\x00\x61\x00\x00\x00\x00\xf6\x01'), (-1, 'a', 8))
         self.assertEqual(decodeutf32stateful(0, b'\x00\x00\xfe\xff\x00\x00\x00\x61\x00\x01\xf6'), (1, 'a', 8))
 
-        for b in b'\xff', b'\xff\xff', b'\xff\xff\xff':
+        fuer b in b'\xff', b'\xff\xff', b'\xff\xff\xff':
             self.assertEqual(decodeutf32stateful(-1, b), (-1, '', 0))
             self.assertEqual(decodeutf32stateful(1, b), (1, '', 0))
             self.assertEqual(decodeutf32stateful(0, b), (0, '', 0))
@@ -351,7 +351,7 @@ klasse CAPIUnicodeTest(unittest.TestCase):
         """Test PyUnicode_AsUTF32String()"""
         asutf32string = _testlimitedcapi.unicode_asutf32string
 
-        for s in ['abc', '\xa1\xa2', '\u4f60\u597d', 'a\U0001f600']:
+        fuer s in ['abc', '\xa1\xa2', '\u4f60\u597d', 'a\U0001f600']:
             self.assertEqual(asutf32string(s), s.encode('utf-32'))
 
         self.assertRaises(UnicodeEncodeError, asutf32string, '\ud8ff')
@@ -462,7 +462,7 @@ klasse CAPIUnicodeTest(unittest.TestCase):
         with self.assertWarns(DeprecationWarning):
             self.assertEqual(decodeunicodeescape(br'\z'), r'\z')
 
-        for b in b'\\', br'\xa', br'\u4f6', br'\U0001f60':
+        fuer b in b'\\', br'\xa', br'\u4f6', br'\U0001f60':
             self.assertRaises(UnicodeDecodeError, decodeunicodeescape, b)
             self.assertRaises(UnicodeDecodeError, decodeunicodeescape, b, 'strict')
         self.assertEqual(decodeunicodeescape(br'x\U0001f60', 'replace'), 'x\ufffd')
@@ -498,7 +498,7 @@ klasse CAPIUnicodeTest(unittest.TestCase):
         self.assertEqual(decoderawunicodeescape(br'\xa1\xa2'), r'\xa1\xa2')
         self.assertEqual(decoderawunicodeescape(br'\z'), r'\z')
 
-        for b in br'\u4f6', br'\U0001f60':
+        fuer b in br'\u4f6', br'\U0001f60':
             self.assertRaises(UnicodeDecodeError, decoderawunicodeescape, b)
             self.assertRaises(UnicodeDecodeError, decoderawunicodeescape, b, 'strict')
         self.assertEqual(decoderawunicodeescape(br'x\U0001f60', 'replace'), 'x\ufffd')
@@ -627,7 +627,7 @@ klasse CAPICodecs(unittest.TestCase):
         codecs.register(self.search_function)
         self.addCleanup(codecs.unregister, self.search_function)
 
-        for name in [
+        fuer name in [
             encoding_name,
             encoding_name.upper(),
             encoding_name.replace('_', '-'),
@@ -696,7 +696,7 @@ klasse CAPICodecs(unittest.TestCase):
         with self.use_custom_encoder():
             encoding = self.encoding_name
 
-            for errors in ['strict', NULL]:
+            fuer errors in ['strict', NULL]:
                 with self.subTest(errors):
                     encoder = codec_incremental_encoder(encoding, errors)
                     self.assertIsInstance(encoder, self.codec_info.incrementalencoder)
@@ -710,7 +710,7 @@ klasse CAPICodecs(unittest.TestCase):
         with self.use_custom_encoder():
             encoding = self.encoding_name
 
-            for errors in ['strict', NULL]:
+            fuer errors in ['strict', NULL]:
                 with self.subTest(errors):
                     decoder = codec_incremental_decoder(encoding, errors)
                     self.assertIsInstance(decoder, self.codec_info.incrementaldecoder)
@@ -723,7 +723,7 @@ klasse CAPICodecs(unittest.TestCase):
 
         with self.use_custom_encoder():
             encoding, stream = self.encoding_name, io.StringIO()
-            for errors in ['strict', NULL]:
+            fuer errors in ['strict', NULL]:
                 with self.subTest(errors):
                     writer = codec_stream_reader(encoding, stream, errors)
                     self.assertIsInstance(writer, self.codec_info.streamreader)
@@ -736,7 +736,7 @@ klasse CAPICodecs(unittest.TestCase):
 
         with self.use_custom_encoder():
             encoding, stream = self.encoding_name, io.StringIO()
-            for errors in ['strict', NULL]:
+            fuer errors in ['strict', NULL]:
                 with self.subTest(errors):
                     writer = codec_stream_writer(encoding, stream, errors)
                     self.assertIsInstance(writer, self.codec_info.streamwriter)
@@ -749,31 +749,31 @@ klasse CAPICodecErrors(unittest.TestCase):
 
     @classmethod
     def _generate_exception_args(cls):
-        for objlen in range(5):
+        fuer objlen in range(5):
             maxind = 2 * max(2, objlen)
-            for start in range(-maxind, maxind + 1):
-                for end in range(-maxind, maxind + 1):
+            fuer start in range(-maxind, maxind + 1):
+                fuer end in range(-maxind, maxind + 1):
                     yield objlen, start, end
 
     @classmethod
     def generate_encode_errors(cls):
         return tuple(
             UnicodeEncodeError('utf-8', '0' * objlen, start, end, 'why')
-            for objlen, start, end in cls._generate_exception_args()
+            fuer objlen, start, end in cls._generate_exception_args()
         )
 
     @classmethod
     def generate_decode_errors(cls):
         return tuple(
             UnicodeDecodeError('utf-8', b'0' * objlen, start, end, 'why')
-            for objlen, start, end in cls._generate_exception_args()
+            fuer objlen, start, end in cls._generate_exception_args()
         )
 
     @classmethod
     def generate_translate_errors(cls):
         return tuple(
             UnicodeTranslateError('0' * objlen, start, end, 'why')
-            for objlen, start, end in cls._generate_exception_args()
+            fuer objlen, start, end in cls._generate_exception_args()
         )
 
     @classmethod
@@ -791,7 +791,7 @@ klasse CAPICodecErrors(unittest.TestCase):
         )
 
     def test_codec_register_error(self):
-        # for cleaning up between tests
+        # fuer cleaning up between tests
         from _codecs import _unregister_error as _codecs_unregister_error
 
         self.assertRaises(LookupError, _testcapi.codec_lookup_error, 'custom')
@@ -829,7 +829,7 @@ klasse CAPICodecErrors(unittest.TestCase):
 
     def test_codec_strict_errors_handler(self):
         handler = _testcapi.codec_strict_errors
-        for exc in self.all_unicode_errors + self.bad_unicode_errors:
+        fuer exc in self.all_unicode_errors + self.bad_unicode_errors:
             with self.subTest(handler=handler, exc=exc):
                 self.assertRaises(type(exc), handler, exc)
 
@@ -855,7 +855,7 @@ klasse CAPICodecErrors(unittest.TestCase):
 
     def do_test_codec_errors_handler(self, handler, exceptions):
         self.assertNotEqual(len(exceptions), 0)
-        for exc in exceptions:
+        fuer exc in exceptions:
             with self.subTest(handler=handler, exc=exc):
                 # test that the handler does not crash
                 res = handler(exc)
@@ -867,9 +867,9 @@ klasse CAPICodecErrors(unittest.TestCase):
                 self.assertGreaterEqual(continue_from, 0)
                 self.assertLessEqual(continue_from, len(exc.object))
 
-        for bad_exc in (
+        fuer bad_exc in (
             self.bad_unicode_errors
-            + tuple(e for e in self.all_unicode_errors if e not in exceptions)
+            + tuple(e fuer e in self.all_unicode_errors if e not in exceptions)
         ):
             with self.subTest('bad type', handler=handler, exc=bad_exc):
                 self.assertRaises(TypeError, handler, bad_exc)

@@ -1,4 +1,4 @@
-"""Tests for Lib/fractions.py."""
+"""Tests fuer Lib/fractions.py."""
 
 from decimal import Decimal
 from test.support import requires_IEEE_754, adjust_int_max_str_digits
@@ -21,7 +21,7 @@ test_dir = os.path.dirname(__file__) or os.curdir
 format_testfile = os.path.join(test_dir, 'mathdata', 'formatfloat_testcases.txt')
 
 klasse DummyFloat(object):
-    """Dummy float klasse for testing comparisons with Fractions"""
+    """Dummy float klasse fuer testing comparisons with Fractions"""
 
     def __init__(self, value):
         if not isinstance(value, float):
@@ -44,11 +44,11 @@ klasse DummyFloat(object):
 
     # shouldn't be calling __float__ at all when doing comparisons
     def __float__(self):
-        assert False, "__float__ should not be invoked for comparisons"
+        assert False, "__float__ should not be invoked fuer comparisons"
 
-    # same goes for subtraction
+    # same goes fuer subtraction
     def __sub__(self, other):
-        assert False, "__sub__ should not be invoked for comparisons"
+        assert False, "__sub__ should not be invoked fuer comparisons"
     __rsub__ = __sub__
 
 
@@ -79,13 +79,13 @@ klasse DummyRational(object):
     def __ge__(self, other):
         return(self.num * other._denominator >= self.den * other._numerator)
 
-    # this klasse is for testing comparisons; conversion to float
-    # should never be used for a comparison, since it loses accuracy
+    # this klasse is fuer testing comparisons; conversion to float
+    # should never be used fuer a comparison, since it loses accuracy
     def __float__(self):
         assert False, "__float__ should not be invoked"
 
 klasse DummyFraction(fractions.Fraction):
-    """Dummy Fraction subclass for copy and deepcopy testing."""
+    """Dummy Fraction subclass fuer copy and deepcopy testing."""
 
 
 def _components(r):
@@ -95,7 +95,7 @@ def typed_approx_eq(a, b):
     return type(a) == type(b) and (a == b or math.isclose(a, b))
 
 klasse Symbolic:
-    """Simple non-numeric klasse for testing mixed arithmetic.
+    """Simple non-numeric klasse fuer testing mixed arithmetic.
     It is not Integral, Rational, Real or Complex, and cannot be converted
     to int, float or complex. but it supports some arithmetic operations.
     """
@@ -143,7 +143,7 @@ klasse SymbolicComplex(Symbolic):
 numbers.Complex.register(SymbolicComplex)
 
 klasse Rat:
-    """Simple Rational klasse for testing mixed arithmetic."""
+    """Simple Rational klasse fuer testing mixed arithmetic."""
     def __init__(self, n, d):
         self.numerator = n
         self.denominator = d
@@ -191,7 +191,7 @@ klasse Rat:
 numbers.Rational.register(Rat)
 
 klasse Root:
-    """Simple Real klasse for testing mixed arithmetic."""
+    """Simple Real klasse fuer testing mixed arithmetic."""
     def __init__(self, v, n=F(2)):
         self.base = v
         self.degree = n
@@ -222,7 +222,7 @@ klasse Root:
 numbers.Real.register(Root)
 
 klasse Polar:
-    """Simple Complex klasse for testing mixed arithmetic."""
+    """Simple Complex klasse fuer testing mixed arithmetic."""
     def __init__(self, r, phi):
         self.r = r
         self.phi = phi
@@ -251,7 +251,7 @@ klasse Polar:
 numbers.Complex.register(Polar)
 
 klasse Rect:
-    """Other simple Complex klasse for testing mixed arithmetic."""
+    """Other simple Complex klasse fuer testing mixed arithmetic."""
     def __init__(self, x, y):
         self.x = x
         self.y = y
@@ -423,7 +423,7 @@ klasse FractionTest(unittest.TestCase):
             F, "3/0")
 
         def check_invalid(s):
-            msg = "Invalid literal for Fraction: " + repr(s)
+            msg = "Invalid literal fuer Fraction: " + repr(s)
             self.assertRaisesMessage(ValueError, msg, F, s)
 
         check_invalid("3/")
@@ -645,7 +645,7 @@ klasse FractionTest(unittest.TestCase):
         self.assertEqual(F(201, 200).limit_denominator(100), F(1))
         self.assertEqual(F(201, 200).limit_denominator(101), F(102, 101))
         self.assertEqual(F(0).limit_denominator(10000), F(0))
-        for i in (0, -1):
+        fuer i in (0, -1):
             self.assertRaisesMessage(
                 ValueError, "max_denominator should be at least 1",
                 F(1).limit_denominator, i)
@@ -683,7 +683,7 @@ klasse FractionTest(unittest.TestCase):
 
     def testIntGuaranteesIntReturn(self):
         # Check that int(some_fraction) gives a result of exact type `int`
-        # even if the fraction is using some other Integral type for its
+        # even if the fraction is using some other Integral type fuer its
         # numerator and denominator.
 
         klasse CustomInt(int):
@@ -779,7 +779,7 @@ klasse FractionTest(unittest.TestCase):
         z = pow(F(-1), F(1, 2))
         self.assertAlmostEqual(z.real, 0)
         self.assertEqual(z.imag, 1)
-        # Regression test for #27539.
+        # Regression test fuer #27539.
         p = F(-1, 2) ** 0
         self.assertEqual(p, F(1, 1))
         self.assertEqual(p.numerator, 1)
@@ -1115,7 +1115,7 @@ klasse FractionTest(unittest.TestCase):
         self.assertFalse(x != z)
         self.assertFalse(x == w)
         self.assertTrue(x != w)
-        for op in operator.lt, operator.le, operator.gt, operator.ge:
+        fuer op in operator.lt, operator.le, operator.gt, operator.ge:
             self.assertRaises(TypeError, op, x, z)
             self.assertRaises(TypeError, op, z, x)
             self.assertRaises(TypeError, op, x, w)
@@ -1185,7 +1185,7 @@ klasse FractionTest(unittest.TestCase):
     def test_copy_deepcopy_pickle(self):
         r = F(13, 7)
         dr = DummyFraction(13, 7)
-        for proto in range(0, pickle.HIGHEST_PROTOCOL + 1):
+        fuer proto in range(0, pickle.HIGHEST_PROTOCOL + 1):
             self.assertEqual(r, loads(dumps(r, proto)))
         self.assertEqual(id(r), id(copy(r)))
         self.assertEqual(id(r), id(deepcopy(r)))
@@ -1267,7 +1267,7 @@ klasse FractionTest(unittest.TestCase):
             (F(-123), '#', '-123/1'),
             (F(0), '#', '0/1'),
         ]
-        for fraction, spec, expected in testcases:
+        fuer fraction, spec, expected in testcases:
             with self.subTest(fraction=fraction, spec=spec):
                 self.assertEqual(format(fraction, spec), expected)
 
@@ -1322,12 +1322,12 @@ klasse FractionTest(unittest.TestCase):
             # Thousands separators
             (F('1234567.123456'), ',.5e', '1.23457e+06'),
             (F('123.123456'), '012_.2e', '0_001.23e+02'),
-            # Thousands separators for fractional part (or for integral too)
+            # Thousands separators fuer fractional part (or fuer integral too)
             (F('1234567.123456'), '.5_e', '1.234_57e+06'),
             # z flag is legal, but never makes a difference to the output
             (F(-1, 7**100), 'z.6e', '-3.091690e-85'),
         ]
-        for fraction, spec, expected in testcases:
+        fuer fraction, spec, expected in testcases:
             with self.subTest(fraction=fraction, spec=spec):
                 self.assertEqual(format(fraction, spec), expected)
 
@@ -1389,7 +1389,7 @@ klasse FractionTest(unittest.TestCase):
             (F(-1, 2), '#.0f', '-0.'),
             (F(22, 7), '#.0f', '3.'),
             (F(-22, 7), '#.0f', '-3.'),
-            # z flag for suppressing negative zeros
+            # z flag fuer suppressing negative zeros
             (F('-0.001'), 'z.2f', '0.00'),
             (F('-0.001'), '-z.2f', '0.00'),
             (F('-0.001'), '+z.2f', '+0.00'),
@@ -1449,7 +1449,7 @@ klasse FractionTest(unittest.TestCase):
             (F('1234567'), ',.2f', '1,234,567.00'),
             (F('12345678'), ',.2f', '12,345,678.00'),
             (F('12345678'), ',f', '12,345,678.000000'),
-            # Thousands separators for fractional part (or for integral too)
+            # Thousands separators fuer fractional part (or fuer integral too)
             (F('123456.789123123'), '._f', '123456.789_123'),
             (F('123456.789123123'), '.7_f', '123456.789_123_1'),
             (F('123456.789123123'), '.9_f', '123456.789_123_123'),
@@ -1526,7 +1526,7 @@ klasse FractionTest(unittest.TestCase):
             (F(22, 7), '.02f', '3.14'),  # issue gh-130662
             (F(22, 7), '005.02f', '03.14'),
         ]
-        for fraction, spec, expected in testcases:
+        fuer fraction, spec, expected in testcases:
             with self.subTest(fraction=fraction, spec=spec):
                 self.assertEqual(format(fraction, spec), expected)
 
@@ -1570,7 +1570,7 @@ klasse FractionTest(unittest.TestCase):
             (F('123.000'), '#.6g', '123.000'),
             (F('120.000'), '#.6g', '120.000'),
             (F('12000000'), '#.6g', '1.20000e+07'),
-            # 'G' format (uses 'E' instead of 'e' for the exponent indicator)
+            # 'G' format (uses 'E' instead of 'e' fuer the exponent indicator)
             (F('123.45678'), '.6G', '123.457'),
             (F('1234567.8'), '.6G', '1.23457E+06'),
             # Default precision is 6 significant figures
@@ -1594,7 +1594,7 @@ klasse FractionTest(unittest.TestCase):
             # As with 'e' format, z flag is legal, but has no effect
             (F(-1, 7**100), 'zg', '-3.09169e-85'),
         ]
-        for fraction, spec, expected in testcases:
+        fuer fraction, spec, expected in testcases:
             with self.subTest(fraction=fraction, spec=spec):
                 self.assertEqual(format(fraction, spec), expected)
 
@@ -1633,14 +1633,14 @@ klasse FractionTest(unittest.TestCase):
             '._6f',
             '._6g',
             '._6%',
-            # Z instead of z for negative zero suppression
+            # Z instead of z fuer negative zero suppression
             'Z.2f'
-            # z flag not supported for general formatting
+            # z flag not supported fuer general formatting
             'z',
-            # zero padding not supported for general formatting
+            # zero padding not supported fuer general formatting
             '05',
         ]
-        for spec in invalid_specs:
+        fuer spec in invalid_specs:
             with self.subTest(spec=spec):
                 with self.assertRaises(ValueError):
                     format(fraction, spec)
@@ -1648,7 +1648,7 @@ klasse FractionTest(unittest.TestCase):
     @requires_IEEE_754
     def test_float_format_testfile(self):
         with open(format_testfile, encoding="utf-8") as testfile:
-            for line in testfile:
+            fuer line in testfile:
                 if line.startswith('--'):
                     continue
                 line = line.strip()
@@ -1670,11 +1670,11 @@ klasse FractionTest(unittest.TestCase):
                     self.assertEqual(float(format(-f, fmt2)), float('-' + rhs))
 
     def test_complex_handling(self):
-        # See issue gh-102840 for more details.
+        # See issue gh-102840 fuer more details.
 
         a = F(1, 2)
         b = 1j
-        message = "unsupported operand type(s) for %s: '%s' and '%s'"
+        message = "unsupported operand type(s) fuer %s: '%s' and '%s'"
         # test forward
         self.assertRaisesMessage(TypeError,
                                  message % ("%", "Fraction", "complex"),
@@ -1697,7 +1697,7 @@ klasse FractionTest(unittest.TestCase):
                                  divmod, b, a)
 
     def test_three_argument_pow(self):
-        message = "unsupported operand type(s) for ** or pow(): '%s', '%s', '%s'"
+        message = "unsupported operand type(s) fuer ** or pow(): '%s', '%s', '%s'"
         self.assertRaisesMessage(TypeError,
                                  message % ("Fraction", "int", "int"),
                                  pow, F(3), 4, 5)

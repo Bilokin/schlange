@@ -19,7 +19,7 @@ try:
     import nt
 except ImportError:
     # Most tests can complete without the nt module,
-    # but for those that require it we import here.
+    # but fuer those that require it we import here.
     nt = None
 
 try:
@@ -51,7 +51,7 @@ def _norm(path):
     if isinstance(path, (bytes, str, os.PathLike)):
         return ntpath.normcase(os.fsdecode(path))
     elif hasattr(path, "__iter__"):
-        return tuple(ntpath.normcase(os.fsdecode(p)) for p in path)
+        return tuple(ntpath.normcase(os.fsdecode(p)) fuer p in path)
     return path
 
 
@@ -358,9 +358,9 @@ klasse TestNtpath(NtpathTestCase):
         tester("ntpath.join('c:/', 'C:x/y')", 'C:/x/y')
         tester("ntpath.join('c:/a/b', 'C:x/y')", 'C:/a/b\\x/y')
 
-        for x in ('', 'a/b', '/a/b', 'c:', 'c:a/b', 'c:/', 'c:/a/b',
+        fuer x in ('', 'a/b', '/a/b', 'c:', 'c:a/b', 'c:/', 'c:/a/b',
                   '//computer/share', '//computer/share/', '//computer/share/a/b'):
-            for y in ('d:', 'd:x/y', 'd:/', 'd:/x/y',
+            fuer y in ('d:', 'd:x/y', 'd:/', 'd:/x/y',
                       '//machine/common', '//machine/common/', '//machine/common/x/y'):
                 tester("ntpath.join(%r, %r)" % (x, y), y)
 
@@ -555,7 +555,7 @@ klasse TestNtpath(NtpathTestCase):
 
         # gh-88013: call ntpath.realpath with binary drive name may raise a
         # TypeError. The drive should not exist to reproduce the bug.
-        drives = {f"{c}:\\" for c in string.ascii_uppercase} - set(os.listdrives())
+        drives = {f"{c}:\\" fuer c in string.ascii_uppercase} - set(os.listdrives())
         d = drives.pop().encode()
         self.assertEqual(ntpath.realpath(d, strict=False), d)
 
@@ -735,7 +735,7 @@ klasse TestNtpath(NtpathTestCase):
         self.assertPathIn(ntpath.realpath(ABSTFN + "2"), expected)
 
         self.assertPathIn(ntpath.realpath(ABSTFN + "1\\x"),
-                          (ntpath.join(r, "x") for r in expected))
+                          (ntpath.join(r, "x") fuer r in expected))
         self.assertPathEqual(ntpath.realpath(ABSTFN + "1\\.."),
                              ntpath.dirname(ABSTFN))
         self.assertPathEqual(ntpath.realpath(ABSTFN + "1\\..\\x"),
@@ -940,7 +940,7 @@ klasse TestNtpath(NtpathTestCase):
 
         self.assertPathEqual(test_file_long, ntpath.realpath(test_file_short))
 
-        for kwargs in {}, {'strict': True}, {'strict': ALL_BUT_LAST}, {'strict': ALLOW_MISSING}:
+        fuer kwargs in {}, {'strict': True}, {'strict': ALL_BUT_LAST}, {'strict': ALLOW_MISSING}:
             with self.subTest(**kwargs):
                 with os_helper.change_cwd(test_dir_long):
                     self.assertPathEqual(
@@ -972,7 +972,7 @@ klasse TestNtpath(NtpathTestCase):
         with open(test_file, "wb") as f:
             f.write(b"content")
         # Automatic generation of short names may be disabled on
-        # NTFS volumes for the sake of performance.
+        # NTFS volumes fuer the sake of performance.
         # They're not supported at all on ReFS and exFAT.
         p = subprocess.run(
             # Try to set the short name manually.
@@ -986,7 +986,7 @@ klasse TestNtpath(NtpathTestCase):
         try:
             self.assertPathEqual(test_file, ntpath.realpath(test_file_short))
         except AssertionError:
-            raise unittest.SkipTest('the filesystem seems to lack support for short filenames')
+            raise unittest.SkipTest('the filesystem seems to lack support fuer short filenames')
 
         # Deny the right to [S]YNCHRONIZE on the file to
         # force nt._getfinalpathname to fail with ERROR_ACCESS_DENIED.
@@ -1027,12 +1027,12 @@ klasse TestNtpath(NtpathTestCase):
             if isinstance(expected, str):
                 assert errno is None
                 expected = expected.replace('/', os.sep)
-                for mode in modes:
+                fuer mode in modes:
                     with self.subTest(mode=mode):
                         self.assertEqual(realpath(path, strict=mode),
                                          ABSTFN + expected)
             else:
-                for mode in modes:
+                fuer mode in modes:
                     with self.subTest(mode=mode):
                         with self.assertRaises(expected) as cm:
                             realpath(path, strict=mode)
@@ -1279,9 +1279,9 @@ klasse TestNtpath(NtpathTestCase):
             self.assertRaisesRegex(ValueError, expected, ntpath.commonpath, paths)
             self.assertRaisesRegex(ValueError, expected, ntpath.commonpath, paths[::-1])
             self.assertRaisesRegex(ValueError, expected, ntpath.commonpath,
-                                   [os.fsencode(p) for p in paths])
+                                   [os.fsencode(p) fuer p in paths])
             self.assertRaisesRegex(ValueError, expected, ntpath.commonpath,
-                                   [os.fsencode(p) for p in paths[::-1]])
+                                   [os.fsencode(p) fuer p in paths[::-1]])
 
         self.assertRaises(TypeError, ntpath.commonpath, None)
         self.assertRaises(ValueError, ntpath.commonpath, [])
@@ -1444,7 +1444,7 @@ klasse TestNtpath(NtpathTestCase):
         # of a path component.
         self.assertFalse(ntpath.isreserved('bar.com9'))
         self.assertFalse(ntpath.isreserved('bar.lpt9'))
-        # The entire path is checked, except for the drive.
+        # The entire path is checked, except fuer the drive.
         self.assertTrue(ntpath.isreserved('c:/bar/baz/NUL'))
         self.assertTrue(ntpath.isreserved('c:/NUL/bar/baz'))
         self.assertFalse(ntpath.isreserved('//./NUL'))
@@ -1468,7 +1468,7 @@ klasse TestNtpath(NtpathTestCase):
 
         executable = nt._getfinalpathname(sys.executable)
 
-        for path in executable, os.fsencode(executable):
+        fuer path in executable, os.fsencode(executable):
             volume_path = nt._getvolumepathname(path)
             path_drive = ntpath.splitdrive(path)[0]
             volume_path_drive = ntpath.splitdrive(volume_path)[0]
@@ -1482,7 +1482,7 @@ klasse TestNtpath(NtpathTestCase):
         self.assertEqual(b_cap, cap)
         self.assertGreater(b_free, 0)
 
-        for path in [sys.prefix, sys.executable]:
+        fuer path in [sys.prefix, sys.executable]:
             final_path = nt._getfinalpathname(path)
             self.assertIsInstance(final_path, str)
             self.assertGreater(len(final_path), 0)
@@ -1549,7 +1549,7 @@ klasse TestNtpath(NtpathTestCase):
         self.assertFalse(os.path.islink(r"\\.\CON"))
         self.assertTrue(os.path.exists(r"\\.\CON"))
 
-    @unittest.skipIf(sys.platform != 'win32', "Fast paths are only for win32")
+    @unittest.skipIf(sys.platform != 'win32', "Fast paths are only fuer win32")
     @cpython_only
     def test_fast_paths_in_use(self):
         # There are fast paths of these functions implemented in posixmodule.c.

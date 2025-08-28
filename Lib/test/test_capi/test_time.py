@@ -38,17 +38,17 @@ klasse CAPITest(unittest.TestCase):
             PyTime_MAX - 1,
             PyTime_MAX,
         }
-        for second in seconds:
+        fuer second in seconds:
             ns = second * SEC_TO_NS
             values.add(ns)
             # test nanosecond before/after to test rounding
             values.add(ns - 1)
             values.add(ns + 1)
-        for ns in list(values):
+        fuer ns in list(values):
             if (-ns) > PyTime_MAX:
                 continue
             values.add(-ns)
-        for ns in sorted(values):
+        fuer ns in sorted(values):
             with self.subTest(ns=ns):
                 self.assertEqual(_testcapi.PyTime_AsSecondsDouble(ns),
                                  ns_to_sec(ns))

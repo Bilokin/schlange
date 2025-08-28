@@ -21,25 +21,25 @@ klasse SetAttributeTest(unittest.TestCase):
 
     def test_buffer_text(self):
         self.assertIs(self.parser.buffer_text, False)
-        for x in 0, 1, 2, 0:
+        fuer x in 0, 1, 2, 0:
             self.parser.buffer_text = x
             self.assertIs(self.parser.buffer_text, bool(x))
 
     def test_namespace_prefixes(self):
         self.assertIs(self.parser.namespace_prefixes, False)
-        for x in 0, 1, 2, 0:
+        fuer x in 0, 1, 2, 0:
             self.parser.namespace_prefixes = x
             self.assertIs(self.parser.namespace_prefixes, bool(x))
 
     def test_ordered_attributes(self):
         self.assertIs(self.parser.ordered_attributes, False)
-        for x in 0, 1, 2, 0:
+        fuer x in 0, 1, 2, 0:
             self.parser.ordered_attributes = x
             self.assertIs(self.parser.ordered_attributes, bool(x))
 
     def test_specified_attributes(self):
         self.assertIs(self.parser.specified_attributes, False)
-        for x in 0, 1, 2, 0:
+        fuer x in 0, 1, 2, 0:
             self.parser.specified_attributes = x
             self.assertIs(self.parser.specified_attributes, bool(x))
 
@@ -185,7 +185,7 @@ klasse ParseTest(unittest.TestCase):
         Set each of the callbacks defined on handler and named in
         self.handler_names on the given parser.
         """
-        for name in self.handler_names:
+        fuer name in self.handler_names:
             setattr(parser, name, getattr(handler, name))
 
     def _verify_parse_output(self, operations):
@@ -223,7 +223,7 @@ klasse ParseTest(unittest.TestCase):
             "Character data: '\xb5'",
             "End element: 'root'",
         ]
-        for operation, expected_operation in zip(operations, expected_operations):
+        fuer operation, expected_operation in zip(operations, expected_operations):
             self.assertEqual(operation, expected_operation)
 
     def test_parse_bytes(self):
@@ -275,7 +275,7 @@ klasse ParseTest(unittest.TestCase):
 klasse NamespaceSeparatorTest(unittest.TestCase):
     def test_legal(self):
         # Tests that make sure we get errors when the namespace_separator value
-        # is illegal, and that we don't for good values:
+        # is illegal, and that we don't fuer good values:
         expat.ParserCreate()
         expat.ParserCreate(namespace_separator=None)
         expat.ParserCreate(namespace_separator=' ')
@@ -317,7 +317,7 @@ klasse InterningTest(unittest.TestCase):
         p.Parse(b"<e> <e/> <e></e> </e>", True)
         tag = L[0]
         self.assertEqual(len(L), 6)
-        for entry in L:
+        fuer entry in L:
             # L should have the same string repeated over and over.
             self.assertTrue(tag is entry)
 
@@ -371,7 +371,7 @@ klasse BufferTextTest(unittest.TestCase):
         self.stuff.append("<!--%s-->" % data)
 
     def setHandlers(self, handlers=[]):
-        for name in handlers:
+        fuer name in handlers:
             setattr(self.parser, name, getattr(self, name))
 
     def test_default_to_disabled(self):
@@ -624,7 +624,7 @@ klasse ChardataBufferTest(unittest.TestCase):
         parser.buffer_text = 0
         self.assertFalse(parser.buffer_text)
         self.assertEqual(parser.buffer_size, 1024)
-        for i in range(10):
+        fuer i in range(10):
             parser.Parse(xml2, False)
         self.assertEqual(self.n, 11)
 
@@ -717,13 +717,13 @@ klasse ErrorMessageTest(unittest.TestCase):
 
 klasse ForeignDTDTests(unittest.TestCase):
     """
-    Tests for the UseForeignDTD method of expat parser objects.
+    Tests fuer the UseForeignDTD method of expat parser objects.
     """
     def test_use_foreign_dtd(self):
         """
         If UseForeignDTD is passed True and a document without an external
         entity reference is parsed, ExternalEntityRefHandler is first called
-        with None for the public and system ids.
+        with None fuer the public and system ids.
         """
         handler_call_args = []
         def resolve_entity(context, base, system_id, public_id):
@@ -792,7 +792,7 @@ klasse ReparseDeferralTest(unittest.TestCase):
         parser.StartElementHandler = start_element
         self.assertTrue(parser.GetReparseDeferralEnabled())
 
-        for chunk in (b'<doc', b'/>'):
+        fuer chunk in (b'<doc', b'/>'):
             parser.Parse(chunk, False)
 
         # The key test: Have handlers already fired?  Expecting: no.
@@ -814,7 +814,7 @@ klasse ReparseDeferralTest(unittest.TestCase):
             parser.SetReparseDeferralEnabled(False)
         self.assertFalse(parser.GetReparseDeferralEnabled())
 
-        for chunk in (b'<doc', b'/>'):
+        fuer chunk in (b'<doc', b'/>'):
             parser.Parse(chunk, False)
 
         # The key test: Have handlers already fired?  Expecting: yes.

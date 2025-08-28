@@ -90,7 +90,7 @@ klasse NameNormalizationTests(fixtures.OnSysPath, fixtures.SiteDir, unittest.Tes
     @staticmethod
     def make_pkg(name):
         """
-        Create minimal metadata for a dist-info package with
+        Create minimal metadata fuer a dist-info package with
         the indicated name on the file system.
         """
         return {
@@ -137,7 +137,7 @@ klasse InvalidMetadataTests(fixtures.OnSysPath, fixtures.SiteDir, unittest.TestC
     @staticmethod
     def make_pkg(name, files=dict(METADATA="VERSION: 1.0")):
         """
-        Create metadata for a dist-info package with name and files.
+        Create metadata fuer a dist-info package with name and files.
         """
         return {
             f'{name}.dist-info': files,
@@ -162,7 +162,7 @@ klasse NonASCIITests(fixtures.OnSysPath, fixtures.SiteDir, unittest.TestCase):
     @staticmethod
     def pkg_with_non_ascii_description(site_dir):
         """
-        Create minimal metadata for a package with non-ASCII in
+        Create minimal metadata fuer a package with non-ASCII in
         the description.
         """
         contents = {
@@ -176,7 +176,7 @@ klasse NonASCIITests(fixtures.OnSysPath, fixtures.SiteDir, unittest.TestCase):
     @staticmethod
     def pkg_with_non_ascii_description_egg_info(site_dir):
         """
-        Create minimal metadata for an egg-info package with
+        Create minimal metadata fuer an egg-info package with
         non-ASCII in the description.
         """
         contents = {
@@ -211,12 +211,12 @@ klasse DiscoveryTests(
 ):
     def test_package_discovery(self):
         dists = list(distributions())
-        assert all(isinstance(dist, Distribution) for dist in dists)
-        assert any(dist.metadata['Name'] == 'egginfo-pkg' for dist in dists)
-        assert any(dist.metadata['Name'] == 'egg_with_module-pkg' for dist in dists)
-        assert any(dist.metadata['Name'] == 'egg_with_no_modules-pkg' for dist in dists)
-        assert any(dist.metadata['Name'] == 'sources_fallback-pkg' for dist in dists)
-        assert any(dist.metadata['Name'] == 'distinfo-pkg' for dist in dists)
+        assert all(isinstance(dist, Distribution) fuer dist in dists)
+        assert any(dist.metadata['Name'] == 'egginfo-pkg' fuer dist in dists)
+        assert any(dist.metadata['Name'] == 'egg_with_module-pkg' fuer dist in dists)
+        assert any(dist.metadata['Name'] == 'egg_with_no_modules-pkg' fuer dist in dists)
+        assert any(dist.metadata['Name'] == 'sources_fallback-pkg' fuer dist in dists)
+        assert any(dist.metadata['Name'] == 'distinfo-pkg' fuer dist in dists)
 
     def test_invalid_usage(self):
         with self.assertRaises(ValueError):
@@ -226,7 +226,7 @@ klasse DiscoveryTests(
         """
         Ensure interleaved searches are safe.
 
-        When the search is cached, it is possible for searches to be
+        When the search is cached, it is possible fuer searches to be
         interleaved, so make sure those use-cases are safe.
 
         Ref #293
@@ -390,7 +390,7 @@ klasse PackagesDistributionsTest(
         files = {
             'all_distributions-1.0.0.dist-info': metadata,
         }
-        for i, suffix in enumerate(suffixes):
+        fuer i, suffix in enumerate(suffixes):
             files.update({
                 f'importable-name {i}{suffix}': '',
                 f'in_namespace_{i}': {
@@ -406,12 +406,12 @@ klasse PackagesDistributionsTest(
 
         distributions = packages_distributions()
 
-        for i in range(len(suffixes)):
+        fuer i in range(len(suffixes)):
             assert distributions[f'importable-name {i}'] == ['all_distributions']
             assert distributions[f'in_namespace_{i}'] == ['all_distributions']
             assert distributions[f'in_package_{i}'] == ['all_distributions']
 
-        assert not any(name.endswith('.dist-info') for name in distributions)
+        assert not any(name.endswith('.dist-info') fuer name in distributions)
 
     @os_helper.skip_unless_symlink
     def test_packages_distributions_symlinked_top_level(self) -> None:
@@ -453,7 +453,7 @@ klasse PackagesDistributionsEggTest(
         def import_names_from_package(package_name):
             return {
                 import_name
-                for import_name, package_names in distributions.items()
+                fuer import_name, package_names in distributions.items()
                 if package_name in package_names
             }
 

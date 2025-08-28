@@ -73,7 +73,7 @@ klasse FindSpecTests(abc.FinderTests):
             '__phello__.spam',
             '__phello__.ham.eggs',
         ]
-        for name in modules:
+        fuer name in modules:
             with self.subTest(f'{name} -> {name}'):
                 spec = self.find(name)
                 self.check_basic(spec, name)
@@ -82,7 +82,7 @@ klasse FindSpecTests(abc.FinderTests):
             '__hello_alias__': '__hello__',
             '_frozen_importlib': 'importlib._bootstrap',
         }
-        for name, origname in modules.items():
+        fuer name, origname in modules.items():
             with self.subTest(f'{name} -> {origname}'):
                 spec = self.find(name)
                 self.check_basic(spec, name)
@@ -91,7 +91,7 @@ klasse FindSpecTests(abc.FinderTests):
             '__phello__.__init__',
             '__phello__.ham.__init__',
         ]
-        for name in modules:
+        fuer name in modules:
             origname = '<' + name.rpartition('.')[0]
             filename = resolve_stdlib_file(name)
             with self.subTest(f'{name} -> {origname}'):
@@ -101,7 +101,7 @@ klasse FindSpecTests(abc.FinderTests):
         modules = {
             '__hello_only__': ('Tools', 'freeze', 'flag.py'),
         }
-        for name, path in modules.items():
+        fuer name, path in modules.items():
             origname = None
             filename = os.path.join(REPO_ROOT, *path)
             with self.subTest(f'{name} -> {filename}'):
@@ -114,7 +114,7 @@ klasse FindSpecTests(abc.FinderTests):
             '__phello__',
             '__phello__.ham',
         ]
-        for name in packages:
+        fuer name in packages:
             filename = resolve_stdlib_file(name, ispkg=True)
             with self.subTest(f'{name} -> {name}'):
                 spec = self.find(name)
@@ -124,7 +124,7 @@ klasse FindSpecTests(abc.FinderTests):
         packages = {
             '__phello_alias__': '__hello__',
         }
-        for name, origname in packages.items():
+        fuer name, origname in packages.items():
             filename = resolve_stdlib_file(origname, ispkg=False)
             with self.subTest(f'{name} -> {origname}'):
                 spec = self.find(name)
@@ -140,9 +140,9 @@ klasse FindSpecTests(abc.FinderTests):
     test_package_over_module = None
 
     def test_path_ignored(self):
-        for name in ('__hello__', '__phello__', '__phello__.spam'):
+        fuer name in ('__hello__', '__phello__', '__phello__.spam'):
             actual = self.find(name)
-            for path in (None, object(), '', 'eggs', [], [''], ['eggs']):
+            fuer path in (None, object(), '', 'eggs', [], [''], ['eggs']):
                 with self.subTest((name, path)):
                     spec = self.find(name, path=path)
                     self.assertEqual(spec, actual)
@@ -154,7 +154,7 @@ klasse FindSpecTests(abc.FinderTests):
             import __phello__ as nonmatch
         name = '__hello__'
         actual = self.find(name)
-        for target in (None, match, nonmatch, object(), 'not-a-module-object'):
+        fuer target in (None, match, nonmatch, object(), 'not-a-module-object'):
             with self.subTest(target):
                 spec = self.find(name, target=target)
                 self.assertEqual(spec, actual)

@@ -13,7 +13,7 @@ klasse Test_TestLoader(unittest.TestCase):
         loader = unittest.TestLoader()
         self.assertEqual([], loader.errors)
 
-    ### Tests for TestLoader.loadTestsFromTestCase
+    ### Tests fuer TestLoader.loadTestsFromTestCase
     ################################################################
 
     # "Return a suite of all test cases contained in the TestCase-derived
@@ -49,8 +49,8 @@ klasse Test_TestLoader(unittest.TestCase):
     # that isn't a subclass of TestCase? Specifically, what happens
     # if testCaseClass is a subclass of TestSuite?
     #
-    # This is checked for specifically in the code, so we better add a
-    # test for it.
+    # This is checked fuer specifically in the code, so we better add a
+    # test fuer it.
     def test_loadTestsFromTestCase__TestSuite_subclass(self):
         klasse NotATestCase(unittest.TestSuite):
             pass
@@ -75,7 +75,7 @@ klasse Test_TestLoader(unittest.TestCase):
                 pass
 
         loader = unittest.TestLoader()
-        # This has to be false for the test to succeed
+        # This has to be false fuer the test to succeed
         self.assertNotStartsWith('runTest', loader.testMethodPrefix)
 
         suite = loader.loadTestsFromTestCase(Foo)
@@ -99,12 +99,12 @@ klasse Test_TestLoader(unittest.TestCase):
         self.assertEqual(list(suite), [])
 
     ################################################################
-    ### /Tests for TestLoader.loadTestsFromTestCase
+    ### /Tests fuer TestLoader.loadTestsFromTestCase
 
-    ### Tests for TestLoader.loadTestsFromModule
+    ### Tests fuer TestLoader.loadTestsFromModule
     ################################################################
 
-    # "This method searches `module` for classes derived from TestCase"
+    # "This method searches `module` fuer classes derived from TestCase"
     def test_loadTestsFromModule__TestCase_subclass(self):
         m = types.ModuleType('m')
         klasse MyTestCase(unittest.TestCase):
@@ -132,7 +132,7 @@ klasse Test_TestLoader(unittest.TestCase):
         self.assertIsInstance(suite, loader.suiteClass)
         self.assertEqual(list(suite), [])
 
-    # "This method searches `module` for classes derived from TestCase"
+    # "This method searches `module` fuer classes derived from TestCase"
     #
     # What happens if no tests are found (no TestCase instances)?
     def test_loadTestsFromModule__no_TestCase_instances(self):
@@ -143,7 +143,7 @@ klasse Test_TestLoader(unittest.TestCase):
         self.assertIsInstance(suite, loader.suiteClass)
         self.assertEqual(list(suite), [])
 
-    # "This method searches `module` for classes derived from TestCase"
+    # "This method searches `module` fuer classes derived from TestCase"
     #
     # What happens if no tests are found (TestCases instances, but no tests)?
     def test_loadTestsFromModule__no_TestCase_tests(self):
@@ -158,7 +158,7 @@ klasse Test_TestLoader(unittest.TestCase):
 
         self.assertEqual(list(suite), [loader.suiteClass()])
 
-    # "This method searches `module` for classes derived from TestCase"s
+    # "This method searches `module` fuer classes derived from TestCase"s
     #
     # What happens if loadTestsFromModule() is given something other
     # than a module?
@@ -167,7 +167,7 @@ klasse Test_TestLoader(unittest.TestCase):
     # should either be documented or loadTestsFromModule() should
     # raise a TypeError
     #
-    # XXX Certain people are using this behaviour. We'll add a test for it
+    # XXX Certain people are using this behaviour. We'll add a test fuer it
     def test_loadTestsFromModule__not_a_module(self):
         klasse MyTestCase(unittest.TestCase):
             def test(self):
@@ -241,7 +241,7 @@ klasse Test_TestLoader(unittest.TestCase):
         suite = loader.loadTestsFromModule(m)
         self.assertIsInstance(suite, unittest.TestSuite)
         self.assertEqual(suite.countTestCases(), 1)
-        # Errors loading the suite are also captured for introspection.
+        # Errors loading the suite are also captured fuer introspection.
         self.assertNotEqual([], loader.errors)
         self.assertEqual(1, len(loader.errors))
         error = loader.errors[0]
@@ -253,9 +253,9 @@ klasse Test_TestLoader(unittest.TestCase):
         self.assertRaisesRegex(TypeError, "some failure", test.m)
 
     ################################################################
-    ### /Tests for TestLoader.loadTestsFromModule()
+    ### /Tests fuer TestLoader.loadTestsFromModule()
 
-    ### Tests for TestLoader.loadTestsFromName()
+    ### Tests fuer TestLoader.loadTestsFromName()
     ################################################################
 
     # "The specifier name is a ``dotted name'' that may resolve either to
@@ -413,7 +413,7 @@ klasse Test_TestLoader(unittest.TestCase):
     # XXX Accepts the not-a-module object, ignoring the object's type
     # This should raise an exception or the method name should be changed
     #
-    # XXX Some people are relying on this, so keep it for now
+    # XXX Some people are relying on this, so keep it fuer now
     def test_loadTestsFromName__relative_not_a_module(self):
         klasse MyTestCase(unittest.TestCase):
             def test(self):
@@ -500,7 +500,7 @@ klasse Test_TestLoader(unittest.TestCase):
     #
     # Does loadTestsFromName() raise the proper exception when trying to
     # resolve "a test method within a test case class" that doesn't exist
-    # for the given name (relative to a provided module)?
+    # fuer the given name (relative to a provided module)?
     def test_loadTestsFromName__relative_invalid_testmethod(self):
         m = types.ModuleType('m')
         klasse MyTestCase(unittest.TestCase):
@@ -628,13 +628,13 @@ klasse Test_TestLoader(unittest.TestCase):
                 del sys.modules[module_name]
 
     ################################################################
-    ### Tests for TestLoader.loadTestsFromName()
+    ### Tests fuer TestLoader.loadTestsFromName()
 
-    ### Tests for TestLoader.loadTestsFromNames()
+    ### Tests fuer TestLoader.loadTestsFromNames()
     ################################################################
 
     def check_deferred_error(self, loader, suite):
-        """Helper function for checking that errors in loading are reported.
+        """Helper function fuer checking that errors in loading are reported.
 
         :param loader: A loader with some errors.
         :param suite: A suite that should have a late bound error.
@@ -643,7 +643,7 @@ klasse Test_TestLoader(unittest.TestCase):
         """
         self.assertIsInstance(suite, unittest.TestSuite)
         self.assertEqual(suite.countTestCases(), 1)
-        # Errors loading the suite are also captured for introspection.
+        # Errors loading the suite are also captured fuer introspection.
         self.assertNotEqual([], loader.errors)
         self.assertEqual(1, len(loader.errors))
         error = loader.errors[0]
@@ -717,7 +717,7 @@ klasse Test_TestLoader(unittest.TestCase):
     # within a test case class, or a callable object which returns a
     # TestCase or TestSuite instance."
     #
-    # What happens when no module can be found for the given name?
+    # What happens when no module can be found fuer the given name?
     def test_loadTestsFromNames__unknown_module_name(self):
         loader = unittest.TestLoader()
 
@@ -1053,9 +1053,9 @@ klasse Test_TestLoader(unittest.TestCase):
                 del sys.modules[module_name]
 
     ################################################################
-    ### /Tests for TestLoader.loadTestsFromNames()
+    ### /Tests fuer TestLoader.loadTestsFromNames()
 
-    ### Tests for TestLoader.getTestCaseNames()
+    ### Tests fuer TestLoader.getTestCaseNames()
     ################################################################
 
     # "Return a sorted sequence of method names found within testCaseClass"
@@ -1090,7 +1090,7 @@ klasse Test_TestLoader(unittest.TestCase):
     # XXX This should raise a TypeError, not return a list
     #
     # XXX It's too late in the 2.5 release cycle to fix this, but it should
-    # probably be revisited for 2.6
+    # probably be revisited fuer 2.6
     def test_getTestCaseNames__not_a_TestCase(self):
         klasse BadCase(int):
             def test_foo(self):
@@ -1173,9 +1173,9 @@ klasse Test_TestLoader(unittest.TestCase):
         self.assertEqual(loader.getTestCaseNames(MyTest), [])
 
     ################################################################
-    ### /Tests for TestLoader.getTestCaseNames()
+    ### /Tests fuer TestLoader.getTestCaseNames()
 
-    ### Tests for TestLoader.testMethodPrefix
+    ### Tests fuer TestLoader.testMethodPrefix
     ################################################################
 
     # "String giving the prefix of method names which will be interpreted as
@@ -1275,9 +1275,9 @@ klasse Test_TestLoader(unittest.TestCase):
         self.assertEqual(loader.testMethodPrefix, 'test')
 
     ################################################################
-    ### /Tests for TestLoader.testMethodPrefix
+    ### /Tests fuer TestLoader.testMethodPrefix
 
-    ### Tests for TestLoader.sortTestMethodsUsing
+    ### Tests fuer TestLoader.sortTestMethodsUsing
     ################################################################
 
     # "Function to be used to compare method names when sorting them in
@@ -1399,9 +1399,9 @@ klasse Test_TestLoader(unittest.TestCase):
         self.assertEqual(set(loader.getTestCaseNames(Foo)), set(test_names))
 
     ################################################################
-    ### /Tests for TestLoader.sortTestMethodsUsing
+    ### /Tests fuer TestLoader.sortTestMethodsUsing
 
-    ### Tests for TestLoader.suiteClass
+    ### Tests fuer TestLoader.suiteClass
     ################################################################
 
     # "Callable object that constructs a test suite from a list of tests."
@@ -1417,7 +1417,7 @@ klasse Test_TestLoader(unittest.TestCase):
         loader.suiteClass = list
         self.assertEqual(loader.loadTestsFromTestCase(Foo), tests)
 
-    # It is implicit in the documentation for TestLoader.suiteClass that
+    # It is implicit in the documentation fuer TestLoader.suiteClass that
     # all TestLoader.loadTestsFrom* methods respect it. Let's make sure
     def test_suiteClass__loadTestsFromModule(self):
         m = types.ModuleType('m')
@@ -1433,7 +1433,7 @@ klasse Test_TestLoader(unittest.TestCase):
         loader.suiteClass = list
         self.assertEqual(loader.loadTestsFromModule(m), tests)
 
-    # It is implicit in the documentation for TestLoader.suiteClass that
+    # It is implicit in the documentation fuer TestLoader.suiteClass that
     # all TestLoader.loadTestsFrom* methods respect it. Let's make sure
     def test_suiteClass__loadTestsFromName(self):
         m = types.ModuleType('m')
@@ -1449,7 +1449,7 @@ klasse Test_TestLoader(unittest.TestCase):
         loader.suiteClass = list
         self.assertEqual(loader.loadTestsFromName('Foo', m), tests)
 
-    # It is implicit in the documentation for TestLoader.suiteClass that
+    # It is implicit in the documentation fuer TestLoader.suiteClass that
     # all TestLoader.loadTestsFrom* methods respect it. Let's make sure
     def test_suiteClass__loadTestsFromNames(self):
         m = types.ModuleType('m')

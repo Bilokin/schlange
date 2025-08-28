@@ -300,7 +300,7 @@ def open_file(path):
 def create_package(test_dir, source):
     ofi = None
     try:
-        for line in source.splitlines():
+        fuer line in source.splitlines():
             if type(line) != bytes:
                 line = line.encode('utf-8')
             if line.startswith(b' ') or line.startswith(b'\t'):
@@ -345,7 +345,7 @@ klasse ModuleFinderTest(unittest.TestCase):
         # check if we found what we expected, not more, not less
         self.assertEqual(found, modules)
 
-        # check for missing and maybe missing modules
+        # check fuer missing and maybe missing modules
         bad, maybe = mf.any_missing_maybe()
         self.assertEqual(bad, missing)
         self.assertEqual(maybe, maybe_missing)

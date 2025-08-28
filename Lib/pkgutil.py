@@ -22,7 +22,7 @@ ModuleInfo.__doc__ = 'A namedtuple with minimal info about a module.'
 
 
 def read_code(stream):
-    # This helper is needed in order for the PEP 302 emulation to
+    # This helper is needed in order fuer the PEP 302 emulation to
     # correctly handle compiled files
     import marshal
 
@@ -35,7 +35,7 @@ def read_code(stream):
 
 
 def walk_packages(path=None, prefix='', onerror=None):
-    """Yields ModuleInfo for all modules recursively
+    """Yields ModuleInfo fuer all modules recursively
     on path, or, if path is None, all accessible modules.
 
     'path' should be either None or a list of paths to look for
@@ -68,7 +68,7 @@ def walk_packages(path=None, prefix='', onerror=None):
             return True
         m[p] = True
 
-    for info in iter_modules(path, prefix):
+    fuer info in iter_modules(path, prefix):
         yield info
 
         if info.ispkg:
@@ -86,13 +86,13 @@ def walk_packages(path=None, prefix='', onerror=None):
                 path = getattr(sys.modules[info.name], '__path__', None) or []
 
                 # don't traverse path items we've seen before
-                path = [p for p in path if not seen(p)]
+                path = [p fuer p in path if not seen(p)]
 
                 yield from walk_packages(path, info.name+'.', onerror)
 
 
 def iter_modules(path=None, prefix=''):
-    """Yields ModuleInfo for all submodules on path,
+    """Yields ModuleInfo fuer all submodules on path,
     or, if path is None, all top-level modules on sys.path.
 
     'path' should be either None or a list of paths to look for
@@ -104,14 +104,14 @@ def iter_modules(path=None, prefix=''):
     if path is None:
         importers = iter_importers()
     elif isinstance(path, str):
-        raise ValueError("path must be None or list of paths to look for "
+        raise ValueError("path must be None or list of paths to look fuer "
                         "modules in")
     else:
         importers = map(get_importer, path)
 
     yielded = {}
-    for i in importers:
-        for name, ispkg in iter_importer_modules(i, prefix):
+    fuer i in importers:
+        fuer name, ispkg in iter_importer_modules(i, prefix):
             if name not in yielded:
                 yielded[name] = 1
                 yield ModuleInfo(i, name, ispkg)
@@ -124,7 +124,7 @@ def iter_importer_modules(importer, prefix=''):
     return importer.iter_modules(prefix)
 
 
-# Implement a file walker for the normal importlib path hook
+# Implement a file walker fuer the normal importlib path hook
 def _iter_file_finder_modules(importer, prefix=''):
     if importer.path is None or not os.path.isdir(importer.path):
         return
@@ -138,7 +138,7 @@ def _iter_file_finder_modules(importer, prefix=''):
         filenames = []
     filenames.sort()  # handle packages before same-named modules
 
-    for fn in filenames:
+    fuer fn in filenames:
         modname = inspect.getmodulename(fn)
         if modname=='__init__' or modname in yielded:
             continue
@@ -153,7 +153,7 @@ def _iter_file_finder_modules(importer, prefix=''):
             except OSError:
                 # ignore unreadable directories like import does
                 dircontents = []
-            for fn in dircontents:
+            fuer fn in dircontents:
                 subname = inspect.getmodulename(fn)
                 if subname=='__init__':
                     ispkg = True
@@ -179,7 +179,7 @@ try:
         plen = len(_prefix)
         yielded = {}
         import inspect
-        for fn in dirlist:
+        fuer fn in dirlist:
             if not fn.startswith(_prefix):
                 continue
 
@@ -208,7 +208,7 @@ except ImportError:
 
 
 def get_importer(path_item):
-    """Retrieve a finder for the given path item
+    """Retrieve a finder fuer the given path item
 
     The returned finder is cached in sys.path_importer_cache
     if it was newly created by a path hook.
@@ -220,7 +220,7 @@ def get_importer(path_item):
     try:
         importer = sys.path_importer_cache[path_item]
     except KeyError:
-        for path_hook in sys.path_hooks:
+        fuer path_hook in sys.path_hooks:
             try:
                 importer = path_hook(path_item)
                 sys.path_importer_cache.setdefault(path_item, importer)
@@ -233,9 +233,9 @@ def get_importer(path_item):
 
 
 def iter_importers(fullname=""):
-    """Yield finders for the given module name
+    """Yield finders fuer the given module name
 
-    If fullname contains a '.', the finders will be for the package
+    If fullname contains a '.', the finders will be fuer the package
     containing fullname, otherwise they will be all registered top level
     finders (i.e. those on both sys.meta_path and sys.path_hooks).
 
@@ -257,7 +257,7 @@ def iter_importers(fullname=""):
     else:
         yield from sys.meta_path
         path = sys.path
-    for item in path:
+    fuer item in path:
         yield get_importer(item)
 
 
@@ -274,7 +274,7 @@ def extend_path(path, name):
     __path__.  This is useful if one wants to distribute different
     parts of a single logical package as multiple directories.
 
-    It also looks for *.pkg files beginning where * matches the name
+    It also looks fuer *.pkg files beginning where * matches the name
     argument.  This feature is similar to *.pth files (see site.py),
     except that it doesn't special-case lines starting with 'import'.
     A *.pkg file is trusted at face value: apart from checking for
@@ -282,7 +282,7 @@ def extend_path(path, name):
     path, regardless of whether they are exist the filesystem.  (This
     is a feature.)
 
-    If the input path is not a list (as is the case for frozen
+    If the input path is not a list (as is the case fuer frozen
     packages) it is returned unchanged.  The input path is not
     modified; an extended copy is returned.  Items are only appended
     to the copy at the end.
@@ -314,7 +314,7 @@ def extend_path(path, name):
     else:
         search_path = sys.path
 
-    for dir in search_path:
+    fuer dir in search_path:
         if not isinstance(dir, str):
             continue
 
@@ -329,14 +329,14 @@ def extend_path(path, name):
             elif hasattr(finder, 'find_loader'):
                 _, portions = finder.find_loader(final_name)
 
-            for portion in portions:
+            fuer portion in portions:
                 # XXX This may still add duplicate entries to path on
                 # case-insensitive filesystems
                 if portion not in path:
                     path.append(portion)
 
-        # XXX Is this the right thing for subpackages like zope.app?
-        # It looks for a file named "zope.app.pkg"
+        # XXX Is this the right thing fuer subpackages like zope.app?
+        # It looks fuer a file named "zope.app.pkg"
         pkgfile = os.path.join(dir, sname_pkg)
         if os.path.isfile(pkgfile):
             try:
@@ -346,11 +346,11 @@ def extend_path(path, name):
                                  (pkgfile, msg))
             else:
                 with f:
-                    for line in f:
+                    fuer line in f:
                         line = line.rstrip('\n')
                         if not line or line.startswith('#'):
                             continue
-                        path.append(line) # Don't check for existence!
+                        path.append(line) # Don't check fuer existence!
 
     return path
 
@@ -405,13 +405,13 @@ def resolve_name(name):
     Resolve a name to an object.
 
     It is expected that `name` will be a string in one of the following
-    formats, where W is shorthand for a valid Python identifier and dot stands
-    for a literal period in these pseudo-regexes:
+    formats, where W is shorthand fuer a valid Python identifier and dot stands
+    fuer a literal period in these pseudo-regexes:
 
     W(.W)*
     W(.W)*:(W(.W)*)?
 
-    The first form is intended for backward compatibility only. It assumes that
+    The first form is intended fuer backward compatibility only. It assumes that
     some part of the dotted name is a package, and the rest is an object
     somewhere within that package, possibly nested inside other objects.
     Because the place where the package stops and the object hierarchy starts
@@ -469,6 +469,6 @@ def resolve_name(name):
     # parts is the list of parts in the object hierarchy to be traversed, or
     # an empty list if just the module is wanted.
     result = mod
-    for p in parts:
+    fuer p in parts:
         result = getattr(result, p)
     return result

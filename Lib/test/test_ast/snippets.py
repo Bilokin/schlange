@@ -28,7 +28,7 @@ exec_tests = [
     # FunctionDef with kwargs
     "def f(**kwargs): pass",
     # FunctionDef with all kind of args and docstring
-    "def f(a, b=1, c=None, d=[], e={}, *args, f=42, **kwargs): 'doc for f()'",
+    "def f(a, b=1, c=None, d=[], e={}, *args, f=42, **kwargs): 'doc fuer f()'",
     # FunctionDef with type annotation on return involving unpacking
     "def f() -> tuple[*Ts]: pass",
     "def f() -> tuple[int, *Ts]: pass",
@@ -36,7 +36,7 @@ exec_tests = [
     # ClassDef
     "class C:pass",
     # ClassDef with docstring
-    "class C: 'docstring for klasse C'",
+    "class C: 'docstring fuer klasse C'",
     # ClassDef, new style class
     "class C(object): pass",
     # Classdef with multiple bases
@@ -128,11 +128,11 @@ exec_tests = [
     "for v in v:break",
     # Continue
     "for v in v:continue",
-    # for statements with naked tuples (see http://bugs.python.org/issue6704)
+    # fuer statements with naked tuples (see http://bugs.python.org/issue6704)
     "for a,b in c: pass",
     "for (a,b) in c: pass",
     "for [a,b] in c: pass",
-    # Multiline generator expression (test for .lineno & .col_offset)
+    # Multiline generator expression (test fuer .lineno & .col_offset)
     """(
     (
     Aa
@@ -145,17 +145,17 @@ exec_tests = [
     Bb in Cc
     )""",
     # dictcomp
-    "{a : b for w in x for m in p if g}",
+    "{a : b fuer w in x fuer m in p if g}",
     # dictcomp with naked tuple
-    "{a : b for v,w in x}",
+    "{a : b fuer v,w in x}",
     # setcomp
-    "{r for l in x if g}",
+    "{r fuer l in x if g}",
     # setcomp with naked tuple
-    "{r for l,m in x}",
+    "{r fuer l,m in x}",
     # AsyncFunctionDef
     "async def f():\n 'async function'\n await something()",
     # AsyncFor
-    "async def f():\n async for e in i: 1\n else: 2",
+    "async def f():\n async fuer e in i: 1\n else: 2",
     # AsyncWith
     "async def f():\n async with a as b: 1",
     # PEP 448: Additional Unpacking Generalizations
@@ -165,7 +165,7 @@ exec_tests = [
     "def f(): yield 1",
     "def f(): yield from []",
     # Asynchronous comprehensions
-    "async def f():\n [i async for b in c]",
+    "async def f():\n [i async fuer b in c]",
     # Decorated FunctionDef
     "@deco1\n@deco2()\n@deco3(1)\ndef f(): pass",
     # Decorated AsyncFunctionDef
@@ -173,7 +173,7 @@ exec_tests = [
     # Decorated ClassDef
     "@deco1\n@deco2()\n@deco3(1)\nclass C: pass",
     # Decorator with generator argument
-    "@deco(a for a in b)\ndef f(): pass",
+    "@deco(a fuer a in b)\ndef f(): pass",
     # Decorator with attribute
     "@a.b.c\ndef f(): pass",
     # Simple assignment expression
@@ -265,7 +265,7 @@ eval_tests = [
   "{}",
   # Set
   "{None,}",
-  # Multiline dict (test for .lineno & .col_offset)
+  # Multiline dict (test fuer .lineno & .col_offset)
   """{
       1
         :
@@ -289,23 +289,23 @@ eval_tests = [
         1
      }""",
   # ListComp
-  "[a for b in c if d]",
+  "[a fuer b in c if d]",
   # GeneratorExp
-  "(a for b in c if d)",
+  "(a fuer b in c if d)",
   # SetComp
-  "{a for b in c if d}",
+  "{a fuer b in c if d}",
   # DictComp
-  "{k: v for k, v in c if d}",
-  # Comprehensions with multiple for targets
-  "[(a,b) for a,b in c]",
-  "[(a,b) for (a,b) in c]",
-  "[(a,b) for [a,b] in c]",
-  "{(a,b) for a,b in c}",
-  "{(a,b) for (a,b) in c}",
-  "{(a,b) for [a,b] in c}",
-  "((a,b) for a,b in c)",
-  "((a,b) for (a,b) in c)",
-  "((a,b) for [a,b] in c)",
+  "{k: v fuer k, v in c if d}",
+  # Comprehensions with multiple fuer targets
+  "[(a,b) fuer a,b in c]",
+  "[(a,b) fuer (a,b) in c]",
+  "[(a,b) fuer [a,b] in c]",
+  "{(a,b) fuer a,b in c}",
+  "{(a,b) fuer (a,b) in c}",
+  "{(a,b) fuer [a,b] in c}",
+  "((a,b) fuer a,b in c)",
+  "((a,b) fuer (a,b) in c)",
+  "((a,b) fuer [a,b] in c)",
   # Async comprehensions - async comprehensions can't work outside an asynchronous function
   #
   # Yield - yield expressions can't work outside a function
@@ -327,7 +327,7 @@ eval_tests = [
   # Call with multi-character starred
   "f(*[0, 1])",
   # Call with a generator argument
-  "f(a for a in b)",
+  "f(a fuer a in b)",
   # Constant(value=int())
   "10",
   # Complex num
@@ -377,10 +377,10 @@ def main():
     if __name__ != '__main__':
         return
     if sys.argv[1:] == ['-g']:
-        for statements, kind in ((exec_tests, "exec"), (single_tests, "single"),
+        fuer statements, kind in ((exec_tests, "exec"), (single_tests, "single"),
                                  (eval_tests, "eval")):
             print(kind+"_results = [")
-            for statement in statements:
+            fuer statement in statements:
                 tree = ast.parse(statement, "?", kind)
                 print("%r," % (to_tuple(tree),))
             print("]")
@@ -399,12 +399,12 @@ exec_results = [
 ('Module', [('FunctionDef', (1, 0, 1, 36), 'f', ('arguments', [], [], ('arg', (1, 7, 1, 29), 'args', ('Starred', (1, 13, 1, 29), ('Subscript', (1, 14, 1, 29), ('Name', (1, 14, 1, 19), 'tuple', ('Load',)), ('Tuple', (1, 20, 1, 28), [('Name', (1, 20, 1, 23), 'int', ('Load',)), ('Constant', (1, 25, 1, 28), Ellipsis, None)], ('Load',)), ('Load',)), ('Load',)), None), [], [], None, []), [('Pass', (1, 32, 1, 36))], [], None, None, [])], []),
 ('Module', [('FunctionDef', (1, 0, 1, 36), 'f', ('arguments', [], [], ('arg', (1, 7, 1, 29), 'args', ('Starred', (1, 13, 1, 29), ('Subscript', (1, 14, 1, 29), ('Name', (1, 14, 1, 19), 'tuple', ('Load',)), ('Tuple', (1, 20, 1, 28), [('Name', (1, 20, 1, 23), 'int', ('Load',)), ('Starred', (1, 25, 1, 28), ('Name', (1, 26, 1, 28), 'Ts', ('Load',)), ('Load',))], ('Load',)), ('Load',)), ('Load',)), None), [], [], None, []), [('Pass', (1, 32, 1, 36))], [], None, None, [])], []),
 ('Module', [('FunctionDef', (1, 0, 1, 21), 'f', ('arguments', [], [], None, [], [], ('arg', (1, 8, 1, 14), 'kwargs', None, None), []), [('Pass', (1, 17, 1, 21))], [], None, None, [])], []),
-('Module', [('FunctionDef', (1, 0, 1, 71), 'f', ('arguments', [], [('arg', (1, 6, 1, 7), 'a', None, None), ('arg', (1, 9, 1, 10), 'b', None, None), ('arg', (1, 14, 1, 15), 'c', None, None), ('arg', (1, 22, 1, 23), 'd', None, None), ('arg', (1, 28, 1, 29), 'e', None, None)], ('arg', (1, 35, 1, 39), 'args', None, None), [('arg', (1, 41, 1, 42), 'f', None, None)], [('Constant', (1, 43, 1, 45), 42, None)], ('arg', (1, 49, 1, 55), 'kwargs', None, None), [('Constant', (1, 11, 1, 12), 1, None), ('Constant', (1, 16, 1, 20), None, None), ('List', (1, 24, 1, 26), [], ('Load',)), ('Dict', (1, 30, 1, 32), [], [])]), [('Expr', (1, 58, 1, 71), ('Constant', (1, 58, 1, 71), 'doc for f()', None))], [], None, None, [])], []),
+('Module', [('FunctionDef', (1, 0, 1, 71), 'f', ('arguments', [], [('arg', (1, 6, 1, 7), 'a', None, None), ('arg', (1, 9, 1, 10), 'b', None, None), ('arg', (1, 14, 1, 15), 'c', None, None), ('arg', (1, 22, 1, 23), 'd', None, None), ('arg', (1, 28, 1, 29), 'e', None, None)], ('arg', (1, 35, 1, 39), 'args', None, None), [('arg', (1, 41, 1, 42), 'f', None, None)], [('Constant', (1, 43, 1, 45), 42, None)], ('arg', (1, 49, 1, 55), 'kwargs', None, None), [('Constant', (1, 11, 1, 12), 1, None), ('Constant', (1, 16, 1, 20), None, None), ('List', (1, 24, 1, 26), [], ('Load',)), ('Dict', (1, 30, 1, 32), [], [])]), [('Expr', (1, 58, 1, 71), ('Constant', (1, 58, 1, 71), 'doc fuer f()', None))], [], None, None, [])], []),
 ('Module', [('FunctionDef', (1, 0, 1, 27), 'f', ('arguments', [], [], None, [], [], None, []), [('Pass', (1, 23, 1, 27))], [], ('Subscript', (1, 11, 1, 21), ('Name', (1, 11, 1, 16), 'tuple', ('Load',)), ('Tuple', (1, 17, 1, 20), [('Starred', (1, 17, 1, 20), ('Name', (1, 18, 1, 20), 'Ts', ('Load',)), ('Load',))], ('Load',)), ('Load',)), None, [])], []),
 ('Module', [('FunctionDef', (1, 0, 1, 32), 'f', ('arguments', [], [], None, [], [], None, []), [('Pass', (1, 28, 1, 32))], [], ('Subscript', (1, 11, 1, 26), ('Name', (1, 11, 1, 16), 'tuple', ('Load',)), ('Tuple', (1, 17, 1, 25), [('Name', (1, 17, 1, 20), 'int', ('Load',)), ('Starred', (1, 22, 1, 25), ('Name', (1, 23, 1, 25), 'Ts', ('Load',)), ('Load',))], ('Load',)), ('Load',)), None, [])], []),
 ('Module', [('FunctionDef', (1, 0, 1, 45), 'f', ('arguments', [], [], None, [], [], None, []), [('Pass', (1, 41, 1, 45))], [], ('Subscript', (1, 11, 1, 39), ('Name', (1, 11, 1, 16), 'tuple', ('Load',)), ('Tuple', (1, 17, 1, 38), [('Name', (1, 17, 1, 20), 'int', ('Load',)), ('Starred', (1, 22, 1, 38), ('Subscript', (1, 23, 1, 38), ('Name', (1, 23, 1, 28), 'tuple', ('Load',)), ('Tuple', (1, 29, 1, 37), [('Name', (1, 29, 1, 32), 'int', ('Load',)), ('Constant', (1, 34, 1, 37), Ellipsis, None)], ('Load',)), ('Load',)), ('Load',))], ('Load',)), ('Load',)), None, [])], []),
 ('Module', [('ClassDef', (1, 0, 1, 12), 'C', [], [], [('Pass', (1, 8, 1, 12))], [], [])], []),
-('Module', [('ClassDef', (1, 0, 1, 32), 'C', [], [], [('Expr', (1, 9, 1, 32), ('Constant', (1, 9, 1, 32), 'docstring for klasse C', None))], [], [])], []),
+('Module', [('ClassDef', (1, 0, 1, 32), 'C', [], [], [('Expr', (1, 9, 1, 32), ('Constant', (1, 9, 1, 32), 'docstring fuer klasse C', None))], [], [])], []),
 ('Module', [('ClassDef', (1, 0, 1, 21), 'C', [('Name', (1, 8, 1, 14), 'object', ('Load',))], [], [('Pass', (1, 17, 1, 21))], [], [])], []),
 ('Module', [('ClassDef', (1, 0, 1, 19), 'C', [('Name', (1, 8, 1, 9), 'A', ('Load',)), ('Name', (1, 11, 1, 12), 'B', ('Load',))], [], [('Pass', (1, 15, 1, 19))], [], [])], []),
 ('Module', [('FunctionDef', (1, 0, 1, 16), 'f', ('arguments', [], [], None, [], [], None, []), [('Return', (1, 8, 1, 16), ('Constant', (1, 15, 1, 16), 1, None))], [], None, None, [])], []),

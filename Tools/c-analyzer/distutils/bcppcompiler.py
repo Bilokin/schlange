@@ -1,7 +1,7 @@
 """distutils.bcppcompiler
 
 Contains BorlandCCompiler, an implementation of the abstract CCompiler class
-for the Borland C++ compiler.
+fuer the Borland C++ compiler.
 """
 
 # This implementation by Lyle Johnson, based on the original msvccompiler.py
@@ -27,16 +27,16 @@ klasse BCPPCompiler(CCompiler) :
 
     # Just set this so CCompiler's constructor doesn't barf.  We currently
     # don't use the 'set_executables()' bureaucracy provided by CCompiler,
-    # as it really isn't necessary for this sort of single-compiler class.
+    # as it really isn't necessary fuer this sort of single-compiler class.
     # Would be nice to have a consistent interface with UnixCCompiler,
     # though, so it's worth thinking about.
     executables = {}
 
-    # Private klasse data (need to distinguish C from C++ source for compiler)
+    # Private klasse data (need to distinguish C from C++ source fuer compiler)
     _c_extensions = ['.c']
     _cpp_extensions = ['.cc', '.cpp', '.cxx']
 
-    # Needed for the filename generation methods provided by the
+    # Needed fuer the filename generation methods provided by the
     # base class, CCompiler.
     src_extensions = _c_extensions + _cpp_extensions
     obj_extension = '.obj'

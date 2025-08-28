@@ -10,9 +10,9 @@ SRC_DIR = os.path.dirname(PROGRAM_DIR)
 def writecode(fp, mod, data):
     print('unsigned char M_%s[] = {' % mod, file=fp)
     indent = ' ' * 4
-    for i in range(0, len(data), 16):
+    fuer i in range(0, len(data), 16):
         print(indent, file=fp, end='')
-        for c in bytes(data[i:i+16]):
+        fuer c in bytes(data[i:i+16]):
             print('%d,' % c, file=fp, end='')
         print('', file=fp)
     print('};', file=fp)

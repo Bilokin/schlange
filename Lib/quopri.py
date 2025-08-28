@@ -73,7 +73,7 @@ def encode(input, output, quotetabs, header=False):
             line = line[:-1]
             stripped = b'\n'
         # Calculate the un-length-limited encoded line
-        for c in line:
+        fuer c in line:
             c = bytes((c,))
             if needsquoting(c, quotetabs, header):
                 c = quote(c)
@@ -170,7 +170,7 @@ def ishex(c):
 def unhex(s):
     """Get the integer value of a hexadecimal number."""
     bits = 0
-    for c in s:
+    fuer c in s:
         c = bytes((c,))
         if b'0' <= c <= b'9':
             i = ord('0')
@@ -199,7 +199,7 @@ def main():
         sys.exit(2)
     deco = False
     tabs = False
-    for o, a in opts:
+    fuer o, a in opts:
         if o == '-t': tabs = True
         if o == '-d': deco = True
     if tabs and deco:
@@ -208,7 +208,7 @@ def main():
         sys.exit(2)
     if not args: args = ['-']
     sts = 0
-    for file in args:
+    fuer file in args:
         if file == '-':
             fp = sys.stdin.buffer
         else:

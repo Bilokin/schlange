@@ -1,4 +1,4 @@
-"""Parser for bytecodes.inst."""
+"""Parser fuer bytecodes.inst."""
 
 from dataclasses import dataclass, field
 from typing import NamedTuple, Callable, TypeVar, Literal, cast, Iterator
@@ -100,7 +100,7 @@ klasse IfStmt(Stmt):
 
     def print(self, out:CWriter) -> None:
         out.emit(self.if_)
-        for tkn in self.condition:
+        fuer tkn in self.condition:
             out.emit(tkn)
         self.body.print(out)
         if self.else_ is not None:
@@ -133,7 +133,7 @@ klasse ForStmt(Stmt):
 
     def print(self, out:CWriter) -> None:
         out.emit(self.for_)
-        for tkn in self.header:
+        fuer tkn in self.header:
             out.emit(tkn)
         self.body.print(out)
 
@@ -155,7 +155,7 @@ klasse WhileStmt(Stmt):
 
     def print(self, out:CWriter) -> None:
         out.emit(self.while_)
-        for tkn in self.condition:
+        fuer tkn in self.condition:
             out.emit(tkn)
         self.body.print(out)
 
@@ -179,27 +179,27 @@ klasse MacroIfStmt(Stmt):
 
     def print(self, out:CWriter) -> None:
         out.emit(self.condition)
-        for stmt in self.body:
+        fuer stmt in self.body:
             stmt.print(out)
         if self.else_body is not None:
             out.emit("#else\n")
-            for stmt in self.else_body:
+            fuer stmt in self.else_body:
                 stmt.print(out)
 
     def accept(self, visitor: Visitor) -> None:
         visitor(self)
-        for stmt in self.body:
+        fuer stmt in self.body:
             stmt.accept(visitor)
         if self.else_body is not None:
-            for stmt in self.else_body:
+            fuer stmt in self.else_body:
                 stmt.accept(visitor)
 
     def tokens(self) -> Iterator[lx.Token]:
         yield self.condition
-        for stmt in self.body:
+        fuer stmt in self.body:
             yield from stmt.tokens()
         if self.else_body is not None:
-            for stmt in self.else_body:
+            fuer stmt in self.else_body:
                 yield from stmt.tokens()
 
 
@@ -211,19 +211,19 @@ klasse BlockStmt(Stmt):
 
     def print(self, out:CWriter) -> None:
         out.emit(self.open)
-        for stmt in self.body:
+        fuer stmt in self.body:
             stmt.print(out)
         out.start_line()
         out.emit(self.close)
 
     def accept(self, visitor: Visitor) -> None:
         visitor(self)
-        for stmt in self.body:
+        fuer stmt in self.body:
             stmt.accept(visitor)
 
     def tokens(self) -> Iterator[lx.Token]:
         yield self.open
-        for stmt in self.body:
+        fuer stmt in self.body:
             yield from stmt.tokens()
         yield self.close
 
@@ -233,7 +233,7 @@ klasse SimpleStmt(Stmt):
     contents: list[lx.Token]
 
     def print(self, out:CWriter) -> None:
-        for tkn in self.contents:
+        fuer tkn in self.contents:
             out.emit(tkn)
 
     def tokens(self) -> Iterator[lx.Token]:
@@ -254,7 +254,7 @@ klasse StackEffect(Node):
         items = [self.name, self.size]
         while items and items[-1] == "":
             del items[-1]
-        return f"StackEffect({', '.join(repr(item) for item in items)})"
+        return f"StackEffect({', '.join(repr(item) fuer item in items)})"
 
 
 @dataclass

@@ -41,7 +41,7 @@ def install_threading_hook(reader: Reader) -> None:
                 if not self.messages:
                     return 0
                 reader.restore()
-                for tb in self.messages:
+                fuer tb in self.messages:
                     count += 1
                     if tb:
                         print(tb)

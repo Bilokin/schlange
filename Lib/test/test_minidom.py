@@ -1,4 +1,4 @@
-# test for xml.dom.minidom
+# test fuer xml.dom.minidom
 
 import copy
 import pickle
@@ -57,7 +57,7 @@ klasse MinidomTest(unittest.TestCase):
 
     def checkWholeText(self, node, s):
         t = node.wholeText
-        self.assertEqual(t, s, "looking for %r, found %r" % (s, t))
+        self.assertEqual(t, s, "looking fuer %r, found %r" % (s, t))
 
     def testDocumentAsyncAttr(self):
         doc = Document()
@@ -410,10 +410,10 @@ klasse MinidomTest(unittest.TestCase):
         self.addCleanup(dom.unlink)
         el = dom.documentElement
         el.setAttribute("spam", "jam")
-        values = [x.value for x in el.attributes.values()]
+        values = [x.value fuer x in el.attributes.values()]
         self.assertIn("jam", values)
         el.setAttribute("foo", "bar")
-        values = [x.value for x in el.attributes.values()]
+        values = [x.value fuer x in el.attributes.values()]
         self.assertIn("bar", values)
         self.assertIn("jam", values)
 
@@ -590,7 +590,7 @@ klasse MinidomTest(unittest.TestCase):
 
     def test_toprettyxml_preserves_content_of_text_node(self):
         # see issue #4147
-        for str in ('<B>A</B>', '<A><B>C</B></A>'):
+        fuer str in ('<B>A</B>', '<A><B>C</B></A>'):
             dom = parseString(str)
             dom2 = parseString(dom.toprettyxml())
             self.assertEqual(
@@ -717,7 +717,7 @@ klasse MinidomTest(unittest.TestCase):
         keys1.sort()
         keys2.sort()
         self.assertEqual(keys1, keys2)
-        for i in range(len(keys1)):
+        fuer i in range(len(keys1)):
             a1 = attrs1.item(i)
             a2 = attrs2.item(i)
             self.assertIsNot(a1, a2)
@@ -806,7 +806,7 @@ klasse MinidomTest(unittest.TestCase):
                 and len(clone.notations) == len(doctype.notations)
                 and clone.notations.item(len(clone.notations)) is None
                 and len(clone.childNodes) == 0)
-        for i in range(len(doctype.entities)):
+        fuer i in range(len(doctype.entities)):
             se = doctype.entities.item(i)
             ce = clone.entities.item(i)
             self.confirm((not se.isSameNode(ce))
@@ -818,7 +818,7 @@ klasse MinidomTest(unittest.TestCase):
                     and ce.encoding == se.encoding
                     and ce.actualEncoding == se.actualEncoding
                     and ce.version == se.version)
-        for i in range(len(doctype.notations)):
+        fuer i in range(len(doctype.notations)):
             sn = doctype.notations.item(i)
             cn = clone.notations.item(i)
             self.confirm((not sn.isSameNode(cn))
@@ -1513,7 +1513,7 @@ klasse MinidomTest(unittest.TestCase):
         self.confirm(t.name is None
                 and t.namespace == xml.dom.EMPTY_NAMESPACE)
         names = "id notid text enum ref refs ent ents nm nms".split()
-        for name in names:
+        fuer name in names:
             a = elem.getAttributeNode(name)
             t = a.schemaType
             self.confirm(hasattr(t, "name")
@@ -1638,7 +1638,7 @@ klasse MinidomTest(unittest.TestCase):
                 len(n2.notations)
                 self.assertEqual(len(n1.entities), len(n2.entities))
                 self.assertEqual(len(n1.notations), len(n2.notations))
-                for i in range(len(n1.notations)):
+                fuer i in range(len(n1.notations)):
                     # XXX this loop body doesn't seem to be executed?
                     no1 = n1.notations.item(i)
                     no2 = n1.notations.item(i)
@@ -1646,7 +1646,7 @@ klasse MinidomTest(unittest.TestCase):
                     self.assertEqual(no1.publicId, no2.publicId)
                     self.assertEqual(no1.systemId, no2.systemId)
                     stack.append((no1, no2))
-                for i in range(len(n1.entities)):
+                fuer i in range(len(n1.entities)):
                     e1 = n1.entities.item(i)
                     e2 = n2.entities.item(i)
                     self.assertEqual(e1.notationName, e2.notationName)
@@ -1656,12 +1656,12 @@ klasse MinidomTest(unittest.TestCase):
             if n1.nodeType != Node.DOCUMENT_NODE:
                 self.assertTrue(n1.ownerDocument.isSameNode(doc))
                 self.assertTrue(n2.ownerDocument.isSameNode(doc2))
-            for i in range(len(n1.childNodes)):
+            fuer i in range(len(n1.childNodes)):
                 stack.append((n1.childNodes[i], n2.childNodes[i]))
 
     def testPickledDocument(self):
         doc = parseString(sample)
-        for proto in range(2, pickle.HIGHEST_PROTOCOL + 1):
+        fuer proto in range(2, pickle.HIGHEST_PROTOCOL + 1):
             s = pickle.dumps(doc, proto)
             doc2 = pickle.loads(s)
             self.assert_recursive_equal(doc, doc2)

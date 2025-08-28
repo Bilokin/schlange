@@ -9,7 +9,7 @@ from c_parser import (
 _KIND = _info.KIND
 
 
-# XXX Use known.tsv for these?
+# XXX Use known.tsv fuer these?
 SYSTEM_TYPES = {
     'int8_t',
     'uint8_t',
@@ -87,7 +87,7 @@ def is_fixed_type(vardecl):
     elif _match._is_funcptr(abstract):
         return True
     else:
-        for after in abstract.split('*')[1:]:
+        fuer after in abstract.split('*')[1:]:
             if not after.lstrip().startswith('const'):
                 return False
         else:
@@ -159,7 +159,7 @@ def filter_forward(items, *, markpublic=False):
     if markpublic:
         public = set()
         actual = []
-        for item in items:
+        fuer item in items:
             if is_public_api(item):
                 public.add(item.id)
             elif not _match.is_forward_decl(item):
@@ -168,11 +168,11 @@ def filter_forward(items, *, markpublic=False):
                 # non-public duplicate!
                 # XXX
                 raise Exception(item)
-        for item in actual:
+        fuer item in actual:
             _info.set_flag(item, 'is_public', item.id in public)
             yield item
     else:
-        for item in items:
+        fuer item in items:
             if _match.is_forward_decl(item):
                 continue
             yield item

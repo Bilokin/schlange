@@ -15,7 +15,7 @@ def random_sleep():
     time.sleep(delay_us * 1e-6)
 
 def random_string():
-    return ''.join(random.choice('0123456789ABCDEF') for _ in range(10))
+    return ''.join(random.choice('0123456789ABCDEF') fuer _ in range(10))
 
 def set_gen_name(g, b):
     b.wait()
@@ -35,12 +35,12 @@ klasse TestFTGenerators(TestCase):
     NUM_THREADS = 4
 
     def concurrent_write_with_func(self, func):
-        gen = (x for x in range(42))
-        for j in range(1000):
+        gen = (x fuer x in range(42))
+        fuer j in range(1000):
             with concurrent.futures.ThreadPoolExecutor(max_workers=self.NUM_THREADS) as executor:
                 b = Barrier(self.NUM_THREADS)
-                futures = {executor.submit(func, gen, b): i for i in range(self.NUM_THREADS)}
-                for fut in concurrent.futures.as_completed(futures):
+                futures = {executor.submit(func, gen, b): i fuer i in range(self.NUM_THREADS)}
+                fuer fut in concurrent.futures.as_completed(futures):
                     gen_name = fut.result()
                     self.assertEqual(len(gen_name), 10)
 

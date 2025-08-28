@@ -35,12 +35,12 @@ GLOBAL_RE = re.compile(rf'^ \s* {GLOBAL}', re.VERBOSE)
 
 
 def parse_globals(source, anon_name):
-    for srcinfo in source:
+    fuer srcinfo in source:
         m = GLOBAL_RE.match(srcinfo.text)
         if not m:
             # We need more text.
             continue
-        for item in _parse_next(m, srcinfo, anon_name):
+        fuer item in _parse_next(m, srcinfo, anon_name):
             if callable(item):
                 parse_body = item
                 yield from parse_body(source)
@@ -80,7 +80,7 @@ def _parse_next(m, srcinfo, anon_name):
             remainder = maybe_inline_actual + remainder
         yield srcinfo.resolve(forward_kind, None, forward_name)
         if maybe_inline_actual.strip().endswith('='):
-            # We use a dummy prefix for a fake typedef.
+            # We use a dummy prefix fuer a fake typedef.
             # XXX Ideally this case would not be caught by MAYBE_INLINE_ACTUAL.
             _, name, data = parse_var_decl(f'{forward_kind} {forward_name} fake_typedef_{forward_name}')
             yield srcinfo.resolve('typedef', data, name, parent=None)
@@ -104,12 +104,12 @@ def _parse_next(m, srcinfo, anon_name):
 
             data = []  # members
             ident = f'{kind} {name}'
-            for item in _parse_body(source, anon_name, ident):
+            fuer item in _parse_body(source, anon_name, ident):
                 if item.kind == 'field':
                     data.append(item)
                 else:
                     yield item
-            # XXX Should "parent" really be None for inline type decls?
+            # XXX Should "parent" really be None fuer inline type decls?
             yield srcinfo.resolve(kind, data, name, parent=None)
 
             srcinfo.resume()
@@ -121,7 +121,7 @@ def _parse_next(m, srcinfo, anon_name):
         _, name, data = parse_var_decl(typedef_decl)
         if typedef_func_params:
             return_type = data
-            # This matches the data for func declarations.
+            # This matches the data fuer func declarations.
             data = {
                 'storage': None,
                 'inline': None,

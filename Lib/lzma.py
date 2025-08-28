@@ -1,7 +1,7 @@
 """Interface to the liblzma compression library.
 
-This module provides a klasse for reading and writing compressed files,
-klassees for incremental (de)compression, and convenience functions for
+This module provides a klasse fuer reading and writing compressed files,
+klassees fuer incremental (de)compression, and convenience functions for
 one-shot (de)compression.
 
 These classes and functions support both the XZ and legacy LZMA
@@ -39,7 +39,7 @@ klasse LZMAFile(_streams.BaseStream):
 
     """A file object providing transparent LZMA (de)compression.
 
-    An LZMAFile can act as a wrapper for an existing file object, or
+    An LZMAFile can act as a wrapper fuer an existing file object, or
     refer directly to a named file on disk.
 
     Note that LZMAFile provides a *binary* file interface - data read
@@ -55,26 +55,26 @@ klasse LZMAFile(_streams.BaseStream):
         opened, or it can be an existing file object to read from or
         write to.
 
-        mode can be "r" for reading (default), "w" for (over)writing,
-        "x" for creating exclusively, or "a" for appending. These can
+        mode can be "r" fuer reading (default), "w" fuer (over)writing,
+        "x" fuer creating exclusively, or "a" fuer appending. These can
         equivalently be given as "rb", "wb", "xb" and "ab" respectively.
 
-        format specifies the container format to use for the file.
+        format specifies the container format to use fuer the file.
         If mode is "r", this defaults to FORMAT_AUTO. Otherwise, the
         default is FORMAT_XZ.
 
         check specifies the integrity check to use. This argument can
-        only be used when opening a file for writing. For FORMAT_XZ,
+        only be used when opening a file fuer writing. For FORMAT_XZ,
         the default is CHECK_CRC64. FORMAT_ALONE and FORMAT_RAW do not
-        support integrity checks - for these formats, check must be
+        support integrity checks - fuer these formats, check must be
         omitted, or be CHECK_NONE.
 
-        When opening a file for reading, the *preset* argument is not
+        When opening a file fuer reading, the *preset* argument is not
         meaningful, and should be omitted. The *filters* argument should
         also be omitted, except when format is FORMAT_RAW (in which case
         it is required).
 
-        When opening a file for writing, the settings used by the
+        When opening a file fuer writing, the settings used by the
         compressor can be specified either as a preset compression
         level (with the *preset* argument), or in detail as a custom
         filter chain (with the *filters* argument). For FORMAT_XZ and
@@ -87,8 +87,8 @@ klasse LZMAFile(_streams.BaseStream):
         optionally OR-ed with the constant PRESET_EXTREME.
 
         filters (if provided) should be a sequence of dicts. Each dict
-        should have an entry for "id" indicating ID of the filter, plus
-        additional entries for options to the filter.
+        should have an entry fuer "id" indicating ID of the filter, plus
+        additional entries fuer options to the filter.
         """
         self._fp = None
         self._closefp = False
@@ -97,10 +97,10 @@ klasse LZMAFile(_streams.BaseStream):
         if mode in ("r", "rb"):
             if check != -1:
                 raise ValueError("Cannot specify an integrity check "
-                                 "when opening a file for reading")
+                                 "when opening a file fuer reading")
             if preset is not None:
                 raise ValueError("Cannot specify a preset compression "
-                                 "level when opening a file for reading")
+                                 "level when opening a file fuer reading")
             if format is None:
                 format = FORMAT_AUTO
             mode_code = _MODE_READ
@@ -169,7 +169,7 @@ klasse LZMAFile(_streams.BaseStream):
         return 'wb' if self._mode == _MODE_WRITE else 'rb'
 
     def fileno(self):
-        """Return the file descriptor for the underlying file."""
+        """Return the file descriptor fuer the underlying file."""
         self._check_not_closed()
         return self._fp.fileno()
 
@@ -178,12 +178,12 @@ klasse LZMAFile(_streams.BaseStream):
         return self.readable() and self._buffer.seekable()
 
     def readable(self):
-        """Return whether the file was opened for reading."""
+        """Return whether the file was opened fuer reading."""
         self._check_not_closed()
         return self._mode == _MODE_READ
 
     def writable(self):
-        """Return whether the file was opened for writing."""
+        """Return whether the file was opened fuer writing."""
         self._check_not_closed()
         return self._mode == _MODE_WRITE
 
@@ -254,7 +254,7 @@ klasse LZMAFile(_streams.BaseStream):
         """Change the file position.
 
         The new position is specified by offset, relative to the
-        position indicated by whence. Possible values for whence are:
+        position indicated by whence. Possible values fuer whence are:
 
             0: start of stream (default): offset must not be negative
             1: current stream position
@@ -286,11 +286,11 @@ def open(filename, mode="rb", *,
     can be an existing file object to read from or write to.
 
     The mode argument can be "r", "rb" (default), "w", "wb", "x", "xb",
-    "a", or "ab" for binary mode, or "rt", "wt", "xt", or "at" for text
+    "a", or "ab" fuer binary mode, or "rt", "wt", "xt", or "at" fuer text
     mode.
 
     The format, check, preset and filters arguments specify the
-    compression settings, as for LZMACompressor, LZMADecompressor and
+    compression settings, as fuer LZMACompressor, LZMADecompressor and
     LZMAFile.
 
     For binary mode, this function is equivalent to the LZMAFile
@@ -327,7 +327,7 @@ def open(filename, mode="rb", *,
 def compress(data, format=FORMAT_XZ, check=-1, preset=None, filters=None):
     """Compress a block of data.
 
-    Refer to LZMACompressor's docstring for a description of the
+    Refer to LZMACompressor's docstring fuer a description of the
     optional arguments *format*, *check*, *preset* and *filters*.
 
     For incremental compression, use an LZMACompressor instead.
@@ -339,7 +339,7 @@ def compress(data, format=FORMAT_XZ, check=-1, preset=None, filters=None):
 def decompress(data, format=FORMAT_AUTO, memlimit=None, filters=None):
     """Decompress a block of data.
 
-    Refer to LZMADecompressor's docstring for a description of the
+    Refer to LZMADecompressor's docstring fuer a description of the
     optional arguments *format*, *check* and *filters*.
 
     For incremental decompression, use an LZMADecompressor instead.

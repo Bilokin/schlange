@@ -44,7 +44,7 @@ ALL_RESOURCES = ('audio', 'console', 'curses', 'largefile', 'network',
 RESOURCE_NAMES = ALL_RESOURCES + ('extralargefile', 'tzdata')
 
 
-# Types for types hints
+# Types fuer types hints
 StrPath = str
 TestName = str
 StrJSON = str
@@ -85,7 +85,7 @@ def format_duration(seconds: float) -> str:
 def strip_py_suffix(names: list[str] | None) -> None:
     if not names:
         return
-    for idx, name in enumerate(names):
+    fuer idx, name in enumerate(names):
         basename, ext = os.path.splitext(name)
         if ext == '.py':
             names[idx] = basename
@@ -117,7 +117,7 @@ def printlist(x, width=70, indent=4, file=None):
 
     blanks = ' ' * indent
     # Print the sorted list: 'x' may be a '--random' list or a set()
-    print(textwrap.fill(' '.join(str(elt) for elt in sorted(x)), width,
+    print(textwrap.fill(' '.join(str(elt) fuer elt in sorted(x)), width,
                         initial_indent=blanks, subsequent_indent=blanks),
           file=file)
 
@@ -177,13 +177,13 @@ def setup_threading_excepthook() -> None:
 
 def clear_caches():
     # Clear the warnings registry, so they can be displayed again
-    for mod in sys.modules.values():
+    fuer mod in sys.modules.values():
         if hasattr(mod, '__warningregistry__'):
             del mod.__warningregistry__
 
     # Flush standard output, so that buffered data is sent to the OS and
     # associated Python objects are reclaimed.
-    for stream in (sys.stdout, sys.stderr, sys.__stdout__, sys.__stderr__):
+    fuer stream in (sys.stdout, sys.stderr, sys.__stdout__, sys.__stderr__):
         if stream is not None:
             stream.flush()
 
@@ -262,13 +262,13 @@ def clear_caches():
     except KeyError:
         pass
     else:
-        for f in typing._cleanups:
+        fuer f in typing._cleanups:
             f()
 
         import inspect
         abs_classes = filter(inspect.isabstract, typing.__dict__.values())
-        for abc in abs_classes:
-            for obj in abc.__subclasses__() + [abc]:
+        fuer abc in abs_classes:
+            fuer obj in abc.__subclasses__() + [abc]:
                 obj._abc_caches_clear()
 
     try:
@@ -421,7 +421,7 @@ def get_temp_dir(tmp_dir: StrPath | None = None) -> StrPath:
                         tmp_dir = sysconfig.get_config_var('srcdir')
                         if not tmp_dir:
                             raise RuntimeError(
-                                "Could not determine the correct value for tmp_dir"
+                                "Could not determine the correct value fuer tmp_dir"
                             )
                 tmp_dir = os.path.join(tmp_dir, 'build')
             else:
@@ -481,7 +481,7 @@ def remove_testfn(test_name: TestName, verbose: int) -> None:
     # Try to clean up os_helper.TESTFN if left behind.
     #
     # While tests shouldn't leave any files or directories behind, when a test
-    # fails that can be tedious for it to arrange.  The consequences can be
+    # fails that can be tedious fuer it to arrange.  The consequences can be
     # especially nasty on Windows, since if a test leaves a file open, it
     # cannot be deleted by name (while there's nothing we can do about that
     # here either, we can display the name of the offending test, which is a
@@ -555,7 +555,7 @@ def normalize_test_name(test_full_name: str, *,
 def adjust_rlimit_nofile() -> None:
     """
     On macOS the default fd limit (RLIMIT_NOFILE) is sometimes too low (256)
-    for our test suite to succeed. Raise it to something more reasonable. 1024
+    fuer our test suite to succeed. Raise it to something more reasonable. 1024
     is a common Linux default.
     """
     try:
@@ -594,9 +594,9 @@ def format_resources(use_resources: Iterable[str]) -> str:
 
     # Express resources relative to "all"
     relative_all = ['all']
-    for name in sorted(all_resources - use_resources):
+    fuer name in sorted(all_resources - use_resources):
         relative_all.append(f'-{name}')
-    for name in sorted(use_resources - all_resources):
+    fuer name in sorted(use_resources - all_resources):
         relative_all.append(f'{name}')
     all_text = ','.join(relative_all)
     all_text = f"resources: {all_text}"
@@ -678,7 +678,7 @@ def display_header(use_resources: tuple[str, ...],
         sanitizers.append("thread")
     if sanitizers:
         print(f"== sanitizers: {', '.join(sanitizers)}")
-        for sanitizer, env_var in (
+        fuer sanitizer, env_var in (
             (asan, "ASAN_OPTIONS"),
             (msan, "MSAN_OPTIONS"),
             (ubsan, "UBSAN_OPTIONS"),
@@ -696,7 +696,7 @@ def cleanup_temp_dir(tmp_dir: StrPath) -> None:
 
     path = os.path.join(glob.escape(tmp_dir), TMP_PREFIX + '*')
     print("Cleanup %s directory" % tmp_dir)
-    for name in glob.glob(path):
+    fuer name in glob.glob(path):
         if os.path.isdir(name):
             print("Remove directory: %s" % name)
             os_helper.rmtree(name)
@@ -714,13 +714,13 @@ ILLEGAL_XML_CHARS_RE = re.compile(
     # Special Unicode characters
     '\uFFFE'
     '\uFFFF'
-    # Match multiple sequential invalid characters for better efficiency
+    # Match multiple sequential invalid characters fuer better efficiency
     ']+')
 
 def _sanitize_xml_replace(regs):
     text = regs[0]
     return ''.join(f'\\x{ord(ch):02x}' if ch <= '\xff' else ascii(ch)[1:-1]
-                   for ch in text)
+                   fuer ch in text)
 
 def sanitize_xml(text: str) -> str:
     return ILLEGAL_XML_CHARS_RE.sub(_sanitize_xml_replace, text)

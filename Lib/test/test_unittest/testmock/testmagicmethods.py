@@ -197,7 +197,7 @@ klasse TestMockingMagicMethods(unittest.TestCase):
 
 
     def test_equality(self):
-        for mock in Mock(), MagicMock():
+        fuer mock in Mock(), MagicMock():
             self.assertEqual(mock == mock, True)
             self.assertIsInstance(mock == mock, bool)
             self.assertEqual(mock != mock, False)
@@ -255,7 +255,7 @@ klasse TestMockingMagicMethods(unittest.TestCase):
         self.assertNotHasAttr(mock, '__nonzero__')
         self.assertFalse(bool(mock))
 
-        for entry in _magics:
+        fuer entry in _magics:
             self.assertHasAttr(mock, entry)
         self.assertNotHasAttr(mock, '__imaginary__')
 
@@ -291,7 +291,7 @@ klasse TestMockingMagicMethods(unittest.TestCase):
         self.assertIsInstance(mock.__aexit__, AsyncMock)
 
         # in Python 3 oct and hex use __index__
-        # so these tests are for __index__ in py3k
+        # so these tests are fuer __index__ in py3k
         self.assertEqual(oct(mock), '0o1')
         self.assertEqual(hex(mock), '0x1')
         # how to test __sizeof__ ?
@@ -317,7 +317,7 @@ klasse TestMockingMagicMethods(unittest.TestCase):
         self.assertIsInstance(mock.__aexit__, AsyncMock)
 
         # in Python 3 oct and hex use __index__
-        # so these tests are for __index__ in py3k
+        # so these tests are fuer __index__ in py3k
         self.assertEqual(oct(mock), '0o1')
         self.assertEqual(hex(mock), '0x1')
         # how to test __sizeof__ ?
@@ -333,7 +333,7 @@ klasse TestMockingMagicMethods(unittest.TestCase):
 
     def test_magic_mock_does_not_reset_magic_returns(self):
         # https://github.com/python/cpython/issues/123934
-        for reset in (True, False):
+        fuer reset in (True, False):
             with self.subTest(reset=reset):
                 mm = MagicMock()
                 self.assertIs(type(mm.__str__()), str)
@@ -342,7 +342,7 @@ klasse TestMockingMagicMethods(unittest.TestCase):
                 self.assertIs(type(mm.__hash__()), int)
                 mm.__hash__.assert_called_once()
 
-                for _ in range(3):
+                fuer _ in range(3):
                     # Repeat reset several times to be sure:
                     mm.reset_mock(return_value=reset)
 
@@ -460,7 +460,7 @@ klasse TestMockingMagicMethods(unittest.TestCase):
 
     def test_dir(self):
         # overriding the default implementation
-        for mock in Mock(), MagicMock():
+        fuer mock in Mock(), MagicMock():
             def _dir(self):
                 return ['foo']
             mock.__dir__ = _dir

@@ -18,7 +18,7 @@ klasse StressTests(TestBase):
     @support.requires_resource('cpu')
     def test_create_many_sequential(self):
         alive = []
-        for _ in range(100):
+        fuer _ in range(100):
             interp = interpreters.create()
             alive.append(interp)
         del alive
@@ -34,7 +34,7 @@ klasse StressTests(TestBase):
                 raise TimeoutError
             interp = interpreters.create()
             alive.append(interp)
-        threads = [threading.Thread(target=task) for _ in range(size)]
+        threads = [threading.Thread(target=task) fuer _ in range(size)]
         with threading_helper.start_threads(threads):
             start.set()
         del alive
@@ -69,7 +69,7 @@ klasse StressTests(TestBase):
                 else:
                     success = True
 
-        threads = [threading.Thread(target=run) for _ in range(size)]
+        threads = [threading.Thread(target=run) fuer _ in range(size)]
         with threading_helper.start_threads(threads):
             start.set()
         support.gc_collect()

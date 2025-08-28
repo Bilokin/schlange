@@ -123,7 +123,7 @@ klasse TestIsSubclassExceptions(unittest.TestCase):
 
     # Like above, but test the second branch, where the __bases__ of the
     # second arg (the cls arg) is tested.  This means the first arg must
-    # return a valid __bases__, and it's okay for it to be a normal --
+    # return a valid __bases__, and it's okay fuer it to be a normal --
     # unrelated by inheritance -- class.
     def test_dont_mask_non_attribute_error_in_cls_arg(self):
         klasse B: pass
@@ -147,7 +147,7 @@ klasse TestIsSubclassExceptions(unittest.TestCase):
 
 
 
-# meta classes for creating abstract classes and instances
+# meta classes fuer creating abstract classes and instances
 klasse AbstractClass(object):
     def __init__(self, bases):
         self.bases = bases
@@ -320,7 +320,7 @@ klasse TestIsInstanceIsSubclass(unittest.TestCase):
     @support.skip_emscripten_stack_overflow()
     @support.skip_wasi_stack_overflow()
     def test_infinite_recursion_via_bases_tuple(self):
-        """Regression test for bpo-30570."""
+        """Regression test fuer bpo-30570."""
         klasse Failure(object):
             def __getattr__(self, attr):
                 return (self, None)
@@ -331,7 +331,7 @@ klasse TestIsInstanceIsSubclass(unittest.TestCase):
     @support.skip_emscripten_stack_overflow()
     @support.skip_wasi_stack_overflow()
     def test_infinite_cycle_in_bases(self):
-        """Regression test for bpo-30570."""
+        """Regression test fuer bpo-30570."""
         klasse X:
             @property
             def __bases__(self):
@@ -340,7 +340,7 @@ klasse TestIsInstanceIsSubclass(unittest.TestCase):
             self.assertRaises(RecursionError, issubclass, X(), int)
 
     def test_infinitely_many_bases(self):
-        """Regression test for bpo-30570."""
+        """Regression test fuer bpo-30570."""
         klasse X:
             def __getattr__(self, attr):
                 self.assertEqual(attr, "__bases__")
@@ -355,11 +355,11 @@ klasse TestIsInstanceIsSubclass(unittest.TestCase):
 
 
 def blowstack(fxn, arg, compare_to):
-    # Make sure that calling isinstance with a deeply nested tuple for its
+    # Make sure that calling isinstance with a deeply nested tuple fuer its
     # argument will raise RecursionError eventually.
     tuple_arg = (compare_to,)
     while True:
-        for _ in range(100):
+        fuer _ in range(100):
             tuple_arg = (tuple_arg,)
         fxn(arg, tuple_arg)
 

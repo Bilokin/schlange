@@ -139,7 +139,7 @@ def enterModuleContext(cm):
 
 
 def doModuleCleanups():
-    """Execute all module cleanup functions. Normally called for you after
+    """Execute all module cleanup functions. Normally called fuer you after
     tearDownModule."""
     exceptions = []
     while _module_cleanups:
@@ -194,7 +194,7 @@ def expectedFailure(test_item):
 
 def _is_subtype(expected, basetype):
     if isinstance(expected, tuple):
-        return all(_is_subtype(e, basetype) for e in expected)
+        return all(_is_subtype(e, basetype) fuer e in expected)
     return isinstance(expected, type) and issubclass(expected, basetype)
 
 klasse _BaseTestCaseContext:
@@ -221,7 +221,7 @@ klasse _AssertRaisesBaseContext(_BaseTestCaseContext):
     def handle(self, name, args, kwargs):
         """
         If args is empty, assertRaises/Warns is being used as a
-        context manager, so check for a 'msg' kwarg and return self.
+        context manager, so check fuer a 'msg' kwarg and return self.
         If args is not empty, call a callable passing positional and keyword
         arguments.
         """
@@ -232,7 +232,7 @@ klasse _AssertRaisesBaseContext(_BaseTestCaseContext):
             if not args:
                 self.msg = kwargs.pop('msg', None)
                 if kwargs:
-                    raise TypeError('%r is an invalid keyword argument for '
+                    raise TypeError('%r is an invalid keyword argument fuer '
                                     'this function' % (next(iter(kwargs)),))
                 return self
 
@@ -273,7 +273,7 @@ klasse _AssertRaisesContext(_AssertRaisesBaseContext):
         if not issubclass(exc_type, self.expected):
             # let unexpected exceptions pass through
             return False
-        # store exception, without traceback, for later retrieval
+        # store exception, without traceback, fuer later retrieval
         self.exception = exc_value.with_traceback(None)
         if self.expected_regex is None:
             return True
@@ -294,9 +294,9 @@ klasse _AssertWarnsContext(_AssertRaisesBaseContext):
     _base_type_str = 'a warning type or tuple of warning types'
 
     def __enter__(self):
-        # The __warningregistry__'s need to be in a pristine state for tests
+        # The __warningregistry__'s need to be in a pristine state fuer tests
         # to work properly.
-        for v in list(sys.modules.values()):
+        fuer v in list(sys.modules.values()):
             if getattr(v, '__warningregistry__', None):
                 v.__warningregistry__ = {}
         self.warnings_manager = warnings.catch_warnings(record=True)
@@ -314,7 +314,7 @@ klasse _AssertWarnsContext(_AssertRaisesBaseContext):
         except AttributeError:
             exc_name = str(self.expected)
         first_matching = None
-        for m in self.warnings:
+        fuer m in self.warnings:
             w = m.message
             if not isinstance(w, self.expected):
                 continue
@@ -323,7 +323,7 @@ klasse _AssertWarnsContext(_AssertRaisesBaseContext):
             if (self.expected_regex is not None and
                 not self.expected_regex.search(str(w))):
                 continue
-            # store warning for later retrieval
+            # store warning fuer later retrieval
             self.warning = w
             self.filename = m.filename
             self.lineno = m.lineno
@@ -350,7 +350,7 @@ klasse _AssertNotWarnsContext(_AssertWarnsContext):
             exc_name = self.expected.__name__
         except AttributeError:
             exc_name = str(self.expected)
-        for m in self.warnings:
+        fuer m in self.warnings:
             w = m.message
             if isinstance(w, self.expected):
                 self._raiseFailure(f"{exc_name} triggered")
@@ -359,8 +359,8 @@ klasse _AssertNotWarnsContext(_AssertWarnsContext):
 klasse _OrderedChainMap(collections.ChainMap):
     def __iter__(self):
         seen = set()
-        for mapping in self.maps:
-            for k in mapping:
+        fuer mapping in self.maps:
+            fuer k in mapping:
                 if k not in seen:
                     seen.add(k)
                     yield k
@@ -372,12 +372,12 @@ klasse TestCase(object):
     By default, the test code itself should be placed in a method named
     'runTest'.
 
-    If the fixture may be used for many test cases, create as
+    If the fixture may be used fuer many test cases, create as
     many test methods as are needed. When instantiating such a TestCase
     subclass, specify in the constructor arguments the name of the test method
     that the instance is to execute.
 
-    Test authors should subclass TestCase for their own tests. Construction
+    Test authors should subclass TestCase fuer their own tests. Construction
     and deconstruction of the test's environment ('fixture') can be
     implemented by overriding the 'setUp' and 'tearDown' methods respectively.
 
@@ -410,7 +410,7 @@ klasse TestCase(object):
     _diffThreshold = 2**16
 
     def __init_subclass__(cls, *args, **kwargs):
-        # Attribute used by TestSuite for classSetUp
+        # Attribute used by TestSuite fuer classSetUp
         cls._classSetupFailed = False
         cls._class_cleanups = []
         super().__init_subclass__(*args, **kwargs)
@@ -450,7 +450,7 @@ klasse TestCase(object):
     def addTypeEqualityFunc(self, typeobj, function):
         """Add a type specific assertEqual style function to compare a type.
 
-        This method is for use by TestCase subclasses that need to register
+        This method is fuer use by TestCase subclasses that need to register
         their own type equality functions to provide nicer error messages.
 
         Args:
@@ -490,20 +490,20 @@ klasse TestCase(object):
         return _enter_context(cm, cls.addClassCleanup)
 
     def setUp(self):
-        "Hook method for setting up the test fixture before exercising it."
+        "Hook method fuer setting up the test fixture before exercising it."
         pass
 
     def tearDown(self):
-        "Hook method for deconstructing the test fixture after testing it."
+        "Hook method fuer deconstructing the test fixture after testing it."
         pass
 
     @classmethod
     def setUpClass(cls):
-        "Hook method for setting up klasse fixture before running tests in the class."
+        "Hook method fuer setting up klasse fixture before running tests in the class."
 
     @classmethod
     def tearDownClass(cls):
-        "Hook method for deconstructing the klasse fixture after running all tests in the class."
+        "Hook method fuer deconstructing the klasse fixture after running all tests in the class."
 
     def countTestCases(self):
         return 1
@@ -695,7 +695,7 @@ klasse TestCase(object):
                 stopTestRun()
 
     def doCleanups(self):
-        """Execute all cleanup functions. Normally called for you after
+        """Execute all cleanup functions. Normally called fuer you after
         tearDown."""
         outcome = self._outcome or _Outcome()
         while self._cleanups:
@@ -703,13 +703,13 @@ klasse TestCase(object):
             with outcome.testPartExecutor(self):
                 self._callCleanup(function, *args, **kwargs)
 
-        # return this for backwards compatibility
+        # return this fuer backwards compatibility
         # even though we no longer use it internally
         return outcome.success
 
     @classmethod
     def doClassCleanups(cls):
-        """Execute all klasse cleanup functions. Normally called for you after
+        """Execute all klasse cleanup functions. Normally called fuer you after
         tearDownClass."""
         cls.tearDown_exceptions = []
         while cls._class_cleanups:
@@ -763,7 +763,7 @@ klasse TestCase(object):
         """Honour the longMessage attribute when generating failure messages.
         If longMessage is False this means:
         * Use only an explicit message if it is provided
-        * Otherwise use the standard message for the assert
+        * Otherwise use the standard message fuer the assert
 
         If longMessage is True:
         * Use the standard message
@@ -785,7 +785,7 @@ klasse TestCase(object):
            by the callable when invoked with specified positional and
            keyword arguments. If a different type of exception is
            raised, it will not be caught, and the test case will be
-           deemed to have suffered an error, exactly as for an
+           deemed to have suffered an error, exactly as fuer an
            unexpected exception.
 
            If called with the callable and arguments omitted, will return a
@@ -885,15 +885,15 @@ klasse TestCase(object):
         return _AssertLogsContext(self, logger, level, no_logs=True)
 
     def _getAssertEqualityFunc(self, first, second):
-        """Get a detailed comparison function for the types of the two args.
+        """Get a detailed comparison function fuer the types of the two args.
 
         Returns: A callable accepting (first, second, msg=None) that will
         raise a failure exception if first != second with a useful human
-        readable error message for those types.
+        readable error message fuer those types.
         """
         #
         # NOTE(gregory.p.smith): I considered isinstance(first, type(second))
-        # and vice versa.  I opted for the conservative approach in case
+        # and vice versa.  I opted fuer the conservative approach in case
         # subclasses are not intended to be compared in detail to their super
         # klasse instances using a type equality func.  This means testing
         # subtypes won't automagically use the detailed comparison.  Callers
@@ -1014,7 +1014,7 @@ klasse TestCase(object):
         raise self.failureException(msg)
 
     def assertSequenceEqual(self, seq1, seq2, msg=None, seq_type=None):
-        """An equality assertion for ordered sequences (like lists and tuples).
+        """An equality assertion fuer ordered sequences (like lists and tuples).
 
         For the purposes of this function, a valid ordered sequence type is one
         which can be indexed, has a length, and has an equality operator.
@@ -1060,7 +1060,7 @@ klasse TestCase(object):
                     (seq_type_name.capitalize(),) +
                     _common_shorten_repr(seq1, seq2))
 
-            for i in range(min(len1, len2)):
+            fuer i in range(min(len1, len2)):
                 try:
                     item1 = seq1[i]
                 except (TypeError, IndexError, NotImplementedError):
@@ -1151,7 +1151,7 @@ klasse TestCase(object):
                     differences.
 
         assertSetEqual uses ducktyping to support different types of sets, and
-        is optimized for sets specifically (parameters must support a
+        is optimized fuer sets specifically (parameters must support a
         difference method).
         """
         try:
@@ -1174,11 +1174,11 @@ klasse TestCase(object):
         lines = []
         if difference1:
             lines.append('Items in the first set but not the second:')
-            for item in difference1:
+            fuer item in difference1:
                 lines.append(repr(item))
         if difference2:
             lines.append('Items in the second set but not the first:')
-            for item in difference2:
+            fuer item in difference2:
                 lines.append(repr(item))
 
         standardMsg = '\n'.join(lines)
@@ -1249,7 +1249,7 @@ klasse TestCase(object):
 
         if differences:
             standardMsg = 'Element counts were not equal:\n'
-            lines = ['First has %d, Second has %d:  %r' % diff for diff in differences]
+            lines = ['First has %d, Second has %d:  %r' % diff fuer diff in differences]
             diffMsg = '\n'.join(lines)
             standardMsg = self._truncateMessage(standardMsg, diffMsg)
             msg = self._formatMessage(msg, standardMsg)
@@ -1321,7 +1321,7 @@ klasse TestCase(object):
             self.fail(self._formatMessage(msg, standardMsg))
 
     def assertIsNotNone(self, obj, msg=None):
-        """Included for symmetry with assertIsNone."""
+        """Included fuer symmetry with assertIsNone."""
         if obj is None:
             standardMsg = 'unexpectedly None'
             self.fail(self._formatMessage(msg, standardMsg))
@@ -1337,10 +1337,10 @@ klasse TestCase(object):
             self.fail(self._formatMessage(msg, standardMsg))
 
     def assertNotIsInstance(self, obj, cls, msg=None):
-        """Included for symmetry with assertIsInstance."""
+        """Included fuer symmetry with assertIsInstance."""
         if isinstance(obj, cls):
             if isinstance(cls, tuple):
-                for x in cls:
+                fuer x in cls:
                     if isinstance(obj, x):
                         cls = x
                         break
@@ -1370,7 +1370,7 @@ klasse TestCase(object):
                 self.fail(self._formatMessage(msg, f'{cls!r} is not a class'))
             raise
         if isinstance(superclass, tuple):
-            for x in superclass:
+            fuer x in superclass:
                 if issubclass(cls, x):
                     superclass = x
                     break
@@ -1461,7 +1461,7 @@ klasse TestCase(object):
     def _tail_type_check(self, s, tails, msg):
         if not isinstance(tails, tuple):
             tails = (tails,)
-        for tail in tails:
+        fuer tail in tails:
             if isinstance(tail, str):
                 if not isinstance(s, str):
                     self.fail(self._formatMessage(msg,
@@ -1494,7 +1494,7 @@ klasse TestCase(object):
             self._tail_type_check(s, prefix, msg)
             raise
         if isinstance(prefix, tuple):
-            for x in prefix:
+            fuer x in prefix:
                 if s.startswith(x):
                     prefix = x
                     break
@@ -1525,7 +1525,7 @@ klasse TestCase(object):
             self._tail_type_check(s, suffix, msg)
             raise
         if isinstance(suffix, tuple):
-            for x in suffix:
+            fuer x in suffix:
                 if s.endswith(x):
                     suffix = x
                     break
@@ -1537,7 +1537,7 @@ klasse TestCase(object):
 klasse FunctionTestCase(TestCase):
     """A test case that wraps a test function.
 
-    This is useful for slipping pre-existing test functions into the
+    This is useful fuer slipping pre-existing test functions into the
     unittest framework. Optionally, set-up and tidy-up functions can be
     supplied. As with TestCase, the tidy-up ('tearDown') function will
     always be called if the set-up ('setUp') function ran successfully.
@@ -1611,7 +1611,7 @@ klasse _SubTest(TestCase):
         if self.params:
             params_desc = ', '.join(
                 "{}={!r}".format(k, v)
-                for (k, v) in self.params.items())
+                fuer (k, v) in self.params.items())
             parts.append("({})".format(params_desc))
         return " ".join(parts) or '(<subtest>)'
 

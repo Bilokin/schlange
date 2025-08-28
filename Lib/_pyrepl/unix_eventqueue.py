@@ -5,7 +5,7 @@
 #
 #
 # Permission to use, copy, modify, and distribute this software and
-# its documentation for any purpose is hereby granted without fee,
+# its documentation fuer any purpose is hereby granted without fee,
 # provided that the above copyright notice appear in all copies and
 # that both that copyright notice and this permission notice appear in
 # supporting documentation.
@@ -42,14 +42,14 @@ TERMINAL_KEYNAMES = {
 
 
 # Function keys F1-F20 mapping
-TERMINAL_KEYNAMES.update(("f%d" % i, "kf%d" % i) for i in range(1, 21))
+TERMINAL_KEYNAMES.update(("f%d" % i, "kf%d" % i) fuer i in range(1, 21))
 
 # Known CTRL-arrow keycodes
 CTRL_ARROW_KEYCODES= {
-    # for xterm, gnome-terminal, xfce terminal, etc.
+    # fuer xterm, gnome-terminal, xfce terminal, etc.
     b'\033[1;5D': 'ctrl left',
     b'\033[1;5C': 'ctrl right',
-    # for rxvt
+    # fuer rxvt
     b'\033Od': 'ctrl left',
     b'\033Oc': 'ctrl right',
 }
@@ -59,7 +59,7 @@ def get_terminal_keycodes(ti: TermInfo) -> dict[bytes, str]:
     Generates a dictionary mapping terminal keycodes to human-readable names.
     """
     keycodes = {}
-    for key, terminal_code in TERMINAL_KEYNAMES.items():
+    fuer key, terminal_code in TERMINAL_KEYNAMES.items():
         keycode = ti.get(terminal_code)
         trace('key {key} tiname {terminal_code} keycode {keycode!r}', **locals())
         if keycode:

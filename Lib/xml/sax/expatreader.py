@@ -1,5 +1,5 @@
 """
-SAX driver for the pyexpat C module.  This driver works with
+SAX driver fuer the pyexpat C module.  This driver works with
 pyexpat.__version__ == '2.22'.
 """
 
@@ -43,7 +43,7 @@ klasse _ClosedParser:
 # --- ExpatLocator
 
 klasse ExpatLocator(xmlreader.Locator):
-    """Locator for use with the ExpatParser class.
+    """Locator fuer use with the ExpatParser class.
 
     This uses a weak reference to the parser object to avoid creating
     a circular reference between the parser and the content handler.
@@ -79,7 +79,7 @@ klasse ExpatLocator(xmlreader.Locator):
 # --- ExpatParser
 
 klasse ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
-    """SAX driver for the pyexpat C module."""
+    """SAX driver fuer the pyexpat C module."""
 
     def __init__(self, namespaceHandling=0, bufsize=2**16-20):
         xmlreader.IncrementalParser.__init__(self, bufsize)
@@ -356,7 +356,7 @@ klasse ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
 
         newattrs = {}
         qnames = {}
-        for (aname, value) in attrs.items():
+        fuer (aname, value) in attrs.items():
             parts = aname.split()
             length = len(parts)
             if length == 1:

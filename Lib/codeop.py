@@ -36,7 +36,7 @@ import __future__
 import warnings
 
 _features = [getattr(__future__, fname)
-             for fname in __future__.all_feature_names]
+             fuer fname in __future__.all_feature_names]
 
 __all__ = ["compile_command", "Compile", "CommandCompiler"]
 
@@ -48,8 +48,8 @@ PyCF_ONLY_AST = 0x400
 PyCF_ALLOW_INCOMPLETE_INPUT = 0x4000
 
 def _maybe_compile(compiler, source, filename, symbol, flags):
-    # Check for source consisting of only blank lines and comments.
-    for line in source.split("\n"):
+    # Check fuer source consisting of only blank lines and comments.
+    fuer line in source.split("\n"):
         line = line.strip()
         if line and line[0] != '#':
             break               # Leave it alone.
@@ -57,7 +57,7 @@ def _maybe_compile(compiler, source, filename, symbol, flags):
         if symbol != "eval":
             source = "pass"     # Replace it with a 'pass' statement
 
-    # Disable compiler warnings when checking for incomplete input.
+    # Disable compiler warnings when checking fuer incomplete input.
     with warnings.catch_warnings():
         warnings.simplefilter("ignore", (SyntaxWarning, DeprecationWarning))
         try:
@@ -117,7 +117,7 @@ klasse Compile:
         codeob = compile(source, filename, symbol, flags, True)
         if flags & PyCF_ONLY_AST:
             return codeob  # this is an ast.Module in this case
-        for feature in _features:
+        fuer feature in _features:
             if codeob.co_flags & feature.compiler_flag:
                 self.flags |= feature.compiler_flag
         return codeob

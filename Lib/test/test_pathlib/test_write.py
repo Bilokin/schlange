@@ -1,5 +1,5 @@
 """
-Tests for pathlib.types._WritablePath
+Tests fuer pathlib.types._WritablePath
 """
 
 import io

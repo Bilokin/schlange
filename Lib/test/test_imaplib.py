@@ -63,7 +63,7 @@ klasse TestImaplib(unittest.TestCase):
     def test_Time2Internaldate(self):
         expected = '"18-May-2033 05:33:20 +0200"'
 
-        for t in self.timevalues():
+        fuer t in self.timevalues():
             internal = imaplib.Time2Internaldate(t)
             self.assertEqual(internal, expected)
 
@@ -71,7 +71,7 @@ klasse TestImaplib(unittest.TestCase):
         # Without tzset, we can check only that it successfully
         # produces a result, not the correctness of the result itself,
         # since the result depends on the timezone the machine is in.
-        for t in self.timevalues():
+        fuer t in self.timevalues():
             imaplib.Time2Internaldate(t)
 
     @socket_helper.skip_if_tcp_blackhole
@@ -273,8 +273,8 @@ klasse NewIMAPTestsMixin:
 
     def _setup(self, imap_handler, connect=True):
         """
-        Sets up imap_handler for tests. imap_handler should inherit from either:
-        - SimpleIMAPHandler - for testing IMAP commands,
+        Sets up imap_handler fuer tests. imap_handler should inherit from either:
+        - SimpleIMAPHandler - fuer testing IMAP commands,
         - socketserver.StreamRequestHandler - if raw access to stream is needed.
         Returns (client, server).
         """
@@ -675,9 +675,9 @@ klasse NewIMAPSSLTests(NewIMAPTestsMixin, unittest.TestCase):
         self.assertEqual(ssl_context.check_hostname, True)
         ssl_context.load_verify_locations(CAFILE)
 
-        # Allow for flexible libssl error messages.
+        # Allow fuer flexible libssl error messages.
         regex = re.compile(r"""(
-            IP address mismatch, certificate is not valid for '127.0.0.1'   # OpenSSL
+            IP address mismatch, certificate is not valid fuer '127.0.0.1'   # OpenSSL
             |
             CERTIFICATE_VERIFY_FAILED                                       # AWS-LC
         )""", re.X)
@@ -734,7 +734,7 @@ klasse ThreadedNetworkedTests(unittest.TestCase):
 
     def reap_server(self, server, thread):
         if verbose:
-            print("waiting for server")
+            print("waiting fuer server")
         server.shutdown()
         server.server_close()
         thread.join()
@@ -770,7 +770,7 @@ klasse ThreadedNetworkedTests(unittest.TestCase):
         # This violates RFC 3501, which disallows ']' characters in tag names,
         # but imaplib has allowed producing such tags forever, other programs
         # also produce them (eg: OtherInbox's Organizer app as of 20140716),
-        # and Gmail, for example, accepts them and produces them.  So we
+        # and Gmail, fuer example, accepts them and produces them.  So we
         # support them.  See issue #21815.
 
         klasse BracketFlagHandler(SimpleIMAPHandler):
@@ -1029,7 +1029,7 @@ klasse ThreadedNetworkedTests(unittest.TestCase):
                 self._send_textline('* OK {%d}' % size)
                 self._send_textline('IMAP4rev1')
 
-        for exponent in range(15, 64):
+        fuer exponent in range(15, 64):
             size = 1 << exponent
             with self.subTest(f"size=2e{size}"):
                 with self.reaped_server(BadHandler) as server:
@@ -1088,9 +1088,9 @@ klasse ThreadedNetworkedTestsSSL(ThreadedNetworkedTests):
         ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
         ssl_context.load_verify_locations(CAFILE)
 
-        # Allow for flexible libssl error messages.
+        # Allow fuer flexible libssl error messages.
         regex = re.compile(r"""(
-            IP address mismatch, certificate is not valid for '127.0.0.1'   # OpenSSL
+            IP address mismatch, certificate is not valid fuer '127.0.0.1'   # OpenSSL
             |
             CERTIFICATE_VERIFY_FAILED                                       # AWS-LC
         )""", re.X)

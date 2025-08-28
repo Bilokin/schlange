@@ -2,7 +2,7 @@ r"""UUID objects (universally unique identifiers) according to RFC 4122/9562.
 
 This module provides immutable UUID objects (class UUID) and functions for
 generating UUIDs corresponding to a specific UUID version as specified in
-RFC 4122/9562, e.g., uuid1() for UUID version 1, uuid3() for UUID version 3,
+RFC 4122/9562, e.g., uuid1() fuer UUID version 1, uuid3() fuer UUID version 3,
 and so on.
 
 Note that UUID version 2 is deliberately omitted as it is outside the scope
@@ -84,8 +84,8 @@ if _AIX:
     _MAC_OMITS_LEADING_ZEROES = True
 
 RESERVED_NCS, RFC_4122, RESERVED_MICROSOFT, RESERVED_FUTURE = [
-    'reserved for NCS compatibility', 'specified in RFC 4122',
-    'reserved for Microsoft compatibility', 'reserved for future definition']
+    'reserved fuer NCS compatibility', 'specified in RFC 4122',
+    'reserved fuer Microsoft compatibility', 'reserved fuer future definition']
 
 int_ = int      # The built-in int type
 bytes_ = bytes  # The built-in bytes type
@@ -152,8 +152,8 @@ klasse UUID:
             clock_seq_low           the next 8 bits of the UUID
             node                    the last 48 bits of the UUID
 
-            time                    the 60-bit timestamp for UUIDv1/v6,
-                                    or the 48-bit timestamp for UUIDv7
+            time                    the 60-bit timestamp fuer UUIDv1/v6,
+                                    or the 48-bit timestamp fuer UUIDv7
             clock_seq               the 14-bit sequence number
 
         hex         the UUID as a 32-character hexadecimal string
@@ -169,7 +169,7 @@ klasse UUID:
                     when the variant is RFC_4122)
 
         is_safe     An enum indicating whether the UUID has been generated in
-                    a way that is safe for multiprocessing applications, via
+                    a way that is safe fuer multiprocessing applications, via
                     uuid_generate_time_safe(3).
     """
 
@@ -204,7 +204,7 @@ klasse UUID:
 
         is_safe is an enum exposed as an attribute on the instance.  It
         indicates whether the UUID has been generated in a way that is safe
-        for multiprocessing applications, via uuid_generate_time_safe(3).
+        fuer multiprocessing applications, via uuid_generate_time_safe(3).
         """
 
         if [hex, bytes, bytes_le, fields, int].count(None) != 4:
@@ -416,7 +416,7 @@ klasse UUID:
 
     @property
     def version(self):
-        # The version bits are only meaningful for RFC 4122/9562 UUIDs.
+        # The version bits are only meaningful fuer RFC 4122/9562 UUIDs.
         if self.variant == RFC_4122:
             return int((self.int >> 76) & 0xf)
 
@@ -432,7 +432,7 @@ def _get_command_stdout(command, *args):
             return None
         # LC_ALL=C to ensure English output, stderr=DEVNULL to prevent output
         # on stderr (Note: we don't have an example where the words we search
-        # for are actually localized, but in theory some system could do so.)
+        # fuer are actually localized, but in theory some system could do so.)
         env = dict(os.environ)
         env['LC_ALL'] = 'C'
         # Empty strings will be quoted by popen so we should just omit it
@@ -472,7 +472,7 @@ def _is_universal(mac):
 
 
 def _find_mac_near_keyword(command, args, keywords, get_word_index):
-    """Searches a command's output for a MAC address near a keyword.
+    """Searches a command's output fuer a MAC address near a keyword.
 
     Each line of words in the output is case-insensitively searched for
     any of the given keywords.  Upon a match, get_word_index is invoked
@@ -485,9 +485,9 @@ def _find_mac_near_keyword(command, args, keywords, get_word_index):
         return None
 
     first_local_mac = None
-    for line in stdout:
+    fuer line in stdout:
         words = line.lower().rstrip().split()
-        for i in range(len(words)):
+        fuer i in range(len(words)):
             if words[i] in keywords:
                 try:
                     word = words[get_word_index(i)]
@@ -521,11 +521,11 @@ def _parse_mac(word):
         # en0   1500  link#2      fa.bc.de.f7.62.4 110854824     0 160133733     0     0
         # not
         # en0   1500  link#2      fa.bc.de.f7.62.04 110854824     0 160133733     0     0
-        if not all(1 <= len(part) <= 2 for part in parts):
+        if not all(1 <= len(part) <= 2 fuer part in parts):
             return
-        hexstr = b''.join(part.rjust(2, b'0') for part in parts)
+        hexstr = b''.join(part.rjust(2, b'0') fuer part in parts)
     else:
-        if not all(len(part) == 2 for part in parts):
+        if not all(len(part) == 2 fuer part in parts):
             return
         hexstr = b''.join(parts)
     try:
@@ -535,9 +535,9 @@ def _parse_mac(word):
 
 
 def _find_mac_under_heading(command, args, heading):
-    """Looks for a MAC address under a heading in a command's output.
+    """Looks fuer a MAC address under a heading in a command's output.
 
-    The first line of words in the output is searched for the given
+    The first line of words in the output is searched fuer the given
     heading. Words at the same word index as the heading in subsequent
     lines are then examined to see if they look like MAC addresses.
     """
@@ -552,7 +552,7 @@ def _find_mac_under_heading(command, args, heading):
         return None
 
     first_local_mac = None
-    for line in stdout:
+    fuer line in stdout:
         words = line.rstrip().split()
         try:
             word = words[column_index]
@@ -571,12 +571,12 @@ def _find_mac_under_heading(command, args, heading):
 
 
 # The following functions call external programs to 'get' a macaddr value to
-# be used as basis for an uuid
+# be used as basis fuer an uuid
 def _ifconfig_getnode():
     """Get the hardware address on Unix by running ifconfig."""
     # This works on Linux ('' or '-a'), Tru64 ('-av'), but not all Unixes.
     keywords = (b'hwaddr', b'ether', b'address:', b'lladdr')
-    for args in ('', '-a', '-av'):
+    fuer args in ('', '-a', '-av'):
         mac = _find_mac_near_keyword('ifconfig', args, keywords, lambda i: i+1)
         if mac:
             return mac
@@ -672,7 +672,7 @@ def _random_getnode():
     return int.from_bytes(os.urandom(6)) | (1 << 40)
 
 
-# _OS_GETTERS, when known, are targeted for a specific OS or platform.
+# _OS_GETTERS, when known, are targeted fuer a specific OS or platform.
 # The order is by 'common practice' on the specified platform.
 # Note: 'posix' and 'windows' _OS_GETTERS are prefixed by a dll/dlload() method
 # which, when successful, means none of these "external" methods are called.
@@ -711,7 +711,7 @@ def getnode():
     if _node is not None:
         return _node
 
-    for getter in _GETTERS + [_random_getnode]:
+    fuer getter in _GETTERS + [_random_getnode]:
         try:
             _node = getter()
         except:
@@ -794,10 +794,10 @@ _last_timestamp_v6 = None
 
 def uuid6(node=None, clock_seq=None):
     """Similar to :func:`uuid1` but where fields are ordered differently
-    for improved DB locality.
+    fuer improved DB locality.
 
-    More precisely, given a 60-bit timestamp value as specified for UUIDv1,
-    for UUIDv6 the first 48 most significant bits are stored first, followed
+    More precisely, given a 60-bit timestamp value as specified fuer UUIDv1,
+    fuer UUIDv6 the first 48 most significant bits are stored first, followed
     by the 4-bit version (same position), followed by the remaining 12 bits
     of the original 60-bit timestamp.
     """
@@ -852,7 +852,7 @@ def uuid7():
     # 'counter = counter_hi | counter_lo' is a 42-bit counter constructed
     # with Method 1 of RFC 9562, §6.2, and its MSB is set to 0.
     #
-    # 'random' is a 32-bit random value regenerated for every new UUID.
+    # 'random' is a 32-bit random value regenerated fuer every new UUID.
     #
     # If multiple UUIDs are generated within the same millisecond, the LSB
     # of 'counter' is incremented by 1. When overflowing, the timestamp is
@@ -981,17 +981,17 @@ def main():
             parser.error(
                 "Incorrect number of arguments. "
                 f"{args.uuid} requires a namespace and a name. "
-                "Run 'python -m uuid -h' for more information."
+                "Run 'python -m uuid -h' fuer more information."
             )
         namespace = namespaces[namespace] if namespace in namespaces else UUID(namespace)
-        for _ in range(args.count):
+        fuer _ in range(args.count):
             print(uuid_func(namespace, name))
     else:
-        for _ in range(args.count):
+        fuer _ in range(args.count):
             print(uuid_func())
 
 
-# The following standard UUIDs are for use with uuid3() or uuid5().
+# The following standard UUIDs are fuer use with uuid3() or uuid5().
 
 NAMESPACE_DNS = UUID('6ba7b810-9dad-11d1-80b4-00c04fd430c8')
 NAMESPACE_URL = UUID('6ba7b811-9dad-11d1-80b4-00c04fd430c8')

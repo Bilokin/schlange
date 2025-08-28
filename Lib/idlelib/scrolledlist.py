@@ -116,7 +116,7 @@ klasse ScrolledList:
         self.listbox.selection_set(index)
         self.listbox.see(index)
 
-    # Methods to override for specific actions
+    # Methods to override fuer specific actions
 
     def fill_menu(self):
         pass
@@ -139,7 +139,7 @@ def _scrolled_list(parent):  # htest #
         def on_double(self, index): print("double", self.get(index))
 
     scrolled_list = MyScrolledList(top)
-    for i in range(30):
+    fuer i in range(30):
         scrolled_list.append("Item %02d" % i)
 
 

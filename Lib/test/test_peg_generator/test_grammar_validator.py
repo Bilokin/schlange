@@ -19,7 +19,7 @@ klasse TestPegen(unittest.TestCase):
         """
         grammar: Grammar = parse_string(grammar_source, GrammarParser)
         validator = SubRuleValidator(grammar)
-        for rule_name, rule in grammar.rules.items():
+        fuer rule_name, rule in grammar.rules.items():
             validator.validate_rule(rule_name, rule)
 
     def test_rule_with_simple_collision(self) -> None:
@@ -32,7 +32,7 @@ klasse TestPegen(unittest.TestCase):
         grammar: Grammar = parse_string(grammar_source, GrammarParser)
         validator = SubRuleValidator(grammar)
         with self.assertRaises(ValidationError):
-            for rule_name, rule in grammar.rules.items():
+            fuer rule_name, rule in grammar.rules.items():
                 validator.validate_rule(rule_name, rule)
 
     def test_rule_with_collision_after_some_other_rules(self) -> None:
@@ -47,7 +47,7 @@ klasse TestPegen(unittest.TestCase):
         grammar: Grammar = parse_string(grammar_source, GrammarParser)
         validator = SubRuleValidator(grammar)
         with self.assertRaises(ValidationError):
-            for rule_name, rule in grammar.rules.items():
+            fuer rule_name, rule in grammar.rules.items():
                 validator.validate_rule(rule_name, rule)
 
     def test_raising_valid_rule(self) -> None:
@@ -57,5 +57,5 @@ klasse TestPegen(unittest.TestCase):
         grammar: Grammar = parse_string(grammar_source, GrammarParser)
         validator = RaiseRuleValidator(grammar)
         with self.assertRaises(ValidationError):
-            for rule_name, rule in grammar.rules.items():
+            fuer rule_name, rule in grammar.rules.items():
                 validator.validate_rule(rule_name, rule)

@@ -92,7 +92,7 @@ klasse CAPITest(unittest.TestCase):
                    '__abs__': _testcapi.number_absolute,   # PyNumber_Absolute()
                    '__invert__': _testcapi.number_invert}  # PyNumber_Invert()
 
-        for name, func in methmap.items():
+        fuer name, func in methmap.items():
             # Generic object, has no tp_as_number structure
             self.assertRaises(TypeError, func, object())
 
@@ -101,7 +101,7 @@ klasse CAPITest(unittest.TestCase):
 
             # Behave as corresponding unary operation
             op = getattr(operator, name)
-            for x in [0, 42, -1, 3.14, 1+2j]:
+            fuer x in [0, 42, -1, 3.14, 1+2j]:
                 try:
                     op(x)
                 except TypeError:
@@ -139,17 +139,17 @@ klasse CAPITest(unittest.TestCase):
                    '__ipow__': _testcapi.number_inplacepower,  # PyNumber_InPlacePower()
                    }
 
-        for name, func in methmap.items():
+        fuer name, func in methmap.items():
             cases = [0, 42, 3.14, -1, 123, 1+2j]
 
             # Generic object, has no tp_as_number structure
-            for x in cases:
+            fuer x in cases:
                 self.assertRaises(TypeError, func, object(), x)
                 self.assertRaises(TypeError, func, x, object())
 
             # Behave as corresponding binary operation
             op = getattr(operator, name, divmod)
-            for x, y in itertools.combinations(cases, 2):
+            fuer x, y in itertools.combinations(cases, 2):
                 try:
                     op(x, y)
                 except (TypeError, ValueError, ZeroDivisionError) as exc:
@@ -338,7 +338,7 @@ klasse CAPITest(unittest.TestCase):
         # Test PyNumber_AsSsize_t()
         asssizet = _testcapi.number_asssizet
 
-        for n in [*range(-6, 7), PY_SSIZE_T_MIN, PY_SSIZE_T_MAX]:
+        fuer n in [*range(-6, 7), PY_SSIZE_T_MIN, PY_SSIZE_T_MAX]:
             self.assertEqual(asssizet(n, OverflowError), n)
         self.assertEqual(asssizet(PY_SSIZE_T_MAX+10, NULL), PY_SSIZE_T_MAX)
         self.assertEqual(asssizet(PY_SSIZE_T_MIN-10, NULL), PY_SSIZE_T_MIN)

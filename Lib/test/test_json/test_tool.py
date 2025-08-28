@@ -305,7 +305,7 @@ klasse TestMain(unittest.TestCase):
 {cb}'''),
         )
 
-        for input_, expected in cases:
+        fuer input_, expected in cases:
             with self.subTest(input=input_):
                 with open(infile, "w", encoding="utf-8") as fp:
                     fp.write(input_)

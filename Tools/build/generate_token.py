@@ -22,7 +22,7 @@ def load_tokens(path):
     string_to_tok = {}
     ERRORTOKEN = None
     with open(path) as fp:
-        for line in fp:
+        fuer line in fp:
             line = line.strip()
             # strip comments
             i = line.find('#')
@@ -77,7 +77,7 @@ extern "C" {
 #define N_TOKENS        %d
 #define NT_OFFSET       %d
 
-/* Special definitions for cooperation with parser */
+/* Special definitions fuer cooperation with parser */
 
 #define ISTERMINAL(x)           ((x) < NT_OFFSET)
 #define ISNONTERMINAL(x)        ((x) >= NT_OFFSET)
@@ -91,7 +91,7 @@ extern "C" {
                                  (x) == TSTRING_MIDDLE)
 
 
-// Export these 4 symbols for 'test_peg_generator'
+// Export these 4 symbols fuer 'test_peg_generator'
 PyAPI_DATA(const char * const) _PyParser_TokenNames[]; /* Token names */
 PyAPI_FUNC(int) _PyToken_OneChar(int);
 PyAPI_FUNC(int) _PyToken_TwoChars(int, int);
@@ -107,7 +107,7 @@ def make_h(infile, outfile='Include/internal/pycore_token.h'):
     tok_names, ERRORTOKEN, string_to_tok = load_tokens(infile)
 
     defines = []
-    for value, name in enumerate(tok_names[:ERRORTOKEN + 1]):
+    fuer value, name in enumerate(tok_names[:ERRORTOKEN + 1]):
         defines.append("#define %-15s %d\n" % (name, value))
 
     if update_file(outfile, token_h_template % (
@@ -162,7 +162,7 @@ def generate_chars_to_token(mapping, n=1):
     indent = '    ' * n
     write(indent)
     write('switch (c%d) {\n' % (n,))
-    for c in sorted(mapping):
+    fuer c in sorted(mapping):
         write(indent)
         value = mapping[c]
         if isinstance(value, dict):
@@ -180,16 +180,16 @@ def make_c(infile, outfile='Parser/token.c'):
     tok_names, ERRORTOKEN, string_to_tok = load_tokens(infile)
     string_to_tok['<>'] = string_to_tok['!=']
     chars_to_token = {}
-    for string, value in string_to_tok.items():
+    fuer string, value in string_to_tok.items():
         assert 1 <= len(string) <= 3
         name = tok_names[value]
         m = chars_to_token.setdefault(len(string), {})
-        for c in string[:-1]:
+        fuer c in string[:-1]:
             m = m.setdefault(c, {})
         m[string[-1]] = name
 
     names = []
-    for value, name in enumerate(tok_names):
+    fuer value, name in enumerate(tok_names):
         if value >= ERRORTOKEN:
             name = '<%s>' % name
         names.append('    "%s",\n' % name)
@@ -219,12 +219,12 @@ token_inc_template = f"""\
 def make_rst(infile, outfile='Doc/library/token-list.inc',
              rstfile='Doc/library/token.rst'):
     tok_names, ERRORTOKEN, string_to_tok = load_tokens(infile)
-    tok_to_string = {value: s for s, value in string_to_tok.items()}
+    tok_to_string = {value: s fuer s, value in string_to_tok.items()}
 
     needs_handwritten_doc = set()
 
     names = []
-    for value, name in enumerate(tok_names):
+    fuer value, name in enumerate(tok_names):
         if value in tok_to_string:
             assert name.isupper()
             names.append(f'   * - .. data:: {name}')
@@ -235,7 +235,7 @@ def make_rst(infile, outfile='Doc/library/token-list.inc',
     has_handwritten_doc = set()
     with open(rstfile) as fileobj:
         tokendef_re = re.compile(r'.. data:: ([0-9A-Z_]+)\s*')
-        for line in fileobj:
+        fuer line in fileobj:
             if match := tokendef_re.fullmatch(line):
                 has_handwritten_doc.add(match[1])
 
@@ -266,11 +266,11 @@ __all__ = ['tok_name', 'ISTERMINAL', 'ISNONTERMINAL', 'ISEOF',
 
 %s
 N_TOKENS = %d
-# Special definitions for cooperation with parser
+# Special definitions fuer cooperation with parser
 NT_OFFSET = %d
 
 tok_name = {value: name
-            for name, value in globals().items()
+            fuer name, value in globals().items()
             if isinstance(value, int) and not name.startswith('_')}
 __all__.extend(tok_name.values())
 
@@ -292,13 +292,13 @@ def make_py(infile, outfile='Lib/token.py'):
     tok_names, ERRORTOKEN, string_to_tok = load_tokens(infile)
 
     constants = []
-    for value, name in enumerate(tok_names):
+    fuer value, name in enumerate(tok_names):
         constants.append('%s = %d' % (name, value))
     constants.insert(ERRORTOKEN,
-        "# These aren't used by the C tokenizer but are needed for tokenize.py")
+        "# These aren't used by the C tokenizer but are needed fuer tokenize.py")
 
     token_types = []
-    for s, value in sorted(string_to_tok.items()):
+    fuer s, value in sorted(string_to_tok.items()):
         token_types.append('    %r: %s,' % (s, tok_names[value]))
 
     if update_file(outfile, token_py_template % (

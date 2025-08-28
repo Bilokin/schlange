@@ -40,5 +40,5 @@ def iter_many(items, onempty=None):
         else:
             yield first, True
             yield second, True
-        for item in items:
+        fuer item in items:
             yield item, True

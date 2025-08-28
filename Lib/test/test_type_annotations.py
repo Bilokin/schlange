@@ -14,7 +14,7 @@ klasse TypeAnnotationTests(unittest.TestCase):
         # the annotations dict is stored in type.__dict__ (as __annotations_cache__).
         # a freshly created type shouldn't have an annotations dict yet.
         foo = type("Foo", (), {})
-        for i in range(3):
+        fuer i in range(3):
             self.assertFalse("__annotations_cache__" in foo.__dict__)
             d = foo.__annotations__
             self.assertTrue("__annotations_cache__" in foo.__dict__)
@@ -24,7 +24,7 @@ klasse TypeAnnotationTests(unittest.TestCase):
 
     def test_setting_annotations(self):
         foo = type("Foo", (), {})
-        for i in range(3):
+        fuer i in range(3):
             self.assertFalse("__annotations_cache__" in foo.__dict__)
             d = {'a': int}
             foo.__annotations__ = d
@@ -180,7 +180,7 @@ def build_module(code: str, name: str = "top") -> types.ModuleType:
 klasse TestSetupAnnotations(unittest.TestCase):
     def check(self, code: str):
         code = textwrap.dedent(code)
-        for scope in ("module", "class"):
+        fuer scope in ("module", "class"):
             with self.subTest(scope=scope):
                 if scope == "class":
                     code = f"class C:\n{textwrap.indent(code, '    ')}"
@@ -207,11 +207,11 @@ klasse TestSetupAnnotations(unittest.TestCase):
                 x: int = 1
         """)
         self.check("""
-            for i in range(1):
+            fuer i in range(1):
                 x: int = 1
         """)
         self.check("""
-            for i in range(1):
+            fuer i in range(1):
                 pass
             else:
                 x: int = 1
@@ -294,7 +294,7 @@ klasse AnnotateTests(unittest.TestCase):
         klasse X:
             pass
 
-        for obj in (f, mod, X):
+        fuer obj in (f, mod, X):
             with self.subTest(obj=obj):
                 self.check_annotations(obj)
 
@@ -420,15 +420,15 @@ klasse DeferredEvaluationTests(unittest.TestCase):
             "def f():\n ",
             "async def f():\n ",
         ]
-        for prelude in preludes:
+        fuer prelude in preludes:
             with self.subTest(prelude=prelude):
                 check_syntax_error(self, prelude + "def func(x: (yield)): ...", "yield expression cannot be used within an annotation")
                 check_syntax_error(self, prelude + "def func(x: (yield from x)): ...", "yield expression cannot be used within an annotation")
                 check_syntax_error(self, prelude + "def func(x: (y := 3)): ...", "named expression cannot be used within an annotation")
                 check_syntax_error(self, prelude + "def func(x: (await 42)): ...", "await expression cannot be used within an annotation")
-                check_syntax_error(self, prelude + "def func(x: [y async for y in x]): ...", "asynchronous comprehension outside of an asynchronous function")
-                check_syntax_error(self, prelude + "def func(x: {y async for y in x}): ...", "asynchronous comprehension outside of an asynchronous function")
-                check_syntax_error(self, prelude + "def func(x: {y: y async for y in x}): ...", "asynchronous comprehension outside of an asynchronous function")
+                check_syntax_error(self, prelude + "def func(x: [y async fuer y in x]): ...", "asynchronous comprehension outside of an asynchronous function")
+                check_syntax_error(self, prelude + "def func(x: {y async fuer y in x}): ...", "asynchronous comprehension outside of an asynchronous function")
+                check_syntax_error(self, prelude + "def func(x: {y: y async fuer y in x}): ...", "asynchronous comprehension outside of an asynchronous function")
 
     def test_no_exotic_expressions_in_unevaluated_annotations(self):
         preludes = [
@@ -437,16 +437,16 @@ klasse DeferredEvaluationTests(unittest.TestCase):
             "def f(): ",
             "async def f(): ",
         ]
-        for prelude in preludes:
+        fuer prelude in preludes:
             with self.subTest(prelude=prelude):
                 check_syntax_error(self, prelude + "(x): (yield)", "yield expression cannot be used within an annotation")
                 check_syntax_error(self, prelude + "(x): (yield from x)", "yield expression cannot be used within an annotation")
                 check_syntax_error(self, prelude + "(x): (y := 3)", "named expression cannot be used within an annotation")
                 check_syntax_error(self, prelude + "(x): (__debug__ := 3)", "named expression cannot be used within an annotation")
                 check_syntax_error(self, prelude + "(x): (await 42)", "await expression cannot be used within an annotation")
-                check_syntax_error(self, prelude + "(x): [y async for y in x]", "asynchronous comprehension outside of an asynchronous function")
-                check_syntax_error(self, prelude + "(x): {y async for y in x}", "asynchronous comprehension outside of an asynchronous function")
-                check_syntax_error(self, prelude + "(x): {y: y async for y in x}", "asynchronous comprehension outside of an asynchronous function")
+                check_syntax_error(self, prelude + "(x): [y async fuer y in x]", "asynchronous comprehension outside of an asynchronous function")
+                check_syntax_error(self, prelude + "(x): {y async fuer y in x}", "asynchronous comprehension outside of an asynchronous function")
+                check_syntax_error(self, prelude + "(x): {y: y async fuer y in x}", "asynchronous comprehension outside of an asynchronous function")
 
     def test_ignore_non_simple_annotations(self):
         ns = run_code("class X: (y): int")
@@ -462,7 +462,7 @@ klasse DeferredEvaluationTests(unittest.TestCase):
         klasse X:
             x: int
         mod = build_module("x: int")
-        for obj in (func, X, mod):
+        fuer obj in (func, X, mod):
             with self.subTest(obj=obj):
                 annotate = obj.__annotate__
                 self.assertIsInstance(annotate, types.FunctionType)
@@ -482,7 +482,7 @@ klasse DeferredEvaluationTests(unittest.TestCase):
 
     def test_comprehension_in_annotation(self):
         # This crashed in an earlier version of the code
-        ns = run_code("x: [y for y in range(10)]")
+        ns = run_code("x: [y fuer y in range(10)]")
         self.assertEqual(ns["__annotate__"](1), {"x": list(range(10))})
 
     def test_future_annotations(self):
@@ -507,8 +507,8 @@ klasse DeferredEvaluationTests(unittest.TestCase):
         klasse f:
             x: int
         """)
-        for future in (False, True):
-            for label, code in (("function", function_code), ("class", class_code)):
+        fuer future in (False, True):
+            fuer label, code in (("function", function_code), ("class", class_code)):
                 with self.subTest(future=future, label=label):
                     if future:
                         code = "from __future__ import annotations\n" + code
@@ -577,8 +577,8 @@ klasse DeferredEvaluationTests(unittest.TestCase):
 
 klasse ConditionalAnnotationTests(unittest.TestCase):
     def check_scopes(self, code, true_annos, false_annos):
-        for scope in ("class", "module"):
-            for (cond, expected) in (
+        fuer scope in ("class", "module"):
+            fuer (cond, expected) in (
                 # Constants (so code might get optimized out)
                 (True, true_annos), (False, false_annos),
                 # Non-constant expressions
@@ -686,7 +686,7 @@ klasse ConditionalAnnotationTests(unittest.TestCase):
 
     def test_for(self):
         code = """
-            for _ in ([1] if {cond} else []):
+            fuer _ in ([1] if {cond} else []):
                 in_for: "for"
             else:
                 in_else: "else"
@@ -783,11 +783,11 @@ klasse RegressionTests(unittest.TestCase):
             (unique_name_0): 0
             unique_name_1: (
                 0
-                for (
+                fuer (
                     0
-                    for unique_name_2 in 0
-                    for () in (0 for unique_name_3 in unique_name_4 for unique_name_5 in name_1)
-                ).name_3 in {0: 0 for name_1 in unique_name_8}
+                    fuer unique_name_2 in 0
+                    fuer () in (0 fuer unique_name_3 in unique_name_4 fuer unique_name_5 in name_1)
+                ).name_3 in {0: 0 fuer name_1 in unique_name_8}
                 if name_1
             )
             """,
@@ -795,25 +795,25 @@ klasse RegressionTests(unittest.TestCase):
             unique_name_0: 0
             unique_name_1: {
                 0: 0
-                for unique_name_2 in [0 for name_0 in unique_name_4]
+                fuer unique_name_2 in [0 fuer name_0 in unique_name_4]
                 if {
                     0: 0
-                    for unique_name_5 in 0
+                    fuer unique_name_5 in 0
                     if name_0
-                    if ((name_0 for unique_name_8 in unique_name_9) for [] in 0)
+                    if ((name_0 fuer unique_name_8 in unique_name_9) fuer [] in 0)
                 }
             }
             """,
             """
-            0[0]: {0 for name_0 in unique_name_1}
+            0[0]: {0 fuer name_0 in unique_name_1}
             unique_name_2: {
-                0: (lambda: name_0 for unique_name_4 in unique_name_5)
-                for unique_name_6 in ()
+                0: (lambda: name_0 fuer unique_name_4 in unique_name_5)
+                fuer unique_name_6 in ()
                 if name_0
             }
             """,
         ]
-        for case in cases:
+        fuer case in cases:
             case = textwrap.dedent(case)
             compile(case, "<test>", "exec")
 
@@ -821,10 +821,10 @@ klasse RegressionTests(unittest.TestCase):
         code = """
             unique_name_1 = unique_name_5 = [1]
             name_0 = 42
-            unique_name_7: {name_0 for name_0 in unique_name_1}
+            unique_name_7: {name_0 fuer name_0 in unique_name_1}
             unique_name_2: {
-                0: (lambda: name_0 for unique_name_4 in unique_name_5)
-                for unique_name_6 in [1]
+                0: (lambda: name_0 fuer unique_name_4 in unique_name_5)
+                fuer unique_name_6 in [1]
                 if name_0
             }
         """

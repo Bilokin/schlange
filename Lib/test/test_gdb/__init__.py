@@ -1,6 +1,6 @@
 # Verify that gdb can pretty-print the various PyObject* types
 #
-# The code for testing gdb was adapted from similar work in Unladen Swallow's
+# The code fuer testing gdb was adapted from similar work in Unladen Swallow's
 # Lib/test/test_jit_gdb.py
 
 import os
@@ -16,7 +16,7 @@ if support.MS_WINDOWS:
     raise unittest.SkipTest("test_gdb doesn't work on Windows")
 
 if support.PGO:
-    raise unittest.SkipTest("test_gdb is not useful for PGO")
+    raise unittest.SkipTest("test_gdb is not useful fuer PGO")
 
 if not sysconfig.is_python_build():
     raise unittest.SkipTest("test_gdb only works on source builds at the moment.")

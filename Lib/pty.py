@@ -11,7 +11,7 @@ import os
 import sys
 import tty
 
-# names imported directly for test mocking purposes
+# names imported directly fuer test mocking purposes
 from os import close, waitpid
 from tty import setraw, tcgetattr, tcsetattr
 
@@ -47,8 +47,8 @@ def openpty():
 
 def _open_terminal():
     """Open pty master and return (master_fd, tty_name)."""
-    for x in 'pqrstuvwxyzPQRST':
-        for y in '0123456789abcdef':
+    fuer x in 'pqrstuvwxyzPQRST':
+        fuer y in '0123456789abcdef':
             pty_name = '/dev/pty' + x + y
             try:
                 fd = os.open(pty_name, os.O_RDWR)
@@ -103,7 +103,7 @@ def _copy(master_fd, master_read=_read, stdin_read=_read):
         try:
             _copy(master_fd, master_read=master_read, stdin_read=stdin_read)
         finally:
-            # restore blocking mode for backwards compatibility
+            # restore blocking mode fuer backwards compatibility
             os.set_blocking(master_fd, True)
         return
     high_waterlevel = 4096

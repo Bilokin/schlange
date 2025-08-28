@@ -1,4 +1,4 @@
-"""Generate the cases for the tier 2 interpreter.
+"""Generate the cases fuer the tier 2 interpreter.
 Reads the instruction definitions from bytecodes.c.
 Writes the cases to executor_cases.c.h, which is #included in ceval.c.
 """
@@ -47,14 +47,14 @@ def declare_variable(
 def declare_variables(uop: Uop, out: CWriter) -> None:
     stack = Stack()
     null = CWriter.null()
-    for var in reversed(uop.stack.inputs):
+    fuer var in reversed(uop.stack.inputs):
         stack.pop(var, null)
-    for var in uop.stack.outputs:
+    fuer var in uop.stack.outputs:
         stack.push(Local.undefined(var))
     seen = {"unused"}
-    for var in reversed(uop.stack.inputs):
+    fuer var in reversed(uop.stack.inputs):
         declare_variable(var, uop, seen, out)
-    for var in uop.stack.outputs:
+    fuer var in uop.stack.outputs:
         declare_variable(var, uop, seen, out)
 
 
@@ -65,7 +65,7 @@ klasse Tier2Emitter(Emitter):
         self._replacers["oparg"] = self.oparg
 
     def goto_error(self, offset: int, storage: Storage) -> str:
-        # To do: Add jump targets for popping values.
+        # To do: Add jump targets fuer popping values.
         if offset != 0:
             storage.copy().flush(self.out)
         return f"JUMP_TO_ERROR();"
@@ -147,7 +147,7 @@ def write_uop(uop: Uop, emitter: Emitter, stack: Stack) -> Stack:
             emitter.emit(f"assert(oparg == CURRENT_OPARG());\n")
         storage = Storage.for_uop(stack, uop, emitter.out)
         idx = 0
-        for cache in uop.caches:
+        fuer cache in uop.caches:
             if cache.name != "unused":
                 if cache.size == 4:
                     type = cast = "PyObject *"
@@ -172,7 +172,7 @@ def generate_tier2(
     outfile.write(
         """
 #ifdef TIER_ONE
-    #error "This file is for Tier 2 only"
+    #error "This file is fuer Tier 2 only"
 #endif
 #define TIER_TWO 2
 """
@@ -180,7 +180,7 @@ def generate_tier2(
     out = CWriter(outfile, 2, lines)
     emitter = Tier2Emitter(out, analysis.labels)
     out.emit("\n")
-    for name, uop in analysis.uops.items():
+    fuer name, uop in analysis.uops.items():
         if uop.properties.tier == 1:
             continue
         if uop.is_super():
@@ -188,7 +188,7 @@ def generate_tier2(
         why_not_viable = uop.why_not_viable()
         if why_not_viable is not None:
             out.emit(
-                f"/* {uop.name} is not a viable micro-op for tier 2 because it {why_not_viable} */\n\n"
+                f"/* {uop.name} is not a viable micro-op fuer tier 2 because it {why_not_viable} */\n\n"
             )
             continue
         out.emit(f"case {uop.name}: {{\n")
@@ -205,7 +205,7 @@ def generate_tier2(
 
 
 arg_parser = argparse.ArgumentParser(
-    description="Generate the code for the tier 2 interpreter.",
+    description="Generate the code fuer the tier 2 interpreter.",
     formatter_class=argparse.ArgumentDefaultsHelpFormatter,
 )
 

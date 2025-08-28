@@ -23,7 +23,7 @@ def logger(method: F) -> F:
     def logger_wrapper(self: "Parser", *args: object) -> Any:
         if not self._verbose:
             return method(self, *args)
-        argsr = ",".join(repr(arg) for arg in args)
+        argsr = ",".join(repr(arg) fuer arg in args)
         fill = "  " * self._level
         print(f"{fill}{method_name}({argsr}) .... (looking at {self.showpeek()})")
         self._level += 1
@@ -50,7 +50,7 @@ def memoize(method: F) -> F:
             return tree
         # Slow path: no cache hit, or verbose.
         verbose = self._verbose
-        argsr = ",".join(repr(arg) for arg in args)
+        argsr = ",".join(repr(arg) fuer arg in args)
         fill = "  " * self._level
         if key not in self._cache:
             if verbose:
@@ -170,7 +170,7 @@ klasse Parser:
         self._level = 0
         self._cache: Dict[Tuple[Mark, str, Tuple[Any, ...]], Tuple[Any, Mark]] = {}
         # Integer tracking whether we are in a left recursive rule or not. Can be useful
-        # for error reporting.
+        # fuer error reporting.
         self.in_recursive_rule = 0
         # Pass through common tokenizer methods.
         self._mark = self._tokenizer.mark
@@ -300,7 +300,7 @@ def simple_parser_main(parser_class: Type[Parser]) -> None:
         "--verbose",
         action="count",
         default=0,
-        help="Print timing stats; repeat for more debug output",
+        help="Print timing stats; repeat fuer more debug output",
     )
     argparser.add_argument(
         "-q", "--quiet", action="store_true", help="Don't print the parsed program"

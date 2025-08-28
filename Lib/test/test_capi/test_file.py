@@ -120,7 +120,7 @@ klasse CAPIFileTest(unittest.TestCase):
             self.assertEqual(text, "raw<NULL>'repr'<NULL>")
 
         # invalid file type
-        for invalid_file in (123, "abc", object()):
+        fuer invalid_file in (123, "abc", object()):
             with self.subTest(file=invalid_file):
                 with self.assertRaises(AttributeError):
                     writeobject("abc", invalid_file, Py_PRINT_RAW)
@@ -163,7 +163,7 @@ klasse CAPIFileTest(unittest.TestCase):
             asfd(FakeFile("text"))
 
         # unsupported types
-        for obj in ("string", ["list"], object()):
+        fuer obj in ("string", ["list"], object()):
             with self.subTest(obj=obj):
                 with self.assertRaises(TypeError):
                     asfd(obj)
@@ -230,7 +230,7 @@ klasse CAPIFileTest(unittest.TestCase):
         with open(__file__, "rb") as fp:
             source = fp.read()
 
-        for filename in (__file__, os.fsencode(__file__)):
+        fuer filename in (__file__, os.fsencode(__file__)):
             with self.subTest(filename=filename):
                 data = py_fopen(filename, "rb")
                 self.assertEqual(data, source[:256])
@@ -247,7 +247,7 @@ klasse CAPIFileTest(unittest.TestCase):
             filenames.append(os.fsdecode(os_helper.TESTFN_UNDECODABLE))
         if os_helper.TESTFN_UNENCODABLE is not None:
             filenames.append(os_helper.TESTFN_UNENCODABLE)
-        for filename in filenames:
+        fuer filename in filenames:
             with self.subTest(filename=filename):
                 try:
                     with open(filename, "wb") as fp:
@@ -281,7 +281,7 @@ klasse CAPIFileTest(unittest.TestCase):
             py_fopen(__file__, b"\x98\x9d")
 
         # invalid filename type
-        for invalid_type in (123, object()):
+        fuer invalid_type in (123, object()):
             with self.subTest(filename=invalid_type):
                 with self.assertRaises(TypeError):
                     py_fopen(invalid_type, "rb")

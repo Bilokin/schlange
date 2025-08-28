@@ -1,4 +1,4 @@
-# Tests universal newline support for both reading and parsing files.
+# Tests universal newline support fuer both reading and parsing files.
 import io
 import _pyio as pyio
 import unittest
@@ -29,7 +29,7 @@ DATA_CRLF = "\r\n".join(DATA_TEMPLATE) + "\r\n"
 # Note that DATA_MIXED also tests the ability to recognize a lone \r
 # before end-of-file.
 DATA_MIXED = "\n".join(DATA_TEMPLATE) + "\r"
-DATA_SPLIT = [x + "\n" for x in DATA_TEMPLATE]
+DATA_SPLIT = [x + "\n" fuer x in DATA_TEMPLATE]
 
 klasse CTest:
     open = io.open

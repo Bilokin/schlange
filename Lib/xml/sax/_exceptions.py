@@ -20,7 +20,7 @@ klasse SAXException(Exception):
         Exception.__init__(self, msg)
 
     def getMessage(self):
-        "Return a message for this exception."
+        "Return a message fuer this exception."
         return self._msg
 
     def getException(self):
@@ -42,7 +42,7 @@ klasse SAXException(Exception):
 klasse SAXParseException(SAXException):
     """Encapsulate an XML parse error or warning.
 
-    This exception will include information for locating the error in
+    This exception will include information fuer locating the error in
     the original XML document. Note that although the application will
     receive a SAXParseException as the argument to the handlers in the
     ErrorHandler interface, the application is not actually required
@@ -99,27 +99,27 @@ klasse SAXParseException(SAXException):
 # ===== SAXNOTRECOGNIZEDEXCEPTION =====
 
 klasse SAXNotRecognizedException(SAXException):
-    """Exception klasse for an unrecognized identifier.
+    """Exception klasse fuer an unrecognized identifier.
 
     An XMLReader will raise this exception when it is confronted with an
     unrecognized feature or property. SAX applications and extensions may
-    use this klasse for similar purposes."""
+    use this klasse fuer similar purposes."""
 
 
 # ===== SAXNOTSUPPORTEDEXCEPTION =====
 
 klasse SAXNotSupportedException(SAXException):
-    """Exception klasse for an unsupported operation.
+    """Exception klasse fuer an unsupported operation.
 
     An XMLReader will raise this exception when a service it cannot
     perform is requested (specifically setting a state or value). SAX
-    applications and extensions may use this klasse for similar
+    applications and extensions may use this klasse fuer similar
     purposes."""
 
 # ===== SAXNOTSUPPORTEDEXCEPTION =====
 
 klasse SAXReaderNotAvailable(SAXNotSupportedException):
-    """Exception klasse for a missing driver.
+    """Exception klasse fuer a missing driver.
 
     An XMLReader module (driver) should raise this exception when it
     is first imported, e.g. when a support module cannot be imported.

@@ -68,11 +68,11 @@ def to_ulps(x):
 #
 # The outer product above is an infinite product, but once i >= n.bit_length,
 # (n >> i) < 1 and the corresponding term of the product is empty.  So only the
-# finitely many terms for 0 <= i < n.bit_length() contribute anything.
+# finitely many terms fuer 0 <= i < n.bit_length() contribute anything.
 #
 # We iterate downwards from i == n.bit_length() - 1 to i == 0.  The inner
-# product in the formula above starts at 1 for i == n.bit_length(); for each i
-# < n.bit_length() we get the inner product for i from that for i + 1 by
+# product in the formula above starts at 1 fuer i == n.bit_length(); fuer each i
+# < n.bit_length() we get the inner product fuer i from that fuer i + 1 by
 # multiplying by all j in {n >> i+1 < j <= n >> i; j odd}.  In Python terms,
 # this set is range((n >> i+1) + 1 | 1, (n >> i) + 1 | 1, 2).
 
@@ -100,7 +100,7 @@ def py_factorial(n):
 
     """
     inner = outer = 1
-    for i in reversed(range(n.bit_length())):
+    fuer i in reversed(range(n.bit_length())):
         inner *= partial_product((n >> i + 1) + 1 | 1, (n >> i) + 1 | 1)
         outer *= inner
     return outer << (n - count_set_bits(n))
@@ -133,7 +133,7 @@ def parse_mtestfile(fname):
 
     """
     with open(fname, encoding="utf-8") as fp:
-        for line in fp:
+        fuer line in fp:
             # strip comments, and skip blank lines
             if '--' in line:
                 line = line[:line.index('--')]
@@ -156,7 +156,7 @@ def parse_testfile(fname):
     yields id, fn, arg_real, arg_imag, exp_real, exp_imag
     """
     with open(fname, encoding="utf-8") as fp:
-        for line in fp:
+        fuer line in fp:
             # skip comment lines and blank lines
             if line.startswith('--') or not line.strip():
                 continue
@@ -485,7 +485,7 @@ klasse MathTests(unittest.TestCase):
         # but in practice, we are only interested in a boolean value.
         self.assertIsInstance(math.signbit(1.0), bool)
 
-        for arg in [0., 1., INF, NAN]:
+        fuer arg in [0., 1., INF, NAN]:
             self.assertFalse(math.signbit(arg))
             self.assertTrue(math.signbit(-arg))
 
@@ -550,7 +550,7 @@ klasse MathTests(unittest.TestCase):
     def testFactorial(self):
         self.assertEqual(math.factorial(0), 1)
         total = 1
-        for i in range(1, 1000):
+        fuer i in range(1, 1000):
             total *= i
             self.assertEqual(math.factorial(i), total)
             self.assertEqual(math.factorial(i), py_factorial(i))
@@ -569,7 +569,7 @@ klasse MathTests(unittest.TestCase):
     # Other implementations may place different upper bounds.
     @support.cpython_only
     def testFactorialHugeInputs(self):
-        # Currently raises OverflowError for inputs that are too large
+        # Currently raises OverflowError fuer inputs that are too large
         # to fit into a C long.
         self.assertRaises(OverflowError, math.factorial, 10**100)
         self.assertRaises(TypeError, math.factorial, 1e100)
@@ -655,7 +655,7 @@ klasse MathTests(unittest.TestCase):
         self.assertEqual(math.fmax(-1., -0.), 0.)
         self.assertEqual(math.fmax(-0., -1.), 0.)
 
-        for x in [NINF, -1., -0., 0., 1., INF]:
+        fuer x in [NINF, -1., -0., 0., 1., INF]:
             self.assertFalse(math.isnan(x))
 
             with self.subTest(x=x, is_negative=math.copysign(1, x) < 0):
@@ -667,7 +667,7 @@ klasse MathTests(unittest.TestCase):
     @requires_IEEE_754
     def test_fmax_nans(self):
         # When exactly one operand is NaN, the other is returned.
-        for x in [NINF, -1., -0., 0., 1., INF]:
+        fuer x in [NINF, -1., -0., 0., 1., INF]:
             with self.subTest(x=x, is_negative=math.copysign(1, x) < 0):
                 self.assertFalse(math.isnan(math.fmax(NAN, x)))
                 self.assertFalse(math.isnan(math.fmax(x, NAN)))
@@ -698,7 +698,7 @@ klasse MathTests(unittest.TestCase):
         self.assertEqual(math.fmin(-1., -0.), -1.)
         self.assertEqual(math.fmin(-0., -1.), -1.)
 
-        for x in [NINF, -1., -0., 0., 1., INF]:
+        fuer x in [NINF, -1., -0., 0., 1., INF]:
             self.assertFalse(math.isnan(x))
 
             with self.subTest(x=x, is_negative=math.copysign(1, x) < 0):
@@ -710,7 +710,7 @@ klasse MathTests(unittest.TestCase):
     @requires_IEEE_754
     def test_fmin_nans(self):
         # When exactly one operand is NaN, the other is returned.
-        for x in [NINF, -1., -0., 0., 1., INF]:
+        fuer x in [NINF, -1., -0., 0., 1., INF]:
             with self.subTest(x=x, is_negative=math.copysign(1, x) < 0):
                 self.assertFalse(math.isnan(math.fmin(NAN, x)))
                 self.assertFalse(math.isnan(math.fmin(x, NAN)))
@@ -745,7 +745,7 @@ klasse MathTests(unittest.TestCase):
     @unittest.skipIf(HAVE_DOUBLE_ROUNDING,
                          "fsum is not exact on machines with double rounding")
     def testFsum(self):
-        # math.fsum relies on exact rounding for correct operation.
+        # math.fsum relies on exact rounding fuer correct operation.
         # There's a known problem with IA32 floating-point that causes
         # inexact rounding in some situations, and will cause the
         # math.fsum tests below to fail; see issue #2937.  On non IEEE
@@ -753,7 +753,7 @@ klasse MathTests(unittest.TestCase):
         # problem described in issue #2937, we simply skip the whole
         # test.
 
-        # Python version of math.fsum, for comparison.  Uses a
+        # Python version of math.fsum, fuer comparison.  Uses a
         # different algorithm based on frexp, ldexp and integer
         # arithmetic.
         from sys import float_info
@@ -767,7 +767,7 @@ klasse MathTests(unittest.TestCase):
 
             """
             tmant, texp = 0, 0
-            for x in iterable:
+            fuer x in iterable:
                 mant, exp = math.frexp(x)
                 mant, exp = int(math.ldexp(mant, mant_dig)), exp - mant_dig
                 if texp > exp:
@@ -777,7 +777,7 @@ klasse MathTests(unittest.TestCase):
                     mant <<= exp-texp
                 tmant += mant
             # Round tmant * 2**texp to a float.  The original recipe
-            # used float(str(tmant)) * 2.0**texp for this, but that's
+            # used float(str(tmant)) * 2.0**texp fuer this, but that's
             # a little unsafe because str -> float conversion can't be
             # relied upon to do correct rounding on all platforms.
             tail = max(len(bin(abs(tmant)))-2 - mant_dig, etiny - texp)
@@ -796,26 +796,26 @@ klasse MathTests(unittest.TestCase):
             ([2.0**53, 1.0, 2.0**-100], 2.0**53+2.0),
             ([2.0**53+10.0, 1.0, 2.0**-100], 2.0**53+12.0),
             ([2.0**53-4.0, 0.5, 2.0**-54], 2.0**53-3.0),
-            ([1./n for n in range(1, 1001)],
+            ([1./n fuer n in range(1, 1001)],
              float.fromhex('0x1.df11f45f4e61ap+2')),
-            ([(-1.)**n/n for n in range(1, 1001)],
+            ([(-1.)**n/n fuer n in range(1, 1001)],
              float.fromhex('-0x1.62a2af1bd3624p-1')),
             ([1e16, 1., 1e-16], 10000000000000002.0),
             ([1e16-2., 1.-2.**-53, -(1e16-2.), -(1.-2.**-53)], 0.0),
-            # exercise code for resizing partials array
-            ([2.**n - 2.**(n+50) + 2.**(n+52) for n in range(-1074, 972, 2)] +
+            # exercise code fuer resizing partials array
+            ([2.**n - 2.**(n+50) + 2.**(n+52) fuer n in range(-1074, 972, 2)] +
              [-2.**1022],
              float.fromhex('0x1.5555555555555p+970')),
             ]
 
         # Telescoping sum, with exact differences (due to Sterbenz)
-        terms = [1.7**i for i in range(1001)]
+        terms = [1.7**i fuer i in range(1001)]
         test_values.append((
-            [terms[i+1] - terms[i] for i in range(1000)] + [-terms[1000]],
+            [terms[i+1] - terms[i] fuer i in range(1000)] + [-terms[1000]],
             -terms[0]
         ))
 
-        for i, (vals, expected) in enumerate(test_values):
+        fuer i, (vals, expected) in enumerate(test_values):
             try:
                 actual = math.fsum(vals)
             except OverflowError:
@@ -827,10 +827,10 @@ klasse MathTests(unittest.TestCase):
             self.assertEqual(actual, expected)
 
         from random import random, gauss, shuffle
-        for j in range(1000):
+        fuer j in range(1000):
             vals = [7, 1e100, -7, -1e100, -9e-20, 8e-20] * 10
             s = 0
-            for i in range(200):
+            fuer i in range(200):
                 v = gauss(0, random()) ** 7 - s
                 s += v
                 vals.append(v)
@@ -872,7 +872,7 @@ klasse MathTests(unittest.TestCase):
 
         x = 434610456570399902378880679233098819019853229470286994367836600566
         y = 1064502245825115327754847244914921553977
-        for c in (652560,
+        fuer c in (652560,
                   576559230871654959816130551884856912003141446781646602790216406874):
             a = x * c
             b = y * c
@@ -906,10 +906,10 @@ klasse MathTests(unittest.TestCase):
         # Test different numbers of arguments (from zero to five)
         # against a straightforward pure python implementation
         args = math.e, math.pi, math.sqrt(2.0), math.gamma(3.5), math.sin(2.1)
-        for i in range(len(args)+1):
+        fuer i in range(len(args)+1):
             self.assertAlmostEqual(
                 hypot(*args[:i]),
-                math.sqrt(sum(s**2 for s in args[:i]))
+                math.sqrt(sum(s**2 fuer s in args[:i]))
             )
 
         # Test allowable types (those with __float__)
@@ -965,14 +965,14 @@ klasse MathTests(unittest.TestCase):
         self.assertTrue(math.isnan(hypot(NAN, NAN)))
         self.assertTrue(math.isnan(hypot(NAN)))
 
-        # Verify scaling for extremely large values
+        # Verify scaling fuer extremely large values
         fourthmax = FLOAT_MAX / 4.0
-        for n in range(32):
+        fuer n in range(32):
             self.assertTrue(math.isclose(hypot(*([fourthmax]*n)),
                                          fourthmax * math.sqrt(n)))
 
-        # Verify scaling for extremely small values
-        for exp in range(32):
+        # Verify scaling fuer extremely small values
+        fuer exp in range(32):
             scale = FLOAT_MIN / 2.0 ** exp
             self.assertEqual(math.hypot(4*scale, 3*scale), 5*scale)
 
@@ -997,7 +997,7 @@ klasse MathTests(unittest.TestCase):
         Decimal = decimal.Decimal
         high_precision = decimal.Context(prec=500)
 
-        for hx, hy in [
+        fuer hx, hy in [
             # Cases with a 1 ulp error in Python 3.7 compiled with Clang
             ('0x1.10e89518dca48p+29', '0x1.1970f7565b7efp+30'),
             ('0x1.10106eb4b44a2p+29', '0x1.ef0596cdc97f8p+29'),
@@ -1054,13 +1054,13 @@ klasse MathTests(unittest.TestCase):
 
         # Test different numbers of arguments (from zero to nine)
         # against a straightforward pure python implementation
-        for i in range(9):
-            for j in range(5):
-                p = tuple(random.uniform(-5, 5) for k in range(i))
-                q = tuple(random.uniform(-5, 5) for k in range(i))
+        fuer i in range(9):
+            fuer j in range(5):
+                p = tuple(random.uniform(-5, 5) fuer k in range(i))
+                q = tuple(random.uniform(-5, 5) fuer k in range(i))
                 self.assertAlmostEqual(
                     dist(p, q),
-                    sqrt(sum((px - qx) ** 2.0 for px, qx in zip(p, q)))
+                    sqrt(sum((px - qx) ** 2.0 fuer px, qx in zip(p, q)))
                 )
 
         # Test non-tuple inputs
@@ -1138,15 +1138,15 @@ klasse MathTests(unittest.TestCase):
             dist([1], [BadFloat()])
 
         # Verify that the one dimensional case is equivalent to abs()
-        for i in range(20):
+        fuer i in range(20):
             p, q = random.random(), random.random()
             self.assertEqual(dist((p,), (q,)), abs(p - q))
 
         # Test special values
         values = [NINF, -10.5, -0.0, 0.0, 10.5, INF, NAN]
-        for p in itertools.product(values, repeat=3):
-            for q in itertools.product(values, repeat=3):
-                diffs = [px - qx for px, qx in zip(p, q)]
+        fuer p in itertools.product(values, repeat=3):
+            fuer q in itertools.product(values, repeat=3):
+                diffs = [px - qx fuer px, qx in zip(p, q)]
                 if any(map(math.isinf, diffs)):
                     # Any infinite difference gives positive infinity.
                     self.assertEqual(dist(p, q), INF)
@@ -1154,16 +1154,16 @@ klasse MathTests(unittest.TestCase):
                     # If no infinity, any NaN gives a NaN.
                     self.assertTrue(math.isnan(dist(p, q)))
 
-        # Verify scaling for extremely large values
+        # Verify scaling fuer extremely large values
         fourthmax = FLOAT_MAX / 4.0
-        for n in range(32):
+        fuer n in range(32):
             p = (fourthmax,) * n
             q = (0.0,) * n
             self.assertTrue(math.isclose(dist(p, q), fourthmax * math.sqrt(n)))
             self.assertTrue(math.isclose(dist(q, p), fourthmax * math.sqrt(n)))
 
-        # Verify scaling for extremely small values
-        for exp in range(32):
+        # Verify scaling fuer extremely small values
+        fuer exp in range(32):
             scale = FLOAT_MIN / 2.0 ** exp
             p = (4*scale, 3*scale)
             q = (0.0, 0.0)
@@ -1171,7 +1171,7 @@ klasse MathTests(unittest.TestCase):
             self.assertEqual(math.dist(q, p), 5*scale)
 
     def test_math_dist_leak(self):
-        # gh-98897: Check for error handling does not leak memory
+        # gh-98897: Check fuer error handling does not leak memory
         with self.assertRaises(ValueError):
             math.dist([1, 2], [3, 4, 5])
 
@@ -1180,11 +1180,11 @@ klasse MathTests(unittest.TestCase):
         test_values = (
             list(range(1000))
             + list(range(10**6 - 1000, 10**6 + 1000))
-            + [2**e + i for e in range(60, 200) for i in range(-40, 40)]
+            + [2**e + i fuer e in range(60, 200) fuer i in range(-40, 40)]
             + [3**9999, 10**5001]
         )
 
-        for value in test_values:
+        fuer value in test_values:
             with self.subTest(value=value):
                 s = math.isqrt(value)
                 self.assertIs(type(s), int)
@@ -1223,7 +1223,7 @@ klasse MathTests(unittest.TestCase):
             3.5, "a string", decimal.Decimal("3.5"), 3.5j,
             100.0, -4.0,
         ]
-        for value in bad_values:
+        fuer value in bad_values:
             with self.subTest(value=value):
                 with self.assertRaises(TypeError):
                     math.isqrt(value)
@@ -1255,7 +1255,7 @@ klasse MathTests(unittest.TestCase):
 
         x = 43461045657039990237
         y = 10645022458251153277
-        for c in (652560,
+        fuer c in (652560,
                   57655923087165495981):
             a = x * c
             b = y * c
@@ -1297,7 +1297,7 @@ klasse MathTests(unittest.TestCase):
         self.assertTrue(math.isnan(math.ldexp(NAN, 0)))
 
         # large second argument
-        for n in [10**5, 10**10, 10**20, 10**40]:
+        fuer n in [10**5, 10**10, 10**20, 10**40]:
             self.assertEqual(math.ldexp(INF, -n), INF)
             self.assertEqual(math.ldexp(NINF, -n), NINF)
             self.assertEqual(math.ldexp(1., -n), 0.)
@@ -1340,7 +1340,7 @@ klasse MathTests(unittest.TestCase):
 
     def testLog1p(self):
         self.assertRaises(TypeError, math.log1p)
-        for n in [2, 2**90, 2**300]:
+        fuer n in [2, 2**90, 2**300]:
             self.assertAlmostEqual(math.log1p(n), math.log1p(float(n)))
         self.assertRaises(ValueError, math.log1p, -1)
         self.assertEqual(math.log1p(INF), INF)
@@ -1367,9 +1367,9 @@ klasse MathTests(unittest.TestCase):
     # log2() is not accurate enough on Mac OS X Tiger (10.4)
     @support.requires_mac_ver(10, 5)
     def testLog2Exact(self):
-        # Check that we get exact equality for log2 of powers of 2.
-        actual = [math.log2(math.ldexp(1.0, n)) for n in range(-1074, 1024)]
-        expected = [float(n) for n in range(-1074, 1024)]
+        # Check that we get exact equality fuer log2 of powers of 2.
+        actual = [math.log2(math.ldexp(1.0, n)) fuer n in range(-1074, 1024)]
+        expected = [float(n) fuer n in range(-1074, 1024)]
         self.assertEqual(actual, expected)
 
     def testLog10(self):
@@ -1404,7 +1404,7 @@ klasse MathTests(unittest.TestCase):
         self.assertEqual(sumprod([1.], [-1]), -1)
 
         # Type preservation and coercion
-        for v in [
+        fuer v in [
             (10, 20, 30),
             (1.5, -2.5),
             (Fraction(3, 5), Fraction(4, 5)),
@@ -1414,9 +1414,9 @@ klasse MathTests(unittest.TestCase):
             (25, Fraction(3, 5)),  # int/fraction
             (25, Decimal(4.5)),    # int/decimal
         ]:
-            for p, q in [(v, v), (v, v[::-1])]:
+            fuer p, q in [(v, v), (v, v[::-1])]:
                 with self.subTest(p=p, q=q):
-                    expected = sum(p_i * q_i for p_i, q_i in zip(p, q, strict=True))
+                    expected = sum(p_i * q_i fuer p_i, q_i in zip(p, q, strict=True))
                     actual = sumprod(p, q)
                     self.assertEqual(expected, actual)
                     self.assertEqual(type(expected), type(actual))
@@ -1443,7 +1443,7 @@ klasse MathTests(unittest.TestCase):
 
         # Error in iterator
         def raise_after(n):
-            for i in range(n):
+            fuer i in range(n):
                 yield i
             raise RuntimeError
         with self.assertRaises(RuntimeError):
@@ -1531,7 +1531,7 @@ klasse MathTests(unittest.TestCase):
             representable with only a few bits.
             """
             total = 0
-            for p_i, q_i in zip(p, q, strict=True):
+            fuer p_i, q_i in zip(p, q, strict=True):
                 total += p_i * q_i
             return total
 
@@ -1562,10 +1562,10 @@ klasse MathTests(unittest.TestCase):
             (11.25, -3.75, -0.625, 23.375, True, False, 7, Int(5)),
         ]
 
-        for pool in pools:
-            for size in range(4):
-                for args1 in product(pool, repeat=size):
-                    for args2 in product(pool, repeat=size):
+        fuer pool in pools:
+            fuer size in range(4):
+                fuer args1 in product(pool, repeat=size):
+                    fuer args2 in product(pool, repeat=size):
                         args = (args1, args2)
                         self.assertEqual(
                             run(baseline_sumprod, *args),
@@ -1599,7 +1599,7 @@ klasse MathTests(unittest.TestCase):
 
         def linspace(lo, hi, n):
             width = (hi - lo) / (n - 1)
-            return [lo + width * i for i in range(n)]
+            return [lo + width * i fuer i in range(n)]
 
         def GenDot(n, c):
             """ Algorithm 6.1 (GenDot) works as follows. The condition number (5.7) of
@@ -1623,12 +1623,12 @@ klasse MathTests(unittest.TestCase):
             e[0] = int(b / 2) + 1
             e[-1] = 0.0
 
-            x[:n2] = [uniform(-1.0, 1.0) * exp2(p) for p in e]
-            y[:n2] = [uniform(-1.0, 1.0) * exp2(p) for p in e]
+            x[:n2] = [uniform(-1.0, 1.0) * exp2(p) fuer p in e]
+            y[:n2] = [uniform(-1.0, 1.0) * exp2(p) fuer p in e]
 
             # Second half
             e = list(map(round, linspace(b/2, 0.0 , n-n2)))
-            for i in range(n2, n):
+            fuer i in range(n2, n):
                 x[i] = uniform(-1.0, 1.0) * exp2(e[i - n2])
                 y[i] = (uniform(-1.0, 1.0) * exp2(e[i - n2]) - DotExact(x, y)) / x[i]
 
@@ -1658,7 +1658,7 @@ klasse MathTests(unittest.TestCase):
         # and is inaccurate.  To solve this problem, make a new build
         # with the symbol UNRELIABLE_FMA defined.  That will enable a
         # slower but accurate code path that avoids the fma() call.
-        relative_err = median(Trial(math.sumprod, c, n) for i in range(times))
+        relative_err = median(Trial(math.sumprod, c, n) fuer i in range(times))
         self.assertLess(relative_err, 1e-16)
 
     def testModf(self):
@@ -1774,7 +1774,7 @@ klasse MathTests(unittest.TestCase):
         self.assertEqual(math.pow(1., NINF), 1.)
         self.assertEqual(math.pow(1., NAN), 1.)
 
-        # pow(x, 0) should be 1 for any x
+        # pow(x, 0) should be 1 fuer any x
         self.assertEqual(math.pow(2.3, 0.), 1.)
         self.assertEqual(math.pow(-2.3, 0.), 1.)
         self.assertEqual(math.pow(NAN, 0.), 1.)
@@ -1806,7 +1806,7 @@ klasse MathTests(unittest.TestCase):
         self.assertEqual(math.pow(-1.1, INF), INF)
         self.assertEqual(math.pow(-1.9, INF), INF)
 
-        # pow(x, y) should work for x negative, y an integer
+        # pow(x, y) should work fuer x negative, y an integer
         self.ftest('(-2.)**3.', math.pow(-2.0, 3.0), -8.0)
         self.ftest('(-2.)**2.', math.pow(-2.0, 2.0), 4.0)
         self.ftest('(-2.)**1.', math.pow(-2.0, 1.0), -2.0)
@@ -1819,7 +1819,7 @@ klasse MathTests(unittest.TestCase):
         self.assertRaises(ValueError, math.pow, -2.0, 0.5)
 
         # the following tests have been commented out since they don't
-        # really belong here:  the implementation of ** for floats is
+        # really belong here:  the implementation of ** fuer floats is
         # independent of the implementation of math.pow
         #self.assertEqual(1**NAN, 1)
         #self.assertEqual(1**INF, 1)
@@ -1916,7 +1916,7 @@ klasse MathTests(unittest.TestCase):
             '0x1.fp+1023 0x1.4p+1023 -0x0.9p+1023',
         ]
 
-        for case in testcases:
+        fuer case in testcases:
             with self.subTest(case=case):
                 x_hex, y_hex, expected_hex = case.split()
                 x = float.fromhex(x_hex)
@@ -1932,11 +1932,11 @@ klasse MathTests(unittest.TestCase):
         # getting the implementation wrong here (for example,
         # by assuming that modulus/2 is exactly representable).
         tiny = float.fromhex('1p-1074')  # min +ve subnormal
-        for n in range(-25, 25):
+        fuer n in range(-25, 25):
             if n == 0:
                 continue
             y = n * tiny
-            for m in range(100):
+            fuer m in range(100):
                 x = m * tiny
                 actual = math.remainder(x, y)
                 validate_spec(x, y, actual)
@@ -1945,18 +1945,18 @@ klasse MathTests(unittest.TestCase):
 
         # Special values.
         # NaNs should propagate as usual.
-        for value in [NAN, 0.0, -0.0, 2.0, -2.3, NINF, INF]:
+        fuer value in [NAN, 0.0, -0.0, 2.0, -2.3, NINF, INF]:
             self.assertIsNaN(math.remainder(NAN, value))
             self.assertIsNaN(math.remainder(value, NAN))
 
-        # remainder(x, inf) is x, for non-nan non-infinite x.
-        for value in [-2.3, -0.0, 0.0, 2.3]:
+        # remainder(x, inf) is x, fuer non-nan non-infinite x.
+        fuer value in [-2.3, -0.0, 0.0, 2.3]:
             self.assertEqual(math.remainder(value, INF), value)
             self.assertEqual(math.remainder(value, NINF), value)
 
-        # remainder(x, 0) and remainder(infinity, x) for non-NaN x are invalid
+        # remainder(x, 0) and remainder(infinity, x) fuer non-NaN x are invalid
         # operations according to IEEE 754-2008 7.2(f), and should raise.
-        for value in [NINF, -2.3, -0.0, 0.0, 2.3, INF]:
+        fuer value in [NINF, -2.3, -0.0, 0.0, 2.3, INF]:
             with self.assertRaises(ValueError):
                 math.remainder(INF, value)
             with self.assertRaises(ValueError):
@@ -2176,7 +2176,7 @@ klasse MathTests(unittest.TestCase):
         fail_fmt = "{}: {}({!r}): {}"
 
         failures = []
-        for id, fn, ar, ai, er, ei, flags in parse_testfile(test_file):
+        fuer id, fn, ar, ai, er, ei, flags in parse_testfile(test_file):
             # Skip if either the input or result is complex
             if ai != 0.0 or ei != 0.0:
                 continue
@@ -2202,8 +2202,8 @@ klasse MathTests(unittest.TestCase):
             except OverflowError:
                 result = 'OverflowError'
 
-            # C99+ says for math.h's sqrt: If the argument is +∞ or ±0, it is
-            # returned, unmodified.  On another hand, for csqrt: If z is ±0+0i,
+            # C99+ says fuer math.h's sqrt: If the argument is +∞ or ±0, it is
+            # returned, unmodified.  On another hand, fuer csqrt: If z is ±0+0i,
             # the result is +0+0i.  Lets correct zero sign of er to follow
             # first convention.
             if id in ['sqrt0002', 'sqrt0003', 'sqrt1001', 'sqrt1023']:
@@ -2228,7 +2228,7 @@ klasse MathTests(unittest.TestCase):
         fail_fmt = "{}: {}({!r}): {}"
 
         failures = []
-        for id, fn, arg, expected, flags in parse_mtestfile(math_testcases):
+        fuer id, fn, arg, expected, flags in parse_mtestfile(math_testcases):
             func = getattr(math, fn)
 
             if 'invalid' in flags or 'divide-by-zero' in flags:
@@ -2254,14 +2254,14 @@ klasse MathTests(unittest.TestCase):
                 ulp_tol = 20
 
             elif fn == 'lgamma':
-                # we use a weaker accuracy test for lgamma;
+                # we use a weaker accuracy test fuer lgamma;
                 # lgamma only achieves an absolute error of
                 # a few multiples of the machine accuracy, in
                 # general.
                 abs_tol = 1e-15
 
             elif fn == 'erfc' and arg >= 0.0:
-                # erfc has less-than-ideal accuracy for large
+                # erfc has less-than-ideal accuracy fuer large
                 # arguments (x ~ 25 or so), mainly due to the
                 # error involved in computing exp(-x*x).
                 #
@@ -2313,9 +2313,9 @@ klasse MathTests(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             prod([10., BadMultiply()])
 
-        # Test overflow in fast-path for integers
+        # Test overflow in fast-path fuer integers
         self.assertEqual(prod([1, 1, 2**32, 1, 1]), 2**32)
-        # Test overflow in fast-path for floats
+        # Test overflow in fast-path fuer floats
         self.assertEqual(prod([1.0, 1.0, 2**32, 1, 1]), float(2**32))
 
         self.assertRaises(TypeError, prod)
@@ -2343,7 +2343,7 @@ klasse MathTests(unittest.TestCase):
         self.assertEqual(prod([1, 2, 3, 0]), 0)
 
         def _naive_prod(iterable, start=1):
-            for elem in iterable:
+            fuer elem in iterable:
                 start *= elem
             return start
 
@@ -2358,11 +2358,11 @@ klasse MathTests(unittest.TestCase):
 
         # Big floats
 
-        iterable = [float(x) for x in range(1, 1000)]
+        iterable = [float(x) fuer x in range(1, 1000)]
         self.assertEqual(prod(iterable), _naive_prod(iterable))
-        iterable = [float(x) for x in range(-1000, -1)]
+        iterable = [float(x) fuer x in range(-1000, -1)]
         self.assertEqual(prod(iterable), _naive_prod(iterable))
-        iterable = [float(x) for x in range(-1000, 1000)]
+        iterable = [float(x) fuer x in range(-1000, 1000)]
         self.assertIsNaN(prod(iterable))
 
         # Float tests
@@ -2396,24 +2396,24 @@ klasse MathTests(unittest.TestCase):
         perm = math.perm
         factorial = math.factorial
         # Test if factorial definition is satisfied
-        for n in range(500):
-            for k in (range(n + 1) if n < 100 else range(30) if n < 200 else range(10)):
+        fuer n in range(500):
+            fuer k in (range(n + 1) if n < 100 else range(30) if n < 200 else range(10)):
                 self.assertEqual(perm(n, k),
                                  factorial(n) // factorial(n - k))
 
-        # Test for Pascal's identity
-        for n in range(1, 100):
-            for k in range(1, n):
+        # Test fuer Pascal's identity
+        fuer n in range(1, 100):
+            fuer k in range(1, n):
                 self.assertEqual(perm(n, k), perm(n - 1, k - 1) * k + perm(n - 1, k))
 
         # Test corner cases
-        for n in range(1, 100):
+        fuer n in range(1, 100):
             self.assertEqual(perm(n, 0), 1)
             self.assertEqual(perm(n, 1), n)
             self.assertEqual(perm(n, n), factorial(n))
 
         # Test one argument form
-        for n in range(20):
+        fuer n in range(20):
             self.assertEqual(perm(n), factorial(n))
             self.assertEqual(perm(n, None), factorial(n))
 
@@ -2447,12 +2447,12 @@ klasse MathTests(unittest.TestCase):
         if support.check_impl_detail(cpython=True):
             self.assertRaises(OverflowError, perm, n, n)
 
-        for n, k in (True, True), (True, False), (False, False):
+        fuer n, k in (True, True), (True, False), (False, False):
             self.assertEqual(perm(n, k), 1)
             self.assertIs(type(perm(n, k)), int)
         self.assertEqual(perm(IntSubclass(5), IntSubclass(2)), 20)
         self.assertEqual(perm(MyIndexable(5), MyIndexable(2)), 20)
-        for k in range(3):
+        fuer k in range(3):
             self.assertIs(type(perm(IntSubclass(5), IntSubclass(k))), int)
             self.assertIs(type(perm(MyIndexable(5), MyIndexable(k))), int)
 
@@ -2460,28 +2460,28 @@ klasse MathTests(unittest.TestCase):
         comb = math.comb
         factorial = math.factorial
         # Test if factorial definition is satisfied
-        for n in range(500):
-            for k in (range(n + 1) if n < 100 else range(30) if n < 200 else range(10)):
+        fuer n in range(500):
+            fuer k in (range(n + 1) if n < 100 else range(30) if n < 200 else range(10)):
                 self.assertEqual(comb(n, k), factorial(n)
                     // (factorial(k) * factorial(n - k)))
 
-        # Test for Pascal's identity
-        for n in range(1, 100):
-            for k in range(1, n):
+        # Test fuer Pascal's identity
+        fuer n in range(1, 100):
+            fuer k in range(1, n):
                 self.assertEqual(comb(n, k), comb(n - 1, k - 1) + comb(n - 1, k))
 
         # Test corner cases
-        for n in range(100):
+        fuer n in range(100):
             self.assertEqual(comb(n, 0), 1)
             self.assertEqual(comb(n, n), 1)
 
-        for n in range(1, 100):
+        fuer n in range(1, 100):
             self.assertEqual(comb(n, 1), n)
             self.assertEqual(comb(n, n - 1), n)
 
         # Test Symmetry
-        for n in range(100):
-            for k in range(n // 2):
+        fuer n in range(100):
+            fuer k in range(n // 2):
                 self.assertEqual(comb(n, k), comb(n, n - k))
 
         # Raises TypeError if any argument is non-integer or argument count is
@@ -2517,12 +2517,12 @@ klasse MathTests(unittest.TestCase):
         if support.check_impl_detail(cpython=True):
             self.assertRaises(OverflowError, comb, n, n//2)
 
-        for n, k in (True, True), (True, False), (False, False):
+        fuer n, k in (True, True), (True, False), (False, False):
             self.assertEqual(comb(n, k), 1)
             self.assertIs(type(comb(n, k)), int)
         self.assertEqual(comb(IntSubclass(5), IntSubclass(2)), 10)
         self.assertEqual(comb(MyIndexable(5), MyIndexable(2)), 10)
-        for k in range(3):
+        fuer k in range(3):
             self.assertIs(type(comb(IntSubclass(5), IntSubclass(k))), int)
             self.assertIs(type(comb(MyIndexable(5), MyIndexable(k))), int)
 
@@ -2553,7 +2553,7 @@ klasse MathTests(unittest.TestCase):
                          float.fromhex('0x1.0000000000003p+0'))
 
         # x == y: y is returned
-        for steps in range(1, 5):
+        fuer steps in range(1, 5):
             self.assertEqual(math.nextafter(2.0, 2.0, steps=steps), 2.0)
             self.assertEqualSign(math.nextafter(-0.0, +0.0, steps=steps), +0.0)
             self.assertEqualSign(math.nextafter(+0.0, -0.0, steps=steps), -0.0)
@@ -2604,7 +2604,7 @@ klasse MathTests(unittest.TestCase):
         self.assertIsNaN(math.ulp(math.nan))
 
         # negative number: ulp(-x) == ulp(x)
-        for x in (0.0, 1.0, 2 ** 52, 2 ** 64, INF):
+        fuer x in (0.0, 1.0, 2 ** 52, 2 ** 64, INF):
             with self.subTest(x=x):
                 self.assertEqual(math.ulp(-x), math.ulp(x))
 
@@ -2615,7 +2615,7 @@ klasse MathTests(unittest.TestCase):
             def __float__(self):
                 self.converted = True
                 1/0
-        for func in math.atan2, math.copysign, math.remainder:
+        fuer func in math.atan2, math.copysign, math.remainder:
             y = F()
             with self.assertRaises(TypeError):
                 func("not a number", y)
@@ -2699,11 +2699,11 @@ klasse IsCloseTests(unittest.TestCase):
                          msg="%s and %s should not be close!" % (a, b))
 
     def assertAllClose(self, examples, *args, **kwargs):
-        for a, b in examples:
+        fuer a, b in examples:
             self.assertIsClose(a, b, *args, **kwargs)
 
     def assertAllNotClose(self, examples, *args, **kwargs):
-        for a, b in examples:
+        fuer a, b in examples:
             self.assertIsNotClose(a, b, *args, **kwargs)
 
     def test_negative_tolerances(self):
@@ -2749,7 +2749,7 @@ klasse IsCloseTests(unittest.TestCase):
         self.assertIsClose(NINF, NINF, abs_tol=0.0)
 
     def test_inf_ninf_nan(self):
-        # these should never be close (following IEEE 754 rules for equality)
+        # these should never be close (following IEEE 754 rules fuer equality)
         not_close_examples = [(NAN, NAN),
                               (NAN, 1e-100),
                               (1e-100, NAN),
@@ -2811,7 +2811,7 @@ klasse IsCloseTests(unittest.TestCase):
 
 
 klasse FMATests(unittest.TestCase):
-    """ Tests for math.fma. """
+    """ Tests fuer math.fma. """
 
     def test_fma_nan_results(self):
         # Selected representative values.
@@ -2821,7 +2821,7 @@ klasse FMATests(unittest.TestCase):
         ]
 
         # If any input is a NaN, the result should be a NaN, too.
-        for a, b in itertools.product(values, repeat=2):
+        fuer a, b in itertools.product(values, repeat=2):
             with self.subTest(a=a, b=b):
                 self.assertIsNaN(math.fma(math.nan, a, b))
                 self.assertIsNaN(math.fma(a, math.nan, b))
@@ -2834,9 +2834,9 @@ klasse FMATests(unittest.TestCase):
         non_nans = [-math.inf, -2.3, -0.0, 0.0, 2.3, math.inf]
 
         # ValueError due to inf * 0 computation.
-        for c in non_nans:
-            for infinity in [math.inf, -math.inf]:
-                for zero in [0.0, -0.0]:
+        fuer c in non_nans:
+            fuer infinity in [math.inf, -math.inf]:
+                fuer zero in [0.0, -0.0]:
                     with self.subTest(c=c, infinity=infinity, zero=zero):
                         with self.assertRaises(ValueError):
                             math.fma(infinity, zero, c)
@@ -2844,7 +2844,7 @@ klasse FMATests(unittest.TestCase):
                             math.fma(zero, infinity, c)
 
         # ValueError when a*b and c both infinite of opposite signs.
-        for b in positives:
+        fuer b in positives:
             with self.subTest(b=b):
                 with self.assertRaises(ValueError):
                     math.fma(math.inf, b, -math.inf)
@@ -2864,7 +2864,7 @@ klasse FMATests(unittest.TestCase):
                     math.fma(b, -math.inf, math.inf)
 
         # Infinite result when a*b and c both infinite of the same sign.
-        for b in positives:
+        fuer b in positives:
             with self.subTest(b=b):
                 self.assertEqual(math.fma(math.inf, b, math.inf), math.inf)
                 self.assertEqual(math.fma(math.inf, -b, -math.inf), -math.inf)
@@ -2876,13 +2876,13 @@ klasse FMATests(unittest.TestCase):
                 self.assertEqual(math.fma(b, -math.inf, -math.inf), -math.inf)
 
         # Infinite result when a*b finite, c infinite.
-        for a, b in itertools.product(finites, finites):
+        fuer a, b in itertools.product(finites, finites):
             with self.subTest(b=b):
                 self.assertEqual(math.fma(a, b, math.inf), math.inf)
                 self.assertEqual(math.fma(a, b, -math.inf), -math.inf)
 
         # Infinite result when a*b infinite, c finite.
-        for b, c in itertools.product(positives, finites):
+        fuer b, c in itertools.product(positives, finites):
             with self.subTest(b=b, c=c):
                 self.assertEqual(math.fma(math.inf, b, c), math.inf)
                 self.assertEqual(math.fma(-math.inf, b, c), -math.inf)
@@ -2908,7 +2908,7 @@ klasse FMATests(unittest.TestCase):
         nonnegative_finites = [0.0, 1e-300, 2.3, 1e300]
 
         # Zero results from exact zero inputs.
-        for b in nonnegative_finites:
+        fuer b in nonnegative_finites:
             with self.subTest(b=b):
                 self.assertIsPositiveZero(math.fma(0.0, b, 0.0))
                 self.assertIsPositiveZero(math.fma(0.0, b, -0.0))
@@ -2993,7 +2993,7 @@ klasse FMATests(unittest.TestCase):
         self.assertEqual(math.fma(a - 1.0, a + 1.0, 1.0), a*a)
 
     def test_random(self):
-        # A collection of randomly generated inputs for which the naive FMA
+        # A collection of randomly generated inputs fuer which the naive FMA
         # (with two rounds) gives a different result from a singly-rounded FMA.
 
         # tuples (a, b, c, expected)
@@ -3031,7 +3031,7 @@ klasse FMATests(unittest.TestCase):
             ('0x1.d350026ac3946p-1', '0x1.9a234e149a68cp-2',
              '0x1.f5467b1911fd6p-2', '0x1.b5cee3225caa5p-1'),
         ]
-        for a_hex, b_hex, c_hex, expected_hex in test_values:
+        fuer a_hex, b_hex, c_hex, expected_hex in test_values:
             with self.subTest(a_hex=a_hex, b_hex=b_hex, c_hex=c_hex,
                               expected_hex=expected_hex):
                 a = float.fromhex(a_hex)

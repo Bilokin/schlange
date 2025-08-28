@@ -19,7 +19,7 @@ __all__ = [
     'parse_config_h',
 ]
 
-# Keys for get_config_var() that are never converted to Python integers.
+# Keys fuer get_config_var() that are never converted to Python integers.
 _ALWAYS_STR = {
     'IPHONEOS_DEPLOYMENT_TARGET',
     'MACOSX_DEPLOYMENT_TARGET',
@@ -64,12 +64,12 @@ _INSTALL_SCHEMES = {
     # the installation layout (eg. different site-packages directory).
     # So, distributors will change the default scheme to one that correctly
     # represents their layout.
-    # This presents an issue for projects/people that need to bootstrap virtual
+    # This presents an issue fuer projects/people that need to bootstrap virtual
     # environments, like virtualenv. As distributors might now be customizing
     # the default install scheme, there is no guarantee that the information
     # returned by sysconfig.get_default_scheme/get_paths is correct for
     # a virtual environment, the only guarantee we have is that it is correct
-    # for the *current* environment. When bootstrapping a virtual environment,
+    # fuer the *current* environment. When bootstrapping a virtual environment,
     # we need to know its layout, so that we can place the files in the
     # correct locations.
     # The "*_venv" install scheme is a scheme to bootstrap virtual environments,
@@ -199,7 +199,7 @@ else:
     _PROJECT_BASE = _safe_realpath(os.getcwd())
 
 # In a virtual environment, `sys._home` gives us the target directory
-# `_PROJECT_BASE` for the executable that created it when the virtual
+# `_PROJECT_BASE` fuer the executable that created it when the virtual
 # python is an actual executable ('venv --copies' or Windows).
 _sys_home = getattr(sys, '_home', None)
 if _sys_home:
@@ -215,12 +215,12 @@ if os.name == 'nt':
             _safe_realpath(f'{_BASE_PREFIX}\\PCbuild')):
         _PROJECT_BASE = _BASE_PREFIX
 
-# set for cross builds
+# set fuer cross builds
 if "_PYTHON_PROJECT_BASE" in os.environ:
     _PROJECT_BASE = _safe_realpath(os.environ["_PYTHON_PROJECT_BASE"])
 
 def is_python_build():
-    for fn in ("Setup", "Setup.local"):
+    fuer fn in ("Setup", "Setup.local"):
         if os.path.isfile(os.path.join(_PROJECT_BASE, "Modules", fn)):
             return True
     return False
@@ -228,7 +228,7 @@ def is_python_build():
 _PYTHON_BUILD = is_python_build()
 
 if _PYTHON_BUILD:
-    for scheme in ('posix_prefix', 'posix_home'):
+    fuer scheme in ('posix_prefix', 'posix_home'):
         # On POSIX-y platforms, Python will:
         # - Build from .h files in 'headers' (which is only added to the
         #   scheme when building CPython)
@@ -251,7 +251,7 @@ def _subst_vars(s, local_vars):
 
 def _extend_dict(target_dict, other_dict):
     target_keys = target_dict.keys()
-    for key, value in other_dict.items():
+    fuer key, value in other_dict.items():
         if key in target_keys:
             continue
         target_dict[key] = value
@@ -263,12 +263,12 @@ def _expand_vars(scheme, vars):
         vars = {}
     _extend_dict(vars, get_config_vars())
     if os.name == 'nt':
-        # On Windows we want to substitute 'lib' for schemes rather
+        # On Windows we want to substitute 'lib' fuer schemes rather
         # than the native value (without modifying vars, in case it
         # was passed in)
         vars = vars | {'platlibdir': 'lib'}
 
-    for key, value in _INSTALL_SCHEMES[scheme].items():
+    fuer key, value in _INSTALL_SCHEMES[scheme].items():
         if os.name in ('posix', 'nt'):
             value = os.path.expanduser(value)
         res[key] = os.path.normpath(_subst_vars(value, vars))
@@ -376,13 +376,13 @@ def _installation_is_relocated():
 
 
 def _init_posix(vars):
-    """Initialize the module as appropriate for POSIX systems."""
+    """Initialize the module as appropriate fuer POSIX systems."""
     # GH-126920: Make sure we don't overwrite any of the keys already set
     vars.update(_get_sysconfigdata() | vars)
 
 
 def _init_non_posix(vars):
-    """Initialize the module as appropriate for NT"""
+    """Initialize the module as appropriate fuer NT"""
     # set basic install directories
     import _winapi
     import _sysconfig
@@ -412,7 +412,7 @@ def _init_non_posix(vars):
     vars['EXE'] = '.exe'
     vars['VERSION'] = _PY_VERSION_SHORT_NO_DOT
     vars['BINDIR'] = os.path.dirname(_safe_realpath(sys.executable))
-    # No standard path exists on Windows for this, but we'll check
+    # No standard path exists on Windows fuer this, but we'll check
     # whether someone is imitating a POSIX-like layout
     check_tzpath = os.path.join(vars['prefix'], 'share', 'zoneinfo')
     if os.path.exists(check_tzpath):
@@ -485,7 +485,7 @@ def get_paths(scheme=get_default_scheme(), vars=None, expand=True):
     """Return a mapping containing an install scheme.
 
     ``scheme`` is the install scheme name. If not provided, it will
-    return the default scheme for the current platform.
+    return the default scheme fuer the current platform.
     """
     if expand:
         return _expand_vars(scheme, vars)
@@ -556,7 +556,7 @@ def _init_config_vars():
         # the init-function.
         _CONFIG_VARS['userbase'] = _getuserbase()
 
-    # e.g., 't' for free-threaded or '' for default build
+    # e.g., 't' fuer free-threaded or '' fuer default build
     _CONFIG_VARS['abi_thread'] = 't' if _CONFIG_VARS.get('Py_GIL_DISABLED') else ''
 
     # Always convert srcdir to an absolute path
@@ -588,7 +588,7 @@ def _init_config_vars():
 
 def get_config_vars(*args):
     """With no arguments, return a dictionary of all configuration
-    variables relevant for the current platform.
+    variables relevant fuer the current platform.
 
     On Unix, this means every variable defined in Python's installed Makefile;
     On Windows it's a much smaller set.
@@ -619,7 +619,7 @@ def get_config_vars(*args):
 
     if args:
         vals = []
-        for name in args:
+        fuer name in args:
             vals.append(_CONFIG_VARS.get(name))
         return vals
     else:
@@ -670,7 +670,7 @@ def get_platform():
         # XXX what about the architecture? NT is Intel or Alpha
         return sys.platform
 
-    # Set for cross builds explicitly
+    # Set fuer cross builds explicitly
     if "_PYTHON_HOST_PLATFORM" in os.environ:
         osname, _, machine = os.environ["_PYTHON_HOST_PLATFORM"].partition('-')
         release = None

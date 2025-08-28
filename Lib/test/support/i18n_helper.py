@@ -26,7 +26,7 @@ def _generate_po_file(path, *, stdout_only=True):
 
 def _extract_msgids(po):
     msgids = []
-    for msgid in msgid_pattern.findall(po):
+    fuer msgid in msgid_pattern.findall(po):
         msgid_string = ''.join(msgid_string_pattern.findall(msgid))
         msgid_string = msgid_string.replace(r'\"', '"')
         if msgid_string:

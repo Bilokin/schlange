@@ -20,7 +20,7 @@ except ImportError:
     posix = None
 
 
-# An absolute path to a temporary filename for testing. We can't rely on TESTFN
+# An absolute path to a temporary filename fuer testing. We can't rely on TESTFN
 # being an absolute path, so we need this.
 
 ABSTFN = abspath(TESTFN)
@@ -43,7 +43,7 @@ def _parameterize(*parameters):
 klasse PosixPathTest(unittest.TestCase):
 
     def setUp(self):
-        for suffix in ["", "1", "2"]:
+        fuer suffix in ["", "1", "2"]:
             self.assertFalse(posixpath.lexists(ABSTFN + suffix))
 
     def test_join(self):
@@ -287,7 +287,7 @@ klasse PosixPathTest(unittest.TestCase):
     def test_isjunction(self):
         self.assertFalse(posixpath.isjunction(ABSTFN))
 
-    @unittest.skipIf(sys.platform == 'win32', "Fast paths are not for win32")
+    @unittest.skipIf(sys.platform == 'win32', "Fast paths are not fuer win32")
     @support.cpython_only
     def test_fast_paths_in_use(self):
         # There are fast paths of these functions implemented in posixmodule.c.
@@ -310,7 +310,7 @@ klasse PosixPathTest(unittest.TestCase):
             env['HOME'] = '/home/victor/'
             self.assertEqual(posixpath.expanduser("~"), "/home/victor")
 
-            for home in '/', '', '//', '///':
+            fuer home in '/', '', '//', '///':
                 with self.subTest(home=home):
                     env['HOME'] = home
                     self.assertEqual(posixpath.expanduser("~"), "/")
@@ -355,7 +355,7 @@ klasse PosixPathTest(unittest.TestCase):
             # expanduser() must return the path unchanged.
             with mock.patch.object(pwd, 'getpwuid', side_effect=KeyError), \
                  mock.patch.object(pwd, 'getpwnam', side_effect=KeyError):
-                for path in ('~', '~/.local', '~vstinner/'):
+                fuer path in ('~', '~/.local', '~vstinner/'):
                     self.assertEqual(posixpath.expanduser(path), path)
 
     @unittest.skipIf(sys.platform == "vxworks",
@@ -363,7 +363,7 @@ klasse PosixPathTest(unittest.TestCase):
     def test_expanduser_pwd2(self):
         pwd = import_helper.import_module('pwd')
         getpwall = support.get_attribute(pwd, 'getpwall')
-        names = [entry.pw_name for entry in getpwall()]
+        names = [entry.pw_name fuer entry in getpwall()]
         maxusers = 1000 if support.is_resource_enabled('cpu') else 100
         if len(names) > maxusers:
             # Select random names, half of them with non-ASCII name,
@@ -371,7 +371,7 @@ klasse PosixPathTest(unittest.TestCase):
             random.shuffle(names)
             names.sort(key=lambda name: name.isascii())
             del names[maxusers//2:-maxusers//2]
-        for name in names:
+        fuer name in names:
             # gh-121200: pw_dir can be different between getpwall() and
             # getpwnam(), so use getpwnam() pw_dir as expanduser() does.
             entry = pwd.getpwnam(name)
@@ -437,7 +437,7 @@ klasse PosixPathTest(unittest.TestCase):
     ]
 
     def test_normpath(self):
-        for path, expected in self.NORMPATH_CASES:
+        fuer path, expected in self.NORMPATH_CASES:
             with self.subTest(path):
                 result = posixpath.normpath(path)
                 self.assertEqual(result, expected)
@@ -732,7 +732,7 @@ klasse PosixPathTest(unittest.TestCase):
         depth = 10
         try:
             os.mkdir(ABSTFN)
-            for i in range(depth):
+            fuer i in range(depth):
                 os.symlink('/'.join(['%d' % i] * 10), ABSTFN + '/%d' % (i + 1))
             os.symlink('.', ABSTFN + '/0')
             self.assertEqual(realpath(ABSTFN + '/%d' % depth, **kwargs), ABSTFN)
@@ -741,7 +741,7 @@ klasse PosixPathTest(unittest.TestCase):
             with os_helper.change_cwd(ABSTFN):
                 self.assertEqual(realpath('%d' % depth), ABSTFN)
         finally:
-            for i in range(depth + 1):
+            fuer i in range(depth + 1):
                 os_helper.unlink(ABSTFN + '/%d' % i)
             os_helper.rmdir(ABSTFN)
 
@@ -1032,12 +1032,12 @@ klasse PosixPathTest(unittest.TestCase):
             if isinstance(expected, str):
                 assert errno is None
                 expected = expected.replace('/', os.sep)
-                for mode in modes:
+                fuer mode in modes:
                     with self.subTest(mode=mode):
                         self.assertEqual(realpath(path, strict=mode).replace('/', os.sep),
                                          ABSTFN.replace('/', os.sep) + expected)
             else:
-                for mode in modes:
+                fuer mode in modes:
                     with self.subTest(mode=mode):
                         with self.assertRaises(expected) as cm:
                             realpath(path, strict=mode)
@@ -1161,12 +1161,12 @@ klasse PosixPathTest(unittest.TestCase):
     def test_commonpath(self):
         def check(paths, expected):
             self.assertEqual(posixpath.commonpath(paths), expected)
-            self.assertEqual(posixpath.commonpath([os.fsencode(p) for p in paths]),
+            self.assertEqual(posixpath.commonpath([os.fsencode(p) fuer p in paths]),
                              os.fsencode(expected))
         def check_error(exc, paths):
             self.assertRaises(exc, posixpath.commonpath, paths)
             self.assertRaises(exc, posixpath.commonpath,
-                              [os.fsencode(p) for p in paths])
+                              [os.fsencode(p) fuer p in paths])
 
         self.assertRaises(TypeError, posixpath.commonpath, None)
         self.assertRaises(ValueError, posixpath.commonpath, [])

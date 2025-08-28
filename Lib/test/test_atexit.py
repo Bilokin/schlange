@@ -59,7 +59,7 @@ klasse FunctionalTest(unittest.TestCase):
 
 
         def thready():
-            for _ in range(100):
+            fuer _ in range(100):
                 atexit.register(dummy)
                 atexit._clear()
                 atexit.register(dummy)
@@ -67,11 +67,11 @@ klasse FunctionalTest(unittest.TestCase):
                 atexit._run_exitfuncs()
 
 
-        threads = [Thread(target=thready) for _ in range(10)]
-        for thread in threads:
+        threads = [Thread(target=thready) fuer _ in range(10)]
+        fuer thread in threads:
             thread.start()
 
-        for thread in threads:
+        fuer thread in threads:
             thread.join()
         """
 

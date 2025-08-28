@@ -156,7 +156,7 @@ def eval_ast_expr(
     Returns the result of that function call.
 
     globals represents the globals dict the expression
-    should see.  (There's no equivalent for "locals" here.)
+    should see.  (There's no equivalent fuer "locals" here.)
     """
 
     if isinstance(node, ast.Expr):
@@ -269,7 +269,7 @@ klasse DSLParser:
         self.clinic = clinic
 
         self.directives = {}
-        for name in dir(self):
+        fuer name in dir(self):
             # functions that start with directive_ are added to directives
             _, s, key = name.partition("directive_")
             if s:
@@ -385,7 +385,7 @@ klasse DSLParser:
             fd.update(previous_fd)
             return
 
-        # secret command for debugging!
+        # secret command fuer debugging!
         if command_or_name == "print":
             self.block.output.append(pprint.pformat(fd))
             self.block.output.append('\n')
@@ -394,7 +394,7 @@ klasse DSLParser:
         d = self.clinic.get_destination_buffer(destination)
 
         if command_or_name == "everything":
-            for name in list(fd):
+            fuer name in list(fd):
                 fd[name] = d
             return
 
@@ -403,7 +403,7 @@ klasse DSLParser:
             allowed.extend(fd)
             fail(f"Invalid command or destination name {command_or_name!r}. "
                  "Must be one of:\n -",
-                 "\n - ".join([repr(word) for word in allowed]))
+                 "\n - ".join([repr(word) fuer word in allowed]))
         fd[command_or_name] = d
 
     def directive_dump(self, name: str) -> None:
@@ -439,7 +439,7 @@ klasse DSLParser:
             features.remove('fastcall')
             self.disable_fastcall = True
         if features:
-            fail("invalid argument for @disable:", features[0])
+            fail("invalid argument fuer @disable:", features[0])
 
     def at_getter(self) -> None:
         match self.kind:
@@ -491,7 +491,7 @@ klasse DSLParser:
         block.output = []
         block_start = self.clinic.block_parser.line_number
         lines = block.input.split('\n')
-        for line_number, line in enumerate(lines, self.clinic.block_parser.block_start_line_number):
+        fuer line_number, line in enumerate(lines, self.clinic.block_parser.block_start_line_number):
             if '\t' in line:
                 fail(f'Tab characters are illegal in the Clinic DSL: {line!r}',
                      line_number=block_start)
@@ -507,7 +507,7 @@ klasse DSLParser:
 
         if self.preserve_output:
             if block.output:
-                fail("'preserve' only works for blocks that don't produce any output!",
+                fail("'preserve' only works fuer blocks that don't produce any output!",
                      line_number=line_number)
             block.output = self.saved_output
 
@@ -609,7 +609,7 @@ klasse DSLParser:
             try:
                 module_node = ast.parse(ast_input)
             except SyntaxError:
-                fail(f"Badly formed annotation for {full_name!r}: {forced_converter!r}")
+                fail(f"Badly formed annotation fuer {full_name!r}: {forced_converter!r}")
             function_node = module_node.body[0]
             assert isinstance(function_node, ast.FunctionDef)
             try:
@@ -620,7 +620,7 @@ klasse DSLParser:
                     fail(f"No available return converter called {name!r}")
                 return return_converters[name](**kwargs)
             except ValueError:
-                fail(f"Badly formed annotation for {full_name!r}: {forced_converter!r}")
+                fail(f"Badly formed annotation fuer {full_name!r}: {forced_converter!r}")
 
         if self.kind in {METHOD_INIT, SETTER}:
             return int_return_converter()
@@ -628,12 +628,12 @@ klasse DSLParser:
 
     def parse_cloned_function(self, names: FunctionNames, existing: str) -> None:
         full_name, c_basename = names
-        fields = [x.strip() for x in existing.split('.')]
+        fields = [x.strip() fuer x in existing.split('.')]
         function_name = fields.pop()
         module, cls = self.clinic._module_and_class(fields)
         parent = cls or module
 
-        for existing_function in parent.functions:
+        fuer existing_function in parent.functions:
             if existing_function.name == function_name:
                 break
         else:
@@ -641,7 +641,7 @@ klasse DSLParser:
             print(f"{(cls or module).functions=}", file=sys.stderr)
             fail(f"Couldn't find existing function {existing!r}!")
 
-        fields = [x.strip() for x in full_name.split('.')]
+        fields = [x.strip() fuer x in full_name.split('.')]
         function_name = fields.pop()
         module, cls = self.clinic._module_and_class(fields)
 
@@ -670,7 +670,7 @@ klasse DSLParser:
         self.next(self.state_function_docstring)
 
     def state_modulename_name(self, line: str) -> None:
-        # looking for declaration, which establishes the leftmost column
+        # looking fuer declaration, which establishes the leftmost column
         # line should be
         #     modulename.fnname [as c_basename] [-> return annotation]
         # square brackets denote optional syntax.
@@ -705,7 +705,7 @@ klasse DSLParser:
         full_name, c_basename = self.parse_function_names(line)
         return_converter = self.resolve_return_converter(full_name, returns)
 
-        fields = [x.strip() for x in full_name.split('.')]
+        fields = [x.strip() fuer x in full_name.split('.')]
         function_name = fields.pop()
         module, cls = self.clinic._module_and_class(fields)
 
@@ -751,11 +751,11 @@ klasse DSLParser:
     #   * All lines must be indented with spaces only.
     #   * The first line must be a parameter declaration.
     #   * The first line must be indented.
-    #       * This first line establishes the indent for parameters.
+    #       * This first line establishes the indent fuer parameters.
     #       * We'll call this number of spaces P (for "parameter").
     #   * Thenceforth:
     #       * Lines indented with P spaces specify a parameter.
-    #       * Lines indented with > P spaces are docstrings for the previous
+    #       * Lines indented with > P spaces are docstrings fuer the previous
     #         parameter.
     #           * We'll call this number of spaces D (for "docstring").
     #           * All subsequent lines indented with >= D spaces are stored as
@@ -765,7 +765,7 @@ klasse DSLParser:
     #           * It's illegal to have a line starting with a number of spaces X
     #             such that P < X < D.
     #       * A line with < P spaces is the first line of the function
-    #         docstring, which ends processing for parameters and per-parameter
+    #         docstring, which ends processing fuer parameters and per-parameter
     #         docstrings.
     #           * The first line of the function docstring must be at the same
     #             indent as the function declaration.
@@ -825,7 +825,7 @@ klasse DSLParser:
         if self.parameter_state is not ParamState.REQUIRED:
             self.parameter_state = ParamState.REQUIRED
             assert self.function is not None
-            for p in self.function.parameters.values():
+            fuer p in self.function.parameters.values():
                 p.group = -p.group
 
     def state_parameter(self, line: str) -> None:
@@ -889,7 +889,7 @@ klasse DSLParser:
             case st:
                 fail(f"Function {self.function.name} has an unsupported group configuration. (Unexpected state {st}.a)")
 
-        # handle "as" for  parameters too
+        # handle "as" fuer  parameters too
         c_name = None
         m = re.match(r'(?:\* *)?\w+( +as +(\w+))', line)
         if m:
@@ -964,7 +964,7 @@ klasse DSLParser:
                         visit_ListComp = visit_SetComp = bad_node
                         visit_DictComp = visit_GeneratorExp = bad_node
 
-                        # literals for advanced types
+                        # literals fuer advanced types
                         visit_Dict = visit_Set = bad_node
                         visit_List = visit_Tuple = bad_node
 
@@ -1058,7 +1058,7 @@ klasse DSLParser:
         legacy_str = "legacy " if legacy else ""
         if name not in dict:
             fail(f'{name!r} is not a valid {legacy_str}converter')
-        # if you use a c_name for the parameter, we just give that name to the converter
+        # if you use a c_name fuer the parameter, we just give that name to the converter
         # but the parameter object gets the python name
         converter = dict[name](c_name or parameter_name, parameter_name, self.function, value, **kwargs)
 
@@ -1107,7 +1107,7 @@ klasse DSLParser:
                       converter=converter, default=value, group=self.group,
                       deprecated_positional=self.deprecated_positional)
 
-        names = [k.name for k in self.function.parameters.values()]
+        names = [k.name fuer k in self.function.parameters.values()]
         if parameter_name in names[1:]:
             fail(f"You can't have two parameters named {parameter_name!r}!")
         elif names and parameter_name == names[0] and c_name is None:
@@ -1130,7 +1130,7 @@ klasse DSLParser:
                 return name, False, {}
             case ast.Call(func=ast.Name(name)):
                 kwargs: ConverterArgs = {}
-                for node in annotation.keywords:
+                fuer node in annotation.keywords:
                     if not isinstance(node.arg, str):
                         fail("Cannot use a kwarg splat in a function-call annotation")
                     kwargs[node.arg] = eval_ast_expr(node.value)
@@ -1194,7 +1194,7 @@ klasse DSLParser:
         """Parse closing parameter group symbol ']'."""
         if not self.group:
             fail(f"Function {function.name!r} has a ']' without a matching '['.")
-        if not any(p.group == self.group for p in function.parameters.values()):
+        if not any(p.group == self.group fuer p in function.parameters.values()):
             fail(f"Function {function.name!r} has an empty group. "
                  "All groups must contain at least one parameter.")
         self.group -= 1
@@ -1240,7 +1240,7 @@ klasse DSLParser:
         self.deprecated_keyword = version
         if version is not None:
             found = False
-            for p in reversed(function.parameters.values()):
+            fuer p in reversed(function.parameters.values()):
                 found = p.kind is inspect.Parameter.POSITIONAL_OR_KEYWORD
                 break
             if not found:
@@ -1258,7 +1258,7 @@ klasse DSLParser:
             fail(f"Function {function.name!r} has an unsupported group configuration. "
                  f"(Unexpected state {self.parameter_state}.d)")
         # fixup preceding parameters
-        for p in function.parameters.values():
+        fuer p in function.parameters.values():
             if p.kind is inspect.Parameter.POSITIONAL_OR_KEYWORD:
                 if version is None:
                     p.kind = inspect.Parameter.POSITIONAL_ONLY
@@ -1279,7 +1279,7 @@ klasse DSLParser:
         # you may not need to support the same array of platforms as CPython,
         # so you may be able to remove this restriction.
         matches = re.finditer(r'[^\x00-\x7F]', line)
-        if offending := ", ".join([repr(m[0]) for m in matches]):
+        if offending := ", ".join([repr(m[0]) fuer m in matches]):
             warn("Non-ascii characters are not allowed in docstrings:",
                  offending)
 
@@ -1337,14 +1337,14 @@ klasse DSLParser:
         else:
             lines.append('(')
 
-            # populate "right_bracket_count" field for every parameter
+            # populate "right_bracket_count" field fuer every parameter
             assert parameters, "We should always have a self parameter. " + repr(f)
             assert isinstance(parameters[0].converter, self_converter)
             # self is always positional-only.
             assert parameters[0].is_positional_only()
             assert parameters[0].right_bracket_count == 0
             positional_only = True
-            for p in parameters[1:]:
+            fuer p in parameters[1:]:
                 if not p.is_positional_only():
                     positional_only = False
                 else:
@@ -1377,7 +1377,7 @@ klasse DSLParser:
             #   * and if the last *shown* parameter is
             #     positional only
             if not f.docstring_only:
-                for p in reversed(parameters):
+                fuer p in reversed(parameters):
                     if not p.converter.show_in_signature:
                         continue
                     if p.is_positional_only():
@@ -1406,7 +1406,7 @@ klasse DSLParser:
                 line_length += len(s)
                 lines.append(s)
 
-            for p in parameters:
+            fuer p in parameters:
                 if not p.converter.show_in_signature:
                     continue
                 assert p.name
@@ -1439,9 +1439,9 @@ klasse DSLParser:
                     # if it's not bound, it should be marked
                     # as positional-only.
                     #
-                    # note: we don't print "self" for __init__,
+                    # note: we don't print "self" fuer __init__,
                     # because this isn't actually the signature
-                    # for __init__.  (it can't be, __init__ doesn't
+                    # fuer __init__.  (it can't be, __init__ doesn't
                     # have a docstring.)  if this is an __init__
                     # (or __new__), then this signature is for
                     # calling the klasse to construct a new instance.
@@ -1476,7 +1476,7 @@ klasse DSLParser:
         #
         #     The Python standard library will not use function annotations
         #     as that would result in a premature commitment to a particular
-        #     annotation style. Instead, the annotations are left for users
+        #     annotation style. Instead, the annotations are left fuer users
         #     to discover and experiment with useful annotation styles.
         #
         # therefore this is commented out:
@@ -1495,8 +1495,8 @@ klasse DSLParser:
 
     @staticmethod
     def format_docstring_parameters(params: list[Parameter]) -> str:
-        """Create substitution text for {parameters}"""
-        return "".join(p.render_docstring() + "\n" for p in params if p.docstring)
+        """Create substitution text fuer {parameters}"""
+        return "".join(p.render_docstring() + "\n" fuer p in params if p.docstring)
 
     def format_docstring(self) -> str:
         assert self.function is not None
@@ -1520,7 +1520,7 @@ klasse DSLParser:
         lines = f.docstring.split('\n')
         if len(lines) >= 2:
             if lines[1]:
-                fail(f"Docstring for {f.full_name!r} does not have a summary line!\n"
+                fail(f"Docstring fuer {f.full_name!r} does not have a summary line!\n"
                      "Every non-blank function docstring must start with "
                      "a single line summary followed by an empty line.")
         elif len(lines) == 1:
@@ -1537,7 +1537,7 @@ klasse DSLParser:
         max_body = max(map(len, lines[1:]))
         if summary_len > max_width:
             if not self.permit_long_summary:
-                fail(f"Summary line for {f.full_name!r} is too long!\n"
+                fail(f"Summary line fuer {f.full_name!r} is too long!\n"
                      f"The summary line must be no longer than {max_width} characters.")
         else:
             if self.permit_long_summary:
@@ -1546,7 +1546,7 @@ klasse DSLParser:
 
         if max_body > max_width:
             if not self.permit_long_docstring_body:
-                warn(f"Docstring lines for {f.full_name!r} are too long!\n"
+                warn(f"Docstring lines fuer {f.full_name!r} are too long!\n"
                      f"Lines should be no longer than {max_width} characters.")
         else:
             if self.permit_long_docstring_body:
@@ -1581,7 +1581,7 @@ klasse DSLParser:
         else:
             return
 
-        for p in reversed(self.function.parameters.values()):
+        fuer p in reversed(self.function.parameters.values()):
             if self.keyword_only:
                 if (p.kind == inspect.Parameter.KEYWORD_ONLY or
                     p.kind == inspect.Parameter.VAR_POSITIONAL):

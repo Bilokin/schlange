@@ -47,14 +47,14 @@ klasse AsCompletedTests:
 
         # Windows clock resolution is around 15.6 ms
         short_timeout = 0.100
-        for timeout in (0, short_timeout):
+        fuer timeout in (0, short_timeout):
             with self.subTest(timeout):
 
                 completed_futures = set()
                 future = self.executor.submit(time.sleep, short_timeout * 10)
 
                 try:
-                    for f in futures.as_completed(
+                    fuer f in futures.as_completed(
                         already_completed | {future},
                         timeout
                     ):
@@ -72,19 +72,19 @@ klasse AsCompletedTests:
         # Issue #31641: accept arbitrary iterables.
         future1 = self.executor.submit(time.sleep, 2)
         completed = [
-            f for f in futures.as_completed(itertools.repeat(future1, 3))
+            f fuer f in futures.as_completed(itertools.repeat(future1, 3))
         ]
         self.assertEqual(len(completed), 1)
 
     def test_free_reference_yielded_future(self):
         # Issue #14406: Generator should not keep references
         # to finished futures.
-        futures_list = [Future() for _ in range(8)]
+        futures_list = [Future() fuer _ in range(8)]
         futures_list.append(create_future(state=CANCELLED_AND_NOTIFIED))
         futures_list.append(create_future(state=FINISHED, result=42))
 
         with self.assertRaises(futures.TimeoutError):
-            for future in futures.as_completed(futures_list, timeout=0):
+            fuer future in futures.as_completed(futures_list, timeout=0):
                 futures_list.remove(future)
                 wr = weakref.ref(future)
                 del future
@@ -92,7 +92,7 @@ klasse AsCompletedTests:
                 self.assertIsNone(wr())
 
         futures_list[0].set_result("test")
-        for future in futures.as_completed(futures_list):
+        fuer future in futures.as_completed(futures_list):
             futures_list.remove(future)
             wr = weakref.ref(future)
             del future

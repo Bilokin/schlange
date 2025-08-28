@@ -1,4 +1,4 @@
-"""Tests for ast.unparse."""
+"""Tests fuer ast.unparse."""
 
 import unittest
 import test.support
@@ -19,7 +19,7 @@ def read_pyfile(filename):
 
 for_else = """\
 def f():
-    for x in range(10):
+    fuer x in range(10):
         break
     else:
         y = 2
@@ -52,7 +52,7 @@ def f():
             nonlocal x, y
 """
 
-# also acts as test for 'except ... as ...'
+# also acts as test fuer 'except ... as ...'
 raise_from = """\
 try:
     1 / 0
@@ -158,7 +158,7 @@ klasse ASTTestCase(ASTTestMixin, unittest.TestCase):
             self.assertNotEqual(code2, code1)
 
 klasse UnparseTestCase(ASTTestCase):
-    # Tests for specific bugs found in earlier versions of unparse
+    # Tests fuer specific bugs found in earlier versions of unparse
 
     def test_fstrings(self):
         self.check_ast_roundtrip("f'a'")
@@ -307,10 +307,10 @@ klasse UnparseTestCase(ASTTestCase):
         )
 
     def test_set_comprehension(self):
-        self.check_ast_roundtrip("{x for x in range(5)}")
+        self.check_ast_roundtrip("{x fuer x in range(5)}")
 
     def test_dict_comprehension(self):
-        self.check_ast_roundtrip("{x: x*x for x in range(10)}")
+        self.check_ast_roundtrip("{x: x*x fuer x in range(10)}")
 
     def test_class_decorators(self):
         self.check_ast_roundtrip(class_decorator)
@@ -352,7 +352,7 @@ klasse UnparseTestCase(ASTTestCase):
         self.check_ast_roundtrip("a[i]")
         self.check_ast_roundtrip("a[i,]")
         self.check_ast_roundtrip("a[i, j]")
-        # The AST for these next two both look like `a[(*a,)]`
+        # The AST fuer these next two both look like `a[(*a,)]`
         self.check_ast_roundtrip("a[(*a,)]")
         self.check_ast_roundtrip("a[*a]")
         self.check_ast_roundtrip("a[b, *a]")
@@ -423,8 +423,8 @@ klasse UnparseTestCase(ASTTestCase):
             "' \\'\\'\\'\"\"\" \"\"\\'\\' \\'",
             '🐍⛎𩸽üéş^\\\\X\\\\BB\N{LONG RIGHTWARDS SQUIGGLE ARROW}'
         )
-        for docstring in docstrings:
-            # check as Module docstrings for easy testing
+        fuer docstring in docstrings:
+            # check as Module docstrings fuer easy testing
             self.check_ast_roundtrip(f"'''{docstring}'''")
 
     def test_constant_tuples(self):
@@ -436,7 +436,7 @@ klasse UnparseTestCase(ASTTestCase):
         )
 
     def test_function_type(self):
-        for function_type in (
+        fuer function_type in (
             "() -> int",
             "(int, int) -> int",
             "(Callable[complex], More[Complex(call.to_typevar())]) -> None"
@@ -444,7 +444,7 @@ klasse UnparseTestCase(ASTTestCase):
             self.check_ast_roundtrip(function_type, mode="func_type")
 
     def test_type_comments(self):
-        for statement in (
+        fuer statement in (
             "a = 5 # type:",
             "a = 5 # type: int",
             "a = 5 # type: int and more",
@@ -453,14 +453,14 @@ klasse UnparseTestCase(ASTTestCase):
             "async def x(): # type: () -> None\n\tpass",
             "async def x(y): # type: (int) -> None and more\n\tpass",
             "for x in y: # type: int\n\tpass",
-            "async for x in y: # type: int\n\tpass",
+            "async fuer x in y: # type: int\n\tpass",
             "with x(): # type: int\n\tpass",
             "async with x(): # type: int\n\tpass"
         ):
             self.check_ast_roundtrip(statement, type_comments=True)
 
     def test_type_ignore(self):
-        for statement in (
+        fuer statement in (
             "a = 5 # type: ignore",
             "a = 5 # type: ignore and more",
             "def x(): # type: ignore\n\tpass",
@@ -468,7 +468,7 @@ klasse UnparseTestCase(ASTTestCase):
             "async def x(): # type: ignore\n\tpass",
             "async def x(y): # type: ignore and more\n\tpass",
             "for x in y: # type: ignore\n\tpass",
-            "async for x in y: # type: ignore\n\tpass",
+            "async fuer x in y: # type: ignore\n\tpass",
             "with x(): # type: ignore\n\tpass",
             "async with x(): # type: ignore\n\tpass"
         ):
@@ -501,8 +501,8 @@ klasse UnparseTestCase(ASTTestCase):
             "type t[T] = ...",
             "i",
         )
-        for a in combinable:
-            for b in combinable:
+        fuer a in combinable:
+            fuer b in combinable:
                 self.check_src_roundtrip(f"{a}; {b}", mode='single')
 
     def test_unparse_interactive_integrity_1(self):
@@ -524,13 +524,13 @@ klasse UnparseTestCase(ASTTestCase):
         )
 
     def test_unparse_interactive_integrity_2(self):
-        for statement in (
+        fuer statement in (
             "def x():\n    pass",
             "def x(y):\n    pass",
             "async def x():\n    pass",
             "async def x(y):\n    pass",
             "for x in y:\n    pass",
-            "async for x in y:\n    pass",
+            "async fuer x in y:\n    pass",
             "with x():\n    pass",
             "async with x():\n    pass",
             "def f():\n    pass",
@@ -561,13 +561,13 @@ klasse UnparseTestCase(ASTTestCase):
             self.check_src_roundtrip(statement, mode='single')
 
     def test_unparse_interactive_integrity_3(self):
-        for statement in (
+        fuer statement in (
             "def x():",
             "def x(y):",
             "async def x():",
             "async def x(y):",
             "for x in y:",
-            "async for x in y:",
+            "async fuer x in y:",
             "with x():",
             "async with x():",
             "def f():",
@@ -663,8 +663,8 @@ klasse CosmeticTestCase(ASTTestCase):
             '"""almost end in double "quote"."""',
         )
 
-        for prefix in docstring_prefixes:
-            for docstring in docstrings:
+        fuer prefix in docstring_prefixes:
+            fuer docstring in docstrings:
                 self.check_src_roundtrip(f"{prefix}{docstring}")
 
     def test_docstrings_negative_cases(self):
@@ -677,8 +677,8 @@ klasse CosmeticTestCase(ASTTestCase):
             '1 + 1\n"""false"""',
             'f"""no, top level but f-fstring"""'
         )
-        for prefix in docstring_prefixes:
-            for negative in docstrings_negative:
+        fuer prefix in docstring_prefixes:
+            fuer negative in docstrings_negative:
                 # this cases should be result with single quote
                 # rather then triple quoted docstring
                 src = f"{prefix}{negative}"
@@ -686,9 +686,9 @@ klasse CosmeticTestCase(ASTTestCase):
                 self.check_src_dont_roundtrip(src)
 
     def test_unary_op_factor(self):
-        for prefix in ("+", "-", "~"):
+        fuer prefix in ("+", "-", "~"):
             self.check_src_roundtrip(f"{prefix}1")
-        for prefix in ("not",):
+        fuer prefix in ("not",):
             self.check_src_roundtrip(f"{prefix} 1")
 
     def test_slices(self):
@@ -721,13 +721,13 @@ klasse CosmeticTestCase(ASTTestCase):
         self.check_src_roundtrip("lambda x, *y, **z: None")
 
     def test_star_expr_assign_target(self):
-        for source_type, source in [
+        fuer source_type, source in [
             ("single assignment", "{target} = foo"),
             ("multiple assignment", "{target} = {target} = bar"),
             ("for loop", "for {target} in foo:\n    pass"),
-            ("async for loop", "async for {target} in foo:\n    pass")
+            ("async fuer loop", "async fuer {target} in foo:\n    pass")
         ]:
-            for target in [
+            fuer target in [
                 "a",
                 "a,",
                 "a, b",
@@ -944,15 +944,15 @@ klasse DirectoryTestCase(ASTTestCase):
 
         items = [
             item.resolve()
-            for directory in cls.test_directories
-            for item in directory.glob("*.py")
+            fuer directory in cls.test_directories
+            fuer item in directory.glob("*.py")
             if not item.name.startswith("bad")
         ]
 
         # Test limited subset of files unless the 'cpu' resource is specified.
         if not test.support.is_resource_enabled("cpu"):
 
-            tests_to_run_always = {item for item in items if
+            tests_to_run_always = {item fuer item in items if
                                    item.name in cls.run_always_files}
 
             items = set(random.sample(items, 10))
@@ -971,7 +971,7 @@ klasse DirectoryTestCase(ASTTestCase):
         with warnings.catch_warnings():
             warnings.simplefilter('ignore', SyntaxWarning)
 
-            for item in self.files_to_test():
+            fuer item in self.files_to_test():
                 if test.support.verbose:
                     print(f"Testing {item.absolute()}")
 

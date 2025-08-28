@@ -1,7 +1,7 @@
-"""Unittests for the various HTTPServer modules.
+"""Unittests fuer the various HTTPServer modules.
 
 Written by Cody A.W. Somerville <cody-somerville@ubuntu.com>,
-Josip Dzolonga, and Michael Otteneder for the 2007/08 GHOP contest.
+Josip Dzolonga, and Michael Otteneder fuer the 2007/08 GHOP contest.
 """
 
 from http.server import BaseHTTPRequestHandler, HTTPServer, HTTPSServer, \
@@ -111,7 +111,7 @@ klasse TestServerThread(threading.Thread):
 
 klasse BaseTestCase(unittest.TestCase):
 
-    # Optional tuple (certfile, keyfile, password) to use for HTTPS servers.
+    # Optional tuple (certfile, keyfile, password) to use fuer HTTPS servers.
     tls = None
 
     def setUp(self):
@@ -326,7 +326,7 @@ klasse BaseHTTPServerTestCase(BaseTestCase):
     def test_send_error(self):
         allow_transfer_encoding_codes = (HTTPStatus.NOT_MODIFIED,
                                          HTTPStatus.RESET_CONTENT)
-        for code in (HTTPStatus.NO_CONTENT, HTTPStatus.NOT_MODIFIED,
+        fuer code in (HTTPStatus.NO_CONTENT, HTTPStatus.NOT_MODIFIED,
                      HTTPStatus.PROCESSING, HTTPStatus.RESET_CONTENT,
                      HTTPStatus.SWITCHING_PROTOCOLS):
             self.con.request('SEND_ERROR', '/{}'.format(code))
@@ -343,7 +343,7 @@ klasse BaseHTTPServerTestCase(BaseTestCase):
     def test_head_via_send_error(self):
         allow_transfer_encoding_codes = (HTTPStatus.NOT_MODIFIED,
                                          HTTPStatus.RESET_CONTENT)
-        for code in (HTTPStatus.OK, HTTPStatus.NO_CONTENT,
+        fuer code in (HTTPStatus.OK, HTTPStatus.NO_CONTENT,
                      HTTPStatus.NOT_MODIFIED, HTTPStatus.RESET_CONTENT,
                      HTTPStatus.SWITCHING_PROTOCOLS):
             self.con.request('HEAD', '/{}'.format(code))
@@ -401,7 +401,7 @@ klasse BaseHTTPSServerTestCase(BaseTestCase):
             (self.CERTFILE_PROTECTED, None, self.KEY_PASSWORD),
             (self.ONLYCERT, self.ONLYKEY_PROTECTED, self.KEY_PASSWORD),
         ]
-        for certfile, keyfile, password in valid_certdata:
+        fuer certfile, keyfile, password in valid_certdata:
             with self.subTest(
                 certfile=certfile, keyfile=keyfile, password=password
             ):
@@ -422,7 +422,7 @@ klasse BaseHTTPSServerTestCase(BaseTestCase):
             # (self.CERTFILE_PROTECTED, None, None),
             # see issue #132102
         ]
-        for certfile, keyfile, password in invalid_certdata:
+        fuer certfile, keyfile, password in invalid_certdata:
             with self.subTest(
                 certfile=certfile, keyfile=keyfile, password=password
             ):
@@ -483,7 +483,7 @@ klasse SimpleHTTPServerTestCase(BaseTestCase):
             temp.write(self.data)
             temp.flush()
         mtime = os.stat(tempname).st_mtime
-        # compute last modification datetime for browser cache tests
+        # compute last modification datetime fuer browser cache tests
         last_modif = datetime.datetime.fromtimestamp(mtime,
             datetime.timezone.utc)
         self.last_modif_datetime = last_modif.replace(microsecond=0)
@@ -539,7 +539,7 @@ klasse SimpleHTTPServerTestCase(BaseTestCase):
         body = self.check_status_and_reason(response, HTTPStatus.OK)
         displaypath = html.escape(f'{self.base_url}/{dirname}/', quote=False)
         enc = sys.getfilesystemencoding()
-        prefix = f'listing for {displaypath}</'.encode(enc, 'surrogateescape')
+        prefix = f'listing fuer {displaypath}</'.encode(enc, 'surrogateescape')
         self.assertIn(prefix + b'title>', body)
         self.assertIn(prefix + b'h1>', body)
 
@@ -615,7 +615,7 @@ klasse SimpleHTTPServerTestCase(BaseTestCase):
 
     def test_list_dir_escape_dirname(self):
         # Characters that need special treating in URL or HTML.
-        for name in ('q?', 'f#', '&amp;', '&amp', '<i>', '"dq"', "'sq'",
+        fuer name in ('q?', 'f#', '&amp;', '&amp', '<i>', '"dq"', "'sq'",
                      '%A4', '%E2%82%AC'):
             with self.subTest(name=name):
                 dirname = name + '.dir'
@@ -624,7 +624,7 @@ klasse SimpleHTTPServerTestCase(BaseTestCase):
 
     def test_list_dir_escape_filename(self):
         # Characters that need special treating in URL or HTML.
-        for name in ('q?', 'f#', '&amp;', '&amp', '<i>', '"dq"', "'sq'",
+        fuer name in ('q?', 'f#', '&amp;', '&amp', '<i>', '"dq"', "'sq'",
                      '%A4', '%E2%82%AC'):
             with self.subTest(name=name):
                 filename = name + '.txt'
@@ -632,7 +632,7 @@ klasse SimpleHTTPServerTestCase(BaseTestCase):
                 os_helper.unlink(os.path.join(self.tempdir, filename))
 
     def test_list_dir_with_query_and_fragment(self):
-        prefix = f'listing for {self.base_url}/</'.encode('latin1')
+        prefix = f'listing fuer {self.base_url}/</'.encode('latin1')
         response = self.request(self.base_url + '/#123').read()
         self.assertIn(prefix + b'title>', response)
         self.assertIn(prefix + b'h1>', response)
@@ -675,7 +675,7 @@ klasse SimpleHTTPServerTestCase(BaseTestCase):
         self.check_status_and_reason(response, HTTPStatus.MOVED_PERMANENTLY)
         self.assertEqual(response.getheader('Location'), expected_location)
 
-        # If the second word in the http request (Request-URI for the http
+        # If the second word in the http request (Request-URI fuer the http
         # method) is a full URI, we don't worry about it, as that'll be parsed
         # and reassembled as a full URI within BaseHTTPRequestHandler.send_head
         # so no errant scheme-less //netloc//evil.co/ domain mixup can happen.
@@ -693,7 +693,7 @@ klasse SimpleHTTPServerTestCase(BaseTestCase):
         #constructs the path relative to the root directory of the HTTPServer
         response = self.request(self.base_url + '/test')
         self.check_status_and_reason(response, HTTPStatus.OK, data=self.data)
-        # check for trailing "/" which should return 404. See Issue17324
+        # check fuer trailing "/" which should return 404. See Issue17324
         response = self.request(self.base_url + '/test/')
         self.check_status_and_reason(response, HTTPStatus.NOT_FOUND)
         response = self.request(self.base_url + '/test%2f')
@@ -869,7 +869,7 @@ klasse AuditableBytesIO:
 klasse BaseHTTPRequestHandlerTestCase(unittest.TestCase):
     """Test the functionality of the BaseHTTPServer.
 
-       Test the support for the Expect 100-continue header.
+       Test the support fuer the Expect 100-continue header.
        """
 
     HTTPResponseMatch = re.compile(b'HTTP/1.[0-9]+ 200 OK')
@@ -890,8 +890,8 @@ klasse BaseHTTPRequestHandlerTestCase(unittest.TestCase):
         self.assertTrue(self.handler.get_called)
 
     def verify_expected_headers(self, headers):
-        for fieldName in b'Server: ', b'Date: ', b'Content-Type: ':
-            self.assertEqual(sum(h.startswith(fieldName) for h in headers), 1)
+        fuer fieldName in b'Server: ', b'Date: ', b'Content-Type: ':
+            self.assertEqual(sum(h.startswith(fieldName) fuer h in headers), 1)
 
     def verify_http_server_response(self, response):
         match = self.HTTPResponseMatch.search(response)
@@ -899,7 +899,7 @@ klasse BaseHTTPRequestHandlerTestCase(unittest.TestCase):
 
     def test_unprintable_not_logged(self):
         # We call the method from the klasse directly as our Socketless
-        # Handler subclass overrode it... nice for everything BUT this test.
+        # Handler subclass overrode it... nice fuer everything BUT this test.
         self.handler.client_address = ('127.0.0.1', 1337)
         log_message = BaseHTTPRequestHandler.log_message
         with mock.patch.object(sys, 'stderr', StringIO()) as fake_stderr:
@@ -1061,7 +1061,7 @@ klasse BaseHTTPRequestHandlerTestCase(unittest.TestCase):
         # The expect handler should short circuit the usual get method by
         # returning false here, so get_called should be false
         self.assertFalse(self.handler.get_called)
-        self.assertEqual(sum(r == b'Connection: close\r\n' for r in result[1:-1]), 1)
+        self.assertEqual(sum(r == b'Connection: close\r\n' fuer r in result[1:-1]), 1)
         self.handler = usual_handler        # Restore to avoid breaking any subsequent tests.
 
     def test_request_length(self):
@@ -1073,7 +1073,7 @@ klasse BaseHTTPRequestHandlerTestCase(unittest.TestCase):
         self.assertIsInstance(self.handler.requestline, str)
 
     def test_header_length(self):
-        # Issue #6791: same for headers
+        # Issue #6791: same fuer headers
         result = self.send_typical_request(
             b'GET / HTTP/1.1\r\nX-Foo: bar' + b'r' * 65537 + b'\r\n\r\n')
         self.assertEqual(result[0], b'HTTP/1.1 431 Line too long\r\n')
@@ -1216,7 +1216,7 @@ klasse MiscTestCase(unittest.TestCase):
     def test_all(self):
         expected = []
         denylist = {'executable', 'nobody_uid', 'test'}
-        for name in dir(server):
+        fuer name in dir(server):
             if name.startswith('_') or name in denylist:
                 continue
             module_object = getattr(server, name)
@@ -1272,14 +1272,14 @@ klasse ScriptTestCase(unittest.TestCase):
 
     @mock.patch('builtins.print')
     def test_server_test_ipv6(self, _):
-        for bind in self.ipv6_addrs:
+        fuer bind in self.ipv6_addrs:
             mock_server = self.mock_server_class()
             server.test(ServerClass=mock_server, bind=bind)
             self.assertEqual(mock_server.address_family, socket.AF_INET6)
 
     @mock.patch('builtins.print')
     def test_server_test_ipv4(self, _):
-        for bind in self.ipv4_addrs:
+        fuer bind in self.ipv4_addrs:
             mock_server = self.mock_server_class()
             server.test(ServerClass=mock_server, bind=bind)
             self.assertEqual(mock_server.address_family, socket.AF_INET)
@@ -1326,7 +1326,7 @@ klasse CommandLineTestCase(unittest.TestCase):
     @mock.patch('http.server.test')
     def test_port_flag(self, mock_func):
         ports = [8000, 65535]
-        for port in ports:
+        fuer port in ports:
             with self.subTest(port=port):
                 self.invoke_httpd(str(port))
                 call_args = self.args | dict(port=port)
@@ -1339,8 +1339,8 @@ klasse CommandLineTestCase(unittest.TestCase):
         directories = ['.', '/foo', '\\bar', '/',
                        'C:\\', 'C:\\foo', 'C:\\bar',
                        '/home/user', './foo/foo2', 'D:\\foo\\bar']
-        for flag in options:
-            for directory in directories:
+        fuer flag in options:
+            fuer directory in directories:
                 with self.subTest(flag=flag, directory=directory):
                     self.invoke_httpd(flag, directory)
                     mock_func.assert_called_once_with(**self.args)
@@ -1351,8 +1351,8 @@ klasse CommandLineTestCase(unittest.TestCase):
         options = ['-b', '--bind']
         bind_addresses = ['localhost', '127.0.0.1', '::1',
                           '0.0.0.0', '8.8.8.8']
-        for flag in options:
-            for bind_address in bind_addresses:
+        fuer flag in options:
+            fuer bind_address in bind_addresses:
                 with self.subTest(flag=flag, bind_address=bind_address):
                     self.invoke_httpd(flag, bind_address)
                     call_args = self.args | dict(bind=bind_address)
@@ -1363,8 +1363,8 @@ klasse CommandLineTestCase(unittest.TestCase):
     def test_protocol_flag(self, mock_func):
         options = ['-p', '--protocol']
         protocols = ['HTTP/1.0', 'HTTP/1.1', 'HTTP/2.0', 'HTTP/3.0']
-        for flag in options:
-            for protocol in protocols:
+        fuer flag in options:
+            fuer protocol in protocols:
                 with self.subTest(flag=flag, protocol=protocol):
                     self.invoke_httpd(flag, protocol)
                     call_args = self.args | dict(protocol=protocol)
@@ -1374,8 +1374,8 @@ klasse CommandLineTestCase(unittest.TestCase):
     @unittest.skipIf(ssl is None, "requires ssl")
     @mock.patch('http.server.test')
     def test_tls_cert_and_key_flags(self, mock_func):
-        for tls_cert_option in self.tls_cert_options:
-            for tls_key_option in self.tls_key_options:
+        fuer tls_cert_option in self.tls_cert_options:
+            fuer tls_key_option in self.tls_key_options:
                 self.invoke_httpd(tls_cert_option, self.tls_cert,
                                   tls_key_option, self.tls_key)
                 call_args = self.args | {
@@ -1388,9 +1388,9 @@ klasse CommandLineTestCase(unittest.TestCase):
     @unittest.skipIf(ssl is None, "requires ssl")
     @mock.patch('http.server.test')
     def test_tls_cert_and_key_and_password_flags(self, mock_func):
-        for tls_cert_option in self.tls_cert_options:
-            for tls_key_option in self.tls_key_options:
-                for tls_password_option in self.tls_password_options:
+        fuer tls_cert_option in self.tls_cert_options:
+            fuer tls_key_option in self.tls_key_options:
+                fuer tls_password_option in self.tls_password_options:
                     self.invoke_httpd(tls_cert_option,
                                       self.tls_cert,
                                       tls_key_option,
@@ -1408,12 +1408,12 @@ klasse CommandLineTestCase(unittest.TestCase):
     @unittest.skipIf(ssl is None, "requires ssl")
     @mock.patch('http.server.test')
     def test_missing_tls_cert_flag(self, mock_func):
-        for tls_key_option in self.tls_key_options:
+        fuer tls_key_option in self.tls_key_options:
             with self.assertRaises(SystemExit):
                 self.invoke_httpd(tls_key_option, self.tls_key)
             mock_func.reset_mock()
 
-        for tls_password_option in self.tls_password_options:
+        fuer tls_password_option in self.tls_password_options:
             with self.assertRaises(SystemExit):
                 self.invoke_httpd(tls_password_option, self.tls_password)
             mock_func.reset_mock()
@@ -1422,8 +1422,8 @@ klasse CommandLineTestCase(unittest.TestCase):
     @mock.patch('http.server.test')
     def test_invalid_password_file(self, mock_func):
         non_existent_file = 'non_existent_file'
-        for tls_password_option in self.tls_password_options:
-            for tls_cert_option in self.tls_cert_options:
+        fuer tls_password_option in self.tls_password_options:
+            fuer tls_cert_option in self.tls_cert_options:
                 with self.assertRaises(SystemExit):
                     self.invoke_httpd(tls_cert_option,
                                       self.tls_cert,
@@ -1439,7 +1439,7 @@ klasse CommandLineTestCase(unittest.TestCase):
     @mock.patch('http.server.test')
     def test_help_flag(self, _):
         options = ['-h', '--help']
-        for option in options:
+        fuer option in options:
             stdout, stderr = StringIO(), StringIO()
             with self.assertRaises(SystemExit):
                 self.invoke_httpd(option, stdout=stdout, stderr=stderr)

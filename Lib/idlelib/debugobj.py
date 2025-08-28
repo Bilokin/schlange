@@ -1,4 +1,4 @@
-"""Define tree items for debug stackviewer, which is only user.
+"""Define tree items fuer debug stackviewer, which is only user.
 """
 # XXX TO DO:
 # - popup menu
@@ -9,7 +9,7 @@
 # object browser
 
 # XXX TO DO:
-# - for classes/modules, add "open source" to object browser
+# - fuer classes/modules, add "open source" to object browser
 from reprlib import Repr
 
 from idlelib.tree import TreeItem, TreeNode, ScrolledCanvas
@@ -45,7 +45,7 @@ klasse ObjectTreeItem(TreeItem):
     def GetSubList(self):
         keys = dir(self.object)
         sublist = []
-        for key in keys:
+        fuer key in keys:
             try:
                 value = getattr(self.object, key)
             except AttributeError:
@@ -82,7 +82,7 @@ klasse SequenceTreeItem(ObjectTreeItem):
         return range(len(self.object))
     def GetSubList(self):
         sublist = []
-        for key in self.keys():
+        fuer key in self.keys():
             try:
                 value = self.object[key]
             except KeyError:

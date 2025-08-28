@@ -66,7 +66,7 @@ def fixup_build_ext(cmd: Incomplete) -> None:
                 cmd.library_dirs = []
             else:
                 name, equals, value = runshared.partition("=")
-                cmd.library_dirs = [d for d in value.split(os.pathsep) if d]
+                cmd.library_dirs = [d fuer d in value.split(os.pathsep) if d]
 
 
 def compile_c_extension(
@@ -77,17 +77,17 @@ def compile_c_extension(
     disable_optimization: bool = False,
     library_dir: Optional[str] = None,
 ) -> pathlib.Path:
-    """Compile the generated source for a parser generator into an extension module.
+    """Compile the generated source fuer a parser generator into an extension module.
 
     The extension module will be generated in the same directory as the provided path
-    for the generated source, with the same basename (in addition to extension module
-    metadata). For example, for the source mydir/parser.c the generated extension
+    fuer the generated source, with the same basename (in addition to extension module
+    metadata). For example, fuer the source mydir/parser.c the generated extension
     in a darwin system with python 3.8 will be mydir/parser.cpython-38-darwin.so.
 
     If *build_dir* is provided, that path will be used as the temporary build directory
     of distutils (this is useful in case you want to use a temporary directory).
 
-    If *library_dir* is provided, that path will be used as the directory for a
+    If *library_dir* is provided, that path will be used as the directory fuer a
     static library of the common parser sources (this is useful in case you are
     creating multiple extensions).
     """
@@ -148,7 +148,7 @@ def compile_c_extension(
     ]
     if sys.platform == "win32":
         # HACK: The location of pyconfig.h has moved within our build, and
-        # setuptools hasn't updated for it yet. So add the path manually for now
+        # setuptools hasn't updated fuer it yet. So add the path manually fuer now
         include_dirs.append(pathlib.Path(sysconfig.get_config_h_filename()).parent)
     extension = Extension(
         extension_name,
@@ -259,7 +259,7 @@ def generate_token_definitions(tokens: IO[str]) -> TokenDefinitions:
     non_exact_tokens = set()
     numbers = itertools.count(0)
 
-    for line in tokens:
+    fuer line in tokens:
         line = line.strip()
 
         if not line or line.startswith("#"):
@@ -334,12 +334,12 @@ def build_c_parser_and_generator(
     keep_asserts_in_extension: bool = True,
     skip_actions: bool = False,
 ) -> Tuple[Grammar, Parser, Tokenizer, ParserGenerator]:
-    """Generate rules, C parser, tokenizer, parser generator for a given grammar
+    """Generate rules, C parser, tokenizer, parser generator fuer a given grammar
 
     Args:
-        grammar_file (string): Path for the grammar file
-        tokens_file (string): Path for the tokens file
-        output_file (string): Path for the output file
+        grammar_file (string): Path fuer the grammar file
+        tokens_file (string): Path fuer the tokens file
+        output_file (string): Path fuer the output file
         compile_extension (bool, optional): Whether to compile the C extension.
           Defaults to False.
         verbose_tokenizer (bool, optional): Whether to display additional output
@@ -374,11 +374,11 @@ def build_python_parser_and_generator(
     verbose_parser: bool = False,
     skip_actions: bool = False,
 ) -> Tuple[Grammar, Parser, Tokenizer, ParserGenerator]:
-    """Generate rules, python parser, tokenizer, parser generator for a given grammar
+    """Generate rules, python parser, tokenizer, parser generator fuer a given grammar
 
     Args:
-        grammar_file (string): Path for the grammar file
-        output_file (string): Path for the output file
+        grammar_file (string): Path fuer the grammar file
+        output_file (string): Path fuer the output file
         verbose_tokenizer (bool, optional): Whether to display additional output
           when generating the tokenizer. Defaults to False.
         verbose_parser (bool, optional): Whether to display additional output

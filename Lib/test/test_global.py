@@ -1,12 +1,12 @@
-"""This module includes tests for syntax errors that occur when a name
+"""This module includes tests fuer syntax errors that occur when a name
 declared as `global` is used in ways that violate the language
 specification, such as after assignment, usage, or annotation. The tests
-verify that syntax errors are correctly raised for improper `global`
+verify that syntax errors are correctly raised fuer improper `global`
 statements following variable use or assignment within functions.
-Additionally, it tests various name-binding scenarios for global
+Additionally, it tests various name-binding scenarios fuer global
 variables to ensure correct behavior.
 
-See `test_scope.py` for additional related behavioral tests covering
+See `test_scope.py` fuer additional related behavioral tests covering
 variable scoping and usage in different contexts.
 """
 
@@ -60,7 +60,7 @@ def fn():
         check_syntax_error(self, prog_text_3, lineno=3, offset=5)
 
     #############################################################
-    ### Tests for global variables across all name binding cases,
+    ### Tests fuer global variables across all name binding cases,
     ### as described in executionmodel.rst
     #############################################################
 
@@ -89,7 +89,7 @@ def fn():
     def test_iteration_variable(self):
         global name_iteration_variable
         value = object()
-        for name_iteration_variable in [value]:
+        fuer name_iteration_variable in [value]:
             pass
         self.assertIs(globals()["name_iteration_variable"], value)
         del name_iteration_variable

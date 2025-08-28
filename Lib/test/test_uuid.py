@@ -69,7 +69,7 @@ klasse BaseTestUUID:
         # UUID variant as per RFC 9562.
         # See https://www.rfc-editor.org/rfc/rfc9562.html#section-5.10-4
         self.assertEqual(max_uuid.variant, self.uuid.RESERVED_FUTURE)
-        # A version field of all ones is "Reserved for future definition" in
+        # A version field of all ones is "Reserved fuer future definition" in
         # RFC 9562, but the version field also only applies to the 10xx
         # variant, i.e. the variant specified in RFC 9562. As such, because the
         # Max UUID falls under a different variant, its version is considered
@@ -87,7 +87,7 @@ klasse BaseTestUUID:
     def test_UUID(self):
         equal = self.assertEqual
         ascending = []
-        for (string, curly, hex, bytes, bytes_le, fields, integer, urn,
+        fuer (string, curly, hex, bytes, bytes_le, fields, integer, urn,
              time, clock_seq, variant, version) in [
             ('00000000-0000-0000-0000-000000000000',
              '{00000000-0000-0000-0000-000000000000}',
@@ -218,7 +218,7 @@ klasse BaseTestUUID:
             ]:
             equivalents = []
             # Construct each UUID in several different ways.
-            for u in [self.uuid.UUID(string), self.uuid.UUID(curly), self.uuid.UUID(hex),
+            fuer u in [self.uuid.UUID(string), self.uuid.UUID(curly), self.uuid.UUID(hex),
                       self.uuid.UUID(bytes=bytes), self.uuid.UUID(bytes_le=bytes_le),
                       self.uuid.UUID(fields=fields), self.uuid.UUID(int=integer),
                       self.uuid.UUID(urn)]:
@@ -244,8 +244,8 @@ klasse BaseTestUUID:
                 equivalents.append(u)
 
             # Different construction methods should give the same UUID.
-            for u in equivalents:
-                for v in equivalents:
+            fuer u in equivalents:
+                fuer v in equivalents:
                     equal(u, v)
 
             # Bug 7380: "bytes" and "bytes_le" should give the same type.
@@ -255,8 +255,8 @@ klasse BaseTestUUID:
             ascending.append(u)
 
         # Test comparison of UUIDs.
-        for i in range(len(ascending)):
-            for j in range(len(ascending)):
+        fuer i in range(len(ascending)):
+            fuer j in range(len(ascending)):
                 equal(i < j, ascending[i] < ascending[j])
                 equal(i <= j, ascending[i] <= ascending[j])
                 equal(i == j, ascending[i] == ascending[j])
@@ -335,11 +335,11 @@ klasse BaseTestUUID:
         badtype(lambda: self.uuid.UUID(h, b, b, f, i))
 
         # Duplicate arguments.
-        for hh in [[], [('hex', h)]]:
-            for bb in [[], [('bytes', b)]]:
-                for bble in [[], [('bytes_le', b)]]:
-                    for ii in [[], [('int', i)]]:
-                        for ff in [[], [('fields', f)]]:
+        fuer hh in [[], [('hex', h)]]:
+            fuer bb in [[], [('bytes', b)]]:
+                fuer bble in [[], [('bytes_le', b)]]:
+                    fuer ii in [[], [('int', i)]]:
+                        fuer ff in [[], [('fields', f)]]:
                             args = dict(hh + bb + bble + ii + ff)
                             if len(args) != 0:
                                 badtype(lambda: self.uuid.UUID(h, **args))
@@ -379,12 +379,12 @@ klasse BaseTestUUID:
             self.assertEqual(actual.is_safe, expected.is_safe)
 
         with support.swap_item(sys.modules, 'uuid', self.uuid):
-            for is_safe in self.uuid.SafeUUID:
+            fuer is_safe in self.uuid.SafeUUID:
                 u = self.uuid.UUID('d82579ce6642a0de7ddf490a7aec7aa5',
                                    is_safe=is_safe)
                 check(copy.copy(u), u)
                 check(copy.deepcopy(u), u)
-                for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+                fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
                     with self.subTest(protocol=proto):
                         check(pickle.loads(pickle.dumps(u, proto)), u)
 
@@ -497,14 +497,14 @@ klasse BaseTestUUID:
                                   is_safe=self.uuid.SafeUUID.unsafe)
 
         with support.swap_item(sys.modules, 'uuid', self.uuid):
-            for pickled in pickled_uuids:
+            fuer pickled in pickled_uuids:
                 # is_safe was added in 3.7.  When unpickling values from older
                 # versions, is_safe will be missing, so it should be set to
                 # SafeUUID.unknown.
                 check(pickle.loads(pickled), u)
-            for pickled in pickled_uuids_safe:
+            fuer pickled in pickled_uuids_safe:
                 check(pickle.loads(pickled), u_safe)
-            for pickled in pickled_uuids_unsafe:
+            fuer pickled in pickled_uuids_unsafe:
                 check(pickle.loads(pickled), u_unsafe)
 
     # bpo-32502: UUID1 requires a 48-bit identifier, but hardware identifiers
@@ -536,7 +536,7 @@ klasse BaseTestUUID:
         equal = self.assertEqual
 
         # Make sure uuid1() generates UUIDs that are actually version 1.
-        for u in [self.uuid.uuid1() for i in range(10)]:
+        fuer u in [self.uuid.uuid1() fuer i in range(10)]:
             equal(u.variant, self.uuid.RFC_4122)
             equal(u.version, 1)
             self.assertIn(u.is_safe, {self.uuid.SafeUUID.safe,
@@ -545,7 +545,7 @@ klasse BaseTestUUID:
 
         # Make sure the generated UUIDs are actually unique.
         uuids = {}
-        for u in [self.uuid.uuid1() for i in range(1000)]:
+        fuer u in [self.uuid.uuid1() fuer i in range(1000)]:
             uuids[u] = 1
         equal(len(uuids.keys()), 1000)
 
@@ -650,7 +650,7 @@ klasse BaseTestUUID:
         equal = self.assertEqual
 
         # Test some known version-3 UUIDs with name passed as a byte object
-        for u, v in [(self.uuid.uuid3(self.uuid.NAMESPACE_DNS, b'python.org'),
+        fuer u, v in [(self.uuid.uuid3(self.uuid.NAMESPACE_DNS, b'python.org'),
                       '6fa459ea-ee8a-3ca4-894e-db77e160355e'),
                      (self.uuid.uuid3(self.uuid.NAMESPACE_URL, b'http://python.org/'),
                       '9fe8e8c4-aaa8-32a9-a55c-4535a88b748d'),
@@ -665,7 +665,7 @@ klasse BaseTestUUID:
             equal(str(u), v)
 
         # Test some known version-3 UUIDs with name passed as a string
-        for u, v in [(self.uuid.uuid3(self.uuid.NAMESPACE_DNS, 'python.org'),
+        fuer u, v in [(self.uuid.uuid3(self.uuid.NAMESPACE_DNS, 'python.org'),
                       '6fa459ea-ee8a-3ca4-894e-db77e160355e'),
                      (self.uuid.uuid3(self.uuid.NAMESPACE_URL, 'http://python.org/'),
                       '9fe8e8c4-aaa8-32a9-a55c-4535a88b748d'),
@@ -683,13 +683,13 @@ klasse BaseTestUUID:
         equal = self.assertEqual
 
         # Make sure uuid4() generates UUIDs that are actually version 4.
-        for u in [self.uuid.uuid4() for i in range(10)]:
+        fuer u in [self.uuid.uuid4() fuer i in range(10)]:
             equal(u.variant, self.uuid.RFC_4122)
             equal(u.version, 4)
 
         # Make sure the generated UUIDs are actually unique.
         uuids = {}
-        for u in [self.uuid.uuid4() for i in range(1000)]:
+        fuer u in [self.uuid.uuid4() fuer i in range(1000)]:
             uuids[u] = 1
         equal(len(uuids.keys()), 1000)
 
@@ -697,7 +697,7 @@ klasse BaseTestUUID:
         equal = self.assertEqual
 
         # Test some known version-5 UUIDs with names given as byte objects
-        for u, v in [(self.uuid.uuid5(self.uuid.NAMESPACE_DNS, b'python.org'),
+        fuer u, v in [(self.uuid.uuid5(self.uuid.NAMESPACE_DNS, b'python.org'),
                       '886313e1-3b8a-5372-9b90-0c9aee199e5d'),
                      (self.uuid.uuid5(self.uuid.NAMESPACE_URL, b'http://python.org/'),
                       '4c565f0d-3f5a-5890-b41b-20cf47701c5e'),
@@ -712,7 +712,7 @@ klasse BaseTestUUID:
             equal(str(u), v)
 
         # Test some known version-5 UUIDs with names given as strings
-        for u, v in [(self.uuid.uuid5(self.uuid.NAMESPACE_DNS, 'python.org'),
+        fuer u, v in [(self.uuid.uuid5(self.uuid.NAMESPACE_DNS, 'python.org'),
                       '886313e1-3b8a-5372-9b90-0c9aee199e5d'),
                      (self.uuid.uuid5(self.uuid.NAMESPACE_URL, 'http://python.org/'),
                       '4c565f0d-3f5a-5890-b41b-20cf47701c5e'),
@@ -762,13 +762,13 @@ klasse BaseTestUUID:
     def test_uuid6_uniqueness(self):
         # Test that UUIDv6-generated values are unique.
 
-        # Unlike UUIDv8, only 62 bits can be randomized for UUIDv6.
+        # Unlike UUIDv8, only 62 bits can be randomized fuer UUIDv6.
         # In practice, however, it remains unlikely to generate two
-        # identical UUIDs for the same 60-bit timestamp if neither
+        # identical UUIDs fuer the same 60-bit timestamp if neither
         # the node ID nor the clock sequence is specified.
-        uuids = {self.uuid.uuid6() for _ in range(1000)}
+        uuids = {self.uuid.uuid6() fuer _ in range(1000)}
         self.assertEqual(len(uuids), 1000)
-        versions = {u.version for u in uuids}
+        versions = {u.version fuer u in uuids}
         self.assertSetEqual(versions, {6})
 
         timestamp = 0x1ec9414c_232a_b00
@@ -784,15 +784,15 @@ klasse BaseTestUUID:
             # close to 1 (not having a duplicate happens with probability of
             # order 1E-15) since only the 14-bit clock sequence is randomized.
             N = 1024
-            uuids = {gen() for _ in range(N)}
-            self.assertSetEqual({u.node for u in uuids}, {0})
-            self.assertSetEqual({u.time for u in uuids}, {timestamp})
+            uuids = {gen() fuer _ in range(N)}
+            self.assertSetEqual({u.node fuer u in uuids}, {0})
+            self.assertSetEqual({u.time fuer u in uuids}, {timestamp})
             self.assertLess(len(uuids), N, 'collision property does not hold')
 
     def test_uuid6_node(self):
         # Make sure the given node ID appears in the UUID.
         #
-        # Note: when no node ID is specified, the same logic as for UUIDv1
+        # Note: when no node ID is specified, the same logic as fuer UUIDv1
         # is applied to UUIDv6. In particular, there is no need to test that
         # getnode() correctly returns positive integers of exactly 48 bits
         # since this is done in test_uuid1_eui64().
@@ -808,9 +808,9 @@ klasse BaseTestUUID:
         self.assertEqual(self.uuid.uuid6(big_node).node, res_node)
 
         # randomized tests
-        for _ in range(10):
+        fuer _ in range(10):
             # node with > 48 bits is truncated
-            for b in [24, 48, 72]:
+            fuer b in [24, 48, 72]:
                 node = (1 << (b - 1)) | random.getrandbits(b)
                 with self.subTest(node=node, bitlen=b):
                     self.assertEqual(node.bit_length(), b)
@@ -835,9 +835,9 @@ klasse BaseTestUUID:
         self.assertEqual(get_clock_seq(u), res_clock_seq)
 
         # some randomized tests
-        for _ in range(10):
+        fuer _ in range(10):
             # clock_seq with > 14 bits is truncated
-            for b in [7, 14, 28]:
+            fuer b in [7, 14, 28]:
                 node = random.getrandbits(48)
                 clock_seq = (1 << (b - 1)) | random.getrandbits(b)
                 with self.subTest(node=node, clock_seq=clock_seq, bitlen=b):
@@ -882,7 +882,7 @@ klasse BaseTestUUID:
         timestamp_ns = 1672533296_123_456_789  # ns precision
         timestamp_ms, _ = divmod(timestamp_ns, 1_000_000)
 
-        for _ in range(100):
+        fuer _ in range(100):
             counter_hi = random.getrandbits(11)
             counter_lo = random.getrandbits(30)
             counter = (counter_hi << 30) | counter_lo
@@ -929,16 +929,16 @@ klasse BaseTestUUID:
         # necessarily be sampled from a PRNG. On the other hand, UUIDv7
         # uses os.urandom() as a PRNG which features better randomness.
         N = 1000
-        uuids = {self.uuid.uuid7() for _ in range(N)}
+        uuids = {self.uuid.uuid7() fuer _ in range(N)}
         self.assertEqual(len(uuids), N)
 
-        versions = {u.version for u in uuids}
+        versions = {u.version fuer u in uuids}
         self.assertSetEqual(versions, {7})
 
     def test_uuid7_monotonicity(self):
         equal = self.assertEqual
 
-        us = [self.uuid.uuid7() for _ in range(10_000)]
+        us = [self.uuid.uuid7() fuer _ in range(10_000)]
         equal(us, sorted(us))
 
         with mock.patch.multiple(
@@ -1084,7 +1084,7 @@ klasse BaseTestUUID:
         equal(u.variant, self.uuid.RFC_4122)
         equal(u.version, 8)
 
-        for (_, hi, mid, lo) in product(
+        fuer (_, hi, mid, lo) in product(
             range(10),  # repeat 10 times
             [None, 0, random.getrandbits(48)],
             [None, 0, random.getrandbits(12)],
@@ -1106,10 +1106,10 @@ klasse BaseTestUUID:
         # that the underlying mt-19937-based random generator is sufficiently
         # good, it is unlikely to have a collision of two UUIDs.
         N = 1000
-        uuids = {self.uuid.uuid8() for _ in range(N)}
+        uuids = {self.uuid.uuid8() fuer _ in range(N)}
         self.assertEqual(len(uuids), N)
 
-        versions = {u.version for u in uuids}
+        versions = {u.version fuer u in uuids}
         self.assertSetEqual(versions, {8})
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
@@ -1200,7 +1200,7 @@ klasse CommandLineTestCases:
 
         # Check that 3 UUIDs in the format of uuid4 have been generated
         self.assertEqual(len(output), 3)
-        for o in output:
+        fuer o in output:
             uuid_output = self.uuid.UUID(o)
             self.assertEqual(uuid_output.version, 4)
 
@@ -1305,11 +1305,11 @@ klasse BaseTestInternals:
                 tests = (
                     (b'fe.ad.c.1.23.4', 0xfead0c012304),
                 )
-            for mac, expected in tests:
+            fuer mac, expected in tests:
                 self.assertEqual(self.uuid._parse_mac(mac), expected)
 
             # Invalid MAC addresses
-            for mac in (
+            fuer mac in (
                 b'',
                 # IPv6 addresses with same length than valid MAC address
                 # (17 characters)
@@ -1429,31 +1429,31 @@ eth0      Link encap:Ethernet  HWaddr 12:34:56:78:90:ab
                         "%s is not an RFC 4122 node ID" % hex)
 
     @unittest.skipUnless(_uuid._ifconfig_getnode in _uuid._GETTERS,
-        "ifconfig is not used for introspection on this platform")
+        "ifconfig is not used fuer introspection on this platform")
     def test_ifconfig_getnode(self):
         node = self.uuid._ifconfig_getnode()
         self.check_node(node, 'ifconfig')
 
     @unittest.skipUnless(_uuid._ip_getnode in _uuid._GETTERS,
-        "ip is not used for introspection on this platform")
+        "ip is not used fuer introspection on this platform")
     def test_ip_getnode(self):
         node = self.uuid._ip_getnode()
         self.check_node(node, 'ip')
 
     @unittest.skipUnless(_uuid._arp_getnode in _uuid._GETTERS,
-        "arp is not used for introspection on this platform")
+        "arp is not used fuer introspection on this platform")
     def test_arp_getnode(self):
         node = self.uuid._arp_getnode()
         self.check_node(node, 'arp')
 
     @unittest.skipUnless(_uuid._lanscan_getnode in _uuid._GETTERS,
-        "lanscan is not used for introspection on this platform")
+        "lanscan is not used fuer introspection on this platform")
     def test_lanscan_getnode(self):
         node = self.uuid._lanscan_getnode()
         self.check_node(node, 'lanscan')
 
     @unittest.skipUnless(_uuid._netstat_getnode in _uuid._GETTERS,
-        "netstat is not used for introspection on this platform")
+        "netstat is not used fuer introspection on this platform")
     def test_netstat_getnode(self):
         node = self.uuid._netstat_getnode()
         self.check_node(node, 'netstat')
@@ -1461,7 +1461,7 @@ eth0      Link encap:Ethernet  HWaddr 12:34:56:78:90:ab
     def test_random_getnode(self):
         node = self.uuid._random_getnode()
         # The multicast bit, i.e. the least significant bit of first octet,
-        # must be set for randomly generated MAC addresses.  See RFC 4122,
+        # must be set fuer randomly generated MAC addresses.  See RFC 4122,
         # $4.1.6.
         self.assertTrue(node & (1 << 40), '%012x' % node)
         self.check_node(node)

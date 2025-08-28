@@ -9,10 +9,10 @@ import struct
 
 
 # Terminfo constants
-MAGIC16 = 0o432  # Magic number for 16-bit terminfo format
-MAGIC32 = 0o1036  # Magic number for 32-bit terminfo format
+MAGIC16 = 0o432  # Magic number fuer 16-bit terminfo format
+MAGIC32 = 0o1036  # Magic number fuer 32-bit terminfo format
 
-# Special values for absent/cancelled capabilities
+# Special values fuer absent/cancelled capabilities
 ABSENT_BOOLEAN = -1
 ABSENT_NUMERIC = -1
 CANCELLED_NUMERIC = -2
@@ -74,7 +74,7 @@ _STRING_NAMES: tuple[str, ...] = (
 
 
 def _get_terminfo_dirs() -> list[Path]:
-    """Get list of directories to search for terminfo files.
+    """Get list of directories to search fuer terminfo files.
 
     Based on ncurses behavior in:
     - ncurses/tinfo/db_iterator.c:_nc_next_db()
@@ -95,7 +95,7 @@ def _get_terminfo_dirs() -> list[Path]:
     # Check TERMINFO_DIRS
     terminfo_dirs = os.environ.get("TERMINFO_DIRS", "")
     if terminfo_dirs:
-        for d in terminfo_dirs.split(":"):
+        fuer d in terminfo_dirs.split(":"):
             if d:
                 dirs.append(d)
 
@@ -112,7 +112,7 @@ def _get_terminfo_dirs() -> list[Path]:
         ]
     )
 
-    return [Path(d) for d in dirs if Path(d).is_dir()]
+    return [Path(d) fuer d in dirs if Path(d).is_dir()]
 
 
 def _validate_terminal_name_or_raise(terminal_name: str) -> None:
@@ -131,7 +131,7 @@ def _validate_terminal_name_or_raise(terminal_name: str) -> None:
 
 
 def _read_terminfo_file(terminal_name: str) -> bytes:
-    """Find and read terminfo file for given terminal name.
+    """Find and read terminfo file fuer given terminal name.
 
     Terminfo files are stored in directories using the first character
     of the terminal name as a subdirectory.
@@ -140,7 +140,7 @@ def _read_terminfo_file(terminal_name: str) -> bytes:
     first_char = terminal_name[0].lower()
     filename = terminal_name
 
-    for directory in _get_terminfo_dirs():
+    fuer directory in _get_terminfo_dirs():
         path = directory / first_char / filename
         if path.is_file():
             return path.read_bytes()
@@ -154,7 +154,7 @@ def _read_terminfo_file(terminal_name: str) -> bytes:
     raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), filename)
 
 
-# Hard-coded terminal capabilities for common terminals
+# Hard-coded terminal capabilities fuer common terminals
 # This is a minimal subset needed by PyREPL
 _TERMINAL_CAPABILITIES = {
     # ANSI/xterm-compatible terminals
@@ -324,7 +324,7 @@ klasse TermInfo:
     _capabilities: dict[str, bytes] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
-        """Initialize terminal capabilities for the given terminal type.
+        """Initialize terminal capabilities fuer the given terminal type.
 
         Based on ncurses implementation in:
         - ncurses/tinfo/lib_setup.c:setupterm() and _nc_setupterm()
@@ -357,7 +357,7 @@ klasse TermInfo:
     def _parse_terminfo_file(self, terminal_name: str) -> None:
         """Parse a terminfo file.
 
-        Populate the _capabilities dict for easy retrieval
+        Populate the _capabilities dict fuer easy retrieval
 
         Based on ncurses implementation in:
         - ncurses/tinfo/read_entry.c:_nc_read_termtype()
@@ -365,7 +365,7 @@ klasse TermInfo:
         - ncurses/tinfo/lib_ti.c:tigetstr()
         """
         data = _read_terminfo_file(terminal_name)
-        too_short = f"TermInfo file for {terminal_name!r} too short"
+        too_short = f"TermInfo file fuer {terminal_name!r} too short"
         offset = 12
         if len(data) < offset:
             raise ValueError(too_short)
@@ -380,7 +380,7 @@ klasse TermInfo:
             number_size = 4
         else:
             raise ValueError(
-                f"TermInfo file for {terminal_name!r} uses unknown magic"
+                f"TermInfo file fuer {terminal_name!r} uses unknown magic"
             )
 
         # Skip data than PyREPL doesn't need:
@@ -390,7 +390,7 @@ klasse TermInfo:
         offset += name_size
         offset += bool_count
         if offset % 2:
-            # Align to even byte boundary for numbers
+            # Align to even byte boundary fuer numbers
             offset += 1
         offset += num_count * number_size
         if offset > len(data):
@@ -402,7 +402,7 @@ klasse TermInfo:
             raise ValueError(too_short)
         string_offset_data = data[offset:end_offset]
         string_offsets = [
-            off for [off] in struct.iter_unpack("<h", string_offset_data)
+            off fuer [off] in struct.iter_unpack("<h", string_offset_data)
         ]
         offset = end_offset
 
@@ -413,7 +413,7 @@ klasse TermInfo:
 
         # Extract strings from string table
         capabilities = {}
-        for cap, off in zip(_STRING_NAMES, string_offsets):
+        fuer cap, off in zip(_STRING_NAMES, string_offsets):
             if off < 0:
                 # CANCELLED_STRING; we do not store those
                 continue
@@ -448,7 +448,7 @@ def tparm(cap_bytes: bytes, *params: int) -> bytes:
     The ncurses version implements a full stack-based interpreter for
     terminfo parameter strings. This pure Python version implements only
     the subset of parameter substitution operations needed by PyREPL:
-    - %i (increment parameters for 1-based indexing)
+    - %i (increment parameters fuer 1-based indexing)
     - %p[1-9]%d (parameter substitution)
     - %p[1-9]%{n}%+%d (parameter plus constant)
     """
@@ -463,7 +463,7 @@ def tparm(cap_bytes: bytes, *params: int) -> bytes:
         result = result.replace(b"%i", b"")
 
     # Replace %p1%d, %p2%d, etc. with actual parameter values
-    for i in range(len(params)):
+    fuer i in range(len(params)):
         pattern = b"%%p%d%%d" % (i + 1)
         if pattern in result:
             value = params[i]
@@ -475,7 +475,7 @@ def tparm(cap_bytes: bytes, *params: int) -> bytes:
     # Used in some cursor positioning sequences
     pattern_re = re.compile(rb"%p(\d)%\{(\d+)\}%\+%d")
     matches = list(pattern_re.finditer(result))
-    for match in reversed(matches):  # reversed to maintain positions
+    fuer match in reversed(matches):  # reversed to maintain positions
         param_idx = int(match.group(1))
         constant = int(match.group(2))
         value = params[param_idx] + constant

@@ -21,9 +21,9 @@ klasse GrammarValidator(GrammarVisitor):
 
 klasse SubRuleValidator(GrammarValidator):
     def visit_Rhs(self, node: Rhs) -> None:
-        for index, alt in enumerate(node.alts):
+        fuer index, alt in enumerate(node.alts):
             alts_to_consider = node.alts[index + 1 :]
-            for other_alt in alts_to_consider:
+            fuer other_alt in alts_to_consider:
                 self.check_intersection(alt, other_alt)
 
     def check_intersection(self, first_alt: Alt, second_alt: Alt) -> None:
@@ -47,7 +47,7 @@ klasse RaiseRuleValidator(GrammarValidator):
 
 
 def validate_grammar(the_grammar: grammar.Grammar) -> None:
-    for validator_cls in GrammarValidator.__subclasses__():
+    fuer validator_cls in GrammarValidator.__subclasses__():
         validator = validator_cls(the_grammar)
-        for rule_name, rule in the_grammar.rules.items():
+        fuer rule_name, rule in the_grammar.rules.items():
             validator.validate_rule(rule_name, rule)

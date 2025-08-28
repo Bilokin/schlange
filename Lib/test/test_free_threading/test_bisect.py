@@ -13,7 +13,7 @@ OBJECT_COUNT = 500
 klasse TestBase:
     def do_racing_insort(self, insert_method):
         def insert(data):
-            for _ in range(OBJECT_COUNT):
+            fuer _ in range(OBJECT_COUNT):
                 x = random.randint(-OBJECT_COUNT, OBJECT_COUNT)
                 insert_method(data, x)
 
@@ -39,7 +39,7 @@ klasse TestBase:
         """
         Check if the list is sorted in ascending order (non-decreasing).
         """
-        return all(lst[i - 1] <= lst[i] for i in range(1, len(lst)))
+        return all(lst[i - 1] <= lst[i] fuer i in range(1, len(lst)))
 
 
 @threading_helper.requires_working_threading()

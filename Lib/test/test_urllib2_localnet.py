@@ -20,9 +20,9 @@ except ImportError:
 support.requires_working_socket(module=True)
 
 here = os.path.dirname(__file__)
-# Self-signed cert file for 'localhost'
+# Self-signed cert file fuer 'localhost'
 CERT_localhost = os.path.join(here, 'certdata', 'keycert.pem')
-# Self-signed cert file for 'fakehostname'
+# Self-signed cert file fuer 'fakehostname'
 CERT_fakehostname = os.path.join(here, 'certdata', 'keycert2.pem')
 
 
@@ -82,7 +82,7 @@ klasse LoopbackHttpServerThread(threading.Thread):
 # Authentication infrastructure
 
 klasse DigestAuthHandler:
-    """Handler for performing digest authentication."""
+    """Handler fuer performing digest authentication."""
 
     def __init__(self):
         self._request_num = 0
@@ -114,7 +114,7 @@ klasse DigestAuthHandler:
         parts = auth_str.split(",")
 
         auth_dict = {}
-        for part in parts:
+        fuer part in parts:
             name, value = part.split("=")
             name = name.strip()
             if value[0] == '"' and value[-1] == '"':
@@ -190,7 +190,7 @@ klasse DigestAuthHandler:
             # urllib.request uses the full path, so we're going to see if
             # either of them works here.
 
-            for path in [request_handler.path, request_handler.short_path]:
+            fuer path in [request_handler.path, request_handler.short_path]:
                 if self._validate_auth(auth_dict,
                                        password,
                                        request_handler.command,
@@ -203,7 +203,7 @@ klasse DigestAuthHandler:
 
 
 klasse BasicAuthHandler(http.server.BaseHTTPRequestHandler):
-    """Handler for performing basic authentication."""
+    """Handler fuer performing basic authentication."""
     # Server side values
     USER = 'testUser'
     PASSWD = 'testPass'
@@ -260,7 +260,7 @@ klasse FakeProxyHandler(http.server.BaseHTTPRequestHandler):
         http.server.BaseHTTPRequestHandler.__init__(self, *args, **kwargs)
 
     def log_message(self, format, *args):
-        # Uncomment the next line for debugging.
+        # Uncomment the next line fuer debugging.
         # sys.stderr.write(format % args)
         pass
 
@@ -310,7 +310,7 @@ klasse BasicAuthTests(unittest.TestCase):
         try:
             self.assertTrue(urllib.request.urlopen(self.server_url))
         except urllib.error.HTTPError:
-            self.fail("Basic auth failed for the url: %s" % self.server_url)
+            self.fail("Basic auth failed fuer the url: %s" % self.server_url)
 
     def test_basic_auth_httperror(self):
         ah = urllib.request.HTTPBasicAuthHandler()
@@ -427,7 +427,7 @@ def GetRequestHandler(responses):
 
             self.send_response(response_code)
 
-            for (header, value) in headers:
+            fuer (header, value) in headers:
                 self.send_header(header, value % {'port':self.port})
             if body:
                 self.send_header("Content-type", "text/plain")
@@ -448,7 +448,7 @@ klasse TestUrlopen(unittest.TestCase):
     These tests are not exhaustive.  Assuming that testing using files does a
     good job overall of some of the basic interface features.  There are no
     tests exercising the optional 'data' and 'proxies' arguments.  No tests
-    for transparent redirection have been written.
+    fuer transparent redirection have been written.
     """
 
     def setUp(self):
@@ -457,7 +457,7 @@ klasse TestUrlopen(unittest.TestCase):
         # clear _opener global variable
         self.addCleanup(urllib.request.urlcleanup)
 
-        # Ignore proxies for localhost tests.
+        # Ignore proxies fuer localhost tests.
         def restore_environ(old_environ):
             os.environ.clear()
             os.environ.update(old_environ)
@@ -605,7 +605,7 @@ klasse TestUrlopen(unittest.TestCase):
     def test_basic(self):
         handler = self.start_server()
         with urllib.request.urlopen("http://localhost:%s" % handler.port) as open_url:
-            for attr in ("read", "close", "info", "geturl"):
+            fuer attr in ("read", "close", "info", "geturl"):
                 self.assertHasAttr(open_url, attr)
             self.assertTrue(open_url.read(), "calling 'read' failed")
 
@@ -632,7 +632,7 @@ klasse TestUrlopen(unittest.TestCase):
         expected_response = b"pycon 2008..."
         handler = self.start_server([(200, [], expected_response)])
         data = urllib.request.urlopen("http://localhost:%s" % handler.port)
-        for line in data:
+        fuer line in data:
             self.assertEqual(line, expected_response)
 
     def test_line_iteration(self):
@@ -640,7 +640,7 @@ klasse TestUrlopen(unittest.TestCase):
         expected_response = b"".join(lines)
         handler = self.start_server([(200, [], expected_response)])
         data = urllib.request.urlopen("http://localhost:%s" % handler.port)
-        for index, line in enumerate(data):
+        fuer index, line in enumerate(data):
             self.assertEqual(line, lines[index],
                              "Fetched line number %s doesn't match expected:\n"
                              "    Expected length was %s, got %s" %

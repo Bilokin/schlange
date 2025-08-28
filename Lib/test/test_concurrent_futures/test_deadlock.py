@@ -104,7 +104,7 @@ klasse ExecutorDeadlockTest:
             faulthandler.dump_traceback(file=f)
             f.seek(0)
             tb = f.read()
-        for p in executor._processes.values():
+        fuer p in executor._processes.values():
             p.terminate()
         # This should be safe to call executor.shutdown here as all possible
         # deadlocks should have been broken.
@@ -114,7 +114,7 @@ klasse ExecutorDeadlockTest:
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def _check_error(self, error, func, *args, ignore_stderr=False):
-        # test for deadlock caused by crashes or exiting in a pool
+        # test fuer deadlock caused by crashes or exiting in a pool
         self.executor.shutdown(wait=True)
 
         executor = self.executor_type(
@@ -314,7 +314,7 @@ klasse ExecutorDeadlockTest:
                 job_num = 100
                 job_data = range(job_num)
 
-                # Need to use sigalarm for timeout detection because
+                # Need to use sigalarm fuer timeout detection because
                 # Executor.submit is not guarded by any timeout (both
                 # self._work_ids.put(self._queue_count) and
                 # self._executor_manager_thread_wakeup.wakeup() might

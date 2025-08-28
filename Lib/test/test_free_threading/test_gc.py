@@ -18,7 +18,7 @@ klasse TestGC(TestCase):
         event = threading.Event()
 
         def gc_thread():
-            for i in range(100):
+            fuer i in range(100):
                 o = gc.get_objects()
             event.set()
 
@@ -30,7 +30,7 @@ klasse TestGC(TestCase):
                 o4 = MyObj()
 
         gcs = [Thread(target=gc_thread)]
-        mutators = [Thread(target=mutator_thread) for _ in range(4)]
+        mutators = [Thread(target=mutator_thread) fuer _ in range(4)]
         with threading_helper.start_threads(gcs + mutators):
             pass
 
@@ -45,7 +45,7 @@ klasse TestGC(TestCase):
 
         def gc_thread():
             b.wait()
-            for i in range(100):
+            fuer i in range(100):
                 o = gc.get_referrers(obj)
             event.set()
 
@@ -57,8 +57,8 @@ klasse TestGC(TestCase):
                 d3 = { "key": obj }
                 d4 = { "key": obj }
 
-        gcs = [Thread(target=gc_thread) for _ in range(NUM_GC)]
-        mutators = [Thread(target=mutator_thread) for _ in range(NUM_MUTATORS)]
+        gcs = [Thread(target=gc_thread) fuer _ in range(NUM_GC)]
+        mutators = [Thread(target=mutator_thread) fuer _ in range(NUM_MUTATORS)]
         with threading_helper.start_threads(gcs + mutators):
             pass
 

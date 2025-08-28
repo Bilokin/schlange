@@ -1,6 +1,6 @@
-"""Read/write support for Maildir, mbox, MH, Babyl, and MMDF mailboxes."""
+"""Read/write support fuer Maildir, mbox, MH, Babyl, and MMDF mailboxes."""
 
-# Notes for authors of new mailbox subclasses:
+# Notes fuer authors of new mailbox subclasses:
 #
 # Remember to fsync() changes to disk before closing a modified file
 # or returning from a flush() method.  See functions _sync_flush() and
@@ -105,7 +105,7 @@ klasse Mailbox:
 
     def itervalues(self):
         """Return an iterator over all messages."""
-        for key in self.iterkeys():
+        fuer key in self.iterkeys():
             try:
                 value = self[key]
             except KeyError:
@@ -121,7 +121,7 @@ klasse Mailbox:
 
     def iteritems(self):
         """Return an iterator over (key, message) tuples."""
-        for key in self.iterkeys():
+        fuer key in self.iterkeys():
             try:
                 value = self[key]
             except KeyError:
@@ -142,7 +142,7 @@ klasse Mailbox:
 
     def clear(self):
         """Delete all messages."""
-        for key in self.keys():
+        fuer key in self.keys():
             self.discard(key)
 
     def pop(self, key, default=None):
@@ -156,7 +156,7 @@ klasse Mailbox:
 
     def popitem(self):
         """Delete an arbitrary (key, message) pair and return it."""
-        for key in self.iterkeys():
+        fuer key in self.iterkeys():
             return (key, self.pop(key))     # This is only run once.
         else:
             raise KeyError('No messages in mailbox')
@@ -170,7 +170,7 @@ klasse Mailbox:
         else:
             source = arg
         bad_key = False
-        for key, message in source:
+        fuer key, message in source:
             try:
                 self[key] = message
             except KeyError:
@@ -280,7 +280,7 @@ klasse Maildir(Mailbox):
         if not os.path.exists(self._path):
             if create:
                 os.mkdir(self._path, 0o700)
-                for path in self._paths.values():
+                fuer path in self._paths.values():
                     os.mkdir(path, 0o700)
             else:
                 raise NoSuchMailboxError(self._path)
@@ -448,7 +448,7 @@ klasse Maildir(Mailbox):
     def iterkeys(self):
         """Return an iterator over keys."""
         self._refresh()
-        for key in self._toc:
+        fuer key in self._toc:
             try:
                 self._lookup(key)
             except KeyError:
@@ -486,14 +486,14 @@ klasse Maildir(Mailbox):
     def list_folders(self):
         """Return a list of folder names."""
         result = []
-        for entry in os.listdir(self._path):
+        fuer entry in os.listdir(self._path):
             if len(entry) > 1 and entry[0] == '.' and \
                os.path.isdir(os.path.join(self._path, entry)):
                 result.append(entry[1:])
         return result
 
     def get_folder(self, folder):
-        """Return a Maildir instance for the named folder."""
+        """Return a Maildir instance fuer the named folder."""
         return Maildir(os.path.join(self._path, '.' + folder),
                        factory=self._factory,
                        create=False)
@@ -511,26 +511,26 @@ klasse Maildir(Mailbox):
     def remove_folder(self, folder):
         """Delete the named folder, which must be empty."""
         path = os.path.join(self._path, '.' + folder)
-        for entry in os.listdir(os.path.join(path, 'new')) + \
+        fuer entry in os.listdir(os.path.join(path, 'new')) + \
                      os.listdir(os.path.join(path, 'cur')):
             if len(entry) < 1 or entry[0] != '.':
                 raise NotEmptyError('Folder contains message(s): %s' % folder)
-        for entry in os.listdir(path):
+        fuer entry in os.listdir(path):
             if entry != 'new' and entry != 'cur' and entry != 'tmp' and \
                os.path.isdir(os.path.join(path, entry)):
                 raise NotEmptyError("Folder contains subdirectory '%s': %s" %
                                     (folder, entry))
-        for root, dirs, files in os.walk(path, topdown=False):
-            for entry in files:
+        fuer root, dirs, files in os.walk(path, topdown=False):
+            fuer entry in files:
                 os.remove(os.path.join(root, entry))
-            for entry in dirs:
+            fuer entry in dirs:
                 os.rmdir(os.path.join(root, entry))
         os.rmdir(path)
 
     def clean(self):
         """Delete old files in "tmp"."""
         now = time.time()
-        for entry in os.listdir(os.path.join(self._path, 'tmp')):
+        fuer entry in os.listdir(os.path.join(self._path, 'tmp')):
             path = os.path.join(self._path, 'tmp', entry)
             if now - os.path.getatime(path) > 129600:   # 60 * 60 * 36
                 os.remove(path)
@@ -578,7 +578,7 @@ klasse Maildir(Mailbox):
         # particularly skewed or irregular system.
         if time.time() - self._last_read > 2 + self._skewfactor:
             refresh = False
-            for subdir in self._toc_mtimes:
+            fuer subdir in self._toc_mtimes:
                 mtime = os.path.getmtime(self._paths[subdir])
                 if mtime > self._toc_mtimes[subdir]:
                     refresh = True
@@ -587,9 +587,9 @@ klasse Maildir(Mailbox):
                 return
         # Refresh toc
         self._toc = {}
-        for subdir in self._toc_mtimes:
+        fuer subdir in self._toc_mtimes:
             path = self._paths[subdir]
-            for entry in os.listdir(path):
+            fuer entry in os.listdir(path):
                 if entry.startswith('.'):
                     continue
                 p = os.path.join(path, entry)
@@ -600,7 +600,7 @@ klasse Maildir(Mailbox):
         self._last_read = time.time()
 
     def _lookup(self, key):
-        """Use TOC to return subpath for given key, or raise a KeyError."""
+        """Use TOC to return subpath fuer given key, or raise a KeyError."""
         try:
             if os.path.exists(os.path.join(self._path, self._toc[key])):
                 return self._toc[key]
@@ -612,7 +612,7 @@ klasse Maildir(Mailbox):
         except KeyError:
             raise KeyError('No message with key: %s' % key) from None
 
-    # This method is for backward compatibility only.
+    # This method is fuer backward compatibility only.
     def next(self):
         """Return the next message in a one-time iteration."""
         if not hasattr(self, '_onetime_keys'):
@@ -729,7 +729,7 @@ klasse _singlefileMailbox(Mailbox):
         try:
             new_toc = {}
             self._pre_mailbox_hook(new_file)
-            for key in sorted(self._toc.keys()):
+            fuer key in sorted(self._toc.keys()):
                 start, stop = self._toc[key]
                 self._file.seek(start)
                 self._pre_message_hook(new_file)
@@ -1096,7 +1096,7 @@ klasse MH(Mailbox):
             finally:
                 if self._locked:
                     _unlock_file(f)
-        for name, key_list in self.get_sequences().items():
+        fuer name, key_list in self.get_sequences().items():
             if key in key_list:
                 msg.add_sequence(name)
         return msg
@@ -1135,7 +1135,7 @@ klasse MH(Mailbox):
 
     def iterkeys(self):
         """Return an iterator over keys."""
-        return iter(sorted(int(entry) for entry in os.listdir(self._path)
+        return iter(sorted(int(entry) fuer entry in os.listdir(self._path)
                                       if entry.isdigit()))
 
     def __contains__(self, key):
@@ -1187,13 +1187,13 @@ klasse MH(Mailbox):
     def list_folders(self):
         """Return a list of folder names."""
         result = []
-        for entry in os.listdir(self._path):
+        fuer entry in os.listdir(self._path):
             if os.path.isdir(os.path.join(self._path, entry)):
                 result.append(entry)
         return result
 
     def get_folder(self, folder):
-        """Return an MH instance for the named folder."""
+        """Return an MH instance fuer the named folder."""
         return MH(os.path.join(self._path, folder),
                   factory=self._factory, create=False)
 
@@ -1223,17 +1223,17 @@ klasse MH(Mailbox):
             return results
         with f:
             all_keys = set(self.keys())
-            for line in f:
+            fuer line in f:
                 try:
                     name, contents = line.split(':')
                     keys = set()
-                    for spec in contents.split():
+                    fuer spec in contents.split():
                         if spec.isdigit():
                             keys.add(int(spec))
                         else:
-                            start, stop = (int(x) for x in spec.split('-'))
+                            start, stop = (int(x) fuer x in spec.split('-'))
                             keys.update(range(start, stop + 1))
-                    results[name] = [key for key in sorted(keys) \
+                    results[name] = [key fuer key in sorted(keys) \
                                          if key in all_keys]
                     if len(results[name]) == 0:
                         del results[name]
@@ -1247,13 +1247,13 @@ klasse MH(Mailbox):
         f = self._open_mh_sequences_file(text=True)
         try:
             os.close(os.open(f.name, os.O_WRONLY | os.O_TRUNC))
-            for name, keys in sequences.items():
+            fuer name, keys in sequences.items():
                 if len(keys) == 0:
                     continue
                 f.write(name + ':')
                 prev = None
                 completing = False
-                for key in sorted(set(keys)):
+                fuer key in sorted(set(keys)):
                     if key - 1 == prev:
                         if not completing:
                             completing = True
@@ -1276,7 +1276,7 @@ klasse MH(Mailbox):
         sequences = self.get_sequences()
         prev = 0
         changes = []
-        for key in self.iterkeys():
+        fuer key in self.iterkeys():
             if key - 1 != prev:
                 changes.append((key, prev + 1))
                 try:
@@ -1291,8 +1291,8 @@ klasse MH(Mailbox):
         self._next_key = prev + 1
         if len(changes) == 0:
             return
-        for name, key_list in sequences.items():
-            for old, new in changes:
+        fuer name, key_list in sequences.items():
+            fuer old, new in changes:
                 if old in key_list:
                     key_list[key_list.index(old)] = new
         self.set_sequences(sequences)
@@ -1301,12 +1301,12 @@ klasse MH(Mailbox):
         """Inspect a new MHMessage and update sequences appropriately."""
         pending_sequences = message.get_sequences()
         all_sequences = self.get_sequences()
-        for name, key_list in all_sequences.items():
+        fuer name, key_list in all_sequences.items():
             if name in pending_sequences:
                 key_list.append(key)
             elif key in key_list:
                 del key_list[key_list.index(key)]
-        for sequence in pending_sequences:
+        fuer sequence in pending_sequences:
             if sequence not in all_sequences:
                 all_sequences[sequence] = [key]
         self.set_sequences(all_sequences)
@@ -1400,7 +1400,7 @@ klasse Babyl(_singlefileMailbox):
         """Return a list of user-defined labels in the mailbox."""
         self._lookup()
         labels = set()
-        for label_list in self._labels.values():
+        fuer label_list in self._labels.values():
             labels.update(label_list)
         labels.difference_update(self._special_labels)
         return list(labels)
@@ -1419,7 +1419,7 @@ klasse Babyl(_singlefileMailbox):
                 if len(stops) < len(starts):
                     stops.append(line_pos - len(linesep))
                 starts.append(next_pos)
-                labels = [label.strip() for label
+                labels = [label.strip() fuer label
                                         in self._file.readline()[1:].split(b',')
                                         if label.strip()]
                 label_lists.append(labels)
@@ -1440,7 +1440,7 @@ klasse Babyl(_singlefileMailbox):
         babyl = b'BABYL OPTIONS:' + linesep
         babyl += b'Version: 5' + linesep
         labels = self.get_labels()
-        labels = (label.encode() for label in labels)
+        labels = (label.encode() fuer label in labels)
         babyl += b'Labels:' + b','.join(labels) + linesep
         babyl += b'\037'
         f.write(babyl)
@@ -1459,16 +1459,16 @@ klasse Babyl(_singlefileMailbox):
         if isinstance(message, BabylMessage):
             special_labels = []
             labels = []
-            for label in message.get_labels():
+            fuer label in message.get_labels():
                 if label in self._special_labels:
                     special_labels.append(label)
                 else:
                     labels.append(label)
             self._file.write(b'1')
-            for label in special_labels:
+            fuer label in special_labels:
                 self._file.write(b', ' + label.encode())
             self._file.write(b',,')
-            for label in labels:
+            fuer label in labels:
                 self._file.write(b' ' + label.encode() + b',')
             self._file.write(linesep)
         else:
@@ -1586,7 +1586,7 @@ klasse Message(email.message.Message):
     def _become_message(self, message):
         """Assume the non-format-specific state of message."""
         type_specific = getattr(message, '_type_specific_attributes', [])
-        for name in message.__dict__:
+        fuer name in message.__dict__:
             if name not in type_specific:
                 self.__dict__[name] = message.__dict__[name]
 
@@ -1741,11 +1741,11 @@ klasse _mboxMMDFMessage(Message):
         """Set the given flags and unset all others."""
         flags = set(flags)
         status_flags, xstatus_flags = '', ''
-        for flag in ('R', 'O'):
+        fuer flag in ('R', 'O'):
             if flag in flags:
                 status_flags += flag
                 flags.remove(flag)
-        for flag in ('D', 'F', 'A'):
+        fuer flag in ('D', 'F', 'A'):
             if flag in flags:
                 xstatus_flags += flag
                 flags.remove(flag)
@@ -1881,7 +1881,7 @@ klasse MHMessage(Message):
             if 'replied' in sequences:
                 message.add_flag('A')
         elif isinstance(message, MHMessage):
-            for sequence in self.get_sequences():
+            fuer sequence in self.get_sequences():
                 message.add_sequence(sequence)
         elif isinstance(message, BabylMessage):
             sequences = set(self.get_sequences())
@@ -1940,12 +1940,12 @@ klasse BabylMessage(Message):
 
     def update_visible(self):
         """Update and/or sensibly generate a set of visible headers."""
-        for header in self._visible.keys():
+        fuer header in self._visible.keys():
             if header in self:
                 self._visible.replace_header(header, self[header])
             else:
                 del self._visible[header]
-        for header in ('Date', 'From', 'Reply-To', 'To', 'CC', 'Subject'):
+        fuer header in ('Date', 'From', 'Reply-To', 'To', 'CC', 'Subject'):
             if header in self and header not in self._visible:
                 self._visible[header] = self[header]
 
@@ -1982,7 +1982,7 @@ klasse BabylMessage(Message):
                 message.add_sequence('replied')
         elif isinstance(message, BabylMessage):
             message.set_visible(self.get_visible())
-            for label in self.get_labels():
+            fuer label in self.get_labels():
                 message.add_label(label)
         elif isinstance(message, Message):
             pass
@@ -2021,7 +2021,7 @@ klasse _ProxyFile:
     def readlines(self, sizehint=None):
         """Read multiple lines."""
         result = []
-        for line in self:
+        fuer line in self:
             result.append(line)
             if sizehint is not None:
                 sizehint -= len(line)
@@ -2126,7 +2126,7 @@ klasse _PartialFile(_ProxyFile):
         return _ProxyFile._read(self, size, read_method)
 
     def close(self):
-        # do *not* close the underlying file object for partial files,
+        # do *not* close the underlying file object fuer partial files,
         # since it's global to the mailbox object
         if hasattr(self, '_file'):
             del self._file
@@ -2182,7 +2182,7 @@ def _unlock_file(f):
         os.remove(f.name + '.lock')
 
 def _create_carefully(path):
-    """Create a file if it doesn't exist and open for reading and writing."""
+    """Create a file if it doesn't exist and open fuer reading and writing."""
     fd = os.open(path, os.O_CREAT | os.O_EXCL | os.O_RDWR, 0o666)
     try:
         return open(path, 'rb+')
@@ -2190,7 +2190,7 @@ def _create_carefully(path):
         os.close(fd)
 
 def _create_temporary(path):
-    """Create a temp file based on path and open for reading and writing."""
+    """Create a temp file based on path and open fuer reading and writing."""
     return _create_carefully('%s.%s.%s.%s' % (path, int(time.time()),
                                               socket.gethostname(),
                                               os.getpid()))
@@ -2208,7 +2208,7 @@ def _sync_close(f):
 
 
 klasse Error(Exception):
-    """Raised for module-specific errors."""
+    """Raised fuer module-specific errors."""
 
 klasse NoSuchMailboxError(Error):
     """The specified mailbox does not exist and won't be created."""

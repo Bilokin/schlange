@@ -4,7 +4,7 @@
 # Note: each test is run with Python and C versions of ABCMeta. Except for
 # test_ABC_helper(), which assures that abc.ABC is an instance of abc.ABCMeta.
 
-"""Unit tests for abc.py."""
+"""Unit tests fuer abc.py."""
 
 import unittest
 
@@ -154,7 +154,7 @@ def test_factory(abc_ABCMeta, abc_get_cache_token):
                 @abc.abstractmethod
                 def method_one(self):
                     pass
-            msg = r"class C without an implementation for abstract method 'method_one'"
+            msg = r"class C without an implementation fuer abstract method 'method_one'"
             self.assertRaisesRegex(TypeError, msg, C)
 
         def test_object_new_with_many_abstractmethods(self):
@@ -165,11 +165,11 @@ def test_factory(abc_ABCMeta, abc_get_cache_token):
                 @abc.abstractmethod
                 def method_two(self):
                     pass
-            msg = r"class C without an implementation for abstract methods 'method_one', 'method_two'"
+            msg = r"class C without an implementation fuer abstract methods 'method_one', 'method_two'"
             self.assertRaisesRegex(TypeError, msg, C)
 
         def test_abstractmethod_integration(self):
-            for abstractthing in [abc.abstractmethod, abc.abstractproperty,
+            fuer abstractthing in [abc.abstractmethod, abc.abstractproperty,
                                   abc.abstractclassmethod,
                                   abc.abstractstaticmethod]:
                 klasse C(metaclass=abc_ABCMeta):
@@ -438,7 +438,7 @@ def test_factory(abc_ABCMeta, abc_get_cache_token):
                 lambda: [42],
             ]
 
-            for i, func in enumerate(bogus_subclasses):
+            fuer i, func in enumerate(bogus_subclasses):
                 klasse S(metaclass=abc_ABCMeta):
                     __subclasses__ = func
 
@@ -536,7 +536,7 @@ def test_factory(abc_ABCMeta, abc_get_cache_token):
             A.foo = updated_foo
             abc.update_abstractmethods(A)
             self.assertEqual(A.__abstractmethods__, {'foo', 'bar'})
-            msg = "class A without an implementation for abstract methods 'bar', 'foo'"
+            msg = "class A without an implementation fuer abstract methods 'bar', 'foo'"
             self.assertRaisesRegex(TypeError, msg, A)
 
         def test_update_implementation(self):
@@ -548,7 +548,7 @@ def test_factory(abc_ABCMeta, abc_get_cache_token):
             klasse B(A):
                 pass
 
-            msg = "class B without an implementation for abstract method 'foo'"
+            msg = "class B without an implementation fuer abstract method 'foo'"
             self.assertRaisesRegex(TypeError, msg, B)
             self.assertEqual(B.__abstractmethods__, {'foo'})
 
@@ -606,7 +606,7 @@ def test_factory(abc_ABCMeta, abc_get_cache_token):
 
             abc.update_abstractmethods(B)
 
-            msg = "class B without an implementation for abstract method 'foo'"
+            msg = "class B without an implementation fuer abstract method 'foo'"
             self.assertRaisesRegex(TypeError, msg, B)
 
         def test_update_layered_implementation(self):
@@ -628,7 +628,7 @@ def test_factory(abc_ABCMeta, abc_get_cache_token):
 
             abc.update_abstractmethods(C)
 
-            msg = "class C without an implementation for abstract method 'foo'"
+            msg = "class C without an implementation fuer abstract method 'foo'"
             self.assertRaisesRegex(TypeError, msg, C)
 
         def test_update_multi_inheritance(self):

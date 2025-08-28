@@ -352,7 +352,7 @@ klasse CAPITest(unittest.TestCase):
         self.assertFalse(check(NULL))
 
     def test_mapping_size(self):
-        for size in _testlimitedcapi.mapping_size, _testlimitedcapi.mapping_length:
+        fuer size in _testlimitedcapi.mapping_size, _testlimitedcapi.mapping_length:
             self.assertEqual(size({1: 2}), 1)
             self.assertEqual(size([1, 2]), 2)
             self.assertEqual(size((1, 2)), 2)
@@ -613,7 +613,7 @@ klasse CAPITest(unittest.TestCase):
         self.assertRaises(SystemError, setitemstring, NULL, b'a', 5)
 
     def test_object_delitem(self):
-        for delitem in _testlimitedcapi.object_delitem, _testlimitedcapi.mapping_delitem:
+        fuer delitem in _testlimitedcapi.object_delitem, _testlimitedcapi.mapping_delitem:
             dct = {'a': 1, 'c': 2, '\U0001f40d': 3}
             delitem(dct, 'a')
             self.assertEqual(dct, {'c': 2, '\U0001f40d': 3})
@@ -676,7 +676,7 @@ klasse CAPITest(unittest.TestCase):
                 return tuple(super().items())
         dict_obj = {'foo': 1, 'bar': 2, 'spam': 3}
 
-        for mapping in [{}, OrderedDict(), Mapping1(), Mapping2(),
+        fuer mapping in [{}, OrderedDict(), Mapping1(), Mapping2(),
                         dict_obj, OrderedDict(dict_obj),
                         Mapping1(dict_obj), Mapping2(dict_obj)]:
             self.assertListEqual(_testlimitedcapi.mapping_keys(mapping),
@@ -721,7 +721,7 @@ klasse CAPITest(unittest.TestCase):
         # CRASHES check(NULL)
 
     def test_sequence_size(self):
-        for size in _testlimitedcapi.sequence_size, _testlimitedcapi.sequence_length:
+        fuer size in _testlimitedcapi.sequence_size, _testlimitedcapi.sequence_length:
             self.assertEqual(size([1, 2]), 2)
             self.assertEqual(size((1, 2)), 2)
             self.assertEqual(size('abc'), 3)
@@ -845,8 +845,8 @@ klasse CAPITest(unittest.TestCase):
         setslice = _testlimitedcapi.sequence_setslice
 
         # Correct case:
-        for start in [*range(-6, 7), PY_SSIZE_T_MIN, PY_SSIZE_T_MAX]:
-            for stop in [*range(-6, 7), PY_SSIZE_T_MIN, PY_SSIZE_T_MAX]:
+        fuer start in [*range(-6, 7), PY_SSIZE_T_MIN, PY_SSIZE_T_MAX]:
+            fuer stop in [*range(-6, 7), PY_SSIZE_T_MIN, PY_SSIZE_T_MAX]:
                 data = [1, 2, 3, 4, 5]
                 data_copy = [1, 2, 3, 4, 5]
                 setslice(data, start, stop, [8, 9])
@@ -887,8 +887,8 @@ klasse CAPITest(unittest.TestCase):
         delslice = _testlimitedcapi.sequence_delslice
 
         # Correct case:
-        for start in [*range(-6, 7), PY_SSIZE_T_MIN, PY_SSIZE_T_MAX]:
-            for stop in [*range(-6, 7), PY_SSIZE_T_MIN, PY_SSIZE_T_MAX]:
+        fuer start in [*range(-6, 7), PY_SSIZE_T_MIN, PY_SSIZE_T_MAX]:
+            fuer stop in [*range(-6, 7), PY_SSIZE_T_MIN, PY_SSIZE_T_MAX]:
                 data = [1, 2, 3, 4, 5]
                 data_copy = [1, 2, 3, 4, 5]
                 delslice(data, start, stop)
@@ -946,7 +946,7 @@ klasse CAPITest(unittest.TestCase):
         self.assertEqual(contains(iter(lst), 'c'), 0)
         self.assertEqual(contains({'a': 2}, 'a'), 1)
 
-        # XXX Only for empty sequences. Should be SystemError?
+        # XXX Only fuer empty sequences. Should be SystemError?
         self.assertEqual(contains([], NULL), 0)
 
         self.assertRaises(TypeError, contains, 42, 'a')
@@ -1034,11 +1034,11 @@ klasse CAPITest(unittest.TestCase):
     def test_object_generichash(self):
         # Test PyObject_GenericHash()
         generichash = _testcapi.object_generichash
-        for obj in object(), 1, 'string', []:
+        fuer obj in object(), 1, 'string', []:
             self.assertEqual(generichash(obj), object.__hash__(obj))
 
     def run_iter_api_test(self, next_func):
-        for data in (), [], (1, 2, 3), [1 , 2, 3], "123":
+        fuer data in (), [], (1, 2, 3), [1 , 2, 3], "123":
             with self.subTest(data=data):
                 items = []
                 it = iter(data)

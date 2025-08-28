@@ -69,7 +69,7 @@ klasse ExecModuleTests(abc.LoaderTests):
         name = '__hello__'
         module, output = self.exec_module(name)
         check = {'__name__': name}
-        for attr, value in check.items():
+        fuer attr, value in check.items():
             self.assertEqual(getattr(module, attr), value)
         self.assertEqual(output, 'Hello world!\n')
         self.assertHasAttr(module, '__spec__')
@@ -79,7 +79,7 @@ klasse ExecModuleTests(abc.LoaderTests):
         name = '__phello__'
         module, output = self.exec_module(name)
         check = {'__name__': name}
-        for attr, value in check.items():
+        fuer attr, value in check.items():
             attr_value = getattr(module, attr)
             self.assertEqual(attr_value, value,
                         'for {name}.{attr}, {given!r} != {expected!r}'.format(
@@ -93,7 +93,7 @@ klasse ExecModuleTests(abc.LoaderTests):
         with util.uncache('__phello__'):
             module, output = self.exec_module(name)
         check = {'__name__': name}
-        for attr, value in check.items():
+        fuer attr, value in check.items():
             attr_value = getattr(module, attr)
             self.assertEqual(attr_value, value,
                     'for {name}.{attr}, {given} != {expected!r}'.format(
@@ -125,7 +125,7 @@ klasse ExecModuleTests(abc.LoaderTests):
 
 klasse InspectLoaderTests:
 
-    """Tests for the InspectLoader methods for FrozenImporter."""
+    """Tests fuer the InspectLoader methods fuer FrozenImporter."""
 
     def test_get_code(self):
         # Make sure that the code object is good.
@@ -149,14 +149,14 @@ klasse InspectLoaderTests:
         # Should be able to tell what is a package.
         test_for = (('__hello__', False), ('__phello__', True),
                     ('__phello__.spam', False))
-        for name, is_package in test_for:
+        fuer name, is_package in test_for:
             with import_helper.frozen_modules():
                 result = self.machinery.FrozenImporter.is_package(name)
             self.assertEqual(bool(result), is_package)
 
     def test_failure(self):
-        # Raise ImportError for modules that are not frozen.
-        for meth_name in ('get_code', 'get_source', 'is_package'):
+        # Raise ImportError fuer modules that are not frozen.
+        fuer meth_name in ('get_code', 'get_source', 'is_package'):
             method = getattr(self.machinery.FrozenImporter, meth_name)
             with self.assertRaises(ImportError) as cm:
                 with import_helper.frozen_modules():

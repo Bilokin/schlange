@@ -5,28 +5,28 @@ klasse PowTest(unittest.TestCase):
 
     def powtest(self, type):
         if type != float:
-            for i in range(-1000, 1000):
+            fuer i in range(-1000, 1000):
                 self.assertEqual(pow(type(i), 0), 1)
                 self.assertEqual(pow(type(i), 1), type(i))
                 self.assertEqual(pow(type(0), 1), type(0))
                 self.assertEqual(pow(type(1), 1), type(1))
 
-            for i in range(-100, 100):
+            fuer i in range(-100, 100):
                 self.assertEqual(pow(type(i), 3), i*i*i)
 
             pow2 = 1
-            for i in range(0, 31):
+            fuer i in range(0, 31):
                 self.assertEqual(pow(2, i), pow2)
                 if i != 30 : pow2 = pow2*2
 
-            for i in list(range(-10, 0)) + list(range(1, 10)):
+            fuer i in list(range(-10, 0)) + list(range(1, 10)):
                 ii = type(i)
                 inv = pow(ii, -1) # inverse of ii
-                for jj in range(-10, 0):
+                fuer jj in range(-10, 0):
                     self.assertAlmostEqual(pow(ii, jj), pow(inv, -jj))
 
-        for othertype in int, float:
-            for i in range(1, 100):
+        fuer othertype in int, float:
+            fuer i in range(1, 100):
                 zero = type(0)
                 exp = -othertype(i/10.0)
                 if exp == 0:
@@ -44,9 +44,9 @@ klasse PowTest(unittest.TestCase):
             jl = 0
         elif type == int:
             jl, jh = 0, 15
-        for i in range(il, ih+1):
-            for j in range(jl, jh+1):
-                for k in range(kl, kh+1):
+        fuer i in range(il, ih+1):
+            fuer j in range(jl, jh+1):
+                fuer k in range(kl, kh+1):
                     if k != 0:
                         if type == float or j < 0:
                             self.assertRaises(TypeError, pow, type(i), j, k)
@@ -78,9 +78,9 @@ klasse PowTest(unittest.TestCase):
         self.assertEqual(pow(-3,3) % -8, pow(-3,3,-8))
         self.assertEqual(pow(5,2) % -8, pow(5,2,-8))
 
-        for i in range(-10, 11):
-            for j in range(0, 6):
-                for k in range(-7, 11):
+        fuer i in range(-10, 11):
+            fuer j in range(0, 6):
+                fuer k in range(-7, 11):
                     if j >= 0 and k != 0:
                         self.assertEqual(
                             pow(i,j) % k,
@@ -98,8 +98,8 @@ klasse PowTest(unittest.TestCase):
         # Randomized modular tests, checking the identities
         #  a**(b1 + b2) == a**b1 * a**b2
         #  a**(b1 * b2) == (a**b1)**b2
-        prime = 1000000000039 # for speed, relatively small prime modulus
-        for i in range(10):
+        prime = 1000000000039 # fuer speed, relatively small prime modulus
+        fuer i in range(10):
             a = random.randrange(1000, 1000000)
             bpower = random.randrange(1000, 50000)
             b = random.randrange(1 << (bpower - 1), 1 << bpower)
@@ -130,9 +130,9 @@ klasse PowTest(unittest.TestCase):
         # test_math should also fail if that is happening
         eq(pow(a, 1.23e167), 1.0)
         eq(pow(a, -1.23e167), 1.0)
-        for b in range(-10, 11):
+        fuer b in range(-10, 11):
             eq(pow(a, float(b)), b & 1 and -1.0 or 1.0)
-        for n in range(0, 100):
+        fuer n in range(0, 100):
             fiveto = float(5 ** n)
             # For small n, fiveto will be odd.  Eventually we run out of
             # mantissa bits, though, and thereafer fiveto will be even.
@@ -142,8 +142,8 @@ klasse PowTest(unittest.TestCase):
         eq(expected, 1.0)   # else we didn't push fiveto to evenness
 
     def test_negative_exponent(self):
-        for a in range(-50, 50):
-            for m in range(-50, 50):
+        fuer a in range(-50, 50):
+            fuer m in range(-50, 50):
                 with self.subTest(a=a, m=m):
                     if m != 0 and math.gcd(a, m) == 1:
                         # Exponent -1 should give an inverse, with the

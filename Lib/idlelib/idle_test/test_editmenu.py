@@ -37,7 +37,7 @@ klasse PasteTest(unittest.TestCase):
     def test_paste_text(self):
         "Test pasting into text with and without a selection."
         text = self.text
-        for tag, ans in ('', 'onetwo\n'), ('sel', 'two\n'):
+        fuer tag, ans in ('', 'onetwo\n'), ('sel', 'two\n'):
             with self.subTest(tag=tag, ans=ans):
                 text.delete('1.0', 'end')
                 text.insert('1.0', 'one', tag)
@@ -46,10 +46,10 @@ klasse PasteTest(unittest.TestCase):
 
     def test_paste_entry(self):
         "Test pasting into an entry with and without a selection."
-        # Generated <<Paste>> fails for tk entry without empty select
-        # range for 'no selection'.  Live widget works fine.
-        for entry in self.entry, self.tentry:
-            for end, ans in (0, 'onetwo'), ('end', 'two'):
+        # Generated <<Paste>> fails fuer tk entry without empty select
+        # range fuer 'no selection'.  Live widget works fine.
+        fuer entry in self.entry, self.tentry:
+            fuer end, ans in (0, 'onetwo'), ('end', 'two'):
                 with self.subTest(entry=entry, end=end, ans=ans):
                     entry.delete(0, 'end')
                     entry.insert(0, 'one')
@@ -59,9 +59,9 @@ klasse PasteTest(unittest.TestCase):
 
     def test_paste_spin(self):
         "Test pasting into a spinbox with and without a selection."
-        # See note above for entry.
+        # See note above fuer entry.
         spin = self.spin
-        for end, ans in (0, 'onetwo'), ('end', 'two'):
+        fuer end, ans in (0, 'onetwo'), ('end', 'two'):
             with self.subTest(end=end, ans=ans):
                 spin.delete(0, 'end')
                 spin.insert(0, 'one')

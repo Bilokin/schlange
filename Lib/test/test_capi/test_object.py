@@ -37,7 +37,7 @@ klasse GetConstantTest(unittest.TestCase):
         self.assertIs(get_constant(Constant.Py_CONSTANT_ELLIPSIS), Ellipsis)
         self.assertIs(get_constant(Constant.Py_CONSTANT_NOT_IMPLEMENTED), NotImplemented)
 
-        for constant_id, constant_type, value in (
+        fuer constant_id, constant_type, value in (
             (Constant.Py_CONSTANT_ZERO, int, 0),
             (Constant.Py_CONSTANT_ONE, int, 1),
             (Constant.Py_CONSTANT_EMPTY_STR, str, ""),
@@ -163,11 +163,11 @@ klasse EnableDeferredRefcountingTest(unittest.TestCase):
 
         silly_list = [1, 2, 3]
         threads = [
-            Thread(target=silly_func, args=(silly_list,)) for _ in range(4)
+            Thread(target=silly_func, args=(silly_list,)) fuer _ in range(4)
         ]
 
         with threading_helper.start_threads(threads):
-            for i in range(10):
+            fuer i in range(10):
                 silly_list.append(i)
 
         if support.Py_GIL_DISABLED:
@@ -231,7 +231,7 @@ klasse CAPITest(unittest.TestCase):
             def __del__(self):
                 gc.collect()
 
-        for _ in range(1000):
+        fuer _ in range(1000):
             obj = MyObj()
             _testinternalcapi.incref_decref_delayed(obj)
 

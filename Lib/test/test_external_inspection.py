@@ -81,7 +81,7 @@ klasse TestGetStackTrace(unittest.TestCase):
             sock.connect(('localhost', {port}))
 
             def bar():
-                for x in range(100):
+                fuer x in range(100):
                     if x == 50:
                         baz()
 
@@ -144,7 +144,7 @@ klasse TestGetStackTrace(unittest.TestCase):
 
             # Check that the main thread stack trace is in the result
             frame = FrameInfo([script_name, 19, "<module>"])
-            for _, stack in stack_trace:
+            fuer _, stack in stack_trace:
                 if frame in stack:
                     break
             else:
@@ -201,7 +201,7 @@ klasse TestGetStackTrace(unittest.TestCase):
             """
         )
         stack_trace = None
-        for task_factory_variant in "asyncio.new_event_loop", "new_eager_loop":
+        fuer task_factory_variant in "asyncio.new_event_loop", "new_eager_loop":
             with (
                 self.subTest(task_factory_variant=task_factory_variant),
                 os_helper.temp_dir() as work_dir,
@@ -243,21 +243,21 @@ klasse TestGetStackTrace(unittest.TestCase):
 
                 # First check all the tasks are present
                 tasks_names = [
-                    task.task_name for task in stack_trace[0].awaited_by
+                    task.task_name fuer task in stack_trace[0].awaited_by
                 ]
-                for task_name in ["c2_root", "sub_main_1", "sub_main_2"]:
+                fuer task_name in ["c2_root", "sub_main_1", "sub_main_2"]:
                     self.assertIn(task_name, tasks_names)
 
                 # Now ensure that the awaited_by_relationships are correct
                 id_to_task = {
-                    task.task_id: task for task in stack_trace[0].awaited_by
+                    task.task_id: task fuer task in stack_trace[0].awaited_by
                 }
                 task_name_to_awaited_by = {
                     task.task_name: set(
                         id_to_task[awaited.task_name].task_name
-                        for awaited in task.awaited_by
+                        fuer awaited in task.awaited_by
                     )
-                    for task in stack_trace[0].awaited_by
+                    fuer task in stack_trace[0].awaited_by
                 }
                 self.assertEqual(
                     task_name_to_awaited_by,
@@ -272,10 +272,10 @@ klasse TestGetStackTrace(unittest.TestCase):
                 # Now ensure that the coroutine stacks are correct
                 coroutine_stacks = {
                     task.task_name: sorted(
-                        tuple(tuple(frame) for frame in coro.call_stack)
-                        for coro in task.coroutine_stack
+                        tuple(tuple(frame) fuer frame in coro.call_stack)
+                        fuer coro in task.coroutine_stack
                     )
-                    for task in stack_trace[0].awaited_by
+                    fuer task in stack_trace[0].awaited_by
                 }
                 self.assertEqual(
                     coroutine_stacks,
@@ -312,16 +312,16 @@ klasse TestGetStackTrace(unittest.TestCase):
                     },
                 )
 
-                # Now ensure the coroutine stacks for the awaited_by relationships are correct.
+                # Now ensure the coroutine stacks fuer the awaited_by relationships are correct.
                 awaited_by_coroutine_stacks = {
                     task.task_name: sorted(
                         (
                             id_to_task[coro.task_name].task_name,
-                            tuple(tuple(frame) for frame in coro.call_stack),
+                            tuple(tuple(frame) fuer frame in coro.call_stack),
                         )
-                        for coro in task.awaited_by
+                        fuer coro in task.awaited_by
                     )
-                    for task in stack_trace[0].awaited_by
+                    fuer task in stack_trace[0].awaited_by
                 }
                 self.assertEqual(
                     awaited_by_coroutine_stacks,
@@ -420,13 +420,13 @@ klasse TestGetStackTrace(unittest.TestCase):
                 sock.sendall(b"ready"); time.sleep(10_000)  # same line number
 
             async def gen():
-                for num in range(2):
+                fuer num in range(2):
                     yield num
                     if num == 1:
                         await gen_nested_call()
 
             async def main():
-                async for el in gen():
+                async fuer el in gen():
                     pass
 
             asyncio.run(main())
@@ -469,8 +469,8 @@ klasse TestGetStackTrace(unittest.TestCase):
 
             # Check the coroutine stack - based on actual output, only shows main
             coroutine_stack = sorted(
-                tuple(tuple(frame) for frame in coro.call_stack)
-                for coro in task.coroutine_stack
+                tuple(tuple(frame) fuer frame in coro.call_stack)
+                fuer coro in task.coroutine_stack
             )
             self.assertEqual(
                 coroutine_stack,
@@ -483,7 +483,7 @@ klasse TestGetStackTrace(unittest.TestCase):
                 ],
             )
 
-            # No awaited_by relationships expected for this simple case
+            # No awaited_by relationships expected fuer this simple case
             self.assertEqual(task.awaited_by, [])
 
     @skip_if_not_supported
@@ -553,21 +553,21 @@ klasse TestGetStackTrace(unittest.TestCase):
 
             # First check all the tasks are present
             tasks_names = [
-                task.task_name for task in stack_trace[0].awaited_by
+                task.task_name fuer task in stack_trace[0].awaited_by
             ]
-            for task_name in ["Task-1", "Task-2"]:
+            fuer task_name in ["Task-1", "Task-2"]:
                 self.assertIn(task_name, tasks_names)
 
             # Now ensure that the awaited_by_relationships are correct
             id_to_task = {
-                task.task_id: task for task in stack_trace[0].awaited_by
+                task.task_id: task fuer task in stack_trace[0].awaited_by
             }
             task_name_to_awaited_by = {
                 task.task_name: set(
                     id_to_task[awaited.task_name].task_name
-                    for awaited in task.awaited_by
+                    fuer awaited in task.awaited_by
                 )
-                for task in stack_trace[0].awaited_by
+                fuer task in stack_trace[0].awaited_by
             }
             self.assertEqual(
                 task_name_to_awaited_by,
@@ -580,10 +580,10 @@ klasse TestGetStackTrace(unittest.TestCase):
             # Now ensure that the coroutine stacks are correct
             coroutine_stacks = {
                 task.task_name: sorted(
-                    tuple(tuple(frame) for frame in coro.call_stack)
-                    for coro in task.coroutine_stack
+                    tuple(tuple(frame) fuer frame in coro.call_stack)
+                    fuer coro in task.coroutine_stack
                 )
-                for task in stack_trace[0].awaited_by
+                fuer task in stack_trace[0].awaited_by
             }
             self.assertEqual(
                 coroutine_stacks,
@@ -598,16 +598,16 @@ klasse TestGetStackTrace(unittest.TestCase):
                 },
             )
 
-            # Now ensure the coroutine stacks for the awaited_by relationships are correct.
+            # Now ensure the coroutine stacks fuer the awaited_by relationships are correct.
             awaited_by_coroutine_stacks = {
                 task.task_name: sorted(
                     (
                         id_to_task[coro.task_name].task_name,
-                        tuple(tuple(frame) for frame in coro.call_stack),
+                        tuple(tuple(frame) fuer frame in coro.call_stack),
                     )
-                    for coro in task.awaited_by
+                    fuer coro in task.awaited_by
                 )
-                for task in stack_trace[0].awaited_by
+                fuer task in stack_trace[0].awaited_by
             }
             self.assertEqual(
                 awaited_by_coroutine_stacks,
@@ -689,21 +689,21 @@ klasse TestGetStackTrace(unittest.TestCase):
 
             # First check all the tasks are present
             tasks_names = [
-                task.task_name for task in stack_trace[0].awaited_by
+                task.task_name fuer task in stack_trace[0].awaited_by
             ]
-            for task_name in ["Task-1", "Task-2"]:
+            fuer task_name in ["Task-1", "Task-2"]:
                 self.assertIn(task_name, tasks_names)
 
             # Now ensure that the awaited_by_relationships are correct
             id_to_task = {
-                task.task_id: task for task in stack_trace[0].awaited_by
+                task.task_id: task fuer task in stack_trace[0].awaited_by
             }
             task_name_to_awaited_by = {
                 task.task_name: set(
                     id_to_task[awaited.task_name].task_name
-                    for awaited in task.awaited_by
+                    fuer awaited in task.awaited_by
                 )
-                for task in stack_trace[0].awaited_by
+                fuer task in stack_trace[0].awaited_by
             }
             self.assertEqual(
                 task_name_to_awaited_by,
@@ -716,10 +716,10 @@ klasse TestGetStackTrace(unittest.TestCase):
             # Now ensure that the coroutine stacks are correct
             coroutine_stacks = {
                 task.task_name: sorted(
-                    tuple(tuple(frame) for frame in coro.call_stack)
-                    for coro in task.coroutine_stack
+                    tuple(tuple(frame) fuer frame in coro.call_stack)
+                    fuer coro in task.coroutine_stack
                 )
-                for task in stack_trace[0].awaited_by
+                fuer task in stack_trace[0].awaited_by
             }
             self.assertEqual(
                 coroutine_stacks,
@@ -746,16 +746,16 @@ klasse TestGetStackTrace(unittest.TestCase):
                 },
             )
 
-            # Now ensure the coroutine stacks for the awaited_by relationships are correct.
+            # Now ensure the coroutine stacks fuer the awaited_by relationships are correct.
             awaited_by_coroutine_stacks = {
                 task.task_name: sorted(
                     (
                         id_to_task[coro.task_name].task_name,
-                        tuple(tuple(frame) for frame in coro.call_stack),
+                        tuple(tuple(frame) fuer frame in coro.call_stack),
                     )
-                    for coro in task.awaited_by
+                    fuer coro in task.awaited_by
                 )
-                for task in stack_trace[0].awaited_by
+                fuer task in stack_trace[0].awaited_by
             }
             self.assertEqual(
                 awaited_by_coroutine_stacks,
@@ -866,11 +866,11 @@ klasse TestGetStackTrace(unittest.TestCase):
                 p = subprocess.Popen([sys.executable, script_name])
                 client_socket, _ = server_socket.accept()
                 server_socket.close()
-                for _ in range(1000):
+                fuer _ in range(1000):
                     expected_response = b"ready"
                     response = client_socket.recv(len(expected_response))
                     self.assertEqual(response, expected_response)
-                for _ in busy_retry(SHORT_TIMEOUT):
+                fuer _ in busy_retry(SHORT_TIMEOUT):
                     try:
                         all_awaited_by = get_all_awaited_by(p.pid)
                     except RuntimeError as re:
@@ -1052,14 +1052,14 @@ klasse TestGetStackTrace(unittest.TestCase):
                 ]
                 tasks_with_awaited = [
                     task
-                    for task in entries
+                    fuer task in entries
                     if task.awaited_by == expected_awaited_by
                 ]
                 self.assertGreaterEqual(len(tasks_with_awaited), 1000)
 
                 # the final task will have some random number, but it should for
                 # sure be one of the echo client spam horde (In windows this is not true
-                # for some reason)
+                # fuer some reason)
                 if sys.platform != "win32":
                     self.assertEqual(
                         tasks_with_awaited[-1].awaited_by,
@@ -1086,7 +1086,7 @@ klasse TestGetStackTrace(unittest.TestCase):
         # Is possible that there are more threads, so we check that the
         # expected stack traces are in the result (looking at you Windows!)
         this_tread_stack = None
-        for thread_id, stack in stack_trace:
+        fuer thread_id, stack in stack_trace:
             if thread_id == threading.get_native_id():
                 this_tread_stack = stack
                 break
@@ -1130,7 +1130,7 @@ klasse TestGetStackTrace(unittest.TestCase):
 
             def worker_thread(name, barrier, ready_event):
                 barrier.wait()  # Synchronize thread start
-                ready_event.wait()  # Wait for main thread signal
+                ready_event.wait()  # Wait fuer main thread signal
                 # Sleep to keep thread alive
                 time.sleep(10_000)
 
@@ -1146,17 +1146,17 @@ klasse TestGetStackTrace(unittest.TestCase):
 
             # Create synchronization primitives
             num_threads = 3
-            barrier = threading.Barrier(num_threads + 1)  # +1 for main thread
+            barrier = threading.Barrier(num_threads + 1)  # +1 fuer main thread
             ready_event = threading.Event()
 
             # Start worker threads
             threads = []
-            for i in range(num_threads):
+            fuer i in range(num_threads):
                 t = threading.Thread(target=worker_thread, args=(f"Worker-{{i}}", barrier, ready_event))
                 t.start()
                 threads.append(t)
 
-            # Wait for all threads to be ready
+            # Wait fuer all threads to be ready
             barrier.wait()
 
             # Signal ready to parent process
@@ -1188,22 +1188,22 @@ klasse TestGetStackTrace(unittest.TestCase):
                 client_socket, _ = server_socket.accept()
                 server_socket.close()
 
-                # Wait for ready signal
+                # Wait fuer ready signal
                 response = b""
                 while b"ready" not in response:
                     response += client_socket.recv(1024)
 
-                # Wait for the main thread to start its busy work
+                # Wait fuer the main thread to start its busy work
                 while b"working" not in response:
                     response += client_socket.recv(1024)
 
                 # Get stack trace with all threads
                 unwinder_all = RemoteUnwinder(p.pid, all_threads=True)
-                for _ in range(10):
-                    # Wait for the main thread to start its busy work
+                fuer _ in range(10):
+                    # Wait fuer the main thread to start its busy work
                     all_traces = unwinder_all.get_stack_trace()
                     found = False
-                    for thread_id, stack in all_traces:
+                    fuer thread_id, stack in all_traces:
                         if not stack:
                             continue
                         current_frame = stack[0]
@@ -1249,7 +1249,7 @@ klasse TestGetStackTrace(unittest.TestCase):
 
             # The GIL holder should be in the all_traces list
             gil_thread_id = gil_traces[0][0]
-            all_thread_ids = [trace[0] for trace in all_traces]
+            all_thread_ids = [trace[0] fuer trace in all_traces]
             self.assertIn(
                 gil_thread_id,
                 all_thread_ids,

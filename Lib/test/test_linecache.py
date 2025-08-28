@@ -1,4 +1,4 @@
-""" Tests for the linecache module """
+""" Tests fuer the linecache module """
 
 import linecache
 import unittest
@@ -61,7 +61,7 @@ klasse GetLineTestsGoodData(TempFile):
 
     def test_getline(self):
         with tokenize.open(self.file_name) as fp:
-            for index, line in enumerate(fp):
+            fuer index, line in enumerate(fp):
                 if not line.endswith('\n'):
                     line += '\n'
 
@@ -107,7 +107,7 @@ klasse BadUnicode_WithDeclaration(GetLineTestsBadData, unittest.TestCase):
 
 klasse FakeLoader:
     def get_source(self, fullname):
-        return f'source for {fullname}'
+        return f'source fuer {fullname}'
 
 
 klasse NoSourceLoader:
@@ -120,7 +120,7 @@ klasse LineCacheTests(unittest.TestCase):
     def test_getline(self):
         getline = linecache.getline
 
-        # Bad values for line number should return an empty string
+        # Bad values fuer line number should return an empty string
         self.assertEqual(getline(FILENAME, 2**15), EMPTY)
         self.assertEqual(getline(FILENAME, -1), EMPTY)
 
@@ -132,10 +132,10 @@ klasse LineCacheTests(unittest.TestCase):
         self.assertEqual(getline(INVALID_NAME, 1), EMPTY)
 
         # Check module loading
-        for entry in MODULES:
+        fuer entry in MODULES:
             filename = os.path.join(MODULE_PATH, entry) + '.py'
             with open(filename, encoding='utf-8') as file:
-                for index, line in enumerate(file):
+                fuer index, line in enumerate(file):
                     self.assertEqual(line, getline(filename, index + 1))
 
         # Check that bogus data isn't returned (issue #1309567)
@@ -151,19 +151,19 @@ klasse LineCacheTests(unittest.TestCase):
 
     def test_clearcache(self):
         cached = []
-        for entry in MODULES:
+        fuer entry in MODULES:
             filename = os.path.join(MODULE_PATH, entry) + '.py'
             cached.append(filename)
             linecache.getline(filename, 1)
 
         # Are all files cached?
         self.assertNotEqual(cached, [])
-        cached_empty = [fn for fn in cached if fn not in linecache.cache]
+        cached_empty = [fn fuer fn in cached if fn not in linecache.cache]
         self.assertEqual(cached_empty, [])
 
         # Can we clear the cache?
         linecache.clearcache()
-        cached_empty = [fn for fn in cached if fn in linecache.cache]
+        cached_empty = [fn fuer fn in cached if fn in linecache.cache]
         self.assertEqual(cached_empty, [])
 
     def test_checkcache(self):
@@ -178,7 +178,7 @@ klasse LineCacheTests(unittest.TestCase):
         # Keep a copy of the old contents
         source_list = []
         with open(source_name, encoding='utf-8') as source:
-            for index, line in enumerate(source):
+            fuer index, line in enumerate(source):
                 self.assertEqual(line, getline(source_name, index + 1))
                 source_list.append(line)
 
@@ -189,13 +189,13 @@ klasse LineCacheTests(unittest.TestCase):
         linecache.checkcache('dummy')
 
         # Check that the cache matches the old contents
-        for index, line in enumerate(source_list):
+        fuer index, line in enumerate(source_list):
             self.assertEqual(line, getline(source_name, index + 1))
 
         # Update the cache and check whether it matches the new source file
         linecache.checkcache(source_name)
         with open(source_name, encoding='utf-8') as source:
-            for index, line in enumerate(source):
+            fuer index, line in enumerate(source):
                 self.assertEqual(line, getline(source_name, index + 1))
                 source_list.append(line)
 
@@ -259,7 +259,7 @@ klasse LineCacheTests(unittest.TestCase):
     def test_loader(self):
         filename = 'scheme://path'
 
-        for loader in (None, object(), NoSourceLoader()):
+        fuer loader in (None, object(), NoSourceLoader()):
             linecache.clearcache()
             module_globals = {'__name__': 'a.b.c', '__loader__': loader}
             self.assertEqual(linecache.getlines(filename, module_globals), [])
@@ -267,21 +267,21 @@ klasse LineCacheTests(unittest.TestCase):
         linecache.clearcache()
         module_globals = {'__name__': 'a.b.c', '__loader__': FakeLoader()}
         self.assertEqual(linecache.getlines(filename, module_globals),
-                         ['source for a.b.c\n'])
+                         ['source fuer a.b.c\n'])
 
-        for spec in (None, object(), ModuleSpec('', FakeLoader())):
+        fuer spec in (None, object(), ModuleSpec('', FakeLoader())):
             linecache.clearcache()
             module_globals = {'__name__': 'a.b.c', '__loader__': FakeLoader(),
                               '__spec__': spec}
             self.assertEqual(linecache.getlines(filename, module_globals),
-                             ['source for a.b.c\n'])
+                             ['source fuer a.b.c\n'])
 
         linecache.clearcache()
         spec = ModuleSpec('x.y.z', FakeLoader())
         module_globals = {'__name__': 'a.b.c', '__loader__': spec.loader,
                           '__spec__': spec}
         self.assertEqual(linecache.getlines(filename, module_globals),
-                         ['source for x.y.z\n'])
+                         ['source fuer x.y.z\n'])
 
     def test_frozen(self):
         filename = '<frozen fakemodule>'
@@ -297,13 +297,13 @@ klasse LineCacheTests(unittest.TestCase):
         self.assertEqual(empty, [])
 
     def test_invalid_names(self):
-        for name, desc in [
+        fuer name, desc in [
             ('\x00', 'NUL bytes filename'),
             (__file__ + '\x00', 'filename with embedded NUL bytes'),
             # A filename with surrogate codes. A UnicodeEncodeError is raised
             # by os.stat() upon querying, which is a subclass of ValueError.
             ("\uD834\uDD1E.py", 'surrogate codes (MUSICAL SYMBOL G CLEF)'),
-            # For POSIX platforms, an OSError will be raised but for Windows
+            # For POSIX platforms, an OSError will be raised but fuer Windows
             # platforms, a ValueError is raised due to the path_t converter.
             # See: https://github.com/python/cpython/issues/122170
             ('a' * 1_000_000, 'very long filename'),
@@ -316,7 +316,7 @@ klasse LineCacheTests(unittest.TestCase):
 
             # hack into the cache (it shouldn't be allowed
             # but we never know what people do...)
-            for key, fullname in [(name, 'ok'), ('key', name), (name, name)]:
+            fuer key, fullname in [(name, 'ok'), ('key', name), (name, name)]:
                 with self.subTest(f'checkcache: {desc}',
                                   key=key, fullname=fullname):
                     linecache.clearcache()
@@ -342,7 +342,7 @@ klasse LineCacheInvalidationTests(unittest.TestCase):
         self.modified_file = os_helper.TESTFN + '.2'
         self.unchanged_file = os_helper.TESTFN + '.3'
 
-        for fname in (self.deleted_file,
+        fuer fname in (self.deleted_file,
                       self.modified_file,
                       self.unchanged_file):
             self.addCleanup(os_helper.unlink, fname)
@@ -383,7 +383,7 @@ klasse MultiThreadingTest(unittest.TestCase):
 
         with tempfile.TemporaryDirectory() as tmpdirname:
             filenames = []
-            for i in range(10):
+            fuer i in range(10):
                 name = os.path.join(tmpdirname, f"test_{i}.py")
                 with open(name, "w") as h:
                     h.write("import time\n")
@@ -392,15 +392,15 @@ klasse MultiThreadingTest(unittest.TestCase):
 
             def linecache_get_line(b):
                 b.wait()
-                for _ in range(100):
-                    for name in filenames:
+                fuer _ in range(100):
+                    fuer name in filenames:
                         linecache.getline(name, 1)
 
             def check(funcs):
                 barrier = threading.Barrier(len(funcs))
                 threads = []
 
-                for func in funcs:
+                fuer func in funcs:
                     thread = threading.Thread(target=func, args=(barrier,))
 
                     threads.append(thread)

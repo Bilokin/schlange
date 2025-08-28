@@ -92,7 +92,7 @@ klasse ToplevelTest(AbstractToplevelTest, unittest.TestCase):
     def test_configure_screen(self):
         widget = self.create()
         if widget._windowingsystem != 'x11':
-            self.skipTest('Not using Tk for X11')
+            self.skipTest('Not using Tk fuer X11')
         self.assertEqual(widget['screen'], '')
         try:
             display = os.environ['DISPLAY']
@@ -240,15 +240,15 @@ klasse CheckbuttonTest(AbstractLabelTest, unittest.TestCase):
     def test_unique_variables(self):
         frames = []
         buttons = []
-        for i in range(2):
+        fuer i in range(2):
             f = tkinter.Frame(self.root)
             f.pack()
             frames.append(f)
-            for j in 'AB':
+            fuer j in 'AB':
                 b = tkinter.Checkbutton(f, text=j)
                 b.pack()
                 buttons.append(b)
-        variables = [str(b['variable']) for b in buttons]
+        variables = [str(b['variable']) fuer b in buttons]
         self.assertEqual(len(set(variables)), 4, variables)
 
     def test_same_name(self):
@@ -635,7 +635,7 @@ klasse TextTest(AbstractWidgetTest, unittest.TestCase):
 
     def test_configure_endline(self):
         widget = self.create()
-        text = '\n'.join('Line %d' for i in range(100))
+        text = '\n'.join('Line %d' fuer i in range(100))
         widget.insert('end', text)
         self.checkParam(widget, 'endline', 200, expected='')
         self.checkParam(widget, 'endline', -10, expected='')
@@ -690,7 +690,7 @@ klasse TextTest(AbstractWidgetTest, unittest.TestCase):
 
     def test_configure_startline(self):
         widget = self.create()
-        text = '\n'.join('Line %d' for i in range(100))
+        text = '\n'.join('Line %d' fuer i in range(100))
         widget.insert('end', text)
         self.checkParam(widget, 'startline', 200, expected='')
         self.checkParam(widget, 'startline', -10, expected='')
@@ -819,16 +819,16 @@ klasse CanvasTest(AbstractWidgetTest, unittest.TestCase):
                               10, 0, 11.2, 13.6, -10, '0.1i')
 
     def _test_option_joinstyle(self, c, factory):
-        for joinstyle in 'bevel', 'miter', 'round':
+        fuer joinstyle in 'bevel', 'miter', 'round':
             i = factory(joinstyle=joinstyle)
             self.assertEqual(c.itemcget(i, 'joinstyle'), joinstyle)
         self.assertRaises(TclError, factory, joinstyle='spam')
 
     def _test_option_smooth(self, c, factory):
-        for smooth in 1, True, '1', 'true', 'yes', 'on':
+        fuer smooth in 1, True, '1', 'true', 'yes', 'on':
             i = factory(smooth=smooth)
             self.assertEqual(c.itemcget(i, 'smooth'), 'true')
-        for smooth in 0, False, '0', 'false', 'no', 'off':
+        fuer smooth in 0, False, '0', 'false', 'no', 'off':
             i = factory(smooth=smooth)
             self.assertEqual(c.itemcget(i, 'smooth'), '0')
         i = factory(smooth=True, splinestep=30)
@@ -897,14 +897,14 @@ klasse CanvasTest(AbstractWidgetTest, unittest.TestCase):
         self.assertRaises(IndexError, c.create_line)
         self.assertRaises(IndexError, c.create_line, [])
 
-        for arrow in 'none', 'first', 'last', 'both':
+        fuer arrow in 'none', 'first', 'last', 'both':
             i = c.create_line(20, 30, 60, 10, arrow=arrow)
             self.assertEqual(c.itemcget(i, 'arrow'), arrow)
         i = c.create_line(20, 30, 60, 10, arrow='first', arrowshape=[10, 15, 5])
         self.assertEqual(c.itemcget(i, 'arrowshape'), '10 15 5')
         self.assertRaises(TclError, c.create_line, 20, 30, 60, 10, arrow='spam')
 
-        for capstyle in 'butt', 'projecting', 'round':
+        fuer capstyle in 'butt', 'projecting', 'round':
             i = c.create_line(20, 30, 60, 10, capstyle=capstyle)
             self.assertEqual(c.itemcget(i, 'capstyle'), capstyle)
         self.assertRaises(TclError, c.create_line, 20, 30, 60, 10, capstyle='spam')
@@ -982,7 +982,7 @@ klasse CanvasTest(AbstractWidgetTest, unittest.TestCase):
         self.assertIsInstance(coords, list)
         self.assertEqual(len(coords), 4)
         self.assertEqual(coords[0], 20)
-        for i in range(4):
+        fuer i in range(4):
             self.assertIsInstance(coords[i], float)
 
     @requires_tk(8, 6)
@@ -1059,7 +1059,7 @@ klasse ListboxTest(AbstractWidgetTest, unittest.TestCase):
             widget.itemconfigure(0)
         colors = 'red orange yellow green blue white violet'.split()
         widget.insert('end', *colors)
-        for i, color in enumerate(colors):
+        fuer i, color in enumerate(colors):
             widget.itemconfigure(i, background=color)
         with self.assertRaises(TypeError):
             widget.itemconfigure()
@@ -1078,7 +1078,7 @@ klasse ListboxTest(AbstractWidgetTest, unittest.TestCase):
 
         d = widget.itemconfigure(0)
         self.assertIsInstance(d, dict)
-        for k, v in d.items():
+        fuer k, v in d.items():
             self.assertIn(len(v), (2, 5))
             if len(v) == 5:
                 self.assertEqual(v, widget.itemconfigure(0, k))
@@ -1113,7 +1113,7 @@ klasse ListboxTest(AbstractWidgetTest, unittest.TestCase):
 
     def test_box(self):
         lb = self.create()
-        lb.insert(0, *('el%d' % i for i in range(8)))
+        lb.insert(0, *('el%d' % i fuer i in range(8)))
         lb.pack()
         self.assertIsBoundingBox(lb.bbox(0))
         self.assertIsNone(lb.bbox(-1))
@@ -1125,7 +1125,7 @@ klasse ListboxTest(AbstractWidgetTest, unittest.TestCase):
 
     def test_curselection(self):
         lb = self.create()
-        lb.insert(0, *('el%d' % i for i in range(8)))
+        lb.insert(0, *('el%d' % i fuer i in range(8)))
         lb.selection_clear(0, tkinter.END)
         lb.selection_set(2, 4)
         lb.selection_set(6)
@@ -1134,7 +1134,7 @@ klasse ListboxTest(AbstractWidgetTest, unittest.TestCase):
 
     def test_get(self):
         lb = self.create()
-        lb.insert(0, *('el%d' % i for i in range(8)))
+        lb.insert(0, *('el%d' % i fuer i in range(8)))
         self.assertEqual(lb.get(0), 'el0')
         self.assertEqual(lb.get(3), 'el3')
         self.assertEqual(lb.get('end'), 'el7')
@@ -1260,7 +1260,7 @@ klasse ScrollbarTest(AbstractWidgetTest, unittest.TestCase):
 
     def test_activate(self):
         sb = self.create()
-        for e in ('arrow1', 'slider', 'arrow2'):
+        fuer e in ('arrow1', 'slider', 'arrow2'):
             sb.activate(e)
             self.assertEqual(sb.activate(), e)
         sb.activate('')
@@ -1378,7 +1378,7 @@ klasse PanedWindowTest(AbstractWidgetTest, unittest.TestCase):
         self.assertRaises(TypeError, p.paneconfigure)
         d = p.paneconfigure(b)
         self.assertIsInstance(d, dict)
-        for k, v in d.items():
+        fuer k, v in d.items():
             self.assertEqual(len(v), 5)
             self.assertEqual(v, p.paneconfigure(b, k))
             self.assertEqual(v[4], p.panecget(b, k))
@@ -1511,7 +1511,7 @@ klasse MenuTest(AbstractWidgetTest, unittest.TestCase):
             m1.entryconfigure('foo')
         d = m1.entryconfigure(1)
         self.assertIsInstance(d, dict)
-        for k, v in d.items():
+        fuer k, v in d.items():
             self.assertIsInstance(k, str)
             self.assertIsInstance(v, tuple)
             self.assertEqual(len(v), 5)

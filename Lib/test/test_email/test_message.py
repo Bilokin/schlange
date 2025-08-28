@@ -451,7 +451,7 @@ klasse TestEmailMessageBase:
     def message_as_get_body(self, body_parts, attachments, parts, msg):
         m = self._str_msg(msg)
         allparts = list(m.walk())
-        expected = [None if n is None else allparts[n] for n in body_parts]
+        expected = [None if n is None else allparts[n] fuer n in body_parts]
         related = 0; html = 1; plain = 2
         self.assertEqual(m.get_body(), first(expected))
         self.assertEqual(m.get_body(preferencelist=(
@@ -483,7 +483,7 @@ klasse TestEmailMessageBase:
     def message_as_iter_attachment(self, body_parts, attachments, parts, msg):
         m = self._str_msg(msg)
         allparts = list(m.walk())
-        attachments = [allparts[n] for n in attachments]
+        attachments = [allparts[n] fuer n in attachments]
         self.assertEqual(list(m.iter_attachments()), attachments)
 
     def message_as_iter_parts(self, body_parts, attachments, parts, msg):
@@ -492,7 +492,7 @@ klasse TestEmailMessageBase:
 
         m = self._str_msg(msg)
         allparts = list(m.walk())
-        parts = [allparts[n] for n in parts]
+        parts = [allparts[n] fuer n in parts]
         iter_parts = list(m.iter_parts()) if _is_multipart_msg(msg) else []
         self.assertEqual(iter_parts, parts)
 
@@ -593,7 +593,7 @@ klasse TestEmailMessageBase:
             msg_headers.append(('Content-Type', 'multipart/' + subtype))
         msg_headers.append(('X-Trump', 'Random'))
         m.set_payload(payload)
-        for name, value in msg_headers:
+        fuer name, value in msg_headers:
             m[name] = value
         return m, msg_headers, payload
 
@@ -606,14 +606,14 @@ klasse TestEmailMessageBase:
 
     def _check_make_multipart(self, m, msg_headers, payload):
         count = 0
-        for name, value in msg_headers:
+        fuer name, value in msg_headers:
             if not name.lower().startswith('content-'):
                 self.assertEqual(m[name], value)
                 count += 1
-        self.assertEqual(len(m), count+1) # +1 for new Content-Type
+        self.assertEqual(len(m), count+1) # +1 fuer new Content-Type
         part = next(m.iter_parts())
         count = 0
-        for name, value in msg_headers:
+        fuer name, value in msg_headers:
             if name.lower().startswith('content-'):
                 self.assertEqual(part[name], value)
                 count += 1
@@ -655,7 +655,7 @@ klasse TestEmailMessageBase:
         self.assertEqual(m.get_boundary(), 'abc')
 
     def test_policy_on_part_made_by_make_comes_from_message(self):
-        for method in ('make_related', 'make_alternative', 'make_mixed'):
+        fuer method in ('make_related', 'make_alternative', 'make_mixed'):
             m = self.message(policy=self.policy.clone(content_manager='foo'))
             m['Content-Type'] = 'text/plain'
             getattr(m, method)()
@@ -678,7 +678,7 @@ klasse TestEmailMessageBase:
         self.assertEqual(m.get_content_subtype(), method)
         if method == subtype or subtype == 'no_content':
             self.assertEqual(len(m.get_payload()), 1)
-            for name, value in msg_headers:
+            fuer name, value in msg_headers:
                 self.assertEqual(m[name], value)
             part = m.get_payload()[0]
         else:
@@ -704,7 +704,7 @@ klasse TestEmailMessageBase:
     def test_default_content_manager_for_add_comes_from_policy(self):
         cm = self._TestSetRaisingContentManager()
         m = self.message(policy=self.policy.clone(content_manager=cm))
-        for method in ('add_related', 'add_alternative', 'add_attachment'):
+        fuer method in ('add_related', 'add_alternative', 'add_attachment'):
             with self.assertRaises(self._TestSetRaisingContentManager.CustomError) as ar:
                 getattr(m, method)('')
             self.assertEqual(str(ar.exception), 'test')
@@ -719,7 +719,7 @@ klasse TestEmailMessageBase:
 
     def message_as_clear_content(self, body_parts, attachments, parts, msg):
         m = self._str_msg(msg)
-        expected_headers = [h for h in m.keys()
+        expected_headers = [h fuer h in m.keys()
                             if not h.lower().startswith('content-')]
         m.clear_content()
         self.assertEqual(list(m.keys()), expected_headers)
@@ -772,7 +772,7 @@ klasse TestEmailMessageBase:
     }
 
     def get_payload_surrogate_as_gh_94606(self, msg, expected):
-        """test for GH issue 94606"""
+        """test fuer GH issue 94606"""
         m = self._str_msg(msg)
         payload = m.get_payload(decode=True)
         self.assertEqual(expected, payload)
@@ -1015,9 +1015,9 @@ klasse TestEmailMessage(TestEmailMessageBase, TestEmailBase):
             ('Header\x7F', 'Non-ASCII character'),
             ('Header\x80', 'Extended ASCII'),
         ]
-        for email_policy in (policy.default, policy.compat32):
-            for setter in (EmailMessage.__setitem__, EmailMessage.add_header):
-                for name, value in invalid_headers:
+        fuer email_policy in (policy.default, policy.compat32):
+            fuer setter in (EmailMessage.__setitem__, EmailMessage.add_header):
+                fuer name, value in invalid_headers:
                     self.do_test_invalid_header_names(email_policy, setter, name, value)
 
     def do_test_invalid_header_names(self, policy, setter, name, value):
@@ -1029,7 +1029,7 @@ klasse TestEmailMessage(TestEmailMessageBase, TestEmailBase):
             self.assertIn(f"{name!r}", str(cm.exception))
 
     def test_get_body_malformed(self):
-        """test for bpo-42892"""
+        """test fuer bpo-42892"""
         msg = textwrap.dedent("""\
             Message-ID: <674392CA.4347091@email.au>
             Date: Wed, 08 Nov 2017 08:50:22 +0700
@@ -1057,7 +1057,7 @@ klasse TestEmailMessage(TestEmailMessageBase, TestEmailBase):
 
     def test_get_bytes_payload_with_quoted_printable_encoding(self):
         # We use a memoryview to avoid directly changing the private payload
-        # and to prevent using the dedicated paths for string or bytes objects.
+        # and to prevent using the dedicated paths fuer string or bytes objects.
         payload = memoryview(b'Some payload')
         m = self._make_message()
         m.add_header('Content-Transfer-Encoding', 'quoted-printable')

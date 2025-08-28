@@ -35,7 +35,7 @@ klasse TestSetPointerType(unittest.TestCase):
         p = c1
 
         result = []
-        for i in range(8):
+        fuer i in range(8):
             result.append(p.name)
             p = p.next[0]
         self.assertEqual(result, [b"foo", b"bar"] * 4)

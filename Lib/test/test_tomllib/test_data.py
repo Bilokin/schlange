@@ -20,7 +20,7 @@ VALID_FILES = tuple((DATA_DIR / "valid").glob("**/*.toml"))
 assert VALID_FILES, "Valid TOML test files not found"
 
 _expected_files = []
-for p in VALID_FILES:
+fuer p in VALID_FILES:
     json_path = p.with_suffix(".json")
     try:
         text = json.loads(json_path.read_bytes().decode())
@@ -35,7 +35,7 @@ assert INVALID_FILES, "Invalid TOML test files not found"
 
 klasse TestData(unittest.TestCase):
     def test_invalid(self):
-        for invalid in INVALID_FILES:
+        fuer invalid in INVALID_FILES:
             with self.subTest(msg=invalid.stem):
                 toml_bytes = invalid.read_bytes()
                 try:
@@ -47,7 +47,7 @@ klasse TestData(unittest.TestCase):
                     tomllib.loads(toml_str)
 
     def test_valid(self):
-        for valid, expected in zip(VALID_FILES, VALID_FILES_EXPECTED):
+        fuer valid, expected in zip(VALID_FILES, VALID_FILES_EXPECTED):
             with self.subTest(msg=valid.stem):
                 if isinstance(expected, MissingFile):
                     # For a poor man's xfail, assert that this is one of the

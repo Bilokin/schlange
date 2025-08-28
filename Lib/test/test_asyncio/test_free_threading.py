@@ -30,13 +30,13 @@ klasse TestFreeThreading:
             tasks = set()
 
             async with asyncio.TaskGroup() as tg:
-                for _ in range(100):
+                fuer _ in range(100):
                     tasks.add(tg.create_task(coro()))
 
                 all_tasks = asyncio.all_tasks(loop)
                 self.assertEqual(len(all_tasks), 101)
 
-                for task in all_tasks:
+                fuer task in all_tasks:
                     self.assertEqual(task.get_loop(), loop)
                     self.assertFalse(task.done())
 
@@ -53,7 +53,7 @@ klasse TestFreeThreading:
 
         threads = []
 
-        for _ in range(10):
+        fuer _ in range(10):
             thread = Thread(target=runner)
             threads.append(thread)
 
@@ -63,7 +63,7 @@ klasse TestFreeThreading:
     def test_all_tasks_different_thread(self) -> None:
         loop = None
         started = threading.Event()
-        done = threading.Event() # used for main task not finishing early
+        done = threading.Event() # used fuer main task not finishing early
         async def coro():
             await asyncio.Future()
 
@@ -74,7 +74,7 @@ klasse TestFreeThreading:
             nonlocal tasks, loop
             loop = asyncio.get_running_loop()
             started.set()
-            for i in range(1000):
+            fuer i in range(1000):
                 with lock:
                     asyncio.create_task(coro())
                     tasks = asyncio.all_tasks(loop)
@@ -87,7 +87,7 @@ klasse TestFreeThreading:
             with lock:
                 self.assertSetEqual(tasks & asyncio.all_tasks(loop), tasks)
 
-        threads = [threading.Thread(target=check) for _ in range(10)]
+        threads = [threading.Thread(target=check) fuer _ in range(10)]
         runner.start()
 
         with threading_helper.start_threads(threads):
@@ -129,7 +129,7 @@ klasse TestFreeThreading:
         async def main():
             loop = asyncio.get_running_loop()
             async with asyncio.TaskGroup() as tg:
-                for _ in range(10):
+                fuer _ in range(10):
                     tg.create_task(asyncio.to_thread(in_thread, loop))
             self.assertEqual(results, [42] * 10)
 
@@ -150,13 +150,13 @@ klasse TestFreeThreading:
         async def main():
             loop = asyncio.get_running_loop()
             tasks = []
-            for _ in range(10):
+            fuer _ in range(10):
                 task = loop.create_task(asyncio.to_thread(in_thread, loop))
                 tasks.append(task)
             results = await asyncio.gather(*tasks, return_exceptions=True)
 
             self.assertEqual(len(results), 10)
-            for result in results:
+            fuer result in results:
                 self.assertIsInstance(result, MyException)
                 self.assertEqual(str(result), "test")
 

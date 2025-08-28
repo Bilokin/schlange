@@ -17,11 +17,11 @@ def main():
         print(msg)
         print("usage:", sys.argv[0], "[-t tabwidth] file ...")
         return
-    for optname, optvalue in opts:
+    fuer optname, optvalue in opts:
         if optname == '-t':
             tabsize = int(optvalue)
 
-    return max(process(filename, tabsize) for filename in args)
+    return max(process(filename, tabsize) fuer filename in args)
 
 
 def process(filename, tabsize, verbose=True):

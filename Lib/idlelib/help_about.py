@@ -1,4 +1,4 @@
-"""About Dialog for IDLE
+"""About Dialog fuer IDLE
 
 """
 import os
@@ -20,7 +20,7 @@ else:
 
 
 klasse AboutDialog(Toplevel):
-    """Modal about dialog for idle
+    """Modal about dialog fuer idle
 
     """
     def __init__(self, parent, title=None, *, _htest=False, _utest=False):
@@ -159,7 +159,7 @@ klasse AboutDialog(Toplevel):
         "Handle Python Credits button event."
         self.display_printer_text('About - Python Credits', credits)
 
-    # Encode CREDITS.txt to utf-8 for proper version of Loewis.
+    # Encode CREDITS.txt to utf-8 fuer proper version of Loewis.
     # Specify others as ascii until need utf-8, so catch errors.
     def show_idle_credits(self):
         "Handle Idle Credits button event."
@@ -174,7 +174,7 @@ klasse AboutDialog(Toplevel):
         self.display_file_text('About - News', 'News3.txt', 'utf-8')
 
     def display_printer_text(self, title, printer):
-        """Create textview for built-in constants.
+        """Create textview fuer built-in constants.
 
         Built-in constants have type _sitebuiltins._Printer.  The
         text is extracted from the built-in and then sent to a text
@@ -187,7 +187,7 @@ klasse AboutDialog(Toplevel):
             self, title, text, _utest=self._utest)
 
     def display_file_text(self, title, filename, encoding=None):
-        """Create textview for filename.
+        """Create textview fuer filename.
 
         The filename needs to be in the current directory.  The path
         is sent to a text viewer with self as the parent, title as

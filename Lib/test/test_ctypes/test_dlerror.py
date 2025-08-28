@@ -41,7 +41,7 @@ klasse TestNullDlsym(unittest.TestCase):
 
     The objective way of telling if an error during symbol
     lookup happened is to call glibc's dlerror() and check
-    for a non-NULL return value.
+    fuer a non-NULL return value.
 
     However, there can be cases where dlsym() returns NULL
     and dlerror() is also NULL, meaning that glibc did not

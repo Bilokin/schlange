@@ -2,7 +2,7 @@ import marshal
 import bkfile
 
 
-# Write a file containing frozen code for the modules in the dictionary.
+# Write a file containing frozen code fuer the modules in the dictionary.
 
 header = """
 #include "Python.h"
@@ -34,7 +34,7 @@ def makefreeze(base, dict, debug=0, entry_point=None, fail_import=()):
     done = []
     files = []
     mods = sorted(dict.keys())
-    for mod in mods:
+    fuer mod in mods:
         m = dict[mod]
         mangled = "__".join(mod.split("."))
         if m.__code__:
@@ -53,17 +53,17 @@ def makefreeze(base, dict, debug=0, entry_point=None, fail_import=()):
     if debug:
         print("generating table of frozen modules")
     with bkfile.open(base + 'frozen.c', 'w') as outfp:
-        for mod, mangled, size, _ in done:
+        fuer mod, mangled, size, _ in done:
             outfp.write('extern unsigned char M_%s[];\n' % mangled)
         outfp.write(header)
-        for mod, mangled, size, is_package in done:
+        fuer mod, mangled, size, is_package in done:
             outfp.write('\t{"%s", M_%s, %d, %s},\n' % (mod, mangled, size, is_package))
         outfp.write('\n')
         # The following modules have a NULL code pointer, indicating
-        # that the frozen program should not search for them on the host
+        # that the frozen program should not search fuer them on the host
         # system. Importing them will *always* raise an ImportError.
         # The zero value size is never used.
-        for mod in fail_import:
+        fuer mod in fail_import:
             outfp.write('\t{"%s", NULL, 0},\n' % (mod,))
         outfp.write(trailer)
         outfp.write(entry_point)
@@ -71,15 +71,15 @@ def makefreeze(base, dict, debug=0, entry_point=None, fail_import=()):
 
 
 
-# Write a C initializer for a module containing the frozen python code.
+# Write a C initializer fuer a module containing the frozen python code.
 # The array is called M_<mod>.
 
 def writecode(fp, mod, data):
     print('unsigned char M_%s[] = {' % mod, file=fp)
     indent = ' ' * 4
-    for i in range(0, len(data), 16):
+    fuer i in range(0, len(data), 16):
         print(indent, file=fp, end='')
-        for c in bytes(data[i:i+16]):
+        fuer c in bytes(data[i:i+16]):
             print('%d,' % c, file=fp, end='')
         print('', file=fp)
     print('};', file=fp)

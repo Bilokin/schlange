@@ -45,8 +45,8 @@ similar types.
 
 Classes can use the same interfaces to control copying that they use
 to control pickling: they can define methods called __getinitargs__(),
-__getstate__() and __setstate__().  See the documentation for module
-"pickle" for information on these methods.
+__getstate__() and __setstate__().  See the documentation fuer module
+"pickle" fuer information on these methods.
 """
 
 import types
@@ -62,7 +62,7 @@ __all__ = ["Error", "copy", "deepcopy", "replace"]
 def copy(x):
     """Shallow copy operation on arbitrary Python objects.
 
-    See the module's __doc__ string for more info.
+    See the module's __doc__ string fuer more info.
     """
 
     cls = type(x)
@@ -110,7 +110,7 @@ _copy_builtin_containers = {list, dict, set, bytearray}
 def deepcopy(x, memo=None, _nil=[]):
     """Deep copy operation on arbitrary Python objects.
 
-    See the module's __doc__ string for more info.
+    See the module's __doc__ string fuer more info.
     """
 
     cls = type(x)
@@ -173,20 +173,20 @@ def _deepcopy_list(x, memo, deepcopy=deepcopy):
     y = []
     memo[id(x)] = y
     append = y.append
-    for a in x:
+    fuer a in x:
         append(deepcopy(a, memo))
     return y
 d[list] = _deepcopy_list
 
 def _deepcopy_tuple(x, memo, deepcopy=deepcopy):
-    y = [deepcopy(a, memo) for a in x]
+    y = [deepcopy(a, memo) fuer a in x]
     # We're not going to put the tuple in the memo, but it's still important we
-    # check for it, in case the tuple contains recursive mutable structures.
+    # check fuer it, in case the tuple contains recursive mutable structures.
     try:
         return memo[id(x)]
     except KeyError:
         pass
-    for k, j in zip(x, y):
+    fuer k, j in zip(x, y):
         if k is not j:
             y = tuple(y)
             break
@@ -198,7 +198,7 @@ d[tuple] = _deepcopy_tuple
 def _deepcopy_dict(x, memo, deepcopy=deepcopy):
     y = {}
     memo[id(x)] = y
-    for key, value in x.items():
+    fuer key, value in x.items():
         y[deepcopy(key, memo)] = deepcopy(value, memo)
     return y
 d[dict] = _deepcopy_dict
@@ -230,7 +230,7 @@ def _reconstruct(x, memo, func, args,
                  *, deepcopy=deepcopy):
     deep = memo is not None
     if deep and args:
-        args = (deepcopy(arg, memo) for arg in args)
+        args = (deepcopy(arg, memo) fuer arg in args)
     y = func(*args)
     if deep:
         memo[id(x)] = y
@@ -248,25 +248,25 @@ def _reconstruct(x, memo, func, args,
             if state is not None:
                 y.__dict__.update(state)
             if slotstate is not None:
-                for key, value in slotstate.items():
+                fuer key, value in slotstate.items():
                     setattr(y, key, value)
 
     if listiter is not None:
         if deep:
-            for item in listiter:
+            fuer item in listiter:
                 item = deepcopy(item, memo)
                 y.append(item)
         else:
-            for item in listiter:
+            fuer item in listiter:
                 y.append(item)
     if dictiter is not None:
         if deep:
-            for key, value in dictiter:
+            fuer key, value in dictiter:
                 key = deepcopy(key, memo)
                 value = deepcopy(value, memo)
                 y[key] = value
         else:
-            for key, value in dictiter:
+            fuer key, value in dictiter:
                 y[key] = value
     return y
 
@@ -276,7 +276,7 @@ del types, weakref
 def replace(obj, /, **changes):
     """Return a new object replacing specified fields with new values.
 
-    This is especially useful for immutable objects, like named tuples or
+    This is especially useful fuer immutable objects, like named tuples or
     frozen dataclasses.
     """
     cls = obj.__class__

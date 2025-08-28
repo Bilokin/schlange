@@ -1,4 +1,4 @@
-"""Tests for asyncio/timeouts.py"""
+"""Tests fuer asyncio/timeouts.py"""
 
 import unittest
 import time
@@ -217,7 +217,7 @@ klasse TimeoutTests(unittest.IsolatedAsyncioTestCase):
             async with asyncio.timeout(0.1):  # (1)
                 with self.assertRaises(TimeoutError):
                     async with asyncio.timeout(0.01):  # (2)
-                        # Pretend the loop is busy for a while.
+                        # Pretend the loop is busy fuer a while.
                         time.sleep(0.1)
                         await asyncio.sleep(1)
                 # TimeoutError was caught by (2)

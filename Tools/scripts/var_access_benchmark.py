@@ -25,7 +25,7 @@ klasse C(object):
 
 def read_local(trials=trials):
     v_local = 1
-    for t in trials:
+    fuer t in trials:
         v_local;    v_local;    v_local;    v_local;    v_local
         v_local;    v_local;    v_local;    v_local;    v_local
         v_local;    v_local;    v_local;    v_local;    v_local
@@ -35,7 +35,7 @@ def read_local(trials=trials):
 def make_nonlocal_reader():
     v_nonlocal = 1
     def inner(trials=trials):
-        for t in trials:
+        fuer t in trials:
             v_nonlocal; v_nonlocal; v_nonlocal; v_nonlocal; v_nonlocal
             v_nonlocal; v_nonlocal; v_nonlocal; v_nonlocal; v_nonlocal
             v_nonlocal; v_nonlocal; v_nonlocal; v_nonlocal; v_nonlocal
@@ -48,7 +48,7 @@ read_nonlocal = make_nonlocal_reader()
 
 v_global = 1
 def read_global(trials=trials):
-    for t in trials:
+    fuer t in trials:
         v_global; v_global; v_global; v_global; v_global
         v_global; v_global; v_global; v_global; v_global
         v_global; v_global; v_global; v_global; v_global
@@ -56,7 +56,7 @@ def read_global(trials=trials):
         v_global; v_global; v_global; v_global; v_global
 
 def read_builtin(trials=trials):
-    for t in trials:
+    fuer t in trials:
         oct; oct; oct; oct; oct
         oct; oct; oct; oct; oct
         oct; oct; oct; oct; oct
@@ -65,7 +65,7 @@ def read_builtin(trials=trials):
 
 def read_classvar_from_class(trials=trials, A=A):
     A.x = 1
-    for t in trials:
+    fuer t in trials:
         A.x;    A.x;    A.x;    A.x;    A.x
         A.x;    A.x;    A.x;    A.x;    A.x
         A.x;    A.x;    A.x;    A.x;    A.x
@@ -75,7 +75,7 @@ def read_classvar_from_class(trials=trials, A=A):
 def read_classvar_from_instance(trials=trials, A=A):
     A.x = 1
     a = A()
-    for t in trials:
+    fuer t in trials:
         a.x;    a.x;    a.x;    a.x;    a.x
         a.x;    a.x;    a.x;    a.x;    a.x
         a.x;    a.x;    a.x;    a.x;    a.x
@@ -83,7 +83,7 @@ def read_classvar_from_instance(trials=trials, A=A):
         a.x;    a.x;    a.x;    a.x;    a.x
 
 def read_instancevar(trials=trials, a=C(1)):
-    for t in trials:
+    fuer t in trials:
         a.x;    a.x;    a.x;    a.x;    a.x
         a.x;    a.x;    a.x;    a.x;    a.x
         a.x;    a.x;    a.x;    a.x;    a.x
@@ -91,7 +91,7 @@ def read_instancevar(trials=trials, a=C(1)):
         a.x;    a.x;    a.x;    a.x;    a.x
 
 def read_instancevar_slots(trials=trials, a=B(1)):
-    for t in trials:
+    fuer t in trials:
         a.x;    a.x;    a.x;    a.x;    a.x
         a.x;    a.x;    a.x;    a.x;    a.x
         a.x;    a.x;    a.x;    a.x;    a.x
@@ -100,7 +100,7 @@ def read_instancevar_slots(trials=trials, a=B(1)):
 
 def read_namedtuple(trials=trials, D=namedtuple('D', ['x'])):
     a = D(1)
-    for t in trials:
+    fuer t in trials:
         a.x;    a.x;    a.x;    a.x;    a.x
         a.x;    a.x;    a.x;    a.x;    a.x
         a.x;    a.x;    a.x;    a.x;    a.x
@@ -108,7 +108,7 @@ def read_namedtuple(trials=trials, D=namedtuple('D', ['x'])):
         a.x;    a.x;    a.x;    a.x;    a.x
 
 def read_boundmethod(trials=trials, a=A()):
-    for t in trials:
+    fuer t in trials:
         a.m;    a.m;    a.m;    a.m;    a.m
         a.m;    a.m;    a.m;    a.m;    a.m
         a.m;    a.m;    a.m;    a.m;    a.m
@@ -117,7 +117,7 @@ def read_boundmethod(trials=trials, a=A()):
 
 def write_local(trials=trials):
     v_local = 1
-    for t in trials:
+    fuer t in trials:
         v_local = 1; v_local = 1; v_local = 1; v_local = 1; v_local = 1
         v_local = 1; v_local = 1; v_local = 1; v_local = 1; v_local = 1
         v_local = 1; v_local = 1; v_local = 1; v_local = 1; v_local = 1
@@ -128,7 +128,7 @@ def make_nonlocal_writer():
     v_nonlocal = 1
     def inner(trials=trials):
         nonlocal v_nonlocal
-        for t in trials:
+        fuer t in trials:
             v_nonlocal = 1; v_nonlocal = 1; v_nonlocal = 1; v_nonlocal = 1; v_nonlocal = 1
             v_nonlocal = 1; v_nonlocal = 1; v_nonlocal = 1; v_nonlocal = 1; v_nonlocal = 1
             v_nonlocal = 1; v_nonlocal = 1; v_nonlocal = 1; v_nonlocal = 1; v_nonlocal = 1
@@ -141,7 +141,7 @@ write_nonlocal = make_nonlocal_writer()
 
 def write_global(trials=trials):
     global v_global
-    for t in trials:
+    fuer t in trials:
         v_global = 1; v_global = 1; v_global = 1; v_global = 1; v_global = 1
         v_global = 1; v_global = 1; v_global = 1; v_global = 1; v_global = 1
         v_global = 1; v_global = 1; v_global = 1; v_global = 1; v_global = 1
@@ -149,7 +149,7 @@ def write_global(trials=trials):
         v_global = 1; v_global = 1; v_global = 1; v_global = 1; v_global = 1
 
 def write_classvar(trials=trials, A=A):
-    for t in trials:
+    fuer t in trials:
         A.x = 1;    A.x = 1;    A.x = 1;    A.x = 1;    A.x = 1
         A.x = 1;    A.x = 1;    A.x = 1;    A.x = 1;    A.x = 1
         A.x = 1;    A.x = 1;    A.x = 1;    A.x = 1;    A.x = 1
@@ -157,7 +157,7 @@ def write_classvar(trials=trials, A=A):
         A.x = 1;    A.x = 1;    A.x = 1;    A.x = 1;    A.x = 1
 
 def write_instancevar(trials=trials, a=C(1)):
-    for t in trials:
+    fuer t in trials:
         a.x = 1;    a.x = 1;    a.x = 1;    a.x = 1;    a.x = 1
         a.x = 1;    a.x = 1;    a.x = 1;    a.x = 1;    a.x = 1
         a.x = 1;    a.x = 1;    a.x = 1;    a.x = 1;    a.x = 1
@@ -165,7 +165,7 @@ def write_instancevar(trials=trials, a=C(1)):
         a.x = 1;    a.x = 1;    a.x = 1;    a.x = 1;    a.x = 1
 
 def write_instancevar_slots(trials=trials, a=B(1)):
-    for t in trials:
+    fuer t in trials:
         a.x = 1;    a.x = 1;    a.x = 1;    a.x = 1;    a.x = 1
         a.x = 1;    a.x = 1;    a.x = 1;    a.x = 1;    a.x = 1
         a.x = 1;    a.x = 1;    a.x = 1;    a.x = 1;    a.x = 1
@@ -173,7 +173,7 @@ def write_instancevar_slots(trials=trials, a=B(1)):
         a.x = 1;    a.x = 1;    a.x = 1;    a.x = 1;    a.x = 1
 
 def read_list(trials=trials, a=[1]):
-    for t in trials:
+    fuer t in trials:
         a[0];   a[0];   a[0];   a[0];   a[0]
         a[0];   a[0];   a[0];   a[0];   a[0]
         a[0];   a[0];   a[0];   a[0];   a[0]
@@ -181,7 +181,7 @@ def read_list(trials=trials, a=[1]):
         a[0];   a[0];   a[0];   a[0];   a[0]
 
 def read_deque(trials=trials, a=deque([1])):
-    for t in trials:
+    fuer t in trials:
         a[0];   a[0];   a[0];   a[0];   a[0]
         a[0];   a[0];   a[0];   a[0];   a[0]
         a[0];   a[0];   a[0];   a[0];   a[0]
@@ -189,7 +189,7 @@ def read_deque(trials=trials, a=deque([1])):
         a[0];   a[0];   a[0];   a[0];   a[0]
 
 def read_dict(trials=trials, a={0: 1}):
-    for t in trials:
+    fuer t in trials:
         a[0];   a[0];   a[0];   a[0];   a[0]
         a[0];   a[0];   a[0];   a[0];   a[0]
         a[0];   a[0];   a[0];   a[0];   a[0]
@@ -197,7 +197,7 @@ def read_dict(trials=trials, a={0: 1}):
         a[0];   a[0];   a[0];   a[0];   a[0]
 
 def read_strdict(trials=trials, a={'key': 1}):
-    for t in trials:
+    fuer t in trials:
         a['key'];   a['key'];   a['key'];   a['key'];   a['key']
         a['key'];   a['key'];   a['key'];   a['key'];   a['key']
         a['key'];   a['key'];   a['key'];   a['key'];   a['key']
@@ -206,7 +206,7 @@ def read_strdict(trials=trials, a={'key': 1}):
 
 def list_append_pop(trials=trials, a=[1]):
     ap, pop = a.append, a.pop
-    for t in trials:
+    fuer t in trials:
         ap(1); pop(); ap(1); pop(); ap(1); pop(); ap(1); pop(); ap(1); pop()
         ap(1); pop(); ap(1); pop(); ap(1); pop(); ap(1); pop(); ap(1); pop()
         ap(1); pop(); ap(1); pop(); ap(1); pop(); ap(1); pop(); ap(1); pop()
@@ -215,7 +215,7 @@ def list_append_pop(trials=trials, a=[1]):
 
 def deque_append_pop(trials=trials, a=deque([1])):
     ap, pop = a.append, a.pop
-    for t in trials:
+    fuer t in trials:
         ap(1); pop(); ap(1); pop(); ap(1); pop(); ap(1); pop(); ap(1); pop()
         ap(1); pop(); ap(1); pop(); ap(1); pop(); ap(1); pop(); ap(1); pop()
         ap(1); pop(); ap(1); pop(); ap(1); pop(); ap(1); pop(); ap(1); pop()
@@ -224,7 +224,7 @@ def deque_append_pop(trials=trials, a=deque([1])):
 
 def deque_append_popleft(trials=trials, a=deque([1])):
     ap, pop = a.append, a.popleft
-    for t in trials:
+    fuer t in trials:
         ap(1); pop(); ap(1); pop(); ap(1); pop(); ap(1); pop(); ap(1); pop();
         ap(1); pop(); ap(1); pop(); ap(1); pop(); ap(1); pop(); ap(1); pop();
         ap(1); pop(); ap(1); pop(); ap(1); pop(); ap(1); pop(); ap(1); pop();
@@ -232,7 +232,7 @@ def deque_append_popleft(trials=trials, a=deque([1])):
         ap(1); pop(); ap(1); pop(); ap(1); pop(); ap(1); pop(); ap(1); pop();
 
 def write_list(trials=trials, a=[1]):
-    for t in trials:
+    fuer t in trials:
         a[0]=1; a[0]=1; a[0]=1; a[0]=1; a[0]=1
         a[0]=1; a[0]=1; a[0]=1; a[0]=1; a[0]=1
         a[0]=1; a[0]=1; a[0]=1; a[0]=1; a[0]=1
@@ -240,7 +240,7 @@ def write_list(trials=trials, a=[1]):
         a[0]=1; a[0]=1; a[0]=1; a[0]=1; a[0]=1
 
 def write_deque(trials=trials, a=deque([1])):
-    for t in trials:
+    fuer t in trials:
         a[0]=1; a[0]=1; a[0]=1; a[0]=1; a[0]=1
         a[0]=1; a[0]=1; a[0]=1; a[0]=1; a[0]=1
         a[0]=1; a[0]=1; a[0]=1; a[0]=1; a[0]=1
@@ -248,7 +248,7 @@ def write_deque(trials=trials, a=deque([1])):
         a[0]=1; a[0]=1; a[0]=1; a[0]=1; a[0]=1
 
 def write_dict(trials=trials, a={0: 1}):
-    for t in trials:
+    fuer t in trials:
         a[0]=1; a[0]=1; a[0]=1; a[0]=1; a[0]=1
         a[0]=1; a[0]=1; a[0]=1; a[0]=1; a[0]=1
         a[0]=1; a[0]=1; a[0]=1; a[0]=1; a[0]=1
@@ -256,7 +256,7 @@ def write_dict(trials=trials, a={0: 1}):
         a[0]=1; a[0]=1; a[0]=1; a[0]=1; a[0]=1
 
 def write_strdict(trials=trials, a={'key': 1}):
-    for t in trials:
+    fuer t in trials:
         a['key']=1; a['key']=1; a['key']=1; a['key']=1; a['key']=1
         a['key']=1; a['key']=1; a['key']=1; a['key']=1; a['key']=1
         a['key']=1; a['key']=1; a['key']=1; a['key']=1; a['key']=1
@@ -264,7 +264,7 @@ def write_strdict(trials=trials, a={'key': 1}):
         a['key']=1; a['key']=1; a['key']=1; a['key']=1; a['key']=1
 
 def loop_overhead(trials=trials):
-    for t in trials:
+    fuer t in trials:
         pass
 
 
@@ -272,7 +272,7 @@ if __name__=='__main__':
 
     from timeit import Timer
 
-    for f in [
+    fuer f in [
             'Variable and attribute read access:',
             read_local, read_nonlocal, read_global, read_builtin,
             read_classvar_from_class, read_classvar_from_instance,

@@ -30,18 +30,18 @@ klasse CRenderData:
         # parsed by the parse call, before calling the impl.
         self.modifications: list[str] = []
 
-        # The entries for the "keywords" array for PyArg_ParseTuple.
+        # The entries fuer the "keywords" array fuer PyArg_ParseTuple.
         # Should be individual strings representing the names.
         self.keywords: list[str] = []
 
-        # The "format units" for PyArg_ParseTuple.
+        # The "format units" fuer PyArg_ParseTuple.
         # Should be individual strings that will get
         self.format_units: list[str] = []
 
-        # The varargs arguments for PyArg_ParseTuple.
+        # The varargs arguments fuer PyArg_ParseTuple.
         self.parse_arguments: list[str] = []
 
-        # The parameter declarations for the impl function.
+        # The parameter declarations fuer the impl function.
         self.impl_parameters: list[str] = []
 
         # The arguments to the impl function at the time it's called.
@@ -53,14 +53,14 @@ klasse CRenderData:
 
         # For return converters: the code to convert the return
         # value from the parse function.  This is also where
-        # you should check the _return_value for errors, and
+        # you should check the _return_value fuer errors, and
         # "goto exit" if there are any.
         self.return_conversion: list[str] = []
         self.converter_retval = "_return_value"
 
         # The C statements required to do some operations
         # after the end of parsing but before cleaning up.
-        # These operations may be, for example, memory deallocations which
+        # These operations may be, fuer example, memory deallocations which
         # can only be done without any error happening during argument parsing.
         self.post_parsing: list[str] = []
 
@@ -124,7 +124,7 @@ klasse BlockPrinter:
         if not body_prefix:
             write(input)
         else:
-            for line in input.split('\n'):
+            fuer line in input.split('\n'):
                 write(body_prefix)
                 write(line)
                 write("\n")
@@ -134,11 +134,11 @@ klasse BlockPrinter:
 
         output = ''
         if header_includes:
-            # Emit optional "#include" directives for C headers
+            # Emit optional "#include" directives fuer C headers
             output += '\n'
 
             current_condition: str | None = None
-            for include in header_includes:
+            fuer include in header_includes:
                 if include.condition != current_condition:
                     if current_condition:
                         output += '#endif\n'
@@ -179,11 +179,11 @@ klasse BlockPrinter:
 klasse BufferSeries:
     """
     Behaves like a "defaultlist".
-    When you ask for an index that doesn't exist yet,
+    When you ask fuer an index that doesn't exist yet,
     the object grows the list until that item exists.
     So o[n] will always work.
 
-    Supports negative indices for actual items.
+    Supports negative indices fuer actual items.
     e.g. o[-1] is an element immediately preceding o[0].
     """
 
@@ -195,7 +195,7 @@ klasse BufferSeries:
         i -= self._start
         if i < 0:
             self._start += i
-            prefix: list[list[str]] = [[] for x in range(-i)]
+            prefix: list[list[str]] = [[] fuer x in range(-i)]
             self._array = prefix + self._array
             i = 0
         while i >= len(self._array):
@@ -203,11 +203,11 @@ klasse BufferSeries:
         return self._array[i]
 
     def clear(self) -> None:
-        for ta in self._array:
+        fuer ta in self._array:
             ta.clear()
 
     def dump(self) -> str:
-        texts = ["".join(ta) for ta in self._array]
+        texts = ["".join(ta) fuer ta in self._array]
         self.clear()
         return "".join(texts)
 
@@ -226,15 +226,15 @@ klasse Destination:
         valid_types = ('buffer', 'file', 'suppress')
         if self.type not in valid_types:
             fail(
-                f"Invalid destination type {self.type!r} for {self.name}, "
+                f"Invalid destination type {self.type!r} fuer {self.name}, "
                 f"must be {', '.join(valid_types)}"
             )
         extra_arguments = 1 if self.type == "file" else 0
         if len(args) < extra_arguments:
-            fail(f"Not enough arguments for destination "
+            fail(f"Not enough arguments fuer destination "
                  f"{self.name!r} new {self.type!r}")
         if len(args) > extra_arguments:
-            fail(f"Too many arguments for destination {self.name!r} new {self.type!r}")
+            fail(f"Too many arguments fuer destination {self.name!r} new {self.type!r}")
         if self.type =='file':
             d = {}
             filename = self.clinic.filename

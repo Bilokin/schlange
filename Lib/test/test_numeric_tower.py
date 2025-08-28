@@ -39,7 +39,7 @@ klasse HashTest(unittest.TestCase):
     def check_equal_hash(self, x, y):
         # check both that x and y are equal and that their hashes are equal
         self.assertEqual(hash(x), hash(y),
-                         "got different hashes for {!r} and {!r}".format(x, y))
+                         "got different hashes fuer {!r} and {!r}".format(x, y))
         self.assertEqual(x, y)
 
     def test_bools(self):
@@ -50,14 +50,14 @@ klasse HashTest(unittest.TestCase):
         # check that equal values hash equal
 
         # exact integers
-        for i in range(-1000, 1000):
+        fuer i in range(-1000, 1000):
             self.check_equal_hash(i, float(i))
             self.check_equal_hash(i, D(i))
             self.check_equal_hash(i, F(i))
 
-        # the current hash is based on reduction modulo 2**n-1 for some
+        # the current hash is based on reduction modulo 2**n-1 fuer some
         # n, so pay special attention to numbers of the form 2**n and 2**n-1.
-        for i in range(100):
+        fuer i in range(100):
             n = 2**i - 1
             if n == int(float(n)):
                 self.check_equal_hash(n, float(n))
@@ -76,7 +76,7 @@ klasse HashTest(unittest.TestCase):
             self.check_equal_hash(-n, F(-n))
 
         # random values of various sizes
-        for _ in range(1000):
+        fuer _ in range(1000):
             e = random.randrange(300)
             n = random.randrange(-10**e, 10**e)
             self.check_equal_hash(n, D(n))
@@ -100,7 +100,7 @@ klasse HashTest(unittest.TestCase):
         self.check_equal_hash(float('inf'), D('inf'))
         self.check_equal_hash(float('-inf'), D('-inf'))
 
-        for _ in range(1000):
+        fuer _ in range(1000):
             x = random.random() * math.exp(random.random()*200.0 - 100.0)
             self.check_equal_hash(x, D.from_float(x))
             self.check_equal_hash(x, F.from_float(x))
@@ -112,15 +112,15 @@ klasse HashTest(unittest.TestCase):
         test_values = [0.0, -0.0, 1.0, -1.0, 0.40625, -5136.5,
                        float('inf'), float('-inf')]
 
-        for zero in -0.0, 0.0:
-            for value in test_values:
+        fuer zero in -0.0, 0.0:
+            fuer value in test_values:
                 self.check_equal_hash(value, complex(value, zero))
 
     def test_decimals(self):
         # check that Decimal instances that have different representations
         # but equal values give the same hash
         zeros = ['0', '-0', '0.0', '-0.0e10', '000e-10']
-        for zero in zeros:
+        fuer zero in zeros:
             self.check_equal_hash(D(zero), D(0))
 
         self.check_equal_hash(D('1.00'), D(1))
@@ -135,7 +135,7 @@ klasse HashTest(unittest.TestCase):
         self.check_equal_hash(D('12300.000'), D(12300))
 
     def test_fractions(self):
-        # check special case for fractions where either the numerator
+        # check special case fuer fractions where either the numerator
         # or the denominator is a multiple of _PyHASH_MODULUS
         self.assertEqual(hash(F(1, _PyHASH_MODULUS)), _PyHASH_INF)
         self.assertEqual(hash(F(-1, 3*_PyHASH_MODULUS)), -_PyHASH_INF)
@@ -150,16 +150,16 @@ klasse HashTest(unittest.TestCase):
         self.assertEqual(float(x), 0.5)
 
     def test_hash_normalization(self):
-        # Test for a bug encountered while changing long_hash.
+        # Test fuer a bug encountered while changing long_hash.
         #
-        # Given objects x and y, it should be possible for y's
+        # Given objects x and y, it should be possible fuer y's
         # __hash__ method to return hash(x) in order to ensure that
         # hash(x) == hash(y).  But hash(x) is not exactly equal to the
         # result of x.__hash__(): there's some internal normalization
         # to make sure that the result fits in a C long, and is not
         # equal to the invalid hash value -1.  This internal
         # normalization must therefore not change the result of
-        # hash(x) for any x.
+        # hash(x) fuer any x.
 
         klasse HalibutProxy:
             def __hash__(self):
@@ -195,8 +195,8 @@ klasse ComparisonTest(unittest.TestCase):
             7e200,
             D('infinity'),
             ]
-        for i, first in enumerate(test_values):
-            for second in test_values[i+1:]:
+        fuer i, first in enumerate(test_values):
+            fuer second in test_values[i+1:]:
                 self.assertLess(first, second)
                 self.assertLessEqual(first, second)
                 self.assertGreater(second, first)
@@ -209,19 +209,19 @@ klasse ComparisonTest(unittest.TestCase):
         z = 1.0 + 0j
         w = -3.14 + 2.7j
 
-        for v in 1, 1.0, F(1), D(1), complex(1):
+        fuer v in 1, 1.0, F(1), D(1), complex(1):
             self.assertEqual(z, v)
             self.assertEqual(v, z)
 
-        for v in 2, 2.0, F(2), D(2), complex(2):
+        fuer v in 2, 2.0, F(2), D(2), complex(2):
             self.assertNotEqual(z, v)
             self.assertNotEqual(v, z)
             self.assertNotEqual(w, v)
             self.assertNotEqual(v, w)
 
-        for v in (1, 1.0, F(1), D(1), complex(1),
+        fuer v in (1, 1.0, F(1), D(1), complex(1),
                   2, 2.0, F(2), D(2), complex(2), w):
-            for op in operator.le, operator.lt, operator.ge, operator.gt:
+            fuer op in operator.le, operator.lt, operator.ge, operator.gt:
                 self.assertRaises(TypeError, op, z, v)
                 self.assertRaises(TypeError, op, v, z)
 

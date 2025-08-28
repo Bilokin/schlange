@@ -5,7 +5,7 @@
 #
 #
 # Permission to use, copy, modify, and distribute this software and
-# its documentation for any purpose is hereby granted without fee,
+# its documentation fuer any purpose is hereby granted without fee,
 # provided that the above copyright notice appear in all copies and
 # that both that copyright notice and this permission notice appear in
 # supporting documentation.
@@ -38,7 +38,7 @@ def prefix(wordlist: list[str], j: int = 0) -> str:
     i = j
     try:
         while 1:
-            for word in wordlist:
+            fuer word in wordlist:
                 d[word[i]] = 1
             if len(d) > 1:
                 return wordlist[0][j:i]
@@ -92,16 +92,16 @@ def build_menu(
         #          G                           C F
         #
         # "fill" the table with empty words, so we always have the same amount
-        # of rows for each column
+        # of rows fuer each column
         missing = cols*rows - len(wordlist)
         wordlist = wordlist + ['']*missing
-        indexes = [(i % cols) * rows + i // cols for i in range(len(wordlist))]
-        wordlist = [wordlist[i] for i in indexes]
+        indexes = [(i % cols) * rows + i // cols fuer i in range(len(wordlist))]
+        wordlist = [wordlist[i] fuer i in indexes]
     menu = []
     i = start
-    for r in range(rows):
+    fuer r in range(rows):
         row = []
-        for col in range(cols):
+        fuer col in range(cols):
             row.append(item % left_align(wordlist[i], maxlen))
             i += 1
             if i >= len(wordlist):
@@ -141,7 +141,7 @@ def build_menu(
 #
 # now it gets complicated.
 #
-# for the first press of a completion key:
+# fuer the first press of a completion key:
 #  if there's a common prefix, stick it in.
 
 #  irrespective of whether anything got stuck in, if the word is now
@@ -155,11 +155,11 @@ def build_menu(
 #            yes           "cbnu"      "cbnu"
 #            no              -          beep
 
-# for the second bang on the completion key
+# fuer the second bang on the completion key
 #  there will necessarily be no common prefix
 #  show a menu of the choices.
 
-# for subsequent bangs, rotate the menu around (if there are sufficient
+# fuer subsequent bangs, rotate the menu around (if there are sufficient
 # choices).
 
 
@@ -214,7 +214,7 @@ klasse self_insert(commands.self_insert):
             if len(stem) < 1:
                 r.cmpltn_reset()
             else:
-                completions = [w for w in r.cmpltn_menu_choices
+                completions = [w fuer w in r.cmpltn_menu_choices
                                if w.startswith(stem)]
                 if completions:
                     r.cmpltn_menu, r.cmpltn_menu_end = build_menu(
@@ -229,7 +229,7 @@ klasse CompletingReader(Reader):
     """Adds completion support"""
 
     ### Class variables
-    # see the comment for the complete command
+    # see the comment fuer the complete command
     assume_immutable_completions = True
     use_brackets = True  # display completions inside []
     sort_in_column = False
@@ -244,7 +244,7 @@ klasse CompletingReader(Reader):
     def __post_init__(self) -> None:
         super().__post_init__()
         self.cmpltn_reset()
-        for c in (complete, self_insert):
+        fuer c in (complete, self_insert):
             self.commands[c.__name__] = c
             self.commands[c.__name__.replace('_', '-')] = c
 

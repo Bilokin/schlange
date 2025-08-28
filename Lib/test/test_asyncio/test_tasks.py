@@ -1,4 +1,4 @@
-"""Tests for tasks.py."""
+"""Tests fuer tasks.py."""
 
 import collections
 import contextlib
@@ -144,7 +144,7 @@ klasse BaseTaskTests:
 
         self.loop.run_until_complete(
             asyncio.gather(*[
-                self.new_task(self.loop, run()) for _ in range(100)
+                self.new_task(self.loop, run()) fuer _ in range(100)
             ]))
 
     def test_other_loop_future(self):
@@ -640,7 +640,7 @@ klasse BaseTaskTests:
                         #    code might have been nested (think multiple timeouts). See
                         #    commit 7fce1063b6e5a366f8504e039a8ccdd6944625cd for
                         #    details.
-                        # 5. we only convert CancelledError to TimeoutError; for other
+                        # 5. we only convert CancelledError to TimeoutError; fuer other
                         #    exceptions raised due to the cancellation (like
                         #    a ConnectionLostError from a database client), simply
                         #    propagate them.
@@ -695,7 +695,7 @@ klasse BaseTaskTests:
         loop = asyncio.new_event_loop()
         fut = asyncio.Future(loop=loop)
         task = self.new_task(loop, coro())
-        loop.run_until_complete(asyncio.sleep(0))  # Get task waiting for fut
+        loop.run_until_complete(asyncio.sleep(0))  # Get task waiting fuer fut
         fut.set_result(None)  # Make task runnable
         try:
             task.cancel()  # Enter cancelled state
@@ -740,7 +740,7 @@ klasse BaseTaskTests:
             # Non-string values should roundtrip.
             ((5,), (5,)),
         ]
-        for cancel_args, expected_args in cases:
+        fuer cancel_args, expected_args in cases:
             with self.subTest(cancel_args=cancel_args):
                 loop = asyncio.new_event_loop()
                 self.set_event_loop(loop)
@@ -774,7 +774,7 @@ klasse BaseTaskTests:
             # Non-string values should roundtrip.
             ((5,), (5,)),
         ]
-        for cancel_args, expected_args in cases:
+        fuer cancel_args, expected_args in cases:
             with self.subTest(cancel_args=cancel_args):
                 loop = asyncio.new_event_loop()
                 self.set_event_loop(loop)
@@ -994,8 +994,8 @@ klasse BaseTaskTests:
         self.assertFalse(t.cancel())
 
     def test_cancel_awaited_task(self):
-        # This tests for a relatively rare condition when
-        # a task cancellation is requested for a task which is not
+        # This tests fuer a relatively rare condition when
+        # a task cancellation is requested fuer a task which is not
         # currently blocked, such as a task cancelling itself.
         # In this situation we must ensure that whatever next future
         # or task the cancelled task blocks on is cancelled correctly
@@ -1011,7 +1011,7 @@ klasse BaseTaskTests:
 
         async def coro():
             nonlocal nested_task
-            # Create a sub-task and wait for it to run.
+            # Create a sub-task and wait fuer it to run.
             nested_task = self.new_task(loop, nested())
             await asyncio.sleep(0)
 
@@ -1174,7 +1174,7 @@ klasse BaseTaskTests:
         done, pending = self.loop.run_until_complete(task)
 
         self.assertFalse(pending)
-        self.assertEqual(set(f.result() for f in done), {'test', 'spam'})
+        self.assertEqual(set(f.result() fuer f in done), {'test', 'spam'})
 
     def test_wait_errors(self):
         self.assertRaises(
@@ -1324,7 +1324,7 @@ klasse BaseTaskTests:
             done, pending = await asyncio.wait([b, a])
             self.assertEqual(len(done), 2)
             self.assertEqual(pending, set())
-            errors = set(f for f in done if f.exception() is not None)
+            errors = set(f fuer f in done if f.exception() is not None)
             self.assertEqual(len(errors), 1)
 
         loop.run_until_complete(self.new_task(loop, foo()))
@@ -1420,7 +1420,7 @@ klasse BaseTaskTests:
         loop = self.new_test_loop()
 
         async def main():
-            tasks = (self.new_task(loop, func(i)) for i in range(10))
+            tasks = (self.new_task(loop, func(i)) fuer i in range(10))
             done, pending = await asyncio.wait(tasks, return_when=asyncio.ALL_COMPLETED)
             self.assertEqual(len(done), 10)
             self.assertEqual(len(pending), 0)
@@ -1447,17 +1447,17 @@ klasse BaseTaskTests:
 
         async def try_iterator(awaitables):
             values = []
-            for f in asyncio.as_completed(awaitables):
+            fuer f in asyncio.as_completed(awaitables):
                 values.append(await f)
             return values
 
         async def try_async_iterator(awaitables):
             values = []
-            async for f in asyncio.as_completed(awaitables):
+            async fuer f in asyncio.as_completed(awaitables):
                 values.append(await f)
             return values
 
-        for foo in try_iterator, try_async_iterator:
+        fuer foo in try_iterator, try_async_iterator:
             with self.subTest(method=foo.__name__):
                 loop = self.new_test_loop(gen)
                 # disable "slow callback" warning
@@ -1482,7 +1482,7 @@ klasse BaseTaskTests:
         # those awaitables are futures.
         async def try_async_iterator(awaitables):
             awaitables_out = set()
-            async for out_aw in asyncio.as_completed(awaitables):
+            async fuer out_aw in asyncio.as_completed(awaitables):
                 awaitables_out.add(out_aw)
             return awaitables_out
 
@@ -1528,7 +1528,7 @@ klasse BaseTaskTests:
 
         async def try_iterator():
             values = []
-            for f in asyncio.as_completed([a, b], timeout=0.12):
+            fuer f in asyncio.as_completed([a, b], timeout=0.12):
                 if values:
                     loop.advance_time(0.02)
                 try:
@@ -1541,7 +1541,7 @@ klasse BaseTaskTests:
         async def try_async_iterator():
             values = []
             try:
-                async for f in asyncio.as_completed([a, b], timeout=0.12):
+                async fuer f in asyncio.as_completed([a, b], timeout=0.12):
                     v = await f
                     values.append((1, v))
                     loop.advance_time(0.02)
@@ -1549,7 +1549,7 @@ klasse BaseTaskTests:
                 values.append((2, exc))
             return values
 
-        for foo in try_iterator, try_async_iterator:
+        fuer foo in try_iterator, try_async_iterator:
             with self.subTest(method=foo.__name__):
                 loop = self.new_test_loop(gen)
                 a = loop.create_task(asyncio.sleep(0.1, 'a'))
@@ -1574,16 +1574,16 @@ klasse BaseTaskTests:
             yield 0.01
 
         async def try_iterator():
-            for f in asyncio.as_completed([a], timeout=1):
+            fuer f in asyncio.as_completed([a], timeout=1):
                 v = await f
                 self.assertEqual(v, 'a')
 
         async def try_async_iterator():
-            async for f in asyncio.as_completed([a], timeout=1):
+            async fuer f in asyncio.as_completed([a], timeout=1):
                 v = await f
                 self.assertEqual(v, 'a')
 
-        for foo in try_iterator, try_async_iterator:
+        fuer foo in try_iterator, try_async_iterator:
             with self.subTest(method=foo.__name__):
                 a = asyncio.sleep(0.01, 'a')
                 loop = self.new_test_loop(gen)
@@ -1598,7 +1598,7 @@ klasse BaseTaskTests:
             iterations = 0
             iterator = asyncio.as_completed(awaitables)
             collected = []
-            for f in iterator:
+            fuer f in iterator:
                 collected.append(await f)
                 iterations += 1
                 if iterations == 2:
@@ -1606,7 +1606,7 @@ klasse BaseTaskTests:
             self.assertEqual(len(collected), 2)
 
             # Resume same iterator:
-            for f in iterator:
+            fuer f in iterator:
                 collected.append(await f)
             return collected
 
@@ -1614,7 +1614,7 @@ klasse BaseTaskTests:
             iterations = 0
             iterator = asyncio.as_completed(awaitables)
             collected = []
-            async for f in iterator:
+            async fuer f in iterator:
                 collected.append(await f)
                 iterations += 1
                 if iterations == 2:
@@ -1622,7 +1622,7 @@ klasse BaseTaskTests:
             self.assertEqual(len(collected), 2)
 
             # Resume same iterator:
-            async for f in iterator:
+            async fuer f in iterator:
                 collected.append(await f)
             return collected
 
@@ -1630,7 +1630,7 @@ klasse BaseTaskTests:
             return i
 
         with contextlib.closing(asyncio.new_event_loop()) as loop:
-            for foo in try_iterator, try_async_iterator:
+            fuer foo in try_iterator, try_async_iterator:
                 with self.subTest(method=foo.__name__):
                     results = loop.run_until_complete(
                         foo((coro(0), coro(1), coro(2), coro(3)))
@@ -1681,9 +1681,9 @@ klasse BaseTaskTests:
             return list(asyncio.as_completed(fs))
 
         async def try_async_iterator(fs):
-            return [f async for f in asyncio.as_completed(fs)]
+            return [f async fuer f in asyncio.as_completed(fs)]
 
-        for runner in try_iterator, try_async_iterator:
+        fuer runner in try_iterator, try_async_iterator:
             with self.subTest(method=runner.__name__):
                 a = asyncio.sleep(0.05, 'a')
                 b = asyncio.sleep(0.05, 'b')
@@ -1693,9 +1693,9 @@ klasse BaseTaskTests:
                     futs = await runner(fs)
                     self.assertEqual(len(futs), 2)
                     done, pending = await asyncio.wait(
-                        [asyncio.ensure_future(fut) for fut in futs]
+                        [asyncio.ensure_future(fut) fuer fut in futs]
                     )
-                    self.assertEqual(set(f.result() for f in done), {'a', 'b'})
+                    self.assertEqual(set(f.result() fuer f in done), {'a', 'b'})
 
                 loop = self.new_test_loop(gen)
                 loop.run_until_complete(test())
@@ -1708,18 +1708,18 @@ klasse BaseTaskTests:
         async def try_iterator():
             result = []
             c = coro('ham')
-            for f in asyncio.as_completed([c, c, coro('spam')]):
+            fuer f in asyncio.as_completed([c, c, coro('spam')]):
                 result.append(await f)
             return result
 
         async def try_async_iterator():
             result = []
             c = coro('ham')
-            async for f in asyncio.as_completed([c, c, coro('spam')]):
+            async fuer f in asyncio.as_completed([c, c, coro('spam')]):
                 result.append(await f)
             return result
 
-        for runner in try_iterator, try_async_iterator:
+        fuer runner in try_iterator, try_async_iterator:
             with self.subTest(method=runner.__name__):
                 fut = self.new_task(self.loop, runner())
                 self.loop.run_until_complete(fut)
@@ -2023,7 +2023,7 @@ klasse BaseTaskTests:
         self.loop.run_until_complete(asyncio.wait((task1, task2)))
         self.assertIsNone(self.current_task(loop=self.loop))
 
-    # Some thorough tests for cancellation propagation through
+    # Some thorough tests fuer cancellation propagation through
     # coroutines, tasks and wait().
 
     def test_yield_future_passes_cancel(self):
@@ -2267,7 +2267,7 @@ klasse BaseTaskTests:
 
         # Async iterator
         async def try_async_iterator(aw):
-            async for f in asyncio.as_completed(aw):
+            async fuer f in asyncio.as_completed(aw):
                 break
 
         fut = self.new_future(self.loop)
@@ -2312,7 +2312,7 @@ klasse BaseTaskTests:
 
         self.assertEqual(self.all_tasks(loop=self.loop), {task})
 
-        # execute the task so it waits for future
+        # execute the task so it waits fuer future
         self.loop.run_until_complete(asyncio.sleep(0))
         self.assertEqual(len(self.loop._ready), 0)
 
@@ -2423,7 +2423,7 @@ klasse BaseTaskTests:
             # Non-string values should roundtrip.
             ((5,), (5,)),
         ]
-        for cancel_args, expected_args in cases:
+        fuer cancel_args, expected_args in cases:
             with self.subTest(cancel_args=cancel_args):
                 loop = asyncio.new_event_loop()
                 self.addCleanup(loop.close)
@@ -2501,7 +2501,7 @@ klasse BaseTaskTests:
                                     "a coroutine was expected, got 123"):
             self.new_task(self.loop, 123)
 
-        # test it for the second time to ensure that caching
+        # test it fuer the second time to ensure that caching
         # in asyncio.iscoroutine() doesn't break things.
         with self.assertRaisesRegex(TypeError,
                                     "a coroutine was expected, got 123"):
@@ -2516,7 +2516,7 @@ klasse BaseTaskTests:
         self.assertIsInstance(task, self.Task)
         self.loop.run_until_complete(task)
 
-        # test it for the second time to ensure that caching
+        # test it fuer the second time to ensure that caching
         # in asyncio.iscoroutine() doesn't break things.
         task = self.new_task(self.loop, coro())
         self.assertIsInstance(task, self.Task)
@@ -2527,7 +2527,7 @@ klasse BaseTaskTests:
         self.assertIsInstance(task, self.Task)
         self.assertEqual(self.loop.run_until_complete(task), 42)
 
-        # test it for the second time to ensure that caching
+        # test it fuer the second time to ensure that caching
         # in asyncio.iscoroutine() doesn't break things.
         task = self.new_task(self.loop, CoroLikeObject())
         self.assertIsInstance(task, self.Task)
@@ -2592,7 +2592,7 @@ klasse BaseTaskTests:
 
             self.assertEqual(cvar.get(), 'nope')
 
-            for j in range(2):
+            fuer j in range(2):
                 fut = self.new_future(loop)
                 fut.add_done_callback(fut_on_done)
                 cvar.set(f'yes{j}')
@@ -2600,7 +2600,7 @@ klasse BaseTaskTests:
                 await fut
                 self.assertEqual(cvar.get(), f'yes{j}')
 
-                for i in range(3):
+                fuer i in range(3):
                     # Test that task passed its context to add_done_callback:
                     cvar.set(f'yes{i}-{j}')
                     await asyncio.sleep(0.001)
@@ -2621,14 +2621,14 @@ klasse BaseTaskTests:
         cvar = contextvars.ContextVar('cvar', default=-1)
 
         async def sub(num):
-            for i in range(10):
+            fuer i in range(10):
                 cvar.set(num + i)
                 await asyncio.sleep(random.uniform(0.001, 0.05))
                 self.assertEqual(cvar.get(), num + i)
 
         async def main():
             tasks = []
-            for i in range(100):
+            fuer i in range(100):
                 task = loop.create_task(sub(random.randint(0, 10)))
                 tasks.append(task)
 
@@ -2788,7 +2788,7 @@ klasse BaseTaskTests:
         coro = coroutine_function()
         with contextlib.closing(asyncio.EventLoop()) as loop:
             task = asyncio.Task.__new__(asyncio.Task)
-            for _ in range(5):
+            fuer _ in range(5):
                 with self.assertRaisesRegex(RuntimeError, 'break'):
                     task.__init__(coro, loop=loop, context=obj, name=Break())
 
@@ -2850,8 +2850,8 @@ def add_subclass_tests(cls):
     cls.test_subclasses_ctask_cfuture = test_subclasses_ctask_cfuture
 
     # Disable the "test_task_source_traceback" test
-    # (the test is hardcoded for a particular call stack, which
-    # is slightly different for Task subclasses)
+    # (the test is hardcoded fuer a particular call stack, which
+    # is slightly different fuer Task subclasses)
     cls.test_task_source_traceback = None
 
     return cls
@@ -2929,7 +2929,7 @@ klasse CTask_CFuture_Tests(BaseTaskTests, SetMethodsTest,
         task = self.new_task(self.loop, coro())
         self.loop.run_until_complete(task)
         refs_before = gettotalrefcount()
-        for i in range(100):
+        fuer i in range(100):
             task.__init__(coro(), loop=self.loop)
             self.loop.run_until_complete(task)
         self.assertAlmostEqual(gettotalrefcount() - refs_before, 0, delta=10)
@@ -3100,7 +3100,7 @@ klasse BaseTaskIntrospectionTests:
         loop = mock.Mock()
         # _enter_task is called by Task.__step while the loop
         # is running, so set the loop as the running loop
-        # for a more realistic test.
+        # fuer a more realistic test.
         asyncio._set_running_loop(loop)
         self.assertIsNone(self.current_task(loop))
         self._enter_task(loop, task)
@@ -3135,7 +3135,7 @@ klasse BaseTaskIntrospectionTests:
         loop = mock.Mock()
         # _leave_task is called by Task.__step while the loop
         # is running, so set the loop as the running loop
-        # for a more realistic test.
+        # fuer a more realistic test.
         asyncio._set_running_loop(loop)
         self._enter_task(loop, task1)
         with self.assertRaises(RuntimeError):
@@ -3251,7 +3251,7 @@ klasse GenericTaskTests(test_utils.TestCase):
         # Because of circular imports it's easy to make _asyncio
         # module non-importable.  This is a simple test that will
         # fail on systems where C modules were successfully compiled
-        # (hence the test for _functools etc), but _asyncio somehow didn't.
+        # (hence the test fuer _functools etc), but _asyncio somehow didn't.
         try:
             import _functools  # noqa: F401
             import _json       # noqa: F401
@@ -3278,7 +3278,7 @@ klasse GatherTestsBase:
             test_utils.run_briefly(loop)
 
     def _check_success(self, **kwargs):
-        a, b, c = [self.one_loop.create_future() for i in range(3)]
+        a, b, c = [self.one_loop.create_future() fuer i in range(3)]
         fut = self._gather(*self.wrap_futures(a, b, c), **kwargs)
         cb = test_utils.MockCallback()
         fut.add_done_callback(cb)
@@ -3300,7 +3300,7 @@ klasse GatherTestsBase:
         self._check_success(return_exceptions=True)
 
     def test_one_exception(self):
-        a, b, c, d, e = [self.one_loop.create_future() for i in range(5)]
+        a, b, c, d, e = [self.one_loop.create_future() fuer i in range(5)]
         fut = self._gather(*self.wrap_futures(a, b, c, d, e))
         cb = test_utils.MockCallback()
         fut.add_done_callback(cb)
@@ -3318,7 +3318,7 @@ klasse GatherTestsBase:
         e.exception()
 
     def test_return_exceptions(self):
-        a, b, c, d = [self.one_loop.create_future() for i in range(4)]
+        a, b, c, d = [self.one_loop.create_future() fuer i in range(4)]
         fut = self._gather(*self.wrap_futures(a, b, c, d),
                            return_exceptions=True)
         cb = test_utils.MockCallback()
@@ -3407,7 +3407,7 @@ klasse FutureGatherTests(GatherTestsBase, test_utils.TestCase):
             asyncio.gather(fut1, fut2)
 
     def test_constructor_homogenous_futures(self):
-        children = [self.other_loop.create_future() for i in range(3)]
+        children = [self.other_loop.create_future() fuer i in range(3)]
         fut = asyncio.gather(*children)
         self.assertIs(fut._loop, self.other_loop)
         self._run_loop(self.other_loop)
@@ -3418,7 +3418,7 @@ klasse FutureGatherTests(GatherTestsBase, test_utils.TestCase):
         self.assertFalse(fut.done())
 
     def test_one_cancellation(self):
-        a, b, c, d, e = [self.one_loop.create_future() for i in range(5)]
+        a, b, c, d, e = [self.one_loop.create_future() fuer i in range(5)]
         fut = asyncio.gather(a, b, c, d, e)
         cb = test_utils.MockCallback()
         fut.add_done_callback(cb)
@@ -3437,7 +3437,7 @@ klasse FutureGatherTests(GatherTestsBase, test_utils.TestCase):
 
     def test_result_exception_one_cancellation(self):
         a, b, c, d, e, f = [self.one_loop.create_future()
-                            for i in range(6)]
+                            fuer i in range(6)]
         fut = asyncio.gather(a, b, c, d, e, f, return_exceptions=True)
         cb = test_utils.MockCallback()
         fut.add_done_callback(cb)
@@ -3463,7 +3463,7 @@ klasse CoroutineGatherTests(GatherTestsBase, test_utils.TestCase):
 
     def wrap_futures(self, *futures):
         coros = []
-        for fut in futures:
+        fuer fut in futures:
             async def coro(fut=fut):
                 return await fut
             coros.append(coro())
@@ -3548,7 +3548,7 @@ klasse CoroutineGatherTests(GatherTestsBase, test_utils.TestCase):
         self.assertEqual(proof, 0)
 
     def test_exception_marking(self):
-        # Test for the first line marked "Mark exception retrieved."
+        # Test fuer the first line marked "Mark exception retrieved."
 
         async def inner(f):
             await f
@@ -3584,7 +3584,7 @@ klasse CoroutineGatherTests(GatherTestsBase, test_utils.TestCase):
 
 
 klasse RunCoroutineThreadsafeTests(test_utils.TestCase):
-    """Test case for asyncio.run_coroutine_threadsafe."""
+    """Test case fuer asyncio.run_coroutine_threadsafe."""
 
     def setUp(self):
         super().setUp()
@@ -3607,7 +3607,7 @@ klasse RunCoroutineThreadsafeTests(test_utils.TestCase):
         coro = self.add(1, 2, fail=fail, cancel=cancel)
         future = asyncio.run_coroutine_threadsafe(coro, self.loop)
         if advance_coro:
-            # this is for test_run_coroutine_threadsafe_task_factory_exception;
+            # this is fuer test_run_coroutine_threadsafe_task_factory_exception;
             # otherwise it spills errors and breaks **other** unittests, since
             # 'target' is interacting with threads.
 
@@ -3641,7 +3641,7 @@ klasse RunCoroutineThreadsafeTests(test_utils.TestCase):
             self.loop.run_until_complete(future)
         test_utils.run_briefly(self.loop)
         # Check that there's no pending task (add has been cancelled)
-        for task in asyncio.all_tasks(self.loop):
+        fuer task in asyncio.all_tasks(self.loop):
             self.assertTrue(task.done())
 
     def test_run_coroutine_threadsafe_task_cancelled(self):
@@ -3711,7 +3711,7 @@ klasse SleepTests(test_utils.TestCase):
 
 
 klasse CompatibilityTests(test_utils.TestCase):
-    # Tests for checking a bridge between old-styled coroutines
+    # Tests fuer checking a bridge between old-styled coroutines
     # and async/await syntax
 
     def setUp(self):

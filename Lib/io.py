@@ -19,7 +19,7 @@ streams. BytesIO is a simple stream of in-memory bytes.
 Another IOBase subclass, TextIOBase, deals with the encoding and decoding
 of streams into text. TextIOWrapper, which extends it, is a buffered text
 interface to a buffered raw stream (`BufferedIOBase`). Finally, StringIO
-is an in-memory stream for text.
+is an in-memory stream fuer text.
 
 Argument names are not part of the specification, and only the arguments
 of open() are intended to be used as keyword arguments.
@@ -60,7 +60,7 @@ from _io import (DEFAULT_BUFFER_SIZE, BlockingIOError, UnsupportedOperation,
                  IncrementalNewlineDecoder, text_encoding, TextIOWrapper)
 
 
-# for seek()
+# fuer seek()
 SEEK_SET = 0
 SEEK_CUR = 1
 SEEK_END = 2
@@ -82,11 +82,11 @@ klasse TextIOBase(_io._TextIOBase, IOBase):
 
 RawIOBase.register(FileIO)
 
-for klass in (BytesIO, BufferedReader, BufferedWriter, BufferedRandom,
+fuer klass in (BytesIO, BufferedReader, BufferedWriter, BufferedRandom,
               BufferedRWPair):
     BufferedIOBase.register(klass)
 
-for klass in (StringIO, TextIOWrapper):
+fuer klass in (StringIO, TextIOWrapper):
     TextIOBase.register(klass)
 del klass
 
@@ -105,7 +105,7 @@ GenericAlias = type(list[int])
 
 
 klasse Reader(metaclass=abc.ABCMeta):
-    """Protocol for simple I/O reader instances.
+    """Protocol fuer simple I/O reader instances.
 
     This protocol only supports blocking I/O.
     """
@@ -130,7 +130,7 @@ klasse Reader(metaclass=abc.ABCMeta):
 
 
 klasse Writer(metaclass=abc.ABCMeta):
-    """Protocol for simple I/O writer instances.
+    """Protocol fuer simple I/O writer instances.
 
     This protocol only supports blocking I/O.
     """

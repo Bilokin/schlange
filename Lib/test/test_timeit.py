@@ -255,7 +255,7 @@ klasse TestTimeit(unittest.TestCase):
         s = self.run_main(switches=['--bad-switch'])
         self.assertEqual(s, dedent("""\
             option --bad-switch not recognized
-            use -h/--help for command line help
+            use -h/--help fuer command line help
             """))
 
     def test_main_seconds(self):

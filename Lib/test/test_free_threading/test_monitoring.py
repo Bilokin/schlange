@@ -29,7 +29,7 @@ klasse InstrumentationMultiThreadedMixin:
 
     def work(self, n, funcs):
         """Fibonacci function which also calls a bunch of random functions"""
-        for func in funcs:
+        fuer func in funcs:
             func()
         if n < 2:
             return n
@@ -48,13 +48,13 @@ klasse InstrumentationMultiThreadedMixin:
     def test_instrumentation(self):
         # Setup a bunch of functions which will need instrumentation...
         funcs = []
-        for i in range(self.func_count):
+        fuer i in range(self.func_count):
             x = {}
             exec("def f(): pass", x)
             funcs.append(x["f"])
 
         threads = []
-        for i in range(self.thread_count):
+        fuer i in range(self.thread_count):
             # Each thread gets a copy of the func list to avoid contention
             t = Thread(target=self.start_work, args=(self.fib, list(funcs)))
             t.start()
@@ -64,7 +64,7 @@ klasse InstrumentationMultiThreadedMixin:
 
         while True:
             any_alive = False
-            for t in threads:
+            fuer t in threads:
                 if t.is_alive():
                     any_alive = True
                     break
@@ -79,7 +79,7 @@ klasse InstrumentationMultiThreadedMixin:
 
 klasse MonitoringTestMixin:
     def setUp(self):
-        for i in range(6):
+        fuer i in range(6):
             if monitoring.get_tool(i) is None:
                 self.tool_id = i
                 monitoring.use_tool_id(i, self.__class__.__name__)
@@ -239,17 +239,17 @@ klasse SetProfileAllMultiThreaded(TestCase):
             return None
 
         bg_threads = []
-        for i in range(10):
+        fuer i in range(10):
             t = threading.Thread(target=bg_thread)
             t.start()
             bg_threads.append(t)
 
-        for i in range(100):
+        fuer i in range(100):
             threading.setprofile_all_threads(my_profile)
             threading.setprofile_all_threads(None)
 
         done.set()
-        for t in bg_threads:
+        fuer t in bg_threads:
             t.join()
 
 
@@ -271,7 +271,7 @@ klasse MonitoringMisc(MonitoringTestMixin, TestCase):
         def callback(*args):
             pass
 
-        for i in range(200):
+        fuer i in range(200):
             monitoring.register_callback(self.tool_id, monitoring.events.LINE, callback)
 
         self.refs.append(weakref.ref(callback))
@@ -280,16 +280,16 @@ klasse MonitoringMisc(MonitoringTestMixin, TestCase):
         self.refs = []
         threads = []
         barrier = Barrier(5)
-        for i in range(5):
+        fuer i in range(5):
             t = Thread(target=self.register_callback, args=(barrier,))
             t.start()
             threads.append(t)
 
-        for thread in threads:
+        fuer thread in threads:
             thread.join()
 
         monitoring.register_callback(self.tool_id, monitoring.events.LINE, None)
-        for ref in self.refs:
+        fuer ref in self.refs:
             self.assertEqual(ref(), None)
 
     def test_set_local_trace_opcodes(self):
@@ -304,13 +304,13 @@ klasse MonitoringMisc(MonitoringTestMixin, TestCase):
             l = _PyRLock()
 
             def f():
-                for i in range(loops):
+                fuer i in range(loops):
                     with l:
                         pass
 
             t = Thread(target=f)
             t.start()
-            for i in range(loops):
+            fuer i in range(loops):
                 with l:
                     pass
             t.join()
@@ -318,7 +318,7 @@ klasse MonitoringMisc(MonitoringTestMixin, TestCase):
             sys.settrace(None)
 
     def test_toggle_setprofile_no_new_events(self):
-        # gh-136396: Make sure that profile functions are called for newly
+        # gh-136396: Make sure that profile functions are called fuer newly
         # created threads when profiling is toggled but the set of monitoring
         # events doesn't change
         traces = []
@@ -382,14 +382,14 @@ klasse MonitoringMisc(MonitoringTestMixin, TestCase):
         num_threads = 5
         barrier = Barrier(num_threads)
         threads = []
-        for i in range(num_threads):
+        fuer i in range(num_threads):
             t = Thread(target=parent, args=(barrier, i))
             t.start()
             threads.append(t)
-        for t in threads:
+        fuer t in threads:
             t.join()
 
-        for i in range(num_threads):
+        fuer i in range(num_threads):
             self.assertIn(("in_parent", "return", i), buf.traces)
             self.assertIn(("in_child", "return", i), buf.traces)
 
@@ -452,7 +452,7 @@ klasse MonitoringMisc(MonitoringTestMixin, TestCase):
         b = threading.Barrier(2)
 
         def func():
-            for _ in range(100):
+            fuer _ in range(100):
                 pass
 
         def noop():
@@ -464,7 +464,7 @@ klasse MonitoringMisc(MonitoringTestMixin, TestCase):
 
         def tracefunc(frame, event, arg):
             # These calls run under tracing can race with the background thread
-            for _ in range(10):
+            fuer _ in range(10):
                 func()
             return tracefunc
 

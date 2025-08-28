@@ -1,4 +1,4 @@
-"""This is a test module for test_pydoc"""
+"""This is a test module fuer test_pydoc"""
 
 from __future__ import print_function
 

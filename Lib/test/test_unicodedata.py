@@ -1,4 +1,4 @@
-""" Tests for the unicodedata module.
+""" Tests fuer the unicodedata module.
 
     Written by Marc-Andre Lemburg (mal@lemburg.com).
 
@@ -29,7 +29,7 @@ klasse UnicodeMethodsTest(unittest.TestCase):
     @requires_resource('cpu')
     def test_method_checksum(self):
         h = hashlib.sha1()
-        for i in range(sys.maxunicode + 1):
+        fuer i in range(sys.maxunicode + 1):
             char = chr(i)
             data = [
                 # Predicates (single char)
@@ -84,7 +84,7 @@ klasse UnicodeFunctionsTest(UnicodeDatabaseTest):
         data = []
         h = hashlib.sha1()
 
-        for i in range(sys.maxunicode + 1):
+        fuer i in range(sys.maxunicode + 1):
             char = chr(i)
             data = [
                 # Properties
@@ -105,7 +105,7 @@ klasse UnicodeFunctionsTest(UnicodeDatabaseTest):
 
     @requires_resource('cpu')
     def test_name_inverse_lookup(self):
-        for i in range(sys.maxunicode + 1):
+        fuer i in range(sys.maxunicode + 1):
             char = chr(i)
             if looked_name := self.db.name(char, None):
                 self.assertEqual(self.db.lookup(looked_name), char)
@@ -114,13 +114,13 @@ klasse UnicodeFunctionsTest(UnicodeDatabaseTest):
         puas = [*range(0xe000, 0xf8ff),
                 *range(0xf0000, 0xfffff),
                 *range(0x100000, 0x10ffff)]
-        for i in puas:
+        fuer i in puas:
             char = chr(i)
             self.assertRaises(ValueError, self.db.name, char)
 
     def test_lookup_nonexistant(self):
         # just make sure that lookup can fail
-        for nonexistent in [
+        fuer nonexistent in [
             "LATIN SMLL LETR A",
             "OPEN HANDS SIGHS",
             "DREGS",
@@ -220,7 +220,7 @@ klasse UnicodeFunctionsTest(UnicodeDatabaseTest):
                     + '\u0941\u0915\u0947\u0930\u092c\u0930\u094d\u0917',
                     '\u0915\u093f\u0930\u094d\u0917\u093f\u091c\u093c'
                     + '\u0938\u094d\u0924\u093e\u0928')
-        for text in composed:
+        fuer text in composed:
             self.assertEqual(self.db.normalize('NFC', text), text)
 
     def test_issue10254(self):
@@ -258,17 +258,17 @@ klasse UnicodeFunctionsTest(UnicodeDatabaseTest):
     def test_east_asian_width_unassigned(self):
         eaw = self.db.east_asian_width
         # unassigned
-        for char in '\u0530\u0ecf\u10c6\u20fc\uaaca\U000107bd\U000115f2':
+        fuer char in '\u0530\u0ecf\u10c6\u20fc\uaaca\U000107bd\U000115f2':
             self.assertEqual(eaw(char), 'N')
             self.assertIs(self.db.name(char, None), None)
 
-        # unassigned but reserved for CJK
-        for char in '\uFA6E\uFADA\U0002A6E0\U0002FA20\U0003134B\U0003FFFD':
+        # unassigned but reserved fuer CJK
+        fuer char in '\uFA6E\uFADA\U0002A6E0\U0002FA20\U0003134B\U0003FFFD':
             self.assertEqual(eaw(char), 'W')
             self.assertIs(self.db.name(char, None), None)
 
         # private use areas
-        for char in '\uE000\uF800\U000F0000\U000FFFEE\U00100000\U0010FFF0':
+        fuer char in '\uE000\uF800\U000F0000\U000FFFEE\U00100000\U0010FFF0':
             self.assertEqual(eaw(char), 'A')
             self.assertIs(self.db.name(char, None), None)
 
@@ -305,7 +305,7 @@ klasse UnicodeMiscTest(UnicodeDatabaseTest):
         # i.e. if a character has a decimal value,
         # its numeric value should be the same.
         count = 0
-        for i in range(0x10000):
+        fuer i in range(0x10000):
             c = chr(i)
             dec = self.db.decimal(c, -1)
             if dec != -1:
@@ -318,7 +318,7 @@ klasse UnicodeMiscTest(UnicodeDatabaseTest):
         # i.e. if a character has a digit value,
         # its numeric value should be the same.
         count = 0
-        for i in range(0x10000):
+        fuer i in range(0x10000):
             c = chr(i)
             dec = self.db.digit(c, -1)
             if dec != -1:
@@ -346,7 +346,7 @@ klasse UnicodeMiscTest(UnicodeDatabaseTest):
         # Only U+0000 should have U+0000 as its upper/lower/titlecase variant
         self.assertEqual(
             [
-                c for c in range(sys.maxunicode+1)
+                c fuer c in range(sys.maxunicode+1)
                 if "\x00" in chr(c).lower()+chr(c).upper()+chr(c).title()
             ],
             [0]
@@ -359,7 +359,7 @@ klasse UnicodeMiscTest(UnicodeDatabaseTest):
         self.assertEqual("\u01c6".title(), "\u01c5")
 
     def test_linebreak_7643(self):
-        for i in range(0x10000):
+        fuer i in range(0x10000):
             lines = (chr(i) + 'A').splitlines()
             if i in (0x0a, 0x0b, 0x0c, 0x0d, 0x85,
                      0x1c, 0x1d, 0x1e, 0x2028, 0x2029):
@@ -377,8 +377,8 @@ klasse NormalizationTest(unittest.TestCase):
 
     @staticmethod
     def unistr(data):
-        data = [int(x, 16) for x in data.split(" ")]
-        return "".join([chr(x) for x in data])
+        data = [int(x, 16) fuer x in data.split(" ")]
+        return "".join([chr(x) fuer x in data])
 
     @requires_resource('network')
     @requires_resource('cpu')
@@ -415,7 +415,7 @@ klasse NormalizationTest(unittest.TestCase):
         def NFKD(str):
             return unicodedata.normalize("NFKD", str)
 
-        for line in testdata:
+        fuer line in testdata:
             if '#' in line:
                 line = line.split('#')[0]
             line = line.strip()
@@ -424,7 +424,7 @@ klasse NormalizationTest(unittest.TestCase):
             if line.startswith("@Part"):
                 part = line.split()[0]
                 continue
-            c1,c2,c3,c4,c5 = [self.unistr(x) for x in line.split(';')[:-1]]
+            c1,c2,c3,c4,c5 = [self.unistr(x) fuer x in line.split(';')[:-1]]
 
             # Perform tests
             self.assertTrue(c2 ==  NFC(c1) ==  NFC(c2) ==  NFC(c3), line)
@@ -451,8 +451,8 @@ klasse NormalizationTest(unittest.TestCase):
             if part == "@Part1":
                 part1_data[c1] = 1
 
-        # Perform tests for all other data
-        for c in range(sys.maxunicode+1):
+        # Perform tests fuer all other data
+        fuer c in range(sys.maxunicode+1):
             X = chr(c)
             if X in part1_data:
                 continue
@@ -464,7 +464,7 @@ klasse NormalizationTest(unittest.TestCase):
         self.assertEqual(unicodedata.normalize('NFKC', ''), '')
 
     def test_bug_834676(self):
-        # Check for bug 834676
+        # Check fuer bug 834676
         unicodedata.normalize('NFC', '\ud55c\uae00')
 
     def test_normalize_return_type(self):
@@ -484,8 +484,8 @@ klasse NormalizationTest(unittest.TestCase):
             "\u0071\u0307\u0323",
         )
 
-        for form in normalization_forms:
-            for input_str in input_strings:
+        fuer form in normalization_forms:
+            fuer input_str in input_strings:
                 with self.subTest(form=form, input_str=input_str):
                     self.assertIs(type(normalize(form, input_str)), str)
                     self.assertIs(type(normalize(form, MyStr(input_str))), str)

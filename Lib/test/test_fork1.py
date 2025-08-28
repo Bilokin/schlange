@@ -1,4 +1,4 @@
-"""This test checks for correct fork() behavior.
+"""This test checks fuer correct fork() behavior.
 """
 
 import _imp as imp
@@ -40,7 +40,7 @@ klasse ForkTest(ForkWait):
         exitcode = 42
         pid = os.fork()
         try:
-            # PyOS_BeforeFork should have waited for the import to complete
+            # PyOS_BeforeFork should have waited fuer the import to complete
             # before forking, so the child can recreate the import lock
             # correctly, but also won't see a partially initialised module
             if not pid:
@@ -73,13 +73,13 @@ klasse ForkTest(ForkWait):
             in_child = False
             try:
                 try:
-                    for i in range(level):
+                    fuer i in range(level):
                         imp.acquire_lock()
                         release += 1
                     pid = os.fork()
                     in_child = not pid
                 finally:
-                    for i in range(release):
+                    fuer i in range(release):
                         imp.release_lock()
             except RuntimeError:
                 if in_child:
@@ -93,7 +93,7 @@ klasse ForkTest(ForkWait):
 
         # Check this works with various levels of nested
         # import in the main thread
-        for level in range(5):
+        fuer level in range(5):
             fork_with_import_lock(level)
 
 

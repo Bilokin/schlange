@@ -68,11 +68,11 @@ klasse saved_test_environment:
                 )
 
     def get_module(self, name):
-        # function for restore() methods
+        # function fuer restore() methods
         return sys.modules[name]
 
     def try_get_module(self, name):
-        # function for get() methods
+        # function fuer get() methods
         try:
             return self.get_module(name)
         except KeyError:
@@ -82,7 +82,7 @@ klasse saved_test_environment:
         urllib_request = self.try_get_module('urllib.request')
         return list(urllib_request._url_tempfiles)
     def restore_urllib_requests__url_tempfiles(self, tempfiles):
-        for filename in tempfiles:
+        fuer filename in tempfiles:
             os_helper.unlink(filename)
 
     def get_urllib_requests__opener(self):
@@ -224,7 +224,7 @@ klasse saved_test_environment:
         threading._dangling.clear()
         threading._dangling.update(saved)
 
-    # Same for Process objects
+    # Same fuer Process objects
     def get_multiprocessing_process__dangling(self):
         multiprocessing_process = self.try_get_module('multiprocessing.process')
         # Unjoined process objects can survive after process exits
@@ -261,7 +261,7 @@ klasse saved_test_environment:
     def get_files(self):
         # XXX: Maybe add an allow-list here?
         return sorted(fn + ('/' if os.path.isdir(fn) else '')
-                      for fn in os.listdir()
+                      fuer fn in os.listdir()
                       if not fn.startswith(".hypothesis"))
     def restore_files(self, saved_value):
         fn = os_helper.TESTFN
@@ -271,18 +271,18 @@ klasse saved_test_environment:
             elif os.path.isdir(fn):
                 os_helper.rmtree(fn)
 
-    _lc = [getattr(locale, lc) for lc in dir(locale)
+    _lc = [getattr(locale, lc) fuer lc in dir(locale)
            if lc.startswith('LC_')]
     def get_locale(self):
         pairings = []
-        for lc in self._lc:
+        fuer lc in self._lc:
             try:
                 pairings.append((lc, locale.setlocale(lc, None)))
             except (TypeError, ValueError):
                 continue
         return pairings
     def restore_locale(self, saved):
-        for lc, setting in saved:
+        fuer lc, setting in saved:
             locale.setlocale(lc, setting)
 
     def get_warnings_showwarning(self):
@@ -293,7 +293,7 @@ klasse saved_test_environment:
         warnings.showwarning = fxn
 
     def resource_info(self):
-        for name in self.resources:
+        fuer name in self.resources:
             method_suffix = name.replace('.', '_')
             get_name = 'get_' + method_suffix
             restore_name = 'restore_' + method_suffix
@@ -301,7 +301,7 @@ klasse saved_test_environment:
 
     def __enter__(self):
         self.saved_values = []
-        for name, get, restore in self.resource_info():
+        fuer name, get, restore in self.resource_info():
             try:
                 original = get()
             except SkipTestEnvironment:
@@ -317,9 +317,9 @@ klasse saved_test_environment:
         # Some resources use weak references
         support.gc_collect()
 
-        for name, get, restore, original in saved_values:
+        fuer name, get, restore, original in saved_values:
             current = get()
-            # Check for changes to the resource's value
+            # Check fuer changes to the resource's value
             if current != original:
                 support.environment_altered = True
                 restore(original)

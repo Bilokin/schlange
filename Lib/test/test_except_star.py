@@ -16,7 +16,7 @@ klasse TestInvalidExceptStar(unittest.TestCase):
             "try: pass\nexcept* ValueError: pass\nexcept: pass\n",
         ]
 
-        for err in errors:
+        fuer err in errors:
             with self.assertRaises(SyntaxError):
                 compile(err, "<string>", "exec")
 
@@ -67,7 +67,7 @@ klasse TestBreakContinueReturnInExceptStarBlock(unittest.TestCase):
 
         self.check_invalid(
             """
-            for i in range(5):
+            fuer i in range(5):
                 try:
                     pass
                 except* Exception as e:
@@ -77,7 +77,7 @@ klasse TestBreakContinueReturnInExceptStarBlock(unittest.TestCase):
 
         self.check_invalid(
             """
-            for i in range(5):
+            fuer i in range(5):
                 try:
                     pass
                 except* Exception as e:
@@ -92,7 +92,7 @@ klasse TestBreakContinueReturnInExceptStarBlock(unittest.TestCase):
     def test_continue_in_except_star_block_invalid(self):
         self.check_invalid(
             """
-            for i in range(5):
+            fuer i in range(5):
                 try:
                     raise ValueError
                 except* Exception as e:
@@ -101,7 +101,7 @@ klasse TestBreakContinueReturnInExceptStarBlock(unittest.TestCase):
 
         self.check_invalid(
             """
-            for i in range(5):
+            fuer i in range(5):
                 try:
                     pass
                 except* Exception as e:
@@ -111,7 +111,7 @@ klasse TestBreakContinueReturnInExceptStarBlock(unittest.TestCase):
 
         self.check_invalid(
             """
-            for i in range(5):
+            fuer i in range(5):
                 try:
                     pass
                 except* Exception as e:
@@ -148,7 +148,7 @@ klasse TestBreakContinueReturnInExceptStarBlock(unittest.TestCase):
             raise ValueError(42)
         except* Exception as e:
             count = 0
-            for i in range(5):
+            fuer i in range(5):
                 if i == 0:
                     continue
                 if i == 4:
@@ -437,7 +437,7 @@ klasse TestExceptStarSplitSemantics(ExceptStarTest):
             self.fail("Exception not raised")
 
     def test_nested_in_loop(self):
-        for _ in range(2):
+        fuer _ in range(2):
             try:
                 raise ExceptionGroup("nl", [BlockingIOError("io")])
             except* BlockingIOError:
@@ -946,7 +946,7 @@ klasse TestExceptStarExceptionGroupSubclass(ExceptStarTest):
         except Exception as e:
             exc = e
 
-        for e in [tes, ves, exc]:
+        fuer e in [tes, ves, exc]:
             self.assertFalse(e)
             self.assertIsInstance(e, FalsyEG)
 
@@ -971,7 +971,7 @@ klasse TestExceptStarExceptionGroupSubclass(ExceptStarTest):
              r"split must return a 2-tuple, got tuple of size 1")
         ]
 
-        for eg_class, msg in eg_list:
+        fuer eg_class, msg in eg_list:
             with self.assertRaisesRegex(TypeError, msg) as m:
                 try:
                     raise eg_class
@@ -982,7 +982,7 @@ klasse TestExceptStarExceptionGroupSubclass(ExceptStarTest):
 
             self.assertExceptionIsLike(m.exception.__context__, eg_class)
 
-        # we allow tuples of length > 2 for backwards compatibility
+        # we allow tuples of length > 2 fuer backwards compatibility
         klasse WeirdEG(ExceptionGroup):
             def split(self, *args):
                 return super().split(*args) + ("anything", 123456, None)
@@ -1054,7 +1054,7 @@ klasse TestExceptStar_WeirdLeafExceptions(ExceptStarTest):
         return match, rest
 
     def test_catch_unhashable_leaf_exception(self):
-        for Bad in self.bad_types:
+        fuer Bad in self.bad_types:
             with self.subTest(Bad):
                 eg = ExceptionGroup("eg", [TypeError(1), Bad(2)])
                 match, rest = self.except_type(eg, Bad)
@@ -1064,7 +1064,7 @@ klasse TestExceptStar_WeirdLeafExceptions(ExceptStarTest):
                     rest, ExceptionGroup("eg", [TypeError(1)]))
 
     def test_propagate_unhashable_leaf(self):
-        for Bad in self.bad_types:
+        fuer Bad in self.bad_types:
             with self.subTest(Bad):
                 eg = ExceptionGroup("eg", [TypeError(1), Bad(2)])
                 match, rest = self.except_type(eg, TypeError)
@@ -1074,7 +1074,7 @@ klasse TestExceptStar_WeirdLeafExceptions(ExceptStarTest):
                     rest, ExceptionGroup("eg", [Bad(2)]))
 
     def test_catch_nothing_unhashable_leaf(self):
-        for Bad in self.bad_types:
+        fuer Bad in self.bad_types:
             with self.subTest(Bad):
                 eg = ExceptionGroup("eg", [TypeError(1), Bad(2)])
                 match, rest = self.except_type(eg, OSError)
@@ -1082,7 +1082,7 @@ klasse TestExceptStar_WeirdLeafExceptions(ExceptStarTest):
                 self.assertExceptionIsLike(rest, eg)
 
     def test_catch_everything_unhashable_leaf(self):
-        for Bad in self.bad_types:
+        fuer Bad in self.bad_types:
             with self.subTest(Bad):
                 eg = ExceptionGroup("eg", [TypeError(1), Bad(2)])
                 match, rest = self.except_type(eg, Exception)
@@ -1090,7 +1090,7 @@ klasse TestExceptStar_WeirdLeafExceptions(ExceptStarTest):
                 self.assertIsNone(rest)
 
     def test_reraise_unhashable_leaf(self):
-        for Bad in self.bad_types:
+        fuer Bad in self.bad_types:
             with self.subTest(Bad):
                 eg = ExceptionGroup(
                     "eg", [TypeError(1), Bad(2), ValueError(3)])
@@ -1158,7 +1158,7 @@ klasse TestExceptStar_WeirdExceptionGroupSubclass(ExceptStarTest):
         return match, rest
 
     def test_catch_some_unhashable_exception_group_subclass(self):
-        for BadEG in self.bad_types:
+        fuer BadEG in self.bad_types:
             with self.subTest(BadEG):
                 eg = BadEG("eg",
                            [TypeError(1),
@@ -1170,7 +1170,7 @@ klasse TestExceptStar_WeirdExceptionGroupSubclass(ExceptStarTest):
                     BadEG("eg", [BadEG("nested", [ValueError(2)])]))
 
     def test_catch_none_unhashable_exception_group_subclass(self):
-        for BadEG in self.bad_types:
+        fuer BadEG in self.bad_types:
             with self.subTest(BadEG):
 
                 eg = BadEG("eg",
@@ -1182,7 +1182,7 @@ klasse TestExceptStar_WeirdExceptionGroupSubclass(ExceptStarTest):
                 self.assertExceptionIsLike(rest, eg)
 
     def test_catch_all_unhashable_exception_group_subclass(self):
-        for BadEG in self.bad_types:
+        fuer BadEG in self.bad_types:
             with self.subTest(BadEG):
 
                 eg = BadEG("eg",
@@ -1194,7 +1194,7 @@ klasse TestExceptStar_WeirdExceptionGroupSubclass(ExceptStarTest):
                 self.assertIsNone(rest)
 
     def test_reraise_unhashable_eg(self):
-        for BadEG in self.bad_types:
+        fuer BadEG in self.bad_types:
             with self.subTest(BadEG):
 
                 eg = BadEG("eg",

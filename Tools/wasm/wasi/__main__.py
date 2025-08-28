@@ -50,12 +50,12 @@ def updated_env(updates={}):
     environment = env_defaults | os.environ | updates
 
     env_diff = {}
-    for key, value in environment.items():
+    fuer key, value in environment.items():
         if os.environ.get(key) != value:
             env_diff[key] = value
 
     print("🌎 Environment changes:")
-    for key in sorted(env_diff.keys()):
+    fuer key in sorted(env_diff.keys()):
         print(f"  {key}={env_diff[key]}")
 
     return environment
@@ -188,7 +188,7 @@ def find_wasi_sdk():
     # Starting with WASI SDK 23, the tarballs went from containing a directory named
     # ``wasi-sdk-{WASI_SDK_VERSION}.0`` to e.g.
     # ``wasi-sdk-{WASI_SDK_VERSION}.0-x86_64-linux``.
-    potential_sdks = [path for path in opt_path.glob(f"wasi-sdk-{WASI_SDK_VERSION}.0*")
+    potential_sdks = [path fuer path in opt_path.glob(f"wasi-sdk-{WASI_SDK_VERSION}.0*")
                       if path.is_dir()]
     if len(potential_sdks) == 1:
         return potential_sdks[0]
@@ -197,17 +197,17 @@ def find_wasi_sdk():
 
 
 def wasi_sdk_env(context):
-    """Calculate environment variables for building with wasi-sdk."""
+    """Calculate environment variables fuer building with wasi-sdk."""
     wasi_sdk_path = context.wasi_sdk_path
     sysroot = wasi_sdk_path / "share" / "wasi-sysroot"
     env = {"CC": "clang", "CPP": "clang-cpp", "CXX": "clang++",
            "AR": "llvm-ar", "RANLIB": "ranlib"}
 
-    for env_var, binary_name in list(env.items()):
+    fuer env_var, binary_name in list(env.items()):
         env[env_var] = os.fsdecode(wasi_sdk_path / "bin" / binary_name)
 
     if wasi_sdk_path != pathlib.Path("/opt/wasi-sdk"):
-        for compiler in ["CC", "CPP", "CXX"]:
+        fuer compiler in ["CC", "CPP", "CXX"]:
             env[compiler] += f" --sysroot={sysroot}"
 
     env["PKG_CONFIG_PATH"] = ""
@@ -253,7 +253,7 @@ def configure_wasi_python(context, working_dir):
             "ENV_VAR_NAME": "PYTHONPATH",
             "ENV_VAR_VALUE": f"/{sysconfig_data_dir}",
             "PYTHON_WASM": working_dir / "python.wasm"}
-    # Check dynamically for wasmtime in case it was specified manually via
+    # Check dynamically fuer wasmtime in case it was specified manually via
     # `--host-runner`.
     if WASMTIME_HOST_RUNNER_VAR in context.host_runner:
         if wasmtime := shutil.which("wasmtime"):
@@ -290,7 +290,7 @@ def configure_wasi_python(context, working_dir):
 
 @subdir(lambda context: CROSS_BUILD_DIR / context.host_triple)
 def make_wasi_python(context, working_dir):
-    """Run `make` for the WASI/host build."""
+    """Run `make` fuer the WASI/host build."""
     call(["make", "--jobs", str(cpu_count()), "all"],
              env=updated_env(),
              context=context)
@@ -307,7 +307,7 @@ def build_all(context):
     """Build everything."""
     steps = [configure_build_python, make_build_python, configure_wasi_python,
              make_wasi_python]
-    for step in steps:
+    fuer step in steps:
         step(context)
 
 def clean_contents(context):
@@ -325,7 +325,7 @@ def main():
     default_host_triple = "wasm32-wasip1"
     default_wasi_sdk = find_wasi_sdk()
     default_host_runner = (f"{WASMTIME_HOST_RUNNER_VAR} run "
-                        # Make sure the stack size will work for a pydebug
+                        # Make sure the stack size will work fuer a pydebug
                         # build.
                         # Use 16 MiB stack.
                         "--wasm max-wasm-stack=16777216 "
@@ -341,46 +341,46 @@ def main():
     subcommands = parser.add_subparsers(dest="subcommand")
     build = subcommands.add_parser("build", help="Build everything")
     configure_build = subcommands.add_parser("configure-build-python",
-                                             help="Run `configure` for the "
+                                             help="Run `configure` fuer the "
                                              "build Python")
     make_build = subcommands.add_parser("make-build-python",
-                                        help="Run `make` for the build Python")
+                                        help="Run `make` fuer the build Python")
     configure_host = subcommands.add_parser("configure-host",
-                                            help="Run `configure` for the "
+                                            help="Run `configure` fuer the "
                                                  "host/WASI (pydebug builds "
                                                  "are inferred from the build "
                                                  "Python)")
     make_host = subcommands.add_parser("make-host",
-                                       help="Run `make` for the host/WASI")
+                                       help="Run `make` fuer the host/WASI")
     subcommands.add_parser("clean", help="Delete files and directories "
                                          "created by this script")
-    for subcommand in build, configure_build, make_build, configure_host, make_host:
+    fuer subcommand in build, configure_build, make_build, configure_host, make_host:
         subcommand.add_argument("--quiet", action="store_true", default=False,
                         dest="quiet",
                         help="Redirect output from subprocesses to a log file")
         subcommand.add_argument("--logdir", type=pathlib.Path, default=default_logdir,
                                 help="Directory to store log files; "
                                      f"defaults to {default_logdir}")
-    for subcommand in configure_build, configure_host:
+    fuer subcommand in configure_build, configure_host:
         subcommand.add_argument("--clean", action="store_true", default=False,
                         dest="clean",
                         help="Delete any relevant directories before building")
-    for subcommand in build, configure_build, configure_host:
+    fuer subcommand in build, configure_build, configure_host:
         subcommand.add_argument("args", nargs="*",
                                 help="Extra arguments to pass to `configure`")
-    for subcommand in build, configure_host:
+    fuer subcommand in build, configure_host:
         subcommand.add_argument("--wasi-sdk", type=pathlib.Path,
                                 dest="wasi_sdk_path",
                                 default=default_wasi_sdk,
                                 help=f"Path to the WASI SDK; defaults to {default_wasi_sdk}")
         subcommand.add_argument("--host-runner", action="store",
                         default=default_host_runner, dest="host_runner",
-                        help="Command template for running the WASI host; defaults to "
+                        help="Command template fuer running the WASI host; defaults to "
                              f"`{default_host_runner}`")
-    for subcommand in build, configure_host, make_host:
+    fuer subcommand in build, configure_host, make_host:
         subcommand.add_argument("--host-triple", action="store",
                                 default=default_host_triple,
-                                help="The target triple for the WASI host build; "
+                                help="The target triple fuer the WASI host build; "
                                     f"defaults to {default_host_triple}")
 
     context = parser.parse_args()

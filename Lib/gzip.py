@@ -38,7 +38,7 @@ def open(filename, mode="rb", compresslevel=_COMPRESS_LEVEL_TRADEOFF,
     an existing file object to read from or write to.
 
     The mode argument can be "r", "rb", "w", "wb", "x", "xb", "a" or "ab" for
-    binary mode, or "rt", "wt", "xt" or "at" for text mode. The default mode is
+    binary mode, or "rt", "wt", "xt" or "at" fuer text mode. The default mode is
     "rb", and the default compresslevel is 9.
 
     For binary mode, this function is equivalent to the GzipFile constructor:
@@ -123,7 +123,7 @@ klasse _PaddedFile:
 
 
 klasse BadGzipFile(OSError):
-    """Exception raised in some cases for invalid gzip files."""
+    """Exception raised in some cases fuer invalid gzip files."""
 
 
 klasse _WriteBufferStream(io.RawIOBase):
@@ -159,7 +159,7 @@ klasse GzipFile(_streams.BaseStream):
 
     def __init__(self, filename=None, mode=None,
                  compresslevel=_COMPRESS_LEVEL_TRADEOFF, fileobj=None, mtime=None):
-        """Constructor for the GzipFile class.
+        """Constructor fuer the GzipFile class.
 
         At least one of fileobj and filename must be given a
         non-trivial value.
@@ -178,7 +178,7 @@ klasse GzipFile(_streams.BaseStream):
         The mode argument can be any of 'r', 'rb', 'a', 'ab', 'w', 'wb', 'x', or
         'xb' depending on whether the file will be read or written.  The default
         is the mode of fileobj if discernible; otherwise, the default is 'rb'.
-        A mode of 'r' is equivalent to one of 'rb', and similarly for 'w' and
+        A mode of 'r' is equivalent to one of 'rb', and similarly fuer 'w' and
         'wb', 'a' and 'ab', and 'x' and 'xb'.
 
         The compresslevel argument is an integer from 0 to 9 controlling the
@@ -227,9 +227,9 @@ klasse GzipFile(_streams.BaseStream):
                 if origmode is None:
                     import warnings
                     warnings.warn(
-                        "GzipFile was opened for writing, but this will "
+                        "GzipFile was opened fuer writing, but this will "
                         "change in future Python releases.  "
-                        "Specify the mode argument for opening it for writing.",
+                        "Specify the mode argument fuer opening it fuer writing.",
                         FutureWarning, 2)
                 self.mode = WRITE
                 self._init_write(filename)
@@ -268,7 +268,7 @@ klasse GzipFile(_streams.BaseStream):
         self.name = filename
         self.crc = zlib.crc32(b"")
         self.size = 0
-        self.offset = 0  # Current file offset for seek(), tell(), etc
+        self.offset = 0  # Current file offset fuer seek(), tell(), etc
 
     def tell(self):
         self._check_not_closed()
@@ -447,7 +447,7 @@ klasse GzipFile(_streams.BaseStream):
                 raise OSError('Negative seek in write mode')
             count = offset - self.offset
             chunk = b'\0' * self._buffer_size
-            for i in range(count // self._buffer_size):
+            fuer i in range(count // self._buffer_size):
                 self.write(chunk)
             self.write(b'\0' * (count % self._buffer_size))
         elif self.mode == READ:
@@ -624,7 +624,7 @@ def compress(data, compresslevel=_COMPRESS_LEVEL_TRADEOFF, *, mtime=0):
 
     compresslevel sets the compression level in range of 0-9.
     mtime can be used to set the modification time.
-    The modification time is set to 0 by default, for reproducibility.
+    The modification time is set to 0 by default, fuer reproducibility.
     """
     # Wbits=31 automatically includes a gzip header and trailer.
     gzip_data = zlib.compress(data, level=compresslevel, wbits=31)
@@ -664,7 +664,7 @@ def decompress(data):
 def main():
     from argparse import ArgumentParser
     parser = ArgumentParser(description=
-        "A simple command line interface for the gzip module: act like gzip, "
+        "A simple command line interface fuer the gzip module: act like gzip, "
         "but do not delete the input file.",
         color=True,
     )
@@ -683,7 +683,7 @@ def main():
     elif args.best:
         compresslevel = _COMPRESS_LEVEL_BEST
 
-    for arg in args.args:
+    fuer arg in args.args:
         if args.decompress:
             if arg == "-":
                 f = GzipFile(filename="", mode="rb", fileobj=sys.stdin.buffer)

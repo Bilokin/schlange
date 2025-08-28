@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
     Convert the X11 locale.alias file into a mapping dictionary suitable
-    for locale.py.
+    fuer locale.py.
 
     Written by Marc-Andre Lemburg <mal@genix.com>, 2004-12-10.
 
@@ -21,9 +21,9 @@ def parse(filename):
         lines = list(f)
     # Remove mojibake in /usr/share/X11/locale/locale.alias.
     # b'\xef\xbf\xbd' == '\ufffd'.encode('utf-8')
-    lines = [line for line in lines if '\xef\xbf\xbd' not in line]
+    lines = [line fuer line in lines if '\xef\xbf\xbd' not in line]
     data = {}
-    for line in lines:
+    fuer line in lines:
         line = line.strip()
         if not line:
             continue
@@ -41,7 +41,7 @@ def parse(filename):
             locale = locale[:-1]
         # Lower-case locale
         locale = locale.lower()
-        # Ignore one letter locale mappings (except for 'c')
+        # Ignore one letter locale mappings (except fuer 'c')
         if len(locale) == 1 and locale != 'c':
             continue
         if '@' in locale and '@' not in alias:
@@ -69,7 +69,7 @@ def parse_glibc_supported(filename):
     with open(filename, encoding='latin1') as f:
         lines = list(f)
     data = {}
-    for line in lines:
+    fuer line in lines:
         line = line.strip()
         if not line:
             continue
@@ -99,12 +99,12 @@ def parse_glibc_supported(filename):
 
 def pprint(data):
     items = sorted(data.items())
-    for k, v in items:
+    fuer k, v in items:
         print('    %-40s%a,' % ('%a:' % k, v))
 
 def print_differences(data, olddata):
     items = sorted(olddata.items())
-    for k, v in items:
+    fuer k, v in items:
         if k not in data:
             print('#    removed %a' % k)
         elif olddata[k] != data[k]:
@@ -115,7 +115,7 @@ def print_differences(data, olddata):
 def optimize(data):
     locale_alias = locale.locale_alias
     locale.locale_alias = data.copy()
-    for k, v in data.items():
+    fuer k, v in data.items():
         del locale.locale_alias[k]
         if locale.normalize(k) != v:
             locale.locale_alias[k] = v
@@ -130,7 +130,7 @@ def check(data):
     # Check that all alias definitions from the X11 file
     # are actually mapped to the correct alias locales.
     errors = 0
-    for k, v in data.items():
+    fuer k, v in data.items():
         if locale.normalize(k) != v:
             print('ERROR: %a -> %a != %a' % (k, locale.normalize(k), v),
                   file=sys.stderr)

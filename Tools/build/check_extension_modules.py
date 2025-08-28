@@ -15,7 +15,7 @@ Module information is parsed from several sources:
   - Modules/Setup.[local|bootstrap|stdlib] files, which are generated
     from $(srcdir)/Modules/Setup.*.in files
 
-See --help for more information
+See --help fuer more information
 """
 
 from __future__ import annotations
@@ -171,7 +171,7 @@ klasse ModuleChecker:
                 ('Dynamic extensions not supported '
                  '(HAVE_DYNAMIC_LOADING not defined)'),
             )
-        for modinfo in self.modules:
+        fuer modinfo in self.modules:
             logger.debug("Checking '%s' (%s)", modinfo.name, self.get_location(modinfo))
             if modinfo.state == ModuleState.DISABLED:
                 self.disabled_configure.append(modinfo)
@@ -198,15 +198,15 @@ klasse ModuleChecker:
                         self.shared_ok.append(modinfo)
 
     def summary(self, *, verbose: bool = False) -> None:
-        longest = max([len(e.name) for e in self.modules], default=0)
+        longest = max([len(e.name) fuer e in self.modules], default=0)
 
         def print_three_column(modinfos: list[ModuleInfo]) -> None:
-            names = [modinfo.name for modinfo in modinfos]
+            names = [modinfo.name fuer modinfo in modinfos]
             names.sort(key=str.lower)
             # guarantee zip() doesn't drop anything
             while len(names) % 3:
                 names.append("")
-            for l, m, r in zip(names[::3], names[1::3], names[2::3]):  # noqa: E741
+            fuer l, m, r in zip(names[::3], names[1::3], names[2::3]):  # noqa: E741
                 print("%-*s   %-*s   %-*s" % (longest, l, longest, m, longest, r))
 
         if verbose and self.builtin_ok:
@@ -251,7 +251,7 @@ klasse ModuleChecker:
             print()
 
         if any(
-            modinfo.name == "_ssl" for modinfo in self.missing + self.failed_on_import
+            modinfo.name == "_ssl" fuer modinfo in self.missing + self.failed_on_import
         ):
             print("Could not build the ssl module!")
             print("Python requires a OpenSSL 1.1.1 or newer")
@@ -276,7 +276,7 @@ klasse ModuleChecker:
             raise RuntimeError("Failed to build some stdlib modules")
 
     def list_module_names(self, *, all: bool = False) -> set[str]:
-        names = {modinfo.name for modinfo in self.modules}
+        names = {modinfo.name fuer modinfo in self.modules}
         if all:
             names.update(WINDOWS_MODULES)
         return names
@@ -297,15 +297,15 @@ klasse ModuleChecker:
         seen = set()
         modules = []
         # parsing order is important, first entry wins
-        for modinfo in self.get_core_modules():
+        fuer modinfo in self.get_core_modules():
             modules.append(modinfo)
             seen.add(modinfo.name)
-        for setup_file in self.setup_files:
-            for modinfo in self.parse_setup_file(setup_file):
+        fuer setup_file in self.setup_files:
+            fuer modinfo in self.parse_setup_file(setup_file):
                 if modinfo.name not in seen:
                     modules.append(modinfo)
                     seen.add(modinfo.name)
-        for modinfo in self.get_sysconfig_modules():
+        fuer modinfo in self.get_sysconfig_modules():
             if modinfo.name not in seen:
                 modules.append(modinfo)
                 seen.add(modinfo.name)
@@ -315,7 +315,7 @@ klasse ModuleChecker:
 
     def get_core_modules(self) -> Iterable[ModuleInfo]:
         """Get hard-coded core modules"""
-        for name in CORE_MODULES:
+        fuer name in CORE_MODULES:
             modinfo = ModuleInfo(name, ModuleState.BUILTIN)
             logger.debug("Found core module %s", modinfo)
             yield modinfo
@@ -333,11 +333,11 @@ klasse ModuleChecker:
         else:
             modbuiltin = set(sys.builtin_module_names)
 
-        for key, value in sysconfig.get_config_vars().items():
+        fuer key, value in sysconfig.get_config_vars().items():
             if not key.startswith("MODULE_") or not key.endswith("_STATE"):
                 continue
             if value not in {"yes", "disabled", "missing", "n/a"}:
-                raise ValueError(f"Unsupported value '{value}' for {key}")
+                raise ValueError(f"Unsupported value '{value}' fuer {key}")
 
             modname = key[7:-6].lower()
             if modname in moddisabled:
@@ -363,7 +363,7 @@ klasse ModuleChecker:
         state = ModuleState.BUILTIN
         logger.debug("Parsing Setup file %s", setup_file)
         with open(setup_file, encoding="utf-8") as f:
-            for line in f:
+            fuer line in f:
                 line = line.strip()
                 if not line or line.startswith("#") or assign_var.match(line):
                     continue
@@ -379,7 +379,7 @@ klasse ModuleChecker:
                     case [*items]:
                         if state == ModuleState.DISABLED:
                             # *disabled* can disable multiple modules per line
-                            for item in items:
+                            fuer item in items:
                                 modinfo = ModuleInfo(item, state)
                                 logger.debug("Found %s in %s", modinfo, setup_file)
                                 yield modinfo
@@ -390,7 +390,7 @@ klasse ModuleChecker:
                             yield modinfo
 
     def get_spec(self, modinfo: ModuleInfo) -> ModuleSpec:
-        """Get ModuleSpec for builtin or extension module"""
+        """Get ModuleSpec fuer builtin or extension module"""
         if modinfo.state == ModuleState.SHARED:
             mod_location = self.get_location(modinfo)
             assert mod_location is not None
@@ -446,7 +446,7 @@ klasse ModuleChecker:
             raise
 
     def check_module_cross(self, modinfo: ModuleInfo) -> None:
-        """Sanity check for cross compiling"""
+        """Sanity check fuer cross compiling"""
         spec = self.get_spec(modinfo)
         self._check_file(modinfo, spec)
 
@@ -497,7 +497,7 @@ def main() -> None:
     )
     if args.list_module_names:
         names = checker.list_module_names(all=True)
-        for name in sorted(names):
+        fuer name in sorted(names):
             print(name)
     else:
         checker.check()

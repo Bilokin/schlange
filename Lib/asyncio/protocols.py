@@ -7,7 +7,7 @@ __all__ = (
 
 
 klasse BaseProtocol:
-    """Common base klasse for protocol interfaces.
+    """Common base klasse fuer protocol interfaces.
 
     Usually user implements protocols that derived from BaseProtocol
     like Protocol or ProcessProtocol.
@@ -22,7 +22,7 @@ klasse BaseProtocol:
         """Called when a connection is made.
 
         The argument is the transport representing the pipe connection.
-        To receive data, wait for data_received() calls.
+        To receive data, wait fuer data_received() calls.
         When the connection is closed, connection_lost() is called.
         """
 
@@ -59,12 +59,12 @@ klasse BaseProtocol:
     def resume_writing(self):
         """Called when the transport's buffer drains below the low-water mark.
 
-        See pause_writing() for details.
+        See pause_writing() fuer details.
         """
 
 
 klasse Protocol(BaseProtocol):
-    """Interface for stream protocol.
+    """Interface fuer stream protocol.
 
     The user should implement this interface.  They can inherit from
     this klasse but don't need to.  The implementations here do
@@ -107,7 +107,7 @@ klasse Protocol(BaseProtocol):
 
 
 klasse BufferedProtocol(BaseProtocol):
-    """Interface for stream protocol with manual buffer control.
+    """Interface fuer stream protocol with manual buffer control.
 
     Event methods, such as `create_server` and `create_connection`,
     accept factories that return protocols that implement this interface.
@@ -115,7 +115,7 @@ klasse BufferedProtocol(BaseProtocol):
     The idea of BufferedProtocol is that it allows to manually allocate
     and control the receive buffer.  Event loops can then use the buffer
     provided by the protocol to avoid unnecessary data copies.  This
-    can result in noticeable performance improvement for protocols that
+    can result in noticeable performance improvement fuer protocols that
     receive big amounts of data.  Sophisticated protocols can allocate
     the buffer only once at creation time.
 
@@ -135,7 +135,7 @@ klasse BufferedProtocol(BaseProtocol):
     def get_buffer(self, sizehint):
         """Called to allocate a new receive buffer.
 
-        *sizehint* is a recommended minimal size for the returned
+        *sizehint* is a recommended minimal size fuer the returned
         buffer.  When set to -1, the buffer size can be arbitrary.
 
         Must return an object that implements the
@@ -160,7 +160,7 @@ klasse BufferedProtocol(BaseProtocol):
 
 
 klasse DatagramProtocol(BaseProtocol):
-    """Interface for datagram protocol."""
+    """Interface fuer datagram protocol."""
 
     __slots__ = ()
 
@@ -175,7 +175,7 @@ klasse DatagramProtocol(BaseProtocol):
 
 
 klasse SubprocessProtocol(BaseProtocol):
-    """Interface for protocol for subprocess calls."""
+    """Interface fuer protocol fuer subprocess calls."""
 
     __slots__ = ()
 

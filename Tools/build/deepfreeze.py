@@ -32,7 +32,7 @@ verbose = False
 RESUME = 128
 
 def isprintable(b: bytes) -> bool:
-    return all(0x20 <= c < 0x7f for c in b)
+    return all(0x20 <= c < 0x7f fuer c in b)
 
 
 def make_string_literal(b: bytes) -> str:
@@ -40,7 +40,7 @@ def make_string_literal(b: bytes) -> str:
     if isprintable(b):
         res.append(b.decode("ascii").replace("\\", "\\\\").replace("\"", "\\\""))
     else:
-        for i in b:
+        fuer i in b:
             res.append(f"\\x{i:02x}")
     res.append('"')
     return "".join(res)
@@ -54,11 +54,11 @@ next_code_version = 1
 
 def get_localsplus(code: types.CodeType) -> tuple[tuple[str, ...], bytes]:
     a: collections.defaultdict[str, int] = collections.defaultdict(int)
-    for name in code.co_varnames:
+    fuer name in code.co_varnames:
         a[name] |= CO_FAST_LOCAL
-    for name in code.co_cellvars:
+    fuer name in code.co_cellvars:
         a[name] |= CO_FAST_CELL
-    for name in code.co_freevars:
+    fuer name in code.co_freevars:
         a[name] |= CO_FAST_FREE
     return tuple(a.keys()), bytes(a.values())
 
@@ -70,7 +70,7 @@ def get_localsplus_counts(code: types.CodeType,
     ncellvars = 0
     nfreevars = 0
     assert len(names) == len(kinds)
-    for name, kind in zip(names, kinds):
+    fuer name, kind in zip(names, kinds):
         if kind & CO_FAST_LOCAL:
             nlocals += 1
             if kind & CO_FAST_CELL:
@@ -93,7 +93,7 @@ PyUnicode_4BYTE_KIND = 4
 
 def analyze_character_width(s: str) -> tuple[int, bool]:
     maxchar = ' '
-    for c in s:
+    fuer c in s:
         maxchar = max(maxchar, c)
     ascii = False
     if maxchar <= '\xFF':
@@ -135,7 +135,7 @@ klasse Printer:
             lines = fp.readlines()
         identifiers: set[str] = set()
         strings: dict[str, str] = {}
-        for line in lines:
+        fuer line in lines:
             if m := re.search(r"STRUCT_FOR_ID\((\w+)\)", line):
                 identifiers.add(m.group(1))
             if m := re.search(r'STRUCT_FOR_STR\((\w+), "(.*?)"\)', line):
@@ -243,7 +243,7 @@ klasse Printer:
                     self.write(f'.utf8 = {make_string_literal(utf8)},')
                     self.write(f'.utf8_length = {len(utf8)},')
                 with self.block(f"._data =", ","):
-                    for i in range(0, len(s), 16):
+                    fuer i in range(0, len(s), 16):
                         data = s[i:i+16]
                         self.write(", ".join(map(str, map(ord, data))) + ",")
                 return f"& {name}._compact._base.ob_base"
@@ -258,8 +258,8 @@ klasse Printer:
         co_filename = self.generate(name + "_filename", code.co_filename)
         co_name = self.generate(name + "_name", code.co_name)
         co_linetable = self.generate(name + "_linetable", code.co_linetable)
-        # We use 3.10 for type checking, but this module requires 3.11
-        # TODO: bump python version for this script.
+        # We use 3.10 fuer type checking, but this module requires 3.11
+        # TODO: bump python version fuer this script.
         co_qualname = self.generate(
             name + "_qualname",
             code.co_qualname,  # type: ignore[attr-defined]
@@ -282,7 +282,7 @@ klasse Printer:
         with self.block(f"{name} =", ";"):
             self.object_var_head("PyCode_Type", len(code.co_code) // 2)
             # But the ordering here must match that in cpython/code.h
-            # (which is a pain because we tend to reorder those for perf)
+            # (which is a pain because we tend to reorder those fuer perf)
             # otherwise MSVC doesn't like it.
             self.write(f".co_consts = {co_consts},")
             self.write(f".co_names = {co_names},")
@@ -310,7 +310,7 @@ klasse Printer:
             self.write(f"._co_cached = NULL,")
             self.write(f".co_code_adaptive = {co_code_adaptive},")
             first_traceable = 0
-            for op in code.co_code[::2]:
+            fuer op in code.co_code[::2]:
                 if op == RESUME:
                     break
                 first_traceable += 1
@@ -323,7 +323,7 @@ klasse Printer:
     def generate_tuple(self, name: str, t: tuple[object, ...]) -> str:
         if len(t) == 0:
             return f"(PyObject *)& _Py_SINGLETON(tuple_empty)"
-        items = [self.generate(f"{name}_{i}", it) for i, it in enumerate(t)]
+        items = [self.generate(f"{name}_{i}", it) fuer i, it in enumerate(t)]
         self.write("static")
         with self.indent():
             with self.block("struct"):
@@ -337,7 +337,7 @@ klasse Printer:
                 self.object_var_head("PyTuple_Type", len(t))
                 if items:
                     with self.block(f".ob_item =", ","):
-                        for item in items:
+                        fuer item in items:
                             self.write(item + ",")
         return f"& {name}._object.ob_base.ob_base"
 
@@ -372,7 +372,7 @@ klasse Printer:
             self._generate_int_for_bits(name, i, 2**15)
         else:
             connective = "if"
-            for bits_in_digit in 15, 30:
+            fuer bits_in_digit in 15, 30:
                 self.write(f"#{connective} PYLONG_BITS_IN_DIGIT == {bits_in_digit}")
                 self._generate_int_for_bits(name, i, 2**bits_in_digit)
                 connective = "elif"
@@ -443,7 +443,7 @@ klasse Printer:
             return "Py_None"
         else:
             raise TypeError(
-                f"Cannot generate code for {type(obj).__name__} object")
+                f"Cannot generate code fuer {type(obj).__name__} object")
         # print(f"Cache store {key!r:.40}: {val!r:.40}")
         self.cache[key] = val
         return val
@@ -469,16 +469,16 @@ def is_frozen_header(source: str) -> bool:
 
 def decode_frozen_data(source: str) -> types.CodeType:
     values: list[int] = []
-    for line in source.splitlines():
+    fuer line in source.splitlines():
         if re.match(FROZEN_DATA_LINE, line):
-            values.extend([int(x) for x in line.split(",") if x.strip()])
+            values.extend([int(x) fuer x in line.split(",") if x.strip()])
     data = bytes(values)
     return umarshal.loads(data)  # type: ignore[no-any-return]
 
 
 def generate(args: list[str], output: TextIO) -> None:
     printer = Printer(output)
-    for arg in args:
+    fuer arg in args:
         file, modname = arg.rsplit(':', 1)
         with open(file, encoding="utf8") as fd:
             source = fd.read()
@@ -488,10 +488,10 @@ def generate(args: list[str], output: TextIO) -> None:
                 code = compile(fd.read(), f"<frozen {modname}>", "exec")
             printer.generate_file(modname, code)
     with printer.block(f"void\n_Py_Deepfreeze_Fini(void)"):
-        for p in printer.finis:
+        fuer p in printer.finis:
             printer.write(p)
     with printer.block(f"int\n_Py_Deepfreeze_Init(void)"):
-        for p in printer.inits:
+        fuer p in printer.inits:
             with printer.block(f"if ({p} < 0)"):
                 printer.write("return -1;")
         printer.write("return 0;")
@@ -529,7 +529,7 @@ def main() -> None:
         if verbose:
             print(f"Reading targets from {args.file}")
         with open(args.file, encoding="utf-8-sig") as fin:
-            rules = [x.strip() for x in fin]
+            rules = [x.strip() fuer x in fin]
     else:
         rules = args.args
 

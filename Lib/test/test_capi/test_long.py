@@ -32,15 +32,15 @@ klasse MyIndexAndInt:
 klasse LongTests(unittest.TestCase):
 
     def test_compact(self):
-        for n in {
+        fuer n in {
             # Edge cases
-            *(2**n for n in range(66)),
-            *(-2**n for n in range(66)),
-            *(2**n - 1 for n in range(66)),
-            *(-2**n + 1 for n in range(66)),
+            *(2**n fuer n in range(66)),
+            *(-2**n fuer n in range(66)),
+            *(2**n - 1 fuer n in range(66)),
+            *(-2**n + 1 fuer n in range(66)),
             # Essentially random
-            *(37**n for n in range(14)),
-            *(-37**n for n in range(14)),
+            *(37**n fuer n in range(14)),
+            *(-37**n fuer n in range(14)),
         }:
             with self.subTest(n=n):
                 is_compact, value = _testcapi.call_long_compact_api(n)
@@ -84,7 +84,7 @@ klasse LongTests(unittest.TestCase):
         # Test PyLong_FromDouble()
         fromdouble = _testlimitedcapi.pylong_fromdouble
         float_max = sys.float_info.max
-        for value in (5.0, 5.1, 5.9, -5.1, -5.9, 0.0, -0.0, float_max, -float_max):
+        fuer value in (5.0, 5.1, 5.9, -5.1, -5.9, 0.0, -0.0, float_max, -float_max):
             with self.subTest(value=value):
                 self.assertEqual(fromdouble(value), int(value))
         self.assertRaises(OverflowError, fromdouble, float('inf'))
@@ -171,7 +171,7 @@ klasse LongTests(unittest.TestCase):
         values = (0, 1, 512, 1234, max_val)
         if min_val < 0:
             values += (-1, -512, -1234, min_val)
-        for value in values:
+        fuer value in values:
             with self.subTest(value=value):
                 self.assertEqual(func(value), value)
                 self.assertEqual(func(IntSubclass(value)), value)
@@ -201,7 +201,7 @@ klasse LongTests(unittest.TestCase):
 
     def check_long_asintandoverflow(self, func, min_val, max_val):
         # round trip (object -> C integer -> object)
-        for value in (min_val, max_val, -1, 0, 1, 1234):
+        fuer value in (min_val, max_val, -1, 0, 1, 1234):
             with self.subTest(value=value):
                 self.assertEqual(func(value), (value, 0))
                 self.assertEqual(func(IntSubclass(value)), (value, 0))
@@ -286,7 +286,7 @@ klasse LongTests(unittest.TestCase):
         # Test PyLong_AsDouble()
         asdouble = _testlimitedcapi.pylong_asdouble
         MAX = int(sys.float_info.max)
-        for value in (-MAX, MAX, -1, 0, 1, 1234):
+        fuer value in (-MAX, MAX, -1, 0, 1, 1234):
             with self.subTest(value=value):
                 self.assertEqual(asdouble(value), float(value))
                 self.assertIsInstance(asdouble(value), float)
@@ -372,7 +372,7 @@ klasse LongTests(unittest.TestCase):
         # using n_bytes=0. If our implementation changes, feel free to update
         # the expectations here -- or loosen them to be range checks.
         # (i.e. 0 *could* be stored in 1 byte and 512 in 2)
-        for v, expect in [
+        fuer v, expect in [
             (0, SZ),
             (512, SZ),
             (-512, SZ),
@@ -415,7 +415,7 @@ klasse LongTests(unittest.TestCase):
         # the result (both big and little endian). We check the return value
         # independently, since the buffer should always be filled correctly even
         # if we need more bytes
-        for v, expect_be, expect_n in [
+        fuer v, expect_be, expect_n in [
             (0,         b'\x00',                1),
             (0,         b'\x00' * 2,            2),
             (0,         b'\x00' * 8,            min(8, SZ)),
@@ -480,9 +480,9 @@ klasse LongTests(unittest.TestCase):
                     f"PyLong_AsNativeBytes(v, buffer, {n}, <little>)")
                 self.assertEqual(expect_le, buffer[:n], "<little>")
 
-        # Test cases that do not request size for a sign bit when we pass the
+        # Test cases that do not request size fuer a sign bit when we pass the
         # Py_ASNATIVEBYTES_UNSIGNED_BUFFER flag
-        for v, expect_be, expect_n in [
+        fuer v, expect_be, expect_n in [
             (255,       b'\xff',                1),
             # We pass a 2 byte buffer so it just uses the whole thing
             (255,       b'\x00\xff',            2),
@@ -534,12 +534,12 @@ klasse LongTests(unittest.TestCase):
         # Allocate bigger buffer than actual values are going to be
         buffer = bytearray(260)
 
-        for _ in range(1000):
+        fuer _ in range(1000):
             n = rng.randrange(1, 256)
             bytes_be = bytes([
                 # Ensure the most significant byte is nonzero
                 rng.randrange(1, 256),
-                *[rng.randrange(256) for _ in range(n - 1)]
+                *[rng.randrange(256) fuer _ in range(n - 1)]
             ])
             bytes_le = bytes_be[::-1]
             v = int.from_bytes(bytes_le, 'little')
@@ -572,7 +572,7 @@ klasse LongTests(unittest.TestCase):
             except AssertionError as ex:
                 value_hex = ''.join(reversed([
                     f'{b:02X}{"" if i % 8 else "_"}'
-                    for i, b in enumerate(bytes_le, start=1)
+                    fuer i, b in enumerate(bytes_le, start=1)
                 ])).strip('_')
                 if support.verbose:
                     print()
@@ -594,7 +594,7 @@ klasse LongTests(unittest.TestCase):
         MAX_SSIZE = 2 ** (SZ * 8 - 1) - 1
         MAX_USIZE = 2 ** (SZ * 8) - 1
 
-        for v_be, expect_s, expect_u in [
+        fuer v_be, expect_s, expect_u in [
             (b'\x00', 0, 0),
             (b'\x01', 1, 1),
             (b'\xff', -1, 255),
@@ -622,7 +622,7 @@ klasse LongTests(unittest.TestCase):
                     self.assertEqual(expect_u, fromnativebytes(v_be, n, -1, 0),
                         f"PyLong_FromUnsignedNativeBytes(buffer, {n}, <native>)")
 
-                # Swap the unsigned request for tests and use the
+                # Swap the unsigned request fuer tests and use the
                 # Py_ASNATIVEBYTES_UNSIGNED_BUFFER flag instead
                 self.assertEqual(expect_u, fromnativebytes(v_be, n, 4, 1),
                     f"PyLong_FromNativeBytes(buffer, {n}, <big|unsigned>)")
@@ -774,7 +774,7 @@ klasse LongTests(unittest.TestCase):
         self.assertEqual(pylongwriter_create(0, [123, 0, 0]), 123)
 
         # test singletons + normalize
-        for num in (-2, 0, 1, 5, 42, 100):
+        fuer num in (-2, 0, 1, 5, 42, 100):
             self.assertIs(pylongwriter_create(bool(num < 0), [abs(num), 0]),
                           num)
 
@@ -790,8 +790,8 @@ klasse LongTests(unittest.TestCase):
         # round trip: Python int -> export -> Python int
         pylong_export = _testcapi.pylong_export
         numbers = [*range(0, 10), 12345, 0xdeadbeef, 2**100, 2**100-1]
-        numbers.extend(-num for num in list(numbers))
-        for num in numbers:
+        numbers.extend(-num fuer num in list(numbers))
+        fuer num in numbers:
             with self.subTest(num=num):
                 data = pylong_export(num)
                 if isinstance(data, tuple):

@@ -1,5 +1,5 @@
 #
-# Test suite for Optik.  Supplied by Johannes Gijsbers
+# Test suite fuer Optik.  Supplied by Johannes Gijsbers
 # (taradino@softhome.net) -- translated from the original Optik
 # test suite to this PyUnit-based version.
 #
@@ -57,7 +57,7 @@ klasse BaseTest(unittest.TestCase):
         expected_opts -- The options expected.
         expected_positional_args -- The positional arguments expected.
 
-        Returns the options and positional args for further testing.
+        Returns the options and positional args fuer further testing.
         """
 
         (options, positional_args) = self.parser.parse_args(args)
@@ -96,7 +96,7 @@ Args were %(args)s.""" % locals ())
           expected_message -- expected exception message (or pattern
             if a compiled regex object)
 
-        Returns the exception raised for further testing.
+        Returns the exception raised fuer further testing.
         """
         if args is None:
             args = ()
@@ -244,13 +244,13 @@ klasse TestOptionChecks(BaseTest):
 
     def test_no_type_for_action(self):
         self.assertOptionError(
-            "option -b: must not supply a type for action 'count'",
+            "option -b: must not supply a type fuer action 'count'",
             ["-b"], {'action': 'count', 'type': 'int'})
 
     def test_no_choices_list(self):
         self.assertOptionError(
             "option -b/--bad: must supply a list of "
-            "choices for type 'choice'",
+            "choices fuer type 'choice'",
             ["-b", "--bad"], {'type': "choice"})
 
     def test_bad_choices_list(self):
@@ -263,17 +263,17 @@ klasse TestOptionChecks(BaseTest):
 
     def test_no_choices_for_type(self):
         self.assertOptionError(
-            "option -b: must not supply choices for type 'int'",
+            "option -b: must not supply choices fuer type 'int'",
             ["-b"], {'type': 'int', 'choices':"bad"})
 
     def test_no_const_for_action(self):
         self.assertOptionError(
-            "option -b: 'const' must not be supplied for action 'store'",
+            "option -b: 'const' must not be supplied fuer action 'store'",
             ["-b"], {'action': 'store', 'const': 1})
 
     def test_no_nargs_for_action(self):
         self.assertOptionError(
-            "option -b: 'nargs' must not be supplied for action 'count'",
+            "option -b: 'nargs' must not be supplied fuer action 'count'",
             ["-b"], {'action': 'count', 'nargs': 2})
 
     def test_callback_not_callable(self):
@@ -303,19 +303,19 @@ klasse TestOptionChecks(BaseTest):
 
     def test_no_callback_for_action(self):
         self.assertOptionError(
-            "option -b: callback supplied ('foo') for non-callback option",
+            "option -b: callback supplied ('foo') fuer non-callback option",
             ["-b"], {'action': 'store',
                      'callback': 'foo'})
 
     def test_no_callback_args_for_action(self):
         self.assertOptionError(
-            "option -b: callback_args supplied for non-callback option",
+            "option -b: callback_args supplied fuer non-callback option",
             ["-b"], {'action': 'store',
                      'callback_args': 'foo'})
 
     def test_no_callback_kwargs_for_action(self):
         self.assertOptionError(
-            "option -b: callback_kwargs supplied for non-callback option",
+            "option -b: callback_kwargs supplied fuer non-callback option",
             ["-b"], {'action': 'store',
                      'callback_kwargs': 'foo'})
 
@@ -450,7 +450,7 @@ klasse TestTypeAliases(BaseTest):
         self.assertEqual(self.parser.get_option("-x").type, "int")
 
 
-# Custom type for testing processing of default values.
+# Custom type fuer testing processing of default values.
 _time_units = { 's' : 1, 'm' : 60, 'h' : 60*60, 'd' : 60*60*24 }
 
 def _check_duration(option, opt, value):
@@ -1172,7 +1172,7 @@ klasse TestCallbackMeddleArgs(BaseTest):
     def setUp(self):
         options = [make_option(str(x), action="callback",
                                callback=self.process_n, dest='things')
-                   for x in range(-1, -6, -1)]
+                   fuer x in range(-1, -6, -1)]
         self.parser = OptionParser(option_list=options)
 
     # Callback that meddles in rargs, largs
@@ -1181,7 +1181,7 @@ klasse TestCallbackMeddleArgs(BaseTest):
         nargs = int(opt[1:])
         rargs = parser_.rargs
         if len(rargs) < nargs:
-            self.fail("Expected %d arguments for %s option." % (nargs, opt))
+            self.fail("Expected %d arguments fuer %s option." % (nargs, opt))
         dest = parser_.values.ensure_value(option.dest, [])
         dest.append(tuple(rargs[0:nargs]))
         parser_.largs.append(nargs)
@@ -1298,7 +1298,7 @@ klasse ConflictBase(BaseTest):
         parser.values.show_version = 1
 
 klasse TestConflict(ConflictBase):
-    """Use the default conflict resolution for Optik 1.2: error."""
+    """Use the default conflict resolution fuer Optik 1.2: error."""
     def assertTrueconflict_error(self, func):
         err = self.assertRaises(
             func, ("-v", "--version"), {'action' : "callback",
@@ -1403,7 +1403,7 @@ Options:
   -a APPLE           throw APPLEs at basket
   -b NUM, --boo=NUM  shout "boo!" NUM times (in order to frighten away all the
                      evil spirits that cause trouble and mayhem)
-  --foo=FOO          store FOO in the foo list for later fooing
+  --foo=FOO          store FOO in the foo list fuer later fooing
   -h, --help         show this help message and exit
 """
 
@@ -1414,7 +1414,7 @@ Options:
   -a APPLE           throw APPLEs at basket
   --boo=NUM, -b NUM  shout "boo!" NUM times (in order to frighten away all the
                      evil spirits that cause trouble and mayhem)
-  --foo=FOO          store FOO in the foo list for later fooing
+  --foo=FOO          store FOO in the foo list fuer later fooing
   --help, -h         show this help message and exit
 """
 
@@ -1428,7 +1428,7 @@ Options
 -a APPLE           throw APPLEs at basket
 --boo=NUM, -b NUM  shout "boo!" NUM times (in order to frighten away all the
                    evil spirits that cause trouble and mayhem)
---foo=FOO          store FOO in the foo list for later fooing
+--foo=FOO          store FOO in the foo list fuer later fooing
 --help, -h         show this help message and exit
 """
 
@@ -1440,7 +1440,7 @@ Options:
   -b NUM, --boo=NUM  shout "boo!" NUM times (in order to
                      frighten away all the evil spirits
                      that cause trouble and mayhem)
-  --foo=FOO          store FOO in the foo list for later
+  --foo=FOO          store FOO in the foo list fuer later
                      fooing
   -h, --help         show this help message and exit
 """
@@ -1492,12 +1492,12 @@ klasse TestHelp(BaseTest):
                         "shout \"boo!\" NUM times (in order to frighten away "
                         "all the evil spirits that cause trouble and mayhem)"),
             make_option("--foo", action="append", type="string", dest='foo',
-                        help="store FOO in the foo list for later fooing"),
+                        help="store FOO in the foo list fuer later fooing"),
             ]
 
-        # We need to set COLUMNS for the OptionParser constructor, but
+        # We need to set COLUMNS fuer the OptionParser constructor, but
         # we must restore its original value -- otherwise, this test
-        # screws things up for other tests when it's part of the Python
+        # screws things up fuer other tests when it's part of the Python
         # test suite.
         with os_helper.EnvironmentVarGuard() as env:
             env['COLUMNS'] = str(columns)
@@ -1561,7 +1561,7 @@ Options:
 
     def test_help_description_groups(self):
         self.parser.set_description(
-            "This is the program description for %prog.  %prog has "
+            "This is the program description fuer %prog.  %prog has "
             "an option group as well as single options.")
 
         group = OptionGroup(
@@ -1574,14 +1574,14 @@ Options:
         expect = """\
 Usage: bar.py [options]
 
-This is the program description for bar.py.  bar.py has an option group as
+This is the program description fuer bar.py.  bar.py has an option group as
 well as single options.
 
 Options:
   -a APPLE           throw APPLEs at basket
   -b NUM, --boo=NUM  shout "boo!" NUM times (in order to frighten away all the
                      evil spirits that cause trouble and mayhem)
-  --foo=FOO          store FOO in the foo list for later fooing
+  --foo=FOO          store FOO in the foo list fuer later fooing
   -h, --help         show this help message and exit
 
   Dangerous Options:
@@ -1624,11 +1624,11 @@ klasse TestParseNumber(BaseTest):
         self.assertRaises(
             _parse_num, ("", int), {},
             ValueError,
-            re.compile(r"invalid literal for int().*: '?'?"))
+            re.compile(r"invalid literal fuer int().*: '?'?"))
         self.assertRaises(
             _parse_num, ("0xOoops", int), {},
             ValueError,
-            re.compile(r"invalid literal for int().*: s?'?0xOoops'?"))
+            re.compile(r"invalid literal fuer int().*: s?'?0xOoops'?"))
 
     def test_parse_num_ok(self):
         self.assertEqual(_parse_num("0", int), 0)

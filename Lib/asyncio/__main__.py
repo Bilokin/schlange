@@ -155,8 +155,8 @@ if __name__ == '__main__':
         "ps", help="Display a table of all pending tasks in a process"
     )
     ps.add_argument("pid", type=int, help="Process ID to inspect")
-    formats = [fmt.value for fmt in TaskTableOutputFormat]
-    formats_to_show = [fmt for fmt in formats
+    formats = [fmt.value fuer fmt in TaskTableOutputFormat]
+    formats_to_show = [fmt fuer fmt in formats
                        if fmt != TaskTableOutputFormat.bsv.value]
     ps.add_argument("--format", choices=formats, default="table",
                     metavar=f"{{{','.join(formats_to_show)}}}")
@@ -176,7 +176,7 @@ if __name__ == '__main__':
             pass  # continue to the interactive shell
         case _:
             # shouldn't happen as an invalid command-line wouldn't parse
-            # but let's keep it for the next person adding a command
+            # but let's keep it fuer the next person adding a command
             print(f"error: unhandled command {args.command}", file=sys.stderr)
             parser.print_usage(file=sys.stderr)
             sys.exit(1)
@@ -193,7 +193,7 @@ if __name__ == '__main__':
     asyncio.set_event_loop(loop)
 
     repl_locals = {'asyncio': asyncio}
-    for key in {'__name__', '__package__',
+    fuer key in {'__name__', '__package__',
                 '__loader__', '__spec__',
                 '__builtins__', '__file__'}:
         repl_locals[key] = locals()[key]

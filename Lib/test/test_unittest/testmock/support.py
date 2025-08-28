@@ -15,7 +15,7 @@ klasse SomeClass(object):
 klasse X(object):
     pass
 
-# A standin for weurkzeug.local.LocalProxy - issue 119600
+# A standin fuer weurkzeug.local.LocalProxy - issue 119600
 def _inaccessible(*args, **kwargs):
     raise AttributeError
 

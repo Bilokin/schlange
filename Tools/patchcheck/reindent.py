@@ -5,7 +5,7 @@
 """reindent [-d][-r][-v] [ path ... ]
 
 -d (--dryrun)   Dry run.   Analyze, but don't make any changes to, files.
--r (--recurse)  Recurse.   Search for all .py files in subdirectories too.
+-r (--recurse)  Recurse.   Search fuer all .py files in subdirectories too.
 -n (--nobackup) No backup. Does not make a ".bak" file before reindenting.
 -v (--verbose)  Verbose.   Print informative msgs; else no output.
    (--newline)  Newline.   Specify the newline character to use (CRLF, LF).
@@ -23,12 +23,12 @@ ignored.
 
 You can pass one or more file and/or directory paths.  When a directory
 path, all .py files within the directory will be examined, and, if the -r
-option is given, likewise recursively for subdirectories.
+option is given, likewise recursively fuer subdirectories.
 
 If output is not to standard output, reindent overwrites files in place,
 renaming the originals with a .bak extension.  If it finds nothing to
 change, the file is left alone.  If reindent does change a file, the changed
-file is a fixed-point for future runs (i.e., running reindent on the
+file is a fixed-point fuer future runs (i.e., running reindent on the
 resulting .py file won't change it again).
 
 The hard part of reindenting is figuring out what to do with comment
@@ -63,7 +63,7 @@ def usage(msg=None):
 
 
 def errprint(*args):
-    sys.stderr.write(" ".join(str(arg) for arg in args))
+    sys.stderr.write(" ".join(str(arg) fuer arg in args))
     sys.stderr.write("\n")
 
 def main():
@@ -75,7 +75,7 @@ def main():
     except getopt.error as msg:
         usage(msg)
         return
-    for o, a in opts:
+    fuer o, a in opts:
         if o in ('-d', '--dryrun'):
             dryrun = True
         elif o in ('-r', '--recurse'):
@@ -97,7 +97,7 @@ def main():
         r.run()
         r.write(sys.stdout)
         return
-    for arg in args:
+    fuer arg in args:
         check(arg)
 
 
@@ -106,7 +106,7 @@ def check(file):
         if verbose:
             print("listing directory", file)
         names = os.listdir(file)
-        for name in names:
+        fuer name in names:
             fullname = os.path.join(file, name)
             if ((recurse and os.path.isdir(fullname) and
                  not os.path.islink(fullname) and
@@ -184,12 +184,12 @@ klasse Reindenter:
         # that we can use tokenize's 1-based line numbering easily.
         # Note that a line is all-blank iff it's "\n".
         self.lines = [_rstrip(line).expandtabs() + "\n"
-                      for line in self.raw]
+                      fuer line in self.raw]
         self.lines.insert(0, None)
         self.index = 1  # index into self.lines of next line
 
-        # List of (lineno, indentlevel) pairs, one for each stmt and
-        # comment line.  indentlevel is -1 for comment lines, as a
+        # List of (lineno, indentlevel) pairs, one fuer each stmt and
+        # comment line.  indentlevel is -1 fuer comment lines, as a
         # signal that tokenize doesn't know what to do about them;
         # indeed, they're our headache!
         self.stats = []
@@ -200,7 +200,7 @@ klasse Reindenter:
 
     def run(self):
         tokens = tokenize.generate_tokens(self.getline)
-        for _token in tokens:
+        fuer _token in tokens:
             self.tokeneater(*_token)
         # Remove trailing empty lines.
         lines = self.lines
@@ -217,7 +217,7 @@ klasse Reindenter:
         # we see a line with *something* on it.
         i = stats[0][0]
         after.extend(lines[1:i])
-        for i in range(len(stats) - 1):
+        fuer i in range(len(stats) - 1):
             thisstmt, thislevel = stats[i]
             nextstmt = stats[i + 1][0]
             have = getlspace(lines[thisstmt])
@@ -231,7 +231,7 @@ klasse Reindenter:
                     want = have2want.get(have, -1)
                     if want < 0:
                         # Then it probably belongs to the next real stmt.
-                        for j in range(i + 1, len(stats) - 1):
+                        fuer j in range(i + 1, len(stats) - 1):
                             jline, jlevel = stats[j]
                             if jlevel >= 0:
                                 if have == getlspace(lines[jline]):
@@ -241,7 +241,7 @@ klasse Reindenter:
                                            # comment like this one,
                         # in which case we should shift it like its base
                         # line got shifted.
-                        for j in range(i - 1, -1, -1):
+                        fuer j in range(i - 1, -1, -1):
                             jline, jlevel = stats[j]
                             if jlevel >= 0:
                                 want = have + (getlspace(after[jline - 1]) -
@@ -258,7 +258,7 @@ klasse Reindenter:
             if diff == 0 or have == 0:
                 after.extend(lines[thisstmt:nextstmt])
             else:
-                for line in lines[thisstmt:nextstmt]:
+                fuer line in lines[thisstmt:nextstmt]:
                     if diff > 0:
                         if line == "\n":
                             after.append(line)
@@ -272,7 +272,7 @@ klasse Reindenter:
     def write(self, f):
         f.writelines(self.after)
 
-    # Line-getter for tokenize.
+    # Line-getter fuer tokenize.
     def getline(self):
         if self.index >= len(self.lines):
             line = ""
@@ -281,7 +281,7 @@ klasse Reindenter:
             self.index += 1
         return line
 
-    # Line-eater for tokenize.
+    # Line-eater fuer tokenize.
     def tokeneater(self, type, token, slinecol, end, line,
                    INDENT=tokenize.INDENT,
                    DEDENT=tokenize.DEDENT,
@@ -306,7 +306,7 @@ klasse Reindenter:
         elif type == COMMENT:
             if self.find_stmt:
                 self.stats.append((slinecol[0], -1))
-                # but we're still looking for a new stmt, so leave
+                # but we're still looking fuer a new stmt, so leave
                 # find_stmt alone
 
         elif type == NL:

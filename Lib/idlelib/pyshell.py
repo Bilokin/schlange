@@ -8,7 +8,7 @@ try:
     from tkinter import *
 except ImportError:
     print("** IDLE can't import Tkinter.\n"
-          "Your Python may not be configured for Tk. **", file=sys.__stderr__)
+          "Your Python may not be configured fuer Tk. **", file=sys.__stderr__)
     raise SystemExit(1)
 
 if sys.platform == 'win32':
@@ -45,11 +45,11 @@ from idlelib import rpc
 from idlelib.run import idle_formatwarning, StdInputFile, StdOutputFile
 from idlelib.undo import UndoDelegator
 
-# Default for testing; defaults to True in main() for running.
+# Default fuer testing; defaults to True in main() fuer running.
 use_subprocess = False
 
 HOST = '127.0.0.1' # python execution server on localhost loopback
-PORT = 0  # someday pass in host, port for remote debug capability
+PORT = 0  # someday pass in host, port fuer remote debug capability
 
 try:  # In case IDLE started with -n.
     eof = 'Ctrl-D (end-of-file)'
@@ -111,7 +111,7 @@ def extended_linecache_checkcache(filename=None,
     """
     cache = linecache.cache
     save = {}
-    for key in list(cache):
+    fuer key in list(cache):
         if key[:1] + key[-1:] == '<>':
             save[key] = cache.pop(key)
     orig_checkcache(filename)
@@ -249,7 +249,7 @@ klasse PyShellEditorWindow(EditorWindow):
             lines = []
         try:
             with open(self.breakpointPath, "w") as new_file:
-                for line in lines:
+                fuer line in lines:
                     if not line.startswith(filename + '='):
                         new_file.write(line)
                 self.update_breakpoints()
@@ -275,10 +275,10 @@ klasse PyShellEditorWindow(EditorWindow):
         if os.path.isfile(self.breakpointPath):
             with open(self.breakpointPath) as fp:
                 lines = fp.readlines()
-            for line in lines:
+            fuer line in lines:
                 if line.startswith(filename + '='):
                     breakpoint_linenumbers = eval(line[len(filename)+1:])
-                    for breakpoint_linenumber in breakpoint_linenumbers:
+                    fuer breakpoint_linenumber in breakpoint_linenumbers:
                         self.set_breakpoint(breakpoint_linenumber)
 
     def update_breakpoints(self):
@@ -290,7 +290,7 @@ klasse PyShellEditorWindow(EditorWindow):
 
     def ranges_to_linenumbers(self, ranges):
         lines = []
-        for index in range(0, len(ranges), 2):
+        fuer index in range(0, len(ranges), 2):
             lineno = int(float(ranges[index].string))
             end = int(float(ranges[index+1].string))
             while lineno < end:
@@ -332,7 +332,7 @@ klasse PyShellFileList(FileList):
 
 
 klasse ModifiedColorDelegator(ColorDelegator):
-    "Extend base class: colorizer for the shell window itself"
+    "Extend base class: colorizer fuer the shell window itself"
     def recolorize_main(self):
         self.tag_remove("TODO", "1.0", "iomark")
         self.tag_add("SYNC", "1.0", "iomark")
@@ -340,7 +340,7 @@ klasse ModifiedColorDelegator(ColorDelegator):
 
     def removecolors(self):
         # Don't remove shell color tags before "iomark"
-        for tag in self.tagdefs:
+        fuer tag in self.tagdefs:
             self.tag_remove(tag, "iomark", "end")
 
 
@@ -366,9 +366,9 @@ klasse ModifiedUndoDelegator(UndoDelegator):
 
     def undo_event(self, event):
         # Temporarily monkey-patch the delegate's .insert() method to
-        # always use the "stdin" tag.  This is needed for undo-ing
+        # always use the "stdin" tag.  This is needed fuer undo-ing
         # deletions to preserve the "stdin" tag, because UndoDelegator
-        # doesn't preserve tags for deleted text.
+        # doesn't preserve tags fuer deleted text.
         orig_insert = self.delegate.insert
         self.delegate.insert = \
             lambda index, chars: orig_insert(index, chars, "stdin")
@@ -431,7 +431,7 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
     def build_subprocess_arglist(self):
         assert (self.port!=0), (
             "Socket should have been assigned a port number.")
-        w = ['-W' + s for s in sys.warnoptions]
+        w = ['-W' + s fuer s in sys.warnoptions]
         # Maybe IDLE is installed and is being accessed via sys.path,
         # or maybe it's not installed and the idle.py script is being
         # run from the IDLE source directory.
@@ -442,8 +442,8 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
 
     def start_subprocess(self):
         addr = (HOST, self.port)
-        # GUI makes several attempts to acquire socket, listens for connection
-        for i in range(3):
+        # GUI makes several attempts to acquire socket, listens fuer connection
+        fuer i in range(3):
             time.sleep(i)
             try:
                 self.rpcclt = MyRPCClient(addr)
@@ -521,7 +521,7 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
         if debug:
             # Restarted debugger connects to current instance of debug GUI
             debugger_r.restart_subprocess_debugger(self.rpcclt)
-            # reload remote debugger breakpoints for all PyShellEditWindows
+            # reload remote debugger breakpoints fuer all PyShellEditWindows
             debug.load_breakpoints()
         self.compile.compiler.flags = self.original_compiler_flags
         self.restarting = False
@@ -745,7 +745,7 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
     def checklinecache(self):
         "Remove keys other than '<pyshell#n>'."
         cache = linecache.cache
-        for key in list(cache):  # Iterate list because mutate cache.
+        fuer key in list(cache):  # Iterate list because mutate cache.
             if key[:1] + key[-1:] != "<>":
                 del cache[key]
 
@@ -819,7 +819,7 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
             "because no networking is installed on this computer.  "
             "Run IDLE with the -n command line switch to start without a "
             "subprocess and refer to Help/IDLE Help 'Running without a "
-            "subprocess' for further details.",
+            "subprocess' fuer further details.",
             parent=self.tkconsole.text)
 
     def display_no_subprocess_error(self):
@@ -974,7 +974,7 @@ klasse PyShell(OutputWindow):
           "stderr": idleConf.GetHighlight(theme, "stderr"),
           "console": idleConf.GetHighlight(theme, "normal"),
         }
-        for tag, tag_colors_config in tag_colors.items():
+        fuer tag, tag_colors_config in tag_colors.items():
             self.text.tag_configure(tag, **tag_colors_config)
 
         if self.shell_sidebar is not None:
@@ -996,18 +996,18 @@ klasse PyShell(OutputWindow):
          )
         prompts = [
             self.shell_sidebar.line_prompts.get(lineno)
-            for lineno in lineno_range
+            fuer lineno in lineno_range
         ]
         return "\n".join(
             line if prompt is None else f"{prompt} {line}"
-            for prompt, line in zip(prompts, text.splitlines())
+            fuer prompt, line in zip(prompts, text.splitlines())
         ) + "\n"
 
 
     def copy_with_prompts_callback(self, event=None):
         """Copy selected lines to the clipboard, with prompts.
 
-        This makes the copied text useful for doc-tests and interactive
+        This makes the copied text useful fuer doc-tests and interactive
         shell code examples.
 
         This always copies entire lines, even if only part of the first
@@ -1089,12 +1089,12 @@ klasse PyShell(OutputWindow):
         self.update_menu_state('debug', '*tack*iewer', state)
 
     def beginexecuting(self):
-        "Helper for ModifiedInterpreter"
+        "Helper fuer ModifiedInterpreter"
         self.resetoutput()
         self.executing = True
 
     def endexecuting(self):
-        "Helper for ModifiedInterpreter"
+        "Helper fuer ModifiedInterpreter"
         self.executing = False
         self.canceled = False
         self.showprompt()
@@ -1137,7 +1137,7 @@ klasse PyShell(OutputWindow):
     def short_title(self):
         return self.shell_title
 
-    SPLASHLINE = 'Enter "help" below or click "Help" above for more information.'
+    SPLASHLINE = 'Enter "help" below or click "Help" above fuer more information.'
 
     def begin(self):
         self.text.mark_set("iomark", "insert")
@@ -1262,7 +1262,7 @@ klasse PyShell(OutputWindow):
         if self.text.compare("insert", "<", "iomark linestart"):
             # Check if there's a relevant stdin range -- if so, use it.
             # Note: "stdin" blocks may include several successive statements,
-            # so look for "console" tags on the newline before each statement
+            # so look fuer "console" tags on the newline before each statement
             # (and possibly on prompts).
             prev = self.text.tag_prevrange("stdin", "insert")
             if (
@@ -1340,7 +1340,7 @@ klasse PyShell(OutputWindow):
             if len(lines) > 1:
                 orig_base_indent = re.search(r'^([ \t]*)', lines[0]).group(0)
                 new_base_indent  = re.search(r'^([ \t]*)', prefix).group(0)
-                for line in lines[1:]:
+                fuer line in lines[1:]:
                     if line.startswith(orig_base_indent):
                         # replace orig base indentation with new indentation
                         line = new_base_indent + line[len(orig_base_indent):]
@@ -1382,7 +1382,7 @@ klasse PyShell(OutputWindow):
         self.text.see("restart")
 
     def restart_shell(self, event=None):
-        "Callback for Run/Restart Shell Cntl-F6"
+        "Callback fuer Run/Restart Shell Cntl-F6"
         self.interp.restart_subprocess(with_cwd=True)
 
     def showprompt(self):
@@ -1455,7 +1455,7 @@ klasse PyShell(OutputWindow):
 def fix_x11_paste(root):
     "Make paste replace selection on x11.  See issue #5124."
     if root._windowingsystem == 'x11':
-        for cls in 'Text', 'Entry', 'Spinbox':
+        fuer cls in 'Text', 'Entry', 'Spinbox':
             root.bind_class(
                 cls,
                 '<<Paste>>',
@@ -1471,7 +1471,7 @@ USAGE: idle  [-deins] [-t title] [file]*
 
   -h         print this help message and exit
   -n         run IDLE without a subprocess (DEPRECATED,
-             see Help/IDLE Help for details)
+             see Help/IDLE Help fuer details)
 
 The following options will override the IDLE 'settings' configuration:
 
@@ -1538,7 +1538,7 @@ def main():
     except getopt.error as msg:
         print(f"Error: {msg}\n{usage_msg}", file=sys.stderr)
         sys.exit(2)
-    for o, a in opts:
+    fuer o, a in opts:
         if o == '-c':
             cmd = a
             enable_shell = True
@@ -1574,7 +1574,7 @@ def main():
         cmd = sys.stdin.read()
         enable_shell = True
     # process sys.argv and sys.path:
-    for i in range(len(sys.path)):
+    fuer i in range(len(sys.path)):
         sys.path[i] = os.path.abspath(sys.path[i])
     if args and args[0] == '-':
         sys.argv = [''] + args[1:]
@@ -1585,9 +1585,9 @@ def main():
     elif args:
         enable_edit = True
         pathx = []
-        for filename in args:
+        fuer filename in args:
             pathx.append(os.path.dirname(filename))
-        for dir in pathx:
+        fuer dir in pathx:
             dir = os.path.abspath(dir)
             if not dir in sys.path:
                 sys.path.insert(0, dir)
@@ -1623,9 +1623,9 @@ def main():
             ext = '.gif'
             sizes = (16, 32, 48)
         iconfiles = [os.path.join(icondir, 'idle_%d%s' % (size, ext))
-                     for size in sizes]
+                     fuer size in sizes]
         icons = [PhotoImage(master=root, file=iconfile)
-                 for iconfile in iconfiles]
+                 fuer iconfile in iconfiles]
         root.wm_iconphoto(True, *icons)
 
     # start editor and/or shell windows:
@@ -1636,7 +1636,7 @@ def main():
 
     if enable_edit:
         if not (cmd or script):
-            for filename in args[:]:
+            fuer filename in args[:]:
                 if flist.open(filename) is None:
                     # filename is a directory actually, disconsider it
                     args.remove(filename)
@@ -1678,7 +1678,7 @@ def main():
             shell.interp.execfile(script)
     elif shell:
         # If there is a shell window and no cmd or script in progress,
-        # check for problematic issues and print warning message(s) in
+        # check fuer problematic issues and print warning message(s) in
         # the IDLE shell window; this is less intrusive than always
         # opening a separate window.
 

@@ -3,11 +3,11 @@
 # - support partial or total redisplay
 # - key bindings (instead of quick-n-dirty bindings on Canvas):
 #   - up/down arrow keys to move focus around
-#   - ditto for page up/down, home/end
+#   - ditto fuer page up/down, home/end
 #   - left/right arrows to expand/collapse & move out/in
 # - more doc strings
-# - add icons for "file", "module", "class", "method"; better "python" icon
-# - callback for selection???
+# - add icons fuer "file", "module", "class", "method"; better "python" icon
+# - callback fuer selection???
 # - multiple-item selection
 # - tooltips
 # - redo geometry without magic numbers
@@ -24,7 +24,7 @@ from idlelib import zoomheight
 
 ICONDIR = "Icons"
 
-# Look for Icons subdirectory in the same directory as this module
+# Look fuer Icons subdirectory in the same directory as this module
 try:
     _icondir = os.path.join(os.path.dirname(__file__), ICONDIR)
 except NameError:
@@ -42,7 +42,7 @@ def listicons(icondir=ICONDIR):
     list.sort()
     images = []
     row = column = 0
-    for file in list:
+    fuer file in list:
         name = os.path.splitext(os.path.basename(file))[0]
         image = PhotoImage(file=file, master=root)
         images.append(image)
@@ -93,10 +93,10 @@ klasse TreeNode:
         self.selected = False
         self.children = []
         self.x = self.y = None
-        self.iconimages = {} # cache of PhotoImage instances for icons
+        self.iconimages = {} # cache of PhotoImage instances fuer icons
 
     def destroy(self):
-        for c in self.children[:]:
+        fuer c in self.children[:]:
             self.children.remove(c)
             c.destroy()
         self.parent = None
@@ -139,7 +139,7 @@ klasse TreeNode:
     def deselecttree(self):
         if self.selected:
             self.deselect()
-        for child in self.children:
+        fuer child in self.children:
             child.deselecttree()
 
     def flip(self, event=None):
@@ -212,13 +212,13 @@ klasse TreeNode:
             if not sublist:
                 # _IsExpandable() was mistaken; that's allowed
                 return y + TreeNode.dy
-            for item in sublist:
+            fuer item in sublist:
                 child = self.__class__(self.canvas, self, item)
                 self.children.append(child)
         cx = x+20
         cy = y + TreeNode.dy
         cylast = 0
-        for child in self.children:
+        fuer child in self.children:
             cylast = cy
             self.canvas.create_line(x+9, cy+7, cx, cy+7, fill="gray50")
             cy = child.draw(cx, cy)
@@ -435,7 +435,7 @@ klasse FileTreeItem(TreeItem):
             return []
         names.sort(key = os.path.normcase)
         sublist = []
-        for name in names:
+        fuer name in names:
             item = FileTreeItem(os.path.join(self.path, name))
             sublist.append(item)
         return sublist

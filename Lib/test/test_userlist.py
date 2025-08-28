@@ -12,10 +12,10 @@ klasse UserListTest(list_tests.CommonTest):
         super().test_getslice()
         l = [0, 1, 2, 3, 4]
         u = self.type2test(l)
-        for i in range(-3, 6):
+        fuer i in range(-3, 6):
             self.assertEqual(u[:i], l[:i])
             self.assertEqual(u[i:], l[i:])
-            for j in range(-3, 6):
+            fuer j in range(-3, 6):
                 self.assertEqual(u[i:j], l[i:j])
 
     def test_slice_type(self):
@@ -67,7 +67,7 @@ klasse UserListTest(list_tests.CommonTest):
         self.assertEqual(type(u), type(v))
 
     # Decorate existing test with recursion limit, because
-    # the test is for C structure, but `UserList` is a Python structure.
+    # the test is fuer C structure, but `UserList` is a Python structure.
     test_repr_deep = list_tests.CommonTest.test_repr_deep
 
 if __name__ == "__main__":

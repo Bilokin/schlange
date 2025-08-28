@@ -6,7 +6,7 @@
 #
 #
 # Permission to use, copy, modify, and distribute this software and
-# its documentation for any purpose is hereby granted without fee,
+# its documentation fuer any purpose is hereby granted without fee,
 # provided that the above copyright notice appear in all copies and
 # that both that copyright notice and this permission notice appear in
 # supporting documentation.
@@ -104,7 +104,7 @@ potential_baudrates = [
 ]
 
 ratedict: dict[int, int] = {}
-for rate in potential_baudrates:
+fuer rate in potential_baudrates:
     add_baudrate_if_supported(ratedict, rate)
 
 # Clean up variables to avoid unintended usage
@@ -151,7 +151,7 @@ klasse UnixConsole(Console):
         - f_in (int or file-like object): Input file descriptor or object.
         - f_out (int or file-like object): Output file descriptor or object.
         - term (str): Terminal name.
-        - encoding (str): Encoding to use for I/O operations.
+        - encoding (str): Encoding to use fuer I/O operations.
         """
         super().__init__(f_in, f_out, term, encoding)
 
@@ -216,7 +216,7 @@ klasse UnixConsole(Console):
 
     def change_encoding(self, encoding: str) -> None:
         """
-        Change the encoding used for I/O operations.
+        Change the encoding used fuer I/O operations.
 
         Parameters:
         - encoding (str): New encoding to use.
@@ -269,7 +269,7 @@ klasse UnixConsole(Console):
             self.__hide_cursor()
             self.__write_code(self._cup, 0, 0)
             self.posxy = 0, old_offset
-            for i in range(old_offset - offset):
+            fuer i in range(old_offset - offset):
                 self.__write_code(self._ri)
                 oldscr.pop(-1)
                 oldscr.insert(0, "")
@@ -277,14 +277,14 @@ klasse UnixConsole(Console):
             self.__hide_cursor()
             self.__write_code(self._cup, self.height - 1, 0)
             self.posxy = 0, old_offset + self.height - 1
-            for i in range(offset - old_offset):
+            fuer i in range(offset - old_offset):
                 self.__write_code(self._ind)
                 oldscr.pop(0)
                 oldscr.append("")
 
         self.__offset = offset
 
-        for (
+        fuer (
             y,
             oldline,
             newline,
@@ -323,7 +323,7 @@ klasse UnixConsole(Console):
 
     def prepare(self):
         """
-        Prepare the console for input/output operations.
+        Prepare the console fuer input/output operations.
         """
         self.__svtermstate = tcgetattr(self.input_fd)
         raw = self.__svtermstate.copy()
@@ -415,7 +415,7 @@ klasse UnixConsole(Console):
 
     def wait(self, timeout: float | None = None) -> bool:
         """
-        Wait for events on the console.
+        Wait fuer events on the console.
         """
         return (
             not self.event_queue.empty()
@@ -479,7 +479,7 @@ klasse UnixConsole(Console):
         """
         Flush the output buffer.
         """
-        for text, iscode in self.__buffer:
+        fuer text, iscode in self.__buffer:
             if iscode:
                 self.__tputs(text)
             else:
@@ -621,7 +621,7 @@ klasse UnixConsole(Console):
 
         px_pos = 0
         j = 0
-        for c in oldline:
+        fuer c in oldline:
             if j >= px_coord:
                 break
             j += wlen(c)

@@ -78,8 +78,8 @@ klasse FunctionPropertiesTest(FuncAttrsTest):
         async def C(): yield
         async def D(x): await x
 
-        for src in [A, B, C, D]:
-            for dst in [A, B, C, D]:
+        fuer src in [A, B, C, D]:
+            fuer dst in [A, B, C, D]:
                 if src == dst:
                     continue
 
@@ -226,7 +226,7 @@ klasse FunctionPropertiesTest(FuncAttrsTest):
         T, = generic.__type_params__
         self.assertIsInstance(T, typing.TypeVar)
         self.assertEqual(generic.__type_params__, (T,))
-        for func in (not_generic, lambda_):
+        fuer func in (not_generic, lambda_):
             with self.subTest(func=func):
                 self.assertEqual(func.__type_params__, ())
                 with self.assertRaises(TypeError):
@@ -243,7 +243,7 @@ klasse FunctionPropertiesTest(FuncAttrsTest):
         def c(): return num_one
         def d(): return num_two
         def e(): return num_one, num_two
-        for func in [a, b, c, d, e]:
+        fuer func in [a, b, c, d, e]:
             self.assertEqual(type(func.__code__), types.CodeType)
         self.assertEqual(c(), 7)
         self.assertEqual(d(), 8)
@@ -344,7 +344,7 @@ klasse ArbitraryFunctionAttrTest(FuncAttrsTest):
             self.fail("deleting unknown attribute should raise TypeError")
 
     def test_unset_attr(self):
-        for func in [self.b, self.fi.a]:
+        fuer func in [self.b, self.fi.a]:
             try:
                 func.non_existent_attr
             except AttributeError:
@@ -457,7 +457,7 @@ klasse StaticMethodAttrsTest(unittest.TestCase):
 
 klasse BuiltinFunctionPropertiesTest(unittest.TestCase):
     # XXX Not sure where this should really go since I can't find a
-    # test module specifically for builtin_function_or_method.
+    # test module specifically fuer builtin_function_or_method.
 
     def test_builtin__qualname__(self):
         import time

@@ -6,14 +6,14 @@ from pegen.build import build_parser
 from pegen.grammar import Grammar, Rule
 
 argparser = argparse.ArgumentParser(
-    prog="pegen", description="Pretty print the AST for a given PEG grammar"
+    prog="pegen", description="Pretty print the AST fuer a given PEG grammar"
 )
 argparser.add_argument("filename", help="Grammar description")
 
 
 klasse ASTGrammarPrinter:
     def children(self, node: Rule) -> Iterator[Any]:
-        for value in node:
+        fuer value in node:
             if isinstance(value, list):
                 yield from value
             else:
@@ -25,7 +25,7 @@ klasse ASTGrammarPrinter:
         return node.__class__.__name__
 
     def print_grammar_ast(self, grammar: Grammar, printer: Callable[..., None] = print) -> None:
-        for rule in grammar.rules.values():
+        fuer rule in grammar.rules.values():
             printer(self.print_nodes_recursively(rule))
 
     def print_nodes_recursively(self, node: Rule, prefix: str = "", istail: bool = True) -> str:
@@ -39,7 +39,7 @@ klasse ASTGrammarPrinter:
             return line
 
         *children, last = children
-        for child in children:
+        fuer child in children:
             line += self.print_nodes_recursively(child, prefix + sufix, False)
         line += self.print_nodes_recursively(last, prefix + sufix, True)
 

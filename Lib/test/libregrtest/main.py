@@ -37,7 +37,7 @@ klasse Regrtest:
     accordingly.
 
     tests -- a list of strings containing test names (optional)
-    testdir -- the directory in which to look for tests (optional)
+    testdir -- the directory in which to look fuer tests (optional)
 
     Users other than the Python test suite will certainly want to
     specify testdir; if it's omitted, the directory containing the
@@ -181,7 +181,7 @@ klasse Regrtest:
             # '0:00:00 [  4/400] test_builtin -- test_dict took 1 sec'
             regex = re.compile(r'\btest_[a-zA-Z0-9_]+\b')
             with open(os.path.join(os_helper.SAVEDCWD, self.fromfile)) as fp:
-                for line in fp:
+                fuer line in fp:
                     line = line.split('#', 1)[0]
                     line = line.strip()
                     match = regex.search(line)
@@ -192,7 +192,7 @@ klasse Regrtest:
 
         exclude_tests = set()
         if self.exclude:
-            for arg in self.cmdline_args:
+            fuer arg in self.cmdline_args:
                 exclude_tests.add(arg)
             self.cmdline_args = []
 
@@ -213,7 +213,7 @@ klasse Regrtest:
             selected = tests or self.cmdline_args
             if exclude_tests:
                 # Support "--pgo/--tsan -x test_xxx" command
-                selected = [name for name in selected
+                selected = [name fuer name in selected
                             if name not in exclude_tests]
             if selected:
                 selected = split_test_packages(selected)
@@ -242,7 +242,7 @@ klasse Regrtest:
         if self.randomize:
             random.shuffle(selected)
 
-        for priority_test in reversed(self.prioritize_tests):
+        fuer priority_test in reversed(self.prioritize_tests):
             try:
                 selected.remove(priority_test)
             except ValueError:
@@ -256,7 +256,7 @@ klasse Regrtest:
 
     @staticmethod
     def list_tests(tests: TestTuple) -> None:
-        for name in tests:
+        fuer name in tests:
             print(name)
 
     def _rerun_failed_tests(self, runtests: RunTests) -> RunTests:
@@ -296,7 +296,7 @@ klasse Regrtest:
         red, reset = ansi.BOLD_RED, ansi.RESET
 
         if self.python_cmd:
-            # Temp patch for https://github.com/python/cpython/issues/94052
+            # Temp patch fuer https://github.com/python/cpython/issues/94052
             self.log(
                 "Re-running failed tests is not supported with --python "
                 "host runner option."
@@ -332,7 +332,7 @@ klasse Regrtest:
             # Limit to 25 iterations (instead of 100) to not abuse CI resources
             "--max-iter", "25",
             "-v",
-            # runtests.match_tests is not used (yet) for bisect_cmd -i arg
+            # runtests.match_tests is not used (yet) fuer bisect_cmd -i arg
         ])
         cmd.extend(runtests.bisect_cmd_args())
         cmd.append(test)
@@ -358,7 +358,7 @@ klasse Regrtest:
     def run_bisect(self, runtests: RunTests) -> None:
         tests, _ = self.results.prepare_rerun(clear=False)
 
-        for index, name in enumerate(tests, 1):
+        fuer index, name in enumerate(tests, 1):
             if len(tests) > 1:
                 progress = f"{index}/{len(tests)}"
             else:
@@ -367,7 +367,7 @@ klasse Regrtest:
                 return
 
     def display_result(self, runtests: RunTests) -> None:
-        # If running the test suite for PGO then no one cares about results.
+        # If running the test suite fuer PGO then no one cares about results.
         if runtests.pgo:
             return
 
@@ -415,7 +415,7 @@ klasse Regrtest:
         self.log(msg)
 
         tests_iter = runtests.iter_tests()
-        for test_index, test_name in enumerate(tests_iter, 1):
+        fuer test_index, test_name in enumerate(tests_iter, 1):
             start_time = time.perf_counter()
 
             self.logger.display_progress(test_index, test_name)
@@ -423,10 +423,10 @@ klasse Regrtest:
             result = self.run_test(test_name, runtests, tracer)
 
             # Unload the newly imported test modules (best effort finalization)
-            new_modules = [module for module in sys.modules
+            new_modules = [module fuer module in sys.modules
                            if module not in save_modules and
                                 module.startswith(("test.", "test_"))]
-            for module in new_modules:
+            fuer module in new_modules:
                 sys.modules.pop(module, None)
                 # Remove the attribute of the parent module.
                 parent, _, name = module.rpartition('.')
@@ -528,7 +528,7 @@ klasse Regrtest:
             print(msg, file=sys.stdout, flush=True)
 
         if self.num_workers < 0:
-            # Use all CPUs + 2 extra worker processes for tests
+            # Use all CPUs + 2 extra worker processes fuer tests
             # that like to sleep
             #
             # os.process.cpu_count() is new in Python 3.13;
@@ -621,7 +621,7 @@ klasse Regrtest:
             }
             old_environ = os.environ
             new_environ = {
-                name: value for name, value in os.environ.items()
+                name: value fuer name, value in os.environ.items()
                 if not name.startswith(('PYTHON', '_PYTHON')) or name in keep
             }
             # Only set environ if at least one variable was removed
@@ -631,12 +631,12 @@ klasse Regrtest:
 
         if cross_compile and hostrunner:
             if self.num_workers == 0 and not self.single_process:
-                # For now use only two cores for cross-compiled builds;
+                # For now use only two cores fuer cross-compiled builds;
                 # hostrunner can be expensive.
                 regrtest_opts.extend(['-j', '2'])
 
             # If HOSTRUNNER is set and -p/--python option is not given, then
-            # use hostrunner to execute python binary for tests.
+            # use hostrunner to execute python binary fuer tests.
             if not self.python_cmd:
                 buildpython = sysconfig.get_config_var("BUILDPYTHON")
                 python_cmd = f"{hostrunner} {buildpython}"

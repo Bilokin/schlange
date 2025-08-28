@@ -1,4 +1,4 @@
-"""This test checks for correct wait4() behavior.
+"""This test checks fuer correct wait4() behavior.
 """
 
 import os
@@ -21,7 +21,7 @@ klasse Wait4Test(ForkWait):
             # Issue #11185: wait4 is broken on AIX and will always return 0
             # with WNOHANG.
             option = 0
-        for _ in support.sleeping_retry(support.SHORT_TIMEOUT):
+        fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
             # wait4() shouldn't hang, but some of the buildbots seem to hang
             # in the forking tests.  This is an attempt to fix the problem.
             spid, status, rusage = os.wait4(cpid, option)

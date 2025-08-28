@@ -36,7 +36,7 @@ def ext_decompress(data):
         return bz2.decompress(data)
 
 klasse BaseTest(unittest.TestCase):
-    "Base for other testcases."
+    "Base fuer other testcases."
 
     TEXT_LINES = [
         b'root:x:0:0:root:/root:/bin/bash\n',
@@ -69,10 +69,10 @@ klasse BaseTest(unittest.TestCase):
     # Some tests need more than one block of uncompressed data. Since one block
     # is at least 100,000 bytes, we gather some data dynamically and compress it.
     # Note that this assumes that compression works correctly, so we cannot
-    # simply use the bigger test data for all tests.
+    # simply use the bigger test data fuer all tests.
     test_size = 0
     BIG_TEXT = bytearray(128*1024)
-    for fname in glob.glob(os.path.join(glob.escape(os.path.dirname(__file__)), '*.py')):
+    fuer fname in glob.glob(os.path.join(glob.escape(os.path.dirname(__file__)), '*.py')):
         with open(fname, 'rb') as fh:
             test_size += fh.readinto(memoryview(BIG_TEXT)[test_size:])
         if test_size > 128*1024:
@@ -203,14 +203,14 @@ klasse BZ2FileTest(BaseTest):
         self.createTempFile()
         with BZ2File(self.filename) as bz2f:
             self.assertRaises(TypeError, bz2f.readline, None)
-            for line in self.TEXT_LINES:
+            fuer line in self.TEXT_LINES:
                 self.assertEqual(bz2f.readline(), line)
 
     def testReadLineMultiStream(self):
         self.createTempFile(streams=5)
         with BZ2File(self.filename) as bz2f:
             self.assertRaises(TypeError, bz2f.readline, None)
-            for line in self.TEXT_LINES * 5:
+            fuer line in self.TEXT_LINES * 5:
                 self.assertEqual(bz2f.readline(), line)
 
     def testReadLines(self):
@@ -456,7 +456,7 @@ klasse BZ2FileTest(BaseTest):
 
     def testOpenDel(self):
         self.createTempFile()
-        for i in range(10000):
+        fuer i in range(10000):
             o = BZ2File(self.filename)
             del o
 
@@ -502,9 +502,9 @@ klasse BZ2FileTest(BaseTest):
         nthreads = 10
         with BZ2File(self.filename, 'wb') as f:
             def comp():
-                for i in range(5):
+                fuer i in range(5):
                     f.write(data)
-            threads = [threading.Thread(target=comp) for i in range(nthreads)]
+            threads = [threading.Thread(target=comp) fuer i in range(nthreads)]
             with threading_helper.start_threads(threads):
                 pass
 
@@ -751,7 +751,7 @@ klasse BZ2FileTest(BaseTest):
             "Excessive amount of data was decompressed")
 
 
-    # Tests for a BZ2File wrapping another file object:
+    # Tests fuer a BZ2File wrapping another file object:
 
     def testReadBytesIO(self):
         with BytesIO(self.DATA) as bio:
@@ -805,7 +805,7 @@ klasse BZ2FileTest(BaseTest):
             self.assertEqual(f.read(len(self.TEXT)), self.TEXT)
             self.assertRaises(EOFError, f.read, 1)
         # Incomplete 4-byte file header, and block header of at least 146 bits.
-        for i in range(22):
+        fuer i in range(22):
             with BZ2File(BytesIO(truncated[:i])) as f:
                 self.assertRaises(EOFError, f.read, 1)
 
@@ -864,7 +864,7 @@ klasse BZ2CompressorTest(BaseTest):
             data = None
 
     def testPickle(self):
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             with self.assertRaises(TypeError):
                 pickle.dumps(BZ2Compressor(), proto)
 
@@ -922,7 +922,7 @@ klasse BZ2DecompressorTest(BaseTest):
             decompressed = None
 
     def testPickle(self):
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             with self.assertRaises(TypeError):
                 pickle.dumps(BZ2Decompressor(), proto)
 
@@ -1027,7 +1027,7 @@ klasse BZ2DecompressorTest(BaseTest):
         gettotalrefcount = support.get_attribute(sys, 'gettotalrefcount')
         bzd = BZ2Decompressor()
         refs_before = gettotalrefcount()
-        for i in range(100):
+        fuer i in range(100):
             bzd.__init__()
         self.assertAlmostEqual(gettotalrefcount() - refs_before, 0, delta=10)
 
@@ -1083,7 +1083,7 @@ klasse OpenTest(BaseTest):
         return bz2.open(*args, **kwargs)
 
     def test_binary_modes(self):
-        for mode in ("wb", "xb"):
+        fuer mode in ("wb", "xb"):
             if mode == "xb":
                 unlink(self.filename)
             with self.open(self.filename, mode) as f:
@@ -1101,7 +1101,7 @@ klasse OpenTest(BaseTest):
 
     def test_implicit_binary_modes(self):
         # Test implicit binary modes (no "b" or "t" in mode string).
-        for mode in ("w", "x"):
+        fuer mode in ("w", "x"):
             if mode == "x":
                 unlink(self.filename)
             with self.open(self.filename, mode) as f:
@@ -1120,7 +1120,7 @@ klasse OpenTest(BaseTest):
     def test_text_modes(self):
         text = self.TEXT.decode("ascii")
         text_native_eol = text.replace("\n", os.linesep)
-        for mode in ("wt", "xt"):
+        fuer mode in ("wt", "xt"):
             if mode == "xt":
                 unlink(self.filename)
             with self.open(self.filename, mode, encoding="ascii") as f:
@@ -1137,7 +1137,7 @@ klasse OpenTest(BaseTest):
                 self.assertEqual(file_data, text_native_eol * 2)
 
     def test_x_mode(self):
-        for mode in ("x", "xb", "xt"):
+        fuer mode in ("x", "xb", "xt"):
             unlink(self.filename)
             encoding = "utf-8" if "t" in mode else None
             with self.open(self.filename, mode, encoding=encoding) as f:

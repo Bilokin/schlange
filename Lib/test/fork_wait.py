@@ -1,4 +1,4 @@
-"""This test case provides support for checking forking and wait behavior.
+"""This test case provides support fuer checking forking and wait behavior.
 
 To test different wait behavior, override the wait_impl method.
 
@@ -31,7 +31,7 @@ klasse ForkWait(unittest.TestCase):
     def tearDown(self):
         # Stop threads
         self.stop = 1
-        for thread in self.threads:
+        fuer thread in self.threads:
             thread.join()
         thread = None
         self.threads.clear()
@@ -49,13 +49,13 @@ klasse ForkWait(unittest.TestCase):
         support.wait_process(cpid, exitcode=exitcode)
 
     def test_wait(self):
-        for i in range(NUM_THREADS):
+        fuer i in range(NUM_THREADS):
             thread = threading.Thread(target=self.f, args=(i,))
             thread.start()
             self.threads.append(thread)
 
-        # busy-loop to wait for threads
-        for _ in support.sleeping_retry(support.SHORT_TIMEOUT):
+        # busy-loop to wait fuer threads
+        fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
             if len(self.alive) >= NUM_THREADS:
                 break
 
@@ -71,7 +71,7 @@ klasse ForkWait(unittest.TestCase):
                 # Child
                 time.sleep(LONGSLEEP)
                 n = 0
-                for key in self.alive:
+                fuer key in self.alive:
                     if self.alive[key] != prefork_lives[key]:
                         n += 1
                 os._exit(n)

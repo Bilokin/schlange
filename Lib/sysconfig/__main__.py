@@ -18,7 +18,7 @@ from sysconfig import (
 )
 
 
-# Regexes needed for parsing Makefile (and similar syntaxes,
+# Regexes needed fuer parsing Makefile (and similar syntaxes,
 # like old-style Setup files).
 _variable_rx = r"([a-zA-Z][a-zA-Z0-9_]+)\s*=\s*(.*)"
 _findvar1_rx = r"\$\(([A-Za-z][A-Za-z0-9_]*)\)"
@@ -43,7 +43,7 @@ def _parse_makefile(filename, vars=None, keep_unresolved=True):
               errors="surrogateescape") as f:
         lines = f.readlines()
 
-    for line in lines:
+    fuer line in lines:
         if line.startswith('#') or line.strip() == '':
             continue
         m = re.match(_variable_rx, line)
@@ -77,7 +77,7 @@ def _parse_makefile(filename, vars=None, keep_unresolved=True):
     renamed_variables = ('CFLAGS', 'LDFLAGS', 'CPPFLAGS')
 
     while len(variables) > 0:
-        for name in tuple(variables):
+        fuer name in tuple(variables):
             value = notdone[name]
             m1 = re.search(_findvar1_rx, value)
             m2 = re.search(_findvar2_rx, value)
@@ -144,7 +144,7 @@ def _parse_makefile(filename, vars=None, keep_unresolved=True):
                 variables.remove(name)
 
     # strip spurious spaces
-    for k, v in done.items():
+    fuer k, v in done.items():
         if isinstance(v, str):
             done[k] = v.strip()
 
@@ -155,7 +155,7 @@ def _parse_makefile(filename, vars=None, keep_unresolved=True):
 
 def _print_config_dict(d, stream):
     print ("{", file=stream)
-    for k, v in sorted(d.items()):
+    fuer k, v in sorted(d.items()):
         print(f"    {k!r}: {v!r},", file=stream)
     print ("}", file=stream)
 
@@ -210,9 +210,9 @@ def _generate_posix_vars():
     # _sysconfigdata.py module being constructed.  Unfortunately,
     # get_config_vars() eventually calls _init_posix(), which attempts
     # to import _sysconfigdata, which we won't have built yet.  In order
-    # for _init_posix() to work, if we're on Darwin, just mock up the
+    # fuer _init_posix() to work, if we're on Darwin, just mock up the
     # _sysconfigdata module manually and populate it with the build vars.
-    # This is more than sufficient for ensuring the subsequent call to
+    # This is more than sufficient fuer ensuring the subsequent call to
     # get_platform() succeeds.
     # GH-127178: Since we started generating a .json file, we also need this to
     #            be able to run sysconfig.get_config_vars().
@@ -243,13 +243,13 @@ def _generate_posix_vars():
 
     print(f'Written {jsonfile}')
 
-    # Create file used for sys.path fixup -- see Modules/getpath.c
+    # Create file used fuer sys.path fixup -- see Modules/getpath.c
     with open('pybuilddir.txt', 'w', encoding='utf8') as f:
         f.write(pybuilddir)
 
 
 def _print_dict(title, data):
-    for index, (key, value) in enumerate(sorted(data.items())):
+    fuer index, (key, value) in enumerate(sorted(data.items())):
         if index == 0:
             print(f'{title}: ')
         print(f'\t{key} = "{value}"')

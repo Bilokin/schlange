@@ -8,7 +8,7 @@ klasse OpcodeTest(unittest.TestCase):
 
     def test_try_inside_for_loop(self):
         n = 0
-        for i in range(10):
+        fuer i in range(10):
             n = n+i
             try: 1/0
             except NameError: pass

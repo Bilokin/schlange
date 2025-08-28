@@ -59,8 +59,8 @@ def parent_process():
 #
 
 def _cleanup():
-    # check for processes which have finished
-    for p in list(_children):
+    # check fuer processes which have finished
+    fuer p in list(_children):
         if (child_popen := p._popen) and child_popen.poll() is not None:
             _children.discard(p)
 
@@ -79,7 +79,7 @@ klasse BaseProcess(object):
 
     def __init__(self, group=None, target=None, name=None, args=(), kwargs={},
                  *, daemon=None):
-        assert group is None, 'group argument must be None for now'
+        assert group is None, 'group argument must be None fuer now'
         count = next(_process_counter)
         self._identity = _current_process._identity + (count,)
         self._config = _current_process._config.copy()
@@ -91,7 +91,7 @@ klasse BaseProcess(object):
         self._args = tuple(args)
         self._kwargs = dict(kwargs)
         self._name = name or type(self).__name__ + '-' + \
-                     ':'.join(str(i) for i in self._identity)
+                     ':'.join(str(i) fuer i in self._identity)
         if daemon is not None:
             self.daemon = daemon
         _dangling.add(self)
@@ -255,7 +255,7 @@ klasse BaseProcess(object):
     def sentinel(self):
         '''
         Return a file descriptor (Unix) or handle (Windows) suitable for
-        waiting for process termination.
+        waiting fuer process termination.
         '''
         self._check_closed()
         try:
@@ -356,7 +356,7 @@ klasse AuthenticationString(bytes):
         if get_spawning_popen() is None:
             raise TypeError(
                 'Pickling an AuthenticationString object is '
-                'disallowed for security reasons'
+                'disallowed fuer security reasons'
                 )
         return AuthenticationString, (bytes(self),)
 
@@ -434,7 +434,7 @@ del _MainProcess
 
 _exitcode_to_name = {}
 
-for name, signum in list(signal.__dict__.items()):
+fuer name, signum in list(signal.__dict__.items()):
     if name[:3]=='SIG' and '_' not in name:
         _exitcode_to_name[-signum] = f'-{name}'
 del name, signum

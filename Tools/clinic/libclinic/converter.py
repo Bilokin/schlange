@@ -41,7 +41,7 @@ def add_c_converter(
 
 
 def add_default_legacy_c_converter(cls: CConverterClassT) -> CConverterClassT:
-    # automatically add converter for default format unit
+    # automatically add converter fuer default format unit
     # (but without stomping on the existing one if it's already
     # set, in case you subclass)
     if ((cls.format_unit not in ('O&', '')) and
@@ -65,18 +65,18 @@ klasse CConverter(metaclass=CConverterAutoRegister):
     parameters must be keyword-only.
     """
 
-    # The C name to use for this variable.
+    # The C name to use fuer this variable.
     name: str
 
-    # The Python name to use for this variable.
+    # The Python name to use fuer this variable.
     py_name: str
 
-    # The C type to use for this variable.
+    # The C type to use fuer this variable.
     # 'type' should be a Python string specifying the type, e.g. "int".
     # If this is a pointer type, the type string should end with ' *'.
     type: str | None = None
 
-    # The Python default value for this parameter, as a Python value.
+    # The Python default value fuer this parameter, as a Python value.
     # Or the magic value "unspecified" if there is no default.
     # Or the magic value "unknown" if this value is a cannot be evaluated
     # at Argument-Clinic-preprocessing time (but is presumed to be valid
@@ -129,12 +129,12 @@ klasse CConverter(metaclass=CConverterAutoRegister):
     #############################################################
     #############################################################
 
-    # The "format unit" to specify for this variable when
+    # The "format unit" to specify fuer this variable when
     # parsing arguments using PyArg_ParseTuple (AndKeywords).
     # Custom converters should always use the default value of 'O&'.
     format_unit = 'O&'
 
-    # What encoding do we want for this variable?  Only used
+    # What encoding do we want fuer this variable?  Only used
     # by format units starting with 'e'.
     encoding: str | None = None
 
@@ -150,14 +150,14 @@ klasse CConverter(metaclass=CConverterAutoRegister):
 
     # Should we show this parameter in the generated
     # __text_signature__? This is *almost* always True.
-    # (It's only False for __new__, __init__, and METH_STATIC functions.)
+    # (It's only False fuer __new__, __init__, and METH_STATIC functions.)
     show_in_signature = True
 
     # Overrides the name used in a text signature.
-    # The name used for a "self" parameter must be one of
+    # The name used fuer a "self" parameter must be one of
     # self, type, or module; however users can set their own.
     # This lets the self_converter overrule the user-settable
-    # name, *just* for the text signature.
+    # name, *just* fuer the text signature.
     # Only set by self_converter.
     signature_name: str | None = None
 
@@ -190,10 +190,10 @@ klasse CConverter(metaclass=CConverterAutoRegister):
                 if isinstance(self.default_type, type):
                     types_str = self.default_type.__name__
                 else:
-                    names = [cls.__name__ for cls in self.default_type]
+                    names = [cls.__name__ fuer cls in self.default_type]
                     types_str = ', '.join(names)
                 cls_name = self.__class__.__name__
-                fail(f"{cls_name}: default value {default!r} for field "
+                fail(f"{cls_name}: default value {default!r} fuer field "
                      f"{name!r} is not of type {types_str!r}")
             self.default = default
 
@@ -215,7 +215,7 @@ klasse CConverter(metaclass=CConverterAutoRegister):
     # Add a custom __getattr__ method to improve the error message
     # if somebody tries to access self.function in converter_init().
     #
-    # mypy will assume arbitrary access is okay for a klasse with a __getattr__ method,
+    # mypy will assume arbitrary access is okay fuer a klasse with a __getattr__ method,
     # and that's not what we want,
     # so put it inside an `if not TYPE_CHECKING` block
     if not TYPE_CHECKING:
@@ -226,7 +226,7 @@ klasse CConverter(metaclass=CConverterAutoRegister):
                     f"Note: accessing self.function inside converter_init is disallowed!"
                 )
             return super().__getattr__(attr)
-    # this branch is just here for coverage reporting
+    # this branch is just here fuer coverage reporting
     else:  # pragma: no cover
         pass
 
@@ -266,12 +266,12 @@ klasse CConverter(metaclass=CConverterAutoRegister):
         # initializers
         initializers = self.initialize()
         if initializers:
-            data.initializers.append('/* initializers for ' + name + ' */\n' + initializers.rstrip())
+            data.initializers.append('/* initializers fuer ' + name + ' */\n' + initializers.rstrip())
 
         # modifications
         modifications = self.modify()
         if modifications:
-            data.modifications.append('/* modifications for ' + name + ' */\n' + modifications.rstrip())
+            data.modifications.append('/* modifications fuer ' + name + ' */\n' + modifications.rstrip())
 
         # keywords
         if parameter.is_vararg():
@@ -293,12 +293,12 @@ klasse CConverter(metaclass=CConverterAutoRegister):
 
         # post_parsing
         if post_parsing := self.post_parsing():
-            data.post_parsing.append('/* Post parse cleanup for ' + name + ' */\n' + post_parsing.rstrip() + '\n')
+            data.post_parsing.append('/* Post parse cleanup fuer ' + name + ' */\n' + post_parsing.rstrip() + '\n')
 
         # cleanup
         cleanup = self.cleanup()
         if cleanup:
-            data.cleanup.append('/* Cleanup for ' + name + ' */\n' + cleanup.rstrip() + "\n")
+            data.cleanup.append('/* Cleanup fuer ' + name + ' */\n' + cleanup.rstrip() + "\n")
 
     def render(self, parameter: Parameter, data: CRenderData) -> None:
         """
@@ -531,7 +531,7 @@ ConverterDict = dict[str, ConverterType]
 converters: ConverterDict = {}
 
 # maps strings to callables.
-# these callables follow the same rules as those for "converters" above.
+# these callables follow the same rules as those fuer "converters" above.
 # note however that they will never be called with keyword-only parameters.
 legacy_converters: ConverterDict = {}
 

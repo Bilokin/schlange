@@ -60,7 +60,7 @@ klasse TestError(unittest.TestCase):
         def list_returner(s: str) -> list:
             return []
 
-        for invalid_parse_float in (dict_returner, list_returner):
+        fuer invalid_parse_float in (dict_returner, list_returner):
             with self.assertRaises(ValueError) as exc_info:
                 tomllib.loads("f=0.1", parse_float=invalid_parse_float)
             self.assertEqual(
@@ -68,7 +68,7 @@ klasse TestError(unittest.TestCase):
             )
 
     def test_deprecated_tomldecodeerror(self):
-        for args in [
+        fuer args in [
             (),
             ("err msg",),
             (None,),

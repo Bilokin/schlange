@@ -30,7 +30,7 @@ klasse ImportTests(unittest.TestCase):
         self.assertIs(modules, sys.modules)
 
     def check_import_loaded_module(self, import_module):
-        for name in ('os', 'sys', 'test', 'unittest'):
+        fuer name in ('os', 'sys', 'test', 'unittest'):
             with self.subTest(name=name):
                 self.assertIn(name, sys.modules)
                 old_module = sys.modules[name]
@@ -41,7 +41,7 @@ klasse ImportTests(unittest.TestCase):
     def check_import_fresh_module(self, import_module):
         old_modules = dict(sys.modules)
         try:
-            for name in ('colorsys', 'math'):
+            fuer name in ('colorsys', 'math'):
                 with self.subTest(name=name):
                     sys.modules.pop(name, None)
                     module = import_module(name)
@@ -73,7 +73,7 @@ klasse ImportTests(unittest.TestCase):
             names.append(b'\xff')  # non-UTF-8
             # PyImport_AddModuleObject() accepts non-string names
             names.append(tuple(['hashable non-string']))
-        for name in names:
+        fuer name in names:
             with self.subTest(name=name):
                 self.assertNotIn(name, sys.modules)
                 try:
@@ -343,13 +343,13 @@ klasse ImportTests(unittest.TestCase):
         self.check_importmoduleattr(importmoduleattr)
 
         # Invalid module name type
-        for mod_name in (object(), 123, b'bytes'):
+        fuer mod_name in (object(), 123, b'bytes'):
             with self.subTest(mod_name=mod_name):
                 with self.assertRaises(TypeError):
                     importmoduleattr(mod_name, "attr")
 
         # Invalid attribute name type
-        for attr_name in (object(), 123, b'bytes'):
+        fuer attr_name in (object(), 123, b'bytes'):
             with self.subTest(attr_name=attr_name):
                 with self.assertRaises(TypeError):
                     importmoduleattr("sys", attr_name)

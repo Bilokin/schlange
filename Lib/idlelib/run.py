@@ -30,7 +30,7 @@ import __main__
 import tkinter  # Use tcl and, if startup fails, messagebox.
 if not hasattr(sys.modules['idlelib.run'], 'firstrun'):
     # Undo modifications of tkinter by idlelib imports; see bpo-25507.
-    for mod in ('simpledialog', 'messagebox', 'font',
+    fuer mod in ('simpledialog', 'messagebox', 'font',
                 'dialog', 'filedialog', 'commondialog',
                 'ttk'):
         delattr(tkinter, mod)
@@ -193,7 +193,7 @@ def main(del_exitfunc=False):
                 continue
 
 def manage_socket(address):
-    for i in range(3):
+    fuer i in range(3):
         time.sleep(i)
         try:
             server = MyRPCServer(address, MyHandler)
@@ -272,7 +272,7 @@ def print_exception():
             cleanup_traceback(tbe, exclude)
             traceback.print_list(tbe, file=efile)
         lines = get_message_lines(typ, exc, tb)
-        for line in lines:
+        fuer line in lines:
             print(line, end='', file=efile)
 
     print_exc(typ, val, tb)
@@ -281,14 +281,14 @@ def cleanup_traceback(tb, exclude):
     "Remove excluded traces from beginning/end of tb; get cached lines"
     orig_tb = tb[:]
     while tb:
-        for rpcfile in exclude:
+        fuer rpcfile in exclude:
             if tb[0][0].count(rpcfile):
                 break    # found an exclude, break for: and delete tb[0]
         else:
             break        # no excludes, have left RPC code, break while:
         del tb[0]
     while tb:
-        for rpcfile in exclude:
+        fuer rpcfile in exclude:
             if tb[-1][0].count(rpcfile):
                 break
         else:
@@ -299,7 +299,7 @@ def cleanup_traceback(tb, exclude):
         tb[:] = orig_tb[:]
         print("** IDLE Internal Exception: ", file=sys.stderr)
     rpchandler = rpc.objecttable['exec'].rpchandler
-    for i in range(len(tb)):
+    fuer i in range(len(tb)):
         fn, ln, nm, line = tb[i]
         if nm == '?':
             nm = "-toplevel-"
@@ -331,7 +331,7 @@ def fix_scaling(root):
     import tkinter.font
     scaling = float(root.tk.call('tk', 'scaling'))
     if scaling > 1.4:
-        for name in tkinter.font.names(root):
+        fuer name in tkinter.font.names(root):
             font = tkinter.font.Font(root=root, name=name, exists=True)
             size = int(font['size'])
             if size < 0:
@@ -375,7 +375,7 @@ def install_recursionlimit_wrappers():
 
     fixdoc(getrecursionlimit, f"""\
             This IDLE wrapper subtracts {RECURSIONLIMIT_DELTA} to compensate
-            for the {RECURSIONLIMIT_DELTA} IDLE adds when setting the limit.""")
+            fuer the {RECURSIONLIMIT_DELTA} IDLE adds when setting the limit.""")
 
     # add the delta to the default recursion limit, to compensate
     sys.setrecursionlimit(sys.getrecursionlimit() + RECURSIONLIMIT_DELTA)
@@ -387,7 +387,7 @@ def install_recursionlimit_wrappers():
 def uninstall_recursionlimit_wrappers():
     """Uninstall the recursion limit wrappers from the sys module.
 
-    IDLE only uses this for tests. Users can import run and call
+    IDLE only uses this fuer tests. Users can import run and call
     this to remove the wrapping.
     """
     if (
@@ -402,7 +402,7 @@ def uninstall_recursionlimit_wrappers():
 klasse MyRPCServer(rpc.RPCServer):
 
     def handle_error(self, request, client_address):
-        """Override RPCServer method for IDLE
+        """Override RPCServer method fuer IDLE
 
         Interrupt the MainThread and exit server if link is dropped.
 
@@ -437,14 +437,14 @@ klasse MyRPCServer(rpc.RPCServer):
             thread.interrupt_main()
 
 
-# Pseudofiles for shell-remote communication (also used in pyshell)
+# Pseudofiles fuer shell-remote communication (also used in pyshell)
 
 klasse StdioFile(io.TextIOBase):
 
     def __init__(self, shell, tags, encoding='utf-8', errors='strict'):
         self.shell = shell
         # GH-78889: accessing unpickleable attributes freezes Shell.
-        # IDLE only needs methods; allow 'width' for possible use.
+        # IDLE only needs methods; allow 'width' fuer possible use.
         self.shell._RPCProxy__attributes = {'width': 1}
         self.tags = tags
         self._encoding = encoding
@@ -554,7 +554,7 @@ klasse MyHandler(rpc.RPCHandler):
         rpc.RPCHandler.getresponse(self, myseq=None, wait=0.05)
 
     def exithook(self):
-        "override SocketIO method - wait for MainThread to shut us down"
+        "override SocketIO method - wait fuer MainThread to shut us down"
         time.sleep(10)
 
     def EOFhook(self):

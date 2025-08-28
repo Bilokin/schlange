@@ -1,4 +1,4 @@
-# A test suite for pdb; not very comprehensive at the moment.
+# A test suite fuer pdb; not very comprehensive at the moment.
 
 import _colorize
 import doctest
@@ -47,7 +47,7 @@ klasse PdbTestInput(object):
 
 
 def test_pdb_displayhook():
-    """This tests the custom displayhook for pdb.
+    """This tests the custom displayhook fuer pdb.
 
     >>> def test_function(foo, bar):
     ...     import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
@@ -64,7 +64,7 @@ def test_pdb_displayhook():
     (Pdb) foo
     1
     (Pdb) bar
-    (Pdb) for i in range(5): print(i)
+    (Pdb) fuer i in range(5): print(i)
     0
     1
     2
@@ -79,10 +79,10 @@ def test_pdb_basic_commands():
 
     >>> def test_function_2(foo, bar='default'):
     ...     print(foo)
-    ...     for i in range(5):
+    ...     fuer i in range(5):
     ...         print(i)
     ...     print(bar)
-    ...     for i in range(10):
+    ...     fuer i in range(10):
     ...         never_executed
     ...     print('after for')
     ...     print('...')
@@ -110,11 +110,11 @@ def test_pdb_basic_commands():
     ...     'up',         # step up to test_function()
     ...     'down',       # step down to test_function_2() again
     ...     'next',       # stepping to print(foo)
-    ...     'next',       # stepping to the for loop
-    ...     'step',       # stepping into the for loop
-    ...     'until',      # continuing until out of the for loop
+    ...     'next',       # stepping to the fuer loop
+    ...     'step',       # stepping into the fuer loop
+    ...     'until',      # continuing until out of the fuer loop
     ...     'next',       # executing the print(bar)
-    ...     'jump 8',     # jump over second for loop
+    ...     'jump 8',     # jump over second fuer loop
     ...     'return',     # return out of function
     ...     'retval',     # display return value
     ...     'next',       # step to test_function3()
@@ -142,10 +142,10 @@ def test_pdb_basic_commands():
     (Pdb) list
       1  ->     def test_function_2(foo, bar='default'):
       2             print(foo)
-      3             for i in range(5):
+      3             fuer i in range(5):
       4                 print(i)
       5             print(bar)
-      6             for i in range(10):
+      6             fuer i in range(10):
       7                 never_executed
       8             print('after for')
       9             print('...')
@@ -171,7 +171,7 @@ def test_pdb_basic_commands():
     (Pdb) next
     baz
     > <doctest test.test_pdb.test_pdb_basic_commands[0]>(3)test_function_2()
-    -> for i in range(5):
+    -> fuer i in range(5):
     (Pdb) step
     > <doctest test.test_pdb.test_pdb_basic_commands[0]>(4)test_function_2()
     -> print(i)
@@ -186,7 +186,7 @@ def test_pdb_basic_commands():
     (Pdb) next
     default
     > <doctest test.test_pdb.test_pdb_basic_commands[0]>(6)test_function_2()
-    -> for i in range(10):
+    -> fuer i in range(10):
     (Pdb) jump 8
     > <doctest test.test_pdb.test_pdb_basic_commands[0]>(8)test_function_2()
     -> print('after for')
@@ -238,7 +238,7 @@ def test_pdb_breakpoint_commands():
     ...     print(4)
 
     Now test the breakpoint commands.  NORMALIZE_WHITESPACE is needed because
-    the breakpoint list outputs a tab for the "stop only" and "ignore next"
+    the breakpoint list outputs a tab fuer the "stop only" and "ignore next"
     lines, which we don't want to put in here.
 
     >>> with PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
@@ -287,7 +287,7 @@ def test_pdb_breakpoint_commands():
     (Pdb) ignore 1 10
     Will ignore next 10 crossings of breakpoint 1.
     (Pdb) condition 1 1 < 2
-    New condition set for breakpoint 1.
+    New condition set fuer breakpoint 1.
     (Pdb) condition 1 1 <
     *** Invalid condition 1 <: SyntaxError: invalid syntax
     (Pdb) break 4
@@ -363,7 +363,7 @@ def test_pdb_breakpoint_ignore_and_condition():
     """
     >>> def test_function():
     ...     import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
-    ...     for i in range(5):
+    ...     fuer i in range(5):
     ...         print(i)
 
     >>> with PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
@@ -388,7 +388,7 @@ def test_pdb_breakpoint_ignore_and_condition():
     > <doctest test.test_pdb.test_pdb_breakpoint_ignore_and_condition[0]>(4)test_function()
     -> print(i)
     (Pdb) condition 1 i == 4
-    New condition set for breakpoint 1.
+    New condition set fuer breakpoint 1.
     (Pdb) continue
     2
     3
@@ -518,7 +518,7 @@ def test_pdb_breakpoint_on_disabled_line():
 
     >>> def test_function():
     ...     import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
-    ...     for i in range(3):
+    ...     fuer i in range(3):
     ...         j = i * 2
     ...         print(j)
 
@@ -941,7 +941,7 @@ def test_pdb_alias_command():
     >>> with PdbTestInput([  # doctest: +ELLIPSIS
     ...     's',
     ...     'alias pi',
-    ...     'alias pi for k in %1.__dict__.keys(): print(f"%1.{k} = {%1.__dict__[k]}")',
+    ...     'alias pi fuer k in %1.__dict__.keys(): print(f"%1.{k} = {%1.__dict__[k]}")',
     ...     'alias ps pi self',
     ...     'alias ps',
     ...     'pi o',
@@ -965,7 +965,7 @@ def test_pdb_alias_command():
     -> o.method()
     (Pdb) alias pi
     *** Unknown alias 'pi'
-    (Pdb) alias pi for k in %1.__dict__.keys(): print(f"%1.{k} = {%1.__dict__[k]}")
+    (Pdb) alias pi fuer k in %1.__dict__.keys(): print(f"%1.{k} = {%1.__dict__[k]}")
     (Pdb) alias ps pi self
     (Pdb) alias ps
     ps = pi self
@@ -985,11 +985,11 @@ def test_pdb_alias_command():
     *** Unknown alias 'myp'
     (Pdb) alias myp p %1
     (Pdb) myp
-    *** Not enough arguments for alias 'myp'
+    *** Not enough arguments fuer alias 'myp'
     (Pdb) myp 1
     1
     (Pdb) myp 1 2
-    *** Too many arguments for alias 'myp'
+    *** Too many arguments fuer alias 'myp'
     (Pdb) alias repeat_second_arg p "%* %2"
     (Pdb) repeat_second_arg 1 2 3
     '1 2 3 2'
@@ -1844,16 +1844,16 @@ def test_pdb_invalid_arg():
     *** Invalid argument: 1
           Usage: s(tep)
     (Pdb) p
-    *** Argument is required for this command
+    *** Argument is required fuer this command
           Usage: p expression
     (Pdb) enable
-    *** Argument is required for this command
+    *** Argument is required fuer this command
           Usage: enable bpnumber [bpnumber ...]
     (Pdb) continue
     """
 
 
-# Module for testing skipping of module that makes a callback
+# Module fuer testing skipping of module that makes a callback
 mod = types.ModuleType('module_to_skip')
 exec('def foo_pony(callback): x = 1; callback(); return None', mod.__dict__)
 
@@ -2058,7 +2058,7 @@ def test_next_until_return_at_return_event():
     """
 
 def test_pdb_next_command_for_generator():
-    """Testing skip unwinding stack on yield for generators for "next" command
+    """Testing skip unwinding stack on yield fuer generators fuer "next" command
 
     >>> def test_gen():
     ...     yield 0
@@ -2319,7 +2319,7 @@ if not SKIP_CORO_TESTS:
             """
 
     def test_pdb_next_command_for_coroutine():
-        """Testing skip unwinding stack on yield for coroutines for "next" command
+        """Testing skip unwinding stack on yield fuer coroutines fuer "next" command
 
         >>> from test.support import run_yielding_async_fn, async_yield
 
@@ -2376,7 +2376,7 @@ if not SKIP_CORO_TESTS:
         """
 
     def test_pdb_next_command_for_asyncgen():
-        """Testing skip unwinding stack on yield for coroutines for "next" command
+        """Testing skip unwinding stack on yield fuer coroutines fuer "next" command
 
         >>> from test.support import run_yielding_async_fn, async_yield
 
@@ -2386,7 +2386,7 @@ if not SKIP_CORO_TESTS:
         ...     yield 2
 
         >>> async def test_coro():
-        ...     async for x in agen():
+        ...     async fuer x in agen():
         ...         print(x)
 
         >>> async def test_main():
@@ -2417,14 +2417,14 @@ if not SKIP_CORO_TESTS:
         -> async def test_coro():
         (Pdb) step
         > <doctest test.test_pdb.test_pdb_next_command_for_asyncgen[2]>(2)test_coro()
-        -> async for x in agen():
+        -> async fuer x in agen():
         (Pdb) next
         > <doctest test.test_pdb.test_pdb_next_command_for_asyncgen[2]>(3)test_coro()
         -> print(x)
         (Pdb) next
         1
         > <doctest test.test_pdb.test_pdb_next_command_for_asyncgen[2]>(2)test_coro()
-        -> async for x in agen():
+        -> async fuer x in agen():
         (Pdb) step
         --Call--
         > <doctest test.test_pdb.test_pdb_next_command_for_asyncgen[1]>(2)agen()
@@ -2438,8 +2438,8 @@ if not SKIP_CORO_TESTS:
         """
 
 def test_pdb_return_command_for_generator():
-    """Testing no unwinding stack on yield for generators
-       for "return" command
+    """Testing no unwinding stack on yield fuer generators
+       fuer "return" command
 
     >>> def test_gen():
     ...     yield 0
@@ -2498,7 +2498,7 @@ def test_pdb_return_command_for_generator():
 
 if not SKIP_CORO_TESTS:
     def test_pdb_return_command_for_coroutine():
-        """Testing no unwinding stack on yield for coroutines for "return" command
+        """Testing no unwinding stack on yield fuer coroutines fuer "return" command
 
         >>> from test.support import run_yielding_async_fn, async_yield
 
@@ -2541,8 +2541,8 @@ if not SKIP_CORO_TESTS:
         """
 
 def test_pdb_until_command_for_generator():
-    """Testing no unwinding stack on yield for generators
-       for "until" command if target breakpoint is not reached
+    """Testing no unwinding stack on yield fuer generators
+       fuer "until" command if target breakpoint is not reached
 
     >>> def test_gen():
     ...     yield 0
@@ -2551,7 +2551,7 @@ def test_pdb_until_command_for_generator():
 
     >>> def test_function():
     ...     import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
-    ...     for i in test_gen():
+    ...     fuer i in test_gen():
     ...         print(i)
     ...     print("finished")
 
@@ -2566,7 +2566,7 @@ def test_pdb_until_command_for_generator():
     -> import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
     (Pdb) step
     > <doctest test.test_pdb.test_pdb_until_command_for_generator[1]>(3)test_function()
-    -> for i in test_gen():
+    -> fuer i in test_gen():
     (Pdb) step
     --Call--
     > <doctest test.test_pdb.test_pdb_until_command_for_generator[0]>(1)test_gen()
@@ -2590,8 +2590,8 @@ def test_pdb_until_command_for_generator():
 
 if not SKIP_CORO_TESTS:
     def test_pdb_until_command_for_coroutine():
-        """Testing no unwinding stack for coroutines
-        for "until" command if target breakpoint is not reached
+        """Testing no unwinding stack fuer coroutines
+        fuer "until" command if target breakpoint is not reached
 
         >>> from test.support import run_yielding_async_fn, async_yield
 
@@ -2638,7 +2638,7 @@ if not SKIP_CORO_TESTS:
         """
 
 def test_pdb_next_command_in_generator_for_loop():
-    """The next command on returning from a generator controlled by a for loop.
+    """The next command on returning from a generator controlled by a fuer loop.
 
     >>> def test_gen():
     ...     yield 0
@@ -2646,7 +2646,7 @@ def test_pdb_next_command_in_generator_for_loop():
 
     >>> def test_function():
     ...     import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
-    ...     for i in test_gen():
+    ...     fuer i in test_gen():
     ...         print('value', i)
     ...     x = 123
 
@@ -2671,7 +2671,7 @@ def test_pdb_next_command_in_generator_for_loop():
     (Pdb) next
     Internal StopIteration: 1
     > <doctest test.test_pdb.test_pdb_next_command_in_generator_for_loop[1]>(3)test_function()
-    -> for i in test_gen():
+    -> fuer i in test_gen():
     (Pdb) next
     > <doctest test.test_pdb.test_pdb_next_command_in_generator_for_loop[1]>(5)test_function()
     -> x = 123
@@ -2691,7 +2691,7 @@ def test_pdb_next_command_subiterator():
 
     >>> def test_function():
     ...     import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
-    ...     for i in test_gen():
+    ...     fuer i in test_gen():
     ...         print('value', i)
     ...     x = 123
 
@@ -2707,7 +2707,7 @@ def test_pdb_next_command_subiterator():
     -> import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
     (Pdb) step
     > <doctest test.test_pdb.test_pdb_next_command_subiterator[2]>(3)test_function()
-    -> for i in test_gen():
+    -> fuer i in test_gen():
     (Pdb) step
     --Call--
     > <doctest test.test_pdb.test_pdb_next_command_subiterator[1]>(1)test_gen()
@@ -2722,7 +2722,7 @@ def test_pdb_next_command_subiterator():
     (Pdb) next
     Internal StopIteration: 1
     > <doctest test.test_pdb.test_pdb_next_command_subiterator[2]>(3)test_function()
-    -> for i in test_gen():
+    -> fuer i in test_gen():
     (Pdb) next
     > <doctest test.test_pdb.test_pdb_next_command_subiterator[2]>(5)test_function()
     -> x = 123
@@ -2763,7 +2763,7 @@ def test_pdb_breakpoint_with_throw():
     """
 
 def test_pdb_multiline_statement():
-    """Test for multiline statement
+    """Test fuer multiline statement
 
     >>> def test_function():
     ...     import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
@@ -2797,7 +2797,7 @@ def test_pdb_multiline_statement():
     """
 
 def test_pdb_closure():
-    """Test for all expressions/statements that involve closure
+    """Test fuer all expressions/statements that involve closure
 
     >>> k = 0
     >>> g = 1
@@ -2814,9 +2814,9 @@ def test_pdb_closure():
     ...     'global g; (lambda: g)()',
     ...     '(lambda: x)()',
     ...     '(lambda: g)()',
-    ...     'lst = [n for n in range(10) if (n % x) == 0]',
+    ...     'lst = [n fuer n in range(10) if (n % x) == 0]',
     ...     'lst',
-    ...     'sum(n for n in lst if n > x)',
+    ...     'sum(n fuer n in lst if n > x)',
     ...     'x = 1; raise Exception()',
     ...     'x',
     ...     'def f():',
@@ -2842,10 +2842,10 @@ def test_pdb_closure():
     2
     (Pdb) (lambda: g)()
     3
-    (Pdb) lst = [n for n in range(10) if (n % x) == 0]
+    (Pdb) lst = [n fuer n in range(10) if (n % x) == 0]
     (Pdb) lst
     [0, 2, 4, 6, 8]
-    (Pdb) sum(n for n in lst if n > x)
+    (Pdb) sum(n fuer n in lst if n > x)
     18
     (Pdb) x = 1; raise Exception()
     *** Exception
@@ -2860,7 +2860,7 @@ def test_pdb_closure():
     """
 
 def test_pdb_show_attribute_and_item():
-    """Test for expressions with command prefix
+    """Test fuer expressions with command prefix
 
     >>> def test_function():
     ...     n = lambda x: x
@@ -2943,7 +2943,7 @@ def test_pdb_with_inline_breakpoint():
     """
 
 def test_pdb_issue_20766():
-    """Test for reference leaks when the SIGINT handler is set.
+    """Test fuer reference leaks when the SIGINT handler is set.
 
     >>> def test_function():
     ...     i = 1
@@ -3646,7 +3646,7 @@ def bœr():
         output = (stdout or '') + (stderr or '')
         self.assertNotIn('AttributeError', output,
                          'Calling help on a command with no docs should be handled gracefully')
-        self.assertIn("*** No help for 'testcmdwithnodocs'; __doc__ string missing", output,
+        self.assertIn("*** No help fuer 'testcmdwithnodocs'; __doc__ string missing", output,
                       'Calling help on a command with no docs should print an error')
 
     def test_issue13183(self):
@@ -3682,7 +3682,7 @@ def bœr():
         self.addCleanup(os_helper.unlink, 'bar.py')
         stdout, stderr = self.run_pdb_script(script, commands)
         self.assertTrue(
-            any('main.py(5)foo()->None' in l for l in stdout.splitlines()),
+            any('main.py(5)foo()->None' in l fuer l in stdout.splitlines()),
             'Fail to step into the caller after a return')
 
     def test_issue13120(self):
@@ -3782,13 +3782,13 @@ def bœr():
             quit
         """
         stdout, stderr = self.run_pdb_script(script, commands)
-        res = '\n'.join([x.strip() for x in stdout.splitlines()])
+        res = '\n'.join([x.strip() fuer x in stdout.splitlines()])
         self.assertRegex(res, "Restarting .* with arguments:\na b c")
         self.assertRegex(res, "Restarting .* with arguments:\nd e f")
 
     def test_issue58956(self):
         # Set a breakpoint in a function that already exists on the call stack
-        # should enable the trace function for the frame.
+        # should enable the trace function fuer the frame.
         script = """
             import bar
             def foo():
@@ -3875,7 +3875,7 @@ def bœr():
         """)
 
         pdbrc = textwrap.dedent("""
-            alias pi for k in %1.__dict__.keys(): print(f"%1.{k} = {%1.__dict__[k]}")
+            alias pi fuer k in %1.__dict__.keys(): print(f"%1.{k} = {%1.__dict__[k]}")
             until 6
             pi a
         """)
@@ -3956,7 +3956,7 @@ def bœr():
             quit
         """
         stdout, stderr = self.run_pdb_module(script, commands)
-        self.assertTrue(any("SUCCESS" in l for l in stdout.splitlines()), stdout)
+        self.assertTrue(any("SUCCESS" in l fuer l in stdout.splitlines()), stdout)
 
     def test_module_is_run_as_main(self):
         script = """
@@ -3968,7 +3968,7 @@ def bœr():
             quit
         """
         stdout, stderr = self.run_pdb_module(script, commands)
-        self.assertTrue(any("SUCCESS" in l for l in stdout.splitlines()), stdout)
+        self.assertTrue(any("SUCCESS" in l fuer l in stdout.splitlines()), stdout)
 
     def test_run_module_with_args(self):
         commands = """
@@ -4007,8 +4007,8 @@ def bœr():
             quit
         """
         stdout, stderr = self.run_pdb_module(script, commands)
-        self.assertTrue(any("Breakpoint 1 at" in l for l in stdout.splitlines()), stdout)
-        self.assertTrue(all("SUCCESS" not in l for l in stdout.splitlines()), stdout)
+        self.assertTrue(any("Breakpoint 1 at" in l fuer l in stdout.splitlines()), stdout)
+        self.assertTrue(all("SUCCESS" not in l fuer l in stdout.splitlines()), stdout)
 
     def test_run_pdb_with_pdb(self):
         commands = """
@@ -4018,7 +4018,7 @@ def bœr():
         stdout, stderr = self._run_pdb(["-m", "pdb"], commands)
         self.assertIn(
             pdb._usage,
-            stdout.replace('\r', '')  # remove \r for windows
+            stdout.replace('\r', '')  # remove \r fuer windows
         )
 
     def test_module_without_a_main(self):
@@ -4077,14 +4077,14 @@ def bœr():
         """
         stdout, stderr = self.run_pdb_module(script, commands)
         self.assertTrue(any("__main__.py(4)<module>()"
-                            in l for l in stdout.splitlines()), stdout)
+                            in l fuer l in stdout.splitlines()), stdout)
 
     def test_file_modified_after_execution(self):
         script = """
             print("hello")
         """
 
-        # the time.sleep is needed for low-resolution filesystems like HFS+
+        # the time.sleep is needed fuer low-resolution filesystems like HFS+
         commands = """
             filename = $_frame.f_code.co_filename
             f = open(filename, "w")
@@ -4103,7 +4103,7 @@ def bœr():
             print("hello")
         """
 
-        # the time.sleep is needed for low-resolution filesystems like HFS+
+        # the time.sleep is needed fuer low-resolution filesystems like HFS+
         commands = """
             filename = $_frame.f_code.co_filename
             f = open(filename, "w")
@@ -4118,7 +4118,7 @@ def bœr():
         self.assertNotIn("was edited", stdout)
 
     def test_file_modified_after_execution_with_multiple_instances(self):
-        # the time.sleep is needed for low-resolution filesystems like HFS+
+        # the time.sleep is needed fuer low-resolution filesystems like HFS+
         script = """
             import pdb; pdb.Pdb().set_trace()
             with open(__file__, "w") as f:
@@ -4156,7 +4156,7 @@ def bœr():
         script = """
             import random
             # Any code with a source to step into so this script is not checked
-            # for changes when it's being changed
+            # fuer changes when it's being changed
             random.randint(1, 4)
             print("hello")
         """
@@ -4233,9 +4233,9 @@ def bœr():
             quit
         """
         stdout, _ = self._run_pdb(['-m', self.module_name], commands)
-        self.assertTrue(any("VAR from module" in l for l in stdout.splitlines()), stdout)
-        self.assertTrue(any("VAR from top" in l for l in stdout.splitlines()))
-        self.assertTrue(any("second var" in l for l in stdout.splitlines()))
+        self.assertTrue(any("VAR from module" in l fuer l in stdout.splitlines()), stdout)
+        self.assertTrue(any("VAR from top" in l fuer l in stdout.splitlines()))
+        self.assertTrue(any("second var" in l fuer l in stdout.splitlines()))
 
     def test_relative_imports_on_plain_module(self):
         # Validates running a plain module. See bpo32691
@@ -4266,7 +4266,7 @@ def bœr():
             quit
         """
         stdout, _ = self._run_pdb(['-m', self.module_name + '.runme'], commands)
-        self.assertTrue(any("VAR from module" in l for l in stdout.splitlines()), stdout)
+        self.assertTrue(any("VAR from module" in l fuer l in stdout.splitlines()), stdout)
 
     def test_errors_in_command(self):
         commands = "\n".join([
@@ -4411,7 +4411,7 @@ def bœr():
     def test_gh_93696_frozen_list(self):
         frozen_src = """
         def func():
-            x = "Sentinel string for gh-93696"
+            x = "Sentinel string fuer gh-93696"
             print(x)
         """
         host_program = """
@@ -4461,10 +4461,10 @@ def bœr():
         self.addCleanup(os_helper.unlink, 'gh93696_host.py')
 
         # verify that pdb found the source of the "frozen" function and it
-        # shows the breakpoint at the correct line for both list and longlist
-        for commands in (commands_list, commands_longlist):
+        # shows the breakpoint at the correct line fuer both list and longlist
+        fuer commands in (commands_list, commands_longlist):
             stdout, _ = self._run_pdb(["gh93696_host.py"], commands)
-            self.assertIn('x = "Sentinel string for gh-93696"', stdout, "Sentinel statement not found")
+            self.assertIn('x = "Sentinel string fuer gh-93696"', stdout, "Sentinel statement not found")
             self.assertIn('4 B', stdout, "breakpoint not found")
             self.assertIn('-> def func():', stdout, "stack entry not found")
 
@@ -4480,7 +4480,7 @@ def bœr():
 
     def test_non_utf8_encoding(self):
         script_dir = os.path.join(os.path.dirname(__file__), 'encoded_modules')
-        for filename in os.listdir(script_dir):
+        fuer filename in os.listdir(script_dir):
             if filename.endswith(".py"):
                 self._run_pdb([os.path.join(script_dir, filename)], 'q')
 
@@ -4561,7 +4561,7 @@ klasse ChecklineTests(unittest.TestCase):
         self.assertEqual(db.checkline(os_helper.TESTFN, 1), 1)
 
     def test_checkline_is_not_executable(self):
-        # Test for comments, docstrings and empty lines
+        # Test fuer comments, docstrings and empty lines
         s = textwrap.dedent("""
             # Comment
             \"\"\" docstring \"\"\"
@@ -4570,10 +4570,10 @@ klasse ChecklineTests(unittest.TestCase):
         """)
         with open(os_helper.TESTFN, "w") as f:
             f.write(s)
-        num_lines = len(s.splitlines()) + 2  # Test for EOF
+        num_lines = len(s.splitlines()) + 2  # Test fuer EOF
         with redirect_stdout(StringIO()):
             db = pdb.Pdb()
-            for lineno in range(num_lines):
+            fuer lineno in range(num_lines):
                 self.assertFalse(db.checkline(os_helper.TESTFN, lineno))
 
 
@@ -4756,7 +4756,7 @@ klasse PdbTestReadline(unittest.TestCase):
         # If this fails, the test is skipped because SkipTest will be raised
         readline = import_module('readline')
         if readline.backend == "editline":
-            raise unittest.SkipTest("libedit readline is not supported for pdb")
+            raise unittest.SkipTest("libedit readline is not supported fuer pdb")
 
     def test_basic_completion(self):
         script = textwrap.dedent("""

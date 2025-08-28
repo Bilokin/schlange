@@ -76,7 +76,7 @@ klasse AllTest(unittest.TestCase):
                 self.assertTrue(dir(sys.modules[modname]))
 
     def walk_modules(self, basedir, modpath):
-        for fn in sorted(os.listdir(basedir)):
+        fuer fn in sorted(os.listdir(basedir)):
             path = os.path.join(basedir, fn)
             if os.path.isdir(path):
                 if fn in SKIP_MODULES:
@@ -84,7 +84,7 @@ klasse AllTest(unittest.TestCase):
                 pkg_init = os.path.join(path, '__init__.py')
                 if os.path.exists(pkg_init):
                     yield pkg_init, modpath + fn
-                    for p, m in self.walk_modules(path, modpath + fn + "."):
+                    fuer p, m in self.walk_modules(path, modpath + fn + "."):
                         yield p, m
                 continue
 
@@ -112,7 +112,7 @@ klasse AllTest(unittest.TestCase):
         ignored = []
         failed_imports = []
         lib_dir = os.path.dirname(os.path.dirname(__file__))
-        for path, modname in self.walk_modules(lib_dir, ""):
+        fuer path, modname in self.walk_modules(lib_dir, ""):
             m = modname
             denied = False
             while m:

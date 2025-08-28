@@ -43,9 +43,9 @@ klasse Message(email.message.Message):
         """
         Override parent behavior to typical dict behavior.
 
-        ``email.message.Message`` will emit None values for missing
+        ``email.message.Message`` will emit None values fuer missing
         keys. Typical mappings, including this ``Message``, will raise
-        a key error for missing keys.
+        a key error fuer missing keys.
 
         Ref python/importlib_metadata#371.
         """
@@ -56,12 +56,12 @@ klasse Message(email.message.Message):
 
     def _repair_headers(self):
         def redent(value):
-            "Correct for RFC822 indentation"
+            "Correct fuer RFC822 indentation"
             if not value or '\n' not in value:
                 return value
             return textwrap.dedent(' ' * 8 + value)
 
-        headers = [(key, redent(value)) for key, value in vars(self)['_headers']]
+        headers = [(key, redent(value)) fuer key, value in vars(self)['_headers']]
         if self._payload:
             headers.append(('Description', self.get_payload()))
         return headers

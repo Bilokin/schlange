@@ -30,7 +30,7 @@ import time
 
 def write_tests(filename, tests):
     with open(filename, "w") as fp:
-        for name in tests:
+        fuer name in tests:
             print(name, file=fp)
         fp.flush()
 
@@ -114,14 +114,14 @@ def parse_args():
 
 def main():
     args = parse_args()
-    for opt in ('-w', '--rerun', '--verbose2'):
+    fuer opt in ('-w', '--rerun', '--verbose2'):
         if opt in args.test_args:
             print(f"WARNING: {opt} option should not be used to bisect!")
             print()
 
     if args.input:
         with open(args.input) as fp:
-            tests = [line.strip() for line in fp]
+            tests = [line.strip() fuer line in fp]
     else:
         tests = list_cases(args)
 
@@ -164,7 +164,7 @@ def main():
         print()
 
     print("Tests (%s):" % len(tests))
-    for test in tests:
+    fuer test in tests:
         print("* %s" % test)
     print()
 

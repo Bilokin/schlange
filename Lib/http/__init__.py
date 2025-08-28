@@ -12,7 +12,7 @@ klasse HTTPStatus:
         * RFC 9110: HTTP Semantics, obsoletes 7231, which obsoleted 2616
         * RFC 6585: Additional HTTP Status Codes
         * RFC 3229: Delta encoding in HTTP
-        * RFC 4918: HTTP Extensions for WebDAV, obsoletes 2518
+        * RFC 4918: HTTP Extensions fuer WebDAV, obsoletes 2518
         * RFC 5842: Binding Extensions to WebDAV
         * RFC 7238: Permanent Redirect
         * RFC 2295: Transparent Content Negotiation in HTTP
@@ -20,7 +20,7 @@ klasse HTTPStatus:
         * RFC 7725: An HTTP Status Code to Report Legal Obstacles
         * RFC 7540: Hypertext Transfer Protocol Version 2 (HTTP/2)
         * RFC 2324: Hyper Text Coffee Pot Control Protocol (HTCPCP/1.0)
-        * RFC 8297: An HTTP Status Code for Indicating Hints
+        * RFC 8297: An HTTP Status Code fuer Indicating Hints
         * RFC 8470: Using Early Data in HTTP
     """
     def __new__(cls, value, phrase, description=''):
@@ -56,7 +56,7 @@ klasse HTTPStatus:
             'Switching to new protocol; obey Upgrade header')
     PROCESSING = 102, 'Processing', 'Server is processing the request'
     EARLY_HINTS = (103, 'Early Hints',
-            'Headers sent to prepare for the response')
+            'Headers sent to prepare fuer the response')
 
     # success
     OK = 200, 'OK', 'Request fulfilled, document follows'
@@ -66,7 +66,7 @@ klasse HTTPStatus:
     NON_AUTHORITATIVE_INFORMATION = (203,
         'Non-Authoritative Information', 'Request fulfilled from cache')
     NO_CONTENT = 204, 'No Content', 'Request fulfilled, nothing follows'
-    RESET_CONTENT = 205, 'Reset Content', 'Clear input form for further input'
+    RESET_CONTENT = 205, 'Reset Content', 'Clear input form fuer further input'
     PARTIAL_CONTENT = 206, 'Partial Content', 'Partial content follows'
     MULTI_STATUS = (207, 'Multi-Status',
         'Response contains multiple statuses in the body')
@@ -102,7 +102,7 @@ klasse HTTPStatus:
     NOT_FOUND = (404, 'Not Found',
         'Nothing matches the given URI')
     METHOD_NOT_ALLOWED = (405, 'Method Not Allowed',
-        'Specified method is invalid for this resource')
+        'Specified method is invalid fuer this resource')
     NOT_ACCEPTABLE = (406, 'Not Acceptable',
         'URI not available in preferred format')
     PROXY_AUTHENTICATION_REQUIRED = (407,
@@ -191,7 +191,7 @@ klasse HTTPMethod:
     Methods from the following RFCs are all observed:
 
         * RFC 9110: HTTP Semantics, obsoletes 7231, which obsoleted 2616
-        * RFC 5789: PATCH Method for HTTP
+        * RFC 5789: PATCH Method fuer HTTP
     """
     def __new__(cls, value, description):
         obj = str.__new__(cls, value)
@@ -206,7 +206,7 @@ klasse HTTPMethod:
     DELETE = 'DELETE', 'Remove the target.'
     GET = 'GET', 'Retrieve the target.'
     HEAD = 'HEAD', 'Same as GET, but only retrieve the status line and header section.'
-    OPTIONS = 'OPTIONS', 'Describe the communication options for the target.'
+    OPTIONS = 'OPTIONS', 'Describe the communication options fuer the target.'
     PATCH = 'PATCH', 'Apply partial modifications to a target.'
     POST = 'POST', 'Perform target-specific processing with the request payload.'
     PUT = 'PUT', 'Replace the target with the request payload.'

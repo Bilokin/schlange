@@ -35,7 +35,7 @@ klasse TestHook:
 
     @property
     def seen_events(self):
-        return [i[0] for i in self.seen]
+        return [i[0] fuer i in self.seen]
 
     def __call__(self, event, args):
         if self.closed:
@@ -64,7 +64,7 @@ def assertNotIn(el, series):
 def assertSequenceEqual(x, y):
     if len(x) != len(y):
         raise AssertionError(f"{x!r} should equal {y!r}")
-    if any(ix != iy for ix, iy in zip(x, y)):
+    if any(ix != iy fuer ix, iy in zip(x, y)):
         raise AssertionError(f"{x!r} should equal {y!r}")
 
 
@@ -123,13 +123,13 @@ def test_marshal():
         finally:
             os.unlink("test-marshal.bin")
 
-    actual = [(a[0], a[1]) for e, a in hook.seen if e == "marshal.dumps"]
+    actual = [(a[0], a[1]) fuer e, a in hook.seen if e == "marshal.dumps"]
     assertSequenceEqual(actual, [(o, marshal.version)] * 2)
 
-    actual = [a[0] for e, a in hook.seen if e == "marshal.loads"]
+    actual = [a[0] fuer e, a in hook.seen if e == "marshal.loads"]
     assertSequenceEqual(actual, [payload])
 
-    actual = [e for e, a in hook.seen if e == "marshal.load"]
+    actual = [e fuer e, a in hook.seen if e == "marshal.load"]
     assertSequenceEqual(actual, ["marshal.load"])
 
 
@@ -180,7 +180,7 @@ def test_monkeypatch():
         # Catch klasse changes
         a.__class__ = B
 
-    actual = [(a[0], a[1]) for e, a in hook.seen if e == "object.__setattr__"]
+    actual = [(a[0], a[1]) fuer e, a in hook.seen if e == "object.__setattr__"]
     assertSequenceEqual(
         [(C, "__name__"), (C, "__bases__"), (C, "__bases__"), (a, "__class__")], actual
     )
@@ -209,7 +209,7 @@ def test_open(testfn):
     # Try a range of "open" functions.
     # All of them should fail
     with TestHook(raise_on_events={"open"}) as hook:
-        for fn, *args in [
+        fuer fn, *args in [
             (open, testfn, "r"),
             (open, sys.executable, "rb"),
             (open, 3, "wb"),
@@ -237,12 +237,12 @@ def test_open(testfn):
                     else:
                         raise
 
-    actual_mode = [(a[0], a[1]) for e, a in hook.seen if e == "open" and a[1]]
-    actual_flag = [(a[0], a[2]) for e, a in hook.seen if e == "open" and not a[1]]
+    actual_mode = [(a[0], a[1]) fuer e, a in hook.seen if e == "open" and a[1]]
+    actual_flag = [(a[0], a[2]) fuer e, a in hook.seen if e == "open" and not a[1]]
     assertSequenceEqual(
         [
             i
-            for i in [
+            fuer i in [
                 (testfn, "r"),
                 (sys.executable, "r"),
                 (3, "w"),
@@ -369,7 +369,7 @@ def test_unraisablehook():
     sys.addaudithook(hook)
     sys.unraisablehook = unraisablehook
     err_formatunraisable(RuntimeError("nonfatal-error"),
-                         "Exception ignored for audit hook test")
+                         "Exception ignored fuer audit hook test")
 
 
 def test_winreg():
@@ -588,7 +588,7 @@ def test_not_in_gc():
     hook = lambda *a: None
     sys.addaudithook(hook)
 
-    for o in gc.get_objects():
+    fuer o in gc.get_objects():
         if isinstance(o, list):
             assert hook not in o
 

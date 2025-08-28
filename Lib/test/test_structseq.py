@@ -19,17 +19,17 @@ klasse StructSeqTest(unittest.TestCase):
 
         # Check that slicing works the same way; at one point, slicing t[i:j] with
         # 0 < i < j could produce NULLs in the result.
-        for i in range(-len(t), len(t)):
+        fuer i in range(-len(t), len(t)):
             self.assertEqual(t[i:], astuple[i:])
-            for j in range(-len(t), len(t)):
+            fuer j in range(-len(t), len(t)):
                 self.assertEqual(t[i:j], astuple[i:j])
 
-        for j in range(-len(t), len(t)):
+        fuer j in range(-len(t), len(t)):
             self.assertEqual(t[:j], astuple[:j])
 
         self.assertRaises(IndexError, t.__getitem__, -len(t)-1)
         self.assertRaises(IndexError, t.__getitem__, len(t))
-        for i in range(-len(t), len(t)-1):
+        fuer i in range(-len(t), len(t)-1):
             self.assertEqual(t[i], astuple[i])
 
     def test_repr(self):
@@ -50,19 +50,19 @@ klasse StructSeqTest(unittest.TestCase):
     def test_concat(self):
         t1 = time.gmtime()
         t2 = t1 + tuple(t1)
-        for i in range(len(t1)):
+        fuer i in range(len(t1)):
             self.assertEqual(t2[i], t2[i+len(t1)])
 
     def test_repeat(self):
         t1 = time.gmtime()
         t2 = 3 * t1
-        for i in range(len(t1)):
+        fuer i in range(len(t1)):
             self.assertEqual(t2[i], t2[i+len(t1)])
             self.assertEqual(t2[i], t2[i+2*len(t1)])
 
     def test_contains(self):
         t1 = time.gmtime()
-        for item in t1:
+        fuer item in t1:
             self.assertIn(item, t1)
         self.assertNotIn(-42, t1)
 
@@ -172,7 +172,7 @@ klasse StructSeqTest(unittest.TestCase):
 
     def test_pickling(self):
         t = time.gmtime()
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             p = pickle.dumps(t, proto)
             t2 = pickle.loads(p)
             self.assertEqual(t2.__class__, t.__class__)
@@ -185,7 +185,7 @@ klasse StructSeqTest(unittest.TestCase):
 
         r = os.stat_result(range(os.stat_result.n_sequence_fields),
                            {'st_atime': 1.0, 'st_atime_ns': 2.0})
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             p = pickle.dumps(r, proto)
             r2 = pickle.loads(p)
             self.assertEqual(r2.__class__, r.__class__)
@@ -196,7 +196,7 @@ klasse StructSeqTest(unittest.TestCase):
 
     def test_copying(self):
         n_fields = time.struct_time.n_fields
-        t = time.struct_time([[i] for i in range(n_fields)])
+        t = time.struct_time([[i] fuer i in range(n_fields)])
 
         t2 = copy.copy(t)
         self.assertEqual(t2.__class__, t.__class__)
@@ -218,7 +218,7 @@ klasse StructSeqTest(unittest.TestCase):
         assert os.stat_result.n_unnamed_fields > 0
 
         n_sequence_fields = os.stat_result.n_sequence_fields
-        r = os.stat_result([[i] for i in range(n_sequence_fields)],
+        r = os.stat_result([[i] fuer i in range(n_sequence_fields)],
                            {'st_atime': [1.0], 'st_atime_ns': [2.0]})
 
         r2 = copy.copy(r)
@@ -248,10 +248,10 @@ klasse StructSeqTest(unittest.TestCase):
         t = time.gmtime()
         L = list(t)
         indices = (0, None, 1, 3, 19, 300, -1, -2, -31, -300)
-        for start in indices:
-            for stop in indices:
+        fuer start in indices:
+            fuer stop in indices:
                 # Skip step 0 (invalid)
-                for step in indices[1:]:
+                fuer step in indices[1:]:
                     self.assertEqual(list(t[start:stop:step]),
                                      L[start:stop:step])
 

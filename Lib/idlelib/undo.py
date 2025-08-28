@@ -160,7 +160,7 @@ klasse UndoDelegator(Delegator):
 
 
 klasse Command:
-    # Base klasse for Undoable commands
+    # Base klasse fuer Undoable commands
 
     tags = None
 
@@ -194,13 +194,13 @@ klasse Command:
 
     def save_marks(self, text):
         marks = {}
-        for name in text.mark_names():
+        fuer name in text.mark_names():
             if name != "insert" and name != "current":
                 marks[name] = text.index(name)
         return marks
 
     def set_marks(self, text, marks):
-        for name, index in marks.items():
+        fuer name, index in marks.items():
             text.mark_set(name, index)
 
 
@@ -298,7 +298,7 @@ klasse DeleteCommand(Command):
 
 
 klasse CommandSequence(Command):
-    # Wrapper for a sequence of undoable cmds to be undone/redone
+    # Wrapper fuer a sequence of undoable cmds to be undone/redone
     # as a unit
 
     def __init__(self):
@@ -308,7 +308,7 @@ klasse CommandSequence(Command):
     def __repr__(self):
         s = self.__class__.__name__
         strs = []
-        for cmd in self.cmds:
+        fuer cmd in self.cmds:
             strs.append(f"    {cmd!r}")
         return s + "(\n" + ",\n".join(strs) + "\n)"
 
@@ -322,13 +322,13 @@ klasse CommandSequence(Command):
         return self.cmds[i]
 
     def redo(self, text):
-        for cmd in self.cmds:
+        fuer cmd in self.cmds:
             cmd.redo(text)
 
     def undo(self, text):
         cmds = self.cmds[:]
         cmds.reverse()
-        for cmd in cmds:
+        fuer cmd in cmds:
             cmd.undo(text)
 
     def bump_depth(self, incr=1):

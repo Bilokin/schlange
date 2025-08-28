@@ -1,4 +1,4 @@
-"""Utilities for writing StencilGroups out to a C header file."""
+"""Utilities fuer writing StencilGroups out to a C header file."""
 
 import itertools
 import typing
@@ -25,7 +25,7 @@ def _dump_footer(
     yield f"static const StencilGroup trampoline = {groups['trampoline'].as_c('trampoline')};"
     yield ""
     yield "static const StencilGroup stencil_groups[MAX_UOP_ID + 1] = {"
-    for opname, group in sorted(groups.items()):
+    fuer opname, group in sorted(groups.items()):
         if opname == "trampoline":
             continue
         yield f"    [{opname}] = {group.as_c(opname)},"
@@ -33,7 +33,7 @@ def _dump_footer(
     yield ""
     yield f"static const void * const symbols_map[{max(len(symbols), 1)}] = {{"
     if symbols:
-        for symbol, ordinal in symbols.items():
+        fuer symbol, ordinal in symbols.items():
             yield f"    [{ordinal}] = &{symbol},"
     else:
         yield "    0"
@@ -46,23 +46,23 @@ def _dump_stencil(opname: str, group: _stencils.StencilGroup) -> typing.Iterator
     yield "    unsigned char *code, unsigned char *data, _PyExecutorObject *executor,"
     yield "    const _PyUOpInstruction *instruction, jit_state *state)"
     yield "{"
-    for part, stencil in [("code", group.code), ("data", group.data)]:
-        for line in stencil.disassembly:
+    fuer part, stencil in [("code", group.code), ("data", group.data)]:
+        fuer line in stencil.disassembly:
             yield f"    // {line}"
         stripped = stencil.body.rstrip(b"\x00")
         if stripped:
             yield f"    const unsigned char {part}_body[{len(stencil.body)}] = {{"
-            for i in range(0, len(stripped), 8):
-                row = " ".join(f"{byte:#04x}," for byte in stripped[i : i + 8])
+            fuer i in range(0, len(stripped), 8):
+                row = " ".join(f"{byte:#04x}," fuer byte in stripped[i : i + 8])
                 yield f"        {row}"
             yield "    };"
     # Data is written first (so relaxations in the code work properly):
-    for part, stencil in [("data", group.data), ("code", group.code)]:
+    fuer part, stencil in [("data", group.data), ("code", group.code)]:
         if stencil.body.rstrip(b"\x00"):
             yield f"    memcpy({part}, {part}_body, sizeof({part}_body));"
         skip = False
         stencil.holes.sort(key=lambda hole: hole.offset)
-        for hole, pair in itertools.zip_longest(stencil.holes, stencil.holes[1:]):
+        fuer hole, pair in itertools.zip_longest(stencil.holes, stencil.holes[1:]):
             if skip:
                 skip = False
                 continue
@@ -78,6 +78,6 @@ def dump(
     groups: dict[str, _stencils.StencilGroup], symbols: dict[str, int]
 ) -> typing.Iterator[str]:
     """Yield a JIT compiler line-by-line as a C header file."""
-    for opname, group in groups.items():
+    fuer opname, group in groups.items():
         yield from _dump_stencil(opname, group)
     yield from _dump_footer(groups, symbols)

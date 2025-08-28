@@ -1,4 +1,4 @@
-"""Tests for the sampling profiler (profiling.sampling)."""
+"""Tests fuer the sampling profiler (profiling.sampling)."""
 
 import contextlib
 import io
@@ -38,7 +38,7 @@ else:
 
 
 klasse MockFrameInfo:
-    """Mock FrameInfo for testing since the real one isn't accessible."""
+    """Mock FrameInfo fuer testing since the real one isn't accessible."""
 
     def __init__(self, filename, lineno, funcname):
         self.filename = filename
@@ -61,7 +61,7 @@ skip_if_not_supported = unittest.skipIf(
 
 @contextlib.contextmanager
 def test_subprocess(script):
-    # Find an unused port for socket communication
+    # Find an unused port fuer socket communication
     port = find_unused_port()
 
     # Inject socket connection code at the beginning of the script
@@ -75,7 +75,7 @@ _test_sock.sendall(b"ready")
     # Combine socket code with user script
     full_script = socket_code + script
 
-    # Create server socket to wait for process to be ready
+    # Create server socket to wait fuer process to be ready
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     server_socket.bind(("localhost", port))
@@ -90,7 +90,7 @@ _test_sock.sendall(b"ready")
 
     client_socket = None
     try:
-        # Wait for process to connect and send ready signal
+        # Wait fuer process to connect and send ready signal
         client_socket, _ = server_socket.accept()
         server_socket.close()
         response = client_socket.recv(1024)
@@ -112,7 +112,7 @@ def close_and_unlink(file):
 
 
 klasse TestSampleProfilerComponents(unittest.TestCase):
-    """Unit tests for individual profiler components."""
+    """Unit tests fuer individual profiler components."""
 
     def test_mock_frame_info_with_empty_and_unicode_values(self):
         """Test MockFrameInfo handles empty strings, unicode characters, and very long names correctly."""
@@ -250,7 +250,7 @@ klasse TestSampleProfilerComponents(unittest.TestCase):
         self.assertEqual(collector.call_trees[0], [("file.py", 10, "func")])
 
         # Test with very deep stack
-        deep_stack = [(f"file{i}.py", i, f"func{i}") for i in range(100)]
+        deep_stack = [(f"file{i}.py", i, f"func{i}") fuer i in range(100)]
         test_frames = [(1, deep_stack)]
         collector = CollapsedStackCollector()
         collector.collect(test_frames)
@@ -281,7 +281,7 @@ klasse TestSampleProfilerComponents(unittest.TestCase):
         ]
         collector.collect(test_frames)
 
-        # Should have recorded calls for both functions
+        # Should have recorded calls fuer both functions
         self.assertEqual(len(collector.result), 2)
         self.assertIn(("file.py", 10, "func1"), collector.result)
         self.assertIn(("file.py", 20, "func2"), collector.result)
@@ -446,7 +446,7 @@ klasse TestSampleProfilerComponents(unittest.TestCase):
 
         # Should have function data
         function_entries = [
-            k for k in stats_data.keys() if k != ("__sampled__",)
+            k fuer k in stats_data.keys() if k != ("__sampled__",)
         ]
         self.assertGreater(len(function_entries), 0)
 
@@ -528,7 +528,7 @@ klasse TestSampleProfiler(unittest.TestCase):
             # Mock time to control the sampling loop
             start_time = 1000.0
             times = [
-                start_time + i * 0.1 for i in range(12)
+                start_time + i * 0.1 fuer i in range(12)
             ]  # 0, 0.1, 0.2, ..., 1.1 seconds
 
             with mock.patch("time.perf_counter", side_effect=times):
@@ -606,7 +606,7 @@ klasse TestSampleProfiler(unittest.TestCase):
             self.assertIn("Error rate:", result)
             self.assertIn("%", result)
 
-            # Collector should have been called only for successful samples (should be > 0)
+            # Collector should have been called only fuer successful samples (should be > 0)
             self.assertGreater(mock_collector.collect.call_count, 0)
             self.assertLessEqual(mock_collector.collect.call_count, 3)
 
@@ -733,7 +733,7 @@ klasse TestPrintSampledStats(unittest.TestCase):
             lines = result.strip().split("\n")
 
         # Find the data lines (skip header)
-        data_lines = [l for l in lines if "file" in l and ".py" in l]
+        data_lines = [l fuer l in lines if "file" in l and ".py" in l]
         # func3 should be first (200 calls)
         self.assertIn("func3", data_lines[0])
 
@@ -747,7 +747,7 @@ klasse TestPrintSampledStats(unittest.TestCase):
             result = output.getvalue()
             lines = result.strip().split("\n")
 
-        data_lines = [l for l in lines if "file" in l and ".py" in l]
+        data_lines = [l fuer l in lines if "file" in l and ".py" in l]
         # func3 should be first (1.5s time)
         self.assertIn("func3", data_lines[0])
 
@@ -767,7 +767,7 @@ klasse TestPrintSampledStats(unittest.TestCase):
         lines = result.split("\n")
         # Find where the main stats section ends (before summary)
         main_section_lines = []
-        for line in lines:
+        fuer line in lines:
             if "Summary of Interesting Functions:" in line:
                 break
             main_section_lines.append(line)
@@ -775,7 +775,7 @@ klasse TestPrintSampledStats(unittest.TestCase):
         # Count function entries only in main section
         func_count = sum(
             1
-            for line in main_section_lines
+            fuer line in main_section_lines
             if "func" in line and ".py" in line
         )
         self.assertEqual(func_count, 2)
@@ -790,7 +790,7 @@ klasse TestPrintSampledStats(unittest.TestCase):
 
             result = output.getvalue()
 
-        # Should use seconds for the header since max time is > 1s
+        # Should use seconds fuer the header since max time is > 1s
         self.assertIn("tottime (s)", result)
         self.assertIn("cumtime (s)", result)
 
@@ -894,7 +894,7 @@ klasse TestPrintSampledStats(unittest.TestCase):
             result = output.getvalue()
             lines = result.strip().split("\n")
 
-        data_lines = [l for l in lines if ".py" in l and "func" in l]
+        data_lines = [l fuer l in lines if ".py" in l and "func" in l]
         # expensive_func should be first (highest sample percentage)
         self.assertIn("expensive_func", data_lines[0])
 
@@ -915,7 +915,7 @@ klasse TestPrintSampledStats(unittest.TestCase):
             ),
             ("normal.py", 20, "normal_func"): (
                 3,  # direct_calls
-                3,  # cumulative_calls (same as direct for non-recursive)
+                3,  # cumulative_calls (same as direct fuer non-recursive)
                 0.2,
                 0.2,
                 {},
@@ -929,8 +929,8 @@ klasse TestPrintSampledStats(unittest.TestCase):
             result = output.getvalue()
 
         # Should display recursive calls as "5/10" format
-        self.assertIn("5/10", result)  # nc/cc format for recursive calls
-        self.assertIn("3", result)  # just nc for non-recursive calls
+        self.assertIn("5/10", result)  # nc/cc format fuer recursive calls
+        self.assertIn("3", result)  # just nc fuer non-recursive calls
         self.assertIn("factorial", result)
         self.assertIn("normal_func", result)
 
@@ -978,7 +978,7 @@ klasse TestPrintSampledStats(unittest.TestCase):
         # Find the data lines (skip header and summary)
         # Data lines start with whitespace and numbers, and contain filename:lineno(function)
         data_lines = []
-        for line in lines:
+        fuer line in lines:
             # Skip header lines and summary sections
             if (
                 line.startswith("     ")
@@ -997,12 +997,12 @@ klasse TestPrintSampledStats(unittest.TestCase):
             ):  # Skip summary lines
                 data_lines.append(line)
 
-        # Extract just the function names for comparison
+        # Extract just the function names fuer comparison
         func_names = []
         import re
 
-        for line in data_lines:
-            # Function name is between the last ( and ), accounting for ANSI color codes
+        fuer line in data_lines:
+            # Function name is between the last ( and ), accounting fuer ANSI color codes
             match = re.search(r"\(([^)]+)\)$", line)
             if match:
                 func_name = match.group(1)
@@ -1169,7 +1169,7 @@ klasse TestRecursiveFunctionProfiling(unittest.TestCase):
             ),
         ]
 
-        for frames in recursive_frames:
+        fuer frames in recursive_frames:
             collector.collect([frames])
 
         collector.create_stats()
@@ -1226,13 +1226,13 @@ klasse TestRecursiveFunctionProfiling(unittest.TestCase):
             ),
         ]
 
-        for frames in deep_call_frames:
+        fuer frames in deep_call_frames:
             collector.collect([frames])
 
         collector.create_stats()
 
         # All levels should be recorded
-        for level in range(1, 6):
+        fuer level in range(1, 6):
             key = (f"level{level}.py", level * 10, f"level{level}_func")
             self.assertIn(key, collector.stats)
 
@@ -1297,7 +1297,7 @@ klasse TestRecursiveFunctionProfiling(unittest.TestCase):
             ),
         ]
 
-        for frames in pattern_frames:
+        fuer frames in pattern_frames:
             collector.collect([frames])
 
         collector.create_stats()
@@ -1347,7 +1347,7 @@ klasse TestRecursiveFunctionProfiling(unittest.TestCase):
             ),
         ]
 
-        for frames in recursive_frames:
+        fuer frames in recursive_frames:
             collector.collect([frames])
 
         # Should capture both call trees
@@ -1361,8 +1361,8 @@ klasse TestRecursiveFunctionProfiling(unittest.TestCase):
         self.assertNotEqual(len(tree1), len(tree2))
 
         # Both should contain factorial calls
-        self.assertTrue(any("factorial" in str(frame) for frame in tree1))
-        self.assertTrue(any("factorial" in str(frame) for frame in tree2))
+        self.assertTrue(any("factorial" in str(frame) fuer frame in tree1))
+        self.assertTrue(any("factorial" in str(frame) fuer frame in tree2))
 
         # Function samples should count all occurrences
         factorial_key = ("factorial.py", 10, "factorial")
@@ -1392,7 +1392,7 @@ def slow_fibonacci(n):
 def cpu_intensive_work():
     """CPU intensive work that should show in profiler."""
     result = 0
-    for i in range(10000):
+    fuer i in range(10000):
         result += i * i
         if i % 100 == 0:
             result = result % 1000000
@@ -1401,14 +1401,14 @@ def cpu_intensive_work():
 def medium_computation():
     """Medium complexity function."""
     result = 0
-    for i in range(100):
+    fuer i in range(100):
         result += i * i
     return result
 
 def fast_loop():
     """Fast simple loop."""
     total = 0
-    for i in range(50):
+    fuer i in range(50):
         total += i
     return total
 
@@ -1458,7 +1458,7 @@ if __name__ == "__main__":
                     show_summary=False,
                 )
             except PermissionError:
-                self.skipTest("Insufficient permissions for remote profiling")
+                self.skipTest("Insufficient permissions fuer remote profiling")
 
             output = captured_output.getvalue()
 
@@ -1491,7 +1491,7 @@ if __name__ == "__main__":
                     )
                 except PermissionError:
                     self.skipTest(
-                        "Insufficient permissions for remote profiling"
+                        "Insufficient permissions fuer remote profiling"
                     )
 
             # Verify file was created and contains valid data
@@ -1509,7 +1509,7 @@ if __name__ == "__main__":
 
             # Should have some function data
             function_entries = [
-                k for k in stats_data.keys() if k != ("__sampled__",)
+                k fuer k in stats_data.keys() if k != ("__sampled__",)
             ]
             self.assertGreater(len(function_entries), 0)
 
@@ -1537,7 +1537,7 @@ if __name__ == "__main__":
                     )
                 except PermissionError:
                     self.skipTest(
-                        "Insufficient permissions for remote profiling"
+                        "Insufficient permissions fuer remote profiling"
                     )
 
             # Verify file was created and contains valid data
@@ -1552,7 +1552,7 @@ if __name__ == "__main__":
             self.assertGreater(len(lines), 0)
 
             # Each line should have format: stack_trace count
-            for line in lines:
+            fuer line in lines:
                 parts = line.rsplit(" ", 1)
                 self.assertEqual(len(parts), 2)
 
@@ -1564,7 +1564,7 @@ if __name__ == "__main__":
                 # Stack trace should contain semicolon-separated entries
                 if ";" in stack_trace:
                     stack_parts = stack_trace.split(";")
-                    for part in stack_parts:
+                    fuer part in stack_parts:
                         # Each part should be file:function:line
                         self.assertIn(":", part)
 
@@ -1584,7 +1584,7 @@ if __name__ == "__main__":
                     show_summary=False,
                 )
             except PermissionError:
-                self.skipTest("Insufficient permissions for remote profiling")
+                self.skipTest("Insufficient permissions fuer remote profiling")
 
         # Just verify that sampling completed without error
         # We're not testing output format here
@@ -1605,7 +1605,7 @@ if __name__ == "__main__":
             try:
                 profiling.sampling.sample.main()
             except PermissionError:
-                self.skipTest("Insufficient permissions for remote profiling")
+                self.skipTest("Insufficient permissions fuer remote profiling")
 
             output = captured_output.getvalue()
 
@@ -1639,7 +1639,7 @@ if __name__ == "__main__":
             try:
                 profiling.sampling.sample.main()
             except PermissionError:
-                self.skipTest("Insufficient permissions for remote profiling")
+                self.skipTest("Insufficient permissions fuer remote profiling")
 
             output = captured_output.getvalue()
 
@@ -1676,7 +1676,7 @@ klasse TestSampleProfilerErrorHandling(unittest.TestCase):
                     )
                 except PermissionError:
                     self.skipTest(
-                        "Insufficient permissions for remote profiling"
+                        "Insufficient permissions fuer remote profiling"
                     )
 
                 output = captured_output.getvalue()
@@ -1743,7 +1743,7 @@ klasse TestSampleProfilerErrorHandling(unittest.TestCase):
 
             proc.kill()
 
-            # Wait for the process to die and try to get another trace
+            # Wait fuer the process to die and try to get another trace
             proc.wait()
 
             with self.assertRaises(ProcessLookupError):
@@ -1753,7 +1753,7 @@ klasse TestSampleProfilerErrorHandling(unittest.TestCase):
 
 klasse TestSampleProfilerCLI(unittest.TestCase):
     def _setup_sync_mocks(self, mock_socket, mock_popen):
-        """Helper to set up socket and process mocks for coordinator tests."""
+        """Helper to set up socket and process mocks fuer coordinator tests."""
         # Mock the sync socket with context manager support
         mock_sock_instance = mock.MagicMock()
         mock_sock_instance.getsockname.return_value = ("127.0.0.1", 12345)
@@ -1885,7 +1885,7 @@ klasse TestSampleProfilerCLI(unittest.TestCase):
         ):
             # Use the helper to set up mocks consistently
             mock_process = self._setup_sync_mocks(mock_socket, mock_popen)
-            # Override specific behavior for this test
+            # Override specific behavior fuer this test
             mock_process.wait.side_effect = [subprocess.TimeoutExpired(test_args, 0.1), None]
 
             profiling.sampling.sample.main()
@@ -2117,7 +2117,7 @@ klasse TestSampleProfilerCLI(unittest.TestCase):
             ),
         ]
 
-        for test_args, expected_error_keyword in test_cases:
+        fuer test_args, expected_error_keyword in test_cases:
             with (
                 mock.patch("sys.argv", test_args),
                 mock.patch("sys.stderr", io.StringIO()) as mock_stderr,
@@ -2147,7 +2147,7 @@ klasse TestSampleProfilerCLI(unittest.TestCase):
             self.assertEqual(call_args["filename"], "collapsed.12345.txt")
 
     def test_cli_custom_output_filenames(self):
-        """Test custom output filenames for both formats."""
+        """Test custom output filenames fuer both formats."""
         test_cases = [
             (
                 ["profiling.sampling.sample", "--pstats", "-o", "custom.pstats", "-p", "12345"],
@@ -2161,7 +2161,7 @@ klasse TestSampleProfilerCLI(unittest.TestCase):
             ),
         ]
 
-        for test_args, expected_filename, expected_format in test_cases:
+        fuer test_args, expected_filename, expected_format in test_cases:
             with (
                 mock.patch("sys.argv", test_args),
                 mock.patch("profiling.sampling.sample.sample") as mock_sample,
@@ -2226,7 +2226,7 @@ klasse TestSampleProfilerCLI(unittest.TestCase):
             ("--sort-name", -1),
         ]
 
-        for option, expected_sort_value in sort_options:
+        fuer option, expected_sort_value in sort_options:
             test_args = ["profiling.sampling.sample", option, "-p", "12345"]
 
             with (

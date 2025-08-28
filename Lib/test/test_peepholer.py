@@ -31,19 +31,19 @@ def compile_pattern_with_fast_locals(pattern):
 
 def count_instr_recursively(f, opname):
     count = 0
-    for instr in dis.get_instructions(f):
+    fuer instr in dis.get_instructions(f):
         if instr.opname == opname:
             count += 1
     if hasattr(f, '__code__'):
         f = f.__code__
-    for c in f.co_consts:
+    fuer c in f.co_consts:
         if hasattr(c, 'co_code'):
             count += count_instr_recursively(c, opname)
     return count
 
 
 def get_binop_argval(arg):
-    for i, nb_op in enumerate(opcode._nb_ops):
+    fuer i, nb_op in enumerate(opcode._nb_ops):
         if arg == nb_op[0]:
             return i
     assert False, f"{arg} is not a valid BINARY_OP argument."
@@ -53,8 +53,8 @@ klasse TestTranforms(BytecodeTestCase):
 
     def check_jump_targets(self, code):
         instructions = list(dis.get_instructions(code))
-        targets = {instr.offset: instr for instr in instructions}
-        for instr in instructions:
+        targets = {instr.offset: instr fuer instr in instructions}
+        fuer instr in instructions:
             if 'JUMP_' not in instr.opname:
                 continue
             tgt = targets[instr.argval]
@@ -74,8 +74,8 @@ klasse TestTranforms(BytecodeTestCase):
         lnotab = list(dis.findlinestarts(code))
         # Don't bother checking if the line info is sensible, because
         # most of the line info we can get at comes from lnotab.
-        min_bytecode = min(t[0] for t in lnotab)
-        max_bytecode = max(t[0] for t in lnotab)
+        min_bytecode = min(t[0] fuer t in lnotab)
+        max_bytecode = max(t[0] fuer t in lnotab)
         self.assertGreaterEqual(min_bytecode, 0)
         self.assertLess(max_bytecode, len(code.co_code))
         # This could conceivably test more (and probably should, as there
@@ -93,7 +93,7 @@ klasse TestTranforms(BytecodeTestCase):
         self.check_lnotab(unot)
 
     def test_elim_inversion_of_is_or_in(self):
-        for line, cmp_op, invert in (
+        fuer line, cmp_op, invert in (
             ('not a is b', 'IS_OP', 1,),
             ('not a is not b', 'IS_OP', 0,),
             ('not a in b', 'CONTAINS_OP', 1,),
@@ -117,7 +117,7 @@ klasse TestTranforms(BytecodeTestCase):
             x = False
             return x
 
-        for func, elem in ((f, None), (g, True), (h, False)):
+        fuer func, elem in ((f, None), (g, True), (h, False)):
             with self.subTest(func=func):
                 self.assertNotInBytecode(func, 'LOAD_GLOBAL')
                 self.assertInBytecode(func, 'LOAD_CONST', elem)
@@ -137,14 +137,14 @@ klasse TestTranforms(BytecodeTestCase):
             while 1:
                 pass
             return list
-        for elem in ('LOAD_CONST', 'POP_JUMP_IF_FALSE'):
+        fuer elem in ('LOAD_CONST', 'POP_JUMP_IF_FALSE'):
             self.assertNotInBytecode(f, elem)
-        for elem in ('JUMP_BACKWARD',):
+        fuer elem in ('JUMP_BACKWARD',):
             self.assertInBytecode(f, elem)
         self.check_lnotab(f)
 
     def test_pack_unpack(self):
-        for line, elem in (
+        fuer line, elem in (
             ('a, = a,', 'LOAD_CONST',),
             ('a, b = a, b', 'SWAP',),
             ('a, b, c = a, b, c', 'SWAP',),
@@ -157,7 +157,7 @@ klasse TestTranforms(BytecodeTestCase):
                 self.check_lnotab(code)
 
     def test_constant_folding_tuples_of_constants(self):
-        for line, elem in (
+        fuer line, elem in (
             ('a = 1,2,3', (1, 2, 3)),
             ('("a","b","c")', ('a', 'b', 'c')),
             ('a,b,c,d = 1,2,3,4', (1, 2, 3, 4)),
@@ -173,8 +173,8 @@ klasse TestTranforms(BytecodeTestCase):
         # Long tuples should be folded too.
         code = compile(repr(tuple(range(10000))),'','single')
         self.assertNotInBytecode(code, 'BUILD_TUPLE')
-        # One LOAD_CONST for the tuple, one for the None return value
-        load_consts = [instr for instr in dis.get_instructions(code)
+        # One LOAD_CONST fuer the tuple, one fuer the None return value
+        load_consts = [instr fuer instr in dis.get_instructions(code)
                               if instr.opname == 'LOAD_CONST']
         self.assertEqual(len(load_consts), 2)
         self.check_lnotab(code)
@@ -198,7 +198,7 @@ klasse TestTranforms(BytecodeTestCase):
         self.check_lnotab(crater)
 
     def test_constant_folding_lists_of_constants(self):
-        for line, elem in (
+        fuer line, elem in (
             # in/not in constants with BUILD_LIST should be folded to a tuple:
             ('a in [1,2,3]', (1, 2, 3)),
             ('a not in ["a","b","c"]', ('a', 'b', 'c')),
@@ -212,7 +212,7 @@ klasse TestTranforms(BytecodeTestCase):
                 self.check_lnotab(code)
 
     def test_constant_folding_sets_of_constants(self):
-        for line, elem in (
+        fuer line, elem in (
             # in/not in constants with BUILD_SET should be folded to a frozenset:
             ('a in {1,2,3}', frozenset({1, 2, 3})),
             ('a not in {"a","b","c"}', frozenset({'a', 'c', 'b'})),
@@ -266,7 +266,7 @@ klasse TestTranforms(BytecodeTestCase):
             ('++255', 255),
             ('++256', None),
         ]
-        for expr, oparg in tests:
+        fuer expr, oparg in tests:
             with self.subTest(expr=expr, oparg=oparg):
                 code = compile(expr, '', 'single')
                 if oparg is not None:
@@ -295,7 +295,7 @@ klasse TestTranforms(BytecodeTestCase):
             ('~True', 'UNARY_INVERT', None, False, None, None),
         ]
 
-        for (
+        fuer (
             expr,
             original_opcode,
             original_argval,
@@ -316,7 +316,7 @@ klasse TestTranforms(BytecodeTestCase):
         def negzero():
             return -(1.0-1.0)
 
-        for instr in dis.get_instructions(negzero):
+        fuer instr in dis.get_instructions(negzero):
             self.assertNotStartsWith(instr.opname, 'UNARY_')
         self.check_lnotab(negzero)
 
@@ -379,7 +379,7 @@ klasse TestTranforms(BytecodeTestCase):
             ('(1, (1, 2))[2:6][0][2-1]', 'NB_SUBSCR', False, None, None),
         ]
 
-        for (
+        fuer (
             expr,
             nb_op,
             is_optimized,
@@ -486,28 +486,28 @@ klasse TestTranforms(BytecodeTestCase):
             """,
 
             """
-            for _ in [1,
+            fuer _ in [1,
                       2,
                       3]:
                 pass
             """,
 
             """
-            for _ in [1,
+            fuer _ in [1,
                       2,
                       x]:
                 pass
             """,
 
             """
-            for _ in {1,
+            fuer _ in {1,
                       2,
                       3}:
                 pass
             """
         ]
 
-        for source in sources:
+        fuer source in sources:
             code = compile(textwrap.dedent(source), '', 'single')
             self.assertNotInBytecode(code, 'NOP')
 
@@ -516,7 +516,7 @@ klasse TestTranforms(BytecodeTestCase):
         def f(x):
             return x
         self.assertNotInBytecode(f, 'LOAD_CONST', None)
-        returns = [instr for instr in dis.get_instructions(f)
+        returns = [instr fuer instr in dis.get_instructions(f)
                           if instr.opname == 'RETURN_VALUE']
         self.assertEqual(len(returns), 1)
         self.check_lnotab(f)
@@ -530,7 +530,7 @@ klasse TestTranforms(BytecodeTestCase):
         self.check_jump_targets(f)
         self.assertNotInBytecode(f, 'JUMP_FORWARD')
         self.assertNotInBytecode(f, 'JUMP_BACKWARD')
-        returns = [instr for instr in dis.get_instructions(f)
+        returns = [instr fuer instr in dis.get_instructions(f)
                           if instr.opname == 'RETURN_VALUE']
         self.assertEqual(len(returns), 2)
         self.check_lnotab(f)
@@ -594,7 +594,7 @@ klasse TestTranforms(BytecodeTestCase):
 
     def test_elim_jump_to_uncond_jump4(self):
         def f():
-            for i in range(5):
+            fuer i in range(5):
                 if i > 3:
                     print(i)
         self.check_jump_targets(f)
@@ -612,7 +612,7 @@ klasse TestTranforms(BytecodeTestCase):
             return 6
         self.assertNotInBytecode(f, 'JUMP_FORWARD')
         self.assertNotInBytecode(f, 'JUMP_BACKWARD')
-        returns = [instr for instr in dis.get_instructions(f)
+        returns = [instr fuer instr in dis.get_instructions(f)
                           if instr.opname == 'RETURN_VALUE']
         self.assertLessEqual(len(returns), 6)
         self.check_lnotab(f)
@@ -633,7 +633,7 @@ klasse TestTranforms(BytecodeTestCase):
 
     def test_iterate_literal_list(self):
         def forloop():
-            for x in [a, b]:
+            fuer x in [a, b]:
                 pass
         self.assertEqual(count_instr_recursively(forloop, 'BUILD_LIST'), 0)
         self.check_lnotab(forloop)
@@ -669,16 +669,16 @@ klasse TestTranforms(BytecodeTestCase):
 
     def test_assignment_idiom_in_comprehensions(self):
         def listcomp():
-            return [y for x in a for y in [f(x)]]
+            return [y fuer x in a fuer y in [f(x)]]
         self.assertEqual(count_instr_recursively(listcomp, 'FOR_ITER'), 1)
         def setcomp():
-            return {y for x in a for y in [f(x)]}
+            return {y fuer x in a fuer y in [f(x)]}
         self.assertEqual(count_instr_recursively(setcomp, 'FOR_ITER'), 1)
         def dictcomp():
-            return {y: y for x in a for y in [f(x)]}
+            return {y: y fuer x in a fuer y in [f(x)]}
         self.assertEqual(count_instr_recursively(dictcomp, 'FOR_ITER'), 1)
         def genexpr():
-            return (y for x in a for y in [f(x)])
+            return (y fuer x in a fuer y in [f(x)])
         self.assertEqual(count_instr_recursively(genexpr, 'FOR_ITER'), 1)
 
     @support.requires_resource('cpu')
@@ -695,10 +695,10 @@ klasse TestTranforms(BytecodeTestCase):
             ('', '.40'),
             ('30', '.40'),
         ]
-        for value, suffix in testcases:
-            for width, prec in width_precs:
-                for r in range(len(flags) + 1):
-                    for spec in combinations(flags, r):
+        fuer value, suffix in testcases:
+            fuer width, prec in width_precs:
+                fuer r in range(len(flags) + 1):
+                    fuer spec in combinations(flags, r):
                         fmt = '%' + ''.join(spec) + width + prec + suffix
                         with self.subTest(fmt=fmt, value=value):
                             s1 = fmt % value
@@ -707,7 +707,7 @@ klasse TestTranforms(BytecodeTestCase):
 
     def test_format_misc(self):
         def format(fmt, *values):
-            vars = [f'x{i+1}' for i in range(len(values))]
+            vars = [f'x{i+1}' fuer i in range(len(values))]
             if len(vars) == 1:
                 args = '(' + vars[0] + ',)'
             else:
@@ -728,7 +728,7 @@ klasse TestTranforms(BytecodeTestCase):
 
     def test_format_errors(self):
         with self.assertRaisesRegex(TypeError,
-                    'not enough arguments for format string'):
+                    'not enough arguments fuer format string'):
             eval("'%s' % ()")
         with self.assertRaisesRegex(TypeError,
                     'not all arguments converted during string formatting'):
@@ -738,7 +738,7 @@ klasse TestTranforms(BytecodeTestCase):
         with self.assertRaisesRegex(ValueError, 'incomplete format'):
             eval("'%s%%%' % (x,)", {'x': 1234})
         with self.assertRaisesRegex(TypeError,
-                    'not enough arguments for format string'):
+                    'not enough arguments fuer format string'):
             eval("'%s%z' % (x,)", {'x': 1234})
         with self.assertRaisesRegex(ValueError, 'unsupported format character'):
             eval("'%s%z' % (x, 5)", {'x': 1234})
@@ -751,7 +751,7 @@ klasse TestTranforms(BytecodeTestCase):
         with self.assertRaisesRegex(TypeError, 'must be real number, not str'):
             eval("'%f' % (x,)", {'x': '1234'})
         with self.assertRaisesRegex(TypeError,
-                    'not enough arguments for format string'):
+                    'not enough arguments fuer format string'):
             eval("'%s, %s' % (x, *y)", {'x': 1, 'y': []})
         with self.assertRaisesRegex(TypeError,
                     'not all arguments converted during string formatting'):
@@ -774,7 +774,7 @@ klasse TestTranforms(BytecodeTestCase):
         self.assertNotInBytecode(f, "SWAP")
 
     def test_static_swaps_match_mapping(self):
-        for a, b, c in product("_a", "_b", "_c"):
+        fuer a, b, c in product("_a", "_b", "_c"):
             pattern = f"{{'a': {a}, 'b': {b}, 'c': {c}}}"
             with self.subTest(pattern):
                 code = compile_pattern_with_fast_locals(pattern)
@@ -787,8 +787,8 @@ klasse TestTranforms(BytecodeTestCase):
             "C({}, b={}, c={})",
             "C(a={}, b={}, c={})"
         ]
-        for a, b, c in product("_a", "_b", "_c"):
-            for form in forms:
+        fuer a, b, c in product("_a", "_b", "_c"):
+            fuer form in forms:
                 pattern = form.format(a, b, c)
                 with self.subTest(pattern):
                     code = compile_pattern_with_fast_locals(pattern)
@@ -797,8 +797,8 @@ klasse TestTranforms(BytecodeTestCase):
     def test_static_swaps_match_sequence(self):
         swaps = {"*_, b, c", "a, *_, c", "a, b, *_"}
         forms = ["{}, {}, {}", "{}, {}, *{}", "{}, *{}, {}", "*{}, {}, {}"]
-        for a, b, c in product("_a", "_b", "_c"):
-            for form in forms:
+        fuer a, b, c in product("_a", "_b", "_c"):
+            fuer form in forms:
                 pattern = form.format(a, b, c)
                 with self.subTest(pattern):
                     code = compile_pattern_with_fast_locals(pattern)
@@ -823,7 +823,7 @@ klasse TestBuglets(unittest.TestCase):
             f()
 
     def test_bpo_42057(self):
-        for i in range(10):
+        fuer i in range(10):
             try:
                 raise Exception
             except Exception or Exception:
@@ -953,15 +953,15 @@ klasse TestMarkingVariablesAsUnKnown(BytecodeTestCase):
         self.assertInBytecode(f, 'LOAD_FAST_BORROW_LOAD_FAST_BORROW', ("a00", "a01"))
         self.assertNotInBytecode(f, 'LOAD_FAST_CHECK', "a00")
         self.assertNotInBytecode(f, 'LOAD_FAST_CHECK', "a01")
-        for i in 62, 63:
+        fuer i in 62, 63:
             # First 64 locals: analyze completely
             self.assertInBytecode(f, 'LOAD_FAST_BORROW', f"a{i:02}")
             self.assertNotInBytecode(f, 'LOAD_FAST_CHECK', f"a{i:02}")
-        for i in 64, 65, 78, 79:
+        fuer i in 64, 65, 78, 79:
             # Locals >=64 not in the same basicblock
             self.assertInBytecode(f, 'LOAD_FAST_CHECK', f"a{i:02}")
             self.assertNotInBytecode(f, 'LOAD_FAST', f"a{i:02}")
-        for i in 70, 71:
+        fuer i in 70, 71:
             # Locals >=64 in the same basicblock
             self.assertInBytecode(f, 'LOAD_FAST_BORROW', f"a{i:02}")
             self.assertNotInBytecode(f, 'LOAD_FAST_CHECK', f"a{i:02}")
@@ -978,7 +978,7 @@ klasse TestMarkingVariablesAsUnKnown(BytecodeTestCase):
                 x = y = 2
                 if not x:
                     return 4
-                for i in range(55):
+                fuer i in range(55):
                     x + 6
                 L = 7
                 L = 8
@@ -1010,7 +1010,7 @@ klasse TestMarkingVariablesAsUnKnown(BytecodeTestCase):
                 x = y = 2
                 if not x:
                     return 4
-                for i in range(55):
+                fuer i in range(55):
                     x + 6
                 del x
                 L = 8
@@ -1044,7 +1044,7 @@ klasse TestMarkingVariablesAsUnKnown(BytecodeTestCase):
                 x = y = 2
                 if not x:
                     return 4
-                for i in range(55):
+                fuer i in range(55):
                     x + 6
                 del x, y
                 L = 8
@@ -1453,7 +1453,7 @@ klasse DirectCfgOptimizerTests(CfgOptimizationTestCase):
         self.cfg_optimization_test(same, same, consts=[])
 
     def test_optimize_literal_list_for_iter(self):
-        # for _ in [1, 2]: pass  ==>  for _ in (1, 2): pass
+        # fuer _ in [1, 2]: pass  ==>  fuer _ in (1, 2): pass
         before = [
             ('LOAD_SMALL_INT', 1, 0),
             ('LOAD_SMALL_INT', 2, 0),
@@ -1484,7 +1484,7 @@ klasse DirectCfgOptimizerTests(CfgOptimizationTestCase):
         ]
         self.cfg_optimization_test(before, after, consts=[None], expected_consts=[None, (1, 2)])
 
-        # for _ in [1, x]: pass  ==>  for _ in (1, x): pass
+        # fuer _ in [1, x]: pass  ==>  fuer _ in (1, x): pass
         before = [
             ('LOAD_SMALL_INT', 1, 0),
             ('LOAD_NAME', 0, 0),
@@ -1518,7 +1518,7 @@ klasse DirectCfgOptimizerTests(CfgOptimizationTestCase):
         self.cfg_optimization_test(before, after, consts=[None], expected_consts=[None])
 
     def test_optimize_literal_set_for_iter(self):
-        # for _ in {1, 2}: pass  ==>  for _ in (1, 2): pass
+        # fuer _ in {1, 2}: pass  ==>  fuer _ in (1, 2): pass
         before = [
             ('LOAD_SMALL_INT', 1, 0),
             ('LOAD_SMALL_INT', 2, 0),
@@ -1550,7 +1550,7 @@ klasse DirectCfgOptimizerTests(CfgOptimizationTestCase):
         self.cfg_optimization_test(before, after, consts=[None], expected_consts=[None, frozenset({1, 2})])
 
         # non constant literal set is not changed
-        # for _ in {1, x}: pass  ==>  for _ in {1, x}: pass
+        # fuer _ in {1, x}: pass  ==>  fuer _ in {1, x}: pass
         same = [
             ('LOAD_SMALL_INT', 1, 0),
             ('LOAD_NAME', 0, 0),
@@ -2303,8 +2303,8 @@ klasse DirectCfgOptimizerTests(CfgOptimizationTestCase):
                        (op2, lbl2, lno2),
                    ]
 
-        for op1 in ('JUMP', 'JUMP_NO_INTERRUPT'):
-            for op2 in ('JUMP', 'JUMP_NO_INTERRUPT'):
+        fuer op1 in ('JUMP', 'JUMP_NO_INTERRUPT'):
+            fuer op2 in ('JUMP', 'JUMP_NO_INTERRUPT'):
                 # different lines
                 lno1, lno2 = (4, 5)
                 with self.subTest(lno = (lno1, lno2), ops = (op1, op2)):
@@ -2319,7 +2319,7 @@ klasse DirectCfgOptimizerTests(CfgOptimizationTestCase):
                     self.cfg_optimization_test(insts, expected_insts, consts=list(range(5)))
 
                 # Threading
-                for lno1, lno2 in [(-1, -1), (-1, 5), (6, -1), (7, 7)]:
+                fuer lno1, lno2 in [(-1, -1), (-1, 5), (6, -1), (7, 7)]:
                     with self.subTest(lno = (lno1, lno2), ops = (op1, op2)):
                         insts = get_insts(lno1, lno2, op1, op2)
                         lno = lno1 if lno1 != -1 else lno2
@@ -2335,7 +2335,7 @@ klasse DirectCfgOptimizerTests(CfgOptimizationTestCase):
                         self.cfg_optimization_test(insts, expected_insts, consts=list(range(5)))
 
     def test_list_to_tuple_get_iter(self):
-        # for _ in (*foo, *bar) -> for _ in [*foo, *bar]
+        # fuer _ in (*foo, *bar) -> fuer _ in [*foo, *bar]
         INTRINSIC_LIST_TO_TUPLE = 6
         insts = [
             ("BUILD_LIST", 0, 1),
@@ -2377,7 +2377,7 @@ klasse DirectCfgOptimizerTests(CfgOptimizationTestCase):
 
     def test_list_to_tuple_get_iter_is_safe(self):
         a, b = [], []
-        for item in (*(items := [0, 1, 2, 3]),):
+        fuer item in (*(items := [0, 1, 2, 3]),):
             a.append(item)
             b.append(items.pop())
         self.assertEqual(a, [0, 1, 2, 3])
@@ -2389,10 +2389,10 @@ klasse OptimizeLoadFastTestCase(DirectCfgOptimizerTests):
     def make_bb(self, insts):
         last_loc = insts[-1][2]
         maxconst = 0
-        for op, arg, _ in insts:
+        fuer op, arg, _ in insts:
             if op == "LOAD_CONST":
                 maxconst = max(maxconst, arg)
-        consts = [None for _ in range(maxconst + 1)]
+        consts = [None fuer _ in range(maxconst + 1)]
         return insts + [
             ("LOAD_CONST", 0, last_loc + 1),
             ("RETURN_VALUE", None, last_loc + 2),
@@ -2701,7 +2701,7 @@ klasse OptimizeLoadFastTestCase(DirectCfgOptimizerTests):
 
     def test_del_in_finally(self):
         # This loads `obj` onto the stack, executes `del obj`, then returns the
-        # `obj` from the stack. See gh-133371 for more details.
+        # `obj` from the stack. See gh-133371 fuer more details.
         def create_obj():
             obj = [42]
             try:

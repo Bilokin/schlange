@@ -1,4 +1,4 @@
-"""Tests for base_events.py"""
+"""Tests fuer base_events.py"""
 
 import asyncio
 import contextvars
@@ -24,7 +24,7 @@ klasse EagerTaskFactoryLoopTests:
         """
         Helper method to run the `coro` coroutine in the test event loop.
         It helps with making sure the event loop is running before starting
-        to execute `coro`. This is important for testing the eager step
+        to execute `coro`. This is important fuer testing the eager step
         functionality, since an eager step is taken only if the event loop
         is already running.
         """
@@ -395,7 +395,7 @@ async def recursive_taskgroups(width, depth):
     async with asyncio.TaskGroup() as tg:
         futures = [
             tg.create_task(recursive_taskgroups(width, depth - 1))
-            for _ in range(width)
+            fuer _ in range(width)
         ]
 
 
@@ -404,7 +404,7 @@ async def recursive_gather(width, depth):
         return
 
     await asyncio.gather(
-        *[recursive_gather(width, depth - 1) for _ in range(width)]
+        *[recursive_gather(width, depth - 1) fuer _ in range(width)]
     )
 
 

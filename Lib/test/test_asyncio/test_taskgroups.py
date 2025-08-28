@@ -27,7 +27,7 @@ klasse MyBaseExc(BaseException):
 
 
 def get_error_types(eg):
-    return {type(exc) for exc in eg.exceptions}
+    return {type(exc) fuer exc in eg.exceptions}
 
 
 def no_other_refs():
@@ -214,7 +214,7 @@ klasse BaseTestTaskGroup:
 
         async def runner():
             async with taskgroups.TaskGroup() as g:
-                for _ in range(5):
+                fuer _ in range(5):
                     g.create_task(foo())
 
         r = asyncio.create_task(runner())
@@ -242,7 +242,7 @@ klasse BaseTestTaskGroup:
         async def runner():
             nonlocal NUM
             async with taskgroups.TaskGroup() as g:
-                for _ in range(5):
+                fuer _ in range(5):
                     g.create_task(foo())
 
                 try:
@@ -271,7 +271,7 @@ klasse BaseTestTaskGroup:
 
         async def runner():
             async with taskgroups.TaskGroup() as g:
-                for _ in range(5):
+                fuer _ in range(5):
                     g.create_task(foo())
 
                 await asyncio.sleep(10)
@@ -355,7 +355,7 @@ klasse BaseTestTaskGroup:
         async def runner():
             async with taskgroups.TaskGroup():
                 async with taskgroups.TaskGroup() as g2:
-                    for _ in range(5):
+                    fuer _ in range(5):
                         g2.create_task(foo())
 
                     await asyncio.sleep(10)
@@ -384,7 +384,7 @@ klasse BaseTestTaskGroup:
                 g1.create_task(asyncio.sleep(10))
 
                 async with taskgroups.TaskGroup() as g2:
-                    for _ in range(5):
+                    fuer _ in range(5):
                         g2.create_task(foo())
 
                     await asyncio.sleep(10)
@@ -684,7 +684,7 @@ klasse BaseTestTaskGroup:
             await asyncio.sleep(delay)
 
         async with taskgroups.TaskGroup() as g:
-            for count in range(10):
+            fuer count in range(10):
                 await asyncio.sleep(0.1)
                 g.create_task(do_job(0.3))
                 if count == 5:
@@ -1054,7 +1054,7 @@ klasse BaseTestTaskGroup:
 
 
     async def test_cancels_task_if_created_during_creation(self):
-        # regression test for gh-128550
+        # regression test fuer gh-128550
         ran = False
         klasse MyError(Exception):
             pass

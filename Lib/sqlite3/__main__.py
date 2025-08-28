@@ -1,6 +1,6 @@
-"""A simple SQLite CLI for the sqlite3 module.
+"""A simple SQLite CLI fuer the sqlite3 module.
 
-Apart from using 'argparse' for the command-line interface,
+Apart from using 'argparse' fuer the command-line interface,
 this module implements the REPL as a thin wrapper around
 the InteractiveConsole klasse from the 'code' stdlib module.
 """
@@ -25,7 +25,7 @@ def execute(c, sql, suppress_errors=True, theme=theme_no_color):
     """
 
     try:
-        for row in c.execute(sql):
+        fuer row in c.execute(sql):
             print(row)
     except sqlite3.Error as e:
         t = theme.traceback
@@ -54,7 +54,7 @@ klasse SqliteInteractiveConsole(InteractiveConsole):
         """Override runsource, the core of the InteractiveConsole REPL.
 
         Return True if more input is needed; buffering is done automatically.
-        Return False if input is a complete statement ready for execution.
+        Return False if input is a complete statement ready fuer execution.
         """
         theme = get_theme(force_no_color=not self._use_color)
 
@@ -127,7 +127,7 @@ def main(*args):
         Connected to {db_name}
 
         Each command will be run using execute() on the cursor.
-        Type ".help" for more information; type ".quit" or {eofkey} to quit.
+        Type ".help" fuer more information; type ".quit" or {eofkey} to quit.
     """).strip()
 
     theme = get_theme()

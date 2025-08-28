@@ -1,6 +1,6 @@
-"""Basic tests for os.popen()
+"""Basic tests fuer os.popen()
 
-  Particularly useful for platforms that fake popen.
+  Particularly useful fuer platforms that fake popen.
 """
 
 import unittest
@@ -17,7 +17,7 @@ if not hasattr(os, 'popen'):
 # We can then eval() the result of this, and see what each argv was.
 python = sys.executable
 if ' ' in python:
-    python = '"' + python + '"'     # quote embedded space for cmdline
+    python = '"' + python + '"'     # quote embedded space fuer cmdline
 
 @support.requires_subprocess()
 klasse PopenTest(unittest.TestCase):

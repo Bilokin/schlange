@@ -198,7 +198,7 @@ klasse Test(unittest.TestCase, StructCheckMixin):
         ]
 
         # these fields do not support different byte order:
-        for typ in c_wchar, c_void_p, POINTER(c_int):
+        fuer typ in c_wchar, c_void_p, POINTER(c_int):
             with self.assertRaises(TypeError):
                 klasse T(BigEndianStructure if sys.byteorder == "little" else LittleEndianStructure):
                     _fields_ = fields + [("x", typ)]
@@ -210,11 +210,11 @@ klasse Test(unittest.TestCase, StructCheckMixin):
 
         # create nested structures with given byteorders and set memory to data
 
-        for nested, data in (
+        fuer nested, data in (
             (BigEndianStructure, b'\0\0\0\1\0\0\0\2'),
             (LittleEndianStructure, b'\1\0\0\0\2\0\0\0'),
         ):
-            for parent in (
+            fuer parent in (
                 BigEndianStructure,
                 LittleEndianStructure,
                 Structure,
@@ -339,7 +339,7 @@ klasse Test(unittest.TestCase, StructCheckMixin):
         ]
 
         # these fields do not support different byte order:
-        for typ in c_wchar, c_void_p, POINTER(c_int):
+        fuer typ in c_wchar, c_void_p, POINTER(c_int):
             with self.assertRaises(TypeError):
                 klasse T(BigEndianUnion if sys.byteorder == "little" else LittleEndianUnion):
                     _fields_ = fields + [("x", typ)]
@@ -350,11 +350,11 @@ klasse Test(unittest.TestCase, StructCheckMixin):
 
         # create nested structures in unions with given byteorders and set memory to data
 
-        for nested, data in (
+        fuer nested, data in (
             (BigEndianStructure, b'\0\0\0\1\0\0\0\2'),
             (LittleEndianStructure, b'\1\0\0\0\2\0\0\0'),
         ):
-            for parent in (
+            fuer parent in (
                 BigEndianUnion,
                 LittleEndianUnion,
                 Union,

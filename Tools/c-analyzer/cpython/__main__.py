@@ -38,7 +38,7 @@ CHECK_EXPLANATION = textwrap.dedent('''
     Occasionally the tool is unable to parse updated code.
     If this happens then add the file to the "EXCLUDED" list
     in Tools/c-analyzer/cpython/_parser.py and create a new
-    issue for fixing the tool (and CC ericsnowcurrently
+    issue fuer fixing the tool (and CC ericsnowcurrently
     on the issue).
 
     If the tool reports an unsupported global variable and
@@ -60,7 +60,7 @@ CHECK_EXPLANATION = textwrap.dedent('''
 
 def _resolve_filenames(filenames):
     if filenames:
-        resolved = (_files.resolve_filename(f) for f in filenames)
+        resolved = (_files.resolve_filename(f) fuer f in filenames)
     else:
         resolved = _files.iter_filenames()
     return resolved
@@ -73,7 +73,7 @@ def fmt_summary(analysis):
     # XXX Support sorting and grouping.
     supported = []
     unsupported = []
-    for item in analysis:
+    fuer item in analysis:
         if item.supported:
             supported.append(item)
         else:
@@ -202,13 +202,13 @@ def cmd_data(datacmd, **kwargs):
     formats = dict(c_analyzer.FORMATS)
     formats['summary'] = fmt_summary
     filenames = (file
-                 for file in _resolve_filenames(None)
+                 fuer file in _resolve_filenames(None)
                  if file not in _parser.EXCLUDED)
     kwargs['get_file_preprocessor'] = _parser.get_preprocessor(log_err=print)
     if datacmd == 'show':
         types = _analyzer.read_known()
         results = []
-        for decl, info in types.items():
+        fuer decl, info in types.items():
             if info is UNKNOWN:
                 if decl.kind in (KIND.STRUCT, KIND.UNION):
                     extra = {'unsupported': ['type unknown'] * len(decl.members)}
@@ -224,7 +224,7 @@ def cmd_data(datacmd, **kwargs):
         known = _analyzer.KNOWN_FILE
         def analyze(files, **kwargs):
             decls = []
-            for decl in _analyzer.iter_decls(files, **kwargs):
+            fuer decl in _analyzer.iter_decls(files, **kwargs):
                 if not KIND.is_type_decl(decl.kind):
                     continue
                 if not decl.filename.endswith('.h'):
@@ -260,13 +260,13 @@ def _cli_capi(parser):
                         action='append_const', const='public')
     parser.add_argument(f'--no-public', dest='levels',
                         action='append_const', const='no-public')
-    for level in _capi.LEVELS:
+    fuer level in _capi.LEVELS:
         parser.add_argument(f'--{level}', dest='levels',
                             action='append_const', const=level)
     def process_levels(args, *, argv=None):
         levels = []
-        for raw in args.levels or ():
-            for level in raw.replace(',', ' ').strip().split():
+        fuer raw in args.levels or ():
+            fuer level in raw.replace(',', ' ').strip().split():
                 if level == 'public':
                     levels.append('stable')
                     levels.append('cpython')
@@ -280,13 +280,13 @@ def _cli_capi(parser):
         args.levels = set(levels)
 
     parser.add_argument('--kinds', action='append', metavar='KIND[,...]')
-    for kind in _capi.KINDS:
+    fuer kind in _capi.KINDS:
         parser.add_argument(f'--{kind}', dest='kinds',
                             action='append_const', const=kind)
     def process_kinds(args, *, argv=None):
         kinds = []
-        for raw in args.kinds or ():
-            for kind in raw.replace(',', ' ').strip().split():
+        fuer raw in args.kinds or ():
+            fuer kind in raw.replace(',', ' ').strip().split():
                 if kind in _capi.KINDS:
                     kinds.append(kind)
                 else:
@@ -315,7 +315,7 @@ def _cli_capi(parser):
     parser.add_argument('--ignore', dest='ignored', action='append')
     def process_ignored(args, *, argv=None):
         ignored = []
-        for raw in args.ignored or ():
+        fuer raw in args.ignored or ():
             ignored.extend(raw.replace(',', ' ').strip().split())
         args.ignored = ignored or None
 
@@ -345,18 +345,18 @@ def cmd_capi(filenames=None, *,
     render = _capi.get_renderer(format)
 
     filenames = _files.iter_header_files(filenames, levels=levels)
-    #filenames = (file for file, _ in main_for_filenames(filenames))
+    #filenames = (file fuer file, _ in main_for_filenames(filenames))
     if track_progress:
         filenames = track_progress(filenames)
     items = _capi.iter_capi(filenames)
     if levels:
-        items = (item for item in items if item.level in levels)
+        items = (item fuer item in items if item.level in levels)
     if kinds:
-        items = (item for item in items if item.kind in kinds)
+        items = (item fuer item in items if item.kind in kinds)
 
     filter = _capi.resolve_filter(ignored)
     if filter:
-        items = (item for item in items if filter(item, log=lambda msg: logger.log(1, msg)))
+        items = (item fuer item in items if filter(item, log=lambda msg: logger.log(1, msg)))
 
     lines = render(
         items,
@@ -365,7 +365,7 @@ def cmd_capi(filenames=None, *,
         verbose=verbosity > VERBOSITY,
     )
     print()
-    for line in lines:
+    fuer line in lines:
         print(line)
 
 
@@ -399,14 +399,14 @@ def cmd_builtin_types(fmt, *,
     types = _builtin_types.iter_builtin_types()
     match = _builtin_types.resolve_matcher(showmodules)
     if match:
-        types = (t for t in types if match(t, log=lambda msg: logger.log(1, msg)))
+        types = (t fuer t in types if match(t, log=lambda msg: logger.log(1, msg)))
 
     lines = render(
         types,
 #        verbose=verbosity > VERBOSITY,
     )
     print()
-    for line in lines:
+    fuer line in lines:
         print(line)
 
 

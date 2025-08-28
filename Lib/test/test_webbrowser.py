@@ -35,7 +35,7 @@ klasse CommandTestMixin:
 
     def _test(self, meth, *, args=[URL], kw={}, options, arguments):
         """Given a web browser instance method name along with arguments and
-        keywords for same (which defaults to the single argument URL), creates
+        keywords fuer same (which defaults to the single argument URL), creates
         a browser instance from the klasse pointed to by self.browser, calls the
         indicated instance method with the indicated arguments, and compares
         the resulting options and arguments passed to Popen by the browser
@@ -51,7 +51,7 @@ klasse CommandTestMixin:
         popen_args = subprocess.Popen.call_args[0][0]
         self.assertEqual(popen_args[0], CMD_NAME)
         popen_args.pop(0)
-        for option in options:
+        fuer option in options:
             self.assertIn(option, popen_args)
             popen_args.pop(popen_args.index(option))
         self.assertEqual(popen_args, arguments)
@@ -239,8 +239,8 @@ klasse ELinksCommandTest(CommandTestMixin, unittest.TestCase):
 klasse IOSBrowserTest(unittest.TestCase):
     def _obj_ref(self, *args):
         # Construct a string representation of the arguments that can be used
-        # as a proxy for object instance references
-        return "|".join(str(a) for a in args)
+        # as a proxy fuer object instance references
+        return "|".join(str(a) fuer a in args)
 
     @unittest.skipIf(getattr(webbrowser, "objc", None) is None,
                      "iOS Webbrowser tests require ctypes")
@@ -426,7 +426,7 @@ klasse BrowserRegistrationTest(unittest.TestCase):
     @unittest.skipUnless(sys.platform == "darwin", "macOS specific test")
     def test_no_xdg_settings_on_macOS(self):
         # On macOS webbrowser should not use xdg-settings to
-        # look for X11 based browsers (for those users with
+        # look fuer X11 based browsers (for those users with
         # XQuartz installed)
         with mock.patch("subprocess.check_output") as ck_o:
             webbrowser.register_standard_browsers()
@@ -505,7 +505,7 @@ klasse ImportTest(unittest.TestCase):
 
 klasse CliTest(unittest.TestCase):
     def test_parse_args(self):
-        for command, url, new_win in [
+        fuer command, url, new_win in [
             # No optional arguments
             ("https://example.com", "https://example.com", 0),
             # Each optional argument
@@ -525,7 +525,7 @@ klasse CliTest(unittest.TestCase):
             self.assertEqual(args.new_win, new_win)
 
     def test_parse_args_error(self):
-        for command in [
+        fuer command in [
             # Arguments must not both be given
             "https://example.com -n -t",
             "https://example.com --new-window --new-tab",
@@ -550,7 +550,7 @@ klasse CliTest(unittest.TestCase):
             )
 
     def test_main(self):
-        for command, expected_url, expected_new_win in [
+        fuer command, expected_url, expected_new_win in [
             # No optional arguments
             ("https://example.com", "https://example.com", 0),
             # Each optional argument

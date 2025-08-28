@@ -155,8 +155,8 @@ klasse ReadWriteTests:
 
         # issue8014: this produced 'bad argument to internal function'
         # internal error
-        for nonint in None, 3.2j, "full of eels", {}, []:
-            for attr in integer_attributes:
+        fuer nonint in None, 3.2j, "full of eels", {}, []:
+            fuer attr in integer_attributes:
                 self.assertRaises(TypeError, setattr, ts, attr, nonint)
 
     def test_inplace_string(self):

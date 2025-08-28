@@ -50,7 +50,7 @@ _KNOWN = {
 #           if typeid.startswith('struct ')
 #           else TypeDef(None, typeid, None)
 #           ): ([], {'unsupported': None if supported else True})
-#          for typeid, supported in _KNOWN_IN_DOT_C.items()}
+#          fuer typeid, supported in _KNOWN_IN_DOT_C.items()}
 _IGNORED = {
     # {ID => reason}
 }
@@ -160,7 +160,7 @@ def iter_decls(filenames, **kwargs):
         parse_files=_parser.parse_files,
         **kwargs
     )
-    for decl in decls:
+    fuer decl in decls:
         if not decl.data:
             # Ignore forward declarations.
             continue
@@ -218,10 +218,10 @@ def _check_members(decl, typedeps, types, knowntypes):
         raise NotImplementedError((decl, typedeps))
 
     unsupported = []
-    for member, typedecl in zip(members, typedeps):
+    fuer member, typedecl in zip(members, typedeps):
         checked = _check_typedep(member, typedecl, types, knowntypes)
         unsupported.append(checked)
-    if any(None if v is FIXED_TYPE else v for v in unsupported):
+    if any(None if v is FIXED_TYPE else v fuer v in unsupported):
         return unsupported
     elif FIXED_TYPE in unsupported:
         return FIXED_TYPE
@@ -265,10 +265,10 @@ def _check_typedep(decl, typedecl, types, knowntypes):
 
 
 def _is_kwlist(decl):
-    # keywords for PyArg_ParseTupleAndKeywords()
+    # keywords fuer PyArg_ParseTupleAndKeywords()
     # "static char *name[]" -> "static const char * const name[]"
     # XXX These should be made const.
-    for relpath, name in _KWLIST_VARIANTS:
+    fuer relpath, name in _KWLIST_VARIANTS:
         if decl.name == name:
             if relpath == '*':
                 break
@@ -424,7 +424,7 @@ klasse Analysis(_info.Analysis):
 def check_globals(analysis):
     # yield (data, failure)
     ignored = read_ignored()
-    for item in analysis:
+    fuer item in analysis:
         if item.kind != KIND.VARIABLE:
             continue
         if item.supported:

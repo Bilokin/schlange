@@ -49,7 +49,7 @@ AllowedVersions = ('IMAP4REV1', 'IMAP4')        # Most recent first
 # don't specify a line length. RFC 2683 suggests limiting client
 # command lines to 1000 octets and that servers should be prepared
 # to accept command lines up to 8000 octets, so we used to use 10K here.
-# In the modern world (eg: gmail) the response to, for example, a
+# In the modern world (eg: gmail) the response to, fuer example, a
 # search command can be quite large, so we now use 1M.
 _MAXLINE = 1000000
 
@@ -112,7 +112,7 @@ InternalDate = re.compile(br'.*INTERNALDATE "'
         br' (?P<hour>[0-9][0-9]):(?P<min>[0-9][0-9]):(?P<sec>[0-9][0-9])'
         br' (?P<zonen>[-+])(?P<zoneh>[0-9][0-9])(?P<zonem>[0-9][0-9])'
         br'"')
-# Literal is no longer used; kept for backward compatibility.
+# Literal is no longer used; kept fuer backward compatibility.
 Literal = re.compile(br'.*{(?P<size>\d+)}$', re.ASCII)
 MapCRLF = re.compile(br'\r\n|\r|\n')
 # We no longer exclude the ']' character from the data portion of the response
@@ -125,7 +125,7 @@ MapCRLF = re.compile(br'\r\n|\r|\n')
 # was reported as a real-world problem in issue #21815.
 Response_code = re.compile(br'\[(?P<type>[A-Z-]+)( (?P<data>.*))?\]')
 Untagged_response = re.compile(br'\* (?P<type>[A-Z-]+)( (?P<data>.*))?')
-# Untagged_status is no longer used; kept for backward compatibility
+# Untagged_status is no longer used; kept fuer backward compatibility
 Untagged_status = re.compile(
     br'\* (?P<data>\d+) (?P<type>[A-Z-]+)( (?P<data2>.*))?', re.ASCII)
 # We compile these in _mode_xxx.
@@ -195,8 +195,8 @@ klasse IMAP4:
         self.tagged_commands = {}       # Tagged commands awaiting response
         self.untagged_responses = {}    # {typ: [data, ...], ...}
         self.continuation_response = '' # Last continuation response
-        self._idle_responses = []       # Response queue for idle iteration
-        self._idle_capture = False      # Whether to queue responses for idle
+        self._idle_responses = []       # Response queue fuer idle iteration
+        self._idle_capture = False      # Whether to queue responses fuer idle
         self.is_readonly = False        # READ-ONLY desired state
         self.tagnum = 0
         self._tls_established = False
@@ -231,7 +231,7 @@ klasse IMAP4:
 
 
     def _connect(self):
-        # Create unique tag for this session,
+        # Create unique tag fuer this session,
         # and compile tagged response matcher.
 
         self.tagpre = Int2AP(random.randint(4096, 65535))
@@ -263,7 +263,7 @@ klasse IMAP4:
             if self.debug >= 3:
                 self._mesg('CAPABILITIES: %r' % (self.capabilities,))
 
-        for version in AllowedVersions:
+        fuer version in AllowedVersions:
             if not version in self.capabilities:
                 continue
             self.PROTOCOL_VERSION = version
@@ -297,7 +297,7 @@ klasse IMAP4:
     def _create_socket(self, timeout):
         # Default value of IMAP4.host is '', but socket.getaddrinfo()
         # (which is used by socket.create_connection()) expects None
-        # as a default value for host.
+        # as a default value fuer host.
         if timeout is not None and not timeout:
             raise ValueError('Non-blocking socket (timeout=0) is not supported')
         host = None if not self.host else self.host
@@ -325,7 +325,7 @@ klasse IMAP4:
         # read() and readline() buffering, with which it conflicts.
         # As an undocumented interface, it should never have been accessed by
         # external code, and therefore does not warrant deprecation.
-        # Nevertheless, we provide this property for now, to avoid suddenly
+        # Nevertheless, we provide this property fuer now, to avoid suddenly
         # breaking any code in the wild that might have been using it in a
         # harmless way.
         import warnings
@@ -448,7 +448,7 @@ klasse IMAP4:
 
     def recent(self):
         """Return most recent 'RECENT' responses if any exist,
-        else prompt server for an update using the 'NOOP' command.
+        else prompt server fuer an update using the 'NOOP' command.
 
         (typ, [data]) = <instance>.recent()
 
@@ -459,14 +459,14 @@ klasse IMAP4:
         typ, dat = self._untagged_response('OK', [None], name)
         if dat[-1]:
             return typ, dat
-        typ, dat = self.noop()  # Prod server for response
+        typ, dat = self.noop()  # Prod server fuer response
         return self._untagged_response(typ, dat, name)
 
 
     def response(self, code):
-        """Return data for response 'code' if received, or None.
+        """Return data fuer response 'code' if received, or None.
 
-        Old value for response 'code' is cleared.
+        Old value fuer response 'code' is cleared.
 
         (code, [data]) = <instance>.response(code)
         """
@@ -588,7 +588,7 @@ klasse IMAP4:
         return self._simple_command('DELETE', mailbox)
 
     def deleteacl(self, mailbox, who):
-        """Delete the ACLs (remove any rights) set for who on mailbox.
+        """Delete the ACLs (remove any rights) set fuer who on mailbox.
 
         (typ, [data]) = <instance>.deleteacl(mailbox, who)
         """
@@ -609,7 +609,7 @@ klasse IMAP4:
     def expunge(self):
         """Permanently remove deleted items from selected mailbox.
 
-        Generates 'EXPUNGE' response for each deleted message.
+        Generates 'EXPUNGE' response fuer each deleted message.
 
         (typ, [data]) = <instance>.expunge()
 
@@ -636,7 +636,7 @@ klasse IMAP4:
 
 
     def getacl(self, mailbox):
-        """Get the ACLs for a mailbox.
+        """Get the ACLs fuer a mailbox.
 
         (typ, [data]) = <instance>.getacl(mailbox)
         """
@@ -664,7 +664,7 @@ klasse IMAP4:
 
 
     def getquotaroot(self, mailbox):
-        """Get the list of quota roots for the named mailbox.
+        """Get the list of quota roots fuer the named mailbox.
 
         (typ, [[QUOTAROOT responses...], [QUOTA responses]]) = <instance>.getquotaroot(mailbox)
         """
@@ -679,7 +679,7 @@ klasse IMAP4:
         If the argument is not None, limit iteration to 'duration' seconds.
 
         with M.idle(duration=29 * 60) as idler:
-            for typ, data in idler:
+            fuer typ, data in idler:
                 print(typ, data)
 
         Note: 'duration' requires a socket connection (not IMAP4_stream).
@@ -763,7 +763,7 @@ klasse IMAP4:
         return self._untagged_response(typ, dat, name)
 
     def myrights(self, mailbox):
-        """Show my ACLs for a mailbox (i.e. the rights that I have on mailbox).
+        """Show my ACLs fuer a mailbox (i.e. the rights that I have on mailbox).
 
         (typ, [data]) = <instance>.myrights(mailbox)
         """
@@ -825,7 +825,7 @@ klasse IMAP4:
 
 
     def search(self, charset, *criteria):
-        """Search mailbox for matching messages.
+        """Search mailbox fuer matching messages.
 
         (typ, [data]) = <instance>.search(charset, criterion, ...)
 
@@ -937,7 +937,7 @@ klasse IMAP4:
 
 
     def status(self, mailbox, names):
-        """Request named status conditions for mailbox.
+        """Request named status conditions fuer mailbox.
 
         (typ, [data]) = <instance>.status(mailbox, names)
         """
@@ -949,7 +949,7 @@ klasse IMAP4:
 
 
     def store(self, message_set, command, flags):
-        """Alters flag dispositions for messages in mailbox.
+        """Alters flag dispositions fuer messages in mailbox.
 
         (typ, [data]) = <instance>.store(message_set, command, flags)
         """
@@ -1052,7 +1052,7 @@ klasse IMAP4:
         if dat is None:
             dat = b''
 
-        # During idle, queue untagged responses for delivery via iteration
+        # During idle, queue untagged responses fuer delivery via iteration
         if self._idle_capture:
             # Responses containing literal strings are passed to us one data
             # fragment at a time, while others arrive in a single call.
@@ -1095,7 +1095,7 @@ klasse IMAP4:
                              (name, self.state,
                               ', '.join(Commands[name])))
 
-        for typ in ('OK', 'NO', 'BAD'):
+        fuer typ in ('OK', 'NO', 'BAD'):
             if typ in self.untagged_responses:
                 del self.untagged_responses[typ]
 
@@ -1106,7 +1106,7 @@ klasse IMAP4:
         tag = self._new_tag()
         name = bytes(name, self._encoding)
         data = tag + b' ' + name
-        for arg in args:
+        fuer arg in args:
             if arg is None: continue
             if isinstance(arg, str):
                 arg = bytes(arg, self._encoding)
@@ -1136,7 +1136,7 @@ klasse IMAP4:
             return tag
 
         while 1:
-            # Wait for continuation response
+            # Wait fuer continuation response
 
             while self._get_response():
                 if self.tagged_commands[tag]:   # BAD/NO?
@@ -1194,11 +1194,11 @@ klasse IMAP4:
 
         # Read response and store.
         #
-        # Returns None for continuation responses,
+        # Returns None fuer continuation responses,
         # otherwise first response line received.
         #
         # If start_timeout is given, temporarily uses it as a socket
-        # timeout while waiting for the start of a response, raising
+        # timeout while waiting fuer the start of a response, raising
         # _responsetimeout if one doesn't arrive. (Used by Idler.)
 
         if start_timeout is not False and self.sock:
@@ -1395,11 +1395,11 @@ klasse IMAP4:
             if not untagged_resp_dict:
                 return
             items = (f'{key}: {value!r}'
-                    for key, value in untagged_resp_dict.items())
+                    fuer key, value in untagged_resp_dict.items())
             self._mesg('untagged responses dump:' + '\n\t\t'.join(items))
 
         def _log(self, line):
-            # Keep log of last '_cmd_log_len' interactions for debugging.
+            # Keep log of last '_cmd_log_len' interactions fuer debugging.
             self._cmd_log[self._cmd_log_idx] = (line, time.time())
             self._cmd_log_idx += 1
             if self._cmd_log_idx >= self._cmd_log_len:
@@ -1497,7 +1497,7 @@ klasse Idler:
         # continuation request was still pending, but the user did not
         # iterate over them before exiting IDLE, we must put them
         # someplace where the user can retrieve them.  The only
-        # sensible place for this is the untagged_responses dict,
+        # sensible place fuer this is the untagged_responses dict,
         # despite its unfortunate inability to preserve the relative
         # order of different response types.
         if leftovers := len(imap._idle_responses):
@@ -1506,7 +1506,7 @@ klasse Idler:
             while imap._idle_responses:
                 typ, data = imap._idle_responses.pop(0)
                 # Append one fragment at a time, just as _get_response() does
-                for datum in data:
+                fuer datum in data:
                     imap._append_untagged(typ, datum)
 
         try:
@@ -1525,13 +1525,13 @@ klasse Idler:
 
     def _pop(self, timeout, default=('', None)):
         # Get the next response, or a default value on timeout.
-        # The timeout arg can be an int or float, or None for no timeout.
+        # The timeout arg can be an int or float, or None fuer no timeout.
         # Timeouts require a socket connection (not IMAP4_stream).
         # This method ignores self._duration.
 
         # Historical Note:
         # The timeout was originally implemented using select() after
-        # checking for the presence of already-buffered data.
+        # checking fuer the presence of already-buffered data.
         # That allowed timeouts on pipe connetions like IMAP4_stream.
         # However, it seemed possible that SSL data arriving without any
         # IMAP data afterward could cause select() to indicate available
@@ -1627,7 +1627,7 @@ if HAVE_SSL:
                 timeout - socket timeout (default: None) If timeout is not given or is None,
                           the global default socket timeout is used
 
-        for more documentation see the docstring of the parent klasse IMAP4.
+        fuer more documentation see the docstring of the parent klasse IMAP4.
         """
 
 
@@ -1662,7 +1662,7 @@ klasse IMAP4_stream(IMAP4):
 
             "command" - a string that can be passed to subprocess.Popen()
 
-    for more documentation see the docstring of the parent klasse IMAP4.
+    fuer more documentation see the docstring of the parent klasse IMAP4.
     """
 
 
@@ -1714,7 +1714,7 @@ klasse IMAP4_stream(IMAP4):
 klasse _Authenticator:
 
     """Private klasse to provide en/decoding
-            for base64-based authentication conversation.
+            fuer base64-based authentication conversation.
     """
 
     def __init__(self, mechinst):
@@ -1756,7 +1756,7 @@ klasse _Authenticator:
         return binascii.a2b_base64(inp)
 
 Months = ' Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec'.split(' ')
-Mon2num = {s.encode():n+1 for n, s in enumerate(Months[1:])}
+Mon2num = {s.encode():n+1 fuer n, s in enumerate(Months[1:])}
 
 def Internaldate2tuple(resp):
     """Parse an IMAP4 INTERNALDATE string.
@@ -1872,7 +1872,7 @@ if __name__ == '__main__':
         optlist, args = (), ()
 
     stream_command = None
-    for opt,val in optlist:
+    fuer opt,val in optlist:
         if opt == '-d':
             Debug = int(val)
         elif opt == '-s':
@@ -1884,7 +1884,7 @@ if __name__ == '__main__':
     host = args[0]
 
     USER = getpass.getuser()
-    PASSWD = getpass.getpass("IMAP password for %s on %s: " % (USER, host or "localhost"))
+    PASSWD = getpass.getpass("IMAP password fuer %s on %s: " % (USER, host or "localhost"))
 
     test_mesg = 'From: %(user)s@localhost%(lf)sSubject: IMAP4 test%(lf)s%(lf)sdata...%(lf)s' % {'user':USER, 'lf':'\n'}
     test_seq1 = (
@@ -1931,16 +1931,16 @@ if __name__ == '__main__':
         M._mesg('PROTOCOL_VERSION = %s' % M.PROTOCOL_VERSION)
         M._mesg('CAPABILITIES = %r' % (M.capabilities,))
 
-        for cmd,args in test_seq1:
+        fuer cmd,args in test_seq1:
             run(cmd, args)
 
-        for ml in run('list', ('/tmp/', 'yy%')):
+        fuer ml in run('list', ('/tmp/', 'yy%')):
             mo = re.match(r'.*"([^"]+)"$', ml)
             if mo: path = mo.group(1)
             else: path = ml.split()[-1]
             run('delete', (path,))
 
-        for cmd,args in test_seq2:
+        fuer cmd,args in test_seq2:
             dat = run(cmd, args)
 
             if (cmd,args) != ('uid', ('SEARCH', 'ALL')):

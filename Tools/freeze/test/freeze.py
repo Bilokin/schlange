@@ -58,7 +58,7 @@ def _run_stdout(cmd):
 def find_opt(args, name):
     opt = f'--{name}'
     optstart = f'{opt}='
-    for i, arg in enumerate(args):
+    fuer i, arg in enumerate(args):
         if arg == opt or arg.startswith(optstart):
             return i
     return -1

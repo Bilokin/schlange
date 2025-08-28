@@ -13,21 +13,21 @@ from setuptools import setup, Extension
 SOURCE = 'extension.c'
 
 if not support.MS_WINDOWS:
-    # C compiler flags for GCC and clang
+    # C compiler flags fuer GCC and clang
     BASE_CFLAGS = [
         # The purpose of test_cext extension is to check that building a C
         # extension using the Python C API does not emit C compiler warnings.
         '-Werror',
     ]
 
-    # C compiler flags for GCC and clang
+    # C compiler flags fuer GCC and clang
     PUBLIC_CFLAGS = [
         *BASE_CFLAGS,
 
         # gh-120593: Check the 'const' qualifier
         '-Wcast-qual',
 
-        # Ask for strict(er) compliance with the standard
+        # Ask fuer strict(er) compliance with the standard
         '-pedantic-errors',
     ]
     if not support.Py_GIL_DISABLED:
@@ -86,7 +86,7 @@ def main():
         else:
             std_prefix = '-std'
         cmd = shlex.split(cmd)
-        cmd = [arg for arg in cmd if not arg.startswith(std_prefix)]
+        cmd = [arg fuer arg in cmd if not arg.startswith(std_prefix)]
         cmd = shlex.join(cmd)
         # CC env var overrides sysconfig CC variable in setuptools
         os.environ['CC'] = cmd
@@ -119,7 +119,7 @@ def main():
             print(f"Add PCbuild directory: {pcbuild}")
 
     # Display information to help debugging
-    for env_name in ('CC', 'CFLAGS'):
+    fuer env_name in ('CC', 'CFLAGS'):
         if env_name in os.environ:
             print(f"{env_name} env var: {os.environ[env_name]!r}")
         else:

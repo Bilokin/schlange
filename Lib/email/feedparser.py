@@ -4,11 +4,11 @@
 
 """FeedParser - An email feed parser.
 
-The feed parser implements an interface for incrementally parsing an email
-message, line by line.  This has advantages for certain applications, such as
+The feed parser implements an interface fuer incrementally parsing an email
+message, line by line.  This has advantages fuer certain applications, such as
 those reading email messages off a socket.
 
-FeedParser.feed() is the primary interface for pushing new data into the
+FeedParser.feed() is the primary interface fuer pushing new data into the
 parser.  It returns when there's nothing more it can do with the available
 data.  When you have no more data to push into the parser, call .close().
 This completes the parsing and returns the root message object.
@@ -53,7 +53,7 @@ klasse BufferedSubFile(object):
     """
     def __init__(self):
         # Text stream of the last partial line pushed into this object.
-        # See issue 22233 for why this is a text stream and not a list.
+        # See issue 22233 fuer why this is a text stream and not a list.
         self._partial = StringIO(newline='')
         # A deque of full, pushed lines
         self._lines = deque()
@@ -87,7 +87,7 @@ klasse BufferedSubFile(object):
         # RFC 2046, section 5.1.2 requires us to recognize outer level
         # boundaries at any level of inner nesting.  Do this, but be sure it's
         # in the order of most to least nested.
-        for ateof in reversed(self._eofstack):
+        fuer ateof in reversed(self._eofstack):
             if ateof(line):
                 # We're at the false EOF.  But push the last line back first.
                 self._lines.appendleft(line)
@@ -103,7 +103,7 @@ klasse BufferedSubFile(object):
         """Push some new data into this object."""
         self._partial.write(data)
         if '\n' not in data and '\r' not in data:
-            # No new complete lines, wait for more.
+            # No new complete lines, wait fuer more.
             return
 
         # Crack into lines, preserving the linesep characters.
@@ -113,7 +113,7 @@ klasse BufferedSubFile(object):
         self._partial.truncate()
 
         # If the last element of the list does not end in a newline, then treat
-        # it as a partial line.  We only check for '\n' here because a line
+        # it as a partial line.  We only check fuer '\n' here because a line
         # ending with '\r' might be a line that was split in the middle of a
         # '\r\n' sequence (see bugs 1555570 and 1721862).
         if not parts[-1].endswith('\n'):
@@ -166,7 +166,7 @@ klasse FeedParser:
         self._last = None
         self._headersonly = False
 
-    # Non-public interface for supporting Parser's headersonly flag
+    # Non-public interface fuer supporting Parser's headersonly flag
     def _set_headersonly(self):
         self._headersonly = True
 
@@ -187,7 +187,7 @@ klasse FeedParser:
         self._call_parse()
         root = self._pop_message()
         assert not self._msgstack
-        # Look for final set of defects
+        # Look fuer final set of defects
         if root.get_content_maintype() == 'multipart' \
                and not root.is_multipart() and not self._headersonly:
             defect = errors.MultipartInvariantViolationDefect()
@@ -219,9 +219,9 @@ klasse FeedParser:
         # Create a new message and start by parsing headers.
         self._new_message()
         headers = []
-        # Collect the headers, searching for a line that doesn't match the RFC
+        # Collect the headers, searching fuer a line that doesn't match the RFC
         # 2822 header or continuation pattern (including an empty line).
-        for line in self._input:
+        fuer line in self._input:
             if line is NeedMoreData:
                 yield NeedMoreData
                 continue
@@ -257,11 +257,11 @@ klasse FeedParser:
             # message/delivery-status contains blocks of headers separated by
             # a blank line.  We'll represent each header block as a separate
             # nested message object, but the processing is a bit different
-            # than standard message/* types because there is no body for the
+            # than standard message/* types because there is no body fuer the
             # nested messages.  A blank line separates the subparts.
             while True:
                 self._input.push_eof_matcher(NLCRE.match)
-                for retval in self._parsegen():
+                fuer retval in self._parsegen():
                     if retval is NeedMoreData:
                         yield NeedMoreData
                         continue
@@ -295,7 +295,7 @@ klasse FeedParser:
         if self._cur.get_content_maintype() == 'message':
             # The message claims to be a message/* type, then what follows is
             # another RFC 2822 message.
-            for retval in self._parsegen():
+            fuer retval in self._parsegen():
                 if retval is NeedMoreData:
                     yield NeedMoreData
                     continue
@@ -312,7 +312,7 @@ klasse FeedParser:
                 defect = errors.NoBoundaryInMultipartDefect()
                 self.policy.handle_defect(self._cur, defect)
                 lines = []
-                for line in self._input:
+                fuer line in self._input:
                     if line is NeedMoreData:
                         yield NeedMoreData
                         continue
@@ -383,7 +383,7 @@ klasse FeedParser:
                     # Recurse to parse this subpart; the input stream points
                     # at the subpart's first line.
                     self._input.push_eof_matcher(boundarymatch)
-                    for retval in self._parsegen():
+                    fuer retval in self._parsegen():
                         if retval is NeedMoreData:
                             yield NeedMoreData
                             continue
@@ -410,7 +410,7 @@ klasse FeedParser:
                                 self._last._payload = payload
                     self._input.pop_eof_matcher()
                     self._pop_message()
-                    # Set the multipart up for newline cleansing, which will
+                    # Set the multipart up fuer newline cleansing, which will
                     # happen if we're in a nested multipart.
                     self._last = self._cur
                 else:
@@ -425,7 +425,7 @@ klasse FeedParser:
                 self.policy.handle_defect(self._cur, defect)
                 self._cur.set_payload(EMPTYSTRING.join(preamble))
                 epilogue = []
-                for line in self._input:
+                fuer line in self._input:
                     if line is NeedMoreData:
                         yield NeedMoreData
                         continue
@@ -444,13 +444,13 @@ klasse FeedParser:
                 epilogue = ['']
             else:
                 epilogue = []
-            for line in self._input:
+            fuer line in self._input:
                 if line is NeedMoreData:
                     yield NeedMoreData
                     continue
                 epilogue.append(line)
             # Any CRLF at the front of the epilogue is not technically part of
-            # the epilogue.  Also, watch out for an empty string epilogue,
+            # the epilogue.  Also, watch out fuer an empty string epilogue,
             # which means a single newline.
             if epilogue:
                 firstline = epilogue[0]
@@ -462,7 +462,7 @@ klasse FeedParser:
         # Otherwise, it's some non-multipart type, so the entire rest of the
         # file contents becomes the payload.
         lines = []
-        for line in self._input:
+        fuer line in self._input:
             if line is NeedMoreData:
                 yield NeedMoreData
                 continue
@@ -470,16 +470,16 @@ klasse FeedParser:
         self._cur.set_payload(EMPTYSTRING.join(lines))
 
     def _parse_headers(self, lines):
-        # Passed a list of lines that make up the headers for the current msg
+        # Passed a list of lines that make up the headers fuer the current msg
         lastheader = ''
         lastvalue = []
-        for lineno, line in enumerate(lines):
-            # Check for continuation
+        fuer lineno, line in enumerate(lines):
+            # Check fuer continuation
             if line[0] in ' \t':
                 if not lastheader:
                     # The first line of the headers was a continuation.  This
                     # is illegal, so let's note the defect, store the illegal
-                    # line, and ignore it for purposes of headers.
+                    # line, and ignore it fuer purposes of headers.
                     defect = errors.FirstHeaderLineIsContinuationDefect(line)
                     self.policy.handle_defect(self._cur, defect)
                     continue
@@ -488,7 +488,7 @@ klasse FeedParser:
             if lastheader:
                 self._cur.set_raw(*self.policy.header_source_parse(lastvalue))
                 lastheader, lastvalue = '', []
-            # Check for envelope header, i.e. unix-from
+            # Check fuer envelope header, i.e. unix-from
             if line.startswith('From '):
                 if lineno == 0:
                     # Strip off the trailing newline

@@ -120,7 +120,7 @@ result_2004_html = """\
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset={encoding}" />
 <link rel="stylesheet" type="text/css" href="calendar.css" />
-<title>Calendar for 2004</title>
+<title>Calendar fuer 2004</title>
 </head>
 <body>
 <table border="0" cellpadding="0" cellspacing="0" class="{year}">
@@ -375,7 +375,7 @@ klasse OutputTestCase(unittest.TestCase):
             return not c.isspace() and not c.isdigit()
 
         lines = []
-        for line in s.splitlines(keepends=False):
+        fuer line in s.splitlines(keepends=False):
             # Drop texts, as they are locale dependent
             if line and not filter(neitherspacenordigit, line):
                 lines.append(line)
@@ -423,8 +423,8 @@ klasse OutputTestCase(unittest.TestCase):
     def test_yeardatescalendar(self):
         def shrink(cal):
             return [[[' '.join('{:02d}/{:02d}/{}'.format(
-                                d.month, d.day, str(d.year)[-2:]) for d in z)
-                            for z in y] for y in x] for x in cal]
+                                d.month, d.day, str(d.year)[-2:]) fuer d in z)
+                            fuer z in y] fuer y in x] fuer x in cal]
         self.assertEqual(
             shrink(calendar.Calendar().yeardatescalendar(2004)),
             result_2004_dates
@@ -507,7 +507,7 @@ klasse CalendarTestCase(unittest.TestCase):
             calendar.January
 
     def test_isleap(self):
-        # Make sure that the return is right for a few years, and
+        # Make sure that the return is right fuer a few years, and
         # ensure that the return values are 1 or 0, not just true or
         # false (see SF bug #485794).  Specific additional tests may
         # be appropriate; this tests a single "cycle".
@@ -534,10 +534,10 @@ klasse CalendarTestCase(unittest.TestCase):
     def test_enumerate_weekdays(self):
         self.assertRaises(IndexError, calendar.day_abbr.__getitem__, -10)
         self.assertRaises(IndexError, calendar.day_name.__getitem__, 10)
-        self.assertEqual(len([d for d in calendar.day_abbr]), 7)
+        self.assertEqual(len([d fuer d in calendar.day_abbr]), 7)
 
     def test_days(self):
-        for attr in "day_name", "day_abbr":
+        fuer attr in "day_name", "day_abbr":
             value = getattr(calendar, attr)
             self.assertEqual(len(value), 7)
             self.assertEqual(len(value[:]), 7)
@@ -547,7 +547,7 @@ klasse CalendarTestCase(unittest.TestCase):
             self.assertEqual(value[::-1], list(reversed(value)))
 
     def test_months(self):
-        for attr in ("month_name", "month_abbr", "standalone_month_name",
+        fuer attr in ("month_name", "month_abbr", "standalone_month_name",
                      "standalone_month_abbr"):
             value = getattr(calendar, attr)
             self.assertEqual(len(value), 13)
@@ -705,7 +705,7 @@ klasse CalendarTestCase(unittest.TestCase):
             'Malay', 'ms_MY.UTF8'
     )
     def test_locale_calendar_short_weekday_names(self):
-        names = (datetime.date(2001, 1, i+1).strftime('%A') for i in range(7))
+        names = (datetime.date(2001, 1, i+1).strftime('%A') fuer i in range(7))
         max_length = max(map(len, names))
         if max_length >= 9:
             self.skipTest('weekday names are too long')
@@ -733,9 +733,9 @@ klasse CalendarTestCase(unittest.TestCase):
             'Russian', 'ru_RU.UTF-8',
     )
     def test_locale_calendar_long_weekday_names(self):
-        names = (datetime.date(2001, 1, i+1).strftime('%A') for i in range(7))
+        names = (datetime.date(2001, 1, i+1).strftime('%A') fuer i in range(7))
         max_length = max(map(len, names))
-        abbrev_names = (datetime.date(2001, 1, i+1).strftime('%a') for i in range(7))
+        abbrev_names = (datetime.date(2001, 1, i+1).strftime('%a') fuer i in range(7))
         abbrev_max_length = max(map(len, abbrev_names))
 
         if max_length <= 9:
@@ -797,10 +797,10 @@ klasse CalendarTestCase(unittest.TestCase):
         self.assertEqual(days[-1], (2001, 2, 28, 2))
 
     def test_itermonthdays(self):
-        for firstweekday in range(7):
+        fuer firstweekday in range(7):
             cal = calendar.Calendar(firstweekday)
             # Test the extremes, see #28253 and #26650
-            for y, m in [(1, 1), (9999, 12)]:
+            fuer y, m in [(1, 1), (9999, 12)]:
                 days = list(cal.itermonthdays(y, m))
                 self.assertIn(len(days), (35, 42))
         # Test a short month
@@ -809,17 +809,17 @@ klasse CalendarTestCase(unittest.TestCase):
         self.assertEqual(days, list(range(1, 29)))
 
     def test_itermonthdays2(self):
-        for firstweekday in range(7):
+        fuer firstweekday in range(7):
             cal = calendar.Calendar(firstweekday)
             # Test the extremes, see #28253 and #26650
-            for y, m in [(1, 1), (9999, 12)]:
+            fuer y, m in [(1, 1), (9999, 12)]:
                 days = list(cal.itermonthdays2(y, m))
                 self.assertEqual(days[0][1], firstweekday)
                 self.assertEqual(days[-1][1], (firstweekday - 1) % 7)
 
     def test_iterweekdays(self):
         week0 = list(range(7))
-        for firstweekday in range(7):
+        fuer firstweekday in range(7):
             cal = calendar.Calendar(firstweekday)
             week = list(cal.iterweekdays())
             expected = week0[firstweekday:] + week0[:firstweekday]
@@ -837,8 +837,8 @@ klasse MonthCalendarTestCase(unittest.TestCase):
     def check_weeks(self, year, month, weeks):
         cal = calendar.monthcalendar(year, month)
         self.assertEqual(len(cal), len(weeks))
-        for i in range(len(weeks)):
-            self.assertEqual(weeks[i], sum(day != 0 for day in cal[i]))
+        fuer i in range(len(weeks)):
+            self.assertEqual(weeks[i], sum(day != 0 fuer day in cal[i]))
 
 
 klasse MondayTestCase(MonthCalendarTestCase):
@@ -960,7 +960,7 @@ klasse TimegmTestCase(unittest.TestCase):
     TIMESTAMPS = [0, 10, 100, 1000, 10000, 100000, 1000000,
                   1234567890, 1262304000, 1275785153,]
     def test_timegm(self):
-        for secs in self.TIMESTAMPS:
+        fuer secs in self.TIMESTAMPS:
             tuple = time.gmtime(secs)
             self.assertEqual(secs, calendar.timegm(tuple))
 
@@ -1096,7 +1096,7 @@ klasse CommandLineTestCase(unittest.TestCase):
         self.assertFailure('-t', 'html', '2004', '1')
 
     def test_output_current_year(self):
-        for run in self.runners:
+        fuer run in self.runners:
             output = run()
             year = datetime.datetime.now().year
             self.assertIn(conv(' %s' % year), output)
@@ -1104,19 +1104,19 @@ klasse CommandLineTestCase(unittest.TestCase):
             self.assertIn(b'Mo Tu We Th Fr Sa Su', output)
 
     def test_output_year(self):
-        for run in self.runners:
+        fuer run in self.runners:
             output = run('2004')
             self.assertEqual(output, conv(result_2004_text))
 
     def test_output_month(self):
-        for run in self.runners:
+        fuer run in self.runners:
             output = run('2004', '1')
             self.assertEqual(output, conv(result_2004_01_text))
 
     def test_option_encoding(self):
         self.assertFailure('-e')
         self.assertFailure('--encoding')
-        for run in self.runners:
+        fuer run in self.runners:
             output = run('--encoding', 'utf-16-le', '2004')
             self.assertEqual(output, result_2004_text.encode('utf-16-le'))
 
@@ -1136,8 +1136,8 @@ klasse CommandLineTestCase(unittest.TestCase):
                 locale.setlocale(locale.LC_TIME, oldlocale)
         except (locale.Error, ValueError):
             self.skipTest('cannot set the system default locale')
-        for run in self.runners:
-            for type in ('text', 'html'):
+        fuer run in self.runners:
+            fuer type in ('text', 'html'):
                 output = run(
                     '--type', type, '--locale', lang, '--encoding', enc, '2004'
                 )
@@ -1147,7 +1147,7 @@ klasse CommandLineTestCase(unittest.TestCase):
         self.assertFailure('-w')
         self.assertFailure('--width')
         self.assertFailure('-w', 'spam')
-        for run in self.runners:
+        fuer run in self.runners:
             output = run('--width', '3', '2004')
             self.assertIn(b'Mon Tue Wed Thu Fri Sat Sun', output)
 
@@ -1155,7 +1155,7 @@ klasse CommandLineTestCase(unittest.TestCase):
         self.assertFailure('-l')
         self.assertFailure('--lines')
         self.assertFailure('-l', 'spam')
-        for run in self.runners:
+        fuer run in self.runners:
             output = run('--lines', '2', '2004')
             self.assertIn(conv('December\n\nMo Tu We'), output)
 
@@ -1163,7 +1163,7 @@ klasse CommandLineTestCase(unittest.TestCase):
         self.assertFailure('-s')
         self.assertFailure('--spacing')
         self.assertFailure('-s', 'spam')
-        for run in self.runners:
+        fuer run in self.runners:
             output = run('--spacing', '8', '2004')
             self.assertIn(b'Su        Mo', output)
 
@@ -1171,7 +1171,7 @@ klasse CommandLineTestCase(unittest.TestCase):
         self.assertFailure('-m')
         self.assertFailure('--month')
         self.assertFailure('-m', 'spam')
-        for run in self.runners:
+        fuer run in self.runners:
             output = run('--months', '1', '2004')
             self.assertIn(conv('\nMo Tu We Th Fr Sa Su\n'), output)
 
@@ -1179,29 +1179,29 @@ klasse CommandLineTestCase(unittest.TestCase):
         self.assertFailure('-t')
         self.assertFailure('--type')
         self.assertFailure('-t', 'spam')
-        for run in self.runners:
+        fuer run in self.runners:
             output = run('--type', 'text', '2004')
             self.assertEqual(output, conv(result_2004_text))
             output = run('--type', 'html', '2004')
             self.assertStartsWith(output, b'<?xml ')
-            self.assertIn(b'<title>Calendar for 2004</title>', output)
+            self.assertIn(b'<title>Calendar fuer 2004</title>', output)
 
     def test_html_output_current_year(self):
-        for run in self.runners:
+        fuer run in self.runners:
             output = run('--type', 'html')
             year = datetime.datetime.now().year
-            self.assertIn(('<title>Calendar for %s</title>' % year).encode(), output)
+            self.assertIn(('<title>Calendar fuer %s</title>' % year).encode(), output)
             self.assertIn(b'<tr><th colspan="7" class="month">January</th></tr>', output)
 
     def test_html_output_year_encoding(self):
-        for run in self.runners:
+        fuer run in self.runners:
             output = run('-t', 'html', '--encoding', 'ascii', '2004')
             self.assertEqual(output, result_2004_html.format(**default_format).encode('ascii'))
 
     def test_html_output_year_css(self):
         self.assertFailure('-t', 'html', '-c')
         self.assertFailure('-t', 'html', '--css')
-        for run in self.runners:
+        fuer run in self.runners:
             output = run('-t', 'html', '--css', 'custom.css', '2004')
             self.assertIn(b'<link rel="stylesheet" type="text/css" '
                           b'href="custom.css" />', output)
@@ -1221,7 +1221,7 @@ klasse TestSubClassingCase(unittest.TestCase):
     def setUp(self):
 
         klasse CustomHTMLCal(calendar.HTMLCalendar):
-            cssclasses = [style + " text-nowrap" for style in
+            cssclasses = [style + " text-nowrap" fuer style in
                           calendar.HTMLCalendar.cssclasses]
             cssclasses_weekday_head = ["red", "blue", "green", "lilac",
                                        "yellow", "orange", "pink"]
@@ -1253,7 +1253,7 @@ klasse TestSubClassingCase(unittest.TestCase):
 
     def test_formatweek_head(self):
         header = self.cal.formatweekheader()
-        for color in self.cal.cssclasses_weekday_head:
+        fuer color in self.cal.cssclasses_weekday_head:
             self.assertIn('<th class="%s">' % color, header)
 
     def test_format_year(self):

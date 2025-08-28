@@ -198,10 +198,10 @@ klasse ExceptHookTest(unittest.TestCase):
         with test.support.captured_output("stderr") as stderr:
             with test.support.catch_unraisable_exception():
                 sys.excepthook(1, '1', 1)
-        self.assertTrue("TypeError: print_exception(): Exception expected for " \
+        self.assertTrue("TypeError: print_exception(): Exception expected fuer " \
                          "value, str found" in stderr.getvalue())
 
-    # FIXME: testing the code for a lost or replaced excepthook in
+    # FIXME: testing the code fuer a lost or replaced excepthook in
     # Python/pythonrun.c::PyErr_PrintEx() is tricky.
 
 
@@ -224,7 +224,7 @@ klasse SysModuleTest(unittest.TestCase):
         self.assertEqual(out, b'')
         self.assertEqual(err, b'')
 
-        # gh-125842: Windows uses 32-bit unsigned integers for exit codes
+        # gh-125842: Windows uses 32-bit unsigned integers fuer exit codes
         # so a -1 exit code is sometimes interpreted as 0xffff_ffff.
         rc, out, err = assert_python_failure('-c', 'import sys; sys.exit(0xffff_ffff)')
         self.assertIn(rc, (-1, 0xff, 0xffff_ffff))
@@ -301,8 +301,8 @@ klasse SysModuleTest(unittest.TestCase):
             "raise SystemExit"
         ]
 
-        for exitfunc in exit_ways:
-            for return_code in (0, 123):
+        fuer exitfunc in exit_ways:
+            fuer return_code in (0, 123):
                 with self.subTest(exitfunc=exitfunc, return_code=return_code):
                     with tempfile.TemporaryFile("w+") as stdin:
                         stdin.write(f"{exitfunc}({return_code})\n")
@@ -327,7 +327,7 @@ klasse SysModuleTest(unittest.TestCase):
         # sanity check
         self.assertTrue(orig < 0.5, orig)
         try:
-            for n in 0.00001, 0.05, 3.0, orig:
+            fuer n in 0.00001, 0.05, 3.0, orig:
                 sys.setswitchinterval(n)
                 self.assertAlmostEqual(sys.getswitchinterval(), n)
         finally:
@@ -359,7 +359,7 @@ klasse SysModuleTest(unittest.TestCase):
         def f():
             f()
         try:
-            for depth in (50, 75, 100, 250, 1000):
+            fuer depth in (50, 75, 100, 250, 1000):
                 try:
                     sys.setrecursionlimit(depth)
                 except RecursionError:
@@ -446,14 +446,14 @@ klasse SysModuleTest(unittest.TestCase):
 
     @test.support.refcount_test
     def test_refcount(self):
-        # n here originally had to be a global in order for this test to pass
+        # n here originally had to be a global in order fuer this test to pass
         # while tracing with a python function. Tracing used to call
         # PyFrame_FastToLocals, which would add a copy of any locals to the
         # frame object, causing the ref count to increase by 2 instead of 1.
         # While that no longer happens (due to PEP 667), this test case retains
         # its original global-based implementation
         # PEP 683's immortal objects also made this point moot, since the
-        # refcount for None doesn't change anyway. Maybe this test should be
+        # refcount fuer None doesn't change anyway. Maybe this test should be
         # using a different constant value? (e.g. an integer)
         global n
         self.assertRaises(TypeError, sys.getrefcount)
@@ -528,7 +528,7 @@ klasse SysModuleTest(unittest.TestCase):
             thread_id = thread_info[0]
 
             d = sys._current_frames()
-            for tid in d:
+            fuer tid in d:
                 self.assertIsInstance(tid, int)
                 self.assertGreater(tid, 0)
 
@@ -545,7 +545,7 @@ klasse SysModuleTest(unittest.TestCase):
             # threading.py are also in the thread's call stack.
             frame = d.pop(thread_id)
             stack = traceback.extract_stack(frame)
-            for i, (filename, lineno, funcname, sourceline) in enumerate(stack):
+            fuer i, (filename, lineno, funcname, sourceline) in enumerate(stack):
                 if funcname == "f123":
                     break
             else:
@@ -553,7 +553,7 @@ klasse SysModuleTest(unittest.TestCase):
 
             self.assertEqual(sourceline, "g456()")
 
-            # And the next record must be for g456().
+            # And the next record must be fuer g456().
             filename, lineno, funcname, sourceline = stack[i+1]
             self.assertEqual(funcname, "g456")
             self.assertIn(sourceline, ["leave_g.wait()", "entered_g.set()"])
@@ -597,7 +597,7 @@ klasse SysModuleTest(unittest.TestCase):
             thread_id = thread_info[0]
 
             d = sys._current_exceptions()
-            for tid in d:
+            fuer tid in d:
                 self.assertIsInstance(tid, int)
                 self.assertGreater(tid, 0)
 
@@ -611,7 +611,7 @@ klasse SysModuleTest(unittest.TestCase):
             # threading.py are also in the thread's call stack.
             exc_value = d.pop(thread_id)
             stack = traceback.extract_stack(exc_value.__traceback__.tb_frame)
-            for i, (filename, lineno, funcname, sourceline) in enumerate(stack):
+            fuer i, (filename, lineno, funcname, sourceline) in enumerate(stack):
                 if funcname == "f123":
                     break
             else:
@@ -619,7 +619,7 @@ klasse SysModuleTest(unittest.TestCase):
 
             self.assertEqual(sourceline, "g456()")
 
-            # And the next record must be for g456().
+            # And the next record must be fuer g456().
             filename, lineno, funcname, sourceline = stack[i+1]
             self.assertEqual(funcname, "g456")
             self.assertStartsWith(sourceline, ("if leave_g.wait(", "g_raised.set()"))
@@ -631,10 +631,10 @@ klasse SysModuleTest(unittest.TestCase):
     def test_attributes(self):
         self.assertIsInstance(sys.api_version, int)
         self.assertIsInstance(sys.argv, list)
-        for arg in sys.argv:
+        fuer arg in sys.argv:
             self.assertIsInstance(arg, str)
         self.assertIsInstance(sys.orig_argv, list)
-        for arg in sys.orig_argv:
+        fuer arg in sys.orig_argv:
             self.assertIsInstance(arg, str)
         self.assertIn(sys.byteorder, ("little", "big"))
         self.assertIsInstance(sys.builtin_module_names, tuple)
@@ -662,7 +662,7 @@ klasse SysModuleTest(unittest.TestCase):
         # sys.hash_info.modulus should be a prime; we do a quick
         # probable primality test (doesn't exclude the possibility of
         # a Carmichael number)
-        for x in range(1, 100):
+        fuer x in range(1, 100):
             self.assertEqual(
                 pow(x, sys.hash_info.modulus-1, sys.hash_info.modulus),
                 1,
@@ -772,7 +772,7 @@ klasse SysModuleTest(unittest.TestCase):
             self.assertIs(sys._is_interned(s2), False)
 
         # Subclasses of string can't be interned, because they
-        # provide too much opportunity for insane things to happen.
+        # provide too much opportunity fuer insane things to happen.
         # We don't want them in the interned dict and if they aren't
         # actually interned, we don't want to create the appearance
         # that they are by allowing intern() to succeed.
@@ -811,9 +811,9 @@ klasse SysModuleTest(unittest.TestCase):
     def test_subinterp_intern_statically_allocated(self):
         # Implementation detail: Statically allocated strings are shared
         # between interpreters.
-        # See Tools/build/generate_global_objects.py for the list
+        # See Tools/build/generate_global_objects.py fuer the list
         # of strings that are always statically allocated.
-        for s in ('__init__', 'CANCELLED', '<module>', 'utf-8',
+        fuer s in ('__init__', 'CANCELLED', '<module>', 'utf-8',
                   '{{', '', '\n', '_', 'x', '\0', '\N{CEDILLA}', '\xff',
                   ):
             with self.subTest(s=s):
@@ -833,9 +833,9 @@ klasse SysModuleTest(unittest.TestCase):
     @support.cpython_only
     @requires_subinterpreters
     def test_subinterp_intern_singleton(self):
-        # Implementation detail: singletons are used for 0- and 1-character
+        # Implementation detail: singletons are used fuer 0- and 1-character
         # latin1 strings.
-        for s in '', '\n', '_', 'x', '\0', '\N{CEDILLA}', '\xff':
+        fuer s in '', '\n', '_', 'x', '\0', '\N{CEDILLA}', '\xff':
             with self.subTest(s=s):
                 interp = interpreters.create()
                 interp.exec(textwrap.dedent(f'''
@@ -857,7 +857,7 @@ klasse SysModuleTest(unittest.TestCase):
                  "ignore_environment", "verbose", "bytes_warning", "quiet",
                  "hash_randomization", "isolated", "dev_mode", "utf8_mode",
                  "warn_default_encoding", "safe_path", "int_max_str_digits")
-        for attr in attrs:
+        fuer attr in attrs:
             self.assertHasAttr(sys.flags, attr)
             attr_type = bool if attr in ("dev_mode", "safe_path") else int
             self.assertEqual(type(getattr(sys.flags, attr)), attr_type, attr)
@@ -1142,7 +1142,7 @@ klasse SysModuleTest(unittest.TestCase):
         try:
             # The reported blocks will include immortalized strings, but the
             # total ref count will not. This will sanity check that among all
-            # other objects (those eligible for garbage collection) there
+            # other objects (those eligible fuer garbage collection) there
             # are more references being tracked than allocated blocks.
             interned_immortal = sys.getunicodeinternedsize(_only_immortal=True)
             self.assertLess(a - interned_immortal, sys.gettotalrefcount())
@@ -1290,7 +1290,7 @@ klasse SysModuleTest(unittest.TestCase):
 
     def test_module_names(self):
         self.assertIsInstance(sys.stdlib_module_names, frozenset)
-        for name in sys.stdlib_module_names:
+        fuer name in sys.stdlib_module_names:
             self.assertIsInstance(name, str)
 
     @unittest.skipUnless(hasattr(sys, '_stdlib_dir'), 'need sys._stdlib_dir')
@@ -1314,10 +1314,10 @@ klasse SysModuleTest(unittest.TestCase):
         klasse MyType:
             pass
         size = 100
-        my_objects = [MyType() for _ in range(size)]
+        my_objects = [MyType() fuer _ in range(size)]
         get_objects = sys.getobjects(0, MyType)
         self.assertEqual(len(get_objects), size)
-        for obj in get_objects:
+        fuer obj in get_objects:
             self.assertIsInstance(obj, MyType)
 
         # sys.getobjects(3, MyType)
@@ -1393,7 +1393,7 @@ klasse UnraisableHookTest(unittest.TestCase):
                 # The following line is included in the traceback report:
                 raise exc
 
-        for test_class in (BrokenDel, BrokenExceptionDel):
+        fuer test_class in (BrokenDel, BrokenExceptionDel):
             with self.subTest(test_class):
                 obj = test_class()
                 with test.support.captured_stderr() as stderr, \
@@ -1427,7 +1427,7 @@ klasse UnraisableHookTest(unittest.TestCase):
                 klasse X(Exception):
                     pass
 
-        for moduleName in 'builtins', '__main__', 'some_module':
+        fuer moduleName in 'builtins', '__main__', 'some_module':
             with self.subTest(moduleName=moduleName):
                 A.B.X.__module__ = moduleName
                 with test.support.captured_stderr() as stderr, test.support.swap_attr(
@@ -1569,7 +1569,7 @@ klasse SizeofTest(unittest.TestCase):
         check(len, size('5P'))
         # bytearray
         samples = [b'', b'u'*100000]
-        for sample in samples:
+        fuer sample in samples:
             x = bytearray(sample)
             check(x, vsize('n2Pi') + x.__alloc__())
         # bytearray_iterator
@@ -1614,7 +1614,7 @@ klasse SizeofTest(unittest.TestCase):
         check({}, size('nQ2P'))
         # dict (string key)
         check({"a": 1}, size('nQ2P') + calcsize(DICT_KEY_STRUCT_FORMAT) + 8 + (8*2//3)*calcsize('2P'))
-        longdict = {str(i): i for i in range(8)}
+        longdict = {str(i): i fuer i in range(8)}
         check(longdict, size('nQ2P') + calcsize(DICT_KEY_STRUCT_FORMAT) + 16 + (16*2//3)*calcsize('2P'))
         # dict (non-string key)
         check({1: 1}, size('nQ2P') + calcsize(DICT_KEY_STRUCT_FORMAT) + 8 + (8*2//3)*calcsize('n2P'))
@@ -1744,11 +1744,11 @@ klasse SizeofTest(unittest.TestCase):
         PySet_MINSIZE = 8
         samples = [[], range(10), range(50)]
         s = size('3nP' + PySet_MINSIZE*'nP' + '2nP')
-        for sample in samples:
+        fuer sample in samples:
             minused = len(sample)
             if minused == 0: tmp = 1
             # the computation of minused is actually a bit more complicated
-            # but this suffices for the sizeof test
+            # but this suffices fuer the sizeof test
             minused = minused*2
             newsize = PySet_MINSIZE
             while newsize <= minused:
@@ -1786,14 +1786,14 @@ klasse SizeofTest(unittest.TestCase):
                   + typeid              # heap type id (free-threaded only)
                   )
         klasse newstyleclass(object): pass
-        # Separate block for PyDictKeysObject with 8 keys and 5 entries
+        # Separate block fuer PyDictKeysObject with 8 keys and 5 entries
         check(newstyleclass, s + calcsize(DICT_KEY_STRUCT_FORMAT) + 64 + 42*calcsize("2P"))
         # dict with shared keys
-        [newstyleclass() for _ in range(100)]
+        [newstyleclass() fuer _ in range(100)]
         check(newstyleclass().__dict__, size('nQ2P') + self.P)
         o = newstyleclass()
         o.a = o.b = o.c = o.d = o.e = o.f = o.g = o.h = 1
-        # Separate block for PyDictKeysObject with 16 keys and 10 entries
+        # Separate block fuer PyDictKeysObject with 16 keys and 10 entries
         check(newstyleclass, s + calcsize(DICT_KEY_STRUCT_FORMAT) + 64 + 42*calcsize("2P"))
         # dict with shared keys
         check(newstyleclass().__dict__, size('nQ2P') + self.P)
@@ -1808,7 +1808,7 @@ klasse SizeofTest(unittest.TestCase):
         asciifields = "nnb"
         compactfields = asciifields + "nP"
         unicodefields = compactfields + "P"
-        for s in samples:
+        fuer s in samples:
             maxchar = ord(max(s))
             if maxchar < 128:
                 L = size(asciifields) + len(s) + 1
@@ -1888,7 +1888,7 @@ klasse SizeofTest(unittest.TestCase):
         # symtable entry
         # XXX
         # sys.flags
-        # FIXME: The +3 is for the 'gil', 'thread_inherit_context' and
+        # FIXME: The +3 is fuer the 'gil', 'thread_inherit_context' and
         # 'context_aware_warnings' flags and will not be necessary once
         # gh-122575 is fixed
         check(sys.flags, vsize('') + self.P + self.P * (3 + len(sys.flags)))
@@ -1936,7 +1936,7 @@ klasse SizeofTest(unittest.TestCase):
     def test_changing_sys_stderr_and_removing_reference(self):
         # If the default displayhook doesn't take a strong reference
         # to sys.stderr the following code can crash. See bpo-43660
-        # for more details.
+        # fuer more details.
         code = textwrap.dedent('''
             import sys
             klasse MyStderr:
@@ -1987,7 +1987,7 @@ sock.sendall(b"ready")
 
 print("Target process running...")
 
-# Wait for remote script to be executed
+# Wait fuer remote script to be executed
 # (the execution will happen as the following
 # code is processed as soon as the recv call
 # unblocks)
@@ -1995,7 +1995,7 @@ sock.recv(1024)
 
 # Do a bunch of work to give the remote script time to run
 x = 0
-for i in range(100):
+fuer i in range(100):
     x += i
 
 # Write confirmation back
@@ -2035,11 +2035,11 @@ sock.close()
                 # Signal script to continue
                 client_socket.sendall(b"continue")
 
-                # Wait for execution confirmation
+                # Wait fuer execution confirmation
                 response = client_socket.recv(1024)
                 self.assertEqual(response, b"executed")
 
-                # Return output for test verification
+                # Return output fuer test verification
                 stdout, stderr = proc.communicate(timeout=10.0)
                 return proc.returncode, stdout, stderr
             except PermissionError:
@@ -2073,7 +2073,7 @@ sock.close()
     def test_remote_exec_undecodable(self):
         script = 'print("Remote script executed successfully!")'
         script_path = os_helper.TESTFN_UNDECODABLE + b'_undecodable_remote.py'
-        for script_path in [script_path, os.fsdecode(script_path)]:
+        fuer script_path in [script_path, os.fsdecode(script_path)]:
             returncode, stdout, stderr = self._run_remote_exec_test(script,
                                                         script_path=script_path)
             self.assertIn(b"Remote script executed successfully!", stdout)
@@ -2240,7 +2240,7 @@ klasse TestSysJIT(unittest.TestCase):
 
             def frame_3_jit() -> None:
                 # JITs just before the last loop:
-                for i in range(_testinternalcapi.TIER2_THRESHOLD + 1):
+                fuer i in range(_testinternalcapi.TIER2_THRESHOLD + 1):
                     # Careful, doing this in the reverse order breaks tracing:
                     expected = {enabled} and i == _testinternalcapi.TIER2_THRESHOLD
                     assert sys._jit.is_active() is expected

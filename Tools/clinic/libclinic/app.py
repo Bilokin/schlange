@@ -133,7 +133,7 @@ impl_definition block
 
         self.presets: dict[str, dict[Any, Any]] = {}
         preset = None
-        for line in self.presets_text.strip().split('\n'):
+        fuer line in self.presets_text.strip().split('\n'):
             line = line.strip()
             if not line:
                 continue
@@ -149,7 +149,7 @@ impl_definition block
             buffer = self.get_destination_buffer(value, index)
 
             if name == 'everything':
-                for name in self.destination_buffers:
+                fuer name in self.destination_buffers:
                     preset[name] = buffer
                 continue
 
@@ -183,7 +183,7 @@ impl_definition block
     def parse(self, input: str) -> str:
         printer = self.printer
         self.block_parser = BlockParser(input, self.language, verify=self.verify)
-        for block in self.block_parser:
+        fuer block in self.block_parser:
             dsl_name = block.dsl_name
             if dsl_name:
                 if dsl_name not in self.parsers:
@@ -194,7 +194,7 @@ impl_definition block
             printer.print_block(block)
 
         # these are destinations not buffers
-        for name, destination in self.destinations.items():
+        fuer name, destination in self.destinations.items():
             if destination.type == 'suppress':
                 continue
             output = destination.dump()
@@ -254,7 +254,7 @@ impl_definition block
         module: Clinic | Module = self
         cls: Class | None = None
 
-        for idx, field in enumerate(fields):
+        fuer idx, field in enumerate(fields):
             if not isinstance(parent, Class):
                 if field in parent.modules:
                     parent = module = parent.modules[field]

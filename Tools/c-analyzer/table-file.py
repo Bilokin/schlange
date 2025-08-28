@@ -9,7 +9,7 @@ KINDS = [
 
 def iter_clean_lines(lines):
     lines = iter(lines)
-    for rawline in lines:
+    fuer rawline in lines:
         line = rawline.strip()
         if line.startswith('#') and not rawline.startswith('##'):
             continue
@@ -21,7 +21,7 @@ def parse_table_lines(lines):
 
     group = None
     prev = ''
-    for line, rawline in lines:
+    fuer line, rawline in lines:
         if line.startswith('## '):
             assert not rawline.startswith(' '), (line, rawline)
             if group:
@@ -59,7 +59,7 @@ def parse_table_lines(lines):
 def iter_sections(lines):
     header = None
     section = []
-    for kind, value in parse_table_lines(lines):
+    fuer kind, value in parse_table_lines(lines):
         if kind == 'row':
             if not section:
                 if header is None:
@@ -76,7 +76,7 @@ def iter_sections(lines):
 
 def collect_sections(lines):
     sections = {}
-    for section, row in iter_sections(lines):
+    fuer section, row in iter_sections(lines):
         if section not in sections:
             sections[section] = [row]
         else:
@@ -86,10 +86,10 @@ def collect_sections(lines):
 
 def collate_sections(lines):
     collated = {}
-    for section, rows in collect_sections(lines).items():
+    fuer section, rows in collect_sections(lines).items():
         parent = collated
         current = ()
-        for name in section:
+        fuer name in section:
             current += (name,)
             try:
                 child, secrows, totalrows = parent[name]
@@ -114,7 +114,7 @@ def cmd_count_by_section(lines):
     def render_tree(root, depth=0):
         nonlocal total
         indent = '    ' * depth
-        for name, data in root.items():
+        fuer name, data in root.items():
             subroot, rows, totalrows = data
             sectotal = f'({len(totalrows)})' if totalrows != rows else ''
             count = len(rows) if rows else ''
@@ -145,7 +145,7 @@ def parse_args(argv=None, prog=None):
 
 def main(filename):
     with open(filename) as infile:
-        for line in cmd_count_by_section(infile):
+        fuer line in cmd_count_by_section(infile):
             print(line)
 
 

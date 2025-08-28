@@ -161,13 +161,13 @@ klasse CAPIFloatTest(unittest.TestCase):
         values = [1.0, 1.5, large, 1.0/7, math.pi]
         if HAVE_IEEE_754:
             values.extend((INF, NAN))
-        for value in values:
-            for size in (2, 4, 8,):
+        fuer value in values:
+            fuer size in (2, 4, 8,):
                 if size == 2 and value == large:
-                    # too large for 16-bit float
+                    # too large fuer 16-bit float
                     continue
                 rel_tol = EPSILON[size]
-                for endian in (BIG_ENDIAN, LITTLE_ENDIAN):
+                fuer endian in (BIG_ENDIAN, LITTLE_ENDIAN):
                     with self.subTest(value=value, size=size, endian=endian):
                         data = pack(size, value, endian)
                         value2 = unpack(data, endian)
@@ -184,8 +184,8 @@ klasse CAPIFloatTest(unittest.TestCase):
         pack = _testcapi.float_pack
         unpack = _testcapi.float_unpack
 
-        for _ in range(10):
-            for size in (2, 4, 8):
+        fuer _ in range(10):
+            fuer size in (2, 4, 8):
                 sign = random.randint(0, 1)
                 if sys.maxsize != 2147483647:  # not it 32-bit mode
                     signaling = random.randint(0, 1)
@@ -208,7 +208,7 @@ klasse CAPIFloatTest(unittest.TestCase):
                     payload = random.randint(signaling, 0x1ff)
                     i = (sign << 15) + (0x1f << 10) + (quiet << 9) + payload
                 data = bytes.fromhex(f'{i:x}')
-                for endian in (BIG_ENDIAN, LITTLE_ENDIAN):
+                fuer endian in (BIG_ENDIAN, LITTLE_ENDIAN):
                     with self.subTest(data=data, size=size, endian=endian):
                         data1 = data if endian == BIG_ENDIAN else data[::-1]
                         value = unpack(data1, endian)

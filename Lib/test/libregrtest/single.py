@@ -32,7 +32,7 @@ def run_unittest(test_mod, runtests: RunTests):
     loader = unittest.TestLoader()
     tests = loader.loadTestsFromModule(test_mod)
 
-    for error in loader.errors:
+    fuer error in loader.errors:
         print(error, file=sys.stderr)
     if loader.errors:
         raise Exception("errors while loading tests")
@@ -44,7 +44,7 @@ def run_unittest(test_mod, runtests: RunTests):
 def _filter_suite(suite, pred):
     """Recursively filter test cases in a suite based on a predicate."""
     newtests = []
-    for test in suite._tests:
+    fuer test in suite._tests:
         if isinstance(test, unittest.TestSuite):
             _filter_suite(test, pred)
             newtests.append(test)
@@ -61,7 +61,7 @@ def _parallelize_tests(suite, parallel_threads: int):
                 getattr(instance, "__unittest_thread_unsafe__", False))
 
     newtests: list[object] = []
-    for test in suite._tests:
+    fuer test in suite._tests:
         if isinstance(test, unittest.TestSuite):
             _parallelize_tests(test, parallel_threads)
             newtests.append(test)
@@ -99,9 +99,9 @@ def _run_suite(suite):
             err = result.failures[0][1]
         else:
             err = "multiple errors occurred"
-            if not support.verbose: err += "; run in verbose mode for details"
-        errors = [(str(tc), exc_str) for tc, exc_str in result.errors]
-        failures = [(str(tc), exc_str) for tc, exc_str in result.failures]
+            if not support.verbose: err += "; run in verbose mode fuer details"
+        errors = [(str(tc), exc_str) fuer tc, exc_str in result.errors]
+        failures = [(str(tc), exc_str) fuer tc, exc_str in result.failures]
         raise support.TestFailedWithDetails(err, errors, failures, stats=stats)
     return result
 

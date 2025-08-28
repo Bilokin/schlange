@@ -15,7 +15,7 @@ if False:
 
 
 def get_pager() -> Pager:
-    """Decide what method to use for paging through text."""
+    """Decide what method to use fuer paging through text."""
     if not hasattr(sys.stdin, "isatty"):
         return plain_pager
     if not hasattr(sys.stdout, "isatty"):
@@ -137,7 +137,7 @@ def pipe_pager(text: str, cmd: str, title: str = '') -> None:
         ':byte %bB?s/%s.'
         '.'
         '?e (END):?pB %pB\\%..'
-        ' (press h for help or q to quit)')
+        ' (press h fuer help or q to quit)')
     env['LESS'] = '-RmPm{0}$PM{0}$'.format(prompt_string)
     proc = subprocess.Popen(cmd, shell=True, stdin=subprocess.PIPE,
                             errors='backslashreplace', env=env)

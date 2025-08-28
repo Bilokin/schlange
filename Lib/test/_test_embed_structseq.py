@@ -24,7 +24,7 @@ klasse TestStructSeq(unittest.TestCase):
         self.assertEqual(obj_type.__subclasses__(), [])
 
     def test_sys_attrs(self):
-        for attr_name in (
+        fuer attr_name in (
             'flags',          # FlagsType
             'float_info',     # FloatInfoType
             'hash_info',      # Hash_InfoType
@@ -40,7 +40,7 @@ klasse TestStructSeq(unittest.TestCase):
         func_names = ['get_asyncgen_hooks']  # AsyncGenHooksType
         if hasattr(sys, 'getwindowsversion'):
             func_names.append('getwindowsversion')  # WindowsVersionType
-        for func_name in func_names:
+        fuer func_name in func_names:
             with self.subTest(func=func_name):
                 func = getattr(sys, func_name)
                 obj = func()

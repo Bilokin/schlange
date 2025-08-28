@@ -5,7 +5,7 @@ import sys
 VERBOSITY = 3
 
 
-# The root logger for the whole top-level package:
+# The root logger fuer the whole top-level package:
 _logger = logging.getLogger(__name__.rpartition('.')[0])
 
 

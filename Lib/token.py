@@ -71,15 +71,15 @@ TSTRING_MIDDLE = 63
 TSTRING_END = 64
 COMMENT = 65
 NL = 66
-# These aren't used by the C tokenizer but are needed for tokenize.py
+# These aren't used by the C tokenizer but are needed fuer tokenize.py
 ERRORTOKEN = 67
 ENCODING = 68
 N_TOKENS = 69
-# Special definitions for cooperation with parser
+# Special definitions fuer cooperation with parser
 NT_OFFSET = 256
 
 tok_name = {value: name
-            for name, value in globals().items()
+            fuer name, value in globals().items()
             if isinstance(value, int) and not name.startswith('_')}
 __all__.extend(tok_name.values())
 

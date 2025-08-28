@@ -91,7 +91,7 @@ def compile(file, cfile=None, dfile=None, doraise=False, optimize=-1,
         will be printed, and the function will return to the caller. If an
         exception occurs and this flag is set to True, a PyCompileError
         exception will be raised.
-    :param optimize: The optimization level for the compiler.  Valid values
+    :param optimize: The optimization level fuer the compiler.  Valid values
         are -1, 0, 1 and 2.  A value of -1 means to use the optimization
         level of the current interpreter, as given by -O command line options.
     :param invalidation_mode:
@@ -112,7 +112,7 @@ def compile(file, cfile=None, dfile=None, doraise=False, optimize=-1,
     they would be byte-compiling every module each time it is loaded.
     This can slow down program start-up considerably.
 
-    See compileall.py for a script/module that uses this module to
+    See compileall.py fuer a script/module that uses this module to
     byte-compile all installed files (or all files in selected
     directories).
 
@@ -176,7 +176,7 @@ def compile(file, cfile=None, dfile=None, doraise=False, optimize=-1,
 def main():
     import argparse
 
-    description = 'A simple command-line interface for py_compile module.'
+    description = 'A simple command-line interface fuer py_compile module.'
     parser = argparse.ArgumentParser(description=description, color=True)
     parser.add_argument(
         '-q', '--quiet',
@@ -190,10 +190,10 @@ def main():
     )
     args = parser.parse_args()
     if args.filenames == ['-']:
-        filenames = [filename.rstrip('\n') for filename in sys.stdin.readlines()]
+        filenames = [filename.rstrip('\n') fuer filename in sys.stdin.readlines()]
     else:
         filenames = args.filenames
-    for filename in filenames:
+    fuer filename in filenames:
         try:
             compile(filename, doraise=True)
         except PyCompileError as error:

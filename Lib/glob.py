@@ -96,19 +96,19 @@ def _iglob(pathname, root_dir, dir_fd, recursive, dironly,
             glob_in_dir = _glob1
     else:
         glob_in_dir = _glob0
-    for dirname in dirs:
-        for name in glob_in_dir(_join(root_dir, dirname), basename, dir_fd, dironly,
+    fuer dirname in dirs:
+        fuer name in glob_in_dir(_join(root_dir, dirname), basename, dir_fd, dironly,
                                include_hidden=include_hidden):
             yield os.path.join(dirname, name)
 
 # These 2 helper functions non-recursively glob inside a literal directory.
 # They return a list of basenames.  _glob1 accepts a pattern while _glob0
-# takes a literal basename (so it only has to check for its existence).
+# takes a literal basename (so it only has to check fuer its existence).
 
 def _glob1(dirname, pattern, dir_fd, dironly, include_hidden=False):
     names = _listdir(dirname, dir_fd, dironly)
     if not (include_hidden or _ishidden(pattern)):
-        names = (x for x in names if not _ishidden(x))
+        names = (x fuer x in names if not _ishidden(x))
     return fnmatch.filter(names, pattern)
 
 def _glob0(dirname, basename, dir_fd, dironly, include_hidden=False):
@@ -116,7 +116,7 @@ def _glob0(dirname, basename, dir_fd, dironly, include_hidden=False):
         if _lexists(_join(dirname, basename), dir_fd):
             return [basename]
     else:
-        # `os.path.split()` returns an empty basename for paths ending with a
+        # `os.path.split()` returns an empty basename fuer paths ending with a
         # directory separator.  'q*x/' should match only directories.
         if _isdir(dirname, dir_fd):
             return [basename]
@@ -153,7 +153,7 @@ def _iterdir(dirname, dir_fd, dironly):
             arg = os.curdir
         try:
             with os.scandir(arg) as it:
-                for entry in it:
+                fuer entry in it:
                     try:
                         if not dironly or entry.is_dir():
                             if fsencode is not None:
@@ -175,11 +175,11 @@ def _listdir(dirname, dir_fd, dironly):
 # Recursively yields relative pathnames inside a literal directory.
 def _rlistdir(dirname, dir_fd, dironly, include_hidden=False):
     names = _listdir(dirname, dir_fd, dironly)
-    for x in names:
+    fuer x in names:
         if include_hidden or not _ishidden(x):
             yield x
             path = _join(dirname, x) if dirname else x
-            for y in _rlistdir(path, dir_fd, dironly,
+            fuer y in _rlistdir(path, dir_fd, dironly,
                                include_hidden=include_hidden):
                 yield _join(x, y)
 
@@ -284,7 +284,7 @@ def translate(pat, *, recursive=False, include_hidden=False, seps=None):
     results = []
     parts = re.split(any_sep, pat)
     last_part_idx = len(parts) - 1
-    for idx, part in enumerate(parts):
+    fuer idx, part in enumerate(parts):
         if part == '*':
             results.append(one_segment if idx < last_part_idx else one_last_segment)
         elif recursive and part == '**':
@@ -389,7 +389,7 @@ klasse _GlobberBase:
         """
 
         # Optimization: consume and join any subsequent literal parts here,
-        # rather than leaving them for the next selector. This reduces the
+        # rather than leaving them fuer the next selector. This reduces the
         # number of string concatenation operations.
         while parts and magic_check.search(parts[-1]) is None:
             part += self.sep + parts.pop()
@@ -419,7 +419,7 @@ klasse _GlobberBase:
             except OSError:
                 pass
             else:
-                for entry, entry_name, entry_path in entries:
+                fuer entry, entry_name, entry_path in entries:
                     if match is None or match(entry_name):
                         if dir_only:
                             try:
@@ -442,7 +442,7 @@ klasse _GlobberBase:
             parts.pop()
 
         # Optimization: consume and join any following non-special parts here,
-        # rather than leaving them for the next selector. They're used to
+        # rather than leaving them fuer the next selector. They're used to
         # build a regular expression, which we use to filter the results of
         # the recursive walk. As a result, non-special pattern segments
         # following a '**' wildcard don't require additional filesystem access
@@ -472,7 +472,7 @@ klasse _GlobberBase:
             except OSError:
                 pass
             else:
-                for entry, _entry_name, entry_path in entries:
+                fuer entry, _entry_name, entry_path in entries:
                     is_dir = False
                     try:
                         if entry.is_dir(follow_symlinks=follow_symlinks):
@@ -508,7 +508,7 @@ klasse _GlobberBase:
 
 
 klasse _StringGlobber(_GlobberBase):
-    """Provides shell-style pattern matching and globbing for string paths.
+    """Provides shell-style pattern matching and globbing fuer string paths.
     """
     lexists = staticmethod(os.path.lexists)
     concat_path = operator.add
@@ -519,7 +519,7 @@ klasse _StringGlobber(_GlobberBase):
         # avoid exhausting file descriptors when globbing deep trees.
         with os.scandir(path) as scandir_it:
             entries = list(scandir_it)
-        return ((entry, entry.name, entry.path) for entry in entries)
+        return ((entry, entry.name, entry.path) fuer entry in entries)
 
     @staticmethod
     def stringify_path(path):

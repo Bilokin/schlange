@@ -40,7 +40,7 @@ klasse InitTktypeTest(unittest.TestCase):
 
     def test_init_sets_tktype(self):
         "Test that _init_tk_type sets _tk_type according to platform."
-        for platform, types in ('darwin', alltypes), ('other', nontypes):
+        fuer platform, types in ('darwin', alltypes), ('other', nontypes):
             with self.subTest(platform=platform):
                 macosx.platform = platform
                 macosx._tk_type = None
@@ -60,7 +60,7 @@ klasse IsTypeTkTest(unittest.TestCase):
     def test_is_calls_init(self, mockinit):
         "Test that each isTypeTk calls _init_tk_type when _tk_type is None."
         macosx._tk_type = None
-        for func, whentrue in self.isfuncs:
+        fuer func, whentrue in self.isfuncs:
             with self.subTest(func=func):
                 func()
                 self.assertTrue(mockinit.called)
@@ -68,8 +68,8 @@ klasse IsTypeTkTest(unittest.TestCase):
 
     def test_isfuncs(self):
         "Test that each isTypeTk return correct bool."
-        for func, whentrue in self.isfuncs:
-            for tktype in alltypes:
+        fuer func, whentrue in self.isfuncs:
+            fuer tktype in alltypes:
                 with self.subTest(func=func, whentrue=whentrue, tktype=tktype):
                     macosx._tk_type = tktype
                     (self.assertTrue if tktype in whentrue else self.assertFalse)\
@@ -100,7 +100,7 @@ klasse SetupTest(unittest.TestCase):
         "Call setupApp with each possible graphics type."
         root = self.root
         flist = FileList(root)
-        for tktype in alltypes:
+        fuer tktype in alltypes:
             with self.subTest(tktype=tktype):
                 macosx._tk_type = tktype
                 macosx.setupApp(root, flist)

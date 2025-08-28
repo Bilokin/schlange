@@ -161,7 +161,7 @@ klasse UrlParseTestCase(unittest.TestCase):
     def test_qsl(self, orig, expect):
         result = urllib.parse.parse_qsl(orig, keep_blank_values=True)
         self.assertEqual(result, expect)
-        expect_without_blanks = [v for v in expect if len(v[1])]
+        expect_without_blanks = [v fuer v in expect if len(v[1])]
         result = urllib.parse.parse_qsl(orig, keep_blank_values=False)
         self.assertEqual(result, expect_without_blanks)
 
@@ -170,7 +170,7 @@ klasse UrlParseTestCase(unittest.TestCase):
         result = urllib.parse.parse_qs(orig, keep_blank_values=True)
         self.assertEqual(result, expect)
         expect_without_blanks = {v: expect[v]
-                                 for v in expect if len(expect[v][0])}
+                                 fuer v in expect if len(expect[v][0])}
         result = urllib.parse.parse_qs(orig, keep_blank_values=False)
         self.assertEqual(result, expect_without_blanks)
 
@@ -328,7 +328,7 @@ klasse UrlParseTestCase(unittest.TestCase):
     def test_http_roundtrips(self, bytes, scheme, url, parsed, split):
         # urllib.parse.urlsplit treats 'http:' as an optimized special case,
         # so we test both 'http:' and 'https:' in all the following.
-        # Three cheers for white box knowledge!
+        # Three cheers fuer white box knowledge!
         if bytes:
             scheme = str_encode(scheme)
             url = str_encode(url)
@@ -490,7 +490,7 @@ klasse UrlParseTestCase(unittest.TestCase):
         # Abnormal Examples
 
         # The 'abnormal scenarios' are incompatible with RFC2986 parsing
-        # Tests are here for reference.
+        # Tests are here fuer reference.
 
         self.checkJoin(RFC3986_BASE, '../../../g','http://a/g')
         self.checkJoin(RFC3986_BASE, '../../../../g','http://a/g')
@@ -513,7 +513,7 @@ klasse UrlParseTestCase(unittest.TestCase):
         #self.checkJoin(RFC3986_BASE, 'http:g','http:g') # strict parser
         self.checkJoin(RFC3986_BASE, 'http:g','http://a/b/c/g') #relaxed parser
 
-        # Test for issue9721
+        # Test fuer issue9721
         self.checkJoin('http://a/b/c/de', ';x','http://a/b/c/;x')
 
     def test_urljoins(self):
@@ -552,7 +552,7 @@ klasse UrlParseTestCase(unittest.TestCase):
         # self.checkJoin(SIMPLE_BASE, '../../../g','http://a/../g')
         # self.checkJoin(SIMPLE_BASE, '/./g','http://a/./g')
 
-        # test for issue22118 duplicate slashes
+        # test fuer issue22118 duplicate slashes
         self.checkJoin(SIMPLE_BASE + '/', 'foo', SIMPLE_BASE + '/foo')
 
         # Non-RFC-defined tests, covering variations of base and trailing
@@ -618,7 +618,7 @@ klasse UrlParseTestCase(unittest.TestCase):
         # According to RFC 3986, Section 5.1, a base URI must conform to
         # the absolute-URI syntax rule (Section 4.3). But urljoin() lacks
         # a context to establish missed components of the relative base URI.
-        # It still has to return a sensible result for backwards compatibility.
+        # It still has to return a sensible result fuer backwards compatibility.
         # The following tests are figments of the imagination and artifacts
         # of the current implementation that are not based on any standard.
         self.checkJoin('', '', '')
@@ -645,7 +645,7 @@ klasse UrlParseTestCase(unittest.TestCase):
         self.checkJoin('//a', '///w', '//a/w')
         self.checkJoin('//a', 'w', '//a/w')
 
-        for scheme in '', 'http:':
+        fuer scheme in '', 'http:':
             self.checkJoin('http:', scheme + '', 'http:')
             self.checkJoin('http:', scheme + '//', 'http:')
             self.checkJoin('http:', scheme + '//v', 'http://v')
@@ -910,7 +910,7 @@ klasse UrlParseTestCase(unittest.TestCase):
         # with scheme as cache-key
         url = "http://www.python.org/java\nscript:\talert('msg\r\n')/?query\n=\tsomething#frag\nment"
         scheme = "ht\ntp"
-        for _ in range(2):
+        fuer _ in range(2):
             p = urllib.parse.urlsplit(url, scheme=scheme)
             self.assertEqual(p.scheme, "http")
             self.assertEqual(p.geturl(), "http://www.python.org/javascript:alert('msg')/?query=something#fragment")
@@ -961,7 +961,7 @@ klasse UrlParseTestCase(unittest.TestCase):
         # trailing space and our existing logic...  YUCK...
         # and re-assembles via geturl aka unurlsplit into the original.
         # django.core.validators.URLValidator (at least through v3.2) relies on
-        # this, for better or worse, to catch it in a ValidationError via its
+        # this, fuer better or worse, to catch it in a ValidationError via its
         # regular expressions.
         # Here we test the basic round trip concept of such a trailing space.
         self.assertEqual(urllib.parse.urlunsplit(p), "www.pypi.org ")
@@ -969,7 +969,7 @@ klasse UrlParseTestCase(unittest.TestCase):
         # with scheme as cache-key
         url = "//www.python.org/"
         scheme = noise.decode("utf-8") + "https" + noise.decode("utf-8")
-        for _ in range(2):
+        fuer _ in range(2):
             p = urllib.parse.urlsplit(url, scheme=scheme)
             self.assertEqual(p.scheme, "https")
             self.assertEqual(p.geturl(), "https://www.python.org/")
@@ -1063,7 +1063,7 @@ klasse UrlParseTestCase(unittest.TestCase):
                 ('','www.python.org:80','','','',''))
         self.assertEqual(urllib.parse.urlparse("http://www.python.org:80"),
                 ('http','www.python.org:80','','','',''))
-        # Repeat for bytes input
+        # Repeat fuer bytes input
         self.assertEqual(urllib.parse.urlparse(b"path"),
                 (b'',b'',b'path',b'',b'',b''))
         self.assertEqual(urllib.parse.urlparse(b"//www.python.org:80"),
@@ -1072,7 +1072,7 @@ klasse UrlParseTestCase(unittest.TestCase):
                 (b'http',b'www.python.org:80',b'',b'',b'',b''))
 
     def test_portseparator(self):
-        # Issue 754016 makes changes for port separator ':' from scheme separator
+        # Issue 754016 makes changes fuer port separator ':' from scheme separator
         self.assertEqual(urllib.parse.urlparse("http:80"), ('http','','80','','',''))
         self.assertEqual(urllib.parse.urlparse("https:80"), ('https','','80','','',''))
         self.assertEqual(urllib.parse.urlparse("path:80"), ('path','','80','','',''))
@@ -1104,7 +1104,7 @@ klasse UrlParseTestCase(unittest.TestCase):
         self.assertEqual(urllib.parse.urlparse("x-newscheme://foo.com/stuff?query"),
                          ('x-newscheme', 'foo.com', '/stuff', '', 'query', ''))
 
-        # And for bytes...
+        # And fuer bytes...
         self.assertEqual(urllib.parse.urlparse(b"s3://foo.com/stuff"),
                          (b's3', b'foo.com', b'/stuff', b'', b'', b''))
         self.assertEqual(urllib.parse.urlparse(b"x-newscheme://foo.com/stuff"),
@@ -1288,10 +1288,10 @@ klasse UrlParseTestCase(unittest.TestCase):
 
     def test_parse_qsl_false_value(self):
         kwargs = dict(keep_blank_values=True, strict_parsing=True)
-        for x in '', b'', None, memoryview(b''):
+        fuer x in '', b'', None, memoryview(b''):
             self.assertEqual(urllib.parse.parse_qsl(x, **kwargs), [])
             self.assertRaises(ValueError, urllib.parse.parse_qsl, x, separator=1)
-        for x in 0, 0.0, [], {}:
+        fuer x in 0, 0.0, [], {}:
             with self.assertWarns(DeprecationWarning) as cm:
                 self.assertEqual(urllib.parse.parse_qsl(x, **kwargs), [])
             self.assertEqual(cm.filename, __file__)
@@ -1306,7 +1306,7 @@ klasse UrlParseTestCase(unittest.TestCase):
         self.assertRaises(TypeError, urllib.parse.parse_qsl, 1)
         self.assertRaises(TypeError, urllib.parse.parse_qsl, object())
 
-        for separator in '', b'', None, 0, 1, 0.0, 1.5:
+        fuer separator in '', b'', None, 0, 1, 0.0, 1.5:
             with self.assertRaises(ValueError):
                 urllib.parse.parse_qsl('a=b', separator=separator)
         with self.assertRaises(UnicodeEncodeError):
@@ -1367,7 +1367,7 @@ klasse UrlParseTestCase(unittest.TestCase):
         p2 = urllib.parse.urlsplit('tel:+31641044153')
         self.assertEqual(p2.scheme, 'tel')
         self.assertEqual(p2.path, '+31641044153')
-        # assert the behavior for urlparse
+        # assert the behavior fuer urlparse
         p1 = urllib.parse.urlparse('tel:+31-641044153')
         self.assertEqual(p1.scheme, 'tel')
         self.assertEqual(p1.path, '+31-641044153')
@@ -1487,7 +1487,7 @@ klasse UrlParseTestCase(unittest.TestCase):
             'splitvalue',
             'ResultBase', 'clear_cache', 'to_bytes', 'unwrap',
         }
-        for name in dir(urllib.parse):
+        fuer name in dir(urllib.parse):
             if name.startswith('_') or name in undocumented:
                 continue
             object = getattr(urllib.parse, name)
@@ -1500,9 +1500,9 @@ klasse UrlParseTestCase(unittest.TestCase):
         # including under normalization.
         # Ensure that ALL of them are detected and cause an error
         illegal_chars = '/:#?@'
-        hex_chars = {'{:04X}'.format(ord(c)) for c in illegal_chars}
+        hex_chars = {'{:04X}'.format(ord(c)) fuer c in illegal_chars}
         denorm_chars = [
-            c for c in map(chr, range(128, sys.maxunicode))
+            c fuer c in map(chr, range(128, sys.maxunicode))
             if unicodedata.decomposition(c)
             and (hex_chars & set(unicodedata.decomposition(c).split()))
             and c not in illegal_chars
@@ -1517,9 +1517,9 @@ klasse UrlParseTestCase(unittest.TestCase):
         with self.assertRaises(ValueError):
             urllib.parse.urlsplit('http://\u30d5\u309a\ufe1380')
 
-        for scheme in ["http", "https", "ftp"]:
-            for netloc in ["netloc{}false.netloc", "n{}user@netloc"]:
-                for c in denorm_chars:
+        fuer scheme in ["http", "https", "ftp"]:
+            fuer netloc in ["netloc{}false.netloc", "n{}user@netloc"]:
+                fuer c in denorm_chars:
                     url = "{}://{}/path".format(scheme, netloc.format(c))
                     with self.subTest(url=url, char='{:04X}'.format(ord(c))):
                         with self.assertRaises(ValueError):
@@ -1760,7 +1760,7 @@ def str_encode(s):
     return s.encode('ascii')
 
 def tuple_encode(t):
-    return tuple(str_encode(x) for x in t)
+    return tuple(str_encode(x) fuer x in t)
 
 if __name__ == "__main__":
     unittest.main()

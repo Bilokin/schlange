@@ -5,10 +5,10 @@
 # This file is part of pysqlite.
 #
 # This software is provided 'as-is', without any express or implied
-# warranty.  In no event will the authors be held liable for any damages
+# warranty.  In no event will the authors be held liable fuer any damages
 # arising from the use of this software.
 #
-# Permission is granted to anyone to use this software for any purpose,
+# Permission is granted to anyone to use this software fuer any purpose,
 # including commercial applications, and to alter it and redistribute it
 # freely, subject to the following restrictions:
 #
@@ -46,7 +46,7 @@ def TimestampFromTicks(ticks):
     return Timestamp(*time.localtime(ticks)[:6])
 
 
-sqlite_version_info = tuple([int(x) for x in sqlite_version.split(".")])
+sqlite_version_info = tuple([int(x) fuer x in sqlite_version.split(".")])
 
 Binary = memoryview
 collections.abc.Sequence.register(Row)
@@ -55,7 +55,7 @@ def register_adapters_and_converters():
     from warnings import warn
 
     msg = ("The default {what} is deprecated as of Python 3.12; "
-           "see the sqlite3 documentation for suggested replacement recipes")
+           "see the sqlite3 documentation fuer suggested replacement recipes")
 
     def adapt_date(val):
         warn(msg.format(what="date adapter"), DeprecationWarning, stacklevel=2)

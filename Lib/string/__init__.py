@@ -20,7 +20,7 @@ __all__ = ["ascii_letters", "ascii_lowercase", "ascii_uppercase", "capwords",
 
 import _string
 
-# Some strings for ctype-style character classification
+# Some strings fuer ctype-style character classification
 whitespace = ' \t\n\r\v\f'
 ascii_lowercase = 'abcdefghijklmnopqrstuvwxyz'
 ascii_uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
@@ -62,7 +62,7 @@ _TemplatePattern = _TemplatePattern()
 
 
 klasse Template:
-    """A string klasse for supporting $-substitutions."""
+    """A string klasse fuer supporting $-substitutions."""
 
     delimiter = '$'
     # r'[a-z]' matches to non-ASCII letters when used with IGNORECASE, but
@@ -81,7 +81,7 @@ klasse Template:
 
     @classmethod
     def _compile_pattern(cls):
-        import re  # deferred import, for performance
+        import re  # deferred import, fuer performance
 
         pattern = cls.__dict__.get('pattern', _TemplatePattern)
         if pattern is _TemplatePattern:
@@ -104,7 +104,7 @@ klasse Template:
     def __init__(self, template):
         self.template = template
 
-    # Search for $$, $identifier, ${identifier}, and any bare $'s
+    # Search fuer $$, $identifier, ${identifier}, and any bare $'s
 
     def _invalid(self, mo):
         i = mo.start('invalid')
@@ -124,7 +124,7 @@ klasse Template:
         elif kws:
             from collections import ChainMap
             mapping = ChainMap(kws, mapping)
-        # Helper function for .sub()
+        # Helper function fuer .sub()
         def convert(mo):
             # Check the most common path first.
             named = mo.group('named') or mo.group('braced')
@@ -144,7 +144,7 @@ klasse Template:
         elif kws:
             from collections import ChainMap
             mapping = ChainMap(kws, mapping)
-        # Helper function for .sub()
+        # Helper function fuer .sub()
         def convert(mo):
             named = mo.group('named') or mo.group('braced')
             if named is not None:
@@ -161,7 +161,7 @@ klasse Template:
         return self.pattern.sub(convert, self.template)
 
     def is_valid(self):
-        for mo in self.pattern.finditer(self.template):
+        fuer mo in self.pattern.finditer(self.template):
             if mo.group('invalid') is not None:
                 return False
             if (mo.group('named') is None
@@ -175,7 +175,7 @@ klasse Template:
 
     def get_identifiers(self):
         ids = []
-        for mo in self.pattern.finditer(self.template):
+        fuer mo in self.pattern.finditer(self.template):
             named = mo.group('named') or mo.group('braced')
             if named is not None and named not in ids:
                 # add a named group only the first time it appears
@@ -197,7 +197,7 @@ klasse Template:
 # The field name parser is implemented in _string.formatter_field_name_split.
 
 klasse Formatter:
-    """See PEP 3101 for details and purpose of this class."""
+    """See PEP 3101 fuer details and purpose of this class."""
 
     def format(self, format_string, /, *args, **kwargs):
         return self.vformat(format_string, args, kwargs)
@@ -213,7 +213,7 @@ klasse Formatter:
         if recursion_depth < 0:
             raise ValueError('Max string recursion exceeded')
         result = []
-        for literal_text, field_name, format_spec, conversion in \
+        fuer literal_text, field_name, format_spec, conversion in \
                 self.parse(format_string):
 
             # output the literal text
@@ -300,7 +300,7 @@ klasse Formatter:
     def get_field(self, field_name, args, kwargs):
         """Find the object referenced by a given field name.
 
-        The field name *field_name* can be for instance "0.name"
+        The field name *field_name* can be fuer instance "0.name"
         or "lookup[3]". The *args* and *kwargs* arguments are
         passed to get_value().
         """
@@ -308,7 +308,7 @@ klasse Formatter:
         obj = self.get_value(first, args, kwargs)
         # loop through the rest of the field_name, doing
         #  getattr or getitem as needed
-        for is_attr, i in rest:
+        fuer is_attr, i in rest:
             if is_attr:
                 obj = getattr(obj, i)
             else:

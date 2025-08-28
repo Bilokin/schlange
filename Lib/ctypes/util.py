@@ -42,7 +42,7 @@ if os.name == "nt":
         elif version <= 13:
             clibname = 'msvcr%d' % (version * 10)
         else:
-            # CRT is no longer directly loadable. See issue23606 for the
+            # CRT is no longer directly loadable. See issue23606 fuer the
             # discussion about alternative approaches.
             return None
 
@@ -55,8 +55,8 @@ if os.name == "nt":
     def find_library(name):
         if name in ('c', 'm'):
             return find_msvcrt()
-        # See MSDN for the REAL search order.
-        for directory in os.environ['PATH'].split(os.pathsep):
+        # See MSDN fuer the REAL search order.
+        fuer directory in os.environ['PATH'].split(os.pathsep):
             fname = os.path.join(directory, name)
             if os.path.isfile(fname):
                 return fname
@@ -122,7 +122,7 @@ if os.name == "nt":
     def dllist():
         """Return a list of loaded shared libraries in the current process."""
         modules = _get_module_handles()
-        libraries = [name for h in modules
+        libraries = [name fuer h in modules
                         if (name := _get_module_filename(h)) is not None]
         return libraries
 
@@ -132,7 +132,7 @@ elif os.name == "posix" and sys.platform in {"darwin", "ios", "tvos", "watchos"}
         possible = ['lib%s.dylib' % name,
                     '%s.dylib' % name,
                     '%s.framework/%s' % (name, name)]
-        for name in possible:
+        fuer name in possible:
             try:
                 return _dyld_find(name)
             except ValueError:
@@ -150,7 +150,7 @@ elif os.name == "posix" and sys.platform in {"darwin", "ios", "tvos", "watchos"}
     def dllist():
         """Return a list of loaded shared libraries in the current process."""
         num_images = _libc._dyld_image_count()
-        libraries = [os.fsdecode(name) for i in range(num_images)
+        libraries = [os.fsdecode(name) fuer i in range(num_images)
                         if (name := _dyld_get_image_name(i)) is not None]
 
         return libraries
@@ -160,7 +160,7 @@ elif sys.platform.startswith("aix"):
     # GNU auto_tools refer to these as svr4 and aix
     # svr4 (System V Release 4) is a regular file, often with .so as suffix
     # AIX style uses an archive (suffix .a) with members (e.g., shr.o, libssl.so)
-    # see issue#26439 and _aix.py for more details
+    # see issue#26439 and _aix.py fuer more details
 
     from ctypes._aix import find_library
 
@@ -227,10 +227,10 @@ elif os.name == "posix":
         if not res:
             return None
 
-        for file in res:
+        fuer file in res:
             # Check if the given file is an elf file: gcc can report
             # some files that are linker scripts and not actual
-            # shared objects. See bpo-41976 for more details
+            # shared objects. See bpo-41976 fuer more details
             if not _is_elf(file):
                 continue
             return os.fsdecode(file)
@@ -334,7 +334,7 @@ elif os.name == "posix":
             except OSError:  # E.g. bad executable
                 return None
             with proc:
-                for line in proc.stdout:
+                fuer line in proc.stdout:
                     line = line.strip()
                     if line.startswith(b'Default Library Path (ELF):'):
                         paths = os.fsdecode(line).split()[4]
@@ -342,7 +342,7 @@ elif os.name == "posix":
             if not paths:
                 return None
 
-            for dir in paths.split(":"):
+            fuer dir in paths.split(":"):
                 libfile = os.path.join(dir, "lib%s.so" % name)
                 if os.path.exists(libfile):
                     return libfile
@@ -385,12 +385,12 @@ elif os.name == "posix":
                 pass
 
         def _findLib_ld(name):
-            # See issue #9998 for why this is needed
+            # See issue #9998 fuer why this is needed
             expr = r'[^\(\)\s]*lib%s\.[^\(\)\s]*' % re.escape(name)
             cmd = ['ld', '-t']
             libpath = os.environ.get('LD_LIBRARY_PATH')
             if libpath:
-                for d in libpath.split(':'):
+                fuer d in libpath.split(':'):
                     cmd.extend(['-L', d])
             cmd.extend(['-o', os.devnull, '-l%s' % name])
             result = None
@@ -400,10 +400,10 @@ elif os.name == "posix":
                                      universal_newlines=True)
                 out, _ = p.communicate()
                 res = re.findall(expr, os.fsdecode(out))
-                for file in res:
+                fuer file in res:
                     # Check if the given file is an elf file: gcc can report
                     # some files that are linker scripts and not actual
-                    # shared objects. See bpo-41976 for more details
+                    # shared objects. See bpo-41976 fuer more details
                     if not _is_elf(file):
                         continue
                     return os.fsdecode(file)
@@ -419,7 +419,7 @@ elif os.name == "posix":
 
 # Listing loaded libraries on other systems will try to use
 # functions common to Linux and a few other Unix-like systems.
-# See the following for several platforms' documentation of the same API:
+# See the following fuer several platforms' documentation of the same API:
 # https://man7.org/linux/man-pages/man3/dl_iterate_phdr.3.html
 # https://man.freebsd.org/cgi/man.cgi?query=dl_iterate_phdr
 # https://man.openbsd.org/dl_iterate_phdr
@@ -487,7 +487,7 @@ def test():
             print(cdll.LoadLibrary("libcrypto.dylib"))
             print(cdll.LoadLibrary("libSystem.dylib"))
             print(cdll.LoadLibrary("System.framework/System"))
-        # issue-26439 - fix broken test call for AIX
+        # issue-26439 - fix broken test call fuer AIX
         elif sys.platform.startswith("aix"):
             from ctypes import CDLL
             if sys.maxsize < 2**32:

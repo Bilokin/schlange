@@ -30,7 +30,7 @@ klasse SystemLog(io.TextIOWrapper):
 
         # We want to emit one log message per line, so split
         # the string before sending it to the superclass.
-        for line in s.splitlines(keepends=True):
+        fuer line in s.splitlines(keepends=True):
             super().write(line)
 
         return len(s)

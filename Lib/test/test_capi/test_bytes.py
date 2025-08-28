@@ -214,7 +214,7 @@ klasse CAPITest(unittest.TestCase):
         with self.assertWarns(DeprecationWarning):
             self.assertEqual(decodeescape(br'\541'), b'a')
 
-        for b in b'\\', br'\x', br'\xa', br'\xz', br'\xaz':
+        fuer b in b'\\', br'\x', br'\xa', br'\xz', br'\xaz':
             self.assertRaises(ValueError, decodeescape, b)
             self.assertRaises(ValueError, decodeescape, b, 'strict')
         self.assertEqual(decodeescape(br'x\xa', 'replace'), b'x?')
@@ -233,7 +233,7 @@ klasse CAPITest(unittest.TestCase):
         """Test _PyBytes_Resize()"""
         resize = _testcapi.bytes_resize
 
-        for new in True, False:
+        fuer new in True, False:
             self.assertEqual(resize(b'abc', 0, new), b'')
             self.assertEqual(resize(b'abc', 1, new), b'a')
             self.assertEqual(resize(b'abc', 2, new), b'ab')

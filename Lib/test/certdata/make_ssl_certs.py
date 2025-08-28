@@ -121,9 +121,9 @@ here = os.path.abspath(os.path.dirname(__file__))
 
 def make_cert_key(cmdlineargs, hostname, sign=False, extra_san='',
                   ext='req_x509_extensions_full', key='rsa:3072'):
-    print("creating cert for " + hostname)
+    print("creating cert fuer " + hostname)
     tempnames = []
-    for i in range(3):
+    fuer i in range(3):
         with tempfile.NamedTemporaryFile(delete=False) as f:
             tempnames.append(f.name)
     req_file, cert_file, key_file = tempnames
@@ -169,7 +169,7 @@ def make_cert_key(cmdlineargs, hostname, sign=False, extra_san='',
             key = f.read()
         return cert, key
     finally:
-        for name in tempnames:
+        fuer name in tempnames:
             os.remove(name)
 
 TMP_CADIR = 'cadir'
@@ -185,7 +185,7 @@ def make_ca(cmdlineargs):
         f.write("00")
     with open(os.path.join('cadir','index.txt.attr'),'w+') as f:
         f.write('unique_subject = no')
-    # random start value for serial numbers
+    # random start value fuer serial numbers
     with open(os.path.join('cadir','serial'), 'w') as f:
         f.write('CB2D80995A69525B\n')
 
@@ -321,6 +321,6 @@ if __name__ == '__main__':
         f.write(cert)
 
     unmake_ca()
-    print("Writing out reference data for Lib/test/test_ssl.py and Lib/test/test_asyncio/utils.py")
+    print("Writing out reference data fuer Lib/test/test_ssl.py and Lib/test/test_asyncio/utils.py")
     write_cert_reference('keycert.pem')
     write_cert_reference('keycert3.pem')

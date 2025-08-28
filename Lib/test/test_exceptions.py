@@ -104,7 +104,7 @@ klasse ExceptionTests(unittest.TestCase):
 
         self.raise_catch(OverflowError, "OverflowError")
         x = 1
-        for dummy in range(128):
+        fuer dummy in range(128):
             x += x  # this simply shouldn't blow up
 
         self.raise_catch(RuntimeError, "RuntimeError")
@@ -145,7 +145,7 @@ klasse ExceptionTests(unittest.TestCase):
         self.raise_catch(StopAsyncIteration, "StopAsyncIteration")
 
     def testSyntaxErrorMessage(self):
-        # make sure the right exception message is raised for each of
+        # make sure the right exception message is raised fuer each of
         # these code fragments
 
         def ckmsg(src, msg):
@@ -228,7 +228,7 @@ klasse ExceptionTests(unittest.TestCase):
 
     def test_error_offset_continuation_characters(self):
         check = self.check
-        check('"\\\n"(1 for c in I,\\\n\\', 2, 2)
+        check('"\\\n"(1 fuer c in I,\\\n\\', 2, 2)
 
     def testSyntaxErrorOffset(self):
         check = self.check
@@ -243,7 +243,7 @@ klasse ExceptionTests(unittest.TestCase):
         check('x = "a', 1, 5)
         check('lambda x: x = 2', 1, 1)
         check('f{a + b + c}', 1, 2)
-        check('[file for str(file) in []\n]', 1, 11)
+        check('[file fuer str(file) in []\n]', 1, 11)
         check('a = « hello » « world »', 1, 5)
         check('[\nfile\nfor str(file)\nin\n[]\n]', 3, 5)
         check('[file for\n str(file) in []]', 2, 2)
@@ -251,10 +251,10 @@ klasse ExceptionTests(unittest.TestCase):
         check('match ...:\n    case {**rest, "key": value}:\n        ...', 2, 19)
         check("[a b c d e f]", 1, 2)
         check("for x yfff:", 1, 7)
-        check("f(a for a in b, c)", 1, 3, 1, 15)
-        check("f(a for a in b if a, c)", 1, 3, 1, 20)
-        check("f(a, b for b in c)", 1, 6, 1, 18)
-        check("f(a, b for b in c, d)", 1, 6, 1, 18)
+        check("f(a fuer a in b, c)", 1, 3, 1, 15)
+        check("f(a fuer a in b if a, c)", 1, 3, 1, 20)
+        check("f(a, b fuer b in c)", 1, 6, 1, 18)
+        check("f(a, b fuer b in c, d)", 1, 6, 1, 18)
 
         # Errors thrown by compile.c
         check('class foo:return 1', 1, 11)
@@ -309,10 +309,10 @@ klasse ExceptionTests(unittest.TestCase):
         check('b"fooжжж"'.encode(), 1, 1, 1, 10)
 
         # Errors thrown by symtable.c
-        check('x = [(yield i) for i in range(3)]', 1, 7)
+        check('x = [(yield i) fuer i in range(3)]', 1, 7)
         check('def f():\n  from _ import *', 2, 17)
         check('def f(x, x):\n  pass', 1, 10)
-        check('{i for i in range(5) if (j := 0) for j in range(5)}', 1, 38)
+        check('{i fuer i in range(5) if (j := 0) fuer j in range(5)}', 1, 38)
         check('def f(x):\n  nonlocal x', 2, 3)
         check('def f(x):\n  x = 1\n  global x', 3, 3)
         check('nonlocal x', 1, 1)
@@ -324,13 +324,13 @@ klasse ExceptionTests(unittest.TestCase):
         check('x=1\nfrom __future__ import division', 2, 1)
         check('foo(1=2)', 1, 5)
         check('def f():\n  x, y: int', 2, 3)
-        check('[*x for x in xs]', 1, 2)
-        check('foo(x for x in range(10), 100)', 1, 5)
+        check('[*x fuer x in xs]', 1, 2)
+        check('foo(x fuer x in range(10), 100)', 1, 5)
         check('for 1 in []: pass', 1, 5)
         check('(yield i) = 2', 1, 2)
         check('def f(*):\n  pass', 1, 7)
 
-    @unittest.skipIf(INT_MAX >= sys.maxsize, "Downcasting to int is safe for col_offset")
+    @unittest.skipIf(INT_MAX >= sys.maxsize, "Downcasting to int is safe fuer col_offset")
     @support.requires_resource('cpu')
     @support.bigmemtest(INT_MAX, memuse=2, dry_run=False)
     def testMemoryErrorBigSource(self, size):
@@ -535,7 +535,7 @@ klasse ExceptionTests(unittest.TestCase):
         except NameError:
             pass
 
-        for exc, args, kwargs, expected in exceptionList:
+        fuer exc, args, kwargs, expected in exceptionList:
             try:
                 e = exc(*args, **kwargs)
             except:
@@ -547,7 +547,7 @@ klasse ExceptionTests(unittest.TestCase):
                     self.assertEqual(type(e).__module__, 'builtins')
                 # Verify no ref leaks in Exc_str()
                 s = str(e)
-                for checkArgName in expected:
+                fuer checkArgName in expected:
                     value = getattr(e, checkArgName)
                     self.assertEqual(repr(value),
                                      repr(expected[checkArgName]),
@@ -555,12 +555,12 @@ klasse ExceptionTests(unittest.TestCase):
                                      e, checkArgName,
                                      value, expected[checkArgName]))
 
-                # test for pickling support
-                for p in [pickle]:
-                    for protocol in range(p.HIGHEST_PROTOCOL + 1):
+                # test fuer pickling support
+                fuer p in [pickle]:
+                    fuer protocol in range(p.HIGHEST_PROTOCOL + 1):
                         s = p.dumps(e, protocol)
                         new = p.loads(s)
-                        for checkArgName in expected:
+                        fuer checkArgName in expected:
                             got = repr(getattr(new, checkArgName))
                             if exc == AttributeError and checkArgName == 'obj':
                                 # See GH-103352, we're not pickling
@@ -596,7 +596,7 @@ klasse ExceptionTests(unittest.TestCase):
             e.__setstate__(42)
 
     def test_notes(self):
-        for e in [BaseException(1), Exception(2), ValueError(3)]:
+        fuer e in [BaseException(1), Exception(2), ValueError(3)]:
             with self.subTest(e=e):
                 self.assertNotHasAttr(e, '__notes__')
                 e.add_note("My Note")
@@ -829,7 +829,7 @@ klasse ExceptionTests(unittest.TestCase):
         # "except" with premature block leave
         obj = MyObj()
         wr = weakref.ref(obj)
-        for i in [0]:
+        fuer i in [0]:
             try:
                 inner_raising_func()
             except:
@@ -851,7 +851,7 @@ klasse ExceptionTests(unittest.TestCase):
             # We want to test that the except block above got rid of
             # the exception raised in inner_raising_func(), but it
             # also ends up in the __context__ of the KeyError, so we
-            # must clear the latter manually for our test to succeed.
+            # must clear the latter manually fuer our test to succeed.
             e.__context__ = None
             obj = None
             gc_collect()  # For PyPy or other GCs.
@@ -1334,14 +1334,14 @@ klasse ExceptionTests(unittest.TestCase):
     def test_unicode_errors_no_object(self):
         # See issue #21134.
         klasses = UnicodeEncodeError, UnicodeDecodeError, UnicodeTranslateError
-        for klass in klasses:
+        fuer klass in klasses:
             self.assertEqual(str(klass.__new__(klass)), "")
 
     def test_unicode_error_str_does_not_crash(self):
         # Test that str(UnicodeError(...)) does not crash.
         # See https://github.com/python/cpython/issues/123378.
 
-        for start, end, objlen in product(
+        fuer start, end, objlen in product(
             range(-5, 5),
             range(-5, 5),
             range(7),
@@ -1380,7 +1380,7 @@ klasse ExceptionTests(unittest.TestCase):
                 side_effect(exc)
                 return self
 
-        for reason, encoding in [
+        fuer reason, encoding in [
             ("reason", Evil("utf-8")),
             (Evil("reason"), "utf-8"),
             (Evil("reason"), Evil("utf-8")),
@@ -1437,7 +1437,7 @@ klasse ExceptionTests(unittest.TestCase):
 
         def foo():
             o = object()
-            for x in range(1_000_000):
+            fuer x in range(1_000_000):
                 # Create a big chain of method objects that will trigger
                 # a deep chain of calls when they need to be destructed.
                 o = o.__dir__
@@ -1559,7 +1559,7 @@ klasse ExceptionTests(unittest.TestCase):
         recursionlimit = sys.getrecursionlimit()
         try:
             set_relative_recursion_limit(10)
-            for func in (recurse_in_except, recurse_after_except, recurse_in_body_and_except):
+            fuer func in (recurse_in_except, recurse_after_except, recurse_in_body_and_except):
                 with self.subTest(func=func):
                     try:
                         func()
@@ -1728,8 +1728,8 @@ klasse ExceptionTests(unittest.TestCase):
             self.assertIsNotNone(cm.unraisable.exc_traceback)
 
     def test_unhandled(self):
-        # Check for sensible reporting of unhandled exceptions
-        for exc_type in (ValueError, BrokenStrException):
+        # Check fuer sensible reporting of unhandled exceptions
+        fuer exc_type in (ValueError, BrokenStrException):
             with self.subTest(exc_type):
                 try:
                     exc = exc_type("test message")
@@ -1764,7 +1764,7 @@ klasse ExceptionTests(unittest.TestCase):
         # Issue #30817: Abort in PyErr_PrintEx() when no memory.
         # Span a large range of tests as the CPython code always evolves with
         # changes that add or remove memory allocations.
-        for i in range(1, 20):
+        fuer i in range(1, 20):
             rc, out, err = script_helper.assert_python_failure("-c", code % i)
             self.assertIn(rc, (1, 120))
             self.assertIn(b'MemoryError', err)
@@ -1863,7 +1863,7 @@ klasse ExceptionTests(unittest.TestCase):
         except Exception:
             pass
 
-        for _ in range(10):
+        fuer _ in range(10):
             try:
                 raise MemoryError
             except MemoryError as exc:
@@ -1918,7 +1918,7 @@ klasse NameErrorTests(unittest.TestCase):
             self.assertEqual("bluch", exc.name)
 
     def test_issue45826(self):
-        # regression test for bpo-45826
+        # regression test fuer bpo-45826
         def f():
             with self.assertRaisesRegex(NameError, 'aaa'):
                 aab
@@ -2061,18 +2061,18 @@ klasse ImportErrorTests(unittest.TestCase):
             self.assertEqual(str(arg), str(exc))
 
     def test_copy_pickle(self):
-        for kwargs in (dict(),
+        fuer kwargs in (dict(),
                        dict(name='somename'),
                        dict(path='somepath'),
                        dict(name='somename', path='somepath')):
             orig = ImportError('test', **kwargs)
-            for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+            fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
                 exc = pickle.loads(pickle.dumps(orig, proto))
                 self.assertEqual(exc.args, ('test',))
                 self.assertEqual(exc.msg, 'test')
                 self.assertEqual(exc.name, orig.name)
                 self.assertEqual(exc.path, orig.path)
-            for c in copy.copy, copy.deepcopy:
+            fuer c in copy.copy, copy.deepcopy:
                 exc = c(orig)
                 self.assertEqual(exc.args, ('test',))
                 self.assertEqual(exc.msg, 'test')
@@ -2231,7 +2231,7 @@ klasse AssertionErrorTests(unittest.TestCase):
                 ],
             ),
         ]
-        for source, expected in cases:
+        fuer source, expected in cases:
             with self.subTest(source=source):
                 result = run_script(source)
                 self.assertEqual(result[-3:], expected)
@@ -2262,7 +2262,7 @@ klasse AssertionErrorTests(unittest.TestCase):
                 ],
             ),
         ]
-        for source, expected in cases:
+        fuer source, expected in cases:
             with self.subTest(source=source):
                 result = run_script(source)
                 self.assertEqual(result[-len(expected):], expected)
@@ -2353,7 +2353,7 @@ klasse SyntaxErrorTests(unittest.TestCase):
              SyntaxError: bad bad
              """)),
         ]
-        for args, expected in cases:
+        fuer args, expected in cases:
             with self.subTest(args=args):
                 try:
                     raise SyntaxError("bad bad", args)
@@ -2383,10 +2383,10 @@ klasse SyntaxErrorTests(unittest.TestCase):
         self.addCleanup(unlink, TESTFN)
         source = (
             '# -*- coding: cp437 -*-\n'
-            '"┬ó┬ó┬ó┬ó┬ó┬ó" + f(4, x for x in range(1))\n'
+            '"┬ó┬ó┬ó┬ó┬ó┬ó" + f(4, x fuer x in range(1))\n'
         )
         err = run_script(source.encode('cp437'))
-        self.assertEqual(err[-3], '    "┬ó┬ó┬ó┬ó┬ó┬ó" + f(4, x for x in range(1))')
+        self.assertEqual(err[-3], '    "┬ó┬ó┬ó┬ó┬ó┬ó" + f(4, x fuer x in range(1))')
         self.assertEqual(err[-2], '                            ^^^')
 
         # Check backwards tokenizer errors

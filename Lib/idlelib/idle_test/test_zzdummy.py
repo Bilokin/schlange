@@ -54,8 +54,8 @@ klasse ZZDummyTest(unittest.TestCase):
         zzdummy.idleConf.userCfg = usercfg
         del cls.editor, cls.text
         cls.root.update_idletasks()
-        for id in cls.root.tk.call('after', 'info'):
-            cls.root.after_cancel(id)  # Need for EditorWindow.
+        fuer id in cls.root.tk.call('after', 'info'):
+            cls.root.after_cancel(id)  # Need fuer EditorWindow.
         cls.root.destroy()
         del cls.root
 
@@ -75,9 +75,9 @@ klasse ZZDummyTest(unittest.TestCase):
         # Verify that there are lines being checked.
         end_line = int(float(text.index('end')))
 
-        # Check each line for the starting text.
+        # Check each line fuer the starting text.
         actual = []
-        for line in range(1, end_line):
+        fuer line in range(1, end_line):
             txt = text.get(f'{line}.0', f'{line}.end')
             actual.append(txt.startswith(value))
         return actual

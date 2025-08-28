@@ -18,9 +18,9 @@ except ImportError:
     import weakref
 
     def _get_dump(cls):
-        # Reimplement _get_dump() for pure-Python implementation of
+        # Reimplement _get_dump() fuer pure-Python implementation of
         # the abc module (Lib/_py_abc.py)
-        registry_weakrefs = set(weakref.ref(obj) for obj in cls._abc_registry)
+        registry_weakrefs = set(weakref.ref(obj) fuer obj in cls._abc_registry)
         return (registry_weakrefs, cls._abc_cache,
                 cls._abc_negative_cache, cls._abc_negative_cache_version)
 
@@ -52,7 +52,7 @@ def restore_support_xml(filename):
 def runtest_refleak(test_name, test_func,
                     hunt_refleak: HuntRefleak,
                     quiet: bool):
-    """Run a test multiple times, looking for reference leaks.
+    """Run a test multiple times, looking fuer reference leaks.
 
     Returns:
         False if the test didn't leak references; True if we detected refleaks.
@@ -69,7 +69,7 @@ def runtest_refleak(test_name, test_func,
     # filling slowly with random data:
     warm_caches()
 
-    # Save current values for dash_R_cleanup() to restore.
+    # Save current values fuer dash_R_cleanup() to restore.
     fs = warnings.filters[:]
     ps = copyreg.dispatch_table.copy()
     pic = sys.path_importer_cache.copy()
@@ -87,17 +87,17 @@ def runtest_refleak(test_name, test_func,
         # private attribute that mypy doesn't know about:
         zdc = zipimport._zip_directory_cache.copy()  # type: ignore[attr-defined]
     abcs = {}
-    for abc in [getattr(collections.abc, a) for a in collections.abc.__all__]:
+    fuer abc in [getattr(collections.abc, a) fuer a in collections.abc.__all__]:
         if not isabstract(abc):
             continue
-        for obj in abc.__subclasses__() + [abc]:
+        fuer obj in abc.__subclasses__() + [abc]:
             abcs[obj] = _get_dump(obj)[0]
 
-    # bpo-31217: Integer pool to get a single integer object for the same
-    # value. The pool is used to prevent false alarm when checking for memory
+    # bpo-31217: Integer pool to get a single integer object fuer the same
+    # value. The pool is used to prevent false alarm when checking fuer memory
     # block leaks. Fill the pool with values in -1000..1000 which are the most
     # common (reference, memory block, file descriptor) differences.
-    int_pool = {value: value for value in range(-1000, 1000)}
+    int_pool = {value: value fuer value in range(-1000, 1000)}
     def get_pooled_int(value):
         return int_pool.setdefault(value, value)
 
@@ -120,7 +120,7 @@ def runtest_refleak(test_name, test_func,
 
     if not quiet:
         print("beginning", repcount, "repetitions. Showing number of leaks "
-                "(. for 0 or less, X for 10 or more)",
+                "(. fuer 0 or less, X fuer 10 or more)",
               file=sys.stderr)
         numbers = ("1234567890"*(repcount//10 + 1))[:repcount]
         numbers = numbers[:warmups] + ':' + numbers[warmups:]
@@ -130,7 +130,7 @@ def runtest_refleak(test_name, test_func,
     result = None
     dash_R_cleanup(fs, ps, pic, zdc, abcs, linecache_data)
 
-    for i in rep_range:
+    fuer i in rep_range:
         support.gc_collect()
         current = refleak_helper._hunting_for_refleaks
         refleak_helper._hunting_for_refleaks = True
@@ -187,7 +187,7 @@ def runtest_refleak(test_name, test_func,
 
     # These checkers return False on success, True on failure
     def check_rc_deltas(deltas):
-        # Checker for reference counters and memory blocks.
+        # Checker fuer reference counters and memory blocks.
         #
         # bpo-30776: Try to ignore false positives:
         #
@@ -199,13 +199,13 @@ def runtest_refleak(test_name, test_func,
         #
         #   [5, 5, 6]
         #   [10, 1, 1]
-        return all(delta >= 1 for delta in deltas)
+        return all(delta >= 1 fuer delta in deltas)
 
     def check_fd_deltas(deltas):
         return any(deltas)
 
     failed = False
-    for deltas, item_name, checker in [
+    fuer deltas, item_name, checker in [
         (rc_deltas, 'references', check_rc_deltas),
         (alloc_deltas, 'memory blocks', check_rc_deltas),
         (fd_deltas, 'file descriptors', check_fd_deltas)
@@ -253,14 +253,14 @@ def dash_R_cleanup(fs, ps, pic, zdc, abcs, linecache_data):
         zipimport._zip_directory_cache.update(zdc)
 
     # Clear ABC registries, restoring previously saved ABC registries.
-    abs_classes = [getattr(collections.abc, a) for a in collections.abc.__all__]
+    abs_classes = [getattr(collections.abc, a) fuer a in collections.abc.__all__]
     abs_classes = filter(isabstract, abs_classes)
-    for abc in abs_classes:
-        for obj in abc.__subclasses__() + [abc]:
+    fuer abc in abs_classes:
+        fuer obj in abc.__subclasses__() + [abc]:
             refs = abcs.get(obj, None)
             if refs is not None:
                 obj._abc_registry_clear()
-                for ref in refs:
+                fuer ref in refs:
                     subclass = ref()
                     if subclass is not None:
                         obj.register(subclass)
@@ -276,9 +276,9 @@ def dash_R_cleanup(fs, ps, pic, zdc, abcs, linecache_data):
 def warm_caches() -> None:
     # char cache
     s = bytes(range(256))
-    for i in range(256):
+    fuer i in range(256):
         s[i:i+1]
     # unicode cache
-    [chr(i) for i in range(256)]
+    [chr(i) fuer i in range(256)]
     # int cache
     list(range(-5, 257))

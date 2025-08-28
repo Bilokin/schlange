@@ -34,7 +34,7 @@ py = os.path.basename(sys.executable)
 
 
 klasse StdIOBuffer(io.TextIOWrapper):
-    '''Replacement for writable io.StringIO that behaves more like real file
+    '''Replacement fuer writable io.StringIO that behaves more like real file
 
     Unlike StringIO, provides a buffer attribute that holds the underlying
     binary data, allowing it to replace sys.stdout/sys.stderr in more
@@ -63,7 +63,7 @@ klasse StdStreamTest(unittest.TestCase):
 
     def test_skip_invalid_stdout(self):
         parser = argparse.ArgumentParser()
-        for func in (
+        fuer func in (
             parser.print_usage,
             parser.print_help,
             functools.partial(parser.parse_args, ['-h'])
@@ -100,8 +100,8 @@ klasse TempDirMixin(object):
 
     def tearDown(self):
         os.chdir(self.old_dir)
-        for root, dirs, files in os.walk(self.temp_dir, topdown=False):
-            for name in files:
+        fuer root, dirs, files in os.walk(self.temp_dir, topdown=False):
+            fuer name in files:
                 os.chmod(os.path.join(self.temp_dir, name), stat.S_IWRITE)
         shutil.rmtree(self.temp_dir, True)
 
@@ -128,7 +128,7 @@ klasse NS(object):
 
     def __repr__(self):
         sorted_items = sorted(self.__dict__.items())
-        kwarg_str = ', '.join(['%s=%r' % tup for tup in sorted_items])
+        kwarg_str = ', '.join(['%s=%r' % tup fuer tup in sorted_items])
         return '%s(%s)' % (type(self).__name__, kwarg_str)
 
     def __eq__(self, other):
@@ -161,7 +161,7 @@ def stderr_to_parser_error(parse_args, *args, **kwargs):
     try:
         try:
             result = parse_args(*args, **kwargs)
-            for key in list(vars(result)):
+            fuer key in list(vars(result)):
                 attr = getattr(result, key)
                 if attr is sys.stdout:
                     setattr(result, key, old_stdout)
@@ -225,27 +225,27 @@ klasse ParserTesterMetaclass(type):
             cls.parser_class = ErrorRaisingArgumentParser
 
         # ---------------------------------------
-        # functions for adding optional arguments
+        # functions fuer adding optional arguments
         # ---------------------------------------
         def no_groups(parser, argument_signatures):
             """Add all arguments directly to the parser"""
-            for sig in argument_signatures:
+            fuer sig in argument_signatures:
                 parser.add_argument(*sig.args, **sig.kwargs)
 
         def one_group(parser, argument_signatures):
             """Add all arguments under a single group in the parser"""
             group = parser.add_argument_group('foo')
-            for sig in argument_signatures:
+            fuer sig in argument_signatures:
                 group.add_argument(*sig.args, **sig.kwargs)
 
         def many_groups(parser, argument_signatures):
             """Add each argument in its own group to the parser"""
-            for i, sig in enumerate(argument_signatures):
+            fuer i, sig in enumerate(argument_signatures):
                 group = parser.add_argument_group('foo:%i' % i)
                 group.add_argument(*sig.args, **sig.kwargs)
 
         # --------------------------
-        # functions for parsing args
+        # functions fuer parsing args
         # --------------------------
         def listargs(parser, args):
             """Parse the args by passing in a list"""
@@ -270,7 +270,7 @@ klasse ParserTesterMetaclass(type):
 
                 add_arguments_name = self._add_arguments.__name__
                 parse_args_name = self._parse_args.__name__
-                for test_func in [self.test_failures, self.test_successes]:
+                fuer test_func in [self.test_failures, self.test_successes]:
                     func_name = test_func.__name__
                     names = func_name, add_arguments_name, parse_args_name
                     test_name = '_'.join(names)
@@ -292,7 +292,7 @@ klasse ParserTesterMetaclass(type):
 
             def test_failures(self, tester):
                 parser = self._get_parser(tester)
-                for args_str in tester.failures:
+                fuer args_str in tester.failures:
                     args = args_str.split()
                     with tester.subTest(args=args):
                         with tester.assertRaises(ArgumentParserError, msg=args):
@@ -300,17 +300,17 @@ klasse ParserTesterMetaclass(type):
 
             def test_successes(self, tester):
                 parser = self._get_parser(tester)
-                for args, expected_ns in tester.successes:
+                fuer args, expected_ns in tester.successes:
                     if isinstance(args, str):
                         args = args.split()
                     with tester.subTest(args=args):
                         result_ns = self._parse_args(parser, args)
                         tester.assertEqual(expected_ns, result_ns)
 
-        # add tests for each combination of an optionals adding method
+        # add tests fuer each combination of an optionals adding method
         # and an arg parsing method
-        for add_arguments in [no_groups, one_group, many_groups]:
-            for parse_args in [listargs, sysargs]:
+        fuer add_arguments in [no_groups, one_group, many_groups]:
+            fuer parse_args in [listargs, sysargs]:
                 AddTests(cls, add_arguments, parse_args)
 
 bases = TestCase,
@@ -517,7 +517,7 @@ klasse TestOptionalsAlternatePrefixChars(ParserTestCase):
 
 
 klasse TestOptionalsAlternatePrefixCharsAddedHelp(ParserTestCase):
-    """When ``-`` not in prefix_chars, default operators created for help
+    """When ``-`` not in prefix_chars, default operators created fuer help
        should use the prefix_chars in use rather than - or --
        http://bugs.python.org/issue9444"""
 
@@ -591,7 +591,7 @@ klasse TestOptionalsDest(ParserTestCase):
 
 
 klasse TestOptionalsDefault(ParserTestCase):
-    """Tests specifying a default for an Optional"""
+    """Tests specifying a default fuer an Optional"""
 
     argument_signatures = [Sig('-x'), Sig('-y', default=42)]
     failures = ['a']
@@ -603,7 +603,7 @@ klasse TestOptionalsDefault(ParserTestCase):
 
 
 klasse TestOptionalsNargsDefault(ParserTestCase):
-    """Tests not specifying the number of args for an Optional"""
+    """Tests not specifying the number of args fuer an Optional"""
 
     argument_signatures = [Sig('-x')]
     failures = ['a', '-x']
@@ -614,7 +614,7 @@ klasse TestOptionalsNargsDefault(ParserTestCase):
 
 
 klasse TestOptionalsNargs1(ParserTestCase):
-    """Tests specifying 1 arg for an Optional"""
+    """Tests specifying 1 arg fuer an Optional"""
 
     argument_signatures = [Sig('-x', nargs=1)]
     failures = ['a', '-x']
@@ -625,7 +625,7 @@ klasse TestOptionalsNargs1(ParserTestCase):
 
 
 klasse TestOptionalsNargs3(ParserTestCase):
-    """Tests specifying 3 args for an Optional"""
+    """Tests specifying 3 args fuer an Optional"""
 
     argument_signatures = [Sig('-x', nargs=3)]
     failures = ['a', '-x', '-x a', '-x a b', 'a -x', 'a -x b']
@@ -636,7 +636,7 @@ klasse TestOptionalsNargs3(ParserTestCase):
 
 
 klasse TestOptionalsNargsOptional(ParserTestCase):
-    """Tests specifying an Optional arg for an Optional"""
+    """Tests specifying an Optional arg fuer an Optional"""
 
     argument_signatures = [
         Sig('-w', nargs='?'),
@@ -659,7 +659,7 @@ klasse TestOptionalsNargsOptional(ParserTestCase):
 
 
 klasse TestOptionalsNargsZeroOrMore(ParserTestCase):
-    """Tests specifying args for an Optional that accepts zero or more"""
+    """Tests specifying args fuer an Optional that accepts zero or more"""
 
     argument_signatures = [
         Sig('-x', nargs='*'),
@@ -678,7 +678,7 @@ klasse TestOptionalsNargsZeroOrMore(ParserTestCase):
 
 
 klasse TestOptionalsNargsOneOrMore(ParserTestCase):
-    """Tests specifying args for an Optional that accepts one or more"""
+    """Tests specifying args fuer an Optional that accepts one or more"""
 
     argument_signatures = [
         Sig('-x', nargs='+'),
@@ -695,7 +695,7 @@ klasse TestOptionalsNargsOneOrMore(ParserTestCase):
 
 
 klasse TestOptionalsChoices(ParserTestCase):
-    """Tests specifying the choices for an Optional"""
+    """Tests specifying the choices fuer an Optional"""
 
     argument_signatures = [
         Sig('-f', choices='abc'),
@@ -725,7 +725,7 @@ klasse TestOptionalsRequired(ParserTestCase):
 
 
 klasse TestOptionalsActionStore(ParserTestCase):
-    """Tests the store action for an Optional"""
+    """Tests the store action fuer an Optional"""
 
     argument_signatures = [Sig('-x', action='store')]
     failures = ['a', 'a -x']
@@ -736,7 +736,7 @@ klasse TestOptionalsActionStore(ParserTestCase):
 
 
 klasse TestOptionalsActionStoreConst(ParserTestCase):
-    """Tests the store_const action for an Optional"""
+    """Tests the store_const action fuer an Optional"""
 
     argument_signatures = [Sig('-y', action='store_const', const=object)]
     failures = ['a']
@@ -747,7 +747,7 @@ klasse TestOptionalsActionStoreConst(ParserTestCase):
 
 
 klasse TestOptionalsActionStoreFalse(ParserTestCase):
-    """Tests the store_false action for an Optional"""
+    """Tests the store_false action fuer an Optional"""
 
     argument_signatures = [Sig('-z', action='store_false')]
     failures = ['a', '-za', '-z a']
@@ -758,7 +758,7 @@ klasse TestOptionalsActionStoreFalse(ParserTestCase):
 
 
 klasse TestOptionalsActionStoreTrue(ParserTestCase):
-    """Tests the store_true action for an Optional"""
+    """Tests the store_true action fuer an Optional"""
 
     argument_signatures = [Sig('--apple', action='store_true')]
     failures = ['a', '--apple=b', '--apple b']
@@ -776,7 +776,7 @@ klasse TestBooleanOptionalAction(ParserTestCase):
         ('', NS(foo=None)),
         ('--foo', NS(foo=True)),
         ('--no-foo', NS(foo=False)),
-        ('--foo --no-foo', NS(foo=False)),  # useful for aliases
+        ('--foo --no-foo', NS(foo=False)),  # useful fuer aliases
         ('--no-foo --foo', NS(foo=True)),
     ]
 
@@ -793,7 +793,7 @@ klasse TestBooleanOptionalAction(ParserTestCase):
         with self.assertRaises(ValueError) as cm:
             parser.add_argument('--no-foo', action=argparse.BooleanOptionalAction)
         self.assertEqual(str(cm.exception),
-                         "invalid option name '--no-foo' for BooleanOptionalAction")
+                         "invalid option name '--no-foo' fuer BooleanOptionalAction")
 
 klasse TestBooleanOptionalActionRequired(ParserTestCase):
     """Tests BooleanOptionalAction required"""
@@ -808,7 +808,7 @@ klasse TestBooleanOptionalActionRequired(ParserTestCase):
     ]
 
 klasse TestOptionalsActionAppend(ParserTestCase):
-    """Tests the append action for an Optional"""
+    """Tests the append action fuer an Optional"""
 
     argument_signatures = [Sig('--baz', action='append')]
     failures = ['a', '--baz', 'a --baz', '--baz a b']
@@ -820,7 +820,7 @@ klasse TestOptionalsActionAppend(ParserTestCase):
 
 
 klasse TestOptionalsActionAppendWithDefault(ParserTestCase):
-    """Tests the append action for an Optional"""
+    """Tests the append action fuer an Optional"""
 
     argument_signatures = [Sig('--baz', action='append', default=['X'])]
     failures = ['a', '--baz', 'a --baz', '--baz a b']
@@ -851,7 +851,7 @@ klasse TestConstActionsMissingConstKwarg(ParserTestCase):
 
 
 klasse TestOptionalsActionAppendConst(ParserTestCase):
-    """Tests the append_const action for an Optional"""
+    """Tests the append_const action fuer an Optional"""
 
     argument_signatures = [
         Sig('-b', action='append_const', const=Exception),
@@ -866,7 +866,7 @@ klasse TestOptionalsActionAppendConst(ParserTestCase):
 
 
 klasse TestOptionalsActionAppendConstWithDefault(ParserTestCase):
-    """Tests the append_const action for an Optional"""
+    """Tests the append_const action fuer an Optional"""
 
     argument_signatures = [
         Sig('-b', action='append_const', const=Exception, default=['X']),
@@ -881,7 +881,7 @@ klasse TestOptionalsActionAppendConstWithDefault(ParserTestCase):
 
 
 klasse TestOptionalsActionCount(ParserTestCase):
-    """Tests the count action for an Optional"""
+    """Tests the count action fuer an Optional"""
 
     argument_signatures = [Sig('-x', action='count')]
     failures = ['a', '-x a', '-x b', '-x a -x b']
@@ -1584,7 +1584,7 @@ klasse TestPrefixCharacterOnlyArguments(ParserTestCase):
 
 
 klasse TestNargsZeroOrMore(ParserTestCase):
-    """Tests specifying args for an Optional that accepts zero or more"""
+    """Tests specifying args fuer an Optional that accepts zero or more"""
 
     argument_signatures = [Sig('-x', nargs='*'), Sig('y', nargs='*')]
     failures = []
@@ -1721,7 +1721,7 @@ klasse TestArgumentsFromFile(TempDirMixin, ParserTestCase):
             ('invalid', b'@no-such-path\n'),
             ('undecodable', self.undecodable + b'\n'),
         ]
-        for path, text in file_texts:
+        fuer path, text in file_texts:
             with open(path, 'wb') as file:
                 file.write(text)
 
@@ -1761,14 +1761,14 @@ klasse TestArgumentsFromFileConverter(TempDirMixin, ParserTestCase):
         file_texts = [
             ('hello', b'hello world!\n'),
         ]
-        for path, text in file_texts:
+        fuer path, text in file_texts:
             with open(path, 'wb') as file:
                 file.write(text)
 
     klasse FromFileConverterArgumentParser(ErrorRaisingArgumentParser):
 
         def convert_arg_line_to_args(self, arg_line):
-            for arg in arg_line.split():
+            fuer arg in arg_line.split():
                 if not arg.strip():
                     continue
                 yield arg
@@ -1837,7 +1837,7 @@ klasse StdStreamComparer:
         # marker, but under some test environments,
         # sys.stdout/err are replaced by io.StringIO which won't have .buffer,
         # so we use a sentinel simply to show that the tests do the right thing
-        # for any buffer supporting object
+        # fuer any buffer supporting object
         self.getattr = operator.attrgetter(attr)
         if attr == 'stdout.buffer':
             self.backupattr = BIN_STDOUT_SENTINEL
@@ -1878,11 +1878,11 @@ klasse RFile(object):
         return self.name == other.name == text
 
 klasse TestFileTypeR(TempDirMixin, ParserTestCase):
-    """Test the FileType option/argument type for reading files"""
+    """Test the FileType option/argument type fuer reading files"""
 
     def setUp(self):
         super(TestFileTypeR, self).setUp()
-        for file_name in ['foo', 'bar']:
+        fuer file_name in ['foo', 'bar']:
             with open(os.path.join(self.temp_dir, file_name),
                       'w', encoding="utf-8") as file:
                 file.write(file_name)
@@ -1919,11 +1919,11 @@ klasse TestFileTypeDefaults(TempDirMixin, ParserTestCase):
 
 
 klasse TestFileTypeRB(TempDirMixin, ParserTestCase):
-    """Test the FileType option/argument type for reading files"""
+    """Test the FileType option/argument type fuer reading files"""
 
     def setUp(self):
         super(TestFileTypeRB, self).setUp()
-        for file_name in ['foo', 'bar']:
+        fuer file_name in ['foo', 'bar']:
             with open(os.path.join(self.temp_dir, file_name),
                       'w', encoding="utf-8") as file:
                 file.write(file_name)
@@ -1960,7 +1960,7 @@ klasse WFile(object):
 
 @os_helper.skip_if_dac_override
 klasse TestFileTypeW(TempDirMixin, ParserTestCase):
-    """Test the FileType option/argument type for writing files"""
+    """Test the FileType option/argument type fuer writing files"""
 
     def setUp(self):
         super().setUp()
@@ -1983,7 +1983,7 @@ klasse TestFileTypeW(TempDirMixin, ParserTestCase):
 
 @os_helper.skip_if_dac_override
 klasse TestFileTypeX(TempDirMixin, ParserTestCase):
-    """Test the FileType option/argument type for writing new files only"""
+    """Test the FileType option/argument type fuer writing new files only"""
 
     def setUp(self):
         super().setUp()
@@ -2003,7 +2003,7 @@ klasse TestFileTypeX(TempDirMixin, ParserTestCase):
 
 @os_helper.skip_if_dac_override
 klasse TestFileTypeWB(TempDirMixin, ParserTestCase):
-    """Test the FileType option/argument type for writing binary files"""
+    """Test the FileType option/argument type fuer writing binary files"""
 
     argument_signatures = [
         Sig('-x', type=FileType('wb')),
@@ -2020,7 +2020,7 @@ klasse TestFileTypeWB(TempDirMixin, ParserTestCase):
 
 @os_helper.skip_if_dac_override
 klasse TestFileTypeXB(TestFileTypeX):
-    "Test the FileType option/argument type for writing new binary files only"
+    "Test the FileType option/argument type fuer writing new binary files only"
 
     argument_signatures = [
         Sig('-x', type=FileType('xb')),
@@ -2045,7 +2045,7 @@ klasse TestFileTypeOpenArgs(TestCase):
             (FT('w', 0, 'l1', 'strict'), ('w', 0, 'l1', 'strict')),
         ]
         with mock.patch('builtins.open') as m:
-            for type, args in cases:
+            fuer type, args in cases:
                 type('foo')
                 m.assert_called_with('foo', *args)
 
@@ -2394,7 +2394,7 @@ klasse TestInvalidAction(TestCase):
         self.assertRaisesRegex(TypeError, r'\(\) is not callable',
                                parser.parse_args, ['--foo', 'bar'])
         # It is impossible to distinguish a TypeError raised due to a mismatch
-        # of the required function arguments from a TypeError raised for an incorrect
+        # of the required function arguments from a TypeError raised fuer an incorrect
         # argument value, and using the heavy inspection machinery is not worthwhile
         # as it does not reliably work in all cases.
         # Therefore, a generic ArgumentError is raised to handle this logical error.
@@ -2481,13 +2481,13 @@ klasse TestAddSubparsers(TestCase):
 
     def test_parse_args_failures(self):
         # check some failure cases:
-        for args_str in ['', 'a', 'a a', '0.5 a', '0.5 1',
+        fuer args_str in ['', 'a', 'a a', '0.5 a', '0.5 1',
                          '0.5 1 -y', '0.5 2 -w']:
             args = args_str.split()
             self.assertArgumentParserError(self.parser.parse_args, args)
 
     def test_parse_args_failures_details(self):
-        for args_str, usage_str, error_str in [
+        fuer args_str, usage_str, error_str in [
             ('',
              'usage: PROG [-h] [--foo] bar {1,2,3} ...',
              'PROG: error: the following arguments are required: bar'),
@@ -2508,7 +2508,7 @@ klasse TestAddSubparsers(TestCase):
     def test_parse_args_failures_details_custom_usage(self):
         parser = self._get_parser(usage='PROG [--foo] bar 1 [-w W] {a,b,c}\n'
                                  '       PROG --foo bar 3 t ...')
-        for args_str, usage_str, error_str in [
+        fuer args_str, usage_str, error_str in [
             ('',
              'usage: PROG [--foo] bar 1 [-w W] {a,b,c}\n'
              '       PROG --foo bar 3 t ...',
@@ -2706,7 +2706,7 @@ klasse TestAddSubparsers(TestCase):
             '''))
 
     def test_help_extra_prefix_chars(self):
-        # Make sure - is still used for help if it is a non-first prefix char
+        # Make sure - is still used fuer help if it is a non-first prefix char
         parser = self._get_parser(prefix_chars='+:-')
         self.assertEqual(parser.format_usage(),
                          'usage: PROG [-h] [++foo] bar {1,2,3} ...\n')
@@ -3326,28 +3326,28 @@ klasse MEMixin(object):
     def test_failures_when_not_required(self):
         parse_args = self.get_parser(required=False).parse_args
         error = ArgumentParserError
-        for args_string in self.failures:
+        fuer args_string in self.failures:
             with self.subTest(args=args_string):
                 self.assertRaises(error, parse_args, args_string.split())
 
     def test_failures_when_required(self):
         parse_args = self.get_parser(required=True).parse_args
         error = ArgumentParserError
-        for args_string in self.failures + ['']:
+        fuer args_string in self.failures + ['']:
             with self.subTest(args=args_string):
                 self.assertRaises(error, parse_args, args_string.split())
 
     def test_successes_when_not_required(self):
         parse_args = self.get_parser(required=False).parse_args
         successes = self.successes + self.successes_when_not_required
-        for args_string, expected_ns in successes:
+        fuer args_string, expected_ns in successes:
             with self.subTest(args=args_string):
                 actual_ns = parse_args(args_string.split())
                 self.assertEqual(actual_ns, expected_ns)
 
     def test_successes_when_required(self):
         parse_args = self.get_parser(required=True).parse_args
-        for args_string, expected_ns in self.successes:
+        fuer args_string, expected_ns in self.successes:
             with self.subTest(args=args_string):
                 actual_ns = parse_args(args_string.split())
                 self.assertEqual(actual_ns, expected_ns)
@@ -4001,7 +4001,7 @@ klasse TestHelpFormattingMetaclass(type):
                 self.func_suffix = func_suffix
                 self.std_name = std_name
 
-                for test_func in [self.test_format,
+                fuer test_func in [self.test_format,
                                   self.test_print,
                                   self.test_print_file]:
                     test_name = '%s_%s' % (test_func.__name__, func_suffix)
@@ -4018,20 +4018,20 @@ klasse TestHelpFormattingMetaclass(type):
                 parser = argparse.ArgumentParser(
                     *tester.parser_signature.args,
                     **tester.parser_signature.kwargs)
-                for argument_sig in getattr(tester, 'argument_signatures', []):
+                fuer argument_sig in getattr(tester, 'argument_signatures', []):
                     parser.add_argument(*argument_sig.args,
                                         **argument_sig.kwargs)
                 group_sigs = getattr(tester, 'argument_group_signatures', [])
-                for group_sig, argument_sigs in group_sigs:
+                fuer group_sig, argument_sigs in group_sigs:
                     group = parser.add_argument_group(*group_sig.args,
                                                       **group_sig.kwargs)
-                    for argument_sig in argument_sigs:
+                    fuer argument_sig in argument_sigs:
                         group.add_argument(*argument_sig.args,
                                            **argument_sig.kwargs)
                 subparsers_sigs = getattr(tester, 'subparsers_signatures', [])
                 if subparsers_sigs:
                     subparsers = parser.add_subparsers()
-                    for subparser_sig in subparsers_sigs:
+                    fuer subparser_sig in subparsers_sigs:
                         subparsers.add_parser(*subparser_sig.args,
                                                **subparser_sig.kwargs)
                 return parser
@@ -4070,8 +4070,8 @@ klasse TestHelpFormattingMetaclass(type):
                 parser_text = sfile.getvalue()
                 self._test(tester, parser_text)
 
-        # add tests for {format,print}_{usage,help}
-        for func_suffix, std_name in [('usage', 'stdout'),
+        # add tests fuer {format,print}_{usage,help}
+        fuer func_suffix, std_name in [('usage', 'stdout'),
                                       ('help', 'stdout')]:
             AddTests(cls, func_suffix, std_name)
 
@@ -5340,7 +5340,7 @@ klasse TestHelpArgumentDefaults(HelpTestCase):
     version = ''
 
 klasse TestHelpVersionAction(HelpTestCase):
-    """Test the default help for the version action"""
+    """Test the default help fuer the version action"""
 
     parser_signature = Sig(prog='PROG', description='description')
     argument_signatures = [Sig('-V', '--version', action='version', version='3.6')]
@@ -5391,7 +5391,7 @@ klasse TestHelpSubparsersOrdering(HelpTestCase):
     argument_signatures = [Sig('-v', '--version', action='version', version='0.1')]
 
     subparsers_signatures = [Sig(name=name)
-                             for name in ('a', 'b', 'c', 'd', 'e')]
+                             fuer name in ('a', 'b', 'c', 'd', 'e')]
 
     usage = '''\
         usage: PROG [-h] [-v] {a,b,c,d,e} ...
@@ -5427,7 +5427,7 @@ klasse TestHelpSubparsersWithHelpOrdering(HelpTestCase):
                        )
 
     subparsers_signatures = [Sig(name=name, help=help)
-                             for name, help in subcommand_data]
+                             fuer name, help in subcommand_data]
 
     usage = '''\
         usage: PROG [-h] [-v] {a,b,c,d,e} ...
@@ -5600,7 +5600,7 @@ klasse TestInvalidArgumentConstructors(TestCase):
 
     def test_missing_destination(self):
         self.assertTypeError()
-        for action in ['store', 'append', 'extend']:
+        fuer action in ['store', 'append', 'extend']:
             with self.subTest(action=action):
                 self.assertTypeError(action=action)
 
@@ -5642,28 +5642,28 @@ klasse TestInvalidArgumentConstructors(TestCase):
         parser.add_argument(dest='foo')
         with self.assertRaises(TypeError) as cm:
             parser.add_argument('bar', dest='baz')
-        self.assertIn('dest supplied twice for positional argument,'
+        self.assertIn('dest supplied twice fuer positional argument,'
                       ' did you mean metavar?',
                       str(cm.exception))
 
     def test_no_argument_actions(self):
-        for action in ['store_const', 'store_true', 'store_false',
+        fuer action in ['store_const', 'store_true', 'store_false',
                        'append_const', 'count']:
             with self.subTest(action=action):
-                for attrs in [dict(type=int), dict(nargs='+'),
+                fuer attrs in [dict(type=int), dict(nargs='+'),
                               dict(choices=['a', 'b'])]:
                     with self.subTest(attrs=attrs):
                         self.assertTypeError('-x', action=action, **attrs)
                         self.assertTypeError('x', action=action, **attrs)
                 self.assertValueError('x', action=action,
-                    errmsg=f"action '{action}' is not valid for positional arguments")
+                    errmsg=f"action '{action}' is not valid fuer positional arguments")
                 self.assertTypeError('-x', action=action, nargs=0)
                 self.assertValueError('x', action=action, nargs=0,
-                    errmsg='nargs for positionals must be != 0')
+                    errmsg='nargs fuer positionals must be != 0')
 
     def test_no_argument_no_const_actions(self):
         # options with zero arguments
-        for action in ['store_true', 'store_false', 'count']:
+        fuer action in ['store_true', 'store_false', 'count']:
             with self.subTest(action=action):
                 # const is always disallowed
                 self.assertTypeError('-x', const='foo', action=action)
@@ -5672,24 +5672,24 @@ klasse TestInvalidArgumentConstructors(TestCase):
                 self.assertTypeError('-x', nargs='*', action=action)
 
     def test_more_than_one_argument_actions(self):
-        for action in ['store', 'append', 'extend']:
+        fuer action in ['store', 'append', 'extend']:
             with self.subTest(action=action):
                 # nargs=0 is disallowed
                 action_name = 'append' if action == 'extend' else action
                 self.assertValueError('-x', nargs=0, action=action,
-                    errmsg=f'nargs for {action_name} actions must be != 0')
+                    errmsg=f'nargs fuer {action_name} actions must be != 0')
                 self.assertValueError('spam', nargs=0, action=action,
-                    errmsg='nargs for positionals must be != 0')
+                    errmsg='nargs fuer positionals must be != 0')
 
                 # const is disallowed with non-optional arguments
-                for nargs in [1, '*', '+']:
+                fuer nargs in [1, '*', '+']:
                     self.assertValueError('-x', const='foo',
                                           nargs=nargs, action=action)
                     self.assertValueError('spam', const='foo',
                                           nargs=nargs, action=action)
 
     def test_required_const_actions(self):
-        for action in ['store_const', 'append_const']:
+        fuer action in ['store_const', 'append_const']:
             with self.subTest(action=action):
                 # nargs is always disallowed
                 self.assertTypeError('-x', nargs='+', action=action)
@@ -5894,8 +5894,8 @@ klasse TestOptionalsHelpVersionActions(TestCase):
         # try all combinations of valid prefixes and suffixes
         valid_prefixes = ['', '-x', 'foo', '-x bar', 'baz -x']
         valid_suffixes = valid_prefixes + ['--bad-option', 'foo bar baz']
-        for prefix in valid_prefixes:
-            for suffix in valid_suffixes:
+        fuer prefix in valid_prefixes:
+            fuer suffix in valid_suffixes:
                 format = '%s %%s %s' % (prefix, suffix)
             self.assertPrintHelpExit(parser, format % '-h')
             self.assertPrintHelpExit(parser, format % '--help')
@@ -5910,7 +5910,7 @@ klasse TestStrings(TestCase):
     """Test str()  and repr() on Optionals and Positionals"""
 
     def assertStringEqual(self, obj, result_string):
-        for func in [str, repr]:
+        fuer func in [str, repr]:
             self.assertEqual(func(obj), result_string)
 
     def test_optional(self):
@@ -6634,7 +6634,7 @@ klasse TestAddArgumentMetavar(TestCase):
             parser.add_argument("--foo", nargs=nargs, metavar=metavar)
         self.assertEqual(cm.exception.args[0], self.EXPECTED_MESSAGE)
 
-    # Unit tests for different values of metavar when nargs=None
+    # Unit tests fuer different values of metavar when nargs=None
 
     def test_nargs_None_metavar_string(self):
         self.do_test_no_exception(nargs=None, metavar="1")
@@ -6651,7 +6651,7 @@ klasse TestAddArgumentMetavar(TestCase):
     def test_nargs_None_metavar_length3(self):
         self.do_test_exception(nargs=None, metavar=("1", "2", "3"))
 
-    # Unit tests for different values of metavar when nargs=?
+    # Unit tests fuer different values of metavar when nargs=?
 
     def test_nargs_optional_metavar_string(self):
         self.do_test_no_exception(nargs="?", metavar="1")
@@ -6668,7 +6668,7 @@ klasse TestAddArgumentMetavar(TestCase):
     def test_nargs_optional_metavar_length3(self):
         self.do_test_exception(nargs="?", metavar=("1", "2", "3"))
 
-    # Unit tests for different values of metavar when nargs=*
+    # Unit tests fuer different values of metavar when nargs=*
 
     def test_nargs_zeroormore_metavar_string(self):
         self.do_test_no_exception(nargs="*", metavar="1")
@@ -6685,7 +6685,7 @@ klasse TestAddArgumentMetavar(TestCase):
     def test_nargs_zeroormore_metavar_length3(self):
         self.do_test_exception(nargs="*", metavar=("1", "2", "3"))
 
-    # Unit tests for different values of metavar when nargs=+
+    # Unit tests fuer different values of metavar when nargs=+
 
     def test_nargs_oneormore_metavar_string(self):
         self.do_test_no_exception(nargs="+", metavar="1")
@@ -6702,7 +6702,7 @@ klasse TestAddArgumentMetavar(TestCase):
     def test_nargs_oneormore_metavar_length3(self):
         self.do_test_exception(nargs="+", metavar=("1", "2", "3"))
 
-    # Unit tests for different values of metavar when nargs=...
+    # Unit tests fuer different values of metavar when nargs=...
 
     def test_nargs_remainder_metavar_string(self):
         self.do_test_no_exception(nargs="...", metavar="1")
@@ -6719,7 +6719,7 @@ klasse TestAddArgumentMetavar(TestCase):
     def test_nargs_remainder_metavar_length3(self):
         self.do_test_no_exception(nargs="...", metavar=("1", "2", "3"))
 
-    # Unit tests for different values of metavar when nargs=A...
+    # Unit tests fuer different values of metavar when nargs=A...
 
     def test_nargs_parser_metavar_string(self):
         self.do_test_no_exception(nargs="A...", metavar="1")
@@ -6736,7 +6736,7 @@ klasse TestAddArgumentMetavar(TestCase):
     def test_nargs_parser_metavar_length3(self):
         self.do_test_exception(nargs="A...", metavar=("1", "2", "3"))
 
-    # Unit tests for different values of metavar when nargs=1
+    # Unit tests fuer different values of metavar when nargs=1
 
     def test_nargs_1_metavar_string(self):
         self.do_test_no_exception(nargs=1, metavar="1")
@@ -6753,7 +6753,7 @@ klasse TestAddArgumentMetavar(TestCase):
     def test_nargs_1_metavar_length3(self):
         self.do_test_exception(nargs=1, metavar=("1", "2", "3"))
 
-    # Unit tests for different values of metavar when nargs=2
+    # Unit tests fuer different values of metavar when nargs=2
 
     def test_nargs_2_metavar_string(self):
         self.do_test_no_exception(nargs=2, metavar="1")
@@ -6770,7 +6770,7 @@ klasse TestAddArgumentMetavar(TestCase):
     def test_nargs_2_metavar_length3(self):
         self.do_test_exception(nargs=2, metavar=("1", "2", "3"))
 
-    # Unit tests for different values of metavar when nargs=3
+    # Unit tests fuer different values of metavar when nargs=3
 
     def test_nargs_3_metavar_string(self):
         self.do_test_no_exception(nargs=3, metavar="1")
@@ -6791,7 +6791,7 @@ klasse TestAddArgumentMetavar(TestCase):
 klasse TestInvalidNargs(TestCase):
 
     EXPECTED_INVALID_MESSAGE = "invalid nargs value"
-    EXPECTED_RANGE_MESSAGE = ("nargs for store actions must be != 0; if you "
+    EXPECTED_RANGE_MESSAGE = ("nargs fuer store actions must be != 0; if you "
                               "have nothing to store, actions such as store "
                               "true or store const may be more appropriate")
 
@@ -6807,7 +6807,7 @@ klasse TestInvalidNargs(TestCase):
             parser.add_argument("--foo", nargs=nargs)
         self.assertEqual(cm.exception.args[0], self.EXPECTED_INVALID_MESSAGE)
 
-    # Unit tests for different values of nargs
+    # Unit tests fuer different values of nargs
 
     def test_nargs_alphabetic(self):
         self.do_test_invalid_exception(nargs='a')
@@ -6823,13 +6823,13 @@ klasse TestInvalidNargs(TestCase):
 klasse TestImportStar(TestCase):
 
     def test(self):
-        for name in argparse.__all__:
+        fuer name in argparse.__all__:
             self.assertHasAttr(argparse, name)
 
     def test_all_exports_everything_but_modules(self):
         items = [
             name
-            for name, value in vars(argparse).items()
+            fuer name, value in vars(argparse).items()
             if not (name.startswith("_") or name == 'ngettext')
             if not inspect.ismodule(value)
         ]

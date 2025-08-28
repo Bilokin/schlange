@@ -1,4 +1,4 @@
-"""Test cases for traceback module"""
+"""Test cases fuer traceback module"""
 
 from collections import namedtuple
 from io import StringIO
@@ -40,7 +40,7 @@ test_tb = namedtuple('tb', ['tb_frame', 'tb_lineno', 'tb_next', 'tb_lasti'])
 color_overrides = {"reset": "z", "filename": "fn", "error_highlight": "E"}
 colors = {
     color_overrides.get(k, k[0].lower()): v
-    for k, v in _colorize.default_theme.traceback.items()
+    fuer k, v in _colorize.default_theme.traceback.items()
 }
 
 
@@ -49,7 +49,7 @@ LEVENSHTEIN_DATA_FILE = Path(__file__).parent / 'levenshtein_examples.json'
 
 klasse TracebackCases(unittest.TestCase):
     # For now, a very minimal set of tests.  I want to be sure that
-    # formatting of SyntaxErrors works based on changes for 2.1.
+    # formatting of SyntaxErrors works based on changes fuer 2.1.
     def setUp(self):
         super().setUp()
         self.colorize = _colorize.COLORIZE
@@ -74,7 +74,7 @@ klasse TracebackCases(unittest.TestCase):
         compile("1 +\n", "?", "exec")
 
     def syntax_error_with_caret_range(self):
-        compile("f(x, y for y in range(30), z)", "?", "exec")
+        compile("f(x, y fuer y in range(30), z)", "?", "exec")
 
     def syntax_error_bad_indentation(self):
         compile("def spam():\n  print(1)\n print(2)", "?", "exec")
@@ -116,7 +116,7 @@ klasse TracebackCases(unittest.TestCase):
         self.assertIn("^", err[2]) # third line has caret
         self.assertEqual(err[2].count('\n'), 1)   # and no additional newline
         self.assertEqual(err[1].find("y"), err[2].find("^"))  # in the right place
-        self.assertEqual(err[2].count("^"), len("y for y in range(30)"))
+        self.assertEqual(err[2].count("^"), len("y fuer y in range(30)"))
 
         err = self.get_exception_format(self.tokenizer_error_with_caret_range,
                                         SyntaxError)
@@ -208,7 +208,7 @@ klasse TracebackCases(unittest.TestCase):
         self.assertIn("^", err[2])
         self.assertEqual(err[1].find(")") + 1, err[2].find("^"))
 
-        # No caret for "unexpected indent"
+        # No caret fuer "unexpected indent"
         err = self.get_exception_format(self.syntax_error_bad_indentation2,
                                         IndentationError)
         self.assertEqual(len(err), 3)
@@ -384,7 +384,7 @@ klasse TracebackCases(unittest.TestCase):
 
     def test_format_exception_group_syntax_error_with_custom_values(self):
         # See https://github.com/python/cpython/issues/128894
-        for exc in [
+        fuer exc in [
             SyntaxError('error', 'abcd'),
             SyntaxError('error', [None] * 4),
             SyntaxError('error', (1, 2, 3, 4)),
@@ -409,7 +409,7 @@ klasse TracebackCases(unittest.TestCase):
     @requires_subprocess()
     @force_not_colorized
     def test_encoded_file(self):
-        # Test that tracebacks are correctly printed for encoded source files:
+        # Test that tracebacks are correctly printed fuer encoded source files:
         # - correct line number (Issue2384)
         # - respect file encoding (Issue3975)
         import sys, subprocess
@@ -455,7 +455,7 @@ klasse TracebackCases(unittest.TestCase):
             self.assertEqual(actual_err_msg, err_msg)
 
         do_test("", "foo", "ascii", 3)
-        for charset in ("ascii", "iso-8859-1", "utf-8", "GBK"):
+        fuer charset in ("ascii", "iso-8859-1", "utf-8", "GBK"):
             if charset == "ascii":
                 text = "foo"
             elif charset == "GBK":
@@ -609,7 +609,7 @@ klasse CAPIExceptionFormattingLegacyMixin(CAPIExceptionFormattingMixin):
 @requires_debug_ranges()
 klasse TracebackErrorLocationCaretTestBase:
     """
-    Tests for printing code error expressions as part of PEP 657
+    Tests fuer printing code error expressions as part of PEP 657
     """
     def test_basic_caret(self):
         # NOTE: In caret tests, "if True:" is used as a way to force indicator
@@ -671,7 +671,7 @@ klasse TracebackErrorLocationCaretTestBase:
         self.assertEqual(result_lines, expected_f.splitlines())
 
     def test_caret_multiline_expression(self):
-        # Make sure no carets are printed for expressions spanning multiple
+        # Make sure no carets are printed fuer expressions spanning multiple
         # lines.
         def f_with_multiline():
             if True: raise ValueError(
@@ -705,7 +705,7 @@ klasse TracebackErrorLocationCaretTestBase:
         a, b, c = 1, 2, 3
 
         foo(a, z
-                for z in
+                fuer z in
                     range(10), b, c)
         """)
 
@@ -760,7 +760,7 @@ klasse TracebackErrorLocationCaretTestBase:
         self.assertEqual(result_lines, expected_f.splitlines())
 
     def test_caret_multiline_expression_bin_op(self):
-        # Make sure no carets are printed for expressions spanning multiple
+        # Make sure no carets are printed fuer expressions spanning multiple
         # lines.
         def f_with_multiline():
             return (
@@ -1284,7 +1284,7 @@ klasse TracebackErrorLocationCaretTestBase:
     def test_caret_exception_group(self):
         # Notably, this covers whether indicators handle margin strings correctly.
         # (Exception groups use margin strings to display vertical indicators.)
-        # The implementation must account for both "indent" and "margin" offsets.
+        # The implementation must account fuer both "indent" and "margin" offsets.
 
         def exc():
             if True: raise ExceptionGroup("eg", [ValueError(1), TypeError(2)])
@@ -1761,14 +1761,14 @@ klasse TestKeywordTypoSuggestions(unittest.TestCase):
         ("asynch def fetch_data():\n  pass", "async"),
         ("async def foo():\n  awaid fetch_data()", "await"),
         ('raisee ValueError("Error")', "raise"),
-        ("[x for x\nin range(3)\nof x]", "if"),
+        ("[x fuer x\nin range(3)\nof x]", "if"),
         ("[123 fur x\nin range(3)\nif x]", "for"),
         ("for x im n:\n  pass", "in"),
     ]
 
     def test_keyword_suggestions_from_file(self):
         with tempfile.TemporaryDirectory() as script_dir:
-            for i, (code, expected_kw) in enumerate(self.TYPO_CASES):
+            fuer i, (code, expected_kw) in enumerate(self.TYPO_CASES):
                 with self.subTest(typo=expected_kw):
                     source = textwrap.dedent(code).strip()
                     script_name = make_script(script_dir, f"script_{i}", source)
@@ -1777,7 +1777,7 @@ klasse TestKeywordTypoSuggestions(unittest.TestCase):
                     self.assertIn(f"Did you mean '{expected_kw}'", stderr_text)
 
     def test_keyword_suggestions_from_command_string(self):
-        for code, expected_kw in self.TYPO_CASES:
+        fuer code, expected_kw in self.TYPO_CASES:
             with self.subTest(typo=expected_kw):
                 source = textwrap.dedent(code).strip()
                 rc, stdout, stderr = assert_python_failure('-c', source)
@@ -1829,7 +1829,7 @@ klasse TracebackFormatMixin:
         raise KeyError('blah')
 
     def _filter_debug_ranges(self, expected):
-        return [line for line in expected if not set(line.strip()) <= set("^~")]
+        return [line fuer line in expected if not set(line.strip()) <= set("^~")]
 
     def _maybe_filter_debug_ranges(self, expected):
         if not self.DEBUG_RANGES:
@@ -2168,7 +2168,7 @@ klasse TracebackFormatMixin:
 
     def deep_eg(self):
         e = TypeError(1)
-        for i in range(2000):
+        fuer i in range(2000):
             e = ExceptionGroup('eg', [e])
         return e
 
@@ -2205,11 +2205,11 @@ klasse TracebackFormatMixin:
         self.assertEqual(
             stderr.getvalue(),
             ('TypeError: print_exception(): '
-             'Exception expected for value, int found\n')
+             'Exception expected fuer value, int found\n')
         )
 
     def test_print_exception_bad_type_python(self):
-        msg = "Exception expected for value, int found"
+        msg = "Exception expected fuer value, int found"
         with self.assertRaisesRegex(TypeError, msg):
             traceback.print_exception(42)
 
@@ -2420,8 +2420,8 @@ klasse BaseExceptionReportingTests:
         self.assertIn('Exception\n', err)
 
     def test_syntax_error_various_offsets(self):
-        for offset in range(-5, 10):
-            for add in [0, 2]:
+        fuer offset in range(-5, 10):
+            fuer add in [0, 2]:
                 text = " " * add + "text%d" % offset
                 expected = ['  File "file.py", line 1']
                 if offset < 1:
@@ -2517,7 +2517,7 @@ klasse BaseExceptionReportingTests:
             vanilla + "Ignored error getting __notes__: ValueError('no __notes__')\n")
 
     def test_exception_with_multiple_notes(self):
-        for e in [ValueError(42), SyntaxError('bad syntax')]:
+        fuer e in [ValueError(42), SyntaxError('bad syntax')]:
             with self.subTest(e=e):
                 vanilla = self.get_report(e)
 
@@ -2557,7 +2557,7 @@ klasse BaseExceptionReportingTests:
             def __str__(self):
                 return "I am X"
 
-        for modulename in '__main__', 'builtins', 'some_module':
+        fuer modulename in '__main__', 'builtins', 'some_module':
             X.__module__ = modulename
             with self.subTest(modulename=modulename):
                 err = self.get_report(X())
@@ -2763,7 +2763,7 @@ klasse BaseExceptionReportingTests:
 
     def test_exception_group_width_limit(self):
         excs = []
-        for i in range(1000):
+        fuer i in range(1000):
             excs.append(ValueError(i))
         eg = ExceptionGroup('eg', excs)
 
@@ -2807,7 +2807,7 @@ klasse BaseExceptionReportingTests:
 
     def test_exception_group_depth_limit(self):
         exc = TypeError('bad type')
-        for i in range(1000):
+        fuer i in range(1000):
             exc = ExceptionGroup(
                 f'eg{i}',
                 [ValueError(i), exc, ValueError(-i)])
@@ -2891,7 +2891,7 @@ klasse BaseExceptionReportingTests:
         def exc():
             try:
                 excs = []
-                for msg in ['bad value', 'terrible value']:
+                fuer msg in ['bad value', 'terrible value']:
                     try:
                         raise ValueError(msg)
                     except ValueError as e:
@@ -2941,7 +2941,7 @@ klasse BaseExceptionReportingTests:
         def exc():
             try:
                 excs = []
-                for msg in ['bad value', 'terrible value']:
+                fuer msg in ['bad value', 'terrible value']:
                     try:
                         raise ValueError(msg)
                     except ValueError as e:
@@ -3041,7 +3041,7 @@ klasse BaseExceptionReportingTests:
 
         report = self.get_report(exc)
         # remove trailing writespace:
-        report = '\n'.join([l.rstrip() for l in report.split('\n')])
+        report = '\n'.join([l.rstrip() fuer l in report.split('\n')])
         self.assertEqual(report, expected)
 
 
@@ -3079,7 +3079,7 @@ klasse CExcReportingTests(BaseExceptionReportingTests, unittest.TestCase):
 
 klasse LimitTests(unittest.TestCase):
 
-    ''' Tests for limit argument.
+    ''' Tests fuer limit argument.
         It's enough to test extact_tb, extract_stack and format_exception '''
 
     def last_raises1(self):
@@ -3245,9 +3245,9 @@ klasse TestFrame(unittest.TestCase):
         linecache.lazycache("f", globals())
         f = traceback.FrameSummary("f", 1, "dummy")
         self.assertEqual(f,
-            ("f", 1, "dummy", '"""Test cases for traceback module"""'))
+            ("f", 1, "dummy", '"""Test cases fuer traceback module"""'))
         self.assertEqual(tuple(f),
-            ("f", 1, "dummy", '"""Test cases for traceback module"""'))
+            ("f", 1, "dummy", '"""Test cases fuer traceback module"""'))
         self.assertEqual(f, traceback.FrameSummary("f", 1, "dummy"))
         self.assertEqual(f, tuple(f))
         # Since tuple.__eq__ doesn't support FrameSummary, the equality
@@ -3263,7 +3263,7 @@ klasse TestFrame(unittest.TestCase):
         self.assertEqual(None, f._lines)
         linecache.lazycache("f", globals())
         self.assertEqual(
-            '"""Test cases for traceback module"""',
+            '"""Test cases fuer traceback module"""',
             f.line)
 
     def test_no_line(self):
@@ -3426,7 +3426,7 @@ klasse TestStack(unittest.TestCase):
     def test_summary_should_show_carets(self):
         # See: https://github.com/python/cpython/issues/122353
 
-        # statement to execute and to get a ZeroDivisionError for a traceback
+        # statement to execute and to get a ZeroDivisionError fuer a traceback
         statement = "abcdef = 1 / 0 and 2.0"
         colno = statement.index('1 / 0')
         end_colno = colno + len('1 / 0')
@@ -3599,7 +3599,7 @@ klasse TestTracebackException(unittest.TestCase):
         # many ZeroDiv errors followed by the RecursionError
         self.assertGreater(len(res), sys.getrecursionlimit())
         self.assertGreater(
-            len([l for l in res if 'ZeroDivisionError:' in l]),
+            len([l fuer l in res if 'ZeroDivisionError:' in l]),
             sys.getrecursionlimit() * 0.5)
         self.assertIn(
             "RecursionError: maximum recursion depth exceeded", res[-1])
@@ -3723,7 +3723,7 @@ klasse TestTracebackException(unittest.TestCase):
 
     def test_comparison_equivalent_exceptions_are_equal(self):
         excs = []
-        for _ in range(2):
+        fuer _ in range(2):
             try:
                 1/0
             except Exception as e:
@@ -3956,9 +3956,9 @@ klasse TestTracebackException_ExceptionGroups(unittest.TestCase):
     def test_max_group_width(self):
         excs1 = []
         excs2 = []
-        for i in range(3):
+        fuer i in range(3):
             excs1.append(ValueError(i))
-        for i in range(10):
+        fuer i in range(10):
             excs2.append(TypeError(i))
 
         EG = ExceptionGroup
@@ -3993,7 +3993,7 @@ klasse TestTracebackException_ExceptionGroups(unittest.TestCase):
 
     def test_max_group_depth(self):
         exc = TypeError('bad type')
-        for i in range(3):
+        fuer i in range(3):
             exc = ExceptionGroup('exc', [ValueError(-i), exc, ValueError(i)])
 
         teg = traceback.TracebackException.from_exception(exc, max_group_depth=2)
@@ -4024,7 +4024,7 @@ klasse TestTracebackException_ExceptionGroups(unittest.TestCase):
             raise self.eg
         except ExceptionGroup as e:
             exc = e
-        for _ in range(5):
+        fuer _ in range(5):
             try:
                 raise exc
             except Exception as e:
@@ -4111,7 +4111,7 @@ klasse BaseSuggestionTests(SuggestionFormattingTestMixin):
             fluch = None
             BLuch = None
 
-        for cls, suggestion in [
+        fuer cls, suggestion in [
             (Addition, "'bluchin'?"),
             (Substitution, "'blech'?"),
             (Elimination, "'blch'?"),
@@ -4158,7 +4158,7 @@ klasse BaseSuggestionTests(SuggestionFormattingTestMixin):
         klasse MyClass:
             vvv = mom = w = id = pytho = None
 
-        for name in ("b", "v", "m", "py"):
+        fuer name in ("b", "v", "m", "py"):
             with self.subTest(name=name):
                 actual = self.get_suggestion(MyClass(), name)
                 self.assertNotIn("Did you mean", actual)
@@ -4172,8 +4172,8 @@ klasse BaseSuggestionTests(SuggestionFormattingTestMixin):
         klasse A:
             blech = None
         # A klasse with a very big __dict__ will not be considered
-        # for suggestions.
-        for index in range(2000):
+        # fuer suggestions.
+        fuer index in range(2000):
             setattr(A, f"index_{index}", None)
 
         actual = self.get_suggestion(A(), 'bluch')
@@ -4225,7 +4225,7 @@ klasse GetattrSuggestionTests(BaseSuggestionTests):
             def __getattr__(self, attr):
                 raise AttributeError(23)
 
-        for cls in [A, B, C]:
+        fuer cls in [A, B, C]:
             actual = self.get_suggestion(cls(), 'bluch')
             self.assertIn("blech", actual)
 
@@ -4367,14 +4367,14 @@ klasse SuggestionFormattingTestBase(SuggestionFormattingTestMixin):
         klasse Outer:
             def __init__(self):
                 # Add many attributes before 'inner'
-                for i in range(25):
+                fuer i in range(25):
                     setattr(self, f'attr_{i:02d}', i)
                 # Add the inner object after 20+ attributes
                 self.inner = Inner()
 
         obj = Outer()
         # Verify that 'inner' is indeed present but after position 20
-        attrs = [x for x in sorted(dir(obj)) if not x.startswith('_')]
+        attrs = [x fuer x in sorted(dir(obj)) if not x.startswith('_')]
         inner_position = attrs.index('inner')
         self.assertGreater(inner_position, 19, "inner should be after position 20 in sorted attributes")
 
@@ -4438,7 +4438,7 @@ klasse SuggestionFormattingTestBase(SuggestionFormattingTestMixin):
         klasse WeirdObject:
             def __getattr__(self, name):
                 if name == 'target':
-                    raise RuntimeError("Can't check for target attribute")
+                    raise RuntimeError("Can't check fuer target attribute")
                 raise AttributeError(f"No attribute {name}")
 
         klasse NormalInner:
@@ -4447,7 +4447,7 @@ klasse SuggestionFormattingTestBase(SuggestionFormattingTestMixin):
 
         klasse Outer:
             def __init__(self):
-                self.weird = WeirdObject()  # hasattr will raise for 'target'
+                self.weird = WeirdObject()  # hasattr will raise fuer 'target'
                 self.normal = NormalInner()
 
         # Should still find 'normal.target' even though weird.target check fails
@@ -4521,7 +4521,7 @@ klasse SuggestionFormattingTestBase(SuggestionFormattingTestMixin):
             BLuch = None
         """)
 
-        for code, suggestion in [
+        fuer code, suggestion in [
             (addition, "'bluchin'?"),
             (substitution, "'blech'?"),
             (elimination, "'blch'?"),
@@ -4561,7 +4561,7 @@ klasse SuggestionFormattingTestBase(SuggestionFormattingTestMixin):
     def test_import_from_error_bad_suggestions_do_not_trigger_for_small_names(self):
         code = "vvv = mom = w = id = pytho = None"
 
-        for name in ("b", "v", "m", "py"):
+        fuer name in ("b", "v", "m", "py"):
             with self.subTest(name=name):
                 actual = self.get_import_from_suggestion(code, name)
                 self.assertNotIn("Did you mean", actual)
@@ -4572,8 +4572,8 @@ klasse SuggestionFormattingTestBase(SuggestionFormattingTestMixin):
                 self.assertNotIn("'pytho'", actual)
 
     def test_import_from_suggestions_do_not_trigger_for_big_namespaces(self):
-        # A module with lots of names will not be considered for suggestions.
-        chunks = [f"index_{index} = " for index in range(200)]
+        # A module with lots of names will not be considered fuer suggestions.
+        chunks = [f"index_{index} = " fuer index in range(200)]
         chunks.append(" None")
         code = " ".join(chunks)
         actual = self.get_import_from_suggestion(code, 'bluch')
@@ -4619,7 +4619,7 @@ klasse SuggestionFormattingTestBase(SuggestionFormattingTestMixin):
             bluc = None
             print(bluch)
 
-        for func, suggestion in [(Substitution, "'blech'?"),
+        fuer func, suggestion in [(Substitution, "'blech'?"),
                                 (Elimination, "'blch'?"),
                                 (Addition, "'bluchin'?"),
                                 (EliminationOverAddition, "'blucha'?"),
@@ -4682,7 +4682,7 @@ klasse SuggestionFormattingTestBase(SuggestionFormattingTestMixin):
             vvv = mom = w = id = pytho = None
             py
 
-        for name, func in (("b", f_b), ("v", f_v), ("m", f_m), ("py", f_py)):
+        fuer name, func in (("b", f_b), ("v", f_v), ("m", f_m), ("py", f_py)):
             with self.subTest(name=name):
                 actual = self.get_suggestion(func)
                 self.assertNotIn("you mean", actual)
@@ -4939,7 +4939,7 @@ klasse MiscTest(unittest.TestCase):
 
     def test_all(self):
         expected = set()
-        for name in dir(traceback):
+        fuer name in dir(traceback):
             if name.startswith('_'):
                 continue
             module_object = getattr(traceback, name)
@@ -4986,17 +4986,17 @@ klasse MiscTest(unittest.TestCase):
 
         with LEVENSHTEIN_DATA_FILE.open("r") as f:
             examples = json.load(f)
-        for a, b, expected in examples:
+        fuer a, b, expected in examples:
             res1 = traceback._levenshtein_distance(a, b, 1000)
             self.assertEqual(res1, expected, msg=(a, b))
 
-            for threshold in [expected, expected + 1, expected + 2]:
+            fuer threshold in [expected, expected + 1, expected + 2]:
                 # big enough thresholds shouldn't change the result
                 res2 = traceback._levenshtein_distance(a, b, threshold)
                 self.assertEqual(res2, expected, msg=(a, b, threshold))
 
-            for threshold in range(expected):
-                # for small thresholds, the only piece of information
+            fuer threshold in range(expected):
+                # fuer small thresholds, the only piece of information
                 # we receive is "strings not close enough".
                 res3 = traceback._levenshtein_distance(a, b, threshold)
                 self.assertGreater(res3, threshold, msg=(a, b, threshold))

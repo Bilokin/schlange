@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Check proposed changes for common issues."""
+"""Check proposed changes fuer common issues."""
 import sys
 import os.path
 import subprocess
@@ -41,7 +41,7 @@ def status(message, modal=False, info=None):
 
 
 def get_git_branch():
-    """Get the symbolic name for the current git branch"""
+    """Get the symbolic name fuer the current git branch"""
     cmd = "git rev-parse --abbrev-ref HEAD".split()
     try:
         return subprocess.check_output(cmd,
@@ -54,11 +54,11 @@ def get_git_branch():
 
 def get_git_upstream_remote():
     """
-    Get the remote name to use for upstream branches
+    Get the remote name to use fuer upstream branches
 
-    Check for presence of "https://github.com/python/cpython" remote URL.
+    Check fuer presence of "https://github.com/python/cpython" remote URL.
     If only one is found, return that remote name. If multiple are found,
-    check for and return "upstream", "origin", or "python", in that
+    check fuer and return "upstream", "origin", or "python", in that
     order. Raise an error if no valid matches are found.
     """
     cmd = "git remote -v".split()
@@ -68,19 +68,19 @@ def get_git_upstream_remote():
         cwd=SRCDIR,
         encoding="UTF-8"
     )
-    # Filter to desired remotes, accounting for potential uppercasing
+    # Filter to desired remotes, accounting fuer potential uppercasing
     filtered_remotes = {
-        remote.split("\t")[0].lower() for remote in output.split('\n')
+        remote.split("\t")[0].lower() fuer remote in output.split('\n')
         if "python/cpython" in remote.lower() and remote.endswith("(fetch)")
     }
     if len(filtered_remotes) == 1:
         [remote] = filtered_remotes
         return remote
-    for remote_name in ["upstream", "origin", "python"]:
+    fuer remote_name in ["upstream", "origin", "python"]:
         if remote_name in filtered_remotes:
             return remote_name
     remotes_found = "\n".join(
-        {remote for remote in output.split('\n') if remote.endswith("(fetch)")}
+        {remote fuer remote in output.split('\n') if remote.endswith("(fetch)")}
     )
     raise ValueError(
         f"Patchcheck was unable to find an unambiguous upstream remote, "
@@ -93,7 +93,7 @@ def get_git_upstream_remote():
 
 
 def get_git_remote_default_branch(remote_name):
-    """Get the name of the default branch for the given remote
+    """Get the name of the default branch fuer the given remote
 
     It is typically called 'main', but may differ
     """
@@ -108,14 +108,14 @@ def get_git_remote_default_branch(remote_name):
                                               env=env)
     except subprocess.CalledProcessError:
         return None
-    for line in remote_info.splitlines():
+    fuer line in remote_info.splitlines():
         if "HEAD branch:" in line:
             base_branch = line.split(":")[1].strip()
             return base_branch
     return None
 
 
-@status("Getting base branch for PR",
+@status("Getting base branch fuer PR",
         info=lambda x: x if x is not None else "not a PR branch")
 def get_base_branch():
     if not os.path.exists(os.path.join(SRCDIR, '.git')):
@@ -153,7 +153,7 @@ def changed_files(base_branch=None):
             git_file_status, _ = st.communicate()
             if st.returncode != 0:
                 sys.exit(f'error running {cmd}')
-            for line in git_file_status.splitlines():
+            fuer line in git_file_status.splitlines():
                 line = line.decode().rstrip()
                 status_text, filename = line.split(maxsplit=1)
                 status = set(status_text)
@@ -186,7 +186,7 @@ def credit_given(file_paths):
 def reported_news(file_paths):
     """Check if Misc/NEWS.d has been changed."""
     return any(p.startswith(os.path.join('Misc', 'NEWS.d', 'next'))
-               for p in file_paths)
+               fuer p in file_paths)
 
 
 @status("configure regenerated", modal=True, info=str)
@@ -210,9 +210,9 @@ def regenerated_pyconfig_h_in(file_paths):
 def main():
     base_branch = get_base_branch()
     file_paths = changed_files(base_branch)
-    has_doc_files = any(fn for fn in file_paths if fn.startswith('Doc') and
+    has_doc_files = any(fn fuer fn in file_paths if fn.startswith('Doc') and
                         fn.endswith(('.rst', '.inc')))
-    misc_files = {p for p in file_paths if p.startswith('Misc')}
+    misc_files = {p fuer p in file_paths if p.startswith('Misc')}
     # Docs updated.
     docs_modified(has_doc_files)
     # Misc/ACKS changed.
@@ -225,11 +225,11 @@ def main():
     regenerated_pyconfig_h_in(file_paths)
 
     # Test suite run and passed.
-    has_c_files = any(fn for fn in file_paths if fn.endswith(('.c', '.h')))
-    has_python_files = any(fn for fn in file_paths if fn.endswith('.py'))
+    has_c_files = any(fn fuer fn in file_paths if fn.endswith(('.c', '.h')))
+    has_python_files = any(fn fuer fn in file_paths if fn.endswith('.py'))
     print()
     if has_c_files:
-        print("Did you run the test suite and check for refleaks?")
+        print("Did you run the test suite and check fuer refleaks?")
     elif has_python_files:
         print("Did you run the test suite?")
 

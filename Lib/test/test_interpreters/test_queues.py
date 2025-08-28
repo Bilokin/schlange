@@ -21,7 +21,7 @@ def get_num_queues():
 
 klasse TestBase(_TestBase):
     def tearDown(self):
-        for qid, _, _ in _queues.list_all():
+        fuer qid, _, _ in _queues.list_all():
             try:
                 _queues.destroy(qid)
             except Exception:
@@ -188,7 +188,7 @@ klasse QueueTests(TestBase):
 
     def test_pickle(self):
         queue = queues.create()
-        for protocol in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer protocol in range(pickle.HIGHEST_PROTOCOL + 1):
             with self.subTest(protocol=protocol):
                 data = pickle.dumps(queue, protocol)
                 unpickled = pickle.loads(data)
@@ -210,7 +210,7 @@ klasse TestQueueOps(TestBase):
         self.assertIs(after, True)
 
     def test_full(self):
-        for maxsize in [1, 3, 11]:
+        fuer maxsize in [1, 3, 11]:
             with self.subTest(f'maxsize={maxsize}'):
                 num_to_add = maxsize
                 expected = [False] * (num_to_add * 2 + 3)
@@ -221,7 +221,7 @@ klasse TestQueueOps(TestBase):
                 actual = []
                 empty = [queue.empty()]
 
-                for _ in range(num_to_add):
+                fuer _ in range(num_to_add):
                     actual.append(queue.full())
                     queue.put_nowait(None)
                 actual.append(queue.full())
@@ -229,7 +229,7 @@ klasse TestQueueOps(TestBase):
                     queue.put_nowait(None)
                 empty.append(queue.empty())
 
-                for _ in range(num_to_add):
+                fuer _ in range(num_to_add):
                     actual.append(queue.full())
                     queue.get_nowait()
                 actual.append(queue.full())
@@ -242,7 +242,7 @@ klasse TestQueueOps(TestBase):
                 self.assertEqual(empty, [True, False, True])
 
         # no max size
-        for args in [(), (0,), (-1,), (-10,)]:
+        fuer args in [(), (0,), (-1,), (-10,)]:
             with self.subTest(f'maxsize={args[0]}' if args else '<default>'):
                 num_to_add = 13
                 expected = [False] * (num_to_add * 2 + 3)
@@ -251,13 +251,13 @@ klasse TestQueueOps(TestBase):
                 actual = []
                 empty = [queue.empty()]
 
-                for _ in range(num_to_add):
+                fuer _ in range(num_to_add):
                     actual.append(queue.full())
                     queue.put_nowait(None)
                 actual.append(queue.full())
                 empty.append(queue.empty())
 
-                for _ in range(num_to_add):
+                fuer _ in range(num_to_add):
                     actual.append(queue.full())
                     queue.get_nowait()
                 actual.append(queue.full())
@@ -273,7 +273,7 @@ klasse TestQueueOps(TestBase):
         expected = [0, 1, 2, 3, 2, 3, 2, 1, 0, 1, 0]
         actual = []
         queue = queues.create()
-        for _ in range(3):
+        fuer _ in range(3):
             actual.append(queue.qsize())
             queue.put(None)
         actual.append(queue.qsize())
@@ -281,7 +281,7 @@ klasse TestQueueOps(TestBase):
         actual.append(queue.qsize())
         queue.put(None)
         actual.append(queue.qsize())
-        for _ in range(3):
+        fuer _ in range(3):
             queue.get()
             actual.append(queue.qsize())
         queue.put(None)
@@ -294,9 +294,9 @@ klasse TestQueueOps(TestBase):
     def test_put_get_main(self):
         expected = list(range(20))
         queue = queues.create()
-        for i in range(20):
+        fuer i in range(20):
             queue.put(i)
-        actual = [queue.get() for _ in range(20)]
+        actual = [queue.get() fuer _ in range(20)]
 
         self.assertEqual(actual, expected)
 
@@ -319,7 +319,7 @@ klasse TestQueueOps(TestBase):
         queue.put_nowait(None)
 
     def test_put_full_fallback(self):
-        for obj in [
+        fuer obj in [
             None,
             True,
             10,
@@ -354,13 +354,13 @@ klasse TestQueueOps(TestBase):
     def test_put_get_full_fallback(self):
         expected = list(range(20))
         queue = queues.create()
-        for methname in ('get', 'get_nowait'):
+        fuer methname in ('get', 'get_nowait'):
             with self.subTest(f'{methname}()'):
                 get = getattr(queue, methname)
 
-                for i in range(20):
+                fuer i in range(20):
                     queue.put(i)
-                actual = [get() for _ in range(20)]
+                actual = [get() fuer _ in range(20)]
                 self.assertEqual(actual, expected)
 
                 obj = [1, 2, 3]  # lists are not shareable
@@ -375,7 +375,7 @@ klasse TestQueueOps(TestBase):
             from concurrent.interpreters import _queues as queues
             queue = queues.create()
             """))
-        for methname in ('get', 'get_nowait'):
+        fuer methname in ('get', 'get_nowait'):
             with self.subTest(f'{methname}()'):
                 interp.exec(dedent(f"""
                     orig = b'spam'
@@ -391,7 +391,7 @@ klasse TestQueueOps(TestBase):
         queue2 = queues.create()
         self.assertEqual(len(queues.list_all()), 2)
 
-        for methname in ('get', 'get_nowait'):
+        fuer methname in ('get', 'get_nowait'):
             with self.subTest(f'{methname}()'):
                 obj1 = b'spam'
                 queue1.put(obj1)

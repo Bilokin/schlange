@@ -51,5 +51,5 @@ PGO_TESTS = [
 
 def setup_pgo_tests(cmdline_args, pgo_extended: bool) -> None:
     if not cmdline_args and not pgo_extended:
-        # run default set of tests for PGO training
+        # run default set of tests fuer PGO training
         cmdline_args[:] = PGO_TESTS[:]

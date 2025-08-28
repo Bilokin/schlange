@@ -18,7 +18,7 @@ klasse TestDecode:
 
     def test_nonascii_digits_rejected(self):
         # JSON specifies only ascii digits, see gh-125687
-        for num in ["1\uff10", "0.\uff10", "0e\uff10"]:
+        fuer num in ["1\uff10", "0.\uff10", "0e\uff10"]:
             with self.assertRaises(self.JSONDecodeError):
                 self.loads(num)
 
@@ -26,7 +26,7 @@ klasse TestDecode:
         self.assertEqual(self.loads(b"1"), 1)
 
     def test_parse_constant(self):
-        for constant, expected in [
+        fuer constant, expected in [
             ("Infinity", "INFINITY"),
             ("-Infinity", "-INFINITY"),
             ("NaN", "NAN"),
@@ -36,7 +36,7 @@ klasse TestDecode:
             )
 
     def test_constant_invalid_case(self):
-        for constant in [
+        fuer constant in [
             "nan", "NAN", "naN", "infinity", "INFINITY", "inFiniTy"
         ]:
             with self.assertRaises(self.JSONDecodeError):
@@ -101,7 +101,7 @@ klasse TestDecode:
 
     def test_invalid_input_type(self):
         msg = 'the JSON object must be str'
-        for value in [1, 3.14, [], {}, None]:
+        fuer value in [1, 3.14, [], {}, None]:
             self.assertRaisesRegex(TypeError, msg, self.loads, value)
 
     def test_string_with_utf8_bom(self):

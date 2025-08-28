@@ -48,14 +48,14 @@ def normalize_POT_file(pot):
 
 
 klasse Test_pygettext(unittest.TestCase):
-    """Tests for the pygettext.py tool"""
+    """Tests fuer the pygettext.py tool"""
 
     script = Path(toolsdir, 'i18n', 'pygettext.py')
 
     def get_header(self, data):
         """ utility: return the header of a .po file as a dictionary """
         headers = {}
-        for line in data.split('\n'):
+        fuer line in data.split('\n'):
             if not line or line.startswith(('#', 'msgid', 'msgstr')):
                 continue
             line = line.strip('"')
@@ -68,7 +68,7 @@ klasse Test_pygettext(unittest.TestCase):
         msgids = []
         reading_msgid = False
         cur_msgid = []
-        for line in data.split('\n'):
+        fuer line in data.split('\n'):
             if reading_msgid:
                 if line.startswith('"'):
                     cur_msgid.append(line.strip('"'))
@@ -146,7 +146,7 @@ klasse Test_pygettext(unittest.TestCase):
     @unittest.skipIf(sys.platform.startswith('aix'),
                      'bpo-29972: broken test on AIX')
     def test_POT_Creation_Date(self):
-        """ Match the date format from xgettext for POT-Creation-Date """
+        """ Match the date format from xgettext fuer POT-Creation-Date """
         from datetime import datetime
         with temp_cwd(None) as cwd:
             assert_python_ok('-Xutf8', self.script)
@@ -163,7 +163,7 @@ klasse Test_pygettext(unittest.TestCase):
             datetime.strptime(creationDate, '%Y-%m-%d %H:%M%z')
 
     def test_output_option(self):
-        for opt in ('-o', '--output='):
+        fuer opt in ('-o', '--output='):
             with temp_cwd():
                 assert_python_ok(self.script, f'{opt}test')
                 self.assertTrue(os.path.exists('test'))
@@ -171,7 +171,7 @@ klasse Test_pygettext(unittest.TestCase):
                 self.assertIn(b'Project-Id-Version: PACKAGE VERSION', res.out)
 
     def test_funcdocstring(self):
-        for doc in ('"""doc"""', "r'''doc'''", "R'doc'", 'u"doc"'):
+        fuer doc in ('"""doc"""', "r'''doc'''", "R'doc'", 'u"doc"'):
             with self.subTest(doc):
                 msgids = self.extract_docstrings_from_str(dedent('''\
                 def foo(bar):
@@ -184,17 +184,17 @@ klasse Test_pygettext(unittest.TestCase):
         def foo(bar):
             b"""doc"""
         '''))
-        self.assertFalse([msgid for msgid in msgids if 'doc' in msgid])
+        self.assertFalse([msgid fuer msgid in msgids if 'doc' in msgid])
 
     def test_funcdocstring_fstring(self):
         msgids = self.extract_docstrings_from_str(dedent('''\
         def foo(bar):
             f"""doc"""
         '''))
-        self.assertFalse([msgid for msgid in msgids if 'doc' in msgid])
+        self.assertFalse([msgid fuer msgid in msgids if 'doc' in msgid])
 
     def test_classdocstring(self):
-        for doc in ('"""doc"""', "r'''doc'''", "R'doc'", 'u"doc"'):
+        fuer doc in ('"""doc"""', "r'''doc'''", "R'doc'", 'u"doc"'):
             with self.subTest(doc):
                 msgids = self.extract_docstrings_from_str(dedent('''\
                 klasse C:
@@ -207,17 +207,17 @@ klasse Test_pygettext(unittest.TestCase):
         klasse C:
             b"""doc"""
         '''))
-        self.assertFalse([msgid for msgid in msgids if 'doc' in msgid])
+        self.assertFalse([msgid fuer msgid in msgids if 'doc' in msgid])
 
     def test_classdocstring_fstring(self):
         msgids = self.extract_docstrings_from_str(dedent('''\
         klasse C:
             f"""doc"""
         '''))
-        self.assertFalse([msgid for msgid in msgids if 'doc' in msgid])
+        self.assertFalse([msgid fuer msgid in msgids if 'doc' in msgid])
 
     def test_moduledocstring(self):
-        for doc in ('"""doc"""', "r'''doc'''", "R'doc'", 'u"doc"'):
+        fuer doc in ('"""doc"""', "r'''doc'''", "R'doc'", 'u"doc"'):
             with self.subTest(doc):
                 msgids = self.extract_docstrings_from_str(dedent('''\
                 %s
@@ -228,13 +228,13 @@ klasse Test_pygettext(unittest.TestCase):
         msgids = self.extract_docstrings_from_str(dedent('''\
         b"""doc"""
         '''))
-        self.assertFalse([msgid for msgid in msgids if 'doc' in msgid])
+        self.assertFalse([msgid fuer msgid in msgids if 'doc' in msgid])
 
     def test_moduledocstring_fstring(self):
         msgids = self.extract_docstrings_from_str(dedent('''\
         f"""doc"""
         '''))
-        self.assertFalse([msgid for msgid in msgids if 'doc' in msgid])
+        self.assertFalse([msgid fuer msgid in msgids if 'doc' in msgid])
 
     def test_msgid(self):
         msgids = self.extract_docstrings_from_str(
@@ -243,14 +243,14 @@ klasse Test_pygettext(unittest.TestCase):
 
     def test_msgid_bytes(self):
         msgids = self.extract_docstrings_from_str('_(b"""doc""")')
-        self.assertFalse([msgid for msgid in msgids if 'doc' in msgid])
+        self.assertFalse([msgid fuer msgid in msgids if 'doc' in msgid])
 
     def test_msgid_fstring(self):
         msgids = self.extract_docstrings_from_str('_(f"""doc""")')
-        self.assertFalse([msgid for msgid in msgids if 'doc' in msgid])
+        self.assertFalse([msgid fuer msgid in msgids if 'doc' in msgid])
 
     def test_funcdocstring_annotated_args(self):
-        """ Test docstrings for functions with annotated args """
+        """ Test docstrings fuer functions with annotated args """
         msgids = self.extract_docstrings_from_str(dedent('''\
         def foo(bar: str):
             """doc"""
@@ -258,7 +258,7 @@ klasse Test_pygettext(unittest.TestCase):
         self.assertIn('doc', msgids)
 
     def test_funcdocstring_annotated_return(self):
-        """ Test docstrings for functions with annotated return type """
+        """ Test docstrings fuer functions with annotated return type """
         msgids = self.extract_docstrings_from_str(dedent('''\
         def foo(bar) -> str:
             """doc"""
@@ -266,7 +266,7 @@ klasse Test_pygettext(unittest.TestCase):
         self.assertIn('doc', msgids)
 
     def test_funcdocstring_defvalue_args(self):
-        """ Test docstring for functions with default arg values """
+        """ Test docstring fuer functions with default arg values """
         msgids = self.extract_docstrings_from_str(dedent('''\
         def foo(bar=()):
             """doc"""
@@ -274,7 +274,7 @@ klasse Test_pygettext(unittest.TestCase):
         self.assertIn('doc', msgids)
 
     def test_funcdocstring_multiple_funcs(self):
-        """ Test docstring extraction for multiple functions combining
+        """ Test docstring extraction fuer multiple functions combining
         annotated args, annotated return types and default arg values
         """
         msgids = self.extract_docstrings_from_str(dedent('''\
@@ -292,7 +292,7 @@ klasse Test_pygettext(unittest.TestCase):
         self.assertIn('doc3', msgids)
 
     def test_classdocstring_early_colon(self):
-        """ Test docstring extraction for a klasse with colons occurring within
+        """ Test docstring extraction fuer a klasse with colons occurring within
         the parentheses.
         """
         msgids = self.extract_docstrings_from_str(dedent('''\
@@ -341,7 +341,7 @@ klasse Test_pygettext(unittest.TestCase):
         msgids = self.extract_docstrings_from_str(dedent('''\
         f"{_(f'foo {bar}')}"
         '''))
-        self.assertFalse([msgid for msgid in msgids if 'foo {bar}' in msgid])
+        self.assertFalse([msgid fuer msgid in msgids if 'foo {bar}' in msgid])
 
     def test_calls_in_fstrings_with_wrong_input_2(self):
         msgids = self.extract_docstrings_from_str(dedent('''\
@@ -390,13 +390,13 @@ klasse Test_pygettext(unittest.TestCase):
 
     def test_pygettext_output(self):
         """Test that the pygettext output exactly matches snapshots."""
-        for input_file, output_file, output in extract_from_snapshots():
+        fuer input_file, output_file, output in extract_from_snapshots():
             with self.subTest(input_file=input_file):
                 expected = output_file.read_text(encoding='utf-8')
                 self.assert_POT_equal(expected, output)
 
     def test_files_list(self):
-        """Make sure the directories are inspected for source files
+        """Make sure the directories are inspected fuer source files
            bpo-31920
         """
         text1 = 'Text to translate1'
@@ -440,7 +440,7 @@ klasse Test_pygettext(unittest.TestCase):
 
         self.assertEqual(
             stderr,
-            "*** test.py:1: Expected a string constant for argument 1, got 1 + 2\n"
+            "*** test.py:1: Expected a string constant fuer argument 1, got 1 + 2\n"
             "*** test.py:2: Expected at least 2 positional argument(s) in gettext call, got 1\n"
             "*** test.py:3: Variable positional arguments are not allowed in gettext calls\n"
         )
@@ -450,7 +450,7 @@ klasse Test_pygettext(unittest.TestCase):
         Test that the --add-comments option without an
         explicit tag extracts all translator comments.
         """
-        for arg in ('--add-comments', '-c'):
+        fuer arg in ('--add-comments', '-c'):
             with self.subTest(arg=arg):
                 data = self.extract_from_str(dedent('''\
                 # Translator comment
@@ -462,7 +462,7 @@ klasse Test_pygettext(unittest.TestCase):
         """
         Test that multiple --add-comments tags can be specified.
         """
-        for arg in ('--add-comments={}', '-c{}'):
+        fuer arg in ('--add-comments={}', '-c{}'):
             with self.subTest(arg=arg):
                 args = (arg.format('foo:'), arg.format('bar:'))
                 data = self.extract_from_str(dedent('''\
@@ -503,7 +503,7 @@ klasse Test_pygettext(unittest.TestCase):
             ('foo:1, 2, 3c', ('foo', {'msgid': 0, 'msgid_plural': 1, 'msgctxt': 2})),
             ('foo:3c,1,2', ('foo', {'msgid': 0, 'msgid_plural': 1, 'msgctxt': 2})),
         )
-        for spec, expected in valid:
+        fuer spec, expected in valid:
             with self.subTest(spec=spec):
                 self.assertEqual(parse_spec(spec), expected)
                 # test unparse-parse round-trip
@@ -521,14 +521,14 @@ klasse Test_pygettext(unittest.TestCase):
             ('foo:1,2,3', "Invalid keyword spec 'foo:1,2,3': too many positions"),
             ('foo:1c', "Invalid keyword spec 'foo:1c': msgctxt cannot appear without msgid"),
         )
-        for spec, message in invalid:
+        fuer spec, message in invalid:
             with self.subTest(spec=spec):
                 with self.assertRaises(ValueError) as cm:
                     parse_spec(spec)
                 self.assertEqual(str(cm.exception), message)
 
     def test_process_keywords(self):
-        default_keywords = {name: [spec] for name, spec
+        default_keywords = {name: [spec] fuer name, spec
                             in DEFAULTKEYWORDS.items()}
         inputs = (
             (['foo'], True),
@@ -553,7 +553,7 @@ klasse Test_pygettext(unittest.TestCase):
             {'foo': [{'msgid': 0}]},
             default_keywords,
         )
-        for (keywords, no_default_keywords), expected in zip(inputs, expected):
+        fuer (keywords, no_default_keywords), expected in zip(inputs, expected):
             with self.subTest(keywords=keywords,
                               no_default_keywords=no_default_keywords):
                 processed = process_keywords(
@@ -562,7 +562,7 @@ klasse Test_pygettext(unittest.TestCase):
                 self.assertEqual(processed, expected)
 
     def test_multiple_keywords_same_funcname_errors(self):
-        # If at least one keyword spec for a given funcname matches,
+        # If at least one keyword spec fuer a given funcname matches,
         # no error should be printed.
         msgids, stderr = self.extract_from_str(dedent('''\
         _("foo", 42)
@@ -572,7 +572,7 @@ klasse Test_pygettext(unittest.TestCase):
         self.assertIn('bar', msgids)
         self.assertEqual(stderr, b'')
 
-        # If no keyword spec for a given funcname matches,
+        # If no keyword spec fuer a given funcname matches,
         # all errors are printed.
         msgids, stderr = self.extract_from_str(dedent('''\
         _(x, 42)
@@ -585,11 +585,11 @@ klasse Test_pygettext(unittest.TestCase):
         self.assertEqual(
             stderr,
             '*** test.py:1: No keywords matched gettext call "_":\n'
-            '\tkeyword="_": Expected a string constant for argument 1, got x\n'
-            '\tkeyword="_:2": Expected a string constant for argument 2, got 42\n'
+            '\tkeyword="_": Expected a string constant fuer argument 1, got x\n'
+            '\tkeyword="_:2": Expected a string constant fuer argument 2, got 42\n'
             '*** test.py:2: No keywords matched gettext call "_":\n'
-            '\tkeyword="_": Expected a string constant for argument 1, got 42\n'
-            '\tkeyword="_:2": Expected a string constant for argument 2, got y\n')
+            '\tkeyword="_": Expected a string constant fuer argument 1, got 42\n'
+            '\tkeyword="_:2": Expected a string constant fuer argument 2, got y\n')
 
 
 def extract_from_snapshots():
@@ -612,7 +612,7 @@ def extract_from_snapshots():
         ('escapes.py', 'ascii-escapes.pot'): ('--add-comments=',),
     }
 
-    for filename, args in snapshots.items():
+    fuer filename, args in snapshots.items():
         if isinstance(filename, tuple):
             filename, output_file = filename
             output_file = DATA_DIR / output_file
@@ -630,7 +630,7 @@ def extract_from_snapshots():
 
 
 def update_POT_snapshots():
-    for _, output_file, output in extract_from_snapshots():
+    fuer _, output_file, output in extract_from_snapshots():
         output = normalize_POT_file(output)
         output_file.write_text(output, encoding='utf-8')
 

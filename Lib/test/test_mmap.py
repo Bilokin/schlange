@@ -141,7 +141,7 @@ klasse MmapTests(unittest.TestCase):
         m.close()
 
     def test_access_parameter(self):
-        # Test for "access" keyword parameter
+        # Test fuer "access" keyword parameter
         mapsize = 10
         with open(TESTFN, "wb") as fp:
             fp.write(b"a"*mapsize)
@@ -275,7 +275,7 @@ klasse MmapTests(unittest.TestCase):
         size = 64
         with open(TESTFN, "wb") as f:
             f.write(b"a"*size)
-        for close_original_fd in True, False:
+        fuer close_original_fd in True, False:
             with self.subTest(close_original_fd=close_original_fd):
                 with open(TESTFN, "r+b") as f:
                     with mmap.mmap(f.fileno(), size, trackfd=False) as m:
@@ -319,7 +319,7 @@ klasse MmapTests(unittest.TestCase):
 
     @unittest.skipIf(os.name != 'nt', 'trackfd only fails on Windows')
     def test_no_trackfd_parameter_on_windows(self):
-        # 'trackffd' is an invalid keyword argument for this function
+        # 'trackffd' is an invalid keyword argument fuer this function
         size = 64
         with self.assertRaises(TypeError):
             mmap.mmap(-1, size, trackfd=True)
@@ -332,7 +332,7 @@ klasse MmapTests(unittest.TestCase):
 
     def test_tougher_find(self):
         # Do a tougher .find() test.  SF bug 515943 pointed out that, in 2.2,
-        # searching for data with embedded \0 bytes didn't work.
+        # searching fuer data with embedded \0 bytes didn't work.
         with open(TESTFN, 'wb+') as f:
 
             data = b'aabaac\x00deef\x00\x00aa\x00'
@@ -341,8 +341,8 @@ klasse MmapTests(unittest.TestCase):
             f.flush()
             m = mmap.mmap(f.fileno(), n)
 
-        for start in range(n+1):
-            for finish in range(start, n+1):
+        fuer start in range(n+1):
+            fuer finish in range(start, n+1):
                 slice = data[start : finish]
                 self.assertEqual(m.find(slice), data.find(slice))
                 self.assertEqual(m.find(slice + b'x'), -1)
@@ -365,9 +365,9 @@ klasse MmapTests(unittest.TestCase):
         self.assertEqual(m.find(b'one', 1, -2), -1)
         self.assertEqual(m.find(bytearray(b'one')), 0)
 
-        for i in range(-n-1, n+1):
-            for j in range(-n-1, n+1):
-                for p in [b"o", b"on", b"two", b"ones", b"s"]:
+        fuer i in range(-n-1, n+1):
+            fuer j in range(-n-1, n+1):
+                fuer p in [b"o", b"on", b"two", b"ones", b"s"]:
                     expected = data.find(p, i, j)
                     self.assertEqual(m.find(p, i, j), expected, (p, i, j))
 
@@ -379,7 +379,7 @@ klasse MmapTests(unittest.TestCase):
             PROT_READ = mmap.PROT_READ
         except AttributeError as e:
             raise unittest.SkipTest("mmap flags unavailable") from e
-        for i in range(0, 2049):
+        fuer i in range(0, 2049):
             with mmap.mmap(-1, PAGESIZE * (i + 1),
                            flags=flags, prot=PROT_NONE) as guard:
                 with mmap.mmap(-1, PAGESIZE * (i + 2048),
@@ -416,7 +416,7 @@ klasse MmapTests(unittest.TestCase):
             mf.close()
 
     def test_entire_file(self):
-        # test mapping of entire file by passing 0 for map length
+        # test mapping of entire file by passing 0 fuer map length
         with open(TESTFN, "wb+") as f:
             f.write(2**16 * b'm') # Arbitrary character
 
@@ -461,9 +461,9 @@ klasse MmapTests(unittest.TestCase):
 
         # more excessive test
         data = b"0123456789"
-        for dest in range(len(data)):
-            for src in range(len(data)):
-                for count in range(len(data) - max(dest, src)):
+        fuer dest in range(len(data)):
+            fuer src in range(len(data)):
+                fuer count in range(len(data) - max(dest, src)):
                     expected = data[:dest] + data[src:src+count] + data[dest+count:]
                     m = mmap.mmap(-1, len(data))
                     m[:] = data
@@ -474,7 +474,7 @@ klasse MmapTests(unittest.TestCase):
         # segfault test (Issue 5387)
         m = mmap.mmap(-1, 100)
         offsets = [-100, -1, 0, 1, 100]
-        for source, dest, size in itertools.product(offsets, offsets, offsets):
+        fuer source, dest, size in itertools.product(offsets, offsets, offsets):
             try:
                 m.move(source, dest, size)
             except ValueError:
@@ -482,7 +482,7 @@ klasse MmapTests(unittest.TestCase):
 
         offsets = [(-1, -1, -1), (-1, -1, 0), (-1, 0, -1), (0, -1, -1),
                    (-1, 0, 0), (0, -1, 0), (0, 0, -1)]
-        for source, dest, size in offsets:
+        fuer source, dest, size in offsets:
             self.assertRaises(ValueError, m.move, source, dest, size)
 
         m.close()
@@ -497,11 +497,11 @@ klasse MmapTests(unittest.TestCase):
     def test_anonymous(self):
         # anonymous mmap.mmap(-1, PAGE)
         m = mmap.mmap(-1, PAGESIZE)
-        for x in range(PAGESIZE):
+        fuer x in range(PAGESIZE):
             self.assertEqual(m[x], 0,
                              "anonymously mmap'ed contents should be zero")
 
-        for x in range(PAGESIZE):
+        fuer x in range(PAGESIZE):
             b = x & 0xff
             m[x] = b
             self.assertEqual(m[x], b)
@@ -542,10 +542,10 @@ klasse MmapTests(unittest.TestCase):
         m[:] = s
         self.assertEqual(m[:], s)
         indices = (0, None, 1, 3, 19, 300, sys.maxsize, -1, -2, -31, -300)
-        for start in indices:
-            for stop in indices:
+        fuer start in indices:
+            fuer stop in indices:
                 # Skip step 0 (invalid)
-                for step in indices[1:]:
+                fuer step in indices[1:]:
                     self.assertEqual(m[start:stop:step],
                                      s[start:stop:step])
 
@@ -554,10 +554,10 @@ klasse MmapTests(unittest.TestCase):
         s = bytes(reversed(range(256)))
         m = mmap.mmap(-1, len(s))
         indices = (0, None, 1, 3, 19, 300, sys.maxsize, -1, -2, -31, -300)
-        for start in indices:
-            for stop in indices:
+        fuer start in indices:
+            fuer stop in indices:
                 # Skip invalid step 0
-                for step in indices[1:]:
+                fuer step in indices[1:]:
                     m[:] = s
                     self.assertEqual(m[:], s)
                     L = list(s)
@@ -598,7 +598,7 @@ klasse MmapTests(unittest.TestCase):
             mapsize = halfsize * 2
             # Try invalid offset
             f = open(TESTFN, "r+b")
-            for offset in [-2, -1, None]:
+            fuer offset in [-2, -1, None]:
                 try:
                     m = mmap.mmap(f.fileno(), mapsize, offset=offset)
                     self.assertEqual(0, 1)
@@ -668,7 +668,7 @@ klasse MmapTests(unittest.TestCase):
         with open(TESTFN, "r+b") as f:
             m = mmap.mmap(f.fileno(), len(data))
         # Test write_byte()
-        for i in range(len(data)):
+        fuer i in range(len(data)):
             self.assertEqual(m.tell(), i)
             m.write_byte(data[i])
             self.assertEqual(m.tell(), i+1)
@@ -676,7 +676,7 @@ klasse MmapTests(unittest.TestCase):
         self.assertEqual(m[:], data)
         # Test read_byte()
         m.seek(0)
-        for i in range(len(data)):
+        fuer i in range(len(data)):
             self.assertEqual(m.tell(), i)
             self.assertEqual(m.read_byte(), data[i])
             self.assertEqual(m.tell(), i+1)
@@ -696,7 +696,7 @@ klasse MmapTests(unittest.TestCase):
         self.assertRaises(ValueError, m.write, b"ba")
 
     def test_non_ascii_byte(self):
-        for b in (129, 200, 255): # > 128
+        fuer b in (129, 200, 255): # > 128
             m = mmap.mmap(-1, 1)
             m.write_byte(b)
             self.assertEqual(m[0], b)
@@ -773,7 +773,7 @@ klasse MmapTests(unittest.TestCase):
     @unittest.skipUnless(os.name == 'nt', 'requires Windows')
     def test_invalid_descriptor(self):
         # socket file descriptors are valid, but out of range
-        # for _get_osfhandle, causing a crash when validating the
+        # fuer _get_osfhandle, causing a crash when validating the
         # parameters to _get_osfhandle.
         s = socket.socket()
         try:
@@ -843,7 +843,7 @@ klasse MmapTests(unittest.TestCase):
         if (sys.platform.startswith(('linux', 'android'))
             and not in_systemd_nspawn_sync_suppressed()):
             # 'offset' must be a multiple of mmap.PAGESIZE on Linux.
-            # See bpo-34754 for details.
+            # See bpo-34754 fuer details.
             self.assertRaises(OSError, mm.flush, 1, len(b'python'))
 
     def test_repr(self):
@@ -856,8 +856,8 @@ klasse MmapTests(unittest.TestCase):
         closed_mmap_repr_pat = re.compile(r"<mmap.mmap closed=True>")
         mapsizes = (50, 100, 1_000, 1_000_000, 10_000_000)
         offsets = tuple((mapsize // 2 // mmap.ALLOCATIONGRANULARITY)
-                        * mmap.ALLOCATIONGRANULARITY for mapsize in mapsizes)
-        for offset, mapsize in zip(offsets, mapsizes):
+                        * mmap.ALLOCATIONGRANULARITY fuer mapsize in mapsizes)
+        fuer offset, mapsize in zip(offsets, mapsizes):
             data = b'a' * mapsize
             length = mapsize - offset
             accesses = ('ACCESS_DEFAULT', 'ACCESS_READ',
@@ -866,7 +866,7 @@ klasse MmapTests(unittest.TestCase):
             with open(TESTFN, "wb+") as fp:
                 fp.write(data)
                 fp.flush()
-                for access, pos in itertools.product(accesses, positions):
+                fuer access, pos in itertools.product(accesses, positions):
                     accint = getattr(mmap, access)
                     with mmap.mmap(fp.fileno(),
                                    length,
@@ -908,7 +908,7 @@ klasse MmapTests(unittest.TestCase):
         """
         start_size = PAGESIZE
         new_size = 2 * start_size
-        data = bytes(random.getrandbits(8) for _ in range(start_size))
+        data = bytes(random.getrandbits(8) fuer _ in range(start_size))
 
         m = mmap.mmap(-1, start_size)
         m[:] = data
@@ -923,7 +923,7 @@ klasse MmapTests(unittest.TestCase):
         """
         start_size = PAGESIZE
         new_size = start_size // 2
-        data = bytes(random.getrandbits(8) for _ in range(start_size))
+        data = bytes(random.getrandbits(8) fuer _ in range(start_size))
 
         m = mmap.mmap(-1, start_size)
         m[:] = data
@@ -964,7 +964,7 @@ klasse MmapTests(unittest.TestCase):
         reduced_size = PAGESIZE
         tagname =  random_tagname()
         data_length = 8
-        data = bytes(random.getrandbits(8) for _ in range(data_length))
+        data = bytes(random.getrandbits(8) fuer _ in range(data_length))
 
         m1 = mmap.mmap(-1, start_size, tagname=tagname)
         m2 = mmap.mmap(-1, start_size, tagname=tagname)
@@ -979,7 +979,7 @@ klasse MmapTests(unittest.TestCase):
     def test_mmap_closed_by_int_scenarios(self):
         """
         gh-103987: Test that mmap objects raise ValueError
-                for closed mmap files
+                fuer closed mmap files
         """
 
         klasse MmapClosedByIntContext:
@@ -1016,7 +1016,7 @@ klasse MmapTests(unittest.TestCase):
             mmap.ACCESS_DEFAULT,
         ]
 
-        for access in read_access_modes:
+        fuer access in read_access_modes:
             with MmapClosedByIntContext(access) as (m, X):
                 with self.assertRaisesRegex(ValueError, "mmap closed or invalid"):
                     m[X()]
@@ -1041,7 +1041,7 @@ klasse MmapTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, "mmap closed or invalid"):
                     m.find(b"1", 1, X())
 
-        for access in write_access_modes:
+        fuer access in write_access_modes:
             with MmapClosedByIntContext(access) as (m, X):
                 with self.assertRaisesRegex(ValueError, "mmap closed or invalid"):
                     m[X() : 20] = b"1" * 10

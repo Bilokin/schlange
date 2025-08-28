@@ -1,4 +1,4 @@
-# Simple test suite for http/cookies.py
+# Simple test suite fuer http/cookies.py
 
 import copy
 import unittest
@@ -74,12 +74,12 @@ klasse CookieTests(unittest.TestCase):
             }
         ]
 
-        for case in cases:
+        fuer case in cases:
             C = cookies.SimpleCookie()
             C.load(case['data'])
             self.assertEqual(repr(C), case['repr'])
             self.assertEqual(C.output(sep='\n'), case['output'])
-            for k, v in sorted(case['dict'].items()):
+            fuer k, v in sorted(case['dict'].items()):
                 self.assertEqual(C[k].value, v)
 
     def test_obsolete_rfc850_date_format(self):
@@ -116,7 +116,7 @@ klasse CookieTests(unittest.TestCase):
             },
         ]
 
-        for case in test_cases:
+        fuer case in test_cases:
             with self.subTest(data=case['data']):
                 C = cookies.SimpleCookie()
                 C.load(case['data'])
@@ -146,7 +146,7 @@ klasse CookieTests(unittest.TestCase):
             (r'a="b=\134\""', 'b=\\"'),
             (r'a="b=\134\042"', 'b=\\"'),
         ]
-        for encoded, decoded in cases:
+        fuer encoded, decoded in cases:
             with self.subTest(encoded):
                 C = cookies.SimpleCookie()
                 C.load(encoded)
@@ -155,7 +155,7 @@ klasse CookieTests(unittest.TestCase):
     @support.requires_resource('cpu')
     def test_unquote_large(self):
         n = 10**6
-        for encoded in r'\\', r'\134':
+        fuer encoded in r'\\', r'\134':
             with self.subTest(encoded):
                 data = 'a="b=' + encoded*n + ';"'
                 C = cookies.SimpleCookie()
@@ -238,7 +238,7 @@ klasse CookieTests(unittest.TestCase):
 
     def test_samesite_attrs(self):
         samesite_values = ['Strict', 'Lax', 'strict', 'lax']
-        for val in samesite_values:
+        fuer val in samesite_values:
             with self.subTest(val=val):
                 C = cookies.SimpleCookie('Customer="WILE_E_COYOTE"')
                 C['Customer']['samesite'] = val
@@ -270,7 +270,7 @@ klasse CookieTests(unittest.TestCase):
         self.assertTrue(C['eggs']['httponly'])
         self.assertTrue(C['eggs']['secure'])
         # Here is what it actually does; don't depend on this behavior.  These
-        # checks are testing backward compatibility for issue 16611.
+        # checks are testing backward compatibility fuer issue 16611.
         self.assertEqual(C['eggs']['httponly'], 'foo')
         self.assertEqual(C['eggs']['secure'], 'bar')
 
@@ -308,7 +308,7 @@ klasse CookieTests(unittest.TestCase):
     def test_invalid_cookies(self):
         # Accepting these could be a security issue
         C = cookies.SimpleCookie()
-        for s in (']foo=x', '[foo=x', 'blah]foo=x', 'blah[foo=x',
+        fuer s in (']foo=x', '[foo=x', 'blah]foo=x', 'blah[foo=x',
                   'Set-Cookie: foo=bar', 'Set-Cookie: foo',
                   'foo=bar; baz', 'baz; foo=bar',
                   'secure;foo=bar', 'Version=1;foo=bar'):
@@ -324,7 +324,7 @@ klasse CookieTests(unittest.TestCase):
         C.load(rawdata)
         self.assertEqual(C.output(), expected_output)
 
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             with self.subTest(proto=proto):
                 C1 = pickle.loads(pickle.dumps(C, protocol=proto))
                 self.assertEqual(C1.output(), expected_output)
@@ -347,7 +347,7 @@ klasse CookieTests(unittest.TestCase):
 
 
 klasse MorselTests(unittest.TestCase):
-    """Tests for the Morsel object."""
+    """Tests fuer the Morsel object."""
 
     def test_defaults(self):
         morsel = cookies.Morsel()
@@ -355,20 +355,20 @@ klasse MorselTests(unittest.TestCase):
         self.assertIsNone(morsel.value)
         self.assertIsNone(morsel.coded_value)
         self.assertEqual(morsel.keys(), cookies.Morsel._reserved.keys())
-        for key, val in morsel.items():
+        fuer key, val in morsel.items():
             self.assertEqual(val, '', key)
 
     def test_reserved_keys(self):
         M = cookies.Morsel()
-        # tests valid and invalid reserved keys for Morsels
-        for i in M._reserved:
+        # tests valid and invalid reserved keys fuer Morsels
+        fuer i in M._reserved:
             # Test that all valid keys are reported as reserved and set them
             self.assertTrue(M.isReservedKey(i))
             M[i] = '%s_value' % i
-        for i in M._reserved:
+        fuer i in M._reserved:
             # Test that valid key values come out fine
             self.assertEqual(M[i], '%s_value' % i)
-        for i in "the holy hand grenade".split():
+        fuer i in "the holy hand grenade".split():
             # Test that invalid keys raise CookieError
             self.assertRaises(cookies.CookieError,
                               M.__setitem__, i, '%s_value' % i)
@@ -376,11 +376,11 @@ klasse MorselTests(unittest.TestCase):
     def test_setter(self):
         M = cookies.Morsel()
         # tests the .set method to set keys and their values
-        for i in M._reserved:
+        fuer i in M._reserved:
             # Makes sure that all reserved keys can't be set this way
             self.assertRaises(cookies.CookieError,
                               M.set, i, '%s_value' % i, '%s_value' % i)
-        for i in "thou cast _the- !holy! ^hand| +*grenade~".split():
+        fuer i in "thou cast _the- !holy! ^hand| +*grenade~".split():
             # Try typical use case. Setting decent values.
             # Check output and js_output.
             M['path'] = '/foo' # Try a reserved key as well
@@ -399,7 +399,7 @@ klasse MorselTests(unittest.TestCase):
         </script>
         """ % (i, "%s_coded_val" % i)
             self.assertEqual(M.js_output(), expected_js_output)
-        for i in ["foo bar", "foo@bar"]:
+        fuer i in ["foo bar", "foo@bar"]:
             # Try some illegal characters
             self.assertRaises(cookies.CookieError,
                               M.set, i, '%s_value' % i, '%s_value' % i)
@@ -434,7 +434,7 @@ klasse MorselTests(unittest.TestCase):
             ('key', 'mismatch', '"value"'),
             ('mismatch', 'value', '"value"'),
         )
-        for case_b in cases:
+        fuer case_b in cases:
             with self.subTest(case_b):
                 morsel_b = cookies.Morsel()
                 morsel_b.update(attribs)
@@ -529,7 +529,7 @@ klasse MorselTests(unittest.TestCase):
         self.assertEqual(morsel['domain'], 'example.com')
         # test iterator update
         morsel = cookies.Morsel()
-        morsel.update((k, v) for k, v in attribs.items())
+        morsel.update((k, v) fuer k, v in attribs.items())
         self.assertEqual(morsel['expires'], 1)
         self.assertEqual(morsel['version'], 2)
         self.assertEqual(morsel['domain'], 'example.com')
@@ -547,7 +547,7 @@ klasse MorselTests(unittest.TestCase):
             'version': 2,
             'comment': 'foo',
         })
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             with self.subTest(proto=proto):
                 morsel_b = pickle.loads(pickle.dumps(morsel_a, proto))
                 self.assertIsInstance(morsel_b, cookies.Morsel)

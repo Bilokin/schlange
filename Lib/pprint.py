@@ -82,7 +82,7 @@ def isrecursive(object):
 
 
 klasse _safe_key:
-    """Helper function for key functions when sorting unorderable objects.
+    """Helper function fuer key functions when sorting unorderable objects.
 
     The wrapped-object will fallback to a Py2.x style comparison for
     unorderable types (sorting first comparing the type name and then by
@@ -105,7 +105,7 @@ klasse _safe_key:
 
 
 def _safe_tuple(t):
-    "Helper function for comparing 2-tuples"
+    "Helper function fuer comparing 2-tuples"
     return _safe_key(t[0]), _safe_key(t[1])
 
 
@@ -116,7 +116,7 @@ klasse PrettyPrinter:
         configured parameters.
 
         indent
-            Number of spaces to indent for each level of nesting.
+            Number of spaces to indent fuer each level of nesting.
 
         width
             Attempted maximum number of columns in the output.
@@ -211,7 +211,7 @@ klasse PrettyPrinter:
 
         cls_name = object.__class__.__name__
         indent += len(cls_name) + 1
-        items = [(f.name, getattr(object, f.name)) for f in dataclass_fields(object) if f.repr]
+        items = [(f.name, getattr(object, f.name)) fuer f in dataclass_fields(object) if f.repr]
         stream.write(cls_name + '(')
         self._format_namespace_items(items, stream, indent, allowance, context, level)
         stream.write(')')
@@ -287,7 +287,7 @@ klasse PrettyPrinter:
 
     _dispatch[_collections.abc.MappingView.__repr__] = _pprint_mapping_abc_view
 
-    _view_reprs = {cls.__repr__ for cls in
+    _view_reprs = {cls.__repr__ fuer cls in
                    (_dict_keys_view, _dict_values_view, _dict_items_view,
                     _collections.abc.MappingView)}
 
@@ -339,7 +339,7 @@ klasse PrettyPrinter:
             indent += 1
             allowance += 1
         max_width1 = max_width = self._width - indent
-        for i, line in enumerate(lines):
+        fuer i, line in enumerate(lines):
             rep = repr(line)
             if i == len(lines) - 1:
                 max_width1 -= allowance
@@ -356,7 +356,7 @@ klasse PrettyPrinter:
                 parts.pop()  # drop empty last part
                 max_width2 = max_width
                 current = ''
-                for j, part in enumerate(parts):
+                fuer j, part in enumerate(parts):
                     candidate = current + part
                     if j == len(parts) - 1 and i == len(lines) - 1:
                         max_width2 -= allowance
@@ -373,7 +373,7 @@ klasse PrettyPrinter:
             return
         if level == 1:
             write('(')
-        for i, rep in enumerate(chunks):
+        fuer i, rep in enumerate(chunks):
             if i > 0:
                 write('\n' + ' '*indent)
             write(rep)
@@ -393,7 +393,7 @@ klasse PrettyPrinter:
             allowance += 1
             write('(')
         delim = ''
-        for rep in _wrap_bytes_repr(object, self._width - indent, allowance):
+        fuer rep in _wrap_bytes_repr(object, self._width - indent, allowance):
             write(delim)
             write(rep)
             if not delim:
@@ -441,7 +441,7 @@ klasse PrettyPrinter:
         indent += self._indent_per_level
         delimnl = ',\n' + ' ' * indent
         last_index = len(items) - 1
-        for i, (key, ent) in enumerate(items):
+        fuer i, (key, ent) in enumerate(items):
             last = i == last_index
             rep = self._repr(key, context, level)
             write(rep)
@@ -456,7 +456,7 @@ klasse PrettyPrinter:
         write = stream.write
         delimnl = ',\n' + ' ' * indent
         last_index = len(items) - 1
-        for i, (key, ent) in enumerate(items):
+        fuer i, (key, ent) in enumerate(items):
             last = i == last_index
             write(key)
             write('=')
@@ -522,7 +522,7 @@ klasse PrettyPrinter:
         return repr
 
     def format(self, object, context, maxlevels, level):
-        """Format object for a specific context, returning a string
+        """Format object fuer a specific context, returning a string
         and flags indicating whether the representation is 'readable'
         and whether the object represents a recursive construct.
         """
@@ -564,7 +564,7 @@ klasse PrettyPrinter:
         cls = object.__class__
         stream.write(cls.__name__ + '(')
         indent += len(cls.__name__) + 1
-        for i, m in enumerate(object.maps):
+        fuer i, m in enumerate(object.maps):
             if i == len(object.maps) - 1:
                 self._format(m, stream, indent, allowance + 1, context, level)
                 stream.write(')')
@@ -641,7 +641,7 @@ klasse PrettyPrinter:
                 items = sorted(object.items(), key=_safe_tuple)
             else:
                 items = object.items()
-            for k, v in items:
+            fuer k, v in items:
                 krepr, kreadable, krecur = self.format(
                     k, context, maxlevels, level)
                 vrepr, vreadable, vrecur = self.format(
@@ -676,7 +676,7 @@ klasse PrettyPrinter:
             components = []
             append = components.append
             level += 1
-            for o in object:
+            fuer o in object:
                 orepr, oreadable, orecur = self.format(
                     o, context, maxlevels, level)
                 append(orepr)
@@ -713,7 +713,7 @@ klasse PrettyPrinter:
             components = []
             append = components.append
             level += 1
-            for val in object:
+            fuer val in object:
                 vrepr, vreadable, vrecur = self.format(
                     val, context, maxlevels, level)
                 append(vrepr)
@@ -739,7 +739,7 @@ def _recursion(object):
 def _wrap_bytes_repr(object, width, allowance):
     current = b''
     last = len(object) // 4 * 4
-    for i in range(0, len(object), 4):
+    fuer i in range(0, len(object), 4):
         part = object[i: i+4]
         candidate = current + part
         if i == last:

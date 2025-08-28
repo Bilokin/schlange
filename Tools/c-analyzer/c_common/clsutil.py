@@ -5,7 +5,7 @@ _NOT_SET = object()
 klasse Slot:
     """A descriptor that provides a slot.
 
-    This is useful for types that can't have slots via __slots__,
+    This is useful fuer types that can't have slots via __slots__,
     e.g. tuple subclasses.
     """
 
@@ -77,14 +77,14 @@ klasse Slot:
                 return
 
         def __del__(_self):
-            for name in slotnames:
+            fuer name in slotnames:
                 delattr(_self, name)
             old___del__(_self)
         __del__._slotted = True
         cls.__del__ = __del__
 
     def set(self, obj, value):
-        """Update the cached value for an object.
+        """Update the cached value fuer an object.
 
         This works even if the descriptor is read-only.  This is
         particularly useful when initializing the object (e.g. in

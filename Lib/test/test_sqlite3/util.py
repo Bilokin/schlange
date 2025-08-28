@@ -7,7 +7,7 @@ import test.support
 import unittest
 
 
-# Helper for temporary memory databases
+# Helper fuer temporary memory databases
 def memory_database(*args, **kwargs):
     cx = sqlite3.connect(":memory:", *args, **kwargs)
     return contextlib.closing(cx)
@@ -24,7 +24,7 @@ def cx_limit(cx, category=sqlite3.SQLITE_LIMIT_SQL_LENGTH, limit=128):
 
 
 def with_tracebacks(exc, regex="", name="", msg_regex=""):
-    """Convenience decorator for testing callback tracebacks."""
+    """Convenience decorator fuer testing callback tracebacks."""
     def decorator(func):
         exc_regex = re.compile(regex) if regex else None
         _msg_regex = re.compile(msg_regex) if msg_regex else None
@@ -43,7 +43,7 @@ def with_tracebacks(exc, regex="", name="", msg_regex=""):
 
 @contextlib.contextmanager
 def check_tracebacks(self, cm, exc, exc_regex, msg_regex, obj_name):
-    """Convenience context manager for testing callback tracebacks."""
+    """Convenience context manager fuer testing callback tracebacks."""
     sqlite3.enable_callback_tracebacks(True)
     try:
         buf = io.StringIO()

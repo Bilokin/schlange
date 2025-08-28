@@ -1,4 +1,4 @@
-'''Tests for WindowsConsoleIO
+'''Tests fuer WindowsConsoleIO
 '''
 
 import io
@@ -28,7 +28,7 @@ klasse WindowsConsoleIOTests(unittest.TestCase):
         with tempfile.TemporaryFile() as tmpfile:
             fd = tmpfile.fileno()
             # Windows 10: "Cannot open non-console file"
-            # Earlier: "Cannot open console output buffer for reading"
+            # Earlier: "Cannot open console output buffer fuer reading"
             self.assertRaisesRegex(ValueError,
                 "Cannot open (console|non-console file)", ConIO, fd)
 
@@ -146,22 +146,22 @@ klasse WindowsConsoleIOTests(unittest.TestCase):
     def test_write(self):
         testcases = []
         with ConIO('CONOUT$', 'w') as f:
-            for a in [
+            fuer a in [
                 b'',
                 b'abc',
                 b'\xc2\xa7\xe2\x98\x83\xf0\x9f\x90\x8d',
                 b'\xff'*10,
             ]:
-                for b in b'\xc2\xa7', b'\xe2\x98\x83', b'\xf0\x9f\x90\x8d':
+                fuer b in b'\xc2\xa7', b'\xe2\x98\x83', b'\xf0\x9f\x90\x8d':
                     testcases.append(a + b)
-                    for i in range(1, len(b)):
+                    fuer i in range(1, len(b)):
                         data = a + b[:i]
                         testcases.append(data + b'z')
                         testcases.append(data + b'\xff')
                         # incomplete multibyte sequence
                         with self.subTest(data=data):
                             self.assertEqual(f.write(data), len(a))
-            for data in testcases:
+            fuer data in testcases:
                 with self.subTest(data=data):
                     self.assertEqual(f.write(data), len(data))
 
@@ -200,7 +200,7 @@ klasse WindowsConsoleIOTests(unittest.TestCase):
         # contains multibyte UTF-8 sequences
         source = 'ϼўТλФЙ\r\n'.encode('utf-16-le')
         expected = 'ϼўТλФЙ\r\n'.encode('utf-8')
-        for read_count in range(1, 16):
+        fuer read_count in range(1, 16):
             with open('CONIN$', 'rb', buffering=0) as stdin:
                 write_input(stdin, source)
 
@@ -219,7 +219,7 @@ klasse WindowsConsoleIOTests(unittest.TestCase):
         # reading an extra character.
         source = '\U00101FFF\U00101001\r\n'.encode('utf-16-le')
         expected = '\U00101FFF\U00101001\r\n'.encode('utf-8')
-        for read_count in range(1, 16):
+        fuer read_count in range(1, 16):
             with open('CONIN$', 'rb', buffering=0) as stdin:
                 write_input(stdin, source)
 

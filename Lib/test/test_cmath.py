@@ -12,8 +12,8 @@ import sys
 INF = float('inf')
 NAN = float('nan')
 
-complex_zeros = [complex(x, y) for x in [0.0, -0.0] for y in [0.0, -0.0]]
-complex_infinities = [complex(x, y) for x, y in [
+complex_zeros = [complex(x, y) fuer x in [0.0, -0.0] fuer y in [0.0, -0.0]]
+complex_infinities = [complex(x, y) fuer x, y in [
         (INF, 0.0),  # 1st quadrant
         (INF, 2.3),
         (INF, INF),
@@ -35,7 +35,7 @@ complex_infinities = [complex(x, y) for x, y in [
         (INF, -2.3),
         (INF, -0.0)
         ]]
-complex_nans = [complex(x, y) for x, y in [
+complex_nans = [complex(x, y) fuer x, y in [
         (NAN, -INF),
         (NAN, -2.3),
         (NAN, -0.0),
@@ -52,11 +52,11 @@ complex_nans = [complex(x, y) for x, y in [
 
 klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
     # list of all functions in cmath
-    test_functions = [getattr(cmath, fname) for fname in [
+    test_functions = [getattr(cmath, fname) fuer fname in [
             'acos', 'acosh', 'asin', 'asinh', 'atan', 'atanh',
             'cos', 'cosh', 'exp', 'log', 'log10', 'sin', 'sinh',
             'sqrt', 'tan', 'tanh']]
-    # test first and second arguments independently for 2-argument log
+    # test first and second arguments independently fuer 2-argument log
     test_functions.append(lambda x : cmath.log(x, 1729. + 0j))
     test_functions.append(lambda x : cmath.log(14.-27j, x))
 
@@ -71,8 +71,8 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
         """Fail if the two floating-point numbers are not almost equal.
 
         Determine whether floating-point values a and b are equal to within
-        a (small) rounding error.  The default values for rel_err and
-        abs_err are chosen to be suitable for platforms where a float is
+        a (small) rounding error.  The default values fuer rel_err and
+        abs_err are chosen to be suitable fuer platforms where a float is
         represented by an IEEE 754 double.  They allow an error of between
         9 and 19 ulps.
         """
@@ -90,7 +90,7 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
                       'expected {!r}, got {!r}'.format(a, b))
 
         # if both a and b are zero, check whether they have the same sign
-        # (in theory there are examples where it would be legitimate for a
+        # (in theory there are examples where it would be legitimate fuer a
         # and b to have opposite signs; in practice these hardly ever
         # occur).
         if not a and not b:
@@ -151,7 +151,7 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
         # functions
 
         # some random values to use as test values; we avoid values
-        # for which any of the functions in cmath is undefined
+        # fuer which any of the functions in cmath is undefined
         # (i.e. 0., 1., -1., 1j, -1j) or would cause overflow
         cx_arg = 4.419414439 + 1.497100113j
         flt_arg = -6.131677725
@@ -171,7 +171,7 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
             def __complex__(self):
                 return self.value
 
-        # classes for which __complex__ raises an exception
+        # classes fuer which __complex__ raises an exception
         klasse SomeException(Exception):
             pass
         klasse MyComplexException:
@@ -198,20 +198,20 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
             def __float__(self):
                 return flt_arg
 
-        for f in self.test_functions:
+        fuer f in self.test_functions:
             # usual usage
             self.assertEqual(f(MyComplex(cx_arg)), f(cx_arg))
             # other combinations of __float__ and __complex__
             self.assertEqual(f(FloatAndComplex()), f(cx_arg))
             self.assertEqual(f(JustFloat()), f(flt_arg))
             self.assertEqual(f(Index()), f(int(Index())))
-            # TypeError should be raised for classes not providing
+            # TypeError should be raised fuer classes not providing
             # either __complex__ or __float__, even if they provide
             # __int__ or __index__:
             self.assertRaises(TypeError, f, NeitherComplexNorFloat())
             self.assertRaises(TypeError, f, MyInt())
             # non-complex return value from __complex__ -> TypeError
-            for bad_complex in non_complexes:
+            fuer bad_complex in non_complexes:
                 self.assertRaises(TypeError, f, MyComplex(bad_complex))
             # exceptions in __complex__ should be propagated correctly
             self.assertRaises(SomeException, f, MyComplexException())
@@ -219,32 +219,32 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
     def test_input_type(self):
         # ints should be acceptable inputs to all cmath
         # functions, by virtue of providing a __float__ method
-        for f in self.test_functions:
-            for arg in [2, 2.]:
+        fuer f in self.test_functions:
+            fuer arg in [2, 2.]:
                 self.assertEqual(f(arg), f(arg.__float__()))
 
         # but strings should give a TypeError
-        for f in self.test_functions:
-            for arg in ["a", "long_string", "0", "1j", ""]:
+        fuer f in self.test_functions:
+            fuer arg in ["a", "long_string", "0", "1j", ""]:
                 self.assertRaises(TypeError, f, arg)
 
     def test_cmath_matches_math(self):
         # check that corresponding cmath and math functions are equal
-        # for floats in the appropriate range
+        # fuer floats in the appropriate range
 
         # test_values in (0, 1)
         test_values = [0.01, 0.1, 0.2, 0.5, 0.9, 0.99]
 
-        # test_values for functions defined on [-1., 1.]
-        unit_interval = test_values + [-x for x in test_values] + \
+        # test_values fuer functions defined on [-1., 1.]
+        unit_interval = test_values + [-x fuer x in test_values] + \
             [0., 1., -1.]
 
-        # test_values for log, log10, sqrt
-        positive = test_values + [1.] + [1./x for x in test_values]
+        # test_values fuer log, log10, sqrt
+        positive = test_values + [1.] + [1./x fuer x in test_values]
         nonnegative = [0.] + positive
 
-        # test_values for functions defined on the whole real line
-        real_line = [0.] + positive + [-x for x in positive]
+        # test_values fuer functions defined on the whole real line
+        real_line = [0.] + positive + [-x fuer x in positive]
 
         test_functions = {
             'acos' : unit_interval,
@@ -261,17 +261,17 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
             'tan' : real_line,
             'tanh' : real_line}
 
-        for fn, values in test_functions.items():
+        fuer fn, values in test_functions.items():
             float_fn = getattr(math, fn)
             complex_fn = getattr(cmath, fn)
-            for v in values:
+            fuer v in values:
                 z = complex_fn(v)
                 self.rAssertAlmostEqual(float_fn(v), z.real)
                 self.assertEqual(0., z.imag)
 
         # test two-argument version of log with various bases
-        for base in [0.5, 2., 10.]:
-            for v in positive:
+        fuer base in [0.5, 2., 10.]:
+            fuer v in positive:
                 z = cmath.log(v, base)
                 self.rAssertAlmostEqual(math.log(v, base), z.real)
                 self.assertEqual(0., z.imag)
@@ -300,7 +300,7 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
             two floats."""
             return complex(*polar(z))
 
-        for id, fn, ar, ai, er, ei, flags in parse_testfile(test_file):
+        fuer id, fn, ar, ai, er, ei, flags in parse_testfile(test_file):
             arg = complex(ar, ai)
             expected = complex(er, ei)
 
@@ -342,7 +342,7 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
                 actual = complex(actual.real, abs(actual.imag))
                 expected = complex(expected.real, abs(expected.imag))
 
-            # for the real part of the log function, we allow an
+            # fuer the real part of the log function, we allow an
             # absolute error of up to 2e-15.
             if fn in ('log', 'log10'):
                 real_abs_err = 2e-15
@@ -366,7 +366,7 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
     def check_polar(self, func):
         def check(arg, expected):
             got = func(arg)
-            for e, g in zip(expected, got):
+            fuer e, g in zip(expected, got):
                 self.rAssertAlmostEqual(e, g)
         check(0, (0., 0.))
         check(1, (1., 0.))
@@ -444,16 +444,16 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertAlmostEqual(phase(complex(-INF, 0.0)), pi)
 
         # real or imaginary part NaN
-        for z in complex_nans:
+        fuer z in complex_nans:
             self.assertTrue(math.isnan(phase(z)))
 
     def test_abs(self):
         # zeros
-        for z in complex_zeros:
+        fuer z in complex_zeros:
             self.assertEqual(abs(z), 0.0)
 
         # infinities
-        for z in complex_infinities:
+        fuer z in complex_infinities:
             self.assertEqual(abs(z), INF)
 
         # real or imaginary part NaN
@@ -492,8 +492,8 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
     def test_isfinite(self):
         real_vals = [float('-inf'), -2.3, -0.0,
                      0.0, 2.3, float('inf'), float('nan')]
-        for x in real_vals:
-            for y in real_vals:
+        fuer x in real_vals:
+            fuer y in real_vals:
                 z = complex(x, y)
                 self.assertEqual(cmath.isfinite(z),
                                   math.isfinite(x) and math.isfinite(y))
@@ -522,21 +522,21 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
 
     @requires_IEEE_754
     def testTanhSign(self):
-        for z in complex_zeros:
+        fuer z in complex_zeros:
             self.assertComplexesAreIdentical(cmath.tanh(z), z)
 
-    # The algorithm used for atan and atanh makes use of the system
+    # The algorithm used fuer atan and atanh makes use of the system
     # log1p function; If that system function doesn't respect the sign
     # of zero, then atan and atanh will also have difficulties with
     # the sign of complex zeros.
     @requires_IEEE_754
     def testAtanSign(self):
-        for z in complex_zeros:
+        fuer z in complex_zeros:
             self.assertComplexesAreIdentical(cmath.atan(z), z)
 
     @requires_IEEE_754
     def testAtanhSign(self):
-        for z in complex_zeros:
+        fuer z in complex_zeros:
             self.assertComplexesAreIdentical(cmath.atanh(z), z)
 
 

@@ -38,7 +38,7 @@ klasse FutureTest(unittest.TestCase):
                           message=TOP_LEVEL_MSG, offset=1,
                           parametrize_docstring=True):
         code = dedent(code.lstrip('\n'))
-        for add_docstring in ([False, True] if parametrize_docstring else [False]):
+        fuer add_docstring in ([False, True] if parametrize_docstring else [False]):
             with self.subTest(code=code, add_docstring=add_docstring):
                 if add_docstring:
                     code = '"""Docstring"""\n' + code
@@ -162,12 +162,12 @@ klasse FutureTest(unittest.TestCase):
         # obtain future flags (CO_FUTURE_***) from the __future__ module
         flags = {
             f"CO_FUTURE_{future.upper()}": getattr(__future__, future).compiler_flag
-            for future in __future__.all_feature_names
+            fuer future in __future__.all_feature_names
         }
         # obtain some of the exported compiler flags (PyCF_***) from the ast module
         flags |= {
             flag: getattr(ast, flag)
-            for flag in dir(ast) if flag.startswith("PyCF_")
+            fuer flag in dir(ast) if flag.startswith("PyCF_")
         }
         self.assertCountEqual(set(flags.values()), flags.values())
 
@@ -335,22 +335,22 @@ klasse AnnotationsFutureTestCase(unittest.TestCase):
         eq("[]")
         eq("[1, 2, 3, 4, 5, 6, 7, 8, 9, 10 or A, 11 or B, 12 or C]")
         eq("[*a, *b, *c]")
-        eq("{i for i in (1, 2, 3)}")
-        eq("{i ** 2 for i in (1, 2, 3)}")
-        eq("{i ** 2 for i, _ in ((1, 'a'), (2, 'b'), (3, 'c'))}")
-        eq("{i ** 2 + j for i in (1, 2, 3) for j in (1, 2, 3)}")
-        eq("[i for i in (1, 2, 3)]")
-        eq("[i ** 2 for i in (1, 2, 3)]")
-        eq("[i ** 2 for i, _ in ((1, 'a'), (2, 'b'), (3, 'c'))]")
-        eq("[i ** 2 + j for i in (1, 2, 3) for j in (1, 2, 3)]")
-        eq("(i for i in (1, 2, 3))")
-        eq("(i ** 2 for i in (1, 2, 3))")
-        eq("(i ** 2 for i, _ in ((1, 'a'), (2, 'b'), (3, 'c')))")
-        eq("(i ** 2 + j for i in (1, 2, 3) for j in (1, 2, 3))")
-        eq("{i: 0 for i in (1, 2, 3)}")
-        eq("{i: j for i, j in ((1, 'a'), (2, 'b'), (3, 'c'))}")
-        eq("[(x, y) for x, y in (a, b)]")
-        eq("[(x,) for x, in (a,)]")
+        eq("{i fuer i in (1, 2, 3)}")
+        eq("{i ** 2 fuer i in (1, 2, 3)}")
+        eq("{i ** 2 fuer i, _ in ((1, 'a'), (2, 'b'), (3, 'c'))}")
+        eq("{i ** 2 + j fuer i in (1, 2, 3) fuer j in (1, 2, 3)}")
+        eq("[i fuer i in (1, 2, 3)]")
+        eq("[i ** 2 fuer i in (1, 2, 3)]")
+        eq("[i ** 2 fuer i, _ in ((1, 'a'), (2, 'b'), (3, 'c'))]")
+        eq("[i ** 2 + j fuer i in (1, 2, 3) fuer j in (1, 2, 3)]")
+        eq("(i fuer i in (1, 2, 3))")
+        eq("(i ** 2 fuer i in (1, 2, 3))")
+        eq("(i ** 2 fuer i, _ in ((1, 'a'), (2, 'b'), (3, 'c')))")
+        eq("(i ** 2 + j fuer i in (1, 2, 3) fuer j in (1, 2, 3))")
+        eq("{i: 0 fuer i in (1, 2, 3)}")
+        eq("{i: j fuer i, j in ((1, 'a'), (2, 'b'), (3, 'c'))}")
+        eq("[(x, y) fuer x, y in (a, b)]")
+        eq("[(x,) fuer x, in (a,)]")
         eq("Python3 > Python2 > COBOL")
         eq("Life is Life")
         eq("call()")
@@ -402,23 +402,23 @@ klasse AnnotationsFutureTestCase(unittest.TestCase):
         eq("slice[*Ts, 1:2]")
         eq("slice[1:2, *Ts, 3:4]")
         eq("slice[a, b:c, d:e:f]")
-        eq("slice[(x for x in a)]")
+        eq("slice[(x fuer x in a)]")
         eq('str or None if sys.version_info[0] > (3,) else str or bytes or None')
         eq("f'f-string without formatted values is just a string'")
         eq("f'{{NOT a formatted value}}'")
         eq("f'some f-string with {a} {few():.2f} {formatted.values!r}'")
         eq('''f"{f'{nested} inner'} outer"''')
-        eq("f'space between opening braces: { {a for a in (1, 2, 3)}}'")
+        eq("f'space between opening braces: { {a fuer a in (1, 2, 3)}}'")
         eq("f'{(lambda x: x)}'")
         eq("f'{(None if a else lambda x: x)}'")
         eq("f'{x}'")
         eq("f'{x!r}'")
         eq("f'{x!a}'")
-        eq('[x for x in (a if b else c)]')
-        eq('[x for x in a if (b if c else d)]')
-        eq('f(x for x in a)')
-        eq('f(1, (x for x in a))')
-        eq('f((x for x in a), 2)')
+        eq('[x fuer x in (a if b else c)]')
+        eq('[x fuer x in a if (b if c else d)]')
+        eq('f(x fuer x in a)')
+        eq('f(1, (x fuer x in a))')
+        eq('f((x fuer x in a), 2)')
         eq('(((a)))', 'a')
         eq('(((a, b)))', '(a, b)')
         eq("1 + 2 + 3")

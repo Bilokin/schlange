@@ -36,18 +36,18 @@ re_gb18030ass = re.compile('<a u="([A-F0-9]{4})" b="([0-9A-F ]+)"/>')
 
 def parse_gb18030map(fo):
     m, gbuni = {}, {}
-    for i in range(65536):
+    fuer i in range(65536):
         if i < 0xd800 or i > 0xdfff: # exclude unicode surrogate area
             gbuni[i] = None
-    for uni, native in re_gb18030ass.findall(fo.read()):
+    fuer uni, native in re_gb18030ass.findall(fo.read()):
         uni = eval('0x'+uni)
-        native = [eval('0x'+u) for u in native.split()]
+        native = [eval('0x'+u) fuer u in native.split()]
         if len(native) <= 2:
             del gbuni[uni]
-        if len(native) == 2: # we can decode algorithmically for 1 or 4 bytes
+        if len(native) == 2: # we can decode algorithmically fuer 1 or 4 bytes
             m.setdefault(native[0], {})
             m[native[0]][native[1]] = uni
-    gbuni = [k for k in gbuni.keys()]
+    gbuni = [k fuer k in gbuni.keys()]
     gbuni.sort()
     return m, gbuni
 
@@ -61,13 +61,13 @@ def main():
     gbkdecmap = loadmap(cp936map)
     gb2312decmap = loadmap(gb2312map)
     difmap = {}
-    for c1, m in gbkdecmap.items():
-        for c2, code in m.items():
+    fuer c1, m in gbkdecmap.items():
+        fuer c2, code in m.items():
             del gb18030decmap[c1][c2]
             if not gb18030decmap[c1]:
                 del gb18030decmap[c1]
-    for c1, m in gb2312decmap.items():
-        for c2, code in m.items():
+    fuer c1, m in gb2312decmap.items():
+        fuer c2, code in m.items():
             gbkc1, gbkc2 = c1 | 0x80, c2 | 0x80
             if gbkdecmap[gbkc1][gbkc2] == code:
                 del gbkdecmap[gbkc1][gbkc2]
@@ -75,16 +75,16 @@ def main():
                     del gbkdecmap[gbkc1]
 
     gb2312_gbkencmap, gb18030encmap = {}, {}
-    for c1, m in gbkdecmap.items():
-        for c2, code in m.items():
+    fuer c1, m in gbkdecmap.items():
+        fuer c2, code in m.items():
             gb2312_gbkencmap.setdefault(code >> 8, {})
             gb2312_gbkencmap[code >> 8][code & 0xff] = c1 << 8 | c2 # MSB set
-    for c1, m in gb2312decmap.items():
-        for c2, code in m.items():
+    fuer c1, m in gb2312decmap.items():
+        fuer c2, code in m.items():
             gb2312_gbkencmap.setdefault(code >> 8, {})
             gb2312_gbkencmap[code >> 8][code & 0xff] = c1 << 8 | c2 # MSB unset
-    for c1, m in gb18030decmap.items():
-        for c2, code in m.items():
+    fuer c1, m in gb18030decmap.items():
+        fuer c2, code in m.items():
             gb18030encmap.setdefault(code >> 8, {})
             gb18030encmap[code >> 8][code & 0xff] = c1 << 8 | c2
 
@@ -108,7 +108,7 @@ def main():
 
         print("Generating GB18030 extension decode map...")
         writer = DecodeMapWriter(fp, "gb18030ext", gb18030decmap)
-        for i in range(1, 6):
+        fuer i in range(1, 6):
             writer.update_decode_map(eval("GB18030EXTP%d_C1" % i), eval("GB18030EXTP%d_C2" % i))
 
         writer.generate()
@@ -127,7 +127,7 @@ static const struct _gb18030_to_unibmp_ranges {
 } gb18030_to_unibmp_ranges[] = {
 """)
 
-        for uni in gb18030unilinear:
+        fuer uni in gb18030unilinear:
             if uni == ranges[-1][1] + 1:
                 ranges[-1][1] = uni
             else:
@@ -135,7 +135,7 @@ static const struct _gb18030_to_unibmp_ranges {
             gblinnum += 1
 
         filler = BufferedFiller()
-        for first, last, base in ranges[1:]:
+        fuer first, last, base in ranges[1:]:
             filler.write('{', str(first), ',', str(last), ',', str(base), '},')
 
         filler.write('{', '0,', '0,', str(

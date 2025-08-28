@@ -8,7 +8,7 @@
 #
 #
 # Permission to use, copy, modify, and distribute this software and
-# its documentation for any purpose is hereby granted without fee,
+# its documentation fuer any purpose is hereby granted without fee,
 # provided that the above copyright notice appear in all copies and
 # that both that copyright notice and this permission notice appear in
 # supporting documentation.
@@ -23,7 +23,7 @@
 
 """A compatibility wrapper reimplementing the 'readline' standard module
 on top of pyrepl.  Not all functionalities are supported.  Contains
-extensions for multiline input.
+extensions fuer multiline input.
 """
 
 from __future__ import annotations
@@ -185,7 +185,7 @@ klasse ReadlineAlikeReader(historical_reader.HistoricalReader, CompletingReader)
         if indentation is not None:
             self.last_used_indentation = indentation
 
-    # --- simplified support for reading multiline Python statements ---
+    # --- simplified support fuer reading multiline Python statements ---
 
     def collect_keymap(self) -> tuple[tuple[KeySpec, CommandName], ...]:
         return super().collect_keymap() + (
@@ -241,7 +241,7 @@ def _get_previous_line_indent(buffer: list[str], pos: int) -> tuple[int, int | N
 
 def _get_first_indentation(buffer: list[str]) -> str | None:
     indented_line_start = None
-    for i in range(len(buffer)):
+    fuer i in range(len(buffer)):
         if (i < len(buffer) - 1
             and buffer[i] == "\n"
             and buffer[i + 1] in " \t"
@@ -303,7 +303,7 @@ klasse maybe_accept(commands.Command):
             r.insert("\n")
             if not self.reader.paste_mode:
                 if indent:
-                    for i in range(prevlinestart, prevlinestart + indent):
+                    fuer i in range(prevlinestart, prevlinestart + indent):
                         r.insert(r.buffer[i])
                 r.update_last_used_indentation()
                 if _should_auto_indent(r.buffer, r.pos):
@@ -379,7 +379,7 @@ klasse _ReadlineWrapper:
         return result
 
     def multiline_input(self, more_lines: MoreLinesCallable, ps1: str, ps2: str) -> str:
-        """Read an input on possibly multiple lines, asking for more
+        """Read an input on possibly multiple lines, asking fuer more
         lines as long as 'more_lines(unicodetext)' returns an object whose
         boolean value is true.
         """
@@ -426,7 +426,7 @@ klasse _ReadlineWrapper:
         return len(self.get_reader().history)
 
     def read_history_file(self, filename: str = gethistoryfile()) -> None:
-        # multiline extension (really a hack) for the end of lines that
+        # multiline extension (really a hack) fuer the end of lines that
         # are actually continuations inside a single multiline_input()
         # history item: we use \r\n instead of just \n.  If the history
         # file is passed to GNU readline, the extra \r are just ignored.
@@ -440,9 +440,9 @@ klasse _ReadlineWrapper:
                 f.seek(0)
                 encoding = "utf-8"
 
-            lines = [line.decode(encoding, errors='replace') for line in f.read().split(b'\n')]
+            lines = [line.decode(encoding, errors='replace') fuer line in f.read().split(b'\n')]
             buffer = []
-            for line in lines:
+            fuer line in lines:
                 if line.endswith("\r"):
                     buffer.append(line+'\n')
                 else:
@@ -460,7 +460,7 @@ klasse _ReadlineWrapper:
         f = open(os.path.expanduser(filename), "w",
                  encoding="utf-8", newline="\n")
         with f:
-            for entry in history:
+            fuer entry in history:
                 entry = entry.replace("\n", "\r\n")  # multiline history support
                 f.write(entry + "\n")
 
@@ -472,7 +472,7 @@ klasse _ReadlineWrapper:
         f = open(os.path.expanduser(filename), "a",
                  encoding="utf-8", newline="\n")
         with f:
-            for entry in history:
+            fuer entry in history:
                 entry = entry.replace("\n", "\r\n")  # multiline history support
                 f.write(entry + "\n")
         self.set_history_length(saved_length + length)
@@ -515,7 +515,7 @@ klasse _ReadlineWrapper:
     def _get_idxs(self) -> tuple[int, int]:
         start = cursor = self.get_reader().pos
         buf = self.get_line_buffer()
-        for i in range(cursor - 1, -1, -1):
+        fuer i in range(cursor - 1, -1, -1):
             if buf[i] in self.get_completer_delims():
                 break
             start = i
@@ -578,7 +578,7 @@ def _make_stub(_name: str, _ret: object) -> None:
     globals()[_name] = stub
 
 
-for _name, _ret in [
+fuer _name, _ret in [
     ("read_init_file", None),
     ("redisplay", None),
     ("set_pre_input_hook", None),

@@ -80,7 +80,7 @@ klasse TestSupport(unittest.TestCase):
         with warnings.catch_warnings(record=True) as warning_objs:
             warnings_helper._warn_about_deprecation()
             warnings.warn("You should NOT be seeing this.", DeprecationWarning)
-            messages = [str(w.message) for w in warning_objs]
+            messages = [str(w.message) fuer w in warning_objs]
         self.assertEqual(len(messages), 0, messages)
 
     def test_import_module(self):
@@ -172,7 +172,7 @@ klasse TestSupport(unittest.TestCase):
         s.listen()
         s.close()
 
-    # Tests for temp_dir()
+    # Tests fuer temp_dir()
 
     def test_temp_dir(self):
         """Test that temp_dir() creates and destroys its directory."""
@@ -220,7 +220,7 @@ klasse TestSupport(unittest.TestCase):
             with warnings_helper.check_warnings() as recorder, _caplog() as caplog:
                 with os_helper.temp_dir(path, quiet=True) as temp_path:
                     self.assertEqual(path, temp_path)
-                warnings = [str(w.message) for w in recorder.warnings]
+                warnings = [str(w.message) fuer w in recorder.warnings]
             # Make sure temp_dir did not delete the original directory.
             self.assertTrue(os.path.isdir(path))
         finally:
@@ -238,7 +238,7 @@ klasse TestSupport(unittest.TestCase):
     @support.requires_fork()
     def test_temp_dir__forked_child(self):
         """Test that a forked child process does not remove the directory."""
-        # See bpo-30028 for details.
+        # See bpo-30028 fuer details.
         # Run the test as an external script, because it uses fork.
         script_helper.assert_python_ok("-c", textwrap.dedent("""
             import os
@@ -249,7 +249,7 @@ klasse TestSupport(unittest.TestCase):
                 if pid != 0:
                     # parent process
 
-                    # wait for the child to terminate
+                    # wait fuer the child to terminate
                     support.wait_process(pid, exitcode=0)
 
                     # Make sure that temp_path is still present. When the child
@@ -260,7 +260,7 @@ klasse TestSupport(unittest.TestCase):
                         raise AssertionError("Child removed temp_path.")
         """))
 
-    # Tests for change_cwd()
+    # Tests fuer change_cwd()
 
     def test_change_cwd(self):
         original_cwd = os.getcwd()
@@ -297,7 +297,7 @@ klasse TestSupport(unittest.TestCase):
                 with os_helper.change_cwd(bad_dir, quiet=True) as new_cwd:
                     self.assertEqual(new_cwd, original_cwd)
                     self.assertEqual(os.getcwd(), new_cwd)
-                warnings = [str(w.message) for w in recorder.warnings]
+                warnings = [str(w.message) fuer w in recorder.warnings]
 
         self.assertListEqual(warnings, [])
         self.assertEqual(len(caplog.records), 1)
@@ -309,7 +309,7 @@ klasse TestSupport(unittest.TestCase):
             f'to {bad_dir!r}: '
         )
 
-    # Tests for change_cwd()
+    # Tests fuer change_cwd()
 
     def test_change_cwd__chdir_warning(self):
         """Check the warning message when os.chdir() fails."""
@@ -317,7 +317,7 @@ klasse TestSupport(unittest.TestCase):
         with warnings_helper.check_warnings() as recorder, _caplog() as caplog:
             with os_helper.change_cwd(path=path, quiet=True):
                 pass
-            messages = [str(w.message) for w in recorder.warnings]
+            messages = [str(w.message) fuer w in recorder.warnings]
 
         self.assertListEqual(messages, [])
         self.assertEqual(len(caplog.records), 1)
@@ -329,7 +329,7 @@ klasse TestSupport(unittest.TestCase):
             f'to {path!r}: ',
         )
 
-    # Tests for temp_cwd()
+    # Tests fuer temp_cwd()
 
     def test_temp_cwd(self):
         here = os.getcwd()
@@ -504,7 +504,7 @@ klasse TestSupport(unittest.TestCase):
             support.environment_altered = False
             stderr = io.StringIO()
 
-            for _ in support.sleeping_retry(support.SHORT_TIMEOUT):
+            fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
                 with support.swap_attr(support.print_warning, 'orig_stderr', stderr):
                     support.reap_children()
 
@@ -527,7 +527,7 @@ klasse TestSupport(unittest.TestCase):
     def check_options(self, args, func, expected=None):
         code = f'from test.support import {func}; print(repr({func}()))'
         cmd = [sys.executable, *args, '-c', code]
-        env = {key: value for key, value in os.environ.items()
+        env = {key: value fuer key, value in os.environ.items()
                if not key.startswith('PYTHON')}
         proc = subprocess.run(cmd,
                               stdout=subprocess.PIPE,
@@ -542,7 +542,7 @@ klasse TestSupport(unittest.TestCase):
     @support.requires_resource('cpu')
     def test_args_from_interpreter_flags(self):
         # Test test.support.args_from_interpreter_flags()
-        for opts in (
+        fuer opts in (
             # no option
             [],
             # single option
@@ -579,7 +579,7 @@ klasse TestSupport(unittest.TestCase):
 
     def test_optim_args_from_interpreter_flags(self):
         # Test test.support.optim_args_from_interpreter_flags()
-        for opts in (
+        fuer opts in (
             # no option
             [],
             ['-O'],
@@ -672,7 +672,7 @@ klasse TestSupport(unittest.TestCase):
             if depth:
                 recursive_function(depth - 1)
 
-        for max_depth in (5, 25, 250, 2500):
+        fuer max_depth in (5, 25, 250, 2500):
             with support.infinite_recursion(max_depth):
                 available = support.get_recursion_available()
 
@@ -710,7 +710,7 @@ klasse TestSupport(unittest.TestCase):
         self.assertEqual(parse('4g'), int(4 * GiB))
         self.assertEqual(parse('1t'), TiB)
 
-        for limit in ('', '3', '3.5.10k', '10x'):
+        fuer limit in ('', '3', '3.5.10k', '10x'):
             with self.subTest(limit=limit):
                 with self.assertRaises(ValueError):
                     parse(limit)
@@ -750,7 +750,7 @@ klasse TestSupport(unittest.TestCase):
             self.skipTest(f"cannot access Python source code directory:"
                           f" {src_dir!r}")
         # Check that the landmark copy_python_src_ignore() expects is available
-        # (Previously we looked for 'Lib\os.py', which is always present on Windows.)
+        # (Previously we looked fuer 'Lib\os.py', which is always present on Windows.)
         landmark = os.path.join(src_dir, 'Modules')
         if not os.path.exists(landmark):
             self.skipTest(f"cannot access Python source code directory:"
@@ -775,7 +775,7 @@ klasse TestSupport(unittest.TestCase):
                          ignored)
 
     def test_get_signal_name(self):
-        for exitcode, expected in (
+        fuer exitcode, expected in (
             (-int(signal.SIGINT), 'SIGINT'),
             (-int(signal.SIGSEGV), 'SIGSEGV'),
             (128 + int(signal.SIGABRT), 'SIGABRT'),
@@ -796,7 +796,7 @@ klasse TestSupport(unittest.TestCase):
         if linked:
             self.assertIsInstance(linked, tuple)
             self.assertEqual(3, len(linked))
-            for v in linked:
+            fuer v in linked:
                 self.assertIsInstance(v, int)
 
 

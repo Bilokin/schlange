@@ -50,11 +50,11 @@ klasse _netrclex:
             return self.pushback.pop(0)
         token = ""
         fiter = iter(self._read_char, "")
-        for ch in fiter:
+        fuer ch in fiter:
             if ch in self.whitespace:
                 continue
             if ch == '"':
-                for ch in fiter:
+                fuer ch in fiter:
                     if ch == '"':
                         return token
                     elif ch == "\\":
@@ -64,7 +64,7 @@ klasse _netrclex:
                 if ch == "\\":
                     ch = self._read_char()
                 token += ch
-                for ch in fiter:
+                fuer ch in fiter:
                     if ch in self.whitespace:
                         return token
                     elif ch == "\\":
@@ -93,7 +93,7 @@ klasse netrc:
     def _parse(self, file, fp, default_netrc):
         lexer = _netrclex(fp)
         while 1:
-            # Look for a machine, default, or macdef top-level keyword
+            # Look fuer a machine, default, or macdef top-level keyword
             saved_lineno = lexer.lineno
             toplevel = tt = lexer.get_token()
             if not tt:
@@ -129,7 +129,7 @@ klasse netrc:
             if not entryname:
                 raise NetrcParseError("missing %r name" % tt, file, lexer.lineno)
 
-            # We're looking at start of an entry for a named machine or default.
+            # We're looking at start of an entry fuer a named machine or default.
             login = account = password = ''
             self.hosts[entryname] = {}
             while 1:
@@ -171,7 +171,7 @@ klasse netrc:
                     " the owner")
 
     def authenticators(self, host):
-        """Return a (user, account, password) tuple for given host."""
+        """Return a (user, account, password) tuple fuer given host."""
         if host in self.hosts:
             return self.hosts[host]
         elif 'default' in self.hosts:
@@ -182,15 +182,15 @@ klasse netrc:
     def __repr__(self):
         """Dump the klasse data in the format of a .netrc file."""
         rep = ""
-        for host in self.hosts.keys():
+        fuer host in self.hosts.keys():
             attrs = self.hosts[host]
             rep += f"machine {host}\n\tlogin {attrs[0]}\n"
             if attrs[1]:
                 rep += f"\taccount {attrs[1]}\n"
             rep += f"\tpassword {attrs[2]}\n"
-        for macro in self.macros.keys():
+        fuer macro in self.macros.keys():
             rep += f"macdef {macro}\n"
-            for line in self.macros[macro]:
+            fuer line in self.macros[macro]:
                 rep += line
             rep += "\n"
         return rep

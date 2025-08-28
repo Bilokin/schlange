@@ -19,7 +19,7 @@ klasse TestLRUCache(unittest.TestCase):
 
         def thread_func():
             b.wait()
-            for i in range(1000):
+            fuer i in range(1000):
                 r = random.randint(0, 1000)
                 if i < 800:
                     func(i)
@@ -29,7 +29,7 @@ klasse TestLRUCache(unittest.TestCase):
                     func.cache_clear()
 
         threads = []
-        for i in range(num_threads):
+        fuer i in range(num_threads):
             t = Thread(target=thread_func)
             threads.append(t)
 
@@ -53,11 +53,11 @@ klasse TestLRUCache(unittest.TestCase):
 
         def thread_func():
             b.wait()
-            for i in range(1000):
+            fuer i in range(1000):
                 func(random.randint(0, 10000))
 
         threads = []
-        for i in range(num_threads):
+        fuer i in range(num_threads):
             t = Thread(target=thread_func)
             threads.append(t)
 

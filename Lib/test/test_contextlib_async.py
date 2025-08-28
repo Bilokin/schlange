@@ -47,7 +47,7 @@ klasse TestAbstractAsyncContextManager(unittest.TestCase):
 
     @_async_test
     async def test_async_gen_propagates_generator_exit(self):
-        # A regression test for https://bugs.python.org/issue33786.
+        # A regression test fuer https://bugs.python.org/issue33786.
 
         @asynccontextmanager
         async def ctx():
@@ -58,7 +58,7 @@ klasse TestAbstractAsyncContextManager(unittest.TestCase):
                 yield 11
 
         g = gen()
-        async for val in g:
+        async fuer val in g:
             self.assertEqual(val, 11)
             break
         await g.aclose()
@@ -166,7 +166,7 @@ klasse AsyncContextManagerTestCase(unittest.TestCase):
         klasse StopAsyncIterationSubclass(StopAsyncIteration):
             pass
 
-        for stop_exc in (
+        fuer stop_exc in (
             StopIteration('spam'),
             StopAsyncIteration('ham'),
             StopIterationSubclass('spam'),
@@ -280,7 +280,7 @@ klasse AsyncContextManagerTestCase(unittest.TestCase):
         klasse StopAsyncIterationSubclass(StopAsyncIteration):
             pass
 
-        for stop_exc in (
+        fuer stop_exc in (
             StopIteration('spam'),
             StopAsyncIteration('ham'),
             StopIterationSubclass('spam'),
@@ -318,7 +318,7 @@ klasse AsyncContextManagerTestCase(unittest.TestCase):
     def _create_contextmanager_attribs(self):
         def attribs(**kw):
             def decorate(func):
-                for k,v in kw.items():
+                fuer k,v in kw.items():
                     setattr(func,k,v)
                 return func
             return decorate
@@ -441,7 +441,7 @@ klasse AsyncContextManagerTestCase(unittest.TestCase):
                 self.b = b
                 self.c = c
 
-        # these tests are for argument passing when used as a decorator
+        # these tests are fuer argument passing when used as a decorator
         test = Test()
         await test.method(1, 2)
         self.assertEqual(test.a, 1)
@@ -556,7 +556,7 @@ klasse TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
             result.append((args, kwds))
 
         async with AsyncExitStack() as stack:
-            for args, kwds in reversed(expected):
+            fuer args, kwds in reversed(expected):
                 if args and kwds:
                     f = stack.push_async_callback(_exit, *args, **kwds)
                 elif args:
@@ -566,7 +566,7 @@ klasse TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
                 else:
                     f = stack.push_async_callback(_exit)
                 self.assertIs(f, _exit)
-            for wrapper in stack._exit_callbacks:
+            fuer wrapper in stack._exit_callbacks:
                 self.assertIs(wrapper[1].__wrapped__, _exit)
                 self.assertNotEqual(wrapper[1].__name__, _exit.__name__)
                 self.assertIsNone(wrapper[1].__doc__, _exit.__doc__)
@@ -718,7 +718,7 @@ klasse TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
                 await stack.enter_async_context(my_cm())
                 yield stack
 
-        for cm in (my_cm, my_cm_with_exit_stack):
+        fuer cm in (my_cm, my_cm_with_exit_stack):
             with self.subTest():
                 try:
                     async with cm():

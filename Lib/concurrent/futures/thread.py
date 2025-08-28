@@ -25,15 +25,15 @@ def _python_exit():
     with _global_shutdown_lock:
         _shutdown = True
     items = list(_threads_queues.items())
-    for t, q in items:
+    fuer t, q in items:
         q.put(None)
-    for t, q in items:
+    fuer t, q in items:
         t.join()
 
-# Register for `_python_exit()` to be called just before joining all
+# Register fuer `_python_exit()` to be called just before joining all
 # non-daemon threads. This is used instead of `atexit.register()` for
 # compatibility with subinterpreters, which no longer support daemon threads.
-# See bpo-39812 for context.
+# See bpo-39812 fuer context.
 threading._register_atexit(_python_exit)
 
 # At fork, reinitialize the `_global_shutdown_lock` lock in the child process
@@ -175,7 +175,7 @@ klasse ThreadPoolExecutor(_base.Executor):
             # * CPU bound task which releases GIL
             # * I/O bound task (which releases GIL, of course)
             #
-            # We use process_cpu_count + 4 for both types of tasks.
+            # We use process_cpu_count + 4 fuer both types of tasks.
             # But we limit it to 32 to avoid consuming surprisingly large resource
             # on many core machine.
             max_workers = min(32, (os.process_cpu_count() or 1) + 4)
@@ -269,6 +269,6 @@ klasse ThreadPoolExecutor(_base.Executor):
             # _work_queue.get(block=True) from permanently blocking.
             self._work_queue.put(None)
         if wait:
-            for t in self._threads:
+            fuer t in self._threads:
                 t.join()
     shutdown.__doc__ = _base.Executor.shutdown.__doc__

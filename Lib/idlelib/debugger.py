@@ -1,7 +1,7 @@
 """Debug user code with a GUI interface to a subclass of bdb.Bdb.
 
 The Idb instance 'idb' and Debugger instance 'gui' need references to each
-other or to an rpc proxy for each other.
+other or to an rpc proxy fuer each other.
 
 If IDLE is started with '-n', so that user code and idb both run in the
 IDLE process, Debugger is called without an idb.  Debugger.__init__
@@ -12,7 +12,7 @@ If IDLE is started normally, so that user code executes in a separate
 process, debugger_r.start_remote_debugger is called, executing in the
 IDLE process.  It calls 'start the debugger' in the remote process,
 which calls Idb with a gui proxy.  Then Debugger is called in the IDLE
-for more.
+fuer more.
 """
 
 import bdb
@@ -27,7 +27,7 @@ from idlelib.window import ListedToplevel
 
 
 klasse Idb(bdb.Bdb):
-    "Supply user_line and user_exception functions for Bdb."
+    "Supply user_line and user_exception functions fuer Bdb."
 
     def __init__(self, gui):
         self.gui = gui  # An instance of Debugger or proxy thereof.
@@ -71,7 +71,7 @@ def _in_rpc_code(frame):
         return _in_rpc_code(prev_frame)
 
 def _frame2message(frame):
-    """Return a message string for frame."""
+    """Return a message string fuer frame."""
     code = frame.f_code
     filename = code.co_filename
     lineno = frame.f_lineno
@@ -126,7 +126,7 @@ klasse Debugger:
         #           <running program with traces>
         #             callback to debugger's interaction()
         #               nested event loop
-        #                 run() for second command
+        #                 run() fuer second command
         #
         # This kind of nesting of event loops causes all kinds of problems
         # (see e.g. issue #24455) especially when dealing with running as a
@@ -199,7 +199,7 @@ klasse Debugger:
         self.bret = b = Button(bframe, text="Quit", command=self.quit)
         bl.append(b)
 
-        for b in bl:
+        fuer b in bl:
             b.configure(state="disabled")
             b.pack(side="left")
 
@@ -282,7 +282,7 @@ klasse Debugger:
         if self.vsource.get():
             self.sync_source_line()
 
-        for b in self.buttons:
+        fuer b in self.buttons:
             b.configure(state="normal")
 
         self.top.wakeup()
@@ -293,7 +293,7 @@ klasse Debugger:
         self.root.tk.call('vwait', '::idledebugwait')
         self.nesting_level -= 1
 
-        for b in self.buttons:
+        fuer b in self.buttons:
             b.configure(state="disabled")
         self.status.configure(text="")
         self.error.configure(text="", background=self.errorbg)
@@ -412,17 +412,17 @@ klasse Debugger:
 
     def load_breakpoints(self):
         """Load PyShellEditorWindow breakpoints into subprocess debugger."""
-        for editwin in self.pyshell.flist.inversedict:
+        fuer editwin in self.pyshell.flist.inversedict:
             filename = editwin.io.filename
             try:
-                for lineno in editwin.breakpoints:
+                fuer lineno in editwin.breakpoints:
                     self.set_breakpoint(filename, lineno)
             except AttributeError:
                 continue
 
 
 klasse StackViewer(ScrolledList):
-    "Code stack viewer for debugger GUI."
+    "Code stack viewer fuer debugger GUI."
 
     def __init__(self, master, flist, gui):
         if macosx.isAquaTk():
@@ -439,7 +439,7 @@ klasse StackViewer(ScrolledList):
     def load_stack(self, stack, index=None):
         self.stack = stack
         self.clear()
-        for i in range(len(stack)):
+        fuer i in range(len(stack)):
             frame, lineno = stack[i]
             try:
                 modname = frame.f_globals["__name__"]
@@ -506,7 +506,7 @@ klasse StackViewer(ScrolledList):
 
 
 klasse NamespaceViewer:
-    "Global/local namespace viewer for debugger GUI."
+    "Global/local namespace viewer fuer debugger GUI."
 
     def __init__(self, master, title, odict=None):  # XXX odict never passed.
         width = 0
@@ -535,14 +535,14 @@ klasse NamespaceViewer:
         self.sfid = canvas.create_window(0, 0, window=subframe, anchor="nw")
         self.load_dict(odict)
 
-    prev_odict = -1  # Needed for initial comparison below.
+    prev_odict = -1  # Needed fuer initial comparison below.
 
     def load_dict(self, odict, force=0, rpc_client=None):
         if odict is self.prev_odict and not force:
             return
         subframe = self.subframe
         frame = self.frame
-        for c in list(subframe.children.values()):
+        fuer c in list(subframe.children.values()):
             c.destroy()
         self.prev_odict = None
         if not odict:
@@ -564,7 +564,7 @@ klasse NamespaceViewer:
             names = sorted(keys_list)
 
             row = 0
-            for name in names:
+            fuer name in names:
                 value = odict[name]
                 svalue = self.repr.repr(value) # repr(value)
                 # Strip extra quotes caused by calling repr on the (already)
@@ -578,7 +578,7 @@ klasse NamespaceViewer:
                 l.grid(row=row, column=1, sticky="nw")
                 row = row+1
         self.prev_odict = odict
-        # XXX Could we use a <Configure> callback for the following?
+        # XXX Could we use a <Configure> callback fuer the following?
         subframe.update_idletasks() # Alas!
         width = subframe.winfo_reqwidth()
         height = subframe.winfo_reqheight()

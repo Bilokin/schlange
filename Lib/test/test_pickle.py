@@ -152,7 +152,7 @@ klasse PyIdPersPicklerTests(AbstractIdentityPersistentPicklerTests,
     @support.cpython_only
     def test_pickler_reference_cycle(self):
         def check(Pickler):
-            for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+            fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
                 f = io.BytesIO()
                 pickler = Pickler(f, proto)
                 pickler.dump('abc')
@@ -205,7 +205,7 @@ klasse PyIdPersPicklerTests(AbstractIdentityPersistentPicklerTests,
     @support.cpython_only
     def test_unpickler_reference_cycle(self):
         def check(Unpickler):
-            for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+            fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
                 unpickler = Unpickler(io.BytesIO(self.dumps('abc', proto)))
                 self.assertEqual(unpickler.load(), 'abc')
             unpickler = Unpickler(io.BytesIO())
@@ -238,7 +238,7 @@ klasse PyIdPersPicklerTests(AbstractIdentityPersistentPicklerTests,
                 self.assertIsNone(super().persistent_id(obj))
                 return obj
 
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             f = io.BytesIO()
             pickler = PersPickler(f, proto)
             called = []
@@ -254,7 +254,7 @@ klasse PyIdPersPicklerTests(AbstractIdentityPersistentPicklerTests,
                     super().persistent_load(pid)
                 return pid
 
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             unpickler = PersUnpickler(io.BytesIO(self.dumps('abc', proto)))
             called = []
             self.assertEqual(unpickler.load(), 'abc')
@@ -265,7 +265,7 @@ klasse PyIdPersPicklerTests(AbstractIdentityPersistentPicklerTests,
             called.append(obj)
             return obj
 
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             f = io.BytesIO()
             pickler = self.pickler(f, proto)
             called = []
@@ -283,7 +283,7 @@ klasse PyIdPersPicklerTests(AbstractIdentityPersistentPicklerTests,
             called.append(pid)
             return pid
 
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             unpickler = self.unpickler(io.BytesIO(self.dumps('abc', proto)))
             called = []
             old_persistent_load = unpickler.persistent_load
@@ -303,7 +303,7 @@ klasse PyIdPersPicklerTests(AbstractIdentityPersistentPicklerTests,
                 self.assertIsNone(super().persistent_id(obj))
                 return obj
 
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             f = io.BytesIO()
             pickler = PersPickler(f, proto)
             called = []
@@ -326,7 +326,7 @@ klasse PyIdPersPicklerTests(AbstractIdentityPersistentPicklerTests,
                     super().persistent_load(pid)
                 return pid
 
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             unpickler = PersUnpickler(io.BytesIO(self.dumps('abc', proto)))
             called = []
             old_persistent_load = unpickler.persistent_load
@@ -446,12 +446,12 @@ if has_c_implementation:
 
         def test_have_gc(self):
             import gc
-            for tp in self._types:
+            fuer tp in self._types:
                 with self.subTest(tp=tp):
                     self.assertTrue(gc.is_tracked(tp))
 
         def test_immutable(self):
-            for tp in self._types:
+            fuer tp in self._types:
                 with self.subTest(tp=tp):
                     with self.assertRaisesRegex(TypeError, "immutable"):
                         tp.foo = "bar"
@@ -470,7 +470,7 @@ if has_c_implementation:
             check(p, basesize +
                 MT_size + 8 * ME_size +  # Minimal memo table size.
                 sys.getsizeof(b'x'*4096))  # Minimal write buffer size.
-            for i in range(6):
+            fuer i in range(6):
                 p.dump(chr(i))
             check(p, basesize +
                 MT_size + 32 * ME_size +  # Size of memo table required to
@@ -483,8 +483,8 @@ if has_c_implementation:
             P = struct.calcsize('P')  # Size of memo table entry.
             n = struct.calcsize('n')  # Size of mark table entry.
             check = self.check_sizeof
-            for encoding in 'ASCII', 'UTF-16', 'latin-1':
-                for errors in 'strict', 'replace':
+            fuer encoding in 'ASCII', 'UTF-16', 'latin-1':
+                fuer errors in 'strict', 'replace':
                     u = unpickler(io.BytesIO(),
                                   encoding=encoding, errors=errors)
                     self.assertEqual(object.__sizeof__(u), basesize)
@@ -504,10 +504,10 @@ if has_c_implementation:
             # 20 is minimal non-empty mark stack size.
             check_unpickler([0] * 100, 32, 20)
             # 128 is memo table size required to save references to 100 objects.
-            check_unpickler([chr(i) for i in range(100)], 128, 20)
+            check_unpickler([chr(i) fuer i in range(100)], 128, 20)
             def recurse(deep):
                 data = 0
-                for i in range(deep):
+                fuer i in range(deep):
                     data = [data, data]
                 return data
             check_unpickler(recurse(0), 32, 0)
@@ -573,12 +573,12 @@ def getmodule(module):
 
 def getattribute(module, name):
     obj = getmodule(module)
-    for n in name.split('.'):
+    fuer n in name.split('.'):
         obj = getattr(obj, n)
     return obj
 
 def get_exceptions(mod):
-    for name in dir(mod):
+    fuer name in dir(mod):
         attr = getattr(mod, name)
         if isinstance(attr, type) and issubclass(attr, BaseException):
             yield name, attr
@@ -587,16 +587,16 @@ klasse CompatPickleTests(unittest.TestCase):
     def test_import(self):
         modules = set(IMPORT_MAPPING.values())
         modules |= set(REVERSE_IMPORT_MAPPING)
-        modules |= {module for module, name in REVERSE_NAME_MAPPING}
-        modules |= {module for module, name in NAME_MAPPING.values()}
-        for module in modules:
+        modules |= {module fuer module, name in REVERSE_NAME_MAPPING}
+        modules |= {module fuer module, name in NAME_MAPPING.values()}
+        fuer module in modules:
             try:
                 getmodule(module)
             except ImportError:
                 pass
 
     def test_import_mapping(self):
-        for module3, module2 in REVERSE_IMPORT_MAPPING.items():
+        fuer module3, module2 in REVERSE_IMPORT_MAPPING.items():
             with self.subTest((module3, module2)):
                 try:
                     getmodule(module3)
@@ -607,7 +607,7 @@ klasse CompatPickleTests(unittest.TestCase):
                     self.assertEqual(IMPORT_MAPPING[module2], module3)
 
     def test_name_mapping(self):
-        for (module3, name3), (module2, name2) in REVERSE_NAME_MAPPING.items():
+        fuer (module3, name3), (module2, name2) in REVERSE_NAME_MAPPING.items():
             with self.subTest(((module3, name3), (module2, name2))):
                 if (module2, name2) == ('exceptions', 'OSError'):
                     attr = getattribute(module3, name3)
@@ -627,7 +627,7 @@ klasse CompatPickleTests(unittest.TestCase):
                         self.assertEqual(getattribute(module, name), attr)
 
     def test_reverse_import_mapping(self):
-        for module2, module3 in IMPORT_MAPPING.items():
+        fuer module2, module3 in IMPORT_MAPPING.items():
             with self.subTest((module2, module3)):
                 try:
                     getmodule(module3)
@@ -636,7 +636,7 @@ klasse CompatPickleTests(unittest.TestCase):
                         print(exc)
                 if ((module2, module3) not in ALT_IMPORT_MAPPING and
                     REVERSE_IMPORT_MAPPING.get(module3, None) != module2):
-                    for (m3, n3), (m2, n2) in REVERSE_NAME_MAPPING.items():
+                    fuer (m3, n3), (m2, n2) in REVERSE_NAME_MAPPING.items():
                         if (module3, module2) == (m3, m2):
                             break
                     else:
@@ -647,7 +647,7 @@ klasse CompatPickleTests(unittest.TestCase):
                 self.assertEqual(module, module3)
 
     def test_reverse_name_mapping(self):
-        for (module2, name2), (module3, name3) in NAME_MAPPING.items():
+        fuer (module2, name2), (module3, name3) in NAME_MAPPING.items():
             with self.subTest(((module2, name2), (module3, name3))):
                 try:
                     attr = getattribute(module3, name3)
@@ -671,7 +671,7 @@ klasse CompatPickleTests(unittest.TestCase):
         self.assertEqual(reverse_mapping('builtins', 'OSError'),
                          ('exceptions', 'OSError'))
 
-        for name, exc in get_exceptions(builtins):
+        fuer name, exc in get_exceptions(builtins):
             with self.subTest(name):
                 if exc in (BlockingIOError,
                            ResourceWarning,
@@ -699,7 +699,7 @@ klasse CompatPickleTests(unittest.TestCase):
 
     def test_multiprocessing_exceptions(self):
         module = import_helper.import_module('multiprocessing.context')
-        for name, exc in get_exceptions(module):
+        fuer name, exc in get_exceptions(module):
             if issubclass(exc, Warning):
                 continue
             with self.subTest(name):

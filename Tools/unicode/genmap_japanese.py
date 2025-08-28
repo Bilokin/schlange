@@ -28,10 +28,10 @@ MAPPINGS_JISX0213_2004 = 'http://wakaba-web.hp.infoseek.co.jp/table/jisx0213-200
 
 
 def loadmap_jisx0213(fo):
-    decmap3, decmap4 = {}, {} # maps to BMP for level 3 and 4
-    decmap3_2, decmap4_2 = {}, {} # maps to U+2xxxx for level 3 and 4
-    decmap3_pair = {} # maps to BMP-pair for level 3
-    for line in fo:
+    decmap3, decmap4 = {}, {} # maps to BMP fuer level 3 and 4
+    decmap3_2, decmap4_2 = {}, {} # maps to U+2xxxx fuer level 3 and 4
+    decmap3_pair = {} # maps to BMP-pair fuer level 3
+    fuer line in fo:
         line = line.split('#', 1)[0].strip()
         if not line or len(line.split()) < 2:
             continue
@@ -91,17 +91,17 @@ def main():
 
     sjisencmap, cp932encmap = {}, {}
     jisx0208_0212encmap = {}
-    for c1, m in sjisdecmap.items():
-        for c2, code in m.items():
+    fuer c1, m in sjisdecmap.items():
+        fuer c2, code in m.items():
             sjisencmap.setdefault(code >> 8, {})
             sjisencmap[code >> 8][code & 0xff] = c1 << 8 | c2
-    for c1, m in cp932decmap.items():
-        for c2, code in m.items():
+    fuer c1, m in cp932decmap.items():
+        fuer c2, code in m.items():
             cp932encmap.setdefault(code >> 8, {})
             if (code & 0xff) not in cp932encmap[code >> 8]:
                 cp932encmap[code >> 8][code & 0xff] = c1 << 8 | c2
-    for c1, m in cp932encmap.copy().items():
-        for c2, code in m.copy().items():
+    fuer c1, m in cp932encmap.copy().items():
+        fuer c2, code in m.copy().items():
             if c1 in sjisencmap and c2 in sjisencmap[c1] and sjisencmap[c1][c2] == code:
                 del cp932encmap[c1][c2]
                 if not cp932encmap[c1]:
@@ -109,29 +109,29 @@ def main():
 
     jisx0213pairdecmap = {}
     jisx0213pairencmap = []
-    for unibody, m1 in jis3_pairdecmap.items():
-        for c1, m2 in m1.items():
-            for c2, modifier in m2.items():
+    fuer unibody, m1 in jis3_pairdecmap.items():
+        fuer c1, m2 in m1.items():
+            fuer c2, modifier in m2.items():
                 jisx0213pairencmap.append((unibody, modifier, c1 << 8 | c2))
                 jisx0213pairdecmap.setdefault(c1, {})
                 jisx0213pairdecmap[c1][c2] = unibody << 16 | modifier
 
-    # Twinmap for both of JIS X 0208 (MSB unset) and JIS X 0212 (MSB set)
-    for c1, m in jisx0208decmap.items():
-        for c2, code in m.items():
+    # Twinmap fuer both of JIS X 0208 (MSB unset) and JIS X 0212 (MSB set)
+    fuer c1, m in jisx0208decmap.items():
+        fuer c2, code in m.items():
             jisx0208_0212encmap.setdefault(code >> 8, {})
             jisx0208_0212encmap[code >> 8][code & 0xff] = c1 << 8 | c2
 
-    for c1, m in jisx0212decmap.items():
-        for c2, code in m.items():
+    fuer c1, m in jisx0212decmap.items():
+        fuer c2, code in m.items():
             jisx0208_0212encmap.setdefault(code >> 8, {})
             if (code & 0xff) in jisx0208_0212encmap[code >> 8]:
                 print("OOPS!!!", (code))
             jisx0208_0212encmap[code >> 8][code & 0xff] = 0x8000 | c1 << 8 | c2
 
     jisx0213bmpencmap = {}
-    for c1, m in jis3decmap.copy().items():
-        for c2, code in m.copy().items():
+    fuer c1, m in jis3decmap.copy().items():
+        fuer c2, code in m.copy().items():
             if c1 in jisx0208decmap and c2 in jisx0208decmap[c1]:
                 if code in jis3_pairdecmap:
                     jisx0213bmpencmap[code >> 8][code & 0xff] = (0,) # pair
@@ -150,18 +150,18 @@ def main():
                     jisx0213bmpencmap[code >> 8][code & 0xff] = (0,) # pair
                     jisx0213pairencmap.append((code, 0, c1 << 8 | c2))
 
-    for c1, m in jis4decmap.items():
-        for c2, code in m.items():
+    fuer c1, m in jis4decmap.items():
+        fuer c2, code in m.items():
             jisx0213bmpencmap.setdefault(code >> 8, {})
             jisx0213bmpencmap[code >> 8][code & 0xff] = 0x8000 | c1 << 8 | c2
 
     jisx0213empencmap = {}
-    for c1, m in jis3_2_decmap.items():
-        for c2, code in m.items():
+    fuer c1, m in jis3_2_decmap.items():
+        fuer c2, code in m.items():
             jisx0213empencmap.setdefault(code >> 8, {})
             jisx0213empencmap[code >> 8][code & 0xff] = c1 << 8 | c2
-    for c1, m in jis4_2_decmap.items():
-        for c2, code in m.items():
+    fuer c1, m in jis4_2_decmap.items():
+        fuer c2, code in m.items():
             jisx0213empencmap.setdefault(code >> 8, {})
             jisx0213empencmap[code >> 8][code & 0xff] = 0x8000 | c1 << 8 | c2
 
@@ -239,7 +239,7 @@ static const struct pair_encodemap *jisx0213_pair_encmap;
         jisx0213pairencmap.sort()
         fp.write("static const struct pair_encodemap jisx0213_pair_encmap[JISX0213_ENCPAIRS] = {\n")
         filler = BufferedFiller()
-        for body, modifier, jis in jisx0213pairencmap:
+        fuer body, modifier, jis in jisx0213pairencmap:
             filler.write('{', '0x%04x%04x,' % (body, modifier), '0x%04x' % jis, '},')
         filler.printout(fp)
         fp.write("};\n")

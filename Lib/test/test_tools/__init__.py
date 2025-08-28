@@ -1,4 +1,4 @@
-"""Support functions for testing scripts in the Tools directory."""
+"""Support functions fuer testing scripts in the Tools directory."""
 import contextlib
 import importlib
 import os.path

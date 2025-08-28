@@ -1,4 +1,4 @@
-"""Tests for the Tools/i18n/msgfmt.py tool."""
+"""Tests fuer the Tools/i18n/msgfmt.py tool."""
 
 import json
 import struct
@@ -31,7 +31,7 @@ klasse CompilationTest(unittest.TestCase):
     def test_compilation(self):
         self.maxDiff = None
         with temp_cwd():
-            for po_file in data_dir.glob('*.po'):
+            fuer po_file in data_dir.glob('*.po'):
                 with self.subTest(po_file=po_file):
                     mo_file = po_file.with_suffix('.mo')
                     with open(mo_file, 'rb') as f:
@@ -131,7 +131,7 @@ msgstr "bar"
 
             res = assert_python_failure(msgfmt_py, 'invalid.po')
             err = res.err.decode('utf-8')
-            self.assertIn('indexed msgstr required for plural', err)
+            self.assertIn('indexed msgstr required fuer plural', err)
 
     def test_generic_syntax_error(self):
         with temp_cwd():
@@ -154,7 +154,7 @@ klasse POParserTest(unittest.TestCase):
     def test_strings(self):
         # Test that the PO parser correctly handles and unescape
         # strings in the PO file.
-        # The PO file format allows for a variety of escape sequences,
+        # The PO file format allows fuer a variety of escape sequences,
         # octal and hex escapes.
         valid_strings = (
             # empty strings
@@ -195,7 +195,7 @@ klasse POParserTest(unittest.TestCase):
         )
 
         with temp_cwd():
-            for po_string, expected in valid_strings:
+            fuer po_string, expected in valid_strings:
                 with self.subTest(po_string=po_string):
                     # Construct a PO file with a single entry,
                     # compile it, read it into a catalog and
@@ -231,7 +231,7 @@ klasse POParserTest(unittest.TestCase):
             r'"\N{ROMAN NUMERAL NINE}"'
         )
         with temp_cwd():
-            for invalid_string in invalid_strings:
+            fuer invalid_string in invalid_strings:
                 with self.subTest(string=invalid_string):
                     po = f'msgid {invalid_string}\nmsgstr "translation"'
                     Path('messages.po').write_text(po)
@@ -244,13 +244,13 @@ klasse POParserTest(unittest.TestCase):
 klasse CLITest(unittest.TestCase):
 
     def test_help(self):
-        for option in ('--help', '-h'):
+        fuer option in ('--help', '-h'):
             res = assert_python_ok(msgfmt_py, option)
             err = res.err.decode('utf-8')
             self.assertIn('Generate binary message catalog from textual translation description.', err)
 
     def test_version(self):
-        for option in ('--version', '-V'):
+        fuer option in ('--version', '-V'):
             res = assert_python_ok(msgfmt_py, option)
             out = res.out.decode('utf-8').strip()
             self.assertEqual('msgfmt.py 1.2', out)
@@ -265,14 +265,14 @@ klasse CLITest(unittest.TestCase):
         res = assert_python_ok(msgfmt_py)
         err = res.err.decode('utf-8').replace('\r\n', '\n')
         self.assertIn('No input file given\n'
-                      "Try `msgfmt --help' for more information.", err)
+                      "Try `msgfmt --help' fuer more information.", err)
 
     def test_nonexistent_file(self):
         assert_python_failure(msgfmt_py, 'nonexistent.po')
 
 
 def update_catalog_snapshots():
-    for po_file in data_dir.glob('*.po'):
+    fuer po_file in data_dir.glob('*.po'):
         mo_file = po_file.with_suffix('.mo')
         compile_messages(po_file, mo_file)
         # Create a human-readable JSON file which is

@@ -17,7 +17,7 @@ klasse GlobTests(unittest.TestCase):
         return os.path.normpath(os.path.join(self.tempdir, *parts))
 
     def joins(self, *tuples):
-        return [os.path.join(self.tempdir, *parts) for parts in tuples]
+        return [os.path.join(self.tempdir, *parts) fuer parts in tuples]
 
     def mktemp(self, *parts):
         filename = self.norm(*parts)
@@ -67,23 +67,23 @@ klasse GlobTests(unittest.TestCase):
         res2 = glob.iglob(p, **kwargs)
         self.assertCountEqual(glob.iglob(p, **kwargs), res)
 
-        bres = [os.fsencode(x) for x in res]
+        bres = [os.fsencode(x) fuer x in res]
         self.assertCountEqual(glob.glob(os.fsencode(p), **kwargs), bres)
         self.assertCountEqual(glob.iglob(os.fsencode(p), **kwargs), bres)
 
         with change_cwd(self.tempdir):
             res2 = glob.glob(pattern, **kwargs)
-            for x in res2:
+            fuer x in res2:
                 self.assertFalse(os.path.isabs(x), x)
             if pattern == '**' or pattern == '**' + os.sep:
                 expected = res[1:]
             else:
                 expected = res
-            self.assertCountEqual([os.path.join(self.tempdir, x) for x in res2],
+            self.assertCountEqual([os.path.join(self.tempdir, x) fuer x in res2],
                                   expected)
             self.assertCountEqual(glob.iglob(pattern, **kwargs), res2)
             bpattern = os.fsencode(pattern)
-            bres2 = [os.fsencode(x) for x in res2]
+            bres2 = [os.fsencode(x) fuer x in res2]
             self.assertCountEqual(glob.glob(bpattern, **kwargs), bres2)
             self.assertCountEqual(glob.iglob(bpattern, **kwargs), bres2)
 
@@ -121,14 +121,14 @@ klasse GlobTests(unittest.TestCase):
         eq(self.glob('zymurgy'), [])
 
         res = glob.glob('*')
-        self.assertEqual({type(r) for r in res}, {str})
+        self.assertEqual({type(r) fuer r in res}, {str})
         res = glob.glob(os.path.join(os.curdir, '*'))
-        self.assertEqual({type(r) for r in res}, {str})
+        self.assertEqual({type(r) fuer r in res}, {str})
 
         res = glob.glob(b'*')
-        self.assertEqual({type(r) for r in res}, {bytes})
+        self.assertEqual({type(r) fuer r in res}, {bytes})
         res = glob.glob(os.path.join(os.fsencode(os.curdir), b'*'))
-        self.assertEqual({type(r) for r in res}, {bytes})
+        self.assertEqual({type(r) fuer r in res}, {bytes})
 
     def test_glob_empty_pattern(self):
         self.assertEqual(glob.glob(''), [])
@@ -170,7 +170,7 @@ klasse GlobTests(unittest.TestCase):
 
     def test_glob_directory_with_trailing_slash(self):
         seps = (os.sep, os.altsep) if os.altsep else (os.sep,)
-        for sep in seps:
+        fuer sep in seps:
             # Patterns ending with a slash shouldn't match non-dirs
             self.assertEqual(glob.glob(self.norm('Z*Z') + sep), [])
             self.assertEqual(glob.glob(self.norm('ZZZ') + sep), [])
@@ -194,7 +194,7 @@ klasse GlobTests(unittest.TestCase):
         # Same as test_glob_directory_with_trailing_slash, but with a
         # bytes argument.
         seps = (os.sep, os.altsep) if os.altsep else (os.sep,)
-        for sep in seps:
+        fuer sep in seps:
             self.assertEqual(glob.glob(os.fsencode(self.norm('Z*Z') + sep)), [])
             self.assertEqual(glob.glob(os.fsencode(self.norm('ZZZ') + sep)), [])
             self.assertEqual(glob.glob(os.fsencode(self.norm('aaa') + sep)),
@@ -297,7 +297,7 @@ klasse GlobTests(unittest.TestCase):
                     ]
         eq(self.rglob('**'), self.joins(('',), *full))
         eq(self.rglob(os.curdir, '**'),
-            self.joins((os.curdir, ''), *((os.curdir,) + i for i in full)))
+            self.joins((os.curdir, ''), *((os.curdir,) + i fuer i in full)))
         dirs = [('a', ''), ('a', 'bcd', ''), ('a', 'bcd', 'efg', ''),
                 ('aaa', ''), ('aab', '')]
         if can_symlink():
@@ -323,17 +323,17 @@ klasse GlobTests(unittest.TestCase):
 
         with change_cwd(self.tempdir):
             join = os.path.join
-            eq(glob.glob('**', recursive=True), [join(*i) for i in full])
+            eq(glob.glob('**', recursive=True), [join(*i) fuer i in full])
             eq(glob.glob(join('**', ''), recursive=True),
-                [join(*i) for i in dirs])
+                [join(*i) fuer i in dirs])
             eq(glob.glob(join('**', '*'), recursive=True),
-                [join(*i) for i in full])
+                [join(*i) fuer i in full])
             eq(glob.glob(join(os.curdir, '**'), recursive=True),
-                [join(os.curdir, '')] + [join(os.curdir, *i) for i in full])
+                [join(os.curdir, '')] + [join(os.curdir, *i) fuer i in full])
             eq(glob.glob(join(os.curdir, '**', ''), recursive=True),
-                [join(os.curdir, '')] + [join(os.curdir, *i) for i in dirs])
+                [join(os.curdir, '')] + [join(os.curdir, *i) fuer i in dirs])
             eq(glob.glob(join(os.curdir, '**', '*'), recursive=True),
-                [join(os.curdir, *i) for i in full])
+                [join(os.curdir, *i) fuer i in full])
             eq(glob.glob(join('**','zz*F'), recursive=True),
                 [join('aaa', 'zzzF')])
             eq(glob.glob('**zz*F', recursive=True), [])
@@ -344,7 +344,7 @@ klasse GlobTests(unittest.TestCase):
 
             rec = [('.bb','H'), ('.bb','.J'), ('.aa','G'), ('.aa',), ('.bb',)]
             eq(glob.glob('**', recursive=True, include_hidden=True),
-               [join(*i) for i in full+rec])
+               [join(*i) fuer i in full+rec])
 
     def test_glob_non_directory(self):
         eq = self.assertSequencesEqual_noorder
@@ -381,15 +381,15 @@ klasse GlobTests(unittest.TestCase):
         p = os.path.join(base, *(['d']*depth))
         os.makedirs(p)
         pattern = os.path.join(base, *(['*']*depth))
-        iters = [glob.iglob(pattern, recursive=True) for j in range(100)]
-        for it in iters:
+        iters = [glob.iglob(pattern, recursive=True) fuer j in range(100)]
+        fuer it in iters:
             self.assertEqual(next(it), p)
         pattern = os.path.join(base, '**', 'd')
-        iters = [glob.iglob(pattern, recursive=True) for j in range(100)]
+        iters = [glob.iglob(pattern, recursive=True) fuer j in range(100)]
         p = base
-        for i in range(depth):
+        fuer i in range(depth):
             p = os.path.join(p, 'd')
-            for it in iters:
+            fuer it in iters:
                 self.assertEqual(next(it), p)
 
     def test_translate_matching(self):

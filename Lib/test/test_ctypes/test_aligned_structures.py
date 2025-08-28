@@ -9,7 +9,7 @@ from ._support import StructCheckMixin
 
 klasse TestAlignedStructures(unittest.TestCase, StructCheckMixin):
     def test_aligned_string(self):
-        for base, e in (
+        fuer base, e in (
             (LittleEndianStructure, "<"),
             (BigEndianStructure, ">"),
         ):
@@ -38,7 +38,7 @@ klasse TestAlignedStructures(unittest.TestCase, StructCheckMixin):
             self.assertEqual(alignment(main), 16)
 
     def test_aligned_structures(self):
-        for base, data in (
+        fuer base, data in (
             (LittleEndianStructure, bytearray(b"\1\0\0\0\1\0\0\0\7\0\0\0")),
             (BigEndianStructure, bytearray(b"\1\0\0\0\1\0\0\0\7\0\0\0")),
         ):
@@ -70,7 +70,7 @@ klasse TestAlignedStructures(unittest.TestCase, StructCheckMixin):
             self.assertEqual(main.z, 7)
 
     def test_negative_align(self):
-        for base in (Structure, LittleEndianStructure, BigEndianStructure):
+        fuer base in (Structure, LittleEndianStructure, BigEndianStructure):
             with (
                 self.subTest(base=base),
                 self.assertRaisesRegex(
@@ -83,7 +83,7 @@ klasse TestAlignedStructures(unittest.TestCase, StructCheckMixin):
                     _fields_ = []
 
     def test_zero_align_no_fields(self):
-        for base in (Structure, LittleEndianStructure, BigEndianStructure):
+        fuer base in (Structure, LittleEndianStructure, BigEndianStructure):
             with self.subTest(base=base):
                 klasse MyStructure(base):
                     _align_ = 0
@@ -93,7 +93,7 @@ klasse TestAlignedStructures(unittest.TestCase, StructCheckMixin):
                 self.assertEqual(alignment(MyStructure()), 1)
 
     def test_zero_align_with_fields(self):
-        for base in (Structure, LittleEndianStructure, BigEndianStructure):
+        fuer base in (Structure, LittleEndianStructure, BigEndianStructure):
             with self.subTest(base=base):
                 klasse MyStructure(base):
                     _align_ = 0
@@ -106,7 +106,7 @@ klasse TestAlignedStructures(unittest.TestCase, StructCheckMixin):
 
     def test_oversized_structure(self):
         data = bytearray(b"\0" * 8)
-        for base in (LittleEndianStructure, BigEndianStructure):
+        fuer base in (LittleEndianStructure, BigEndianStructure):
             klasse SomeBoolsTooBig(base):
                 _align_ = 8
                 _fields_ = [
@@ -129,7 +129,7 @@ klasse TestAlignedStructures(unittest.TestCase, StructCheckMixin):
                 )
 
     def test_aligned_subclasses(self):
-        for base, e in (
+        fuer base, e in (
             (LittleEndianStructure, "<"),
             (BigEndianStructure, ">"),
         ):
@@ -167,7 +167,7 @@ klasse TestAlignedStructures(unittest.TestCase, StructCheckMixin):
             self.assertEqual(Main.b.size, 8)
 
     def test_aligned_union(self):
-        for sbase, ubase, e in (
+        fuer sbase, ubase, e in (
             (LittleEndianStructure, LittleEndianUnion, "<"),
             (BigEndianStructure, BigEndianUnion, ">"),
         ):
@@ -197,7 +197,7 @@ klasse TestAlignedStructures(unittest.TestCase, StructCheckMixin):
             self.assertEqual(alignment(main), 8)
 
     def test_aligned_struct_in_union(self):
-        for sbase, ubase, e in (
+        fuer sbase, ubase, e in (
             (LittleEndianStructure, LittleEndianUnion, "<"),
             (BigEndianStructure, BigEndianUnion, ">"),
         ):
@@ -236,7 +236,7 @@ klasse TestAlignedStructures(unittest.TestCase, StructCheckMixin):
             self.assertEqual(main.union.b.y, 4)
 
     def test_smaller_aligned_subclassed_union(self):
-        for sbase, ubase, e in (
+        fuer sbase, ubase, e in (
             (LittleEndianStructure, LittleEndianUnion, "<"),
             (BigEndianStructure, BigEndianUnion, ">"),
         ):
@@ -273,7 +273,7 @@ klasse TestAlignedStructures(unittest.TestCase, StructCheckMixin):
             self.assertEqual(Main.first.size, 2)
 
     def test_larger_aligned_subclassed_union(self):
-        for ubase, e in (
+        fuer ubase, e in (
             (LittleEndianUnion, "<"),
             (BigEndianUnion, ">"),
         ):
@@ -300,7 +300,7 @@ klasse TestAlignedStructures(unittest.TestCase, StructCheckMixin):
             self.assertEqual(main.signed, -42)
 
     def test_aligned_packed_structures(self):
-        for sbase, e in (
+        fuer sbase, e in (
             (LittleEndianStructure, "<"),
             (BigEndianStructure, ">"),
         ):

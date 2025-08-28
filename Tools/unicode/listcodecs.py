@@ -12,7 +12,7 @@ _debug = 0
 
 def listcodecs(dir):
     names = []
-    for filename in os.listdir(dir):
+    fuer filename in os.listdir(dir):
         if filename[-3:] != '.py':
             continue
         name = filename[:-3]
@@ -36,6 +36,6 @@ if __name__ == '__main__':
     names = listcodecs(encodings.__path__[0])
     names.sort()
     print('all_codecs = [')
-    for name in names:
+    fuer name in names:
         print('    %r,' % name)
     print(']')

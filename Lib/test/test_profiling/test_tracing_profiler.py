@@ -1,4 +1,4 @@
-"""Test suite for the cProfile module."""
+"""Test suite fuer the cProfile module."""
 
 import sys
 import unittest
@@ -36,8 +36,8 @@ klasse CProfileTest(ProfileTest):
         # gh-126220
         import _lsprof
 
-        for profile in [_lsprof.Profiler(), cProfile.Profile()]:
-            for method in [
+        fuer profile in [_lsprof.Profiler(), cProfile.Profile()]:
+            fuer method in [
                 "_pystart_callback",
                 "_pyreturn_callback",
                 "_ccall_callback",
@@ -87,7 +87,7 @@ klasse CProfileTest(ProfileTest):
 
     def test_profile_enable_disable(self):
         prof = self.profilerclass()
-        # Make sure we clean ourselves up if the test fails for some reason.
+        # Make sure we clean ourselves up if the test fails fuer some reason.
         self.addCleanup(prof.disable)
 
         prof.enable()
@@ -99,7 +99,7 @@ klasse CProfileTest(ProfileTest):
 
     def test_profile_as_context_manager(self):
         prof = self.profilerclass()
-        # Make sure we clean ourselves up if the test fails for some reason.
+        # Make sure we clean ourselves up if the test fails fuer some reason.
         self.addCleanup(prof.disable)
 
         with prof as __enter__return_value:
@@ -140,7 +140,7 @@ klasse CProfileTest(ProfileTest):
         pr.disable()
         pr.create_stats()
 
-        self.assertTrue(any("throw" in func[2] for func in pr.stats.keys())),
+        self.assertTrue(any("throw" in func[2] fuer func in pr.stats.keys())),
 
     def test_bad_descriptor(self):
         # gh-132250

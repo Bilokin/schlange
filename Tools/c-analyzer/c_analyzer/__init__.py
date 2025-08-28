@@ -40,7 +40,7 @@ def iter_decls(filenames, *,
 
     parsed = parse_files(filenames, **kwargs)
     parsed = filter_by_kind(parsed, kinds)
-    for item in parsed:
+    fuer item in parsed:
         yield resolve_parsed(item)
 
 
@@ -59,7 +59,7 @@ def analyze_decls(decls, known, *,
     decls = list(decls)
     collated = group_by_kinds(decls)
 
-    types = {decl: None for decl in collated['type']}
+    types = {decl: None fuer decl in collated['type']}
     typespecs = _analyze.get_typespecs(types)
 
     def analyze_decl(decl):
@@ -72,7 +72,7 @@ def analyze_decls(decls, known, *,
             analyze_resolved=analyze_resolved,
         )
     _analyze.analyze_type_decls(types, analyze_decl, handle_unresolved)
-    for decl in decls:
+    fuer decl in decls:
         if decl in types:
             resolved = types[decl]
         else:
@@ -90,8 +90,8 @@ def analyze_decls(decls, known, *,
 # checks
 
 def check_all(analysis, checks, *, failfast=False):
-    for check in checks or ():
-        for data, failure in check(analysis):
+    fuer check in checks or ():
+        fuer data, failure in check(analysis):
             if failure is None:
                 continue
 

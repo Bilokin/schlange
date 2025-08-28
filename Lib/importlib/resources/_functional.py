@@ -1,4 +1,4 @@
-"""Simplified function-based API for importlib.resources"""
+"""Simplified function-based API fuer importlib.resources"""
 
 import warnings
 
@@ -9,12 +9,12 @@ _MISSING = object()
 
 
 def open_binary(anchor, *path_names):
-    """Open for binary reading the *resource* within *package*."""
+    """Open fuer binary reading the *resource* within *package*."""
     return _get_resource(anchor, path_names).open('rb')
 
 
 def open_text(anchor, *path_names, encoding=_MISSING, errors='strict'):
-    """Open for text reading the *resource* within *package*."""
+    """Open fuer text reading the *resource* within *package*."""
     encoding = _get_encoding_arg(path_names, encoding)
     resource = _get_resource(anchor, path_names)
     return resource.open('r', encoding=encoding, errors=errors)
@@ -57,7 +57,7 @@ def contents(anchor, *path_names):
         DeprecationWarning,
         stacklevel=1,
     )
-    return (resource.name for resource in _get_resource(anchor, path_names).iterdir())
+    return (resource.name fuer resource in _get_resource(anchor, path_names).iterdir())
 
 
 def _get_encoding_arg(path_names, encoding):

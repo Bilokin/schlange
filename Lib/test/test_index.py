@@ -56,7 +56,7 @@ klasse BaseTestCase(unittest.TestCase):
         self.assertRaises(TypeError, slice(self.n).indices, 0)
 
     def test_int_subclass_with_index(self):
-        # __index__ should be used when computing indices, even for int
+        # __index__ should be used when computing indices, even fuer int
         # subclasses.  See issue #17576.
         klasse MyInt(int):
             def __index__(self):

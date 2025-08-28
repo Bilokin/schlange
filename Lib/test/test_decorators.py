@@ -85,7 +85,7 @@ klasse TestDecorators(unittest.TestCase):
         self.assertIs(wrapper.__func__, func)
         self.assertIs(wrapper.__wrapped__, func)
 
-        for attr in ('__module__', '__qualname__', '__name__',
+        fuer attr in ('__module__', '__qualname__', '__name__',
                      '__doc__', '__annotations__'):
             self.assertIs(getattr(wrapper, attr),
                           getattr(func, attr))
@@ -113,7 +113,7 @@ klasse TestDecorators(unittest.TestCase):
 
     def test_argforms(self):
         # A few tests of argument passing, as we use restricted form
-        # of expressions for decorators.
+        # of expressions fuer decorators.
 
         def noteargs(*args, **kwds):
             def decorate(func):
@@ -175,13 +175,13 @@ klasse TestDecorators(unittest.TestCase):
     def test_errors(self):
 
         # Test SyntaxErrors:
-        for stmt in ("x,", "x, y", "x = y", "pass", "import sys"):
+        fuer stmt in ("x,", "x, y", "x = y", "pass", "import sys"):
             compile(stmt, "test", "exec")  # Sanity check.
             with self.assertRaises(SyntaxError):
                 compile(f"@{stmt}\ndef f(): pass", "test", "exec")
 
         # Test TypeErrors that used to be SyntaxErrors:
-        for expr in ("1.+2j", "[1, 2][-1]", "(1, 2)", "True", "...", "None"):
+        fuer expr in ("1.+2j", "[1, 2][-1]", "(1, 2)", "True", "...", "None"):
             compile(expr, "test", "eval")  # Sanity check.
             with self.assertRaises(TypeError):
                 exec(f"@{expr}\ndef f(): pass")
@@ -190,7 +190,7 @@ klasse TestDecorators(unittest.TestCase):
             raise NotImplementedError
         context = dict(nullval=None, unimp=unimp)
 
-        for expr, exc in [ ("undef", NameError),
+        fuer expr, exc in [ ("undef", NameError),
                            ("nullval", TypeError),
                            ("nullval.attr", AttributeError),
                            ("unimp", NotImplementedError)]:
@@ -199,7 +199,7 @@ klasse TestDecorators(unittest.TestCase):
             self.assertRaises(exc, eval, code, context)
 
     def test_expressions(self):
-        for expr in (
+        fuer expr in (
             "(x,)", "(x, y)", "x := y", "(x := y)", "x @y", "(x @ y)", "x[0]",
             "w[x].y.z", "w + x - (y + z)", "x(y)()(z)", "[w, x, y][z]", "x.y",
         ):
@@ -231,7 +231,7 @@ klasse TestDecorators(unittest.TestCase):
                             "Application order of decorators is incorrect")
 
     def test_eval_order(self):
-        # Evaluating a decorated function involves four steps for each
+        # Evaluating a decorated function involves four steps fuer each
         # decorator-maker (the function that returns a decorator):
         #
         #    1: Evaluate the decorator-maker name
@@ -240,7 +240,7 @@ klasse TestDecorators(unittest.TestCase):
         #    4: Call the decorator
         #
         # When there are multiple decorators, these steps should be
-        # performed in the above order for each decorator, but we should
+        # performed in the above order fuer each decorator, but we should
         # iterate through the decorators in the reverse of the order they
         # appear in the source.
 

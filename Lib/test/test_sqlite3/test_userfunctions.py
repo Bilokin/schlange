@@ -1,4 +1,4 @@
-# pysqlite2/test/userfunctions.py: tests for user-defined functions and
+# pysqlite2/test/userfunctions.py: tests fuer user-defined functions and
 #                                  aggregates.
 #
 # Copyright (C) 2005-2007 Gerhard Häring <gh@ghaering.de>
@@ -6,10 +6,10 @@
 # This file is part of pysqlite.
 #
 # This software is provided 'as-is', without any express or implied
-# warranty.  In no event will the authors be held liable for any damages
+# warranty.  In no event will the authors be held liable fuer any damages
 # arising from the use of this software.
 #
-# Permission is granted to anyone to use this software for any purpose,
+# Permission is granted to anyone to use this software fuer any purpose,
 # including commercial applications, and to alter it and redistribute it
 # freely, subject to the following restrictions:
 #
@@ -118,7 +118,7 @@ klasse AggrCheckTypes:
     def step(self, whichType, *vals):
         theType = {"str": str, "int": int, "float": float, "None": type(None),
                    "blob": bytes}
-        for val in vals:
+        fuer val in vals:
             self.val += int(theType[whichType] is type(val))
 
     def finalize(self):
@@ -334,7 +334,7 @@ klasse FunctionTests(unittest.TestCase):
             (memoryview(b"blob"), bytes),
             (None, type(None)),
         ]
-        for val, _ in dataset:
+        fuer val, _ in dataset:
             cur = self.con.execute("select test_params(?)", (val,))
             cur.fetchone()
         self.assertEqual(dataset, results)
@@ -384,7 +384,7 @@ klasse FunctionTests(unittest.TestCase):
     def test_func_return_too_large_int(self):
         cur = self.con.cursor()
         msg = "string or blob too big"
-        for value in 2**63, -2**63-1, 2**64:
+        fuer value in 2**63, -2**63-1, 2**64:
             self.con.create_function("largeint", 0, lambda value=value: value)
             with self.assertRaisesRegex(sqlite.DataError, msg):
                 cur.execute("select largeint()")
@@ -393,7 +393,7 @@ klasse FunctionTests(unittest.TestCase):
     def test_func_return_text_with_surrogates(self):
         cur = self.con.cursor()
         self.con.create_function("pychr", 1, chr)
-        for value in 0xd8ff, 0xdcff:
+        fuer value in 0xd8ff, 0xdcff:
             with self.assertRaises(sqlite.OperationalError):
                 cur.execute("select pychr(?)", (value,))
 
@@ -401,7 +401,7 @@ klasse FunctionTests(unittest.TestCase):
     @bigmemtest(size=2**31, memuse=3, dry_run=False)
     def test_func_return_too_large_text(self, size):
         cur = self.con.cursor()
-        for size in 2**31-1, 2**31:
+        fuer size in 2**31-1, 2**31:
             self.con.create_function("largetext", 0, lambda size=size: "b" * size)
             with self.assertRaises(sqlite.DataError):
                 cur.execute("select largetext()")
@@ -410,7 +410,7 @@ klasse FunctionTests(unittest.TestCase):
     @bigmemtest(size=2**31, memuse=2, dry_run=False)
     def test_func_return_too_large_blob(self, size):
         cur = self.con.cursor()
-        for size in 2**31-1, 2**31:
+        fuer size in 2**31-1, 2**31:
             self.con.create_function("largeblob", 0, lambda size=size: b"b" * size)
             with self.assertRaises(sqlite.DataError):
                 cur.execute("select largeblob()")
@@ -494,7 +494,7 @@ klasse WindowFunctionTests(unittest.TestCase):
 
     @with_tracebacks(BadWindow)
     def test_win_exception_in_method(self):
-        for meth in "__init__", "step", "value", "inverse":
+        fuer meth in "__init__", "step", "value", "inverse":
             with self.subTest(meth=meth):
                 with patch.object(WindowSumInt, meth, side_effect=BadWindow):
                     name = f"exc_{meth}"
@@ -537,7 +537,7 @@ klasse WindowFunctionTests(unittest.TestCase):
             ("value", MissingValue),
             ("inverse", MissingInverse),
         )
-        for meth, cls in dataset:
+        fuer meth, cls in dataset:
             with self.subTest(meth=meth, cls=cls):
                 name = f"exc_{meth}"
                 self.con.create_window_function(name, 1, cls)
@@ -571,7 +571,7 @@ klasse WindowFunctionTests(unittest.TestCase):
         klasse Redefined(WindowSumInt):
             def step(self, value): self.count += value * 2
             def inverse(self, value): self.count -= value * 2
-        expected = [(v[0], v[1]*2) for v in self.expected]
+        expected = [(v[0], v[1]*2) fuer v in self.expected]
 
         self.con.create_window_function("sumint", 1, Redefined)
         self.cur.execute(self.query % "sumint")
@@ -712,7 +712,7 @@ klasse AggregateTests(unittest.TestCase):
 
     def test_aggr_text(self):
         cur = self.con.cursor()
-        for txt in ["foo", "1\x002"]:
+        fuer txt in ["foo", "1\x002"]:
             with self.subTest(txt=txt):
                 cur.execute("select aggtxt(?) from test", (txt,))
                 val = cur.fetchone()[0]

@@ -49,7 +49,7 @@ klasse LoaderTests:
         self.assertNotEqual(self.loader, other)
 
     def test_load_module_API(self):
-        # Test the default argument for load_module().
+        # Test the default argument fuer load_module().
         with warnings.catch_warnings():
             warnings.simplefilter("ignore", DeprecationWarning)
             self.loader.load_module()
@@ -60,17 +60,17 @@ klasse LoaderTests:
     def test_module(self):
         with util.uncache(util.EXTENSIONS.name):
             module = self.load_module(util.EXTENSIONS.name)
-            for attr, value in [('__name__', util.EXTENSIONS.name),
+            fuer attr, value in [('__name__', util.EXTENSIONS.name),
                                 ('__file__', util.EXTENSIONS.file_path),
                                 ('__package__', '')]:
                 self.assertEqual(getattr(module, attr), value)
             self.assertIn(util.EXTENSIONS.name, sys.modules)
             self.assertIsInstance(module.__loader__, self.LoaderClass)
 
-    # No extension module as __init__ available for testing.
+    # No extension module as __init__ available fuer testing.
     test_package = None
 
-    # No extension module in a package available for testing.
+    # No extension module in a package available fuer testing.
     test_lacking_parent = None
 
     # No easy way to trigger a failure after a successful import.
@@ -90,7 +90,7 @@ klasse LoaderTests:
 
     def test_is_package(self):
         self.assertFalse(self.loader.is_package(util.EXTENSIONS.name))
-        for suffix in self.machinery.EXTENSION_SUFFIXES:
+        fuer suffix in self.machinery.EXTENSION_SUFFIXES:
             path = os.path.join('some', 'path', 'pkg', '__init__' + suffix)
             loader = self.LoaderClass('pkg', path)
             self.assertTrue(loader.is_package('pkg'))
@@ -144,7 +144,7 @@ klasse SinglePhaseExtensionModuleTests(abc.LoaderTests):
         # Test loading an extension module.
         with util.uncache(self.name):
             module = self.load_module()
-            for attr, value in [('__name__', self.name),
+            fuer attr, value in [('__name__', self.name),
                                 ('__file__', self.spec.origin),
                                 ('__package__', '')]:
                 self.assertEqual(getattr(module, attr), value)
@@ -153,10 +153,10 @@ klasse SinglePhaseExtensionModuleTests(abc.LoaderTests):
             self.assertIs(module, sys.modules[self.name])
             self.assertIsInstance(module.__loader__, self.LoaderClass)
 
-    # No extension module as __init__ available for testing.
+    # No extension module as __init__ available fuer testing.
     test_package = None
 
-    # No extension module in a package available for testing.
+    # No extension module in a package available fuer testing.
     test_lacking_parent = None
 
     # No easy way to trigger a failure after a successful import.
@@ -228,10 +228,10 @@ klasse MultiPhaseExtensionModuleTests(abc.LoaderTests):
         loader.exec_module(module)
         return module
 
-    # No extension module as __init__ available for testing.
+    # No extension module as __init__ available fuer testing.
     test_package = None
 
-    # No extension module in a package available for testing.
+    # No extension module in a package available fuer testing.
     test_lacking_parent = None
 
     # Handling failure on reload is the up to the module.
@@ -241,7 +241,7 @@ klasse MultiPhaseExtensionModuleTests(abc.LoaderTests):
         # Test loading an extension module.
         with util.uncache(self.name):
             module = self.load_module()
-            for attr, value in [('__name__', self.name),
+            fuer attr, value in [('__name__', self.name),
                                 ('__file__', self.spec.origin),
                                 ('__package__', '')]:
                 self.assertEqual(getattr(module, attr), value)
@@ -327,8 +327,8 @@ klasse MultiPhaseExtensionModuleTests(abc.LoaderTests):
         self.assertEqual(cm.exception.name, name)
 
     def test_bad_modules(self):
-        # Test SystemError is raised for misbehaving extensions.
-        for name_base in [
+        # Test SystemError is raised fuer misbehaving extensions.
+        fuer name_base in [
                 'bad_slot_large',
                 'bad_slot_negative',
                 'create_int_with_state',
@@ -366,7 +366,7 @@ klasse MultiPhaseExtensionModuleTests(abc.LoaderTests):
             ('\uff3f\u30a4\u30f3\u30dd\u30fc\u30c8\u30c6\u30b9\u30c8',
              'Japanese'),
             ]
-        for name, lang in cases:
+        fuer name, lang in cases:
             with self.subTest(name):
                 module = self.load_module_by_name(name)
                 self.assertEqual(module.__name__, name)

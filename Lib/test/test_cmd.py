@@ -1,5 +1,5 @@
 """
-Test script for the 'cmd' module
+Test script fuer the 'cmd' module
 Original by Michael Schneider
 """
 
@@ -25,7 +25,7 @@ klasse samplecmdclass(cmd.Cmd):
     Instance the sampleclass:
     >>> mycmd = samplecmdclass()
 
-    Test for the function parseline():
+    Test fuer the function parseline():
     >>> mycmd.parseline("")
     (None, None, '')
     >>> mycmd.parseline("?")
@@ -42,7 +42,7 @@ klasse samplecmdclass(cmd.Cmd):
     ('func', 'arg1', 'func arg1')
 
 
-    Test for the function onecmd():
+    Test fuer the function onecmd():
     >>> mycmd.onecmd("")
     >>> mycmd.onecmd("add 4 5")
     9
@@ -51,27 +51,27 @@ klasse samplecmdclass(cmd.Cmd):
     >>> mycmd.onecmd("test")
     *** Unknown syntax: test
 
-    Test for the function emptyline():
+    Test fuer the function emptyline():
     >>> mycmd.emptyline()
     *** Unknown syntax: test
 
-    Test for the function default():
+    Test fuer the function default():
     >>> mycmd.default("default")
     *** Unknown syntax: default
 
-    Test for the function completedefault():
+    Test fuer the function completedefault():
     >>> mycmd.completedefault()
     This is the completedefault method
     >>> mycmd.completenames("a")
     ['add']
 
-    Test for the function completenames():
+    Test fuer the function completenames():
     >>> mycmd.completenames("12")
     []
     >>> mycmd.completenames("help")
     ['help']
 
-    Test for the function complete_help():
+    Test fuer the function complete_help():
     >>> mycmd.complete_help("a")
     ['add']
     >>> mycmd.complete_help("he")
@@ -81,13 +81,13 @@ klasse samplecmdclass(cmd.Cmd):
     >>> sorted(mycmd.complete_help(""))
     ['add', 'exit', 'help', 'life', 'meaning', 'shell']
 
-    Test for the function do_help():
+    Test fuer the function do_help():
     >>> mycmd.do_help("testet")
     *** No help on testet
     >>> mycmd.do_help("add")
-    help text for add
+    help text fuer add
     >>> mycmd.onecmd("help add")
-    help text for add
+    help text fuer add
     >>> mycmd.onecmd("help meaning")  # doctest: +NORMALIZE_WHITESPACE
     Try and be nice to people, avoid eating fat, read a good book every
     now and then, get some walking in, and try to live together in peace
@@ -107,7 +107,7 @@ klasse samplecmdclass(cmd.Cmd):
     exit  shell
     <BLANKLINE>
 
-    Test for the function print_topics():
+    Test fuer the function print_topics():
     >>> mycmd.print_topics("header", ["command1", "command2"], 2 ,10)
     header
     ======
@@ -115,10 +115,10 @@ klasse samplecmdclass(cmd.Cmd):
     command2
     <BLANKLINE>
 
-    Test for the function columnize():
-    >>> mycmd.columnize([str(i) for i in range(20)])
+    Test fuer the function columnize():
+    >>> mycmd.columnize([str(i) fuer i in range(20)])
     0  1  2  3  4  5  6  7  8  9  10  11  12  13  14  15  16  17  18  19
-    >>> mycmd.columnize([str(i) for i in range(20)], 10)
+    >>> mycmd.columnize([str(i) fuer i in range(20)], 10)
     0  7   14
     1  8   15
     2  9   16
@@ -152,7 +152,7 @@ klasse samplecmdclass(cmd.Cmd):
     ======================
     exit  shell
     <BLANKLINE>
-    help text for add
+    help text fuer add
     Hello from postloop
     """
 
@@ -177,14 +177,14 @@ klasse samplecmdclass(cmd.Cmd):
             print("*** invalid number of arguments")
             return
         try:
-            l = [int(i) for i in l]
+            l = [int(i) fuer i in l]
         except ValueError:
             print("*** arguments should be numbers")
             return
         print(l[0]+l[1])
 
     def help_add(self):
-        print("help text for add")
+        print("help text fuer add")
         return
 
     def help_meaning(self):
@@ -313,7 +313,7 @@ klasse CmdTestReadline(unittest.TestCase):
         """)
 
         # '! h' or '!h' and complete 'ello' to 'hello'
-        for input in [b"! h\t\n", b"!h\t\n"]:
+        fuer input in [b"! h\t\n", b"!h\t\n"]:
             with self.subTest(input=input):
                 output = run_pty(script, input)
                 self.assertIn(b'hello', output)

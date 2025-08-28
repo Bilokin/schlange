@@ -10,7 +10,7 @@ klasse TestTopologicalSort(unittest.TestCase):
             ts.prepare()
             while ts.is_active():
                 nodes = ts.get_ready()
-                for node in nodes:
+                fuer node in nodes:
                     ts.done(node)
                 yield tuple(sorted(nodes))
 
@@ -22,13 +22,13 @@ klasse TestTopologicalSort(unittest.TestCase):
         # expected, because the order within a group is dependent on set
         # iteration order
         it = iter(ts.static_order())
-        for group in expected:
-            tsgroup = {next(it) for element in group}
+        fuer group in expected:
+            tsgroup = {next(it) fuer element in group}
             self.assertEqual(set(group), tsgroup)
 
     def _assert_cycle(self, graph, cycle):
         ts = graphlib.TopologicalSorter()
-        for node, dependson in graph.items():
+        fuer node, dependson in graph.items():
             ts.add(node, *dependson)
         try:
             ts.prepare()
@@ -47,7 +47,7 @@ klasse TestTopologicalSort(unittest.TestCase):
         self._test_graph({1: {}}, [(1,)])
 
         self._test_graph(
-            {x: {x + 1} for x in range(10)}, [(x,) for x in range(10, -1, -1)]
+            {x: {x + 1} fuer x in range(10)}, [(x,) fuer x in range(10, -1, -1)]
         )
 
         self._test_graph(
@@ -95,7 +95,7 @@ klasse TestTopologicalSort(unittest.TestCase):
         self.assertEqual([*ts.static_order()], [2, 1])
 
     def test_graph_with_iterables(self):
-        dependson = (2 * x + 1 for x in range(5))
+        dependson = (2 * x + 1 fuer x in range(5))
         ts = graphlib.TopologicalSorter({0: dependson})
         self.assertEqual(list(ts.static_order()), [1, 3, 5, 7, 9, 0])
 
@@ -151,7 +151,7 @@ klasse TestTopologicalSort(unittest.TestCase):
 
     def test_prepare_cycleerror_each_time(self):
         ts = graphlib.TopologicalSorter({'a': 'b', 'b': 'a'})
-        for attempt in range(1, 4):
+        fuer attempt in range(1, 4):
             with self.assertRaises(graphlib.CycleError, msg=f"{attempt=}"):
                 ts.prepare()
 

@@ -38,7 +38,7 @@ klasse StyleTest(AbstractTkTest, unittest.TestCase):
         style = self.style
 
         # Single state
-        for states in ['active'], [('active',)]:
+        fuer states in ['active'], [('active',)]:
             with self.subTest(states=states):
                 style.map('TButton', background=[(*states, 'white')])
                 expected = [('active', 'white')]
@@ -48,7 +48,7 @@ klasse StyleTest(AbstractTkTest, unittest.TestCase):
                 self.assertEqual(m['background'], expected)
 
         # Multiple states
-        for states in ['pressed', '!disabled'], ['pressed !disabled'], [('pressed', '!disabled')]:
+        fuer states in ['pressed', '!disabled'], ['pressed !disabled'], [('pressed', '!disabled')]:
             with self.subTest(states=states):
                 style.map('TButton', background=[(*states, 'black')])
                 expected = [('pressed', '!disabled', 'black')]
@@ -58,7 +58,7 @@ klasse StyleTest(AbstractTkTest, unittest.TestCase):
                 self.assertEqual(m['background'], expected)
 
         # Default state
-        for states in [], [''], [()]:
+        fuer states in [], [''], [()]:
             with self.subTest(states=states):
                 style.map('TButton', background=[(*states, 'grey')])
                 expected = [('grey',)]
@@ -109,7 +109,7 @@ klasse StyleTest(AbstractTkTest, unittest.TestCase):
 
         curr_theme = self.style.theme_use()
         new_theme = None
-        for theme in self.style.theme_names():
+        fuer theme in self.style.theme_names():
             if theme != curr_theme:
                 new_theme = theme
                 self.style.theme_use(theme)
@@ -128,9 +128,9 @@ klasse StyleTest(AbstractTkTest, unittest.TestCase):
 
         curr_theme = self.style.theme_use()
         self.addCleanup(self.style.theme_use, curr_theme)
-        for theme in self.style.theme_names():
+        fuer theme in self.style.theme_names():
             self.style.theme_use(theme)
-            for name in CLASS_NAMES:
+            fuer name in CLASS_NAMES:
                 default = style.configure(name)
                 if not default:
                     continue
@@ -145,7 +145,7 @@ klasse StyleTest(AbstractTkTest, unittest.TestCase):
                     self.assertEqual(style.configure(newname), None)
                     style.configure(newname, **default)
                     self.assertEqual(style.configure(newname), default)
-                    for key, value in default.items():
+                    fuer key, value in default.items():
                         self.assertEqual(style.configure(newname, key), value)
 
 
@@ -154,9 +154,9 @@ klasse StyleTest(AbstractTkTest, unittest.TestCase):
 
         curr_theme = self.style.theme_use()
         self.addCleanup(self.style.theme_use, curr_theme)
-        for theme in self.style.theme_names():
+        fuer theme in self.style.theme_names():
             self.style.theme_use(theme)
-            for name in CLASS_NAMES:
+            fuer name in CLASS_NAMES:
                 default = style.map(name)
                 if not default:
                     continue
@@ -173,18 +173,18 @@ klasse StyleTest(AbstractTkTest, unittest.TestCase):
                     if theme == 'alt' and name == '.' and get_tk_patchlevel(self.root) < (8, 6, 1):
                         default['embossed'] = [('disabled', '1')]
                     self.assertEqual(style.map(newname), default)
-                    for key, value in default.items():
+                    fuer key, value in default.items():
                         self.assertEqual(style.map(newname, key), value)
 
     def test_element_options(self):
         style = self.style
         element_names = style.element_names()
         self.assertNotIsInstance(element_names, str)
-        for name in element_names:
+        fuer name in element_names:
             self.assertIsInstance(name, str)
             element_options = style.element_options(name)
             self.assertNotIsInstance(element_options, str)
-            for optname in element_options:
+            fuer optname in element_options:
                 self.assertIsInstance(optname, str)
 
     def test_element_create_errors(self):

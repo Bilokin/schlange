@@ -1,14 +1,14 @@
-# pysqlite2/test/dbapi.py: tests for DB-API compliance
+# pysqlite2/test/dbapi.py: tests fuer DB-API compliance
 #
 # Copyright (C) 2004-2010 Gerhard Häring <gh@ghaering.de>
 #
 # This file is part of pysqlite.
 #
 # This software is provided 'as-is', without any express or implied
-# warranty.  In no event will the authors be held liable for any damages
+# warranty.  In no event will the authors be held liable fuer any damages
 # arising from the use of this software.
 #
-# Permission is granted to anyone to use this software for any purpose,
+# Permission is granted to anyone to use this software fuer any purpose,
 # including commercial applications, and to alter it and redistribute it
 # freely, subject to the following restrictions:
 #
@@ -260,7 +260,7 @@ klasse ModuleTests(unittest.TestCase):
             ]
         if sqlite.sqlite_version_info >= (3, 34, 0):
             consts.append("SQLITE_IOERR_CORRUPTFS")
-        for const in consts:
+        fuer const in consts:
             with self.subTest(const=const):
                 self.assertHasAttr(sqlite, const)
 
@@ -411,7 +411,7 @@ klasse ConnectionTests(unittest.TestCase):
             "ProgrammingError",
             "Warning",
         ]
-        for exc in exceptions:
+        fuer exc in exceptions:
             with self.subTest(exc=exc):
                 self.assertHasAttr(self.cx, exc)
                 self.assertIs(getattr(sqlite, exc), getattr(self.cx, exc))
@@ -425,7 +425,7 @@ klasse ConnectionTests(unittest.TestCase):
         self.assertIsNone(self.cx.interrupt())
 
     def test_drop_unused_refs(self):
-        for n in range(500):
+        fuer n in range(500):
             cu = self.cx.execute(f"select {n}")
             self.assertEqual(cu.fetchone()[0], n)
 
@@ -466,7 +466,7 @@ klasse ConnectionTests(unittest.TestCase):
             "IMMEDIATES",
             "EXCLUSIVES",
         )
-        for level in levels:
+        fuer level in levels:
             with self.subTest(level=level):
                 with self.assertRaisesRegex(ValueError, msg):
                     memory_database(isolation_level=level)
@@ -477,7 +477,7 @@ klasse ConnectionTests(unittest.TestCase):
                     self.assertEqual(cx.isolation_level, "")
 
     def test_connection_init_good_isolation_levels(self):
-        for level in ("", "DEFERRED", "IMMEDIATE", "EXCLUSIVE", None):
+        fuer level in ("", "DEFERRED", "IMMEDIATE", "EXCLUSIVE", None):
             with self.subTest(level=level):
                 with memory_database(isolation_level=level) as cx:
                     self.assertEqual(cx.isolation_level, level)
@@ -493,22 +493,22 @@ klasse ConnectionTests(unittest.TestCase):
             cu = cx.cursor()
             cu.execute("create table foo (bar)")
             cu.executemany("insert into foo (bar) values (?)",
-                           ((str(v),) for v in range(4)))
+                           ((str(v),) fuer v in range(4)))
             cu.execute("select bar from foo")
 
-            rows = [r for r in cu.fetchmany(2)]
-            self.assertTrue(all(isinstance(r, sqlite.Row) for r in rows))
-            self.assertEqual([r[0] for r in rows], [b"0", b"1"])
+            rows = [r fuer r in cu.fetchmany(2)]
+            self.assertTrue(all(isinstance(r, sqlite.Row) fuer r in rows))
+            self.assertEqual([r[0] fuer r in rows], [b"0", b"1"])
 
             cx.__init__(":memory:")
             cx.execute("create table foo (bar)")
             cx.executemany("insert into foo (bar) values (?)",
-                           ((v,) for v in ("a", "b", "c", "d")))
+                           ((v,) fuer v in ("a", "b", "c", "d")))
 
             # This uses the old database, old row factory, but new text factory
-            rows = [r for r in cu.fetchall()]
-            self.assertTrue(all(isinstance(r, sqlite.Row) for r in rows))
-            self.assertEqual([r[0] for r in rows], ["2", "3"])
+            rows = [r fuer r in cu.fetchall()]
+            self.assertTrue(all(isinstance(r, sqlite.Row) fuer r in rows))
+            self.assertEqual([r[0] fuer r in rows], ["2", "3"])
             cu.close()
 
     def test_connection_bad_reinit(self):
@@ -522,7 +522,7 @@ klasse ConnectionTests(unittest.TestCase):
             self.assertRaisesRegex(sqlite.ProgrammingError,
                                    "Base Connection.__init__ not called",
                                    cx.executemany, "insert into t values(?)",
-                                   ((v,) for v in range(3)))
+                                   ((v,) fuer v in range(3)))
 
     def test_connection_config(self):
         op = sqlite.SQLITE_DBCONFIG_ENABLE_FKEY
@@ -578,7 +578,7 @@ klasse UninitialisedConnectionTests(unittest.TestCase):
             lambda: self.cx.cursor(),
             lambda: self.cx.close(),
         )
-        for func in funcs:
+        fuer func in funcs:
             with self.subTest(func=func):
                 self.assertRaisesRegex(sqlite.ProgrammingError,
                                        "Base Connection.__init__ not called",
@@ -612,7 +612,7 @@ klasse SerializeTests(unittest.TestCase):
             (TypeError, 1),
             (TypeError, None),
         )
-        for exc, arg in dataset:
+        fuer exc, arg in dataset:
             with self.subTest(exc=exc, arg=arg):
                 with memory_database() as cx:
                     self.assertRaises(exc, cx.deserialize, arg)
@@ -716,7 +716,7 @@ klasse OpenTests(unittest.TestCase):
             database_arg = database
             return sqlite.Connection(":memory:", *args, **kwargs)
 
-        for database in (TESTFN, os.fsencode(TESTFN),
+        fuer database in (TESTFN, os.fsencode(TESTFN),
                          FakePath(TESTFN), FakePath(os.fsencode(TESTFN))):
             database_arg = None
             sqlite.connect(database, factory=factory).close()
@@ -765,7 +765,7 @@ klasse CursorTests(unittest.TestCase):
                select 2
             """,
         )
-        for query in dataset:
+        fuer query in dataset:
             with self.subTest(query=query):
                 with self.assertRaisesRegex(sqlite.ProgrammingError, msg):
                     self.cu.execute(query)
@@ -783,7 +783,7 @@ klasse CursorTests(unittest.TestCase):
             */
             """,
         )
-        for query in dataset:
+        fuer query in dataset:
             with self.subTest(query=query):
                 self.cu.execute(query)
 
@@ -867,14 +867,14 @@ klasse CursorTests(unittest.TestCase):
             ("select :a, :b, ?", (1, 2, 3)),
         )
         msg = "Binding.*is a named parameter"
-        for query, params in dataset:
+        fuer query, params in dataset:
             with self.subTest(query=query, params=params):
                 with self.assertRaisesRegex(sqlite.ProgrammingError, msg) as cm:
                     self.cu.execute(query, params)
 
     def test_execute_indexed_nameless_params(self):
         # See gh-117995: "'?1' is considered a named placeholder"
-        for query, params, expected in (
+        fuer query, params, expected in (
             ("select ?1, ?2", (1, 2), (1, 2)),
             ("select ?2, ?1", (1, 2), (2, 1)),
         ):
@@ -952,7 +952,7 @@ klasse CursorTests(unittest.TestCase):
     @unittest.skipIf(sqlite.sqlite_version_info < (3, 35, 0),
                      "Requires SQLite 3.35.0 or newer")
     def test_rowcount_update_returning(self):
-        # gh-93421: rowcount is updated correctly for UPDATE...RETURNING queries
+        # gh-93421: rowcount is updated correctly fuer UPDATE...RETURNING queries
         self.cu.execute("update test set name='bar' where name='foo' returning 1")
         self.assertEqual(self.cu.fetchone()[0], 1)
         self.assertEqual(self.cu.rowcount, 1)
@@ -986,12 +986,12 @@ klasse CursorTests(unittest.TestCase):
         self.cu.execute("insert into test(name) values ('foo')")
         self.assertLess(2, self.cx.total_changes, msg='total changes reported wrong value')
 
-    # Checks for executemany:
+    # Checks fuer executemany:
     # Sequences are required by the DB-API, iterators
     # enhancements in pysqlite.
 
     def test_execute_many_sequence(self):
-        self.cu.executemany("insert into test(income) values (?)", [(x,) for x in range(100, 110)])
+        self.cu.executemany("insert into test(income) values (?)", [(x,) fuer x in range(100, 110)])
 
     def test_execute_many_iterator(self):
         klasse MyIter:
@@ -1012,7 +1012,7 @@ klasse CursorTests(unittest.TestCase):
 
     def test_execute_many_generator(self):
         def mygen():
-            for i in range(5):
+            fuer i in range(5):
                 yield (i,)
 
         self.cu.executemany("insert into test(income) values (?)", mygen())
@@ -1036,7 +1036,7 @@ klasse CursorTests(unittest.TestCase):
         self.cu.execute("insert into test(id) values (?)", (6,))
         self.cu.execute("select id from test order by id")
         lst = []
-        for row in self.cu:
+        fuer row in self.cu:
             lst.append(row[0])
         self.assertEqual(lst[0], 5)
         self.assertEqual(lst[1], 6)
@@ -1119,7 +1119,7 @@ klasse CursorTests(unittest.TestCase):
         INSERT OR REPLACE and REPLACE INTO should produce the same behavior.
         """
         sql = '{} INTO test(id, unique_test) VALUES (?, ?)'
-        for statement in ('INSERT OR REPLACE', 'REPLACE'):
+        fuer statement in ('INSERT OR REPLACE', 'REPLACE'):
             with self.subTest(statement=statement):
                 self.cu.execute(sql.format(statement), (1, 'foo'))
                 self.assertEqual(self.cu.lastrowid, 1)
@@ -1136,7 +1136,7 @@ klasse CursorTests(unittest.TestCase):
 
     def test_last_row_id_insert_o_r(self):
         results = []
-        for statement in ('FAIL', 'ABORT', 'ROLLBACK'):
+        fuer statement in ('FAIL', 'ABORT', 'ROLLBACK'):
             sql = 'INSERT OR {} INTO test(unique_test) VALUES (?)'
             with self.subTest(statement='INSERT OR {}'.format(statement)):
                 self.cu.execute(sql.format(statement), (statement,))
@@ -1152,7 +1152,7 @@ klasse CursorTests(unittest.TestCase):
         self.assertEqual(results, expected)
 
     def test_column_count(self):
-        # Check that column count is updated correctly for cached statements
+        # Check that column count is updated correctly fuer cached statements
         select = "select * from test"
         res = self.cu.execute(select)
         old_count = len(res.description)
@@ -1163,8 +1163,8 @@ klasse CursorTests(unittest.TestCase):
         self.assertEqual(new_count - old_count, 1)
 
     def test_same_query_in_multiple_cursors(self):
-        cursors = [self.cx.execute("select 1") for _ in range(3)]
-        for cu in cursors:
+        cursors = [self.cx.execute("select 1") fuer _ in range(3)]
+        fuer cu in cursors:
             self.assertEqual(cu.fetchall(), [(1,)])
 
 
@@ -1206,7 +1206,7 @@ klasse BlobTests(unittest.TestCase):
             (ValueError, msg_orig, lambda: self.blob.seek(10, -1)),
             (ValueError, msg_orig, lambda: self.blob.seek(10, 3)),
         )
-        for exc, msg, fn in dataset:
+        fuer exc, msg, fn in dataset:
             with self.subTest(exc=exc, msg=msg, fn=fn):
                 self.assertRaisesRegex(exc, msg, fn)
 
@@ -1290,7 +1290,7 @@ klasse BlobTests(unittest.TestCase):
             (("test", "b", 2), {}),
         )
         regex = "no such"
-        for args, kwds in dataset:
+        fuer args, kwds in dataset:
             with self.subTest(args=args, kwds=kwds):
                 with self.assertRaisesRegex(sqlite.OperationalError, regex):
                     self.cx.blobopen(*args, **kwds)
@@ -1374,7 +1374,7 @@ klasse BlobTests(unittest.TestCase):
 
     def test_blob_get_item_error(self):
         dataset = [len(self.blob), 105, -105]
-        for idx in dataset:
+        fuer idx in dataset:
             with self.subTest(idx=idx):
                 with self.assertRaisesRegex(IndexError, "index out of range"):
                     self.blob[idx]
@@ -1487,7 +1487,7 @@ klasse BlobTests(unittest.TestCase):
                                    blob.read)
 
     def test_blob_32bit_rowid(self):
-        # gh-100370: we should not get an OverflowError for 32-bit rowids
+        # gh-100370: we should not get an OverflowError fuer 32-bit rowids
         with memory_database() as cx:
             rowid = 2**32
             cx.execute("create table t(t blob)")
@@ -1544,7 +1544,7 @@ klasse ThreadTests(unittest.TestCase):
         if sqlite.sqlite_version_info >= (3, 25, 0):
             fns.append(lambda: self.con.create_window_function("foo", 0, None))
 
-        for fn in fns:
+        fuer fn in fns:
             with self.subTest(fn=fn):
                 self._run_test(fn)
 
@@ -1555,7 +1555,7 @@ klasse ThreadTests(unittest.TestCase):
             lambda: self.cur.execute("select name from test"),
             lambda: self.cur.fetchone(),
         ]
-        for fn in fns:
+        fuer fn in fns:
             with self.subTest(fn=fn):
                 self._run_test(fn)
 
@@ -1748,7 +1748,7 @@ klasse ClosedCurTests(MemoryDatabaseMixin, unittest.TestCase):
         cur = self.cx.cursor()
         cur.close()
 
-        for method_name in ("execute", "executemany", "executescript", "fetchall", "fetchmany", "fetchone"):
+        fuer method_name in ("execute", "executemany", "executescript", "fetchall", "fetchmany", "fetchone"):
             if method_name in ("execute", "executescript"):
                 params = ("select 4 union select 5",)
             elif method_name == "executemany":
@@ -1763,9 +1763,9 @@ klasse ClosedCurTests(MemoryDatabaseMixin, unittest.TestCase):
 
 klasse SqliteOnConflictTests(unittest.TestCase):
     """
-    Tests for SQLite's "insert on conflict" feature.
+    Tests fuer SQLite's "insert on conflict" feature.
 
-    See https://www.sqlite.org/lang_conflict.html for details.
+    See https://www.sqlite.org/lang_conflict.html fuer details.
     """
 
     def setUp(self):
@@ -1876,7 +1876,7 @@ klasse MultiprocessTests(unittest.TestCase):
             try:
                 # execute two transactions; both will try to lock the db
                 cx.executescript('''
-                    -- start a transaction and wait for parent
+                    -- start a transaction and wait fuer parent
                     begin transaction;
                     select * from t;
                     select wait();
@@ -1901,7 +1901,7 @@ klasse MultiprocessTests(unittest.TestCase):
         )
         self.addCleanup(proc.communicate)
 
-        # wait for child process to start
+        # wait fuer child process to start
         self.assertEqual("started", proc.stdout.readline().strip())
 
         cx = sqlite.connect(TESTFN, timeout=self.CONNECTION_TIMEOUT)
@@ -1952,7 +1952,7 @@ klasse RowTests(unittest.TestCase):
         self.assertEqual(row[1], 2)
         self.assertEqual(row["a"], 1)
         self.assertEqual(row["b"], 2)
-        for key in "nokey", 4, 1.2:
+        fuer key in "nokey", 4, 1.2:
             with self.subTest(key=key):
                 with self.assertRaises(IndexError):
                     row[key]

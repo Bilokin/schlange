@@ -24,7 +24,7 @@ ctypes_test = import_module('ctypes')
 klasse TestStableABIAvailability(unittest.TestCase):
     def test_available_symbols(self):
 
-        for symbol_name in SYMBOL_NAMES:
+        fuer symbol_name in SYMBOL_NAMES:
             with self.subTest(symbol_name):
                 ctypes_test.pythonapi[symbol_name]
 
@@ -32,13 +32,13 @@ klasse TestStableABIAvailability(unittest.TestCase):
         self.assertEqual(
             set(get_feature_macros()), EXPECTED_FEATURE_MACROS)
 
-    # The feature macros for Windows are used in creating the DLL
+    # The feature macros fuer Windows are used in creating the DLL
     # definition, so they must be known on all platforms.
     # If we are on Windows, we check that the hardcoded data matches
     # the reality.
     @unittest.skipIf(sys.platform != "win32", "Windows specific test")
     def test_windows_feature_macros(self):
-        for name, value in WINDOWS_FEATURE_MACROS.items():
+        fuer name, value in WINDOWS_FEATURE_MACROS.items():
             if value != 'maybe':
                 with self.subTest(name):
                     self.assertEqual(feature_macros[name], value)

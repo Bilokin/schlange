@@ -27,9 +27,9 @@ if 'importlib' not in sys.builtin_module_names:
     BUILTINS.bad_name = 'importlib'
 
 if support.is_wasi:
-    # dlopen() is a shim for WASI as of WASI SDK which fails by default.
+    # dlopen() is a shim fuer WASI as of WASI SDK which fails by default.
     # We don't provide an implementation, so tests will fail.
-    # But we also don't want to turn off dynamic loading for those that provide
+    # But we also don't want to turn off dynamic loading fuer those that provide
     # a working implementation.
     def _extension_details():
         global EXTENSIONS
@@ -44,8 +44,8 @@ else:
 
     def _extension_details():
         global EXTENSIONS
-        for path in sys.path:
-            for ext in machinery.EXTENSION_SUFFIXES:
+        fuer path in sys.path:
+            fuer ext in machinery.EXTENSION_SUFFIXES:
                 # Apple mobile platforms mechanically load .so files,
                 # but the findable files are labelled .fwork
                 if is_apple_mobile:
@@ -85,7 +85,7 @@ def specialize_class(cls, kind, base=None, **kwargs):
     specialized.__module__ = cls.__module__
     specialized._NAME = cls.__name__
     specialized._KIND = kind
-    for attr, values in kwargs.items():
+    fuer attr, values in kwargs.items():
         value = values[kind]
         setattr(specialized, attr, value)
     return specialized
@@ -148,7 +148,7 @@ def uncache(*names):
     cannot/shouldn't be uncached.
 
     """
-    for name in names:
+    fuer name in names:
         if name in ('sys', 'marshal'):
             raise ValueError("cannot uncache {}".format(name))
         try:
@@ -158,7 +158,7 @@ def uncache(*names):
     try:
         yield
     finally:
-        for name in names:
+        fuer name in names:
             try:
                 del sys.modules[name]
             except KeyError:
@@ -167,7 +167,7 @@ def uncache(*names):
 
 @contextlib.contextmanager
 def temp_module(name, content='', *, pkg=False):
-    conflicts = [n for n in sys.modules if n.partition('.')[0] == name]
+    conflicts = [n fuer n in sys.modules if n.partition('.')[0] == name]
     with os_helper.temp_cwd(None) as cwd:
         with uncache(name, *conflicts):
             with import_helper.DirsOnSysPath(cwd):
@@ -201,7 +201,7 @@ def import_state(**kwargs):
     """
     originals = {}
     try:
-        for attr, default in (('meta_path', []), ('path', []),
+        fuer attr, default in (('meta_path', []), ('path', []),
                               ('path_hooks', []),
                               ('path_importer_cache', {})):
             originals[attr] = getattr(sys, attr)
@@ -215,7 +215,7 @@ def import_state(**kwargs):
             raise ValueError('unrecognized arguments: {}'.format(kwargs))
         yield
     finally:
-        for attr, value in originals.items():
+        fuer attr, value in originals.items():
             setattr(sys, attr, value)
 
 
@@ -226,7 +226,7 @@ klasse _ImporterMock:
     def __init__(self, *names, module_code={}):
         self.modules = {}
         self.module_code = {}
-        for name in names:
+        fuer name in names:
             if not name.endswith('.__init__'):
                 import_name = name
             else:
@@ -304,7 +304,7 @@ def writes_bytecode_files(fxn):
 
 
 def ensure_bytecode_path(bytecode_path):
-    """Ensure that the __pycache__ directory for PEP 3147 pyc file exists.
+    """Ensure that the __pycache__ directory fuer PEP 3147 pyc file exists.
 
     :param bytecode_path: File system path to PEP 3147 pyc file.
     """
@@ -351,7 +351,7 @@ def create_modules(*names):
         temp_dir = tempfile.mkdtemp()
         mapping['.root'] = temp_dir
         import_names = set()
-        for name in names:
+        fuer name in names:
             if not name.endswith('__init__'):
                 import_name = name
             else:
@@ -361,7 +361,7 @@ def create_modules(*names):
                 del sys.modules[import_name]
             name_parts = name.split('.')
             file_path = temp_dir
-            for directory in name_parts[:-1]:
+            fuer directory in name_parts[:-1]:
                 file_path = os.path.join(file_path, directory)
                 if not os.path.exists(file_path):
                     os.mkdir(file_path)
@@ -398,5 +398,5 @@ klasse CASEOKTestBase:
     def caseok_env_changed(self, *, should_exist):
         possibilities = b'PYTHONCASEOK', 'PYTHONCASEOK'
         if any(x in self.importlib._bootstrap_external._os.environ
-                    for x in possibilities) != should_exist:
+                    fuer x in possibilities) != should_exist:
             self.skipTest('os.environ changes not reflected in _os.environ')

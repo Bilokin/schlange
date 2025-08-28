@@ -95,9 +95,9 @@ klasse PlatformTest(unittest.TestCase):
         self.assertIsNone(platform._os_release_cache)
 
         # fill the cached entries (some have side effects on others)
-        platform.platform()                 # for platform._platform_cache
-        platform.python_implementation()    # for platform._sys_version_cache
-        platform.uname()                    # for platform._uname_cache
+        platform.platform()                 # fuer platform._platform_cache
+        platform.python_implementation()    # fuer platform._sys_version_cache
+        platform.uname()                    # fuer platform._uname_cache
 
         # check that the cache are filled
         self.assertNotEqual(platform._platform_cache, {})
@@ -129,12 +129,12 @@ klasse PlatformTest(unittest.TestCase):
             self.assertEqual(py.call_real(*cmd), py.call_link(*cmd))
 
     def test_platform(self):
-        for aliased in (False, True):
-            for terse in (False, True):
+        fuer aliased in (False, True):
+            fuer terse in (False, True):
                 res = platform.platform(aliased, terse)
 
     def test__platform(self):
-        for src, res in [
+        fuer src, res in [
             ('foo bar', 'foo_bar'),
             (
                 '1/2\\3:4;5"6(7)8(7)6"5;4:3\\2/1',
@@ -179,7 +179,7 @@ klasse PlatformTest(unittest.TestCase):
 
     def test_sys_version(self):
         # Old test.
-        for input, output in (
+        fuer input, output in (
             ('2.4.3 (#1, Jun 21 2006, 13:54:21) \n[GCC 3.3.4 (pre 3.3.5 20040809)]',
              ('CPython', '2.4.3', '', '', '1', 'Jun 21 2006 13:54:21', 'GCC 3.3.4 (pre 3.3.5 20040809)')),
             ('2.4.3 (truncation, date, t) \n[GCC]',
@@ -206,7 +206,7 @@ klasse PlatformTest(unittest.TestCase):
             self.assertEqual(
                 (name, version, '', '', buildno, builddate, compiler), output)
 
-        # Tests for python_implementation(), python_version(), python_branch(),
+        # Tests fuer python_implementation(), python_version(), python_branch(),
         # python_revision(), python_build(), and python_compiler().
         sys_versions = {
             ("2.6.1 (r261:67515, Dec  6 2008, 15:26:00) \n[GCC 4.0.1 (Apple Computer, Inc. build 5370)]",
@@ -234,7 +234,7 @@ klasse PlatformTest(unittest.TestCase):
                 ("PyPy", "2.5.2", "trunk", "63378", ('63378', 'Mar 26 2009'),
                  "")
             }
-        for (version_tag, scm, sys_platform), info in \
+        fuer (version_tag, scm, sys_platform), info in \
                 sys_versions.items():
             sys.version = version_tag
             if scm is None:
@@ -288,7 +288,7 @@ klasse PlatformTest(unittest.TestCase):
                 self.assertEqual(res.system, "Android")
                 self.assertEqual(res.release, platform.android_ver().release)
             elif sys.platform == "ios":
-                # Platform module needs ctypes for full operation. If ctypes
+                # Platform module needs ctypes fuer full operation. If ctypes
                 # isn't available, there's no ObjC module, and dummy values are
                 # returned.
                 if _ctypes:
@@ -338,7 +338,7 @@ klasse PlatformTest(unittest.TestCase):
 
     def test_uname_pickle(self):
         orig = platform.uname()
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             with self.subTest(protocol=proto):
                 pickled = pickle.dumps(orig, proto)
                 restored = pickle.loads(pickled)
@@ -363,7 +363,7 @@ klasse PlatformTest(unittest.TestCase):
     def test_uname_processor(self):
         """
         On some systems, the processor must match the output
-        of 'uname -p'. See Issue 35967 for rationale.
+        of 'uname -p'. See Issue 35967 fuer rationale.
         """
         try:
             proc_res = subprocess.check_output(['uname', '-p'], text=True).strip()
@@ -414,7 +414,7 @@ klasse PlatformTest(unittest.TestCase):
             # It is rather hard to test explicit version without
             # going deep into the details.
             self.assertIn('.', version)
-            for v in version.split('.'):
+            fuer v in version.split('.'):
                 int(v)  # should not fail
         if csd:
             self.assertStartsWith(csd, 'SP')
@@ -437,7 +437,7 @@ klasse PlatformTest(unittest.TestCase):
             # We are on a macOS system, check that the right version
             # information is returned
             output = subprocess.check_output(['sw_vers'], text=True)
-            for line in output.splitlines():
+            fuer line in output.splitlines():
                 if line.startswith('ProductVersion:'):
                     real_ver = line.strip().split()[-1]
                     break
@@ -470,7 +470,7 @@ klasse PlatformTest(unittest.TestCase):
     def test_mac_ver_with_fork(self):
         # Issue7895: platform.mac_ver() crashes when using fork without exec
         #
-        # This test checks that the fix for that issue works.
+        # This test checks that the fix fuer that issue works.
         #
         pid = os.fork()
         if pid == 0:
@@ -503,7 +503,7 @@ klasse PlatformTest(unittest.TestCase):
             # Release is a numeric version specifier with at least 2 parts
             parts = release.split(".")
             self.assertGreaterEqual(len(parts), 2)
-            self.assertTrue(all(part.isdigit() for part in parts))
+            self.assertTrue(all(part.isdigit() fuer part in parts))
 
             # If this is a simulator, we get a high level device descriptor
             # with no identifying model number. If this is a physical device,
@@ -556,7 +556,7 @@ klasse PlatformTest(unittest.TestCase):
             self.assertEqual(platform.libc_ver(), ('mock', '1.0'))
 
             # test the different regular expressions
-            for data, expected in (
+            fuer data, expected in (
                 (b'__libc_init', ('libc', '')),
                 (b'GLIBC_2.9', ('glibc', '2.9')),
                 (b'libc.so.1.2.5', ('libc', '1.2.5')),
@@ -579,7 +579,7 @@ klasse PlatformTest(unittest.TestCase):
         # make sure that eg 1.9 is seen as older than 1.23.4, and that
         # the arguments don't count even if they are set.
         chunksize = 200
-        for data, expected in (
+        fuer data, expected in (
                 (b'GLIBC_1.23.4\0GLIBC_1.9\0GLIBC_1.21\0', ('glibc', '1.23.4')),
                 (b'libc.so.2.4\0libc.so.9\0libc.so.23.1\0', ('libc', '23.1')),
                 (b'musl-1.4.1\0musl-2.1.1\0musl-2.0.1\0', ('musl', '2.1.1')),
@@ -607,7 +607,7 @@ klasse PlatformTest(unittest.TestCase):
                                res.model, res.device, res.is_emulator))
 
         if sys.platform == "android":
-            for name in ["release", "manufacturer", "model", "device"]:
+            fuer name in ["release", "manufacturer", "model", "device"]:
                 with self.subTest(name):
                     value = getattr(res, name)
                     self.assertIsInstance(value, str)
@@ -686,7 +686,7 @@ klasse PlatformTest(unittest.TestCase):
         with mock.patch.object(sys, "platform", "darwin"), \
              mock.patch.object(platform, 'uname', return_value=uname), \
              mock.patch.object(platform, 'architecture', return_value=arch):
-            for mac_ver, expected_terse, expected in [
+            fuer mac_ver, expected_terse, expected in [
                 # darwin: mac_ver() returns empty strings
                 (('', '', ''),
                  'Darwin-17.7.0',
@@ -706,7 +706,7 @@ klasse PlatformTest(unittest.TestCase):
         self.addCleanup(self.clear_caches)
         self.clear_caches()
 
-        if any(os.path.isfile(fn) for fn in platform._os_release_candidates):
+        if any(os.path.isfile(fn) fuer fn in platform._os_release_candidates):
             info = platform.freedesktop_os_release()
             self.assertIn("NAME", info)
             self.assertIn("ID", info)
@@ -775,8 +775,8 @@ klasse CommandLineTest(unittest.TestCase):
             "--terse", "--nonaliased", "terse", "nonaliased"
         )
 
-        for r in range(len(flags) + 1):
-            for combination in itertools.combinations(flags, r):
+        fuer r in range(len(flags) + 1):
+            fuer combination in itertools.combinations(flags, r):
                 self.invoke_platform(*combination)
 
     def test_arg_parsing(self):
@@ -795,7 +795,7 @@ klasse CommandLineTest(unittest.TestCase):
             (["--terse", "nonaliased"], False, True),
         )
 
-        for flags, aliased, terse in options:
+        fuer flags, aliased, terse in options:
             with self.subTest(flags=flags, aliased=aliased, terse=terse):
                 with mock.patch.object(platform, 'platform') as obj:
                     self.invoke_platform(*flags)

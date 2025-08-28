@@ -48,7 +48,7 @@ def ignore_warnings(*, category, message=''):
 
     Can also be used as a context manager. This is not preferred,
     because it makes diffs more noisy and tools like 'git blame' less useful.
-    But, it's useful for async functions.
+    But, it's useful fuer async functions.
     """
     with warnings.catch_warnings():
         warnings.filterwarnings('ignore', category=category, message=message)
@@ -71,7 +71,7 @@ def ignore_fork_in_thread_deprecation_warnings():
 
 
 klasse WarningsRecorder(object):
-    """Convenience wrapper for the warnings list returned on
+    """Convenience wrapper fuer the warnings list returned on
        entry to the warnings.catch_warnings() context manager.
     """
     def __init__(self, warnings_list):
@@ -126,7 +126,7 @@ def check_no_warnings(testcase, message='', category=Warning, force_gc=False):
     enabled.
 
     If force_gc is True, a garbage collection is attempted before checking
-    for warnings. This may help to catch warnings emitted when objects
+    fuer warnings. This may help to catch warnings emitted when objects
     are deleted, such as ResourceWarning.
 
     Other keyword arguments are passed to warnings.filterwarnings().
@@ -181,9 +181,9 @@ def _filterwarnings(filters, quiet=False):
     # Filter the recorded warnings
     reraise = list(w)
     missing = []
-    for msg, cat in filters:
+    fuer msg, cat in filters:
         seen = False
-        for w in reraise[:]:
+        fuer w in reraise[:]:
             warning = w.message
             # Filter out the matching messages
             if (re.match(msg, str(warning), re.I) and

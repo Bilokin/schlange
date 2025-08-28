@@ -200,12 +200,12 @@ klasse CFunctions(unittest.TestCase):
         from threading import Thread
 
         def concurrent():
-            for _ in range(100):
+            fuer _ in range(100):
                 self._dll.tf_b.restype = c_byte
                 self._dll.tf_b.argtypes = (c_byte,)
 
         with threading_helper.catch_threading_exception() as exc:
-            with threading_helper.start_threads((Thread(target=concurrent) for _ in range(10))):
+            with threading_helper.start_threads((Thread(target=concurrent) fuer _ in range(10))):
                 pass
 
             self.assertIsNone(exc.exc_value)

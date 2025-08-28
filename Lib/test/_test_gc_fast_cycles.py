@@ -25,7 +25,7 @@ klasse IncrementalGCTests(unittest.TestCase):
 
         def make_ll(depth):
             head = LinkedList()
-            for i in range(depth):
+            fuer i in range(depth):
                 head = LinkedList(head, head.prev)
             return head
 
@@ -34,7 +34,7 @@ klasse IncrementalGCTests(unittest.TestCase):
         assert(gc.isenabled())
         olds = []
         initial_heap_size = _testinternalcapi.get_tracked_heap_size()
-        for i in range(20_000):
+        fuer i in range(20_000):
             newhead = make_ll(20)
             newhead.surprise = head
             olds.append(newhead)

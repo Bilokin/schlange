@@ -7,7 +7,7 @@ This package provides two types of profilers:
   and timing.
 
 - profiling.sampling: Statistical sampling profiler that periodically samples
-  the call stack. Low overhead and suitable for production use.
+  the call stack. Low overhead and suitable fuer production use.
 """
 
 __all__ = ("tracing", "sampling")

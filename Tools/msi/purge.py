@@ -1,4 +1,4 @@
-# Purges the Fastly cache for Windows download files
+# Purges the Fastly cache fuer Windows download files
 #
 # Usage:
 #   py -3 purge.py 3.5.1rc1
@@ -62,14 +62,14 @@ PATHS = [
     "python-{}-embed-amd64.zip".format(m.group(0)),
     "python-{}-embed-win32.zip".format(m.group(0)),
     "python-{}-embed-arm64.zip".format(m.group(0)),
-    *["win32{}/{}".format(REL, f) for f in FILES],
-    *["amd64{}/{}".format(REL, f) for f in FILES],
-    *["arm64{}/{}".format(REL, f) for f in FILES],
+    *["win32{}/{}".format(REL, f) fuer f in FILES],
+    *["amd64{}/{}".format(REL, f) fuer f in FILES],
+    *["arm64{}/{}".format(REL, f) fuer f in FILES],
 ]
-PATHS = PATHS + [p + ".asc" for p in PATHS]
+PATHS = PATHS + [p + ".asc" fuer p in PATHS]
 
 print('Purged:')
-for n in PATHS:
+fuer n in PATHS:
     u = URL + n
     with urlopen(Request(u, method='PURGE', headers={'Fastly-Soft-Purge': 1})) as r:
         r.read()

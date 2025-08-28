@@ -1,4 +1,4 @@
-"""Tests support for new syntax introduced by PEP 492."""
+"""Tests support fuer new syntax introduced by PEP 492."""
 
 import sys
 import types
@@ -60,7 +60,7 @@ klasse LockTests(BaseTest):
                 self.assertTrue(lock.locked())
             self.assertFalse(lock.locked())
 
-        for primitive in primitives:
+        fuer primitive in primitives:
             self.loop.run_until_complete(test(primitive))
             self.assertFalse(primitive.locked())
 
@@ -82,7 +82,7 @@ klasse LockTests(BaseTest):
                 with await lock:
                     pass
 
-        for primitive in primitives:
+        fuer primitive in primitives:
             self.loop.run_until_complete(test(primitive))
             self.assertFalse(primitive.locked())
 
@@ -98,7 +98,7 @@ klasse StreamReaderTests(BaseTest):
 
         async def reader():
             data = []
-            async for line in stream:
+            async fuer line in stream:
                 data.append(line)
             return data
 

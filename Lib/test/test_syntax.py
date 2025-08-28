@@ -17,11 +17,11 @@ errors are tested here at the moment.  We should add some tests; since
 there are infinitely many programs with invalid syntax, we would need
 to be judicious in selecting some.
 
-The compiler generates a synthetic module name for code executed by
+The compiler generates a synthetic module name fuer code executed by
 doctest.  Since all the code comes from the same module, a suffix like
 [1] is appended to the module name, As a consequence, changing the
 order of tests in this module means renumbering all the errors after
-it.  (Maybe we should enable the ellipsis option for these tests.)
+it.  (Maybe we should enable the ellipsis option fuer these tests.)
 
 In ast.c, syntax errors are raised by calling ast_error().
 
@@ -91,7 +91,7 @@ SyntaxError: cannot delete function call
 Traceback (most recent call last):
 SyntaxError: cannot assign to expression here. Maybe you meant '==' instead of '='?
 
->>> (x for x in x) = 1
+>>> (x fuer x in x) = 1
 Traceback (most recent call last):
 SyntaxError: cannot assign to generator expression
 
@@ -202,52 +202,52 @@ SyntaxError: assignment to yield expression not possible
 
 >>> a, b += 1, 2
 Traceback (most recent call last):
-SyntaxError: 'tuple' is an illegal expression for augmented assignment
+SyntaxError: 'tuple' is an illegal expression fuer augmented assignment
 
 >>> (a, b) += 1, 2
 Traceback (most recent call last):
-SyntaxError: 'tuple' is an illegal expression for augmented assignment
+SyntaxError: 'tuple' is an illegal expression fuer augmented assignment
 
 >>> [a, b] += 1, 2
 Traceback (most recent call last):
-SyntaxError: 'list' is an illegal expression for augmented assignment
+SyntaxError: 'list' is an illegal expression fuer augmented assignment
 
 Invalid targets in `for` loops and `with` statements should also
 produce a specialized error message
 
->>> for a() in b: pass
+>>> fuer a() in b: pass
 Traceback (most recent call last):
 SyntaxError: cannot assign to function call
 
->>> for (a, b()) in b: pass
+>>> fuer (a, b()) in b: pass
 Traceback (most recent call last):
 SyntaxError: cannot assign to function call
 
->>> for [a, b()] in b: pass
+>>> fuer [a, b()] in b: pass
 Traceback (most recent call last):
 SyntaxError: cannot assign to function call
 
->>> for (*a, b, c+1) in b: pass
+>>> fuer (*a, b, c+1) in b: pass
 Traceback (most recent call last):
 SyntaxError: cannot assign to expression
 
->>> for (x, *(y, z.d())) in b: pass
+>>> fuer (x, *(y, z.d())) in b: pass
 Traceback (most recent call last):
 SyntaxError: cannot assign to function call
 
->>> for a, b() in c: pass
+>>> fuer a, b() in c: pass
 Traceback (most recent call last):
 SyntaxError: cannot assign to function call
 
->>> for a, b, (c + 1, d()): pass
+>>> fuer a, b, (c + 1, d()): pass
 Traceback (most recent call last):
 SyntaxError: cannot assign to expression
 
->>> for i < (): pass
+>>> fuer i < (): pass
 Traceback (most recent call last):
 SyntaxError: invalid syntax
 
->>> for a, b
+>>> fuer a, b
 Traceback (most recent call last):
 SyntaxError: invalid syntax
 
@@ -285,42 +285,42 @@ SyntaxError: invalid syntax
 
 Comprehensions without 'in' keyword:
 
->>> [x for x if range(1)]
+>>> [x fuer x if range(1)]
 Traceback (most recent call last):
 SyntaxError: 'in' expected after for-loop variables
 
->>> tuple(x for x if range(1))
+>>> tuple(x fuer x if range(1))
 Traceback (most recent call last):
 SyntaxError: 'in' expected after for-loop variables
 
->>> [x for x() in a]
+>>> [x fuer x() in a]
 Traceback (most recent call last):
 SyntaxError: cannot assign to function call
 
->>> [x for a, b, (c + 1, d()) in y]
+>>> [x fuer a, b, (c + 1, d()) in y]
 Traceback (most recent call last):
 SyntaxError: cannot assign to expression
 
->>> [x for a, b, (c + 1, d()) if y]
+>>> [x fuer a, b, (c + 1, d()) if y]
 Traceback (most recent call last):
 SyntaxError: 'in' expected after for-loop variables
 
->>> [x for x+1 in y]
+>>> [x fuer x+1 in y]
 Traceback (most recent call last):
 SyntaxError: cannot assign to expression
 
->>> [x for x+1, x() in y]
+>>> [x fuer x+1, x() in y]
 Traceback (most recent call last):
 SyntaxError: cannot assign to expression
 
 Comprehensions creating tuples without parentheses
 should produce a specialized error message:
 
->>> [x,y for x,y in range(100)]
+>>> [x,y fuer x,y in range(100)]
 Traceback (most recent call last):
 SyntaxError: did you forget parentheses around the comprehension target?
 
->>> {x,y for x,y in range(100)}
+>>> {x,y fuer x,y in range(100)}
 Traceback (most recent call last):
 SyntaxError: did you forget parentheses around the comprehension target?
 
@@ -659,32 +659,32 @@ From ast_for_call():
 >>> def f(it, *varargs, **kwargs):
 ...     return list(it)
 >>> L = range(10)
->>> f(x for x in L)
+>>> f(x fuer x in L)
 [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
->>> f(x for x in L, 1)
+>>> f(x fuer x in L, 1)
 Traceback (most recent call last):
 SyntaxError: Generator expression must be parenthesized
->>> f(x for x in L, y=1)
+>>> f(x fuer x in L, y=1)
 Traceback (most recent call last):
 SyntaxError: Generator expression must be parenthesized
->>> f(x for x in L, *[])
+>>> f(x fuer x in L, *[])
 Traceback (most recent call last):
 SyntaxError: Generator expression must be parenthesized
->>> f(x for x in L, **{})
+>>> f(x fuer x in L, **{})
 Traceback (most recent call last):
 SyntaxError: Generator expression must be parenthesized
->>> f(L, x for x in L)
+>>> f(L, x fuer x in L)
 Traceback (most recent call last):
 SyntaxError: Generator expression must be parenthesized
->>> f(x for x in L, y for y in L)
+>>> f(x fuer x in L, y fuer y in L)
 Traceback (most recent call last):
 SyntaxError: Generator expression must be parenthesized
->>> f(x for x in L,)
+>>> f(x fuer x in L,)
 Traceback (most recent call last):
 SyntaxError: Generator expression must be parenthesized
->>> f((x for x in L), 1)
+>>> f((x fuer x in L), 1)
 [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
->>> klasse C(x for x in L):
+>>> klasse C(x fuer x in L):
 ...     pass
 Traceback (most recent call last):
 SyntaxError: invalid syntax
@@ -788,8 +788,8 @@ SyntaxError: invalid syntax
 Traceback (most recent call last):
 SyntaxError: expression cannot contain assignment, perhaps you meant "=="?
 
-# Check that this error doesn't trigger for names:
->>> f(a={x: for x in {}})
+# Check that this error doesn't trigger fuer names:
+>>> f(a={x: fuer x in {}})
 Traceback (most recent call last):
 SyntaxError: invalid syntax
 
@@ -851,41 +851,41 @@ SyntaxError: cannot assign to keyword argument unpacking
 
 More set_context():
 
->>> (x for x in x) += 1
+>>> (x fuer x in x) += 1
 Traceback (most recent call last):
-SyntaxError: 'generator expression' is an illegal expression for augmented assignment
+SyntaxError: 'generator expression' is an illegal expression fuer augmented assignment
 >>> None += 1
 Traceback (most recent call last):
-SyntaxError: 'None' is an illegal expression for augmented assignment
+SyntaxError: 'None' is an illegal expression fuer augmented assignment
 >>> __debug__ += 1
 Traceback (most recent call last):
 SyntaxError: cannot assign to __debug__
 >>> f() += 1
 Traceback (most recent call last):
-SyntaxError: 'function call' is an illegal expression for augmented assignment
+SyntaxError: 'function call' is an illegal expression fuer augmented assignment
 
 
 Test control flow in finally
 
-continue in for loop under finally should be ok.
+continue in fuer loop under finally should be ok.
 
     >>> def test():
     ...     try:
     ...         pass
     ...     finally:
-    ...         for abc in range(10):
+    ...         fuer abc in range(10):
     ...             continue
     ...     print(abc)
     >>> test()
     9
 
-break in for loop under finally should be ok.
+break in fuer loop under finally should be ok.
 
     >>> def test():
     ...     try:
     ...         pass
     ...     finally:
-    ...         for abc in range(10):
+    ...         fuer abc in range(10):
     ...             break
     ...     print(abc)
     >>> test()
@@ -903,7 +903,7 @@ return in function under finally should be ok.
     >>> test()
     42
 
-combine for loop and function def
+combine fuer loop and function def
 
 return in function under finally should be ok.
 
@@ -911,7 +911,7 @@ return in function under finally should be ok.
     ...     try:
     ...         pass
     ...     finally:
-    ...         for i in range(10):
+    ...         fuer i in range(10):
     ...             def f():
     ...                 return 42
     ...     print(f())
@@ -923,7 +923,7 @@ return in function under finally should be ok.
     ...         pass
     ...     finally:
     ...         def f():
-    ...             for i in range(10):
+    ...             fuer i in range(10):
     ...                 return 42
     ...     print(f())
     >>> test()
@@ -940,7 +940,7 @@ A continue outside loop should not be allowed.
       ...
     SyntaxError: 'continue' not properly in loop
 
-There is one test for a break that is not in a loop.  The compiler
+There is one test fuer a break that is not in a loop.  The compiler
 uses a single data structure to keep track of try-finally and loops,
 so we need to be sure that a break is actually inside a loop.  If it
 isn't, there should be a syntax error.
@@ -1024,7 +1024,7 @@ Misuse of the nonlocal and global statement can lead to a few unique syntax erro
    ...     nonlocal x
    Traceback (most recent call last):
      ...
-   SyntaxError: no binding for nonlocal 'x' found
+   SyntaxError: no binding fuer nonlocal 'x' found
 
 From SF bug #1705365
    >>> nonlocal x
@@ -1038,7 +1038,7 @@ From https://bugs.python.org/issue25973
    ...         nonlocal __x
    Traceback (most recent call last):
      ...
-   SyntaxError: no binding for nonlocal '_A__x' found
+   SyntaxError: no binding fuer nonlocal '_A__x' found
 
 
 This tests assignment-context; there was a bug in Python 2.5 where compiling
@@ -1150,12 +1150,12 @@ Missing ':' before suites:
    Traceback (most recent call last):
    SyntaxError: expected ':'
 
-   >>> for x in range(10)
+   >>> fuer x in range(10)
    ...   pass
    Traceback (most recent call last):
    SyntaxError: expected ':'
 
-   >>> for x in range 10:
+   >>> fuer x in range 10:
    ...   pass
    Traceback (most recent call last):
    SyntaxError: invalid syntax
@@ -1349,7 +1349,7 @@ Parenthesized parameters in function definitions
    Traceback (most recent call last):
    SyntaxError: Lambda expression parameters cannot be parenthesized
 
-Custom error messages for try blocks that are not followed by except/finally
+Custom error messages fuer try blocks that are not followed by except/finally
 
    >>> try:
    ...    x = 34
@@ -1357,7 +1357,7 @@ Custom error messages for try blocks that are not followed by except/finally
    Traceback (most recent call last):
    SyntaxError: expected 'except' or 'finally' block
 
-Custom error message for __debug__ as exception variable
+Custom error message fuer __debug__ as exception variable
 
    >>> try:
    ...    pass
@@ -1366,7 +1366,7 @@ Custom error message for __debug__ as exception variable
    Traceback (most recent call last):
    SyntaxError: cannot assign to __debug__
 
-Custom error message for try block mixing except and except*
+Custom error message fuer try block mixing except and except*
 
    >>> try:
    ...    pass
@@ -1408,7 +1408,7 @@ Custom error message for try block mixing except and except*
    Traceback (most recent call last):
    SyntaxError: cannot have both 'except' and 'except*' on the same 'try'
 
-Better error message for using `except as` with not a name:
+Better error message fuer using `except as` with not a name:
 
    >>> try:
    ...    pass
@@ -1438,7 +1438,7 @@ Better error message for using `except as` with not a name:
    Traceback (most recent call last):
    SyntaxError: cannot use except* statement with literal
 
-Regression tests for gh-133999:
+Regression tests fuer gh-133999:
 
    >>> try: pass
    ... except TypeError as name: raise from None
@@ -1464,7 +1464,7 @@ Ensure that early = are not matched by the parser as invalid comparisons
    Traceback (most recent call last):
    SyntaxError: invalid syntax
 
-   >>> dict(x=34, (x for x in range 10), 1); x $ y
+   >>> dict(x=34, (x fuer x in range 10), 1); x $ y
    Traceback (most recent call last):
    SyntaxError: invalid syntax
 
@@ -1498,13 +1498,13 @@ Incomplete dictionary literals
    Traceback (most recent call last):
    SyntaxError: expression expected after dictionary key and ':'
 
-   # Ensure that the error is not raised for syntax errors that happen after sets
+   # Ensure that the error is not raised fuer syntax errors that happen after sets
 
    >>> {1} $
    Traceback (most recent call last):
    SyntaxError: invalid syntax
 
-   # Ensure that the error is not raised for invalid expressions
+   # Ensure that the error is not raised fuer invalid expressions
 
    >>> {1: 2, 3: foo(,), 4: 5}
    Traceback (most recent call last):
@@ -1521,24 +1521,24 @@ Specialized indentation errors:
    Traceback (most recent call last):
    IndentationError: expected an indented block after 'while' statement on line 1
 
-   >>> for x in range(10):
+   >>> fuer x in range(10):
    ... pass
    Traceback (most recent call last):
    IndentationError: expected an indented block after 'for' statement on line 1
 
-   >>> for x in range(10):
+   >>> fuer x in range(10):
    ...     pass
    ... else:
    ... pass
    Traceback (most recent call last):
    IndentationError: expected an indented block after 'else' statement on line 3
 
-   >>> async for x in range(10):
+   >>> async fuer x in range(10):
    ... pass
    Traceback (most recent call last):
    IndentationError: expected an indented block after 'for' statement on line 1
 
-   >>> async for x in range(10):
+   >>> async fuer x in range(10):
    ...     pass
    ... else:
    ... pass
@@ -1702,7 +1702,7 @@ Make sure that the old "raise X, Y[, Z]" form is gone:
      ...
    SyntaxError: invalid syntax
 
-Better errors for `raise` statement:
+Better errors fuer `raise` statement:
 
     >>> raise ValueError from
     Traceback (most recent call last):
@@ -1760,7 +1760,7 @@ raise a custom exception only when using 'as'
    Traceback (most recent call last):
    SyntaxError: multiple exception types must be parenthesized when using 'as'
 
-Custom exception for 'except*' without an exception type
+Custom exception fuer 'except*' without an exception type
 
    >>> try:
    ...   pass
@@ -1771,14 +1771,14 @@ Custom exception for 'except*' without an exception type
    Traceback (most recent call last):
    SyntaxError: expected one or more exception types
 
-Check custom exceptions for keywords with typos
+Check custom exceptions fuer keywords with typos
 
 >>> fur a in b:
 ...   pass
 Traceback (most recent call last):
 SyntaxError: invalid syntax. Did you mean 'for'?
 
->>> for a in b:
+>>> fuer a in b:
 ...   pass
 ... elso:
 ...   pass
@@ -1881,7 +1881,7 @@ Traceback (most recent call last):
 SyntaxError: invalid syntax. Did you mean 'raise'?
 
 >>> [
-... x for x
+... x fuer x
 ... in range(3)
 ... of x
 ... ]
@@ -1897,7 +1897,7 @@ Traceback (most recent call last):
 SyntaxError: invalid syntax. Did you mean 'for'?
 
 
->>> for x im n:
+>>> fuer x im n:
 ...     pass
 Traceback (most recent call last):
 SyntaxError: invalid syntax. Did you mean 'in'?
@@ -2740,10 +2740,10 @@ klasse SyntaxWarningTest(unittest.TestCase):
         self.check_warning(source, "'return' in a 'finally' block")
 
     def test_break_and_continue_in_finally(self):
-        for kw in ('break', 'continue'):
+        fuer kw in ('break', 'continue'):
 
             source = textwrap.dedent(f"""
-                for abc in range(10):
+                fuer abc in range(10):
                     try:
                         pass
                     finally:
@@ -2752,7 +2752,7 @@ klasse SyntaxWarningTest(unittest.TestCase):
             self.check_warning(source, f"'{kw}' in a 'finally' block")
 
             source = textwrap.dedent(f"""
-                for abc in range(10):
+                fuer abc in range(10):
                     try:
                         pass
                     finally:
@@ -2764,7 +2764,7 @@ klasse SyntaxWarningTest(unittest.TestCase):
             self.check_warning(source, f"'{kw}' in a 'finally' block")
 
             source = textwrap.dedent(f"""
-                for abc in range(10):
+                fuer abc in range(10):
                     try:
                         pass
                     finally:
@@ -2848,7 +2848,7 @@ klasse SyntaxErrorTestCase(unittest.TestCase):
         self._check_error("del (a, b, (c, d.e.f + 2))", "cannot delete expression")
         self._check_error("del [a, b, (c, d.e.f[0] + 2)]", "cannot delete expression")
         self._check_error("del (a := 5)", "cannot delete named expression")
-        # We don't have a special message for this, but make sure we don't
+        # We don't have a special message fuer this, but make sure we don't
         # report "cannot delete name"
         self._check_error("del a += b", "invalid syntax")
 
@@ -2957,7 +2957,7 @@ klasse SyntaxErrorTestCase(unittest.TestCase):
                           "keyword argument unpacking")
 
     def test_generator_in_function_call(self):
-        self._check_error("foo(x,    y for y in range(3) for z in range(2) if z    , p)",
+        self._check_error("foo(x,    y fuer y in range(3) fuer z in range(2) if z    , p)",
                           "Generator expression must be parenthesized",
                           lineno=1, end_lineno=1, offset=11, end_offset=53)
 
@@ -3020,15 +3020,15 @@ if x:
         # See gh-128632
 
         self._check_error(f"class A[__classdict__]: pass",
-                        f"reserved name '__classdict__' cannot be used for type parameter")
+                        f"reserved name '__classdict__' cannot be used fuer type parameter")
         self._check_error(f"def f[__classdict__](): pass",
-                        f"reserved name '__classdict__' cannot be used for type parameter")
+                        f"reserved name '__classdict__' cannot be used fuer type parameter")
         self._check_error(f"type T[__classdict__] = tuple[__classdict__]",
-                        f"reserved name '__classdict__' cannot be used for type parameter")
+                        f"reserved name '__classdict__' cannot be used fuer type parameter")
 
         # These compilations are here to make sure __class__, __classcell__ and __classdictcell__
         # don't break in the future like __classdict__ did in this case.
-        for name in ('__class__', '__classcell__', '__classdictcell__'):
+        fuer name in ('__class__', '__classcell__', '__classdictcell__'):
             compile(f"""
 klasse A:
     klasse B[{name}]: pass
@@ -3037,7 +3037,7 @@ klasse A:
     @support.cpython_only
     def test_nested_named_except_blocks(self):
         code = ""
-        for i in range(12):
+        fuer i in range(12):
             code += f"{'    '*i}try:\n"
             code += f"{'    '*(i+1)}raise Exception\n"
             code += f"{'    '*i}except Exception as e:\n"
@@ -3054,19 +3054,19 @@ klasse A:
                     with (
                     a
                 """)
-            for i in range(n):
+            fuer i in range(n):
                 code += f"    as a{i}, a\n"
             code += "): yield a"
             return code
 
         CO_MAXBLOCKS = 21  # static nesting limit of the compiler
-        MAX_MANAGERS = CO_MAXBLOCKS - 1  # One for the StopIteration block
+        MAX_MANAGERS = CO_MAXBLOCKS - 1  # One fuer the StopIteration block
 
-        for n in range(MAX_MANAGERS):
+        fuer n in range(MAX_MANAGERS):
             with self.subTest(f"within range: {n=}"):
                 compile(get_code(n), "<string>", "exec")
 
-        for n in range(MAX_MANAGERS, MAX_MANAGERS + 5):
+        fuer n in range(MAX_MANAGERS, MAX_MANAGERS + 5):
             with self.subTest(f"out of range: {n=}"):
                 self._check_error(get_code(n), "too many statically nested blocks")
 
@@ -3080,26 +3080,26 @@ klasse A:
                     async with (
                     a
                 """) ]
-            for i in range(n):
+            fuer i in range(n):
                 code.append(f"    as a{i}, a\n")
             code.append("): yield a")
             return "".join(code)
 
         CO_MAXBLOCKS = 21  # static nesting limit of the compiler
-        MAX_MANAGERS = CO_MAXBLOCKS - 1  # One for the StopIteration block
+        MAX_MANAGERS = CO_MAXBLOCKS - 1  # One fuer the StopIteration block
 
-        for n in range(MAX_MANAGERS):
+        fuer n in range(MAX_MANAGERS):
             with self.subTest(f"within range: {n=}"):
                 compile(get_code(n), "<string>", "exec")
 
-        for n in range(MAX_MANAGERS, MAX_MANAGERS + 5):
+        fuer n in range(MAX_MANAGERS, MAX_MANAGERS + 5):
             with self.subTest(f"out of range: {n=}"):
                 self._check_error(get_code(n), "too many statically nested blocks")
 
     def test_barry_as_flufl_with_syntax_errors(self):
         # The "barry_as_flufl" rule can produce some "bugs-at-a-distance" if
         # is reading the wrong token in the presence of syntax errors later
-        # in the file. See bpo-42214 for more information.
+        # in the file. See bpo-42214 fuer more information.
         code = """
 def func1():
     if a != b:
@@ -3133,13 +3133,13 @@ def func2():
                           "unexpected EOF while parsing")
 
     def test_error_parenthesis(self):
-        for paren in "([{":
+        fuer paren in "([{":
             self._check_error(paren + "1 + 2", f"\\{paren}' was never closed")
 
-        for paren in "([{":
+        fuer paren in "([{":
             self._check_error(f"a = {paren} 1, 2, 3\nb=3", f"\\{paren}' was never closed")
 
-        for paren in ")]}":
+        fuer paren in ")]}":
             self._check_error(paren + "1 + 2", f"unmatched '\\{paren}'")
 
         # Some more complex examples:
@@ -3202,7 +3202,7 @@ case(34)
     @support.cpython_only
     def test_syntax_error_on_deeply_nested_blocks(self):
         # This raises a SyntaxError, it used to raise a SystemError. Context
-        # for this change can be found on issue #27514
+        # fuer this change can be found on issue #27514
 
         # In 2.5 there was a missing exception and an assert was triggered in a
         # debug build.  The number of blocks must be greater than CO_MAXBLOCKS.
@@ -3238,7 +3238,7 @@ while 1:
     @support.cpython_only
     def test_error_on_parser_stack_overflow(self):
         source = "-" * 100000 + "4"
-        for mode in ["exec", "eval", "single"]:
+        fuer mode in ["exec", "eval", "single"]:
             with self.subTest(mode=mode):
                 with self.assertRaisesRegex(MemoryError, r"too complex"):
                     compile(source, "<string>", mode)
@@ -3288,7 +3288,7 @@ while 1:
     def test_ifexp_else_stmt(self):
         msg = "expected expression after 'else', but statement is given"
 
-        for stmt in [
+        fuer stmt in [
             "pass",
             "return",
             "return 2",
@@ -3308,7 +3308,7 @@ while 1:
     def test_ifexp_body_stmt_else_expression(self):
         msg = "expected expression before 'if', but statement is given"
 
-        for stmt in [
+        fuer stmt in [
             "pass",
             "break",
             "continue"
@@ -3317,7 +3317,7 @@ while 1:
 
     def test_ifexp_body_stmt_else_stmt(self):
         msg = "expected expression before 'if', but statement is given"
-        for lhs_stmt, rhs_stmt in [
+        fuer lhs_stmt, rhs_stmt in [
             ("pass", "pass"),
             ("break", "pass"),
             ("continue", "import ast")

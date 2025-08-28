@@ -1,14 +1,14 @@
-# pysqlite2/test/types.py: tests for type conversion and detection
+# pysqlite2/test/types.py: tests fuer type conversion and detection
 #
 # Copyright (C) 2005 Gerhard Häring <gh@ghaering.de>
 #
 # This file is part of pysqlite.
 #
 # This software is provided 'as-is', without any express or implied
-# warranty.  In no event will the authors be held liable for any damages
+# warranty.  In no event will the authors be held liable fuer any damages
 # arising from the use of this software.
 #
-# Permission is granted to anyone to use this software for any purpose,
+# Permission is granted to anyone to use this software fuer any purpose,
 # including commercial applications, and to alter it and redistribute it
 # freely, subject to the following restrictions:
 #
@@ -88,7 +88,7 @@ klasse SqliteTypeTests(unittest.TestCase):
         self.assertEqual(row[0], "Österreich")
 
     def test_too_large_int(self):
-        for value in 2**63, -2**63-1, 2**64:
+        fuer value in 2**63, -2**63-1, 2**64:
             with self.assertRaises(OverflowError):
                 self.cur.execute("insert into test(i) values (?)", (value,))
         self.cur.execute("select i from test")
@@ -96,7 +96,7 @@ klasse SqliteTypeTests(unittest.TestCase):
         self.assertIsNone(row)
 
     def test_string_with_surrogates(self):
-        for value in 0xd8ff, 0xdcff:
+        fuer value in 0xd8ff, 0xdcff:
             with self.assertRaises(UnicodeEncodeError):
                 self.cur.execute("insert into test(s) values (?)", (chr(value),))
         self.cur.execute("select s from test")

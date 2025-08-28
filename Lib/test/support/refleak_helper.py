@@ -1,6 +1,6 @@
 """
-Utilities for changing test behaviour while hunting
-for refleaks
+Utilities fuer changing test behaviour while hunting
+fuer refleaks
 """
 
 _hunting_for_refleaks = False

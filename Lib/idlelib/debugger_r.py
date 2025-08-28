@@ -1,4 +1,4 @@
-"""Support for remote Python debugging.
+"""Support fuer remote Python debugging.
 
 Some ASCII art to describe the structure:
 
@@ -98,7 +98,7 @@ klasse IdbAdapter:
         else:
             tb = tracebacktable[tbid]
         stack, i = self.idb.get_stack(frame, tb)
-        stack = [(wrap_frame(frame2), k) for frame2, k in stack]
+        stack = [(wrap_frame(frame2), k) fuer frame2, k in stack]
         return stack, i
 
     def run(self, cmd):
@@ -310,7 +310,7 @@ klasse IdbProxy:
     def get_stack(self, frame, tbid):
         # passing frame and traceback IDs, not the objects themselves
         stack, i = self.call("get_stack", frame._fid, tbid)
-        stack = [(FrameProxy(self.conn, fid), k) for fid, k in stack]
+        stack = [(FrameProxy(self.conn, fid), k) fuer fid, k in stack]
         return stack, i
 
     def set_continue(self):

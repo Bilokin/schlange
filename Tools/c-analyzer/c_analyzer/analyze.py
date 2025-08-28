@@ -20,7 +20,7 @@ from .match import (
 
 def get_typespecs(typedecls):
     typespecs = {}
-    for decl in typedecls:
+    fuer decl in typedecls:
         if decl.shortkey not in typespecs:
             typespecs[decl.shortkey] = [decl]
         else:
@@ -46,7 +46,7 @@ def analyze_type_decls(types, analyze_decl, handle_unresolved=True):
     unresolved = set(types)
     while unresolved:
         updated = []
-        for decl in unresolved:
+        fuer decl in unresolved:
             resolved = analyze_decl(decl)
             if resolved is None:
                 # The decl should be skipped or ignored.
@@ -69,7 +69,7 @@ def analyze_type_decls(types, analyze_decl, handle_unresolved=True):
                 if decl.kind is KIND.STRUCT or decl.kind is KIND.UNION:
                     nonrecursive = 0
                     i = 0
-                    for member, dep in zip(decl.members, typedeps):
+                    fuer member, dep in zip(decl.members, typedeps):
                         if dep is None:
                             if member.vartype.typespec != decl.shortkey:
                                 nonrecursive += 1
@@ -82,7 +82,7 @@ def analyze_type_decls(types, analyze_decl, handle_unresolved=True):
             types[decl] = resolved
             updated.append(decl)
         if updated:
-            for decl in updated:
+            fuer decl in updated:
                 unresolved.remove(decl)
         else:
             # XXX
@@ -108,13 +108,13 @@ def resolve_decl(decl, typespecs, knowntypespecs, types):
         elif decl.kind is KIND.TYPEDEF:
             vartypes = [decl.vartype]
         elif decl.kind is KIND.STRUCT or decl.kind is KIND.UNION:
-            vartypes = [m.vartype for m in decl.members]
+            vartypes = [m.vartype fuer m in decl.members]
         else:
             # Skip this one!
             return None
 
         typedeps = []
-        for vartype in vartypes:
+        fuer vartype in vartypes:
             typespec = vartype.typespec
             if is_pots(typespec):
                 typedecl = POTSType(typespec)
@@ -140,7 +140,7 @@ def resolve_decl(decl, typespecs, knowntypespecs, types):
                     # We don't care if it didn't resolve.
                     pass
                 elif types[typedecl] is None:
-                    # The typedecl for the typespec hasn't been resolved yet.
+                    # The typedecl fuer the typespec hasn't been resolved yet.
                     typedecl = None
             typedeps.append(typedecl)
     return typedeps
@@ -163,7 +163,7 @@ def find_typedecl(decl, typespec, typespecs):
     # Decide which one to return.
     candidates = []
     samefile = None
-    for typedecl in specdecls:
+    fuer typedecl in specdecls:
         type_filename = typedecl.filename
         if type_filename == filename:
             if samefile is not None:
@@ -179,7 +179,7 @@ def find_typedecl(decl, typespec, typespecs):
         return None
     elif len(candidates) == 1:
         winner, = candidates
-        # XXX Check for inline?
+        # XXX Check fuer inline?
     elif '-' in typespec:
         # Inlined types are always in the same file.
         winner = samefile
@@ -211,7 +211,7 @@ def _handle_unresolved(unresolved, types, analyze_decl):
     dump = False
     if dump:
         print()
-    for decl in types:  # Preserve the original order.
+    fuer decl in types:  # Preserve the original order.
         if decl not in unresolved:
             assert types[decl] is not None, decl
             if types[decl] in (UNKNOWN, IGNORED):
@@ -229,27 +229,27 @@ def _handle_unresolved(unresolved, types, analyze_decl):
                 print()
     #raise NotImplementedError
 
-    for decl in unresolved:
+    fuer decl in unresolved:
         types[decl] = ([_SKIPPED], None)
 
-    for decl in types:
+    fuer decl in types:
         assert types[decl]
 
 
 def _dump_unresolved(decl, types, analyze_decl):
     if isinstance(decl, str):
         typespec = decl
-        decl, = (d for d in types if d.shortkey == typespec)
+        decl, = (d fuer d in types if d.shortkey == typespec)
     elif type(decl) is tuple:
         filename, typespec = decl
         if '-' in typespec:
-            found = [d for d in types
+            found = [d fuer d in types
                      if d.shortkey == typespec and d.filename == filename]
             #if not found:
             #    raise NotImplementedError(decl)
             decl, = found
         else:
-            found = [d for d in types if d.shortkey == typespec]
+            found = [d fuer d in types if d.shortkey == typespec]
             if not found:
                 print(f'*** {typespec} ???')
                 return
@@ -262,7 +262,7 @@ def _dump_unresolved(decl, types, analyze_decl):
 
     if decl.kind is KIND.STRUCT or decl.kind is KIND.UNION:
         print(f'*** {decl.shortkey} {decl.filename}')
-        for member, mtype in zip(decl.members, typedeps):
+        fuer member, mtype in zip(decl.members, typedeps):
             typespec = member.vartype.typespec
             if typespec == decl.shortkey:
                 print(f'     ~~~~: {typespec:20} - {member!r}')
@@ -276,11 +276,11 @@ def _dump_unresolved(decl, types, analyze_decl):
                 status = 'okay'
             elif mtype is None:
                 if '-' in member.vartype.typespec:
-                    mtype, = [d for d in types
+                    mtype, = [d fuer d in types
                               if d.shortkey == member.vartype.typespec
                               and d.filename == decl.filename]
                 else:
-                    found = [d for d in types
+                    found = [d fuer d in types
                              if d.shortkey == typespec]
                     if not found:
                         print(f' ???: {typespec:20}')

@@ -44,21 +44,21 @@ def more_lines(text: str, namespace: dict | None = None):
 
 
 def code_to_events(code: str):
-    for c in code:
+    fuer c in code:
         yield Event(evt="key", data=c, raw=bytearray(c.encode("utf-8")))
 
 
 def clean_screen(reader: ReadlineAlikeReader) -> list[str]:
     """Cleans color and console characters out of a screen output.
 
-    This is useful for screen testing, it increases the test readability since
+    This is useful fuer screen testing, it increases the test readability since
     it strips out all the unreadable side of the screen.
     """
     output = []
-    for line in reader.screen:
+    fuer line in reader.screen:
         line = unbracket(line, including_content=True)
         line = ANSI_ESCAPE_SEQUENCE.sub("", line)
-        for prefix in (reader.ps1, reader.ps2, reader.ps3, reader.ps4):
+        fuer prefix in (reader.ps1, reader.ps2, reader.ps3, reader.ps4):
             if line.startswith(prefix):
                 line = line[len(prefix):]
                 break
@@ -75,9 +75,9 @@ def prepare_reader(console: Console, **kwargs):
     def get_prompt(lineno, cursor_on_line) -> str:
         return ""
 
-    reader.get_prompt = get_prompt  # Remove prompt for easier calculations of (x, y)
+    reader.get_prompt = get_prompt  # Remove prompt fuer easier calculations of (x, y)
 
-    for key, val in kwargs.items():
+    fuer key, val in kwargs.items():
         setattr(reader, key, val)
 
     return reader
@@ -88,7 +88,7 @@ def prepare_console(events: Iterable[Event], **kwargs) -> MagicMock | Console:
     console.get_event.side_effect = events
     console.height = 100
     console.width = 80
-    for key, val in kwargs.items():
+    fuer key, val in kwargs.items():
         setattr(console, key, val)
     return console
 

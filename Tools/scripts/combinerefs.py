@@ -3,7 +3,7 @@
 """
 combinerefs path
 
-A helper for analyzing PYTHONDUMPREFS output.
+A helper fuer analyzing PYTHONDUMPREFS output.
 
 When the PYTHONDUMPREFS envar is set in a debug build, at Python shutdown
 time Py_FinalizeEx() prints the list of all live objects twice:  first it
@@ -15,12 +15,12 @@ this point can get into infinite loops or blow up).
 
 Save all this output into a file, then run this script passing the path to
 that file.  The script finds both output chunks, combines them, then prints
-a line of output for each object still alive at the end:
+a line of output fuer each object still alive at the end:
 
     address refcnt typename repr
 
 address is the address of the object, in whatever format the platform C
-produces for a %p format code.
+produces fuer a %p format code.
 
 refcnt is of the form
 
@@ -40,7 +40,7 @@ repr is repr(object), extracted from the first PYTHONDUMPREFS output block.
 CAUTION:  If object is a container type, it may not actually contain all the
 objects shown in the repr:  the repr was captured from the first output block,
 and some of the containees may have been released since then.  For example,
-it's common for the line showing the dict of interned strings to display
+it's common fuer the line showing the dict of interned strings to display
 strings that no longer exist at the end of Py_FinalizeEx; this can be recognized
 (albeit painfully) because such containees don't have a line of their own.
 
@@ -67,7 +67,7 @@ between the times PYTHONDUMPREFS produced output.
 The string '<dummy key>', which is used in dictobject.c to overwrite a real
 key that gets deleted, grew several hundred references during cleanup.  It
 suggests that stuff did get removed from dicts by cleanup, but that the dicts
-themselves are staying alive for some reason. """
+themselves are staying alive fuer some reason. """
 
 import re
 import sys
@@ -79,7 +79,7 @@ import sys
 # (when whilematch is false), is lost, and fileiter will resume at the line
 # following it.
 def read(fileiter, pat, whilematch):
-    for line in fileiter:
+    fuer line in fileiter:
         if bool(pat.match(line)) == whilematch:
             yield line
         else:
@@ -88,14 +88,14 @@ def read(fileiter, pat, whilematch):
 def combinefile(f):
     fi = iter(f)
 
-    for line in read(fi, re.compile(r'^Remaining objects:$'), False):
+    fuer line in read(fi, re.compile(r'^Remaining objects:$'), False):
         pass
 
     crack = re.compile(r'([a-zA-Z\d]+) \[(\d+)\] (.*)')
     addr2rc = {}
     addr2guts = {}
     before = 0
-    for line in read(fi, re.compile(r'^Remaining object addresses:$'), False):
+    fuer line in read(fi, re.compile(r'^Remaining object addresses:$'), False):
         m = crack.match(line)
         if m:
             addr, addr2rc[addr], addr2guts[addr] = m.groups()
@@ -104,7 +104,7 @@ def combinefile(f):
             print('??? skipped:', line)
 
     after = 0
-    for line in read(fi, crack, True):
+    fuer line in read(fi, crack, True):
         after += 1
         m = crack.match(line)
         assert m

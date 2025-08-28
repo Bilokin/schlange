@@ -1,4 +1,4 @@
-# Test case for the select.devpoll() function
+# Test case fuer the select.devpoll() function
 
 # Initial tests are copied as is from "test_poll.py"
 
@@ -14,7 +14,7 @@ if not hasattr(select, 'devpoll') :
 
 def find_ready_matching(ready, flag):
     match = []
-    for fd, mode in ready:
+    fuer fd, mode in ready:
         if mode & flag:
             match.append(fd)
     return match
@@ -35,7 +35,7 @@ klasse DevPollTests(unittest.TestCase):
         r2w = {}
         w2r = {}
 
-        for i in range(NUM_PIPES):
+        fuer i in range(NUM_PIPES):
             rd, wr = os.pipe()
             p.register(rd)
             p.modify(rd, select.POLLIN)
@@ -51,14 +51,14 @@ klasse DevPollTests(unittest.TestCase):
             ready = p.poll()
             ready_writers = find_ready_matching(ready, select.POLLOUT)
             if not ready_writers:
-                self.fail("no pipes ready for writing")
+                self.fail("no pipes ready fuer writing")
             wr = random.choice(ready_writers)
             os.write(wr, MSG)
 
             ready = p.poll()
             ready_readers = find_ready_matching(ready, select.POLLIN)
             if not ready_readers:
-                self.fail("no pipes ready for reading")
+                self.fail("no pipes ready fuer reading")
             self.assertEqual([w2r[wr]], ready_readers)
             rd = ready_readers[0]
             buf = os.read(rd, MSG_LEN)

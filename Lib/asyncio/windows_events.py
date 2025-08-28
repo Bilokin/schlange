@@ -1,4 +1,4 @@
-"""Selector and proactor event loops for Windows."""
+"""Selector and proactor event loops fuer Windows."""
 
 import sys
 
@@ -39,10 +39,10 @@ INFINITE = _winapi.INFINITE
 ERROR_CONNECTION_REFUSED = 1225
 ERROR_CONNECTION_ABORTED = 1236
 
-# Initial delay in seconds for connect_pipe() before retrying to connect
+# Initial delay in seconds fuer connect_pipe() before retrying to connect
 CONNECT_PIPE_INIT_DELAY = 0.001
 
-# Maximum delay in seconds for connect_pipe() before retrying to connect
+# Maximum delay in seconds fuer connect_pipe() before retrying to connect
 CONNECT_PIPE_MAX_DELAY = 0.100
 
 
@@ -169,7 +169,7 @@ klasse _BaseWaitHandleFuture(futures.Future):
 
 
 klasse _WaitCancelFuture(_BaseWaitHandleFuture):
-    """Subclass of Future which represents a wait for the cancellation of a
+    """Subclass of Future which represents a wait fuer the cancellation of a
     _WaitHandleFuture using an event.
     """
 
@@ -208,7 +208,7 @@ klasse _WaitHandleFuture(_BaseWaitHandleFuture):
 
         # If the wait was cancelled, the wait may never be signalled, so
         # it's required to unregister it. Otherwise, IocpProactor.close() will
-        # wait forever for an event which will never come.
+        # wait forever fuer an event which will never come.
         #
         # If the IocpProactor already received the event, it's safe to call
         # _unregister() because we kept a reference to the Overlapped object
@@ -262,13 +262,13 @@ klasse PipeServer(object):
     def _get_unconnected_pipe(self):
         # Create new instance and return previous one.  This ensures
         # that (until the server is closed) there is always at least
-        # one pipe handle for address.  Therefore if a client attempt
+        # one pipe handle fuer address.  Therefore if a client attempt
         # to connect it will not fail with FileNotFoundError.
         tmp, self._pipe = self._pipe, self._server_pipe_handle(False)
         return tmp
 
     def _server_pipe_handle(self, first):
-        # Return a wrapper for a new pipe handle.
+        # Return a wrapper fuer a new pipe handle.
         if self.closed():
             return None
         flags = _winapi.PIPE_ACCESS_DUPLEX | _winapi.FILE_FLAG_OVERLAPPED
@@ -294,7 +294,7 @@ klasse PipeServer(object):
             self._accept_pipe_future = None
         # Close all instances which have not been connected to by a client.
         if self._address is not None:
-            for pipe in self._free_instances:
+            fuer pipe in self._free_instances:
                 pipe.close()
             self._pipe = None
             self._address = None
@@ -576,7 +576,7 @@ klasse IocpProactor:
 
     def connect(self, conn, address):
         if conn.type == socket.SOCK_DGRAM:
-            # WSAConnect will complete immediately for UDP sockets so we don't
+            # WSAConnect will complete immediately fuer UDP sockets so we don't
             # need to register any IOCP operation
             _overlapped.WSAConnect(conn.fileno(), address)
             fut = self._loop.create_future()
@@ -624,7 +624,7 @@ klasse IocpProactor:
 
         if connected:
             # ConnectNamePipe() failed with ERROR_PIPE_CONNECTED which means
-            # that the pipe is connected. There is no need to wait for the
+            # that the pipe is connected. There is no need to wait fuer the
             # completion of the connection.
             return self._result(pipe)
 
@@ -654,7 +654,7 @@ klasse IocpProactor:
         return windows_utils.PipeHandle(handle)
 
     def wait_for_handle(self, handle, timeout=None):
-        """Wait for a handle.
+        """Wait fuer a handle.
 
         Return a Future object. The result of the future is True if the wait
         completed, or False if the wait did not complete (on timeout).
@@ -678,7 +678,7 @@ klasse IocpProactor:
             # round away from zero to wait *at least* timeout seconds.
             ms = math.ceil(timeout * 1e3)
 
-        # We only create ov so we can use ov.address as a key for the cache.
+        # We only create ov so we can use ov.address as a key fuer the cache.
         ov = _overlapped.Overlapped(NULL)
         wait_handle = _overlapped.RegisterWaitWithQueue(
             handle, self._iocp, ov.address, ms)
@@ -732,13 +732,13 @@ klasse IocpProactor:
                 f.set_exception(e)
             else:
                 f.set_result(value)
-            # Even if GetOverlappedResult() was called, we have to wait for the
+            # Even if GetOverlappedResult() was called, we have to wait fuer the
             # notification of the completion in GetQueuedCompletionStatus().
             # Register the overlapped operation to keep a reference to the
             # OVERLAPPED object, otherwise the memory is freed and Windows may
             # read uninitialized memory.
 
-        # Register the overlapped operation for later.  Note that
+        # Register the overlapped operation fuer later.  Note that
         # we only store obj to prevent it from being garbage
         # collected too early.
         self._cache[ov.address] = (f, ov, obj, callback)
@@ -812,7 +812,7 @@ klasse IocpProactor:
                     f = None
 
         # Remove unregistered futures
-        for ov in self._unregistered:
+        fuer ov in self._unregistered:
             self._cache.pop(ov.address, None)
         self._unregistered.clear()
 
@@ -828,7 +828,7 @@ klasse IocpProactor:
             return
 
         # Cancel remaining registered operations.
-        for fut, ov, obj, callback in list(self._cache.values()):
+        fuer fut, ov, obj, callback in list(self._cache.values()):
             if fut.cancelled():
                 # Nothing to do with cancelled futures
                 pass
@@ -857,7 +857,7 @@ klasse IocpProactor:
         next_msg = start_time + msg_update
         while self._cache:
             if next_msg <= time.monotonic():
-                logger.debug('%r is running after closing for %.1f seconds',
+                logger.debug('%r is running after closing fuer %.1f seconds',
                              self, time.monotonic() - start_time)
                 next_msg = time.monotonic() + msg_update
 

@@ -9,7 +9,7 @@ import sys
 
 klasse FinderTests(abc.FinderTests):
 
-    """Test the finder for extension modules."""
+    """Test the finder fuer extension modules."""
 
     def setUp(self):
         if not self.machinery.EXTENSION_SUFFIXES or not util.EXTENSIONS:
@@ -22,13 +22,13 @@ klasse FinderTests(abc.FinderTests):
     def find_spec(self, fullname):
         if is_apple_mobile:
             # Apple mobile platforms require a specialist loader that uses
-            # .fwork files as placeholders for the true `.so` files.
+            # .fwork files as placeholders fuer the true `.so` files.
             loaders = [
                 (
                     self.machinery.AppleFrameworkLoader,
                     [
                         ext.replace(".so", ".fwork")
-                        for ext in self.machinery.EXTENSION_SUFFIXES
+                        fuer ext in self.machinery.EXTENSION_SUFFIXES
                     ]
                 )
             ]
@@ -47,13 +47,13 @@ klasse FinderTests(abc.FinderTests):
     def test_module(self):
         self.assertTrue(self.find_spec(util.EXTENSIONS.name))
 
-    # No extension module as an __init__ available for testing.
+    # No extension module as an __init__ available fuer testing.
     test_package = test_package_in_package = None
 
-    # No extension module in a package available for testing.
+    # No extension module in a package available fuer testing.
     test_module_in_package = None
 
-    # Extension modules cannot be an __init__ for a package.
+    # Extension modules cannot be an __init__ fuer a package.
     test_package_over_module = None
 
     def test_failure(self):

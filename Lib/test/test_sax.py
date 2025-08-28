@@ -1,4 +1,4 @@
-# regression test for SAX 2.0
+# regression test fuer SAX 2.0
 
 from xml.sax import make_parser, ContentHandler, \
                     SAXException, SAXReaderNotAvailable, SAXParseException
@@ -136,7 +136,7 @@ klasse ParseTest(unittest.TestCase):
     def test_parse_text(self):
         encodings = ('us-ascii', 'iso-8859-1', 'utf-8',
                      'utf-16', 'utf-16le', 'utf-16be')
-        for encoding in encodings:
+        fuer encoding in encodings:
             self.check_parse(StringIO(xml_str(self.data, encoding)))
             make_xml_file(self.data, encoding)
             with open(TESTFN, 'r', encoding=encoding) as f:
@@ -150,7 +150,7 @@ klasse ParseTest(unittest.TestCase):
         # UTF-8 is default encoding, US-ASCII is compatible with UTF-8,
         # UTF-16 is autodetected
         encodings = ('us-ascii', 'utf-8', 'utf-16', 'utf-16le', 'utf-16be')
-        for encoding in encodings:
+        fuer encoding in encodings:
             self.check_parse(BytesIO(xml_bytes(self.data, encoding)))
             make_xml_file(self.data, encoding)
             self.check_parse(TESTFN)
@@ -225,7 +225,7 @@ klasse ParseTest(unittest.TestCase):
     def test_parseString_text(self):
         encodings = ('us-ascii', 'iso-8859-1', 'utf-8',
                      'utf-16', 'utf-16le', 'utf-16be')
-        for encoding in encodings:
+        fuer encoding in encodings:
             self.check_parseString(xml_str(self.data, encoding))
         self.check_parseString(self.data)
 
@@ -233,7 +233,7 @@ klasse ParseTest(unittest.TestCase):
         # UTF-8 is default encoding, US-ASCII is compatible with UTF-8,
         # UTF-16 is autodetected
         encodings = ('us-ascii', 'utf-8', 'utf-16', 'utf-16le', 'utf-16be')
-        for encoding in encodings:
+        fuer encoding in encodings:
             self.check_parseString(xml_bytes(self.data, encoding))
             self.check_parseString(xml_bytes(self.data, encoding, None))
         # accept UTF-8 with BOM
@@ -528,7 +528,7 @@ klasse XmlgenTest:
         encodings = ('iso-8859-15', 'utf-8', 'utf-8-sig',
                      'utf-16', 'utf-16be', 'utf-16le',
                      'utf-32', 'utf-32be', 'utf-32le')
-        for encoding in encodings:
+        fuer encoding in encodings:
             result = self.ioclass()
             gen = XMLGenerator(result, encoding=encoding)
 
@@ -582,7 +582,7 @@ klasse XmlgenTest:
         encodings = ('iso-8859-15', 'utf-8', 'utf-8-sig',
                      'utf-16', 'utf-16be', 'utf-16le',
                      'utf-32', 'utf-32be', 'utf-32le')
-        for encoding in encodings:
+        fuer encoding in encodings:
             result = self.ioclass()
             gen = XMLGenerator(result, encoding=encoding)
 
@@ -1225,7 +1225,7 @@ klasse ExpatReaderTest(XmlTestBase):
         parser = create_parser()
         parser.setContentHandler(xmlgen)
 
-        for chunk in ("<doc", ">"):
+        fuer chunk in ("<doc", ">"):
             parser.feed(chunk)
 
         self.assertEqual(result.getvalue(), start)  # i.e. no elements started
@@ -1247,7 +1247,7 @@ klasse ExpatReaderTest(XmlTestBase):
         parser = create_parser()
         parser.setContentHandler(xmlgen)
 
-        for chunk in ("<doc", ">"):
+        fuer chunk in ("<doc", ">"):
             parser.feed(chunk)
 
         if pyexpat.version_info >= (2, 6, 0):
@@ -1340,16 +1340,16 @@ klasse ErrorReportingTest(unittest.TestCase):
         # make sure that the __str__() doesn't fall apart when None is
         # passed instead of an integer line and column number
         #
-        # use "normal" values for the locator:
+        # use "normal" values fuer the locator:
         str(SAXParseException("message", None,
                               self.DummyLocator(1, 1)))
-        # use None for the line number:
+        # use None fuer the line number:
         str(SAXParseException("message", None,
                               self.DummyLocator(None, 1)))
-        # use None for the column number:
+        # use None fuer the column number:
         str(SAXParseException("message", None,
                               self.DummyLocator(1, None)))
-        # use None for both:
+        # use None fuer both:
         str(SAXParseException("message", None,
                               self.DummyLocator(None, None)))
 

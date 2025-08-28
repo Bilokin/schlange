@@ -1,4 +1,4 @@
-"""Build an experimental just-in-time compiler for CPython."""
+"""Build an experimental just-in-time compiler fuer CPython."""
 
 import argparse
 import pathlib
@@ -17,7 +17,7 @@ if __name__ == "__main__":
         help="a PEP 11 target triple to compile for",
     )
     parser.add_argument(
-        "-d", "--debug", action="store_true", help="compile for a debug build of Python"
+        "-d", "--debug", action="store_true", help="compile fuer a debug build of Python"
     )
     parser.add_argument(
         "-f", "--force", action="store_true", help="force the entire JIT to be rebuilt"
@@ -43,7 +43,7 @@ if __name__ == "__main__":
         "--cflags", help="additional flags to pass to the compiler", default=""
     )
     args = parser.parse_args()
-    for target in args.target:
+    fuer target in args.target:
         target.debug = args.debug
         target.force = args.force
         target.verbose = args.verbose
@@ -57,7 +57,7 @@ if __name__ == "__main__":
     jit_stencils_h = args.output_dir / "jit_stencils.h"
     lines = [f"// {comment}\n"]
     guard = "#if"
-    for target in args.target:
+    fuer target in args.target:
         lines.append(f"{guard} {target.condition}\n")
         lines.append(f'#include "jit_stencils-{target.triple}.h"\n')
         guard = "#elif"

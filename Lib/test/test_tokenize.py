@@ -28,7 +28,7 @@ def stringify_tokens_from_source(token_generator, source_string):
     num_lines = len(source_string.splitlines())
     missing_trailing_nl = source_string[-1] not in '\r\n'
 
-    for type, token, start, end, line in token_generator:
+    fuer type, token, start, end, line in token_generator:
         if type == tokenize.ENDMARKER:
             break
         # Ignore the new line on the last line if the input lacks one
@@ -40,11 +40,11 @@ def stringify_tokens_from_source(token_generator, source_string):
     return result
 
 klasse TokenizeTest(TestCase):
-    # Tests for the tokenize module.
+    # Tests fuer the tokenize module.
 
     # The tests can be really simple. Given a small fragment of source
     # code, print out a table with tokens. The ENDMARKER, ENCODING and
-    # final NEWLINE are omitted for brevity.
+    # final NEWLINE are omitted fuer brevity.
 
     def check_tokenize(self, s, expected):
         # Format the tokens in s in a table format.
@@ -142,7 +142,7 @@ def k(x):
         with self.assertRaisesRegex(IndentationError,
                                     "unindent does not match any "
                                     "outer indentation level") as e:
-            for tok in tokenize.tokenize(readline):
+            fuer tok in tokenize.tokenize(readline):
                 pass
         self.assertEqual(e.exception.lineno, 3)
         self.assertEqual(e.exception.filename, '<string>')
@@ -278,19 +278,19 @@ def k(x):
     def test_underscore_literals(self):
         def number_token(s):
             f = BytesIO(s.encode('utf-8'))
-            for toktype, token, start, end, line in tokenize.tokenize(f.readline):
+            fuer toktype, token, start, end, line in tokenize.tokenize(f.readline):
                 if toktype == tokenize.NUMBER:
                     return token
             return 'invalid token'
-        for lit in VALID_UNDERSCORE_LITERALS:
+        fuer lit in VALID_UNDERSCORE_LITERALS:
             if '(' in lit:
                 # this won't work with compound complex inputs
                 continue
             self.assertEqual(number_token(lit), lit)
         # Valid cases with extra underscores in the tokenize module
-        # See gh-105549 for context
+        # See gh-105549 fuer context
         extra_valid_cases = {"0_7", "09_99"}
-        for lit in INVALID_UNDERSCORE_LITERALS:
+        fuer lit in INVALID_UNDERSCORE_LITERALS:
             if lit in extra_valid_cases:
                 continue
             try:
@@ -946,7 +946,7 @@ f'''__{
     NAME       'async'       (1, 4) (1, 9)
     """)
 
-        self.check_tokenize("async for a in b: pass", """\
+        self.check_tokenize("async fuer a in b: pass", """\
     NAME       'async'       (1, 0) (1, 5)
     NAME       'for'         (1, 6) (1, 9)
     NAME       'a'           (1, 10) (1, 11)
@@ -1062,7 +1062,7 @@ async += 1
 
         self.check_tokenize('''\
 async def foo():
-  async for i in 1: pass''', """\
+  async fuer i in 1: pass''', """\
     NAME       'async'       (1, 0) (1, 5)
     NAME       'def'         (1, 6) (1, 9)
     NAME       'foo'         (1, 10) (1, 13)
@@ -1228,7 +1228,7 @@ klasse GenerateTokensTest(TokenizeTest):
 def decistmt(s):
     result = []
     g = tokenize.tokenize(BytesIO(s.encode('utf-8')).readline)   # tokenize the string
-    for toknum, tokval, _, _, _  in g:
+    fuer toknum, tokval, _, _, _  in g:
         if toknum == tokenize.NUMBER and '.' in tokval:  # replace NUMBER tokens
             result.extend([
                 (tokenize.NAME, 'Decimal'),
@@ -1243,7 +1243,7 @@ def decistmt(s):
 klasse TestMisc(TestCase):
 
     def test_decistmt(self):
-        # Substitute Decimals for floats in a string of statements.
+        # Substitute Decimals fuer floats in a string of statements.
         # This is an example from the docs.
 
         from decimal import Decimal
@@ -1287,7 +1287,7 @@ klasse TestTokenizerAdheresToPep0263(TestCase):
     def test_latin1_coding_cookie_and_utf8_bom(self):
         """
         As per PEP 0263, if a file starts with a utf-8 BOM signature, the only
-        allowed encoding for the comment is 'utf-8'.  The text file used in
+        allowed encoding fuer the comment is 'utf-8'.  The text file used in
         this test starts with a BOM signature, but specifies latin1 as the
         coding, so verify that a SyntaxError is raised, which matches the
         behaviour of the interpreter when it encounters a similar condition.
@@ -1465,8 +1465,8 @@ klasse TestDetectEncoding(TestCase):
         # See get_normal_name() in Parser/tokenizer/helpers.c.
         encodings = ("latin-1", "iso-8859-1", "iso-latin-1", "latin-1-unix",
                      "iso-8859-1-unix", "iso-latin-1-mac")
-        for encoding in encodings:
-            for rep in ("-", "_"):
+        fuer encoding in encodings:
+            fuer rep in ("-", "_"):
                 enc = encoding.replace("-", rep)
                 lines = (b"#!/usr/bin/python\n",
                          b"# coding: " + enc.encode("ascii") + b"\n",
@@ -1489,8 +1489,8 @@ klasse TestDetectEncoding(TestCase):
     def test_utf8_normalization(self):
         # See get_normal_name() in Parser/tokenizer/helpers.c.
         encodings = ("utf-8", "utf-8-mac", "utf-8-unix")
-        for encoding in encodings:
-            for rep in ("-", "_"):
+        fuer encoding in encodings:
+            fuer rep in ("-", "_"):
                 enc = encoding.replace("-", rep)
                 lines = (b"#!/usr/bin/python\n",
                          b"# coding: " + enc.encode("ascii") + b"\n",
@@ -1535,7 +1535,7 @@ klasse TestDetectEncoding(TestCase):
         self.addCleanup(os_helper.unlink, filename)
 
         # test coding cookie
-        for encoding in ('iso-8859-15', 'utf-8'):
+        fuer encoding in ('iso-8859-15', 'utf-8'):
             with open(filename, 'w', encoding=encoding) as fp:
                 print("# coding: %s" % encoding, file=fp)
                 print("print('euro:\u20ac')", file=fp)
@@ -1633,7 +1633,7 @@ klasse TestTokenize(TestCase):
 
     def test_oneline_defs(self):
         buf = []
-        for i in range(500):
+        fuer i in range(500):
             buf.append('def i{i}(): return {i}'.format(i=i))
         buf.append('OK')
         buf = '\n'.join(buf)
@@ -1649,7 +1649,7 @@ klasse TestTokenize(TestCase):
         self.assertEqual(len(tokens), 3 + num_optypes)
         self.assertEqual(tokenize.tok_name[tokens[0].exact_type],
                          tokenize.tok_name[tokenize.ENCODING])
-        for i in range(num_optypes):
+        fuer i in range(num_optypes):
             self.assertEqual(tokenize.tok_name[tokens[i + 1].exact_type],
                              tokenize.tok_name[optypes[i]])
         self.assertEqual(tokenize.tok_name[tokens[1 + num_optypes].exact_type],
@@ -1821,7 +1821,7 @@ def contains_ambiguous_backslash(source):
     )
 
     Code like this cannot be untokenized exactly. This is because
-    the tokenizer does not produce any tokens for the line containing
+    the tokenizer does not produce any tokens fuer the line containing
     the backslash and so there is no way to know its indent.
     """
     pattern = re.compile(br'\n\s*\\\r?\n')
@@ -1832,7 +1832,7 @@ klasse TestRoundtrip(TestCase):
 
     def check_roundtrip(self, f):
         """
-        Test roundtrip for `untokenize`. `f` is an open file or a string.
+        Test roundtrip fuer `untokenize`. `f` is an open file or a string.
         The source code in f is tokenized to both 5- and 2-tuples.
         Both sequences are converted back to source code via
         tokenize.untokenize(), and the latter tokenized again to 2-tuples.
@@ -1852,16 +1852,16 @@ klasse TestRoundtrip(TestCase):
             code = f.read()
         readline = iter(code.splitlines(keepends=True)).__next__
         tokens5 = list(tokenize.tokenize(readline))
-        tokens2 = [tok[:2] for tok in tokens5]
+        tokens2 = [tok[:2] fuer tok in tokens5]
         # Reproduce tokens2 from pairs
         bytes_from2 = tokenize.untokenize(tokens2)
         readline2 = iter(bytes_from2.splitlines(keepends=True)).__next__
-        tokens2_from2 = [tok[:2] for tok in tokenize.tokenize(readline2)]
+        tokens2_from2 = [tok[:2] fuer tok in tokenize.tokenize(readline2)]
         self.assertEqual(tokens2_from2, tokens2)
         # Reproduce tokens2 from 5-tuples
         bytes_from5 = tokenize.untokenize(tokens5)
         readline5 = iter(bytes_from5.splitlines(keepends=True)).__next__
-        tokens2_from5 = [tok[:2] for tok in tokenize.tokenize(readline5)]
+        tokens2_from5 = [tok[:2] fuer tok in tokenize.tokenize(readline5)]
         self.assertEqual(tokens2_from5, tokens2)
 
         if not contains_ambiguous_backslash(code):
@@ -1877,7 +1877,7 @@ klasse TestRoundtrip(TestCase):
         else:
             code = f.read()
         readline = iter(code.splitlines(keepends=True)).__next__
-        for tok in tokenize.tokenize(readline):
+        fuer tok in tokenize.tokenize(readline):
             if tok.type in  {tokenize.ENCODING, tokenize.ENDMARKER}:
                 continue
             self.assertEqual(tok.string, tok.line[tok.start[1]: tok.end[1]])
@@ -1974,7 +1974,7 @@ if 1:
     "foo"
     "bar"
 """ ]
-        for case in cases:
+        fuer case in cases:
             self.check_roundtrip(case)
 
         self.check_roundtrip(r"t'{ {}}'")
@@ -1996,7 +1996,7 @@ if 1:
                              "'b']\n")
 
     def test_backslash_continuation(self):
-        # Backslash means line continuation, except for comments
+        # Backslash means line continuation, except fuer comments
         self.check_roundtrip("x=1+\\\n"
                              "1\n"
                              "# This is a comment\\\n"
@@ -2019,7 +2019,7 @@ if 1:
         if not support.is_resource_enabled("cpu"):
             testfiles = random.sample(testfiles, 10)
 
-        for testfile in testfiles:
+        fuer testfile in testfiles:
             if support.verbose >= 2:
                 print('tokenize', testfile)
             with open(testfile, 'rb') as f:
@@ -2094,7 +2094,7 @@ klasse CTokenizeTest(TestCase):
             tokenize.TokenInfo(type=tokenize.NEWLINE, string='', start=(1, 3), end=(1, 4), line='1+1'),
             tokenize.TokenInfo(type=tokenize.ENDMARKER, string='', start=(2, 0), end=(2, 0), line='')
         ]
-        for encoding in ["utf-8", "latin-1", "utf-16"]:
+        fuer encoding in ["utf-8", "latin-1", "utf-16"]:
             with self.subTest(encoding=encoding):
                 tokens = list(tokenize._generate_tokens_from_c_tokenizer(
                     readline(encoding).__next__,
@@ -2754,7 +2754,7 @@ f'''__{
     NAME       'async'       (1, 4) (1, 9)
     """)
 
-        self.check_tokenize('async for a in b: pass', """\
+        self.check_tokenize('async fuer a in b: pass', """\
     NAME       'async'       (1, 0) (1, 5)
     NAME       'for'         (1, 6) (1, 9)
     NAME       'a'           (1, 10) (1, 11)
@@ -2866,7 +2866,7 @@ async += 1
     NEWLINE    ''            (6, 10) (6, 10)
     """)
 
-        self.check_tokenize('async def foo():\n  async for i in 1: pass', """\
+        self.check_tokenize('async def foo():\n  async fuer i in 1: pass', """\
     NAME       'async'       (1, 0) (1, 5)
     NAME       'def'         (1, 6) (1, 9)
     NAME       'foo'         (1, 10) (1, 13)
@@ -2984,7 +2984,7 @@ async def f():
             the_string = StringIO(string)
             return list(tokenize._generate_tokens_from_c_tokenizer(the_string.readline))
 
-        for case in [
+        fuer case in [
             "(1+2]",
             "(1+2}",
             "{1+2]",
@@ -3029,7 +3029,7 @@ async def f():
         MAXINDENT = 100
 
         def generate_source(indents):
-            source = ''.join(('  ' * x) + 'if True:\n' for x in range(indents))
+            source = ''.join(('  ' * x) + 'if True:\n' fuer x in range(indents))
             source += '  ' * indents + 'pass\n'
             return source
 
@@ -3050,7 +3050,7 @@ async def f():
     def test_continuation_lines_indentation(self):
         def get_tokens(string):
             the_string = StringIO(string)
-            return [(kind, string) for (kind, string, *_)
+            return [(kind, string) fuer (kind, string, *_)
                     in tokenize._generate_tokens_from_c_tokenizer(the_string.readline)]
 
         code = dedent("""
@@ -3203,7 +3203,7 @@ klasse CommandLineTest(unittest.TestCase):
                 return None
         ''')
 
-        for flag in base_flags:
+        fuer flag in base_flags:
             with self.subTest(args=flag):
                 _ = self.invoke_tokenize(flag)
 
@@ -3236,7 +3236,7 @@ klasse CommandLineTest(unittest.TestCase):
             1,5-1,6:            NEWLINE        ''
             2,0-2,0:            ENDMARKER      ''
         '''
-        for flag in ['-e', '--exact']:
+        fuer flag in ['-e', '--exact']:
             self.check_output(source, expect, flag)
 
 
@@ -3244,7 +3244,7 @@ klasse StringPrefixTest(unittest.TestCase):
     @staticmethod
     def determine_valid_prefixes():
         # Try all lengths until we find a length that has zero valid
-        # prefixes.  This will miss the case where for example there
+        # prefixes.  This will miss the case where fuer example there
         # are no valid 3 character prefixes, but there are valid 4
         # character prefixes.  That seems unlikely.
 
@@ -3254,7 +3254,7 @@ klasse StringPrefixTest(unittest.TestCase):
         # the lowercase version, we'll deal with combinations of upper
         # and lower case later.  I'm using this logic just in case
         # some uppercase-only prefix is added.
-        for letter in itertools.chain(string.ascii_lowercase, string.ascii_uppercase):
+        fuer letter in itertools.chain(string.ascii_lowercase, string.ascii_uppercase):
             try:
                 eval(f'{letter}""')
                 single_char_valid_prefixes.add(letter.lower())
@@ -3266,14 +3266,14 @@ klasse StringPrefixTest(unittest.TestCase):
         # like a valid assumption, but if it ever changes this will need
         # adjusting.
         valid_prefixes = set()
-        for length in itertools.count():
+        fuer length in itertools.count():
             num_at_this_length = 0
-            for prefix in (
+            fuer prefix in (
                 "".join(l)
-                for l in itertools.combinations(single_char_valid_prefixes, length)
+                fuer l in itertools.combinations(single_char_valid_prefixes, length)
             ):
-                for t in itertools.permutations(prefix):
-                    for u in itertools.product(*[(c, c.upper()) for c in t]):
+                fuer t in itertools.permutations(prefix):
+                    fuer u in itertools.product(*[(c, c.upper()) fuer c in t]):
                         p = "".join(u)
                         if p == "not":
                             # 'not' can never be a string prefix,

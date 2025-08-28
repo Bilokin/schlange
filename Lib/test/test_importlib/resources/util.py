@@ -43,7 +43,7 @@ klasse Reader(ResourceReader):
             return entry.split('/')
 
         return any(
-            len(parts) == 1 and parts[0] == path_ for parts in map(part, self._contents)
+            len(parts) == 1 and parts[0] == path_ fuer parts in map(part, self._contents)
         )
 
     def contents(self):
@@ -94,14 +94,14 @@ klasse CommonTestsBase(metaclass=abc.ABCMeta):
 
     def test_string_path(self):
         """
-        Passing in a string for the path should succeed.
+        Passing in a string fuer the path should succeed.
         """
         path = 'utf-8.file'
         self.execute(self.data, path)
 
     def test_pathlib_path(self):
         """
-        Passing in a pathlib.PurePath object for the path should succeed.
+        Passing in a pathlib.PurePath object fuer the path should succeed.
         """
         path = pathlib.PurePath('utf-8.file')
         self.execute(self.data, path)
@@ -115,7 +115,7 @@ klasse CommonTestsBase(metaclass=abc.ABCMeta):
 
     def test_missing_path(self):
         """
-        Attempting to open or read or request the path for a
+        Attempting to open or read or request the path fuer a
         non-existent path should succeed if open_resource
         can return a viable data stream.
         """

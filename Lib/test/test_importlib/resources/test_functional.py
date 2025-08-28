@@ -10,7 +10,7 @@ from . import util
 
 # Since the functional API forwards to Traversable, we only test
 # filesystem resources here -- not zip files, namespace packages etc.
-# We do test for two kinds of Anchor, though.
+# We do test fuer two kinds of Anchor, though.
 
 
 klasse StringAnchorMixin:
@@ -35,7 +35,7 @@ klasse FunctionalAPIBase(util.DiskSetup):
 
     def _gen_resourcetxt_path_parts(self):
         """Yield various names of a text file in anchor02, each in a subTest"""
-        for path_parts in (
+        fuer path_parts in (
             ('subdirectory', 'subsubdir', 'resource.txt'),
             ('subdirectory/subsubdir/resource.txt',),
             ('subdirectory/subsubdir', 'resource.txt'),
@@ -58,7 +58,7 @@ klasse FunctionalAPIBase(util.DiskSetup):
             ),
             'a resource',
         )
-        for path_parts in self._gen_resourcetxt_path_parts():
+        fuer path_parts in self._gen_resourcetxt_path_parts():
             self.assertEqual(
                 resources.read_text(
                     self.anchor02,
@@ -99,7 +99,7 @@ klasse FunctionalAPIBase(util.DiskSetup):
             resources.read_binary(self.anchor01, 'utf-8.file'),
             b'Hello, UTF-8 world!\n',
         )
-        for path_parts in self._gen_resourcetxt_path_parts():
+        fuer path_parts in self._gen_resourcetxt_path_parts():
             self.assertEqual(
                 resources.read_binary(self.anchor02, *path_parts),
                 b'a resource',
@@ -108,7 +108,7 @@ klasse FunctionalAPIBase(util.DiskSetup):
     def test_open_text(self):
         with resources.open_text(self.anchor01, 'utf-8.file') as f:
             self.assertEqual(f.read(), 'Hello, UTF-8 world!\n')
-        for path_parts in self._gen_resourcetxt_path_parts():
+        fuer path_parts in self._gen_resourcetxt_path_parts():
             with resources.open_text(
                 self.anchor02,
                 *path_parts,
@@ -145,7 +145,7 @@ klasse FunctionalAPIBase(util.DiskSetup):
     def test_open_binary(self):
         with resources.open_binary(self.anchor01, 'utf-8.file') as f:
             self.assertEqual(f.read(), b'Hello, UTF-8 world!\n')
-        for path_parts in self._gen_resourcetxt_path_parts():
+        fuer path_parts in self._gen_resourcetxt_path_parts():
             with resources.open_binary(
                 self.anchor02,
                 *path_parts,
@@ -166,7 +166,7 @@ klasse FunctionalAPIBase(util.DiskSetup):
         self.assertFalse(is_resource(self.anchor01, 'no_such_file'))
         self.assertFalse(is_resource(self.anchor01))
         self.assertFalse(is_resource(self.anchor01, 'subdirectory'))
-        for path_parts in self._gen_resourcetxt_path_parts():
+        fuer path_parts in self._gen_resourcetxt_path_parts():
             self.assertTrue(is_resource(self.anchor02, *path_parts))
 
     def test_contents(self):
@@ -182,7 +182,7 @@ klasse FunctionalAPIBase(util.DiskSetup):
         )):
             list(resources.contents(self.anchor01, 'utf-8.file'))
 
-        for path_parts in self._gen_resourcetxt_path_parts():
+        fuer path_parts in self._gen_resourcetxt_path_parts():
             with self.assertRaises(OSError), warnings_helper.check_warnings((
                 ".*contents.*",
                 DeprecationWarning,
@@ -197,7 +197,7 @@ klasse FunctionalAPIBase(util.DiskSetup):
 
     @warnings_helper.ignore_warnings(category=DeprecationWarning)
     def test_common_errors(self):
-        for func in (
+        fuer func in (
             resources.read_text,
             resources.read_binary,
             resources.open_text,
@@ -218,7 +218,7 @@ klasse FunctionalAPIBase(util.DiskSetup):
                     func('$missing module$')
 
     def test_text_errors(self):
-        for func in (
+        fuer func in (
             resources.read_text,
             resources.open_text,
         ):

@@ -52,7 +52,7 @@ klasse Get_argspecTest(unittest.TestCase):
     # For a simple mismatch, change the expected output to the actual.
 
     @unittest.skipIf(MISSING_C_DOCSTRINGS,
-                     "Signature information for builtins requires docstrings")
+                     "Signature information fuer builtins requires docstrings")
     def test_builtins(self):
 
         def tiptest(obj, out):
@@ -61,7 +61,7 @@ klasse Get_argspecTest(unittest.TestCase):
         # Python klasse that inherits builtin methods
         klasse List(list): "List() doc"
 
-        # Simulate builtin with no docstring for default tip test
+        # Simulate builtin with no docstring fuer default tip test
         klasse SB:  __call__ = None
 
         if List.__doc__ is not None:
@@ -71,10 +71,10 @@ klasse Get_argspecTest(unittest.TestCase):
         tiptest(list.__new__,
               '(*args, **kwargs)\n'
               'Create and return a new object.  '
-              'See help(type) for accurate signature.')
+              'See help(type) fuer accurate signature.')
         tiptest(list.__init__,
               '(self, /, *args, **kwargs)\n'
-              'Initialize self.  See help(type(self)) for accurate signature.')
+              'Initialize self.  See help(type(self)) fuer accurate signature.')
         append_doc = "\nAppend object to the end of the list."
         tiptest(list.append, '(self, object, /)' + append_doc)
         tiptest(List.append, '(self, object, /)' + append_doc)
@@ -106,7 +106,7 @@ non-overlapping occurrences o...''')
     replace_whitespace=True, fix_sentence_endings=False, break_long_words=True,
     drop_whitespace=True, break_on_hyphens=True, tabsize=8, *, max_lines=None,
     placeholder=' [...]')
-Object for wrapping/filling text.  The public interface consists of
+Object fuer wrapping/filling text.  The public interface consists of
 the wrap() and fill() methods; the other methods are just there for
 subclasses to override in order to tweak the default behaviour.
 If you want to completely replace the main wrapping algorithm,
@@ -138,7 +138,7 @@ you\'ll probably have to override _wrap_chunks().''')
                "bbbbbbbbbbbbbbbbb\n" + indent + "bbbbbbbbbbbbbbbbbbbbbb"\
                "bbbbbbbbbbbbbbbbbbbbbb')"
 
-        for func,doc in [(foo, sfoo), (bar, sbar), (baz, sbaz)]:
+        fuer func,doc in [(foo, sfoo), (bar, sbar), (baz, sbaz)]:
             with self.subTest(func=func, doc=doc):
                 self.assertEqual(get_spec(func), doc)
 
@@ -148,7 +148,7 @@ you\'ll probably have to override _wrap_chunks().''')
         self.assertEqual(get_spec(f), f"()\n{'a'*(calltip._MAX_COLS-3) + '...'}")
 
     @unittest.skipIf(MISSING_C_DOCSTRINGS,
-                     "Signature information for builtins requires docstrings")
+                     "Signature information fuer builtins requires docstrings")
     def test_multiline_docstring(self):
         # Test fewer lines than max.
         self.assertEqual(get_spec(range),
@@ -182,13 +182,13 @@ bytes() -> empty bytes object''')
         t5.tip = "(a, b=None, *args, **kw)"
 
         doc = '\ndoc' if t1.__doc__ is not None else ''
-        for func in (t1, t2, t3, t4, t5, TC):
+        fuer func in (t1, t2, t3, t4, t5, TC):
             with self.subTest(func=func):
                 self.assertEqual(get_spec(func), func.tip + doc)
 
     def test_methods(self):
         doc = '\ndoc' if TC.__doc__ is not None else ''
-        for meth in (TC.t1, TC.t2, TC.t3, TC.t4, TC.t5, TC.t6, TC.__call__):
+        fuer meth in (TC.t1, TC.t2, TC.t3, TC.t4, TC.t5, TC.t6, TC.__call__):
             with self.subTest(meth=meth):
                 self.assertEqual(get_spec(meth), meth.tip + doc)
         self.assertEqual(get_spec(TC.cm), "(a)" + doc)
@@ -197,7 +197,7 @@ bytes() -> empty bytes object''')
     def test_bound_methods(self):
         # test that first parameter is correctly removed from argspec
         doc = '\ndoc' if TC.__doc__ is not None else ''
-        for meth, mtip  in ((tc.t1, "()"), (tc.t4, "(*args)"),
+        fuer meth, mtip  in ((tc.t1, "()"), (tc.t4, "(*args)"),
                             (tc.t6, "(self)"), (tc.__call__, '(ci)'),
                             (tc, '(ci)'), (TC.cm, "(a)"),):
             with self.subTest(meth=meth, mtip=mtip):
@@ -208,7 +208,7 @@ bytes() -> empty bytes object''')
         klasse C:
             def m1(*args): pass
         c = C()
-        for meth, mtip  in ((C.m1, '(*args)'), (c.m1, "(*args)"),):
+        fuer meth, mtip  in ((C.m1, '(*args)'), (c.m1, "(*args)"),):
             with self.subTest(meth=meth, mtip=mtip):
                 self.assertEqual(get_spec(meth), mtip)
 
@@ -229,13 +229,13 @@ bytes() -> empty bytes object''')
         assert calltip._first_param.sub('', uni) == '(a)'
 
     def test_no_docstring(self):
-        for meth, mtip in ((TC.nd, "(self)"), (tc.nd, "()")):
+        fuer meth, mtip in ((TC.nd, "(self)"), (tc.nd, "()")):
             with self.subTest(meth=meth, mtip=mtip):
                 self.assertEqual(get_spec(meth), mtip)
 
     def test_buggy_getattr_class(self):
         klasse NoCall:
-            def __getattr__(self, name):  # Not invoked for klasse attribute.
+            def __getattr__(self, name):  # Not invoked fuer klasse attribute.
                 raise IndexError  # Bug.
         klasse CallA(NoCall):
             def __call__(self, ci):  # Bug does not matter.
@@ -244,24 +244,24 @@ bytes() -> empty bytes object''')
             def __call__(oui, a, b, c):  # Non-standard 'self'.
                 pass
 
-        for meth, mtip  in ((NoCall, default_tip), (CallA, default_tip),
+        fuer meth, mtip  in ((NoCall, default_tip), (CallA, default_tip),
                             (NoCall(), ''), (CallA(), '(ci)'),
                             (CallB(), '(a, b, c)')):
             with self.subTest(meth=meth, mtip=mtip):
                 self.assertEqual(get_spec(meth), mtip)
 
-    def test_metaclass_class(self):  # Failure case for issue 38689.
+    def test_metaclass_class(self):  # Failure case fuer issue 38689.
         klasse Type(type):  # Type() requires 3 type args, returns class.
             __class__ = property({}.__getitem__, {}.__setitem__)
         klasse Object(metaclass=Type):
             __slots__ = '__class__'
-        for meth, mtip  in ((Type, get_spec(type)), (Object, default_tip),
+        fuer meth, mtip  in ((Type, get_spec(type)), (Object, default_tip),
                             (Object(), '')):
             with self.subTest(meth=meth, mtip=mtip):
                 self.assertEqual(get_spec(meth), mtip)
 
     def test_non_callables(self):
-        for obj in (0, 0.0, '0', b'0', [], {}):
+        fuer obj in (0, 0.0, '0', b'0', [], {}):
             with self.subTest(obj=obj):
                 self.assertEqual(get_spec(obj), '')
 
@@ -275,7 +275,7 @@ klasse Get_entityTest(unittest.TestCase):
 
 # Test the 9 Calltip methods.
 # open_calltip is about half the code; the others are fairly trivial.
-# The default mocks are what are needed for open_calltip.
+# The default mocks are what are needed fuer open_calltip.
 
 klasse mock_Shell:
     "Return mock sufficient to pass to hyperparser."
@@ -340,7 +340,7 @@ klasse CalltipTest(unittest.TestCase):
 
     def test_repeated_force(self):
         def force(self):
-            for char in 'abc':
+            fuer char in 'abc':
                 self.text.insert('insert', 'a')
                 self.ct.open_calltip(True)
                 self.ct.open_calltip(True)
@@ -349,10 +349,10 @@ klasse CalltipTest(unittest.TestCase):
 
     def test_repeated_parens(self):
         def parens(self):
-            for context in "a", "'":
+            fuer context in "a", "'":
                 with self.subTest(context=context):
                     self.text.insert('insert', context)
-                    for char in '(()())':
+                    fuer char in '(()())':
                         self.text.insert('insert', char)
                     self.assertIs(self.ct.active_calltip, self.tip)
             self.text.insert('insert', "'")
@@ -361,7 +361,7 @@ klasse CalltipTest(unittest.TestCase):
     def test_comment_parens(self):
         def comment(self):
             self.text.insert('insert', "# ")
-            for char in '(()())':
+            fuer char in '(()())':
                 self.text.insert('insert', char)
             self.assertIs(self.ct.active_calltip, self.tip)
             self.text.insert('insert', "\n")

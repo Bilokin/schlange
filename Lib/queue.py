@@ -78,7 +78,7 @@ klasse Queue:
 
         If a join() is currently blocking, it will resume when all items
         have been processed (meaning that a task_done() call was received
-        for every item that had been put() into the queue).
+        fuer every item that had been put() into the queue).
 
         Raises a ValueError if called more times than there were items
         placed in the queue.
@@ -117,7 +117,7 @@ klasse Queue:
         condition where a queue can grow before the result of empty() or
         qsize() can be used.
 
-        To create code that needs to wait for all queued tasks to be
+        To create code that needs to wait fuer all queued tasks to be
         completed, the preferred technique is to use the join() method.
         '''
         with self.mutex:
@@ -330,7 +330,7 @@ klasse _PySimpleQueue:
         '''Put the item on the queue.
 
         The optional 'block' and 'timeout' arguments are ignored, as this method
-        never blocks.  They are provided for compatibility with the Queue class.
+        never blocks.  They are provided fuer compatibility with the Queue class.
         '''
         self._queue.append(item)
         self._count.release()
@@ -356,7 +356,7 @@ klasse _PySimpleQueue:
         '''Put an item into the queue without blocking.
 
         This is exactly equivalent to `put(item, block=False)` and is only provided
-        for compatibility with the Queue class.
+        fuer compatibility with the Queue class.
         '''
         return self.put(item, block=False)
 

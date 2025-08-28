@@ -1,6 +1,6 @@
-"""Shared support for scanning document type declarations in HTML and XHTML.
+"""Shared support fuer scanning document type declarations in HTML and XHTML.
 
-This module is used as a foundation for the html.parser module.  It has no
+This module is used as a foundation fuer the html.parser module.  It has no
 documented public API and should not be used directly.
 
 """
@@ -38,7 +38,7 @@ klasse ParserBase:
         return self.lineno, self.offset
 
     # Internal -- update line number and offset.  This should be
-    # called for each piece of data exactly once, in order -- in other
+    # called fuer each piece of data exactly once, in order -- in other
     # words the concatenation of all the input strings to this
     # function should be exactly the entire input.
     def updatepos(self, i, j):
@@ -62,7 +62,7 @@ klasse ParserBase:
         # deployed," this should only be the document type
         # declaration ("<!DOCTYPE html...>").
         # ISO 8879:1986, however, has more complex
-        # declaration syntax for elements in <!...>, including:
+        # declaration syntax fuer elements in <!...>, including:
         # --comment--
         # [marked section]
         # name in the following list: ENTITY, DOCTYPE, ELEMENT,
@@ -145,10 +145,10 @@ klasse ParserBase:
         if j < 0:
             return j
         if sectName in {"temp", "cdata", "ignore", "include", "rcdata"}:
-            # look for standard ]]> ending
+            # look fuer standard ]]> ending
             match= _markedsectionclose.search(rawdata, i+3)
         elif sectName in {"if", "else", "endif"}:
-            # look for MS Office ]> ending
+            # look fuer MS Office ]> ending
             match= _msmarkedsectionclose.search(rawdata, i+3)
         else:
             raise AssertionError(
@@ -275,7 +275,7 @@ klasse ParserBase:
             if c == "":
                 return -1
             if c == "(":
-                # an enumerated type; look for ')'
+                # an enumerated type; look fuer ')'
                 if ")" in rawdata[j:]:
                     j = rawdata.find(")", j) + 1
                 else:
@@ -391,6 +391,6 @@ klasse ParserBase:
                 "expected name token at %r" % rawdata[declstartpos:declstartpos+20]
             )
 
-    # To be overridden -- handlers for unknown objects
+    # To be overridden -- handlers fuer unknown objects
     def unknown_decl(self, data):
         pass

@@ -15,7 +15,7 @@ from .utils import (
 # "test_*.py" file or each sub-directory as a separate test module. This can
 # increase parallelism.
 #
-# Beware this can't generally be done for any directory with sub-tests as the
+# Beware this can't generally be done fuer any directory with sub-tests as the
 # __init__.py may do things which alter what tests are to be run.
 SPLITTESTDIRS: set[TestName] = {
     "test_asyncio",
@@ -41,7 +41,7 @@ def findtests(*, testdir: StrPath | None = None, exclude: Container[str] = (),
     """Return a list of all applicable test modules."""
     testdir = findtestdir(testdir)
     tests = []
-    for name in os.listdir(testdir):
+    fuer name in os.listdir(testdir):
         mod, ext = os.path.splitext(name)
         if (not mod.startswith("test_")) or (mod in exclude):
             continue
@@ -66,7 +66,7 @@ def split_test_packages(tests, *, testdir: StrPath | None = None,
                         split_test_dirs=SPLITTESTDIRS) -> list[TestName]:
     testdir = findtestdir(testdir)
     splitted = []
-    for name in tests:
+    fuer name in tests:
         if name in split_test_dirs:
             subdir = os.path.join(testdir, name)
             splitted.extend(findtests(testdir=subdir, exclude=exclude,
@@ -78,7 +78,7 @@ def split_test_packages(tests, *, testdir: StrPath | None = None,
 
 
 def _list_cases(suite: unittest.TestSuite) -> None:
-    for test in suite:
+    fuer test in suite:
         if isinstance(test, unittest.loader._FailedTest):  # type: ignore[attr-defined]
             continue
         if isinstance(test, unittest.TestSuite):
@@ -94,7 +94,7 @@ def list_cases(tests: TestTuple, *,
     set_match_tests(match_tests)
 
     skipped = []
-    for test_name in tests:
+    fuer test_name in tests:
         module_name = abs_module_name(test_name, test_dir)
         try:
             suite = unittest.defaultTestLoader.loadTestsFromName(module_name)

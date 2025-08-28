@@ -1,7 +1,7 @@
 # Copyright 2001-2022 by Vinay Sajip. All Rights Reserved.
 #
 # Permission to use, copy, modify, and distribute this software and its
-# documentation for any purpose and without fee is hereby granted,
+# documentation fuer any purpose and without fee is hereby granted,
 # provided that the above copyright notice appear in all copies and that
 # both that copyright notice and this permission notice appear in
 # supporting documentation, and that the name of Vinay Sajip
@@ -14,7 +14,7 @@
 # IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT
 # OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-"""Test harness for the logging module. Run all tests.
+"""Test harness fuer the logging module. Run all tests.
 
 Copyright (C) 2001-2022 Vinay Sajip. All Rights Reserved.
 """
@@ -89,7 +89,7 @@ skip_if_tsan_fork = unittest.skipIf(
 
 klasse BaseTest(unittest.TestCase):
 
-    """Base klasse for logging tests."""
+    """Base klasse fuer logging tests."""
 
     log_format = "%(name)s -> %(levelname)s: %(message)s"
     expected_log_pat = r"^([\w.]+) -> (\w+): (\d+)$"
@@ -108,7 +108,7 @@ klasse BaseTest(unittest.TestCase):
             self.saved_name_to_level = logging._nameToLevel.copy()
             self.saved_level_to_name = logging._levelToName.copy()
             self.logger_states = logger_states = {}
-            for name in saved_loggers:
+            fuer name in saved_loggers:
                 logger_states[name] = getattr(saved_loggers[name],
                                               'disabled', None)
 
@@ -158,7 +158,7 @@ klasse BaseTest(unittest.TestCase):
             loggerDict.clear()
             loggerDict.update(self.saved_loggers)
             logger_states = self.logger_states
-            for name in self.logger_states:
+            fuer name in self.logger_states:
                 if logger_states[name] is not None:
                     self.saved_loggers[name].disabled = logger_states[name]
 
@@ -173,7 +173,7 @@ klasse BaseTest(unittest.TestCase):
         pat = re.compile(pat or self.expected_log_pat)
         actual_lines = stream.getvalue().splitlines()
         self.assertEqual(len(actual_lines), len(expected_values))
-        for actual, expected in zip(actual_lines, expected_values):
+        fuer actual, expected in zip(actual_lines, expected_values):
             match = pat.search(actual)
             if not match:
                 self.fail("Log line does not match expected pattern:\n" +
@@ -325,7 +325,7 @@ klasse BuiltinLevelsTest(BaseTest):
         ])
 
     def test_regression_22386(self):
-        """See issue #22386 for more information."""
+        """See issue #22386 fuer more information."""
         self.assertEqual(logging.getLevelName('INFO'), logging.INFO)
         self.assertEqual(logging.getLevelName(logging.INFO), 'INFO')
 
@@ -334,7 +334,7 @@ klasse BuiltinLevelsTest(BaseTest):
         self.assertEqual(fatal, logging.FATAL)
 
     def test_regression_29220(self):
-        """See issue #29220 for more information."""
+        """See issue #29220 fuer more information."""
         logging.addLevelName(logging.INFO, '')
         self.addCleanup(logging.addLevelName, logging.INFO, 'INFO')
         self.assertEqual(logging.getLevelName(logging.INFO), '')
@@ -425,8 +425,8 @@ BORING      = 111
 LEVEL_RANGE = range(BORING, SILENT + 1)
 
 #
-#   Next, we define names for our levels. You don't need to do this - in which
-#   case the system will use "Level n" to denote the text for the level.
+#   Next, we define names fuer our levels. You don't need to do this - in which
+#   case the system will use "Level n" to denote the text fuer the level.
 #
 my_logging_levels = {
     SILENT      : 'Silent',
@@ -465,11 +465,11 @@ klasse CustomLevelsAndFiltersTest(BaseTest):
 
     def setUp(self):
         BaseTest.setUp(self)
-        for k, v in my_logging_levels.items():
+        fuer k, v in my_logging_levels.items():
             logging.addLevelName(k, v)
 
     def log_at_all_levels(self, logger):
-        for lvl in LEVEL_RANGE:
+        fuer lvl in LEVEL_RANGE:
             logger.log(lvl, self.next_message())
 
     def test_handler_filter_replaces_record(self):
@@ -609,7 +609,7 @@ klasse HandlerTest(BaseTest):
         # We can't actually *use* too many handlers in the tests,
         # but we can try instantiating them with various options
         if sys.platform in ('linux', 'android', 'darwin'):
-            for existing in (True, False):
+            fuer existing in (True, False):
                 fn = make_temp_file()
                 if not existing:
                     os.unlink(fn)
@@ -643,7 +643,7 @@ klasse HandlerTest(BaseTest):
                 h.close()
             except OSError: # syslogd might not be available
                 pass
-        for method in ('GET', 'POST', 'PUT'):
+        fuer method in ('GET', 'POST', 'PUT'):
             if method == 'PUT':
                 self.assertRaises(ValueError, logging.handlers.HTTPHandler,
                                   'localhost', '/log', method)
@@ -674,19 +674,19 @@ klasse HandlerTest(BaseTest):
                 )
         if sys.platform in ('linux', 'android', 'darwin'):
             cases += ((logging.handlers.WatchedFileHandler, (pfn, 'w')),)
-        for cls, args in cases:
+        fuer cls, args in cases:
             h = cls(*args, encoding="utf-8")
             self.assertTrue(os.path.exists(fn))
             h.close()
             os.unlink(fn)
 
-    @unittest.skipIf(os.name == 'nt', 'WatchedFileHandler not appropriate for Windows.')
+    @unittest.skipIf(os.name == 'nt', 'WatchedFileHandler not appropriate fuer Windows.')
     @threading_helper.requires_working_threading()
     @support.requires_resource('walltime')
     def test_race(self):
         # Issue #14632 refers.
         def remove_loop(fname, tries):
-            for _ in range(tries):
+            fuer _ in range(tries):
                 try:
                     os.unlink(fname)
                     self.deletion_time = time.time()
@@ -700,7 +700,7 @@ klasse HandlerTest(BaseTest):
         self.handle_time = None
         self.deletion_time = None
 
-        for delay in (False, True):
+        fuer delay in (False, True):
             fn = make_temp_file('.log', 'test_logging-3-')
             remover = threading.Thread(target=remove_loop, args=(fn, del_count))
             remover.daemon = True
@@ -709,7 +709,7 @@ klasse HandlerTest(BaseTest):
             f = logging.Formatter('%(asctime)s: %(levelname)s: %(message)s')
             h.setFormatter(f)
             try:
-                for _ in range(log_count):
+                fuer _ in range(log_count):
                     time.sleep(0.005)
                     r = logging.makeLogRecord({'msg': 'testing' })
                     try:
@@ -750,7 +750,7 @@ klasse HandlerTest(BaseTest):
         self.assertEqual(len(logging._handlers), 0)
         refed_h = _OurHandler()
         self.addCleanup(refed_h.sub_handler.stream.close)
-        refed_h.name = 'because we need at least one for this test'
+        refed_h.name = 'because we need at least one fuer this test'
         self.assertGreater(len(logging._handlers), 0)
         self.assertGreater(len(logging._at_fork_reinit_lock_weakset), 1)
         test_logger = logging.getLogger('test_post_fork_child_no_deadlock')
@@ -769,12 +769,12 @@ klasse HandlerTest(BaseTest):
                 # without dealing with the locks we hold, deadlocking
                 # the child.
 
-                # Wait for a successful fork or an unreasonable amount of
+                # Wait fuer a successful fork or an unreasonable amount of
                 # time before releasing our locks.  To avoid a timing based
                 # test we'd need communication from os.fork() as to when it
                 # has actually happened.  Given this is a regression test
-                # for a fixed issue, potentially less reliably detecting
-                # regression via timing is acceptable for simplicity.
+                # fuer a fixed issue, potentially less reliably detecting
+                # regression via timing is acceptable fuer simplicity.
                 # The test will always take at least this long. :(
                 fork_happened__release_locks_and_end_thread.wait(0.5)
 
@@ -921,7 +921,7 @@ klasse TestSMTPServer(smtpd.SMTPServer):
     def stop(self):
         """
         Stop the thread by closing the server instance.
-        Wait for the server thread to terminate.
+        Wait fuer the server thread to terminate.
         """
         self._quit = True
         threading_helper.join_thread(self._thread)
@@ -943,7 +943,7 @@ klasse ControlMixin(object):
                     process the request. This handler is called on the
                     server thread, effectively meaning that requests are
                     processed serially. While not quite web scale ;-),
-                    this should be fine for testing applications.
+                    this should be fine fuer testing applications.
     :param poll_interval: The polling interval in seconds.
     """
     def __init__(self, handler, poll_interval):
@@ -971,7 +971,7 @@ klasse ControlMixin(object):
 
     def stop(self):
         """
-        Tell the server thread to stop, and wait for it to do so.
+        Tell the server thread to stop, and wait fuer it to do so.
         """
         self.shutdown()
         if self._thread is not None:
@@ -1061,7 +1061,7 @@ klasse TestUDPServer(ControlMixin, ThreadingUDPServer):
     :param handler: A handler callable which will be called with a
                     single parameter - the request - in order to
                     process the request.
-    :param poll_interval: The polling interval for shutdown requests,
+    :param poll_interval: The polling interval fuer shutdown requests,
                           in seconds.
     :bind_and_activate: If True (the default), binds the server and
                         starts it listening. If False, you need to
@@ -1145,7 +1145,7 @@ klasse SMTPHandlerTest(BaseTest):
 
 klasse MemoryHandlerTest(BaseTest):
 
-    """Tests for the MemoryHandler."""
+    """Tests fuer the MemoryHandler."""
 
     # Do not bother with a logger name group.
     expected_log_pat = r"^[\w.]+ -> (\w+): (\d+)$"
@@ -1177,14 +1177,14 @@ klasse MemoryHandlerTest(BaseTest):
             ('WARNING', '3'),
         ]
         self.assert_log_lines(lines)
-        for n in (4, 14):
-            for i in range(9):
+        fuer n in (4, 14):
+            fuer i in range(9):
                 self.mem_logger.debug(self.next_message())
             self.assert_log_lines(lines)
             # This will flush because it's the 10th message since the last
             #  flush.
             self.mem_logger.debug(self.next_message())
-            lines = lines + [('DEBUG', str(i)) for i in range(n, n + 10)]
+            lines = lines + [('DEBUG', str(i)) fuer i in range(n, n + 10)]
             self.assert_log_lines(lines)
 
         self.mem_logger.debug(self.next_message())
@@ -1206,7 +1206,7 @@ klasse MemoryHandlerTest(BaseTest):
             ('INFO', '2'),
         ]
         self.assert_log_lines(lines)
-        # Now configure for flushing not to be done on close.
+        # Now configure fuer flushing not to be done on close.
         self.mem_hdlr = logging.handlers.MemoryHandler(10, logging.WARNING,
                                                        self.root_hdlr,
                                                        False)
@@ -1236,7 +1236,7 @@ klasse MemoryHandlerTest(BaseTest):
             ('INFO', '2'),
         ]
         self.assert_log_lines(lines)
-        # Now configure for flushing not to be done on close.
+        # Now configure fuer flushing not to be done on close.
         self.mem_hdlr = logging.handlers.MemoryHandler(10, logging.WARNING,
                                                        self.root_hdlr,
                                                        False)
@@ -1268,12 +1268,12 @@ klasse MemoryHandlerTest(BaseTest):
         try:
             self.mem_hdlr.setTarget(target)
 
-            for _ in range(10):
+            fuer _ in range(10):
                 time.sleep(0.005)
                 self.mem_logger.info("not flushed")
                 self.mem_logger.warning("flushed")
         finally:
-            for thread in target.threads:
+            fuer thread in target.threads:
                 threading_helper.join_thread(thread)
 
 
@@ -1499,7 +1499,7 @@ klasse ConfigFileTest(BaseTest):
     datefmt=
     """
 
-    # config 8, check for resource warning
+    # config 8, check fuer resource warning
     config8 = r"""
     [loggers]
     keys=root
@@ -1838,7 +1838,7 @@ klasse ConfigFileTest(BaseTest):
 @threading_helper.requires_working_threading()
 klasse SocketHandlerTest(BaseTest):
 
-    """Test for SocketHandler objects."""
+    """Test fuer SocketHandler objects."""
 
     server_class = TestTCPServer
     address = ('localhost', 0)
@@ -1929,7 +1929,7 @@ klasse SocketHandlerTest(BaseTest):
 @unittest.skipUnless(hasattr(socket, "AF_UNIX"), "Unix sockets required")
 klasse UnixSocketHandlerTest(SocketHandlerTest):
 
-    """Test for SocketHandler with unix sockets."""
+    """Test fuer SocketHandler with unix sockets."""
 
     if hasattr(socket, "AF_UNIX"):
         server_class = TestUnixStreamServer
@@ -1944,7 +1944,7 @@ klasse UnixSocketHandlerTest(SocketHandlerTest):
 @threading_helper.requires_working_threading()
 klasse DatagramHandlerTest(BaseTest):
 
-    """Test for DatagramHandler."""
+    """Test fuer DatagramHandler."""
 
     server_class = TestUDPServer
     address = ('localhost', 0)
@@ -2009,7 +2009,7 @@ klasse DatagramHandlerTest(BaseTest):
 @unittest.skipUnless(hasattr(socket, "AF_UNIX"), "Unix sockets required")
 klasse UnixDatagramHandlerTest(DatagramHandlerTest):
 
-    """Test for DatagramHandler using Unix sockets."""
+    """Test fuer DatagramHandler using Unix sockets."""
 
     if hasattr(socket, "AF_UNIX"):
         server_class = TestUnixDatagramServer
@@ -2024,7 +2024,7 @@ klasse UnixDatagramHandlerTest(DatagramHandlerTest):
 @threading_helper.requires_working_threading()
 klasse SysLogHandlerTest(BaseTest):
 
-    """Test for SysLogHandler using UDP."""
+    """Test fuer SysLogHandler using UDP."""
 
     server_class = TestUDPServer
     address = ('localhost', 0)
@@ -2112,7 +2112,7 @@ klasse SysLogHandlerTest(BaseTest):
 @unittest.skipUnless(hasattr(socket, "AF_UNIX"), "Unix sockets required")
 klasse UnixSysLogHandlerTest(SysLogHandlerTest):
 
-    """Test for SysLogHandler with Unix sockets."""
+    """Test fuer SysLogHandler with Unix sockets."""
 
     if hasattr(socket, "AF_UNIX"):
         server_class = TestUnixDatagramServer
@@ -2124,10 +2124,10 @@ klasse UnixSysLogHandlerTest(SysLogHandlerTest):
         SysLogHandlerTest.setUp(self)
 
 @unittest.skipUnless(socket_helper.IPV6_ENABLED,
-                     'IPv6 support required for this test.')
+                     'IPv6 support required fuer this test.')
 klasse IPv6SysLogHandlerTest(SysLogHandlerTest):
 
-    """Test for SysLogHandler with IPv6 host."""
+    """Test fuer SysLogHandler with IPv6 host."""
 
     server_class = TestUDPServer
     address = ('::1', 0)
@@ -2143,7 +2143,7 @@ klasse IPv6SysLogHandlerTest(SysLogHandlerTest):
 @support.requires_working_socket()
 @threading_helper.requires_working_threading()
 klasse HTTPHandlerTest(BaseTest):
-    """Test for HTTPHandler."""
+    """Test fuer HTTPHandler."""
 
     def setUp(self):
         """Set up an HTTP server to receive log messages, and a HTTPHandler
@@ -2169,7 +2169,7 @@ klasse HTTPHandlerTest(BaseTest):
         logger = logging.getLogger("http")
         root_logger = self.root_logger
         root_logger.removeHandler(self.root_logger.handlers[0])
-        for secure in (False, True):
+        fuer secure in (False, True):
             addr = ('localhost', 0)
             if secure:
                 try:
@@ -2199,7 +2199,7 @@ klasse HTTPHandlerTest(BaseTest):
             self.log_data = None
             root_logger.addHandler(self.h_hdlr)
 
-            for method in ('GET', 'POST'):
+            fuer method in ('GET', 'POST'):
                 self.h_hdlr.method = method
                 self.handled.clear()
                 msg = "sp\xe4m"
@@ -2230,18 +2230,18 @@ klasse MemoryTest(BaseTest):
         self._survivors = {}
 
     def _watch_for_survival(self, *args):
-        """Watch the given objects for survival, by creating weakrefs to
+        """Watch the given objects fuer survival, by creating weakrefs to
         them."""
-        for obj in args:
+        fuer obj in args:
             key = id(obj), repr(obj)
             self._survivors[key] = weakref.ref(obj)
 
     def _assertTruesurvival(self):
-        """Assert that all objects watched for survival have survived."""
+        """Assert that all objects watched fuer survival have survived."""
         # Trigger cycle breaking.
         gc.collect()
         dead = []
-        for (id_, repr_), ref in self._survivors.items():
+        fuer (id_, repr_), ref in self._survivors.items():
             if ref() is None:
                 dead.append(repr_)
         if dead:
@@ -3017,7 +3017,7 @@ klasse ConfigDictTest(BaseTest):
         },
     }
 
-    # config0 but with default values for formatter. Skipped 15, it is defined
+    # config0 but with default values fuer formatter. Skipped 15, it is defined
     # in the test code.
     config16 = {
         'version': 1,
@@ -3404,8 +3404,8 @@ klasse ConfigDictTest(BaseTest):
 
     def test_deprecation_warning_custom_handler_with_strm_arg(self):
         msg = (
-            "Support for custom logging handlers with the 'strm' argument "
-            "is deprecated and scheduled for removal in Python 3.16. "
+            "Support fuer custom logging handlers with the 'strm' argument "
+            "is deprecated and scheduled fuer removal in Python 3.16. "
             "Define handlers with the 'stream' argument instead."
         )
         with self.assertWarnsRegex(DeprecationWarning, msg):
@@ -3631,7 +3631,7 @@ klasse ConfigDictTest(BaseTest):
 
     def setup_via_listener(self, text, verify=None):
         text = text.encode("utf-8")
-        # Ask for a randomly assigned port (by using port 0)
+        # Ask fuer a randomly assigned port (by using port 0)
         t = logging.config.listen(0, verify)
         t.start()
         t.ready.wait()
@@ -3928,7 +3928,7 @@ klasse ConfigDictTest(BaseTest):
 
     def test_invalid_type_raises(self):
         klasse NotAFilter: pass
-        for filter_ in [None, 1, NotAFilter()]:
+        fuer filter_ in [None, 1, NotAFilter()]:
             self.assertRaises(
                 ValueError,
                 self.apply_config,
@@ -3980,7 +3980,7 @@ klasse ConfigDictTest(BaseTest):
     def test_config_queue_handler(self):
         qs = [CustomQueue(), CustomQueueProtocol()]
         dqs = [{'()': f'{__name__}.{cls}', 'maxsize': 10}
-               for cls in ['CustomQueue', 'CustomQueueProtocol']]
+               fuer cls in ['CustomQueue', 'CustomQueueProtocol']]
         dl = {
             '()': __name__ + '.listenerMaker',
             'arg1': None,
@@ -3989,13 +3989,13 @@ klasse ConfigDictTest(BaseTest):
         }
         qvalues = (None, __name__ + '.queueMaker', __name__ + '.CustomQueue', *dqs, *qs)
         lvalues = (None, __name__ + '.CustomListener', dl, CustomListener)
-        for qspec, lspec in itertools.product(qvalues, lvalues):
+        fuer qspec, lspec in itertools.product(qvalues, lvalues):
             self.do_queuehandler_configuration(qspec, lspec)
 
         # Some failure cases
         qvalues = (None, 4, int, '', 'foo')
         lvalues = (None, 4, int, '', 'bar')
-        for qspec, lspec in itertools.product(qvalues, lvalues):
+        fuer qspec, lspec in itertools.product(qvalues, lvalues):
             if lspec is None and qspec is None:
                 continue
             with self.assertRaises(ValueError) as ctx:
@@ -4020,7 +4020,7 @@ klasse ConfigDictTest(BaseTest):
     def test_config_queue_handler_does_not_create_multiprocessing_manager(self, manager):
         # gh-120868, gh-121723, gh-124653
 
-        for qspec in [
+        fuer qspec in [
             {"()": "queue.Queue", "maxsize": -1},
             queue.Queue(),
             # queue.SimpleQueue does not inherit from queue.Queue
@@ -4041,7 +4041,7 @@ klasse ConfigDictTest(BaseTest):
     def test_config_queue_handler_invalid_config_does_not_create_multiprocessing_manager(self, manager):
         # gh-120868, gh-121723
 
-        for qspec in [object(), CustomQueueWrongProtocol()]:
+        fuer qspec in [object(), CustomQueueWrongProtocol()]:
             with self.subTest(qspec=qspec), self.assertRaises(ValueError):
                 self._apply_simple_queue_listener_configuration(qspec)
                 manager.assert_not_called()
@@ -4049,7 +4049,7 @@ klasse ConfigDictTest(BaseTest):
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     @skip_if_tsan_fork
     @support.requires_subprocess()
-    @unittest.skipUnless(support.Py_DEBUG, "requires a debug build for testing"
+    @unittest.skipUnless(support.Py_DEBUG, "requires a debug build fuer testing"
                                            " assertions in multiprocessing")
     def test_config_reject_simple_queue_handler_multiprocessing_context(self):
         # multiprocessing.SimpleQueue does not implement 'put_nowait'
@@ -4062,7 +4062,7 @@ klasse ConfigDictTest(BaseTest):
         else:
             start_methods = ['spawn', 'fork', 'forkserver']
 
-        for start_method in start_methods:
+        fuer start_method in start_methods:
             with self.subTest(start_method=start_method):
                 ctx = multiprocessing.get_context(start_method)
                 qspec = ctx.SimpleQueue()
@@ -4072,15 +4072,15 @@ klasse ConfigDictTest(BaseTest):
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     @skip_if_tsan_fork
     @support.requires_subprocess()
-    @unittest.skipUnless(support.Py_DEBUG, "requires a debug build for testing"
+    @unittest.skipUnless(support.Py_DEBUG, "requires a debug build fuer testing"
                                            " assertions in multiprocessing")
     def test_config_queue_handler_multiprocessing_context(self):
-        # regression test for gh-121723
+        # regression test fuer gh-121723
         if support.MS_WINDOWS:
             start_methods = ['spawn']
         else:
             start_methods = ['spawn', 'fork', 'forkserver']
-        for start_method in start_methods:
+        fuer start_method in start_methods:
             with self.subTest(start_method=start_method):
                 ctx = multiprocessing.get_context(start_method)
                 with ctx.Manager() as manager:
@@ -4095,7 +4095,7 @@ klasse ConfigDictTest(BaseTest):
 
     @staticmethod
     def _mpinit_issue121723(qspec, message_to_log):
-        # static method for pickling support
+        # static method fuer pickling support
         logging.config.dictConfig({
             'version': 1,
             'disable_existing_loggers': True,
@@ -4119,9 +4119,9 @@ klasse ConfigDictTest(BaseTest):
         cd = copy.deepcopy(self.config_queue_handler)
         from multiprocessing import Queue as MQ, Manager as MM
         q1 = MQ()  # this can't be pickled
-        q2 = MM().Queue()  # a proxy queue for use when pickling is needed
+        q2 = MM().Queue()  # a proxy queue fuer use when pickling is needed
         q3 = MM().JoinableQueue()  # a joinable proxy queue
-        for qspec in (q1, q2, q3):
+        fuer qspec in (q1, q2, q3):
             fn = make_temp_file('.log', 'test_logging-cmpqh-')
             cd['handlers']['h1']['filename'] = fn
             cd['handlers']['ah']['queue'] = qspec
@@ -4266,7 +4266,7 @@ klasse ChildLoggerTest(BaseTest):
         l4 = logging.getLogger('bar')
         kids = r.getChildren()
         expected = {l1, l4}
-        self.assertEqual(expected, kids & expected)  # might be other kids for root
+        self.assertEqual(expected, kids & expected)  # might be other kids fuer root
         self.assertNotIn(l2, expected)
         kids = l1.getChildren()
         self.assertEqual({l2}, kids)
@@ -4444,7 +4444,7 @@ if hasattr(logging.handlers, 'QueueListener'):
     @threading_helper.requires_working_threading()
     klasse QueueListenerTest(BaseTest):
         """
-        Tests based on patch submitted for issue #27930. Ensure that
+        Tests based on patch submitted fuer issue #27930. Ensure that
         QueueListener handles all log messages.
         """
 
@@ -4476,7 +4476,7 @@ if hasattr(logging.handlers, 'QueueListener'):
 
         @patch.object(logging.handlers.QueueListener, 'handle')
         def test_handle_called_with_queue_queue(self, mock_handle):
-            for i in range(self.repeat):
+            fuer i in range(self.repeat):
                 log_queue = queue.Queue()
                 self.setup_and_log(log_queue, '%s_%s' % (self.id(), i))
             self.assertEqual(mock_handle.call_count, 5 * self.repeat,
@@ -4487,7 +4487,7 @@ if hasattr(logging.handlers, 'QueueListener'):
             # bpo-28668: The multiprocessing (mp) module is not functional
             # when the mp.synchronize module cannot be imported.
             support.skip_if_broken_multiprocessing_synchronize()
-            for i in range(self.repeat):
+            fuer i in range(self.repeat):
                 log_queue = multiprocessing.Queue()
                 self.setup_and_log(log_queue, '%s_%s' % (self.id(), i))
                 log_queue.close()
@@ -4513,7 +4513,7 @@ if hasattr(logging.handlers, 'QueueListener'):
             # bpo-28668: The multiprocessing (mp) module is not functional
             # when the mp.synchronize module cannot be imported.
             support.skip_if_broken_multiprocessing_synchronize()
-            for i in range(self.repeat):
+            fuer i in range(self.repeat):
                 queue = multiprocessing.Queue()
                 self.setup_and_log(queue, '%s_%s' %(self.id(), i))
                 # time.sleep(1)
@@ -4525,7 +4525,7 @@ if hasattr(logging.handlers, 'QueueListener'):
                 self.assertIn(items, expected,
                               'Found unexpected messages in queue: %s' % (
                                     [m.msg if isinstance(m, logging.LogRecord)
-                                     else m for m in items]))
+                                     else m fuer m in items]))
 
         def test_calls_task_done_after_stop(self):
             # Issue 36813: Make sure queue.join does not deadlock.
@@ -4698,19 +4698,19 @@ klasse FormatterTest(unittest.TestCase, AssertErrorMessage):
         self.assertRaises(ValueError, logging.Formatter, '%(foo)0*.8*f')
 
         # StrFormat Style
-        # Testing failure for '-' in field name
+        # Testing failure fuer '-' in field name
         self.assert_error_message(
             ValueError,
             "invalid format: invalid field name/expression: 'name-thing'",
             logging.Formatter, "{name-thing}", style="{"
         )
-        # Testing failure for style mismatch
+        # Testing failure fuer style mismatch
         self.assert_error_message(
             ValueError,
             "invalid format: no fields",
             logging.Formatter, '%(asctime)s', style='{'
         )
-        # Testing failure for invalid conversion
+        # Testing failure fuer invalid conversion
         self.assert_error_message(
             ValueError,
             "invalid conversion: 'Z'"
@@ -4721,7 +4721,7 @@ klasse FormatterTest(unittest.TestCase, AssertErrorMessage):
             "invalid format: expected ':' after conversion specifier",
             logging.Formatter, '{asctime!aa:15}', style='{'
         )
-        # Testing failure for invalid spec
+        # Testing failure fuer invalid spec
         self.assert_error_message(
             ValueError,
             "invalid format: bad specifier: '.2ff'",
@@ -4731,7 +4731,7 @@ klasse FormatterTest(unittest.TestCase, AssertErrorMessage):
         self.assertRaises(ValueError, logging.Formatter, '{process!s:<##30,12g}', style='{')
         self.assertRaises(ValueError, logging.Formatter, '{process!s:<#30#,12g}', style='{')
         self.assertRaises(ValueError, logging.Formatter, '{process!s:{{w}},{{p}}}', style='{')
-        # Testing failure for mismatch braces
+        # Testing failure fuer mismatch braces
         self.assert_error_message(
             ValueError,
             "invalid format: expected '}' before end of string",
@@ -4753,7 +4753,7 @@ klasse FormatterTest(unittest.TestCase, AssertErrorMessage):
         self.assertRaises(ValueError, logging.Formatter, '{foo.!a:d}', style='{')
 
         # Dollar style
-        # Testing failure for mismatch bare $
+        # Testing failure fuer mismatch bare $
         self.assert_error_message(
             ValueError,
             "invalid format: bare \'$\' not allowed",
@@ -4769,7 +4769,7 @@ klasse FormatterTest(unittest.TestCase, AssertErrorMessage):
             "invalid format: bare \'$\' not allowed",
             logging.Formatter, 'foo $.', style='$'
         )
-        # Testing failure for mismatch style
+        # Testing failure fuer mismatch style
         self.assert_error_message(
             ValueError,
             "invalid format: no fields",
@@ -4777,7 +4777,7 @@ klasse FormatterTest(unittest.TestCase, AssertErrorMessage):
         )
         self.assertRaises(ValueError, logging.Formatter, '%(asctime)s', style='$')
 
-        # Testing failure for incorrect fields
+        # Testing failure fuer incorrect fields
         self.assert_error_message(
             ValueError,
             "invalid format: no fields",
@@ -4788,7 +4788,7 @@ klasse FormatterTest(unittest.TestCase, AssertErrorMessage):
     def test_defaults_parameter(self):
         fmts = ['%(custom)s %(message)s', '{custom} {message}', '$custom $message']
         styles = ['%', '{', '$']
-        for fmt, style in zip(fmts, styles):
+        fuer fmt, style in zip(fmts, styles):
             f = logging.Formatter(fmt, style=style, defaults={'custom': 'Default'})
             r = self.get_record()
             self.assertEqual(f.format(r), 'Default Message with 2 placeholders')
@@ -4836,7 +4836,7 @@ klasse FormatterTest(unittest.TestCase, AssertErrorMessage):
 
     def test_issue_89047(self):
         f = logging.Formatter(fmt='{asctime}.{msecs:03.0f} {message}', style='{', datefmt="%Y-%m-%d %H:%M:%S")
-        for i in range(2500):
+        fuer i in range(2500):
             time.sleep(0.0004)
             r = logging.makeLogRecord({'msg': 'Message %d' % (i + 1)})
             s = f.format(r)
@@ -4852,7 +4852,7 @@ klasse FormatterTest(unittest.TestCase, AssertErrorMessage):
             (1_677_903_920_000_998_503, 0.0),  # check truncating doesn't round
             (1_677_903_920_999_999_900, 0.0), # check rounding up
         )
-        for ns, want in tests:
+        fuer ns, want in tests:
             with patch('time.time_ns') as patched_ns:
                 patched_ns.return_value = ns
                 record = logging.makeLogRecord({'msg': 'test'})
@@ -4878,7 +4878,7 @@ klasse FormatterTest(unittest.TestCase, AssertErrorMessage):
             start_monotonic_ns = start_ns - 1
 
             import time
-            # Only time.time_ns needs to be patched for the current
+            # Only time.time_ns needs to be patched fuer the current
             # implementation, but patch also other functions to make
             # the test less implementation depending.
             old_time_ns = time.time_ns
@@ -4893,8 +4893,8 @@ klasse FormatterTest(unittest.TestCase, AssertErrorMessage):
             try:
                 import logging
 
-                for offset_ns in offsets_ns:
-                    # mock for log record creation
+                fuer offset_ns in offsets_ns:
+                    # mock fuer log record creation
                     time_ns_result = start_ns + offset_ns
                     record = logging.makeLogRecord({{'msg': 'test'}})
                     print(record.created, record.relativeCreated)
@@ -4906,7 +4906,7 @@ klasse FormatterTest(unittest.TestCase, AssertErrorMessage):
         """)
         rc, out, err = assert_python_ok("-c", code)
         out = out.decode()
-        for offset_ns, line in zip(offsets_ns, out.splitlines(), strict=True):
+        fuer offset_ns, line in zip(offsets_ns, out.splitlines(), strict=True):
             with self.subTest(offset_ns=offset_ns):
                 created, relativeCreated = map(float, line.split())
                 self.assertAlmostEqual(created, (start_ns + offset_ns) / 1e9, places=6)
@@ -4981,7 +4981,7 @@ klasse LastResortTest(BaseTest):
             logging.lastResort = None
             with support.captured_stderr() as stderr:
                 root.warning('Final chance!')
-                msg = 'No handlers could be found for logger "root"\n'
+                msg = 'No handlers could be found fuer logger "root"\n'
                 self.assertEqual(stderr.getvalue(), msg)
 
             # 'No handlers' message only printed once
@@ -5004,7 +5004,7 @@ klasse LastResortTest(BaseTest):
 klasse FakeHandler:
 
     def __init__(self, identifier, called):
-        for method in ('acquire', 'flush', 'close', 'release'):
+        fuer method in ('acquire', 'flush', 'close', 'release'):
             setattr(self, method, self.record_call(identifier, method, called))
 
     def record_call(self, identifier, method_name, called):
@@ -5026,7 +5026,7 @@ klasse RecordingHandler(logging.NullHandler):
 
 klasse ShutdownTest(BaseTest):
 
-    """Test suite for the shutdown method."""
+    """Test suite fuer the shutdown method."""
 
     def setUp(self):
         super(ShutdownTest, self).setUp()
@@ -5113,7 +5113,7 @@ klasse ShutdownTest(BaseTest):
 
 klasse ModuleLevelMiscTest(BaseTest):
 
-    """Test suite for some module level methods."""
+    """Test suite fuer some module level methods."""
 
     def test_disable(self):
         old_disable = logging.root.manager.disable
@@ -5443,7 +5443,7 @@ klasse LogRecordTest(BaseTest):
 
 klasse BasicConfigTest(unittest.TestCase):
 
-    """Test suite for logging.basicConfig."""
+    """Test suite fuer logging.basicConfig."""
 
     def setUp(self):
         super(BasicConfigTest, self).setUp()
@@ -5455,7 +5455,7 @@ klasse BasicConfigTest(unittest.TestCase):
         logging.root.handlers = []
 
     def tearDown(self):
-        for h in logging.root.handlers[:]:
+        fuer h in logging.root.handlers[:]:
             logging.root.removeHandler(h)
             h.close()
         super(BasicConfigTest, self).tearDown()
@@ -5590,7 +5590,7 @@ klasse BasicConfigTest(unittest.TestCase):
                                                       datefmt='%H:%M:%S')
         assertRaises(ValueError, logging.basicConfig, formatter=formatter,
                                                       style='%')
-        # Issue 23207: test for invalid kwargs
+        # Issue 23207: test fuer invalid kwargs
         assertRaises(ValueError, logging.basicConfig, loglevel=logging.INFO)
         # Should pop both filename and filemode even if filename is None
         logging.basicConfig(filename=None, filemode='a')
@@ -5879,7 +5879,7 @@ klasse LoggerAdapterTest(unittest.TestCase):
     def test_has_handlers(self):
         self.assertTrue(self.adapter.hasHandlers())
 
-        for handler in self.logger.handlers:
+        fuer handler in self.logger.handlers:
             self.logger.removeHandler(handler)
 
         self.assertFalse(self.logger.hasHandlers())
@@ -6133,7 +6133,7 @@ klasse LoggerTest(BaseTest, AssertErrorMessage):
         rv = logging._logRecordFactory(name, level, fn, lno, msg, args,
                                        exc_info, func, sinfo)
 
-        for key in ('message', 'asctime') + tuple(rv.__dict__.keys()):
+        fuer key in ('message', 'asctime') + tuple(rv.__dict__.keys()):
             extra = {key: 'some value'}
             self.assertRaises(KeyError, self.logger.makeRecord, name, level,
                               fn, lno, msg, args, exc_info,
@@ -6151,7 +6151,7 @@ klasse LoggerTest(BaseTest, AssertErrorMessage):
     def test_has_handlers(self):
         self.assertTrue(self.logger.hasHandlers())
 
-        for handler in self.logger.handlers:
+        fuer handler in self.logger.handlers:
             self.logger.removeHandler(handler)
         self.assertFalse(self.logger.hasHandlers())
 
@@ -6196,8 +6196,8 @@ klasse LoggerTest(BaseTest, AssertErrorMessage):
         self.assertRaises(TypeError, logging.getLogger, b'foo')
 
     def test_pickling(self):
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
-            for name in ('', 'root', 'foo', 'foo.bar', 'baz.bar'):
+        fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
+            fuer name in ('', 'root', 'foo', 'foo.bar', 'baz.bar'):
                 logger = logging.getLogger(name)
                 s = pickle.dumps(logger, proto)
                 unpickled = pickle.loads(s)
@@ -6261,7 +6261,7 @@ klasse LoggerTest(BaseTest, AssertErrorMessage):
 
 
 klasse BaseFileTest(BaseTest):
-    "Base klasse for handler tests that write log files"
+    "Base klasse fuer handler tests that write log files"
 
     def setUp(self):
         BaseTest.setUp(self)
@@ -6269,14 +6269,14 @@ klasse BaseFileTest(BaseTest):
         self.rmfiles = []
 
     def tearDown(self):
-        for fn in self.rmfiles:
+        fuer fn in self.rmfiles:
             os.unlink(fn)
         if os.path.exists(self.fn):
             os.unlink(self.fn)
         BaseTest.tearDown(self)
 
     def assertLogFile(self, filename):
-        "Assert a log file is there and register it for deletion"
+        "Assert a log file is there and register it fuer deletion"
         self.assertTrue(os.path.exists(filename),
                         msg="Log file %r does not exist" % filename)
         self.rmfiles.append(filename)
@@ -6332,7 +6332,7 @@ klasse RotatingFileHandlerTest(BaseFileTest):
     def test_should_not_rollover_non_file(self):
         # bpo-45401 - test with special file
         # We set maxBytes to 1 so that rollover would normally happen, except
-        # for the check for regular files
+        # fuer the check fuer regular files
         rh = logging.handlers.RotatingFileHandler(
                 os.devnull, encoding="utf-8", maxBytes=1)
         self.assertFalse(rh.shouldRollover(self.next_rec()))
@@ -6488,15 +6488,15 @@ klasse TimedRotatingFileHandlerTest(BaseFileTest):
         fh.emit(r2)
         fh.close()
         # At this point, we should have a recent rotated file which we
-        # can test for the existence of. However, in practice, on some
+        # can test fuer the existence of. However, in practice, on some
         # machines which run really slowly, we don't know how far back
-        # in time to go to look for the log file. So, we go back a fair
+        # in time to go to look fuer the log file. So, we go back a fair
         # bit, and stop as soon as we see a rotated file. In theory this
         # could of course still fail, but the chances are lower.
         found = False
         now = datetime.datetime.now()
         GO_BACK = 5 * 60 # seconds
-        for secs in range(GO_BACK):
+        fuer secs in range(GO_BACK):
             prev = now - datetime.timedelta(seconds=secs)
             fn = self.fn + prev.strftime(".%Y-%m-%d_%H-%M-%S")
             found = os.path.exists(fn)
@@ -6507,10 +6507,10 @@ klasse TimedRotatingFileHandlerTest(BaseFileTest):
         if not found:
             # print additional diagnostics
             dn, fn = os.path.split(self.fn)
-            files = [f for f in os.listdir(dn) if f.startswith(fn)]
+            files = [f fuer f in os.listdir(dn) if f.startswith(fn)]
             print('Test time: %s' % now.strftime("%Y-%m-%d %H-%M-%S"), file=sys.stderr)
             print('The only matching files are: %s' % files, file=sys.stderr)
-            for f in files:
+            fuer f in files:
                 print('Contents of %s:' % f)
                 path = os.path.join(dn, f)
                 with open(path, 'r') as tf:
@@ -6530,7 +6530,7 @@ klasse TimedRotatingFileHandlerTest(BaseFileTest):
         atTime = atTime.replace(microsecond=0)
         fmt = logging.Formatter('%(asctime)s %(message)s')
         when = f'W{now.weekday()}' if weekly else 'MIDNIGHT'
-        for i in range(3):
+        fuer i in range(3):
             fh = logging.handlers.TimedRotatingFileHandler(
                 self.fn, encoding="utf-8", when=when, atTime=atTime)
             fh.setFormatter(fmt)
@@ -6539,11 +6539,11 @@ klasse TimedRotatingFileHandlerTest(BaseFileTest):
             fh.close()
         self.assertLogFile(self.fn)
         with open(self.fn, encoding="utf-8") as f:
-            for i, line in enumerate(f):
+            fuer i, line in enumerate(f):
                 self.assertIn(f'testing1 {i}', line)
 
         os.utime(self.fn, (now.timestamp() - 1,)*2)
-        for i in range(2):
+        fuer i in range(2):
             fh = logging.handlers.TimedRotatingFileHandler(
                 self.fn, encoding="utf-8", when=when, atTime=atTime)
             fh.setFormatter(fmt)
@@ -6554,10 +6554,10 @@ klasse TimedRotatingFileHandlerTest(BaseFileTest):
         otherfn = f'{self.fn}.{rolloverDate:%Y-%m-%d}'
         self.assertLogFile(otherfn)
         with open(self.fn, encoding="utf-8") as f:
-            for i, line in enumerate(f):
+            fuer i, line in enumerate(f):
                 self.assertIn(f'testing2 {i}', line)
         with open(otherfn, encoding="utf-8") as f:
-            for i, line in enumerate(f):
+            fuer i, line in enumerate(f):
                 self.assertIn(f'testing1 {i}', line)
 
     def test_rollover_at_weekday(self):
@@ -6572,7 +6572,7 @@ klasse TimedRotatingFileHandlerTest(BaseFileTest):
         assertRaises(ValueError, logging.handlers.TimedRotatingFileHandler,
                      self.fn, 'W7', encoding="utf-8", delay=True)
 
-    # TODO: Test for utc=False.
+    # TODO: Test fuer utc=False.
     def test_compute_rollover_daily_attime(self):
         currentTime = 0
         rh = logging.handlers.TimedRotatingFileHandler(
@@ -6612,7 +6612,7 @@ klasse TimedRotatingFileHandlerTest(BaseFileTest):
         finally:
             rh.close()
 
-    # TODO: Test for utc=False.
+    # TODO: Test fuer utc=False.
     def test_compute_rollover_weekly_attime(self):
         currentTime = int(time.time())
         today = currentTime - currentTime % 86400
@@ -6620,7 +6620,7 @@ klasse TimedRotatingFileHandlerTest(BaseFileTest):
         atTime = datetime.time(12, 0, 0)
 
         wday = time.gmtime(today).tm_wday
-        for day in range(7):
+        fuer day in range(7):
             rh = logging.handlers.TimedRotatingFileHandler(
                 self.fn, encoding="utf-8", when='W%d' % day, interval=1, backupCount=0,
                 utc=True, atTime=atTime)
@@ -6635,7 +6635,7 @@ klasse TimedRotatingFileHandlerTest(BaseFileTest):
                 expected *= 24 * 60 * 60
                 # Add in the rollover time
                 expected += 12 * 60 * 60
-                # Add in adjustment for today
+                # Add in adjustment fuer today
                 expected += today
 
                 actual = rh.computeRollover(today)
@@ -6668,18 +6668,18 @@ klasse TimedRotatingFileHandlerTest(BaseFileTest):
                 rh.close()
 
     def test_compute_files_to_delete(self):
-        # See bpo-46063 for background
+        # See bpo-46063 fuer background
         wd = tempfile.mkdtemp(prefix='test_logging_')
         self.addCleanup(shutil.rmtree, wd)
         times = []
         dt = datetime.datetime.now()
-        for i in range(10):
+        fuer i in range(10):
             times.append(dt.strftime('%Y-%m-%d_%H-%M-%S'))
             dt += datetime.timedelta(seconds=5)
         prefixes = ('a.b', 'a.b.c', 'd.e', 'd.e.f', 'g')
         files = []
         rotators = []
-        for prefix in prefixes:
+        fuer prefix in prefixes:
             p = os.path.join(wd, '%s.log' % prefix)
             rotator = logging.handlers.TimedRotatingFileHandler(p, when='s',
                                                                 interval=5,
@@ -6687,7 +6687,7 @@ klasse TimedRotatingFileHandlerTest(BaseFileTest):
                                                                 delay=True)
             rotators.append(rotator)
             if prefix.startswith('a.b'):
-                for t in times:
+                fuer t in times:
                     files.append('%s.log.%s' % (prefix, t))
             elif prefix.startswith('d.e'):
                 def namer(filename):
@@ -6695,7 +6695,7 @@ klasse TimedRotatingFileHandlerTest(BaseFileTest):
                     basename = basename.replace('.log', '') + '.log'
                     return os.path.join(dirname, basename)
                 rotator.namer = namer
-                for t in times:
+                fuer t in times:
                     files.append('%s.%s.log' % (prefix, t))
             elif prefix == 'g':
                 def namer(filename):
@@ -6703,71 +6703,71 @@ klasse TimedRotatingFileHandlerTest(BaseFileTest):
                     basename = 'g' + basename[6:] + '.oldlog'
                     return os.path.join(dirname, basename)
                 rotator.namer = namer
-                for t in times:
+                fuer t in times:
                     files.append('g%s.oldlog' % t)
         # Create empty files
-        for fn in files:
+        fuer fn in files:
             p = os.path.join(wd, fn)
             with open(p, 'wb') as f:
                 pass
-        # Now the checks that only the correct files are offered up for deletion
-        for i, prefix in enumerate(prefixes):
+        # Now the checks that only the correct files are offered up fuer deletion
+        fuer i, prefix in enumerate(prefixes):
             rotator = rotators[i]
             candidates = rotator.getFilesToDelete()
             self.assertEqual(len(candidates), 3, candidates)
             if prefix.startswith('a.b'):
                 p = '%s.log.' % prefix
-                for c in candidates:
+                fuer c in candidates:
                     d, fn = os.path.split(c)
                     self.assertStartsWith(fn, p)
             elif prefix.startswith('d.e'):
-                for c in candidates:
+                fuer c in candidates:
                     d, fn = os.path.split(c)
                     self.assertEndsWith(fn, '.log')
                     self.assertStartsWith(fn, prefix + '.')
                     self.assertTrue(fn[len(prefix) + 2].isdigit())
             elif prefix == 'g':
-                for c in candidates:
+                fuer c in candidates:
                     d, fn = os.path.split(c)
                     self.assertEndsWith(fn, '.oldlog')
                     self.assertStartsWith(fn, 'g')
                     self.assertTrue(fn[1].isdigit())
 
     def test_compute_files_to_delete_same_filename_different_extensions(self):
-        # See GH-93205 for background
+        # See GH-93205 fuer background
         wd = pathlib.Path(tempfile.mkdtemp(prefix='test_logging_'))
         self.addCleanup(shutil.rmtree, wd)
         times = []
         dt = datetime.datetime.now()
         n_files = 10
-        for _ in range(n_files):
+        fuer _ in range(n_files):
             times.append(dt.strftime('%Y-%m-%d_%H-%M-%S'))
             dt += datetime.timedelta(seconds=5)
         prefixes = ('a.log', 'a.log.b')
         files = []
         rotators = []
-        for i, prefix in enumerate(prefixes):
+        fuer i, prefix in enumerate(prefixes):
             backupCount = i+1
             rotator = logging.handlers.TimedRotatingFileHandler(wd / prefix, when='s',
                                                                 interval=5,
                                                                 backupCount=backupCount,
                                                                 delay=True)
             rotators.append(rotator)
-            for t in times:
+            fuer t in times:
                 files.append('%s.%s' % (prefix, t))
-        for t in times:
+        fuer t in times:
             files.append('a.log.%s.c' % t)
         # Create empty files
-        for f in files:
+        fuer f in files:
             (wd / f).touch()
-        # Now the checks that only the correct files are offered up for deletion
-        for i, prefix in enumerate(prefixes):
+        # Now the checks that only the correct files are offered up fuer deletion
+        fuer i, prefix in enumerate(prefixes):
             backupCount = i+1
             rotator = rotators[i]
             candidates = rotator.getFilesToDelete()
             self.assertEqual(len(candidates), n_files - backupCount, candidates)
             matcher = re.compile(r"^\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2}\z")
-            for c in candidates:
+            fuer c in candidates:
                 d, fn = os.path.split(c)
                 self.assertStartsWith(fn, prefix+'.')
                 suffix = fn[(len(prefix)+1):]
@@ -7137,7 +7137,7 @@ klasse TimedRotatingFileHandlerTest(BaseFileTest):
 def secs(**kw):
     return datetime.timedelta(**kw) // datetime.timedelta(seconds=1)
 
-for when, exp in (('S', 1),
+fuer when, exp in (('S', 1),
                   ('M', 60),
                   ('H', 60 * 60),
                   ('D', 60 * 60 * 24),
@@ -7145,7 +7145,7 @@ for when, exp in (('S', 1),
                   # current time (epoch start) is a Thursday, W0 means Monday
                   ('W0', secs(days=4, hours=24)),
                  ):
-    for interval in 1, 3:
+    fuer interval in 1, 3:
         def test_compute_rollover(self, when=when, interval=interval, exp=exp):
             rh = logging.handlers.TimedRotatingFileHandler(
                 self.fn, encoding="utf-8", when=when, interval=interval, backupCount=0, utc=True)
@@ -7156,8 +7156,8 @@ for when, exp in (('S', 1),
             else:
                 exp *= interval
             if exp != actual:
-                # Failures occur on some systems for MIDNIGHT and W0.
-                # Print detailed calculation for MIDNIGHT so we can try to see
+                # Failures occur on some systems fuer MIDNIGHT and W0.
+                # Print detailed calculation fuer MIDNIGHT so we can try to see
                 # what's going on
                 if when == 'MIDNIGHT':
                     try:
@@ -7190,7 +7190,7 @@ for when, exp in (('S', 1),
         setattr(TimedRotatingFileHandlerTest, name, test_compute_rollover)
 
 
-@unittest.skipUnless(win32evtlog, 'win32evtlog/win32evtlogutil/pywintypes required for this test.')
+@unittest.skipUnless(win32evtlog, 'win32evtlog/win32evtlogutil/pywintypes required fuer this test.')
 klasse NTEventLogHandlerTest(BaseTest):
     def test_basic(self):
         logtype = 'Application'
@@ -7214,7 +7214,7 @@ klasse NTEventLogHandlerTest(BaseTest):
         found = False
         GO_BACK = 100
         events = win32evtlog.ReadEventLog(elh, flags, GO_BACK)
-        for e in events:
+        fuer e in events:
             if e.SourceName != 'test_logging':
                 continue
             msg = win32evtlogutil.SafeFormatMessage(e, logtype)

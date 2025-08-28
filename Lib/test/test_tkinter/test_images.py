@@ -449,8 +449,8 @@ klasse PhotoImageTest(AbstractTkTest, unittest.TestCase):
 
     def checkImgTrans(self, image, expected):
         actual = {(x, y)
-                  for x in range(image.width())
-                  for y in range(image.height())
+                  fuer x in range(image.width())
+                  fuer y in range(image.height())
                   if image.transparency_get(x, y)}
         self.assertEqual(actual, expected)
 
@@ -507,8 +507,8 @@ klasse PhotoImageTest(AbstractTkTest, unittest.TestCase):
 
     def test_read(self):
         # Due to the Tk bug https://core.tcl-lang.org/tk/tktview/1576528
-        # the -from option does not work correctly for GIF and PNG files.
-        # Use the PPM file for this test.
+        # the -from option does not work correctly fuer GIF and PNG files.
+        # Use the PPM file fuer this test.
         testfile = support.findfile('python.ppm', subdir='tkinterdata')
         image = tkinter.PhotoImage(master=self.root, file=testfile)
 
@@ -597,7 +597,7 @@ klasse PhotoImageTest(AbstractTkTest, unittest.TestCase):
 
         data = image.data()
         self.assertIsInstance(data, tuple)
-        for row in data:
+        fuer row in data:
             self.assertIsInstance(row, str)
         c = image.get(4, 6)
         if not self.wantobjects:

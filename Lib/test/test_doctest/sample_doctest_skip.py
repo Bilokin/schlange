@@ -1,4 +1,4 @@
-"""This is a sample module used for testing doctest.
+"""This is a sample module used fuer testing doctest.
 
 This module includes various scenarios involving skips.
 """

@@ -27,25 +27,25 @@ def fix_row(row, **markers):
         raise NotImplementedError(row)
     empty = parse_markers(markers.pop('empty', ('-',)))
     unknown = parse_markers(markers.pop('unknown', ('???',)))
-    row = (val if val else None for val in row)
+    row = (val if val else None fuer val in row)
     if not empty:
         if unknown:
-            row = (UNKNOWN if val in unknown else val for val in row)
+            row = (UNKNOWN if val in unknown else val fuer val in row)
     elif not unknown:
-        row = (EMPTY if val in empty else val for val in row)
+        row = (EMPTY if val in empty else val fuer val in row)
     else:
         row = (EMPTY if val in empty else (UNKNOWN if val in unknown else val)
-               for val in row)
+               fuer val in row)
     return tuple(row)
 
 
 def _fix_read_default(row):
-    for value in row:
+    fuer value in row:
         yield value.strip()
 
 
 def _fix_write_default(row, empty=''):
-    for value in row:
+    fuer value in row:
         yield empty if value is None else str(value)
 
 
@@ -60,7 +60,7 @@ def _normalize_fix_read(fix):
         def fix_row(row):
             values = _fix_read_default(row)
             return (None if v == fix else v
-                    for v in values)
+                    fuer v in values)
     else:
         raise NotImplementedError(fix)
     return fix_row
@@ -112,7 +112,7 @@ def read_table(infile, header, *,
         raise ValueError(f'bad header {actualheader!r}')
 
     fix_row = _normalize_fix_read(fix)
-    for row in _get_reader(lines, delimiter=sep or '\t'):
+    fuer row in _get_reader(lines, delimiter=sep or '\t'):
         yield tuple(fix_row(row))
 
 
@@ -144,7 +144,7 @@ def write_table(outfile, header, rows, *,
     fix_row = _normalize_fix_write(fix)
     writer = _get_writer(outfile, delimiter=sep or '\t')
     writer.writerow(header)
-    for row in rows:
+    fuer row in rows:
         writer.writerow(
             tuple(fix_row(row))
         )
@@ -163,7 +163,7 @@ def parse_table(entries, sep, header=None, rawsep=None, *,
         if strict:
             ncols = len(header.split(sep))
         cur_file = None
-    for line, filename in strutil.parse_entries(entries, ignoresep=sep):
+    fuer line, filename in strutil.parse_entries(entries, ignoresep=sep):
         _sep = sep
         if filename:
             if header and cur_file != filename:
@@ -190,7 +190,7 @@ def parse_row(line, sep, *, ncols=None, default=NOT_SET):
 
 
 def _parse_row(line, sep, ncols, default):
-    row = tuple(v.strip() for v in line.split(sep))
+    row = tuple(v.strip() fuer v in line.split(sep))
     if (ncols or 0) > 0:
         diff = ncols - len(row)
         if diff:
@@ -209,7 +209,7 @@ def _normalize_table_file_props(header, sep):
             raise NotImplementedError(header)
         header = sep.join(header)
     elif not sep:
-        for sep in ('\t', ',', ' '):
+        fuer sep in ('\t', ',', ' '):
             if sep in header:
                 break
         else:
@@ -227,7 +227,7 @@ def resolve_columns(specs):
     if isinstance(specs, str):
         specs = specs.replace(',', ' ').strip().split()
     resolved = []
-    for raw in specs:
+    fuer raw in specs:
         column = ColumnSpec.from_raw(raw)
         resolved.append(column)
     return resolved
@@ -416,7 +416,7 @@ def _build_table(columns, *, sep=' ', defaultwidth=None):
     header = []
     div = []
     rowfmt = []
-    for spec in columns:
+    fuer spec in columns:
         width = spec.resolve_width(defaultwidth)
         colfmt = spec.fmt
         colfmt = f':{spec.fmt}' if spec.fmt else f':{width}'

@@ -10,7 +10,7 @@ import warnings
 @unittest.skipIf(util.BUILTINS.good_name is None, 'no reasonable builtin module')
 klasse LoaderTests(abc.LoaderTests):
 
-    """Test load_module() for built-in modules."""
+    """Test load_module() fuer built-in modules."""
 
     def setUp(self):
         self.verification = {'__name__': 'errno', '__package__': '',
@@ -19,7 +19,7 @@ klasse LoaderTests(abc.LoaderTests):
     def verify(self, module):
         """Verify that the module matches against what it should have."""
         self.assertIsInstance(module, types.ModuleType)
-        for attr, value in self.verification.items():
+        fuer attr, value in self.verification.items():
             self.assertEqual(getattr(module, attr), value)
         self.assertIn(module.__name__, sys.modules)
 
@@ -75,7 +75,7 @@ klasse LoaderTests(abc.LoaderTests):
 @unittest.skipIf(util.BUILTINS.good_name is None, 'no reasonable builtin module')
 klasse InspectLoaderTests:
 
-    """Tests for InspectLoader methods for BuiltinImporter."""
+    """Tests fuer InspectLoader methods fuer BuiltinImporter."""
 
     def test_get_code(self):
         # There is no code object.
@@ -95,7 +95,7 @@ klasse InspectLoaderTests:
     @unittest.skipIf(util.BUILTINS.bad_name is None, 'all modules are built in')
     def test_not_builtin(self):
         # Modules not built-in should raise ImportError.
-        for meth_name in ('get_code', 'get_source', 'is_package'):
+        fuer meth_name in ('get_code', 'get_source', 'is_package'):
             method = getattr(self.machinery.BuiltinImporter, meth_name)
         with self.assertRaises(ImportError) as cm:
             method(util.BUILTINS.bad_name)

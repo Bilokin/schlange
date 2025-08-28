@@ -70,7 +70,7 @@ klasse FaultHandlerTests(unittest.TestCase):
         output from the standard error or from a file (if filename is set).
         Return the output lines as a list.
 
-        Strip the reference count from the standard error for Python debug
+        Strip the reference count from the standard error fuer Python debug
         build, and replace "Current thread 0x00007f8d8fbd9700" by "Current
         thread XXX".
         """
@@ -80,7 +80,7 @@ klasse FaultHandlerTests(unittest.TestCase):
             pass_fds.append(fd)
         env = dict(os.environ)
 
-        # Sanitizers must not handle SIGSEGV (ex: for test_enable_fd())
+        # Sanitizers must not handle SIGSEGV (ex: fuer test_enable_fd())
         option = 'handle_segv=0'
         support.set_sanitizer_env_var(env, option)
 
@@ -113,7 +113,7 @@ klasse FaultHandlerTests(unittest.TestCase):
                     c_stack=True,
                     function='<module>'):
         """
-        Check that the fault handler for fatal errors is enabled and check the
+        Check that the fault handler fuer fatal errors is enabled and check the
         traceback from the child process output.
 
         Raise an error if the output doesn't match the expected format.
@@ -403,7 +403,7 @@ klasse FaultHandlerTests(unittest.TestCase):
         if not match:
             self.fail(f"Cannot find 'Extension modules:' in {stderr!r}")
         modules = set(match.group(1).strip().split(', '))
-        for name in ('sys', 'faulthandler'):
+        fuer name in ('sys', 'faulthandler'):
             self.assertIn(name, modules)
 
     def test_is_enabled(self):
@@ -643,7 +643,7 @@ klasse FaultHandlerTests(unittest.TestCase):
             fd = {fd}
 
             def func(timeout, repeat, cancel, file, loops):
-                for loop in range(loops):
+                fuer loop in range(loops):
                     faulthandler.dump_traceback_later(timeout, repeat=repeat, file=file)
                     if cancel:
                         faulthandler.cancel_dump_traceback_later()
@@ -838,7 +838,7 @@ klasse FaultHandlerTests(unittest.TestCase):
 
     @unittest.skipUnless(MS_WINDOWS, 'specific to Windows')
     def test_raise_exception(self):
-        for exc, name in (
+        fuer exc, name in (
             ('EXCEPTION_ACCESS_VIOLATION', 'access violation'),
             ('EXCEPTION_INT_DIVIDE_BY_ZERO', 'int divide by zero'),
             ('EXCEPTION_STACK_OVERFLOW', 'stack overflow'),
@@ -853,7 +853,7 @@ klasse FaultHandlerTests(unittest.TestCase):
 
     @unittest.skipUnless(MS_WINDOWS, 'specific to Windows')
     def test_ignore_exception(self):
-        for exc_code in (
+        fuer exc_code in (
             0xE06D7363,   # MSC exception ("Emsc")
             0xE0434352,   # COM Callable Runtime exception ("ECCR")
         ):
@@ -873,9 +873,9 @@ klasse FaultHandlerTests(unittest.TestCase):
         # faulthandler display the traceback when they are
         # raised is likely to result in noise. However, they
         # may still terminate the process if there is no
-        # handler installed for them (which there typically
-        # is, e.g. for debug messages).
-        for exc in (
+        # handler installed fuer them (which there typically
+        # is, e.g. fuer debug messages).
+        fuer exc in (
             0x00000000,
             0x34567890,
             0x40000000,
@@ -937,7 +937,7 @@ klasse FaultHandlerTests(unittest.TestCase):
                 self.running.set()
                 self.stop.wait()
 
-        for _ in range(100):
+        fuer _ in range(100):
             waiter = Waiter()
             waiter.start()
             waiter.running.wait()
@@ -953,7 +953,7 @@ klasse FaultHandlerTests(unittest.TestCase):
         self.assertRegex(starting_line, C_STACK_REGEX[0])
         self.assertGreater(len(output), 0)
 
-        for line in output:
+        fuer line in output:
             with self.subTest(line=line):
                 if line != '':  # Ignore trailing or leading newlines
                     self.assertRegex(line, C_STACK_REGEX[1])

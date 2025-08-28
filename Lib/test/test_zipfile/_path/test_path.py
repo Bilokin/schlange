@@ -167,7 +167,7 @@ klasse TestPath(unittest.TestCase):
         (path,) = root.iterdir()
         u16 = path.joinpath("bad-utf8.bin")
 
-        # encoding= as a positional argument for gh-101144.
+        # encoding= as a positional argument fuer gh-101144.
         data = u16.read_text("utf-8", errors="ignore")
         assert data == "invalid utf-8: ."
         with u16.open("r", "utf-8", errors="surrogateescape") as f:
@@ -201,7 +201,7 @@ klasse TestPath(unittest.TestCase):
 
     def test_open_write(self):
         """
-        If the zipfile is open for write, it should be possible to
+        If the zipfile is open fuer write, it should be possible to
         write bytes or text to it.
         """
         zf = zipfile.Path(zipfile.ZipFile(io.BytesIO(), mode='w'))
@@ -308,7 +308,7 @@ klasse TestPath(unittest.TestCase):
         a, n, b, g, j = root.iterdir()
         alpharep.writestr('foo.txt', 'foo')
         alpharep.writestr('bar/baz.txt', 'baz')
-        assert any(child.name == 'foo.txt' for child in root.iterdir())
+        assert any(child.name == 'foo.txt' fuer child in root.iterdir())
         assert (root / 'foo.txt').read_text(encoding="utf-8") == 'foo'
         (baz,) = (root / 'bar').iterdir()
         assert baz.read_text(encoding="utf-8") == 'baz'
@@ -319,7 +319,7 @@ klasse TestPath(unittest.TestCase):
         """Create a read-only zipfile with a huge number of entries."""
         strm = io.BytesIO()
         zf = zipfile.ZipFile(strm, "w")
-        for entry in map(str, range(self.HUGE_ZIPFILE_NUM_ENTRIES)):
+        fuer entry in map(str, range(self.HUGE_ZIPFILE_NUM_ENTRIES)):
             zf.writestr(entry, entry)
         zf.mode = 'r'
         return zf
@@ -330,7 +330,7 @@ klasse TestPath(unittest.TestCase):
         """
         root = zipfile.Path(self.huge_zipfile())
         entries = jaraco.itertools.Counter(root.iterdir())
-        for entry in entries:
+        fuer entry in entries:
             entry.joinpath('suffix')
         # Check the file iterated all items
         assert entries.count == self.HUGE_ZIPFILE_NUM_ENTRIES
@@ -339,7 +339,7 @@ klasse TestPath(unittest.TestCase):
     def test_read_does_not_close(self, alpharep):
         alpharep = self.zipfile_ondisk(alpharep)
         with zipfile.ZipFile(alpharep) as file:
-            for rep in range(2):
+            fuer rep in range(2):
                 zipfile.Path(file, 'a.txt').read_text(encoding="utf-8")
 
     @pass_alpharep
@@ -481,7 +481,7 @@ klasse TestPath(unittest.TestCase):
     def test_glob_recursive(self, alpharep):
         root = zipfile.Path(alpharep)
         files = root.glob("**/*.txt")
-        assert all(each.match("*.txt") for each in files)
+        assert all(each.match("*.txt") fuer each in files)
 
         assert list(root.glob("**/*.txt")) == list(root.rglob("*.txt"))
 
@@ -587,7 +587,7 @@ klasse TestPath(unittest.TestCase):
         """
         source_path = self.zipfile_ondisk(alpharep)
         zf = zipfile.ZipFile(source_path)
-        # wrap the zipfile for its side effect
+        # wrap the zipfile fuer its side effect
         zipfile.Path(zf)
         zf.extractall(source_path.parent)
 

@@ -22,7 +22,7 @@ klasse WeakSet:
             self.update(data)
 
     def __iter__(self):
-        for itemref in self.data.copy():
+        fuer itemref in self.data.copy():
             item = itemref()
             if item is not None:
                 # Caveat: the iterator will keep a strong reference to
@@ -68,7 +68,7 @@ klasse WeakSet:
         self.data.discard(ref(item))
 
     def update(self, other):
-        for element in other:
+        fuer element in other:
             self.add(element)
 
     def __ior__(self, other):
@@ -87,28 +87,28 @@ klasse WeakSet:
         if self is other:
             self.data.clear()
         else:
-            self.data.difference_update(ref(item) for item in other)
+            self.data.difference_update(ref(item) fuer item in other)
         return self
 
     def intersection(self, other):
-        return self.__class__(item for item in other if item in self)
+        return self.__class__(item fuer item in other if item in self)
     __and__ = intersection
 
     def intersection_update(self, other):
         self.__iand__(other)
     def __iand__(self, other):
-        self.data.intersection_update(ref(item) for item in other)
+        self.data.intersection_update(ref(item) fuer item in other)
         return self
 
     def issubset(self, other):
-        return self.data.issubset(ref(item) for item in other)
+        return self.data.issubset(ref(item) fuer item in other)
     __le__ = issubset
 
     def __lt__(self, other):
         return self.data < set(map(ref, other))
 
     def issuperset(self, other):
-        return self.data.issuperset(ref(item) for item in other)
+        return self.data.issuperset(ref(item) fuer item in other)
     __ge__ = issuperset
 
     def __gt__(self, other):
@@ -131,11 +131,11 @@ klasse WeakSet:
         if self is other:
             self.data.clear()
         else:
-            self.data.symmetric_difference_update(ref(item, self._remove) for item in other)
+            self.data.symmetric_difference_update(ref(item, self._remove) fuer item in other)
         return self
 
     def union(self, other):
-        return self.__class__(e for s in (self, other) for e in s)
+        return self.__class__(e fuer s in (self, other) fuer e in s)
     __or__ = union
 
     def isdisjoint(self, other):

@@ -42,7 +42,7 @@ klasse ForkingPickler(pickle.Pickler):
 
     @classmethod
     def register(cls, type, reduce):
-        '''Register a reduce function for a type.'''
+        '''Register a reduce function fuer a type.'''
         cls._extra_reducers[type] = reduce
 
     @classmethod
@@ -56,7 +56,7 @@ klasse ForkingPickler(pickle.Pickler):
 register = ForkingPickler.register
 
 def dump(obj, file, protocol=None):
-    '''Replacement for pickle.dump() using ForkingPickler.'''
+    '''Replacement fuer pickle.dump() using ForkingPickler.'''
     ForkingPickler(file, protocol).dump(obj)
 
 #
@@ -102,7 +102,7 @@ if sys.platform == 'win32':
         return conn.recv().detach()
 
     klasse DupHandle(object):
-        '''Picklable wrapper for a handle.'''
+        '''Picklable wrapper fuer a handle.'''
         def __init__(self, handle, access, pid=None):
             if pid is None:
                 # We just duplicate the handle in the current process and
@@ -122,7 +122,7 @@ if sys.platform == 'win32':
             '''Get the handle.  This should only be called once.'''
             # retrieve handle from process which currently owns it
             if self._pid == os.getpid():
-                # The handle has already been duplicated for this process.
+                # The handle has already been duplicated fuer this process.
                 return self._handle
             # We must steal the handle from the process whose pid is self._pid.
             proc = _winapi.OpenProcess(_winapi.PROCESS_DUP_HANDLE, False,
@@ -189,7 +189,7 @@ else:
             return recvfds(s, 1)[0]
 
     def DupFd(fd):
-        '''Return a wrapper for an fd.'''
+        '''Return a wrapper fuer an fd.'''
         popen_obj = context.get_spawning_popen()
         if popen_obj is not None:
             return popen_obj.DupFd(popen_obj.duplicate_for_child(fd))
@@ -249,8 +249,8 @@ else:
 
 
 klasse AbstractReducer(metaclass=ABCMeta):
-    '''Abstract base klasse for use in implementing a Reduction class
-    suitable for use in replacing the standard reduction mechanism
+    '''Abstract base klasse fuer use in implementing a Reduction class
+    suitable fuer use in replacing the standard reduction mechanism
     used in multiprocessing.'''
     ForkingPickler = ForkingPickler
     register = register

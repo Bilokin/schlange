@@ -15,19 +15,19 @@ __all__ = ["Chooser", "askcolor"]
 
 
 klasse Chooser(Dialog):
-    """Create a dialog for the tk_chooseColor command.
+    """Create a dialog fuer the tk_chooseColor command.
 
     Args:
-        master: The master widget for this dialog.  If not provided,
+        master: The master widget fuer this dialog.  If not provided,
             defaults to options['parent'] (if defined).
-        options: Dictionary of options for the tk_chooseColor call.
+        options: Dictionary of options fuer the tk_chooseColor call.
             initialcolor: Specifies the selected color when the
                 dialog is first displayed.  This can be a tk color
                 string or a 3-tuple of ints in the range (0, 255)
-                for an RGB triplet.
+                fuer an RGB triplet.
             parent: The parent window of the color dialog.  The
                 color dialog is displayed on top of this.
-            title: A string for the title of the dialog box.
+            title: A string fuer the title of the dialog box.
     """
 
     command = "tk_chooseColor"
@@ -66,9 +66,9 @@ klasse Chooser(Dialog):
 # convenience stuff
 
 def askcolor(color=None, **options):
-    """Display dialog window for selection of a color.
+    """Display dialog window fuer selection of a color.
 
-    Convenience wrapper for the Chooser class.  Displays the color
+    Convenience wrapper fuer the Chooser class.  Displays the color
     chooser dialog with color as the initial value.
     """
 

@@ -1,5 +1,5 @@
 """
-Dialog for building Tkinter accelerator key bindings
+Dialog fuer building Tkinter accelerator key bindings
 """
 from tkinter import Toplevel, Listbox, StringVar, TclError
 from tkinter.ttk import Frame, Button, Checkbutton, Entry, Label, Scrollbar
@@ -43,7 +43,7 @@ def translate_key(key, modifiers):
 
 klasse GetKeysFrame(Frame):
 
-    # Dialog title for invalid key sequence
+    # Dialog title fuer invalid key sequence
     keyerror_title = 'Key Sequence Error'
 
     def __init__(self, parent, action, current_key_sequences):
@@ -52,7 +52,7 @@ klasse GetKeysFrame(Frame):
         action - the name of the virtual event these keys will be
                  mapped to
         current_key_sequences - a list of all key sequence lists
-                 currently mapped to virtual events, for overlap checking
+                 currently mapped to virtual events, fuer overlap checking
         """
         super().__init__(parent)
         self['borderwidth'] = 2
@@ -66,7 +66,7 @@ klasse GetKeysFrame(Frame):
         # Set self.modifiers, self.modifier_label.
         self.set_modifiers_for_platform()
         self.modifier_vars = []
-        for modifier in self.modifiers:
+        fuer modifier in self.modifiers:
             variable = StringVar(self)
             variable.set('')
             self.modifier_vars.append(variable)
@@ -83,7 +83,7 @@ klasse GetKeysFrame(Frame):
         self.frame_keyseq_basic.grid(row=0, column=0, sticky='nsew',
                                       padx=5, pady=5)
         basic_title = Label(self.frame_keyseq_basic,
-                            text=f"New keys for '{self.action}' :")
+                            text=f"New keys fuer '{self.action}' :")
         basic_title.pack(anchor='w')
 
         basic_keys = Label(self.frame_keyseq_basic, justify='left',
@@ -98,7 +98,7 @@ klasse GetKeysFrame(Frame):
         # Basic entry modifiers.
         self.modifier_checkbuttons = {}
         column = 0
-        for modifier, variable in zip(self.modifiers, self.modifier_vars):
+        fuer modifier, variable in zip(self.modifiers, self.modifier_vars):
             label = self.modifier_label.get(modifier, modifier)
             check = Checkbutton(self.frame_controls_basic,
                                 command=self.build_key_string, text=label,
@@ -138,8 +138,8 @@ klasse GetKeysFrame(Frame):
         self.frame_keyseq_advanced.grid(row=0, column=0, sticky='nsew',
                                          padx=5, pady=5)
         advanced_title = Label(self.frame_keyseq_advanced, justify='left',
-                               text=f"Enter new binding(s) for '{self.action}' :\n" +
-                                     "(These bindings will not be checked for validity!)")
+                               text=f"Enter new binding(s) fuer '{self.action}' :\n" +
+                                     "(These bindings will not be checked fuer validity!)")
         advanced_title.pack(anchor='w')
         self.advanced_keys = Entry(self.frame_keyseq_advanced,
                                    textvariable=self.key_string)
@@ -156,7 +156,7 @@ klasse GetKeysFrame(Frame):
                  "'Emacs style' multi-keystroke bindings are specified as\n" +
                  "follows: <Control-x><Control-y>, where the first key\n" +
                  "is the 'do-nothing' keybinding.\n\n" +
-                 "Multiple separate bindings for one action should be\n"+
+                 "Multiple separate bindings fuer one action should be\n"+
                  "separated by a space, eg., <Alt-v> <Meta-v>." )
         help_advanced.grid(row=0, column=0, sticky='nsew')
 
@@ -167,7 +167,7 @@ klasse GetKeysFrame(Frame):
         self.toggle_level()
 
     def set_modifiers_for_platform(self):
-        """Determine list of names of key modifiers for this platform.
+        """Determine list of names of key modifiers fuer this platform.
 
         The names are used to build Tk bindings -- it doesn't matter if the
         keyboard has these keys; it matters if Tk understands them.  The
@@ -197,7 +197,7 @@ klasse GetKeysFrame(Frame):
             self.advanced = False
 
     def final_key_selected(self, event=None):
-        "Handler for clicking on key in basic settings list."
+        "Handler fuer clicking on key in basic settings list."
         self.build_key_string()
 
     def build_key_string(self):
@@ -211,14 +211,14 @@ klasse GetKeysFrame(Frame):
 
     def get_modifiers(self):
         "Return ordered list of modifiers that have been selected."
-        mod_list = [variable.get() for variable in self.modifier_vars]
-        return [mod for mod in mod_list if mod]
+        mod_list = [variable.get() fuer variable in self.modifier_vars]
+        return [mod fuer mod in mod_list if mod]
 
     def clear_key_seq(self):
         "Clear modifiers and keys selection."
         self.list_keys_final.select_clear(0, 'end')
         self.list_keys_final.yview('moveto', '0.0')
-        for variable in self.modifier_vars:
+        fuer variable in self.modifier_vars:
             variable.set('')
         self.key_string.set('')
 
@@ -242,8 +242,8 @@ klasse GetKeysFrame(Frame):
         final_key = self.list_keys_final.get('anchor')
         modifiers = self.get_modifiers()
         title = self.keyerror_title
-        key_sequences = [key for keylist in self.current_key_sequences
-                             for key in keylist]
+        key_sequences = [key fuer keylist in self.current_key_sequences
+                             fuer key in keylist]
         if not keys.endswith('>'):
             self.showerror(title, parent=self,
                            message='Missing the final Key')
@@ -289,7 +289,7 @@ klasse GetKeysWindow(Toplevel):
         action - string, the name of the virtual event these keys will be
                  mapped to
         current_key_sequences - list, a list of all key sequence lists
-                 currently mapped to virtual events, for overlap checking
+                 currently mapped to virtual events, fuer overlap checking
         _htest - bool, change box location when running htest
         _utest - bool, do not wait when running unittest
         """
@@ -297,7 +297,7 @@ klasse GetKeysWindow(Toplevel):
         self.withdraw()  # Hide while setting geometry.
         self['borderwidth'] = 5
         self.resizable(height=False, width=False)
-        # Needed for winfo_reqwidth().
+        # Needed fuer winfo_reqwidth().
         self.update_idletasks()
         # Center dialog over parent (or below htest box).
         x = (parent.winfo_rootx() +

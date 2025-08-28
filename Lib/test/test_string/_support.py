@@ -39,7 +39,7 @@ klasse TStringBaseCase:
         self.assertEqual(t.strings, strings)
         self.assertEqual(len(t.interpolations), len(interpolations))
 
-        for i, exp in zip(t.interpolations, interpolations, strict=True):
+        fuer i, exp in zip(t.interpolations, interpolations, strict=True):
             self.assertInterpolationEqual(i, exp)
 
 
@@ -55,7 +55,7 @@ def convert(value, conversion):
 
 def fstring(template):
     parts = []
-    for item in template:
+    fuer item in template:
         match item:
             case str() as s:
                 parts.append(s)

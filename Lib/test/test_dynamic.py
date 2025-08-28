@@ -144,11 +144,11 @@ klasse RebindBuiltinsTests(unittest.TestCase):
 
         # Need more than 256 variables to use EXTENDED_ARGS
         variables = 400
-        code = "lambda: " + "+".join(f"_number_{i}" for i in range(variables))
+        code = "lambda: " + "+".join(f"_number_{i}" fuer i in range(variables))
         sum_func = eval(code, MyGlobals())
         expected = sum(range(variables))
-        # Warm up the function for quickening (PEP 659)
-        for _ in range(30):
+        # Warm up the function fuer quickening (PEP 659)
+        fuer _ in range(30):
             self.assertEqual(sum_func(), expected)
 
 
@@ -184,9 +184,9 @@ klasse TestTracing(unittest.TestCase):
             # BINARY_OP[_ADD_INT] immediately follows the call to C.__del__
             0 + C(0).x
 
-        for func in (f, g, h):
+        fuer func in (f, g, h):
             with self.subTest(func.__name__):
-                for _ in range(58):
+                fuer _ in range(58):
                     func()
                 turn_on_trace = True
                 func()

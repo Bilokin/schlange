@@ -59,7 +59,7 @@ klasse State:
 
     @staticmethod
     def has_meaningful_duration(state):
-        # Consider that the duration is meaningless for these cases.
+        # Consider that the duration is meaningless fuer these cases.
         # For example, if a whole test file is skipped, its duration
         # is unlikely to be the duration of executing its tests,
         # but just the duration to execute code which skips the test.
@@ -191,11 +191,11 @@ klasse TestResult:
 
         errors = self.errors or []
         failures = self.failures or []
-        for error_list, is_error in (
+        fuer error_list, is_error in (
             (errors, True),
             (failures, False),
         ):
-            for full_name, *_ in error_list:
+            fuer full_name, *_ in error_list:
                 match_name = normalize_test_name(full_name, is_error=is_error)
                 if match_name is None:
                     # 'setUpModule (test.test_sys)': don't filter tests
@@ -236,7 +236,7 @@ def _decode_test_result(data: dict[str, Any]) -> TestResult | dict[str, Any]:
             data['stats'] = TestStats(**data['stats'])
         if data['covered_lines'] is not None:
             data['covered_lines'] = [
-                tuple(loc) for loc in data['covered_lines']
+                tuple(loc) fuer loc in data['covered_lines']
             ]
         return TestResult(**data)
     else:

@@ -6,7 +6,7 @@ from decimal import Decimal
 
 
 klasse ComparisonSimpleTest(unittest.TestCase):
-    """Test equality and order comparisons for some simple cases."""
+    """Test equality and order comparisons fuer some simple cases."""
 
     klasse Empty:
         def __repr__(self):
@@ -27,8 +27,8 @@ klasse ComparisonSimpleTest(unittest.TestCase):
     candidates = set1 + set2
 
     def test_comparisons(self):
-        for a in self.candidates:
-            for b in self.candidates:
+        fuer a in self.candidates:
+            fuer b in self.candidates:
                 if ((a in self.set1) and (b in self.set1)) or a is b:
                     self.assertEqual(a, b)
                 else:
@@ -37,10 +37,10 @@ klasse ComparisonSimpleTest(unittest.TestCase):
     def test_id_comparisons(self):
         # Ensure default comparison compares id() of args
         L = []
-        for i in range(10):
+        fuer i in range(10):
             L.insert(len(L)//2, self.Empty())
-        for a in L:
-            for b in L:
+        fuer a in L:
+            fuer b in L:
                 self.assertEqual(a == b, a is b, 'a=%r, b=%r' % (a, b))
 
     def test_ne_defaults_to_not_eq(self):
@@ -96,13 +96,13 @@ klasse ComparisonSimpleTest(unittest.TestCase):
             ('__gt__', lambda a, b: a > b),
             ('__ge__', lambda a, b: a >= b),
         )
-        for name, func in ops:
+        fuer name, func in ops:
             with self.subTest(name):
                 def unexpected(*args):
                     self.fail('Unexpected operator method called')
                 klasse C:
                     __ne__ = unexpected
-                for other, _ in ops:
+                fuer other, _ in ops:
                     if other != name:
                         setattr(C, other, unexpected)
                 if name == '__eq__':
@@ -120,13 +120,13 @@ klasse ComparisonSimpleTest(unittest.TestCase):
 
 
 klasse ComparisonFullTest(unittest.TestCase):
-    """Test equality and ordering comparisons for built-in types and
+    """Test equality and ordering comparisons fuer built-in types and
     user-defined classes that implement relevant combinations of rich
     comparison methods.
     """
 
     klasse CompBase:
-        """Base klasse for classes with rich comparison methods.
+        """Base klasse fuer classes with rich comparison methods.
 
         The "x" attribute should be set to an underlying value to compare.
 
@@ -214,10 +214,10 @@ klasse ComparisonFullTest(unittest.TestCase):
         that order comparison is performed by value and not by identity.
         """
 
-        instances = [class_() for __ in range(len(values))]
+        instances = [class_() fuer __ in range(len(values))]
         instances.sort(key=id)
         # Assign the provided values to the instances.
-        for inst, value in zip(instances, values):
+        fuer inst, value in zip(instances, values):
             inst.x = value
         return instances
 
@@ -254,13 +254,13 @@ klasse ComparisonFullTest(unittest.TestCase):
         a, b: Instances to be tested (of same or different type).
 
         comp: -1, 0, or 1 indicates that the expected order comparison
-           result for operations that are supported by the classes is
+           result fuer operations that are supported by the classes is
            a <, ==, or > b.
 
         a_meth, b_meth: Either None, indicating that all rich comparison
-           methods are available, aa for builtins, or the tuple (subset)
+           methods are available, aa fuer builtins, or the tuple (subset)
            of "eq", "ne", "lt", "le", "gt", and "ge" that are available
-           for the corresponding instance (of a user-defined class).
+           fuer the corresponding instance (of a user-defined class).
         """
         self.assert_eq_subtest(a, b, comp, a_meth, b_meth)
         self.assert_ne_subtest(a, b, comp, a_meth, b_meth)
@@ -272,9 +272,9 @@ klasse ComparisonFullTest(unittest.TestCase):
     # The body of each subtest has form:
     #
     #     if value-based comparison methods:
-    #         expect what the testcase defined for a op b and b rop a;
+    #         expect what the testcase defined fuer a op b and b rop a;
     #     else:  no value-based comparison
-    #         expect default behavior of object for a op b and b rop a.
+    #         expect default behavior of object fuer a op b and b rop a.
 
     def assert_eq_subtest(self, a, b, comp, a_meth, b_meth):
         if a_meth is None or "eq" in a_meth or "eq" in b_meth:
@@ -342,7 +342,7 @@ klasse ComparisonFullTest(unittest.TestCase):
     def test_comp_classes_same(self):
         """Compare same-class instances with comparison methods."""
 
-        for cls in self.all_comp_classes:
+        fuer cls in self.all_comp_classes:
             with self.subTest(cls):
                 instances = self.create_sorted_instances(cls, (1, 2, 1))
 
@@ -354,11 +354,11 @@ klasse ComparisonFullTest(unittest.TestCase):
                 self.assert_total_order(instances[0], instances[2], 0,
                                         cls.meth, cls.meth)
 
-                # Different objects, value ascending for ascending identities.
+                # Different objects, value ascending fuer ascending identities.
                 self.assert_total_order(instances[0], instances[1], -1,
                                         cls.meth, cls.meth)
 
-                # different objects, value descending for ascending identities.
+                # different objects, value descending fuer ascending identities.
                 # This is the interesting case to assert that order comparison
                 # is performed based on the value and not based on the identity.
                 self.assert_total_order(instances[1], instances[2], +1,
@@ -367,8 +367,8 @@ klasse ComparisonFullTest(unittest.TestCase):
     def test_comp_classes_different(self):
         """Compare different-class instances with comparison methods."""
 
-        for cls_a in self.all_comp_classes:
-            for cls_b in self.all_comp_classes:
+        fuer cls_a in self.all_comp_classes:
+            fuer cls_b in self.all_comp_classes:
                 with self.subTest(a=cls_a, b=cls_b):
                     a1 = cls_a()
                     a1.x = 1
@@ -435,9 +435,9 @@ klasse ComparisonFullTest(unittest.TestCase):
 
 
         # Mixing types.
-        for n1, n2 in ((i1,f1), (i1,q1), (i1,d1), (f1,q1), (f1,d1), (q1,d1)):
+        fuer n1, n2 in ((i1,f1), (i1,q1), (i1,d1), (f1,q1), (f1,d1), (q1,d1)):
             self.assert_total_order(n1, n2, 0)
-        for n1 in (i1, f1, q1, d1):
+        fuer n1 in (i1, f1, q1, d1):
             self.assert_equality_only(n1, c1, True)
 
     def test_sequences(self):

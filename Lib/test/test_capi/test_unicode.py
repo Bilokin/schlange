@@ -36,7 +36,7 @@ klasse CAPITest(unittest.TestCase):
         """Test PyUnicode_New()"""
         from _testcapi import unicode_new as new
 
-        for maxchar in 0, 0x61, 0xa1, 0x4f60, 0x1f600, 0x10ffff:
+        fuer maxchar in 0, 0x61, 0xa1, 0x4f60, 0x1f600, 0x10ffff:
             self.assertEqual(new(0, maxchar), '')
             self.assertEqual(new(5, maxchar), chr(maxchar)*5)
             self.assertRaises(MemoryError, new, PY_SSIZE_T_MAX, maxchar)
@@ -65,13 +65,13 @@ klasse CAPITest(unittest.TestCase):
         ]
         chars = [0x78, 0xa9, 0x20ac, 0x1f638]
 
-        for idx, fill_char in enumerate(chars):
+        fuer idx, fill_char in enumerate(chars):
             # wide -> narrow: exceed maxchar limitation
-            for to in strings[:idx]:
+            fuer to in strings[:idx]:
                 self.assertRaises(ValueError, fill, to, 0, 0, fill_char)
-            for to in strings[idx:]:
-                for start in [*range(7), PY_SSIZE_T_MAX]:
-                    for length in [*range(-1, 7 - start), PY_SSIZE_T_MIN, PY_SSIZE_T_MAX]:
+            fuer to in strings[idx:]:
+                fuer start in [*range(7), PY_SSIZE_T_MAX]:
+                    fuer length in [*range(-1, 7 - start), PY_SSIZE_T_MIN, PY_SSIZE_T_MAX]:
                         filled = max(min(length, 5 - start), 0)
                         if filled == 5 and to != strings[idx]:
                             # narrow -> wide
@@ -98,14 +98,14 @@ klasse CAPITest(unittest.TestCase):
         from _testlimitedcapi import unicode_writechar as writechar
 
         strings = [
-            # one string for every kind
+            # one string fuer every kind
             'abc', '\xa1\xa2\xa3', '\u4f60\u597d\u4e16',
             '\U0001f600\U0001f601\U0001f602'
         ]
-        # one character for every kind + out of range code
+        # one character fuer every kind + out of range code
         chars = [0x78, 0xa9, 0x20ac, 0x1f638, 0x110000]
-        for i, s in enumerate(strings):
-            for j, c in enumerate(chars):
+        fuer i, s in enumerate(strings):
+            fuer j, c in enumerate(chars):
                 if j <= i:
                     self.assertEqual(writechar(s, 1, c),
                                      (s[:1] + chr(c) + s[2:], 0))
@@ -133,7 +133,7 @@ klasse CAPITest(unittest.TestCase):
             'abc', '\xa1\xa2\xa3', '\u4f60\u597d\u4e16',
             '\U0001f600\U0001f601\U0001f602'
         ]
-        for s in strings:
+        fuer s in strings:
             self.assertEqual(resize(s, 3), (s, 0))
             self.assertEqual(resize(s, 2), (s[:2], 0))
             self.assertEqual(resize(s, 4), (s + '\0', 0))
@@ -158,9 +158,9 @@ klasse CAPITest(unittest.TestCase):
             'abc', '\xa1\xa2\xa3', '\u4f60\u597d\u4e16',
             '\U0001f600\U0001f601\U0001f602'
         ]
-        for left in strings:
+        fuer left in strings:
             left = left[::-1]
-            for right in strings:
+            fuer right in strings:
                 expected = left + right
                 self.assertEqual(append(left, right), expected)
 
@@ -186,9 +186,9 @@ klasse CAPITest(unittest.TestCase):
             'abc', '\xa1\xa2\xa3', '\u4f60\u597d\u4e16',
             '\U0001f600\U0001f601\U0001f602'
         ]
-        for left in strings:
+        fuer left in strings:
             left = left[::-1]
-            for right in strings:
+            fuer right in strings:
                 self.assertEqual(appendanddel(left, right), left + right)
 
         self.assertRaises(SystemError, appendanddel, 'abc', b'abc')
@@ -256,22 +256,22 @@ klasse CAPITest(unittest.TestCase):
             '\U0001f600\U0001f601\U0001f602\U0001f603\U0001f604'
         ]
         enc1 = 'latin1'
-        for s in strings[:2]:
+        fuer s in strings[:2]:
             self.assertEqual(fromkindanddata(1, s.encode(enc1)), s)
         enc2 = 'utf-16le' if sys.byteorder == 'little' else 'utf-16be'
-        for s in strings[:3]:
+        fuer s in strings[:3]:
             self.assertEqual(fromkindanddata(2, s.encode(enc2)), s)
         enc4 = 'utf-32le' if sys.byteorder == 'little' else 'utf-32be'
-        for s in strings:
+        fuer s in strings:
             self.assertEqual(fromkindanddata(4, s.encode(enc4)), s)
         self.assertEqual(fromkindanddata(2, '\U0001f600'.encode(enc2)),
                          '\ud83d\ude00')
-        for kind in 1, 2, 4:
+        fuer kind in 1, 2, 4:
             self.assertEqual(fromkindanddata(kind, b''), '')
             self.assertEqual(fromkindanddata(kind, b'\0'*kind), '\0')
             self.assertEqual(fromkindanddata(kind, NULL, 0), '')
 
-        for kind in -1, 0, 3, 5, 8:
+        fuer kind in -1, 0, 3, 5, 8:
             self.assertRaises(SystemError, fromkindanddata, kind, b'')
         self.assertRaises(ValueError, fromkindanddata, 1, b'abc', -1)
         self.assertRaises(ValueError, fromkindanddata, 1, b'abc', PY_SSIZE_T_MIN)
@@ -291,9 +291,9 @@ klasse CAPITest(unittest.TestCase):
             'ab\xa1\xa2\u4f60\u597d',
             'ab\xa1\xa2\u4f60\u597d\U0001f600\U0001f601'
         ]
-        for s in strings:
-            for start in [*range(0, len(s) + 2), PY_SSIZE_T_MAX]:
-                for end in [*range(max(start-1, 0), len(s) + 2), PY_SSIZE_T_MAX]:
+        fuer s in strings:
+            fuer start in [*range(0, len(s) + 2), PY_SSIZE_T_MAX]:
+                fuer end in [*range(max(start-1, 0), len(s) + 2), PY_SSIZE_T_MAX]:
                     self.assertEqual(substring(s, start, end), s[start:end])
 
         self.assertRaises(IndexError, substring, 'abc', -1, 0)
@@ -310,7 +310,7 @@ klasse CAPITest(unittest.TestCase):
         """Test PyUnicode_GetLength()"""
         from _testlimitedcapi import unicode_getlength as getlength
 
-        for s in ['abc', '\xa1\xa2', '\u4f60\u597d', 'a\U0001f600',
+        fuer s in ['abc', '\xa1\xa2', '\u4f60\u597d', 'a\U0001f600',
                   'a\ud800b\udfffc', '\ud834\udd1e']:
             self.assertEqual(getlength(s), len(s))
 
@@ -324,9 +324,9 @@ klasse CAPITest(unittest.TestCase):
         """Test PyUnicode_ReadChar()"""
         from _testlimitedcapi import unicode_readchar as readchar
 
-        for s in ['abc', '\xa1\xa2', '\u4f60\u597d', 'a\U0001f600',
+        fuer s in ['abc', '\xa1\xa2', '\u4f60\u597d', 'a\U0001f600',
                   'a\ud800b\udfffc', '\ud834\udd1e']:
-            for i, c in enumerate(s):
+            fuer i, c in enumerate(s):
                 self.assertEqual(readchar(s, i), ord(c))
             self.assertRaises(IndexError, readchar, s, len(s))
             self.assertRaises(IndexError, readchar, s, PY_SSIZE_T_MAX)
@@ -343,7 +343,7 @@ klasse CAPITest(unittest.TestCase):
         """Test PyUnicode_FromObject()"""
         from _testlimitedcapi import unicode_fromobject as fromobject
 
-        for s in ['abc', '\xa1\xa2', '\u4f60\u597d', 'a\U0001f600',
+        fuer s in ['abc', '\xa1\xa2', '\u4f60\u597d', 'a\U0001f600',
                   'a\ud800b\udfffc', '\ud834\udd1e']:
             self.assertEqual(fromobject(s), s)
             o = Str(s)
@@ -360,7 +360,7 @@ klasse CAPITest(unittest.TestCase):
     def test_from_format(self):
         """Test PyUnicode_FromFormat()"""
         # Length modifiers "j" and "t" are not tested here because ctypes does
-        # not expose types for intmax_t and ptrdiff_t.
+        # not expose types fuer intmax_t and ptrdiff_t.
         # _testlimitedcapi.test_string_from_format() has a wider coverage of all
         # formats.
         from ctypes import (
@@ -377,7 +377,7 @@ klasse CAPITest(unittest.TestCase):
         def PyUnicode_FromFormat(format, *args):
             cargs = tuple(
                 py_object(arg) if isinstance(arg, str) else arg
-                for arg in args)
+                fuer arg in args)
             return _PyUnicode_FromFormat(format, *cargs)
 
         def check_format(expected, format, *args):
@@ -540,7 +540,7 @@ klasse CAPITest(unittest.TestCase):
                      b'%03i', c_int(10))
         check_format('0010',
                      b'%0.4i', c_int(10))
-        for conv, signed, value, expected in [
+        fuer conv, signed, value, expected in [
             (b'i', True, -123, '-123'),
             (b'd', True, -123, '-123'),
             (b'u', False, 123, '123'),
@@ -548,7 +548,7 @@ klasse CAPITest(unittest.TestCase):
             (b'x', False, 0xabc, 'abc'),
             (b'X', False, 0xabc, 'ABC'),
         ]:
-            for mod, ctype in [
+            fuer mod, ctype in [
                 (b'', c_int if signed else c_uint),
                 (b'l', c_long if signed else c_ulong),
                 (b'll', c_longlong if signed else c_ulonglong),
@@ -780,8 +780,8 @@ klasse CAPITest(unittest.TestCase):
                      b'%s', b'')
 
         # test invalid format strings. these tests are just here
-        # to check for crashes and should not be considered as specifications
-        for fmt in (b'%', b'%0', b'%01', b'%.', b'%.1',
+        # to check fuer crashes and should not be considered as specifications
+        fuer fmt in (b'%', b'%0', b'%01', b'%.', b'%.1',
                     b'%0%s', b'%1%s', b'%.%s', b'%.1%s', b'%1abc',
                     b'%l', b'%ll', b'%z', b'%lls', b'%zs'):
             with self.subTest(fmt=fmt):
@@ -829,11 +829,11 @@ klasse CAPITest(unittest.TestCase):
         elif SIZEOF_WCHAR_T == 4:
             encoding = 'utf-32le' if sys.byteorder == 'little' else 'utf-32be'
 
-        for s in '', 'abc', '\xa1\xa2', '\u4f60', '\U0001f600':
+        fuer s in '', 'abc', '\xa1\xa2', '\u4f60', '\U0001f600':
             b = s.encode(encoding)
             self.assertEqual(fromwidechar(b), s)
             self.assertEqual(fromwidechar(b + b'\0'*SIZEOF_WCHAR_T, -1), s)
-        for s in '\ud83d', '\ude00':
+        fuer s in '\ud83d', '\ude00':
             b = s.encode(encoding, 'surrogatepass')
             self.assertEqual(fromwidechar(b), s)
             self.assertEqual(fromwidechar(b + b'\0'*SIZEOF_WCHAR_T, -1), s)
@@ -941,7 +941,7 @@ klasse CAPITest(unittest.TestCase):
         """Test PyUnicode_AsUCS4()"""
         from _testcapi import unicode_asucs4
 
-        for s in ['abc', '\xa1\xa2', '\u4f60\u597d', 'a\U0001f600',
+        fuer s in ['abc', '\xa1\xa2', '\u4f60\u597d', 'a\U0001f600',
                   'a\ud800b\udfffc', '\ud834\udd1e']:
             l = len(s)
             self.assertEqual(unicode_asucs4(s, l, 1), s+'\0')
@@ -966,7 +966,7 @@ klasse CAPITest(unittest.TestCase):
         """Test PyUnicode_AsUCS4Copy()"""
         from _testcapi import unicode_asucs4copy as asucs4copy
 
-        for s in ['abc', '\xa1\xa2', '\u4f60\u597d', 'a\U0001f600',
+        fuer s in ['abc', '\xa1\xa2', '\u4f60\u597d', 'a\U0001f600',
                   'a\ud800b\udfffc', '\ud834\udd1e']:
             self.assertEqual(asucs4copy(s), s+'\0')
             s = '\0'.join([s, s])
@@ -1015,10 +1015,10 @@ klasse CAPITest(unittest.TestCase):
         data = "😊"
 
         def worker():
-            for _ in range(1000):
+            fuer _ in range(1000):
                 self.assertEqual(unicode_asutf8(data, 5), b'\xf0\x9f\x98\x8a\0')
 
-        threads = [Thread(target=worker) for _ in range(10)]
+        threads = [Thread(target=worker) fuer _ in range(10)]
         with threading_helper.start_threads(threads):
             pass
 
@@ -1259,8 +1259,8 @@ klasse CAPITest(unittest.TestCase):
         """Test PyUnicode_Count()"""
         from _testlimitedcapi import unicode_count
 
-        for str in "\xa1", "\u8000\u8080", "\ud800\udc02", "\U0001f100\U0001f1f1":
-            for i, ch in enumerate(str):
+        fuer str in "\xa1", "\u8000\u8080", "\ud800\udc02", "\U0001f100\U0001f1f1":
+            fuer i, ch in enumerate(str):
                 self.assertEqual(unicode_count(str, ch, 0, len(str)), 1)
 
         str = "!>_<!"
@@ -1325,8 +1325,8 @@ klasse CAPITest(unittest.TestCase):
         """Test PyUnicode_Find()"""
         from _testlimitedcapi import unicode_find as find
 
-        for str in "\xa1", "\u8000\u8080", "\ud800\udc02", "\U0001f100\U0001f1f1":
-            for i, ch in enumerate(str):
+        fuer str in "\xa1", "\u8000\u8080", "\ud800\udc02", "\U0001f100\U0001f1f1":
+            fuer i, ch in enumerate(str):
                 self.assertEqual(find(str, ch, 0, len(str), 1), i)
                 self.assertEqual(find(str, ch, 0, len(str), -1), i)
 
@@ -1366,8 +1366,8 @@ klasse CAPITest(unittest.TestCase):
         """Test PyUnicode_FindChar()"""
         from _testlimitedcapi import unicode_findchar
 
-        for str in "\xa1", "\u8000\u8080", "\ud800\udc02", "\U0001f100\U0001f1f1":
-            for i, ch in enumerate(str):
+        fuer str in "\xa1", "\u8000\u8080", "\ud800\udc02", "\U0001f100\U0001f1f1":
+            fuer i, ch in enumerate(str):
                 self.assertEqual(unicode_findchar(str, ord(ch), 0, len(str), 1), i)
                 self.assertEqual(unicode_findchar(str, ord(ch), 0, len(str), -1), i)
 
@@ -1478,7 +1478,7 @@ klasse CAPITest(unittest.TestCase):
             '\U0001f600\U0001f601\U0001f602',
             '\U0010ffff',
         ]
-        for s in strings:
+        fuer s in strings:
             # Call PyUnicode_AsUTF8AndSize() which creates the UTF-8
             # encoded string cached in the Unicode object.
             asutf8andsize(s, 0)
@@ -1524,7 +1524,7 @@ klasse CAPITest(unittest.TestCase):
             '\U0001f600\U0001f601\U0001f602',
             '\U0010ffff',
         ]
-        for s in strings:
+        fuer s in strings:
             # Call PyUnicode_AsUTF8AndSize() which creates the UTF-8
             # encoded string cached in the Unicode object.
             asutf8andsize(s, 0)
@@ -1589,8 +1589,8 @@ klasse CAPITest(unittest.TestCase):
 
         LT, LE, EQ, NE, GT, GE = range(6)
         strings = ('abc', 'абв', '\U0001f600', 'abc\0')
-        for s1 in strings:
-            for s2 in strings:
+        fuer s1 in strings:
+            fuer s2 in strings:
                 self.assertIs(richcompare(s1, s2, LT), s1 < s2)
                 self.assertIs(richcompare(s1, s2, LE), s1 <= s2)
                 self.assertIs(richcompare(s1, s2, EQ), s1 == s2)
@@ -1598,7 +1598,7 @@ klasse CAPITest(unittest.TestCase):
                 self.assertIs(richcompare(s1, s2, GT), s1 > s2)
                 self.assertIs(richcompare(s1, s2, GE), s1 >= s2)
 
-        for op in LT, LE, EQ, NE, GT, GE:
+        fuer op in LT, LE, EQ, NE, GT, GE:
             self.assertIs(richcompare(b'abc', 'abc', op), NotImplemented)
             self.assertIs(richcompare('abc', b'abc', op), NotImplemented)
             self.assertIs(richcompare(b'abc', b'abc', op), NotImplemented)
@@ -1679,21 +1679,21 @@ klasse CAPITest(unittest.TestCase):
             '\U0001f600\U0001f601\U0001f602\U0001f603\U0001f604'
         ]
 
-        for idx, from_ in enumerate(strings):
+        fuer idx, from_ in enumerate(strings):
             # wide -> narrow: exceed maxchar limitation
-            for to in strings[:idx]:
+            fuer to in strings[:idx]:
                 self.assertRaises(
                     SystemError,
                     unicode_copycharacters, to, 0, from_, 0, 5
                 )
             # same kind
-            for from_start in range(5):
+            fuer from_start in range(5):
                 self.assertEqual(
                     unicode_copycharacters(from_, 0, from_, from_start, 5),
                     (from_[from_start:from_start+5].ljust(5, '\0'),
                      5-from_start)
                 )
-            for to_start in range(5):
+            fuer to_start in range(5):
                 self.assertEqual(
                     unicode_copycharacters(from_, to_start, from_, to_start, 5),
                     (from_[to_start:to_start+5].rjust(5, '\0'),
@@ -1726,9 +1726,9 @@ klasse CAPITest(unittest.TestCase):
     def test_pep393_utf8_caching_bug(self):
         # Issue #25709: Problem with string concatenation and utf-8 cache
         from _testcapi import getargs_s_hash
-        for k in 0x24, 0xa4, 0x20ac, 0x1f40d:
+        fuer k in 0x24, 0xa4, 0x20ac, 0x1f40d:
             s = ''
-            for i in range(5):
+            fuer i in range(5):
                 # Due to CPython specific optimization the 's' string can be
                 # resized in-place.
                 s += chr(k)
@@ -1965,7 +1965,7 @@ klasse PyUnicodeWriterFormatTest(unittest.TestCase):
         self.assertFalse(unicode_equal(Str("abc"), "abcd"))
 
         # invalid type
-        for invalid_type in (b'bytes', 123, ("tuple",)):
+        fuer invalid_type in (b'bytes', 123, ("tuple",)):
             with self.subTest(invalid_type=invalid_type):
                 with self.assertRaises(TypeError):
                     unicode_equal("abc", invalid_type)

@@ -200,7 +200,7 @@ klasse FutureTests(BaseTestCase):
     def test_result_with_success(self):
         # TODO(brian@sweetapp.com): This test is timing dependent.
         def notification():
-            # Wait until the main thread is waiting for the result.
+            # Wait until the main thread is waiting fuer the result.
             time.sleep(1)
             f1.set_result(42)
 
@@ -214,7 +214,7 @@ klasse FutureTests(BaseTestCase):
     def test_result_with_cancel(self):
         # TODO(brian@sweetapp.com): This test is timing dependent.
         def notification():
-            # Wait until the main thread is waiting for the result.
+            # Wait until the main thread is waiting fuer the result.
             time.sleep(1)
             f1.cancel()
 
@@ -241,7 +241,7 @@ klasse FutureTests(BaseTestCase):
 
     def test_exception_with_success(self):
         def notification():
-            # Wait until the main thread is waiting for the exception.
+            # Wait until the main thread is waiting fuer the exception.
             time.sleep(1)
             with f1._condition:
                 f1._state = FINISHED
@@ -284,7 +284,7 @@ klasse FutureTests(BaseTestCase):
         self.assertEqual(f.exception(), e)
 
     def test_get_snapshot(self):
-        """Test the _get_snapshot method for atomic state retrieval."""
+        """Test the _get_snapshot method fuer atomic state retrieval."""
         # Test with a pending future
         f = Future()
         done, cancelled, result, exception = f._get_snapshot()
@@ -327,16 +327,16 @@ klasse FutureTests(BaseTestCase):
         results = []
 
         def get_snapshot():
-            for _ in range(1000):
+            fuer _ in range(1000):
                 snapshot = f._get_snapshot()
                 results.append(snapshot)
 
-        threads = [threading.Thread(target=get_snapshot) for _ in range(4)]
+        threads = [threading.Thread(target=get_snapshot) fuer _ in range(4)]
         with threading_helper.start_threads(threads):
             pass
-        # All snapshots should be identical for a finished future
+        # All snapshots should be identical fuer a finished future
         expected = (True, False, 100, None)
-        for result in results:
+        fuer result in results:
             self.assertEqual(result, expected)
 
 

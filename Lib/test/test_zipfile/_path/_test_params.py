@@ -14,7 +14,7 @@ def parameterize(names, value_groups):
     def decorator(func):
         @functools.wraps(func)
         def wrapped(self):
-            for values in value_groups:
+            fuer values in value_groups:
                 resolved = map(Invoked.eval, always_iterable(values))
                 params = dict(zip(always_iterable(names), resolved))
                 with self.subTest(**params):
@@ -27,7 +27,7 @@ def parameterize(names, value_groups):
 
 klasse Invoked(types.SimpleNamespace):
     """
-    Wrap a function to be invoked for each usage.
+    Wrap a function to be invoked fuer each usage.
     """
 
     @classmethod

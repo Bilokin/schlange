@@ -9,13 +9,13 @@ Martin von Loewis' work[1] helps considerably in this regard.
 
 pygettext uses Python's standard tokenize module to scan Python source
 code, generating .pot files identical to what GNU xgettext[2] generates
-for C and C++ code. From there, the standard GNU tools can be used.
+fuer C and C++ code. From there, the standard GNU tools can be used.
 
-A word about marking Python strings as candidates for translation. GNU
+A word about marking Python strings as candidates fuer translation. GNU
 xgettext recognizes the following keywords: gettext, dgettext, dcgettext,
 and gettext_noop. But those can be a lot of text to include all over your
 code. C and C++ have a trick: they use the C preprocessor. Most
-internationalized C source includes a #define for gettext() to _() so that
+internationalized C source includes a #define fuer gettext() to _() so that
 what has to be written in the source is much less. Thus these are both
 translatable strings:
 
@@ -23,8 +23,8 @@ translatable strings:
     _("Translatable String")
 
 Python of course has no preprocessor so this doesn't work so well.  Thus,
-pygettext searches only for _() by default, but see the -k/--keyword flag
-below for how to augment this.
+pygettext searches only fuer _() by default, but see the -k/--keyword flag
+below fuer how to augment this.
 
  [1] https://www.python.org/workshops/1997-10/proceedings/loewis.html
  [2] https://www.gnu.org/software/gettext/gettext.html
@@ -72,7 +72,7 @@ Options:
 
     -k word
     --keyword=word
-        Keywords to look for in addition to the default set, which are:
+        Keywords to look fuer in addition to the default set, which are:
         _, gettext, ngettext, pgettext, npgettext, dgettext, dngettext,
         dpgettext, and dnpgettext.
 
@@ -104,7 +104,7 @@ Options:
 
     -S stylename
     --style stylename
-        Specify which style to use for location comments.  Two styles are
+        Specify which style to use fuer location comments.  Two styles are
         supported:
 
         Solaris  # File: filename, line: line-number
@@ -193,8 +193,8 @@ def make_escapes(pass_nonascii):
         escape = escape_ascii
     else:
         escape = escape_nonascii
-    escapes = [r"\%03o" % i for i in range(256)]
-    for i in range(32, 127):
+    escapes = [r"\%03o" % i fuer i in range(256)]
+    fuer i in range(32, 127):
         escapes[i] = chr(i)
     escapes[ord('\\')] = r'\\'
     escapes[ord('\t')] = r'\t'
@@ -206,16 +206,16 @@ def make_escapes(pass_nonascii):
 def escape_ascii(s, encoding):
     return ''.join(escapes[ord(c)] if ord(c) < 128 else c
                    if c.isprintable() else escape_nonascii(c, encoding)
-                   for c in s)
+                   fuer c in s)
 
 
 def escape_nonascii(s, encoding):
-    return ''.join(escapes[b] for b in s.encode(encoding))
+    return ''.join(escapes[b] fuer b in s.encode(encoding))
 
 
 def normalize(s, encoding):
     # This converts the various Python string types into a format that is
-    # appropriate for .po files, namely much closer to C style.
+    # appropriate fuer .po files, namely much closer to C style.
     lines = s.split('\n')
     if len(lines) == 1:
         s = '"' + escape(s, encoding) + '"'
@@ -223,7 +223,7 @@ def normalize(s, encoding):
         if not lines[-1]:
             del lines[-1]
             lines[-1] = lines[-1] + '\n'
-        for i in range(len(lines)):
+        fuer i in range(len(lines)):
             lines[i] = escape(lines[i], encoding)
         lineterm = '\\n"\n"'
         s = '""\n"' + lineterm.join(lines) + '"'
@@ -232,19 +232,19 @@ def normalize(s, encoding):
 
 def containsAny(str, set):
     """Check whether 'str' contains ANY of the chars in 'set'"""
-    return 1 in [c in str for c in set]
+    return 1 in [c in str fuer c in set]
 
 
 def getFilesForName(name):
-    """Get a list of module files for a filename, a module or package name,
+    """Get a list of module files fuer a filename, a module or package name,
     or a directory.
     """
     if not os.path.exists(name):
-        # check for glob chars
+        # check fuer glob chars
         if containsAny(name, "*?[]"):
             files = glob.glob(name)
             list = []
-            for file in files:
+            fuer file in files:
                 list.extend(getFilesForName(file))
             return list
 
@@ -260,15 +260,15 @@ def getFilesForName(name):
     if os.path.isdir(name):
         # find all python files in directory
         list = []
-        # get extension for python source files
+        # get extension fuer python source files
         _py_ext = importlib.machinery.SOURCE_SUFFIXES[0]
-        for root, dirs, files in os.walk(name):
+        fuer root, dirs, files in os.walk(name):
             # don't recurse into CVS directories
             if 'CVS' in dirs:
                 dirs.remove('CVS')
             # add all *.py files to list
             list.extend(
-                [os.path.join(root, file) for file in files
+                [os.path.join(root, file) fuer file in files
                  if os.path.splitext(file)[1] == _py_ext]
                 )
         return list
@@ -322,7 +322,7 @@ def parse_spec(spec):
     equivalent.
 
     See https://www.gnu.org/software/gettext/manual/gettext.html
-    for more information.
+    fuer more information.
     """
     parts = spec.strip().split(':', 1)
     if len(parts) == 1:
@@ -335,7 +335,7 @@ def parse_spec(spec):
                          'missing argument positions')
 
     result = {}
-    for arg in args.split(','):
+    fuer arg in args.split(','):
         arg = arg.strip()
         is_context = False
         if arg.endswith('c'):
@@ -382,7 +382,7 @@ def unparse_spec(name, spec):
         return name
 
     parts = []
-    for arg, pos in sorted(spec.items(), key=lambda x: x[1]):
+    fuer arg, pos in sorted(spec.items(), key=lambda x: x[1]):
         if arg == 'msgctxt':
             parts.append(f'{pos + 1}c')
         else:
@@ -392,7 +392,7 @@ def unparse_spec(name, spec):
 
 def process_keywords(keywords, *, no_default_keywords):
     custom_keywords = {}
-    for spec in dict.fromkeys(keywords):
+    fuer spec in dict.fromkeys(keywords):
         name, spec = parse_spec(spec)
         if name not in custom_keywords:
             custom_keywords[name] = []
@@ -402,7 +402,7 @@ def process_keywords(keywords, *, no_default_keywords):
         return custom_keywords
 
     # custom keywords override default keywords
-    for name, spec in DEFAULTKEYWORDS.items():
+    fuer name, spec in DEFAULTKEYWORDS.items():
         if name not in custom_keywords:
             custom_keywords[name] = []
         if spec not in custom_keywords[name]:
@@ -444,7 +444,7 @@ def get_source_comments(source):
     comments in the source code.
     """
     comments = {}
-    for token in tokenize.tokenize(BytesIO(source).readline):
+    fuer token in tokenize.tokenize(BytesIO(source).readline):
         if token.type == tokenize.COMMENT:
             # Remove any leading combination of '#' and whitespace
             comment = token.string.lstrip('# \t')
@@ -495,7 +495,7 @@ klasse GettextVisitor(ast.NodeVisitor):
         func_name = self._get_func_name(node)
         errors = []
         specs = self.options.keywords.get(func_name, [])
-        for spec in specs:
+        fuer spec in specs:
             err = self._extract_message_with_spec(node, spec)
             if err is None:
                 return
@@ -507,13 +507,13 @@ klasse GettextVisitor(ast.NodeVisitor):
             print(f'*** {self.filename}:{node.lineno}: {errors[0]}',
                   file=sys.stderr)
         else:
-            # There are multiple keyword specs for the function name and
+            # There are multiple keyword specs fuer the function name and
             # none of them could be extracted. Print a general error
-            # message and list the errors for each keyword spec.
+            # message and list the errors fuer each keyword spec.
             print(f'*** {self.filename}:{node.lineno}: '
                   f'No keywords matched gettext call "{func_name}":',
                   file=sys.stderr)
-            for spec, err in zip(specs, errors, strict=True):
+            fuer spec, err in zip(specs, errors, strict=True):
                 unparsed = unparse_spec(func_name, spec)
                 print(f'\tkeyword="{unparsed}": {err}', file=sys.stderr)
 
@@ -535,10 +535,10 @@ klasse GettextVisitor(ast.NodeVisitor):
                     f'argument(s) in gettext call, got {len(node.args)}')
 
         msg_data = {}
-        for arg_type, position in spec.items():
+        fuer arg_type, position in spec.items():
             arg = node.args[position]
             if not self._is_string_const(arg):
-                return (f'Expected a string constant for argument '
+                return (f'Expected a string constant fuer argument '
                         f'{position + 1}, got {ast.unparse(arg)}')
             msg_data[arg_type] = arg.value
 
@@ -551,7 +551,7 @@ klasse GettextVisitor(ast.NodeVisitor):
 
         Translator comments must precede the gettext call and
         start with one of the comment prefixes defined by
-        --add-comments=TAG. See the tests for examples.
+        --add-comments=TAG. See the tests fuer examples.
         """
         if not self.options.comment_tags:
             return []
@@ -570,7 +570,7 @@ klasse GettextVisitor(ast.NodeVisitor):
         # Find the first translator comment in the sequence and
         # return all comments starting from that comment.
         comments = comments[::-1]
-        first_index = next((i for i, comment in enumerate(comments)
+        first_index = next((i fuer i, comment in enumerate(comments)
                             if self._is_translator_comment(comment)), None)
         if first_index is None:
             return []
@@ -636,29 +636,29 @@ def write_pot_file(messages, options, fp):
     # Sort locations within each message by filename and lineno
     sorted_keys = [
         (key, sorted(msg.locations))
-        for key, msg in messages.items()
+        fuer key, msg in messages.items()
     ]
     # Sort messages by locations
     # For example, a message with locations [('test.py', 1), ('test.py', 2)] will
     # appear before a message with locations [('test.py', 1), ('test.py', 3)]
     sorted_keys.sort(key=itemgetter(1))
 
-    for key, locations in sorted_keys:
+    fuer key, locations in sorted_keys:
         msg = messages[key]
 
-        for comment in msg.comments:
+        fuer comment in msg.comments:
             print(f'#. {comment}', file=fp)
 
         if options.writelocations:
             # location comments are different b/w Solaris and GNU:
             if options.locationstyle == options.SOLARIS:
-                for location in locations:
+                fuer location in locations:
                     print(f'# File: {location.filename}, line: {location.lineno}', file=fp)
             elif options.locationstyle == options.GNU:
                 # fit as many locations on one line, as long as the
                 # resulting line length doesn't exceed 'options.width'
                 locline = '#:'
-                for location in locations:
+                fuer location in locations:
                     s = f' {location.filename}:{location.lineno}'
                     if len(locline) + len(s) <= options.width:
                         locline = locline + s
@@ -697,7 +697,7 @@ def main():
     except getopt.error as msg:
         usage(1, msg)
 
-    # for holding option values
+    # fuer holding option values
     klasse Options:
         # constants
         GNU = 1
@@ -723,7 +723,7 @@ def main():
                  }
     no_default_keywords = False
     # parse options
-    for opt, arg in opts:
+    fuer opt, arg in opts:
         if opt in ('-h', '--help'):
             usage(0)
         elif opt in ('-a', '--extract-all'):
@@ -749,7 +749,7 @@ def main():
         elif opt in ('-S', '--style'):
             options.locationstyle = locations.get(arg.lower())
             if options.locationstyle is None:
-                usage(1, f'Invalid value for --style: {arg}')
+                usage(1, f'Invalid value fuer --style: {arg}')
         elif opt in ('-o', '--output'):
             options.outfile = arg
         elif opt in ('-p', '--output-dir'):
@@ -757,7 +757,7 @@ def main():
         elif opt in ('-v', '--verbose'):
             options.verbose = 1
         elif opt in ('-V', '--version'):
-            print(f'pygettext.py (xgettext for Python) {__version__}')
+            print(f'pygettext.py (xgettext fuer Python) {__version__}')
             sys.exit(0)
         elif opt in ('-w', '--width'):
             try:
@@ -805,7 +805,7 @@ def main():
 
     # resolve args to module lists
     expanded = []
-    for arg in args:
+    fuer arg in args:
         if arg == '-':
             expanded.append(arg)
         else:
@@ -814,7 +814,7 @@ def main():
 
     # slurp through all the files
     visitor = GettextVisitor(options)
-    for filename in args:
+    fuer filename in args:
         if filename == '-':
             if options.verbose:
                 print('Reading standard input')

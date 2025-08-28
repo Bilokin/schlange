@@ -1,4 +1,4 @@
-"""Simple API for XML (SAX) implementation for Python.
+"""Simple API fuer XML (SAX) implementation fuer Python.
 
 This module provides an implementation of the SAX 2 interface;
 information about the Java version of the interface can be found at
@@ -8,13 +8,13 @@ documented at <...>.
 This package contains the following modules:
 
 handler -- Base classes and constants which define the SAX 2 API for
-           the 'client-side' of SAX for Python.
+           the 'client-side' of SAX fuer Python.
 
 saxutils -- Implementation of the convenience classes commonly used to
             work with SAX.
 
 xmlreader -- Base classes and constants which define the SAX 2 API for
-             the parsers used with SAX for Python.
+             the parsers used with SAX fuer Python.
 
 expatreader -- Driver that allows use of the Expat parser with SAX.
 """
@@ -71,7 +71,7 @@ def make_parser(parser_list=()):
     default_parser_list.  The iterables must contain the names of Python
     modules containing both a SAX parser and a create_parser function."""
 
-    for parser_name in list(parser_list) + default_parser_list:
+    fuer parser_name in list(parser_list) + default_parser_list:
         try:
             return _create_parser(parser_name)
         except ImportError:

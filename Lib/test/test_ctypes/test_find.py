@@ -23,10 +23,10 @@ klasse Test_OpenGL_libs(unittest.TestCase):
             lib_glu = find_library("GLU")
             lib_gle = find_library("gle")
 
-        # print, for debugging
+        # print, fuer debugging
         if test.support.verbose:
             print("OpenGL libraries:")
-            for item in (("GL", lib_gl),
+            fuer item in (("GL", lib_gl),
                          ("GLU", lib_glu),
                          ("gle", lib_gle)):
                 print("\t", item)
@@ -76,7 +76,7 @@ klasse Test_OpenGL_libs(unittest.TestCase):
 
 
 @unittest.skipUnless(sys.platform.startswith('linux'),
-                     'Test only valid for Linux')
+                     'Test only valid fuer Linux')
 klasse FindLibraryLinux(unittest.TestCase):
     @thread_unsafe('uses setenv')
     def test_find_on_libpath(self):
@@ -88,7 +88,7 @@ klasse FindLibraryLinux(unittest.TestCase):
                                  stderr=subprocess.DEVNULL)
             out, _ = p.communicate()
         except OSError:
-            raise unittest.SkipTest('gcc, needed for test, not available')
+            raise unittest.SkipTest('gcc, needed fuer test, not available')
         with tempfile.TemporaryDirectory() as d:
             # create an empty temporary file
             srcname = os.path.join(d, 'dummy.c')
@@ -130,10 +130,10 @@ klasse FindLibraryLinux(unittest.TestCase):
         self.assertIsNone(find_library("libc"))
 
 
-@unittest.skipUnless(sys.platform == 'android', 'Test only valid for Android')
+@unittest.skipUnless(sys.platform == 'android', 'Test only valid fuer Android')
 klasse FindLibraryAndroid(unittest.TestCase):
     def test_find(self):
-        for name in [
+        fuer name in [
             "c", "m",  # POSIX
             "z",  # Non-POSIX, but present on Linux
             "log",  # Not present on Linux
@@ -148,7 +148,7 @@ klasse FindLibraryAndroid(unittest.TestCase):
                 self.assertEqual(os.path.basename(path), f"lib{name}.so")
                 self.assertTrue(os.path.isfile(path), path)
 
-        for name in ["libc", "nonexistent"]:
+        fuer name in ["libc", "nonexistent"]:
             with self.subTest(name=name):
                 self.assertIsNone(find_library(name))
 

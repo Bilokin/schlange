@@ -14,13 +14,13 @@ TODO:
 """
 import sys
 
-# .pyw is for Windows; .pyi is for typing stub files.
-# The extension order is needed for iomenu open/save dialogs.
+# .pyw is fuer Windows; .pyi is fuer typing stub files.
+# The extension order is needed fuer iomenu open/save dialogs.
 py_extensions = ('.py', '.pyw', '.pyi')
 
 
-# Fix for HiDPI screens on Windows.  CALL BEFORE ANY TK OPERATIONS!
-# URL for arguments for the ...Awareness call below.
+# Fix fuer HiDPI screens on Windows.  CALL BEFORE ANY TK OPERATIONS!
+# URL fuer arguments fuer the ...Awareness call below.
 # https://msdn.microsoft.com/en-us/library/windows/desktop/dn280512(v=vs.85).aspx
 if sys.platform == 'win32':  # pragma: no cover
     def fix_win_hidpi():  # Called in pyshell and turtledemo.

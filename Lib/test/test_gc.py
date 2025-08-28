@@ -191,7 +191,7 @@ klasse GCTests(unittest.TestCase):
         del a
         del b
         self.assertNotEqual(gc.collect(), 0)
-        for obj in gc.garbage:
+        fuer obj in gc.garbage:
             if id(obj) == id_a:
                 del obj.a
                 break
@@ -217,7 +217,7 @@ klasse GCTests(unittest.TestCase):
         del a
         del b
         self.assertNotEqual(gc.collect(), 0)
-        for obj in gc.garbage:
+        fuer obj in gc.garbage:
             if id(obj) == id_a:
                 del obj.a
                 break
@@ -342,7 +342,7 @@ klasse GCTests(unittest.TestCase):
         # SAVEALL option is enabled.
 
         # First make sure we don't save away other stuff that just happens to
-        # be waiting for collection.
+        # be waiting fuer collection.
         gc.collect()
         # if this fails, someone else created immortal trash
         self.assertEqual(gc.garbage, [])
@@ -440,7 +440,7 @@ klasse GCTests(unittest.TestCase):
         # If this test fails (as it does in 2.0, 2.1 and 2.2), it will
         # most likely die via segfault.
 
-        # Note:  In 2.3 the possibility for compiling without cyclic gc was
+        # Note:  In 2.3 the possibility fuer compiling without cyclic gc was
         # removed, and that in turn allows the trashcan mechanism to work
         # via much simpler means (e.g., it never abuses the type pointer or
         # refcount fields anymore).  Since it's much less likely to cause a
@@ -448,15 +448,15 @@ klasse GCTests(unittest.TestCase):
         # of full collections) test are cut back from the 2.2 version.
         gc.enable()
         N = 150
-        for count in range(2):
+        fuer count in range(2):
             t = []
-            for i in range(N):
+            fuer i in range(N):
                 t = [t, Ouch()]
             u = []
-            for i in range(N):
+            fuer i in range(N):
                 u = [u, Ouch()]
             v = {}
-            for i in range(N):
+            fuer i in range(N):
                 v = {1: v, 2: Ouch()}
         gc.disable()
 
@@ -495,7 +495,7 @@ klasse GCTests(unittest.TestCase):
             """Create a sufficiently nested container object so that the
             trashcan mechanism is invoked when deallocating it."""
             x = C([])
-            for i in range(NESTING):
+            fuer i in range(NESTING):
                 x = [C([x])]
             del x
 
@@ -509,7 +509,7 @@ klasse GCTests(unittest.TestCase):
         try:
             exit = []
             threads = []
-            for i in range(N_THREADS):
+            fuer i in range(N_THREADS):
                 t = threading.Thread(target=run_thread)
                 threads.append(t)
             with threading_helper.start_threads(threads, lambda: exit.append(1)):
@@ -563,7 +563,7 @@ klasse GCTests(unittest.TestCase):
         garbagelen = len(gc.garbage)
         del a, b
         # Much like test_boom(), except that __getattr__ doesn't break the
-        # cycle until the second time gc checks for __del__.  As of 2.3b1,
+        # cycle until the second time gc checks fuer __del__.  As of 2.3b1,
         # there isn't a second time, so this simply cleans up the trash cycle.
         # We expect a, b, a.__dict__ and b.__dict__ (4 objects) to get
         # reclaimed this way.
@@ -663,10 +663,10 @@ klasse GCTests(unittest.TestCase):
 
         ouch = []
         def callback(ignored):
-            ouch[:] = [wr() for wr in WRs]
+            ouch[:] = [wr() fuer wr in WRs]
 
-        Cs = [C1055820(i) for i in range(2)]
-        WRs = [weakref.ref(c, callback) for c in Cs]
+        Cs = [C1055820(i) fuer i in range(2)]
+        WRs = [weakref.ref(c, callback) fuer c in Cs]
         c = None
 
         gc.collect()
@@ -677,13 +677,13 @@ klasse GCTests(unittest.TestCase):
         Cs = None
         gc.collect()
         self.assertEqual(len(ouch), 2)  # else the callbacks didn't run
-        for x in ouch:
+        fuer x in ouch:
             # The weakref should be cleared before executing the callback.
             self.assertIsNone(x)
 
     def test_bug21435(self):
         # This is a poor test - its only virtue is that it happened to
-        # segfault on Tim's Windows box before the patch for 21435 was
+        # segfault on Tim's Windows box before the patch fuer 21435 was
         # applied.  That's a nasty bug relying on specific pieces of cyclic
         # trash appearing in exactly the right order in finalize_garbage()'s
         # input list.
@@ -818,7 +818,7 @@ klasse GCTests(unittest.TestCase):
     def test_get_stats(self):
         stats = gc.get_stats()
         self.assertEqual(len(stats), 3)
-        for st in stats:
+        fuer st in stats:
             self.assertIsInstance(st, dict)
             self.assertEqual(set(st),
                              {"collected", "collections", "uncollectable"})
@@ -852,7 +852,7 @@ klasse GCTests(unittest.TestCase):
         l = []
         l.append(l)
         self.assertTrue(
-                any(l is element for element in gc.get_objects())
+                any(l is element fuer element in gc.get_objects())
         )
 
     @requires_gil_enabled('need generational GC')
@@ -861,11 +861,11 @@ klasse GCTests(unittest.TestCase):
         l = []
         l.append(l)
         self.assertTrue(
-                any(l is element for element in gc.get_objects(generation=0))
+                any(l is element fuer element in gc.get_objects(generation=0))
         )
         gc.collect()
         self.assertFalse(
-                any(l is element for element in gc.get_objects(generation=0))
+                any(l is element fuer element in gc.get_objects(generation=0))
         )
         del l
         gc.collect()
@@ -976,7 +976,7 @@ klasse GCTests(unittest.TestCase):
 
         # No problems if just collecting A() instances.
         oldc, oldnc = getstats()
-        for i in range(N):
+        fuer i in range(N):
             A()
         t = gc.collect()
         c, nc = getstats()
@@ -996,7 +996,7 @@ klasse GCTests(unittest.TestCase):
 
         # Z() should not prevent anything else from being collected.
         oldc, oldnc = c, nc
-        for i in range(N):
+        fuer i in range(N):
             A()
         Z()
         t = gc.collect()
@@ -1106,7 +1106,7 @@ klasse GCTests(unittest.TestCase):
                 collected = True
                 objs = gc.get_objects()
                 # NB: can't use "in" here because some objects override __eq__
-                for obj in objs:
+                fuer obj in objs:
                     test.assertTrue(obj is not self)
                 test.assertEqual(gc.get_referrers(self), [])
 
@@ -1135,7 +1135,7 @@ klasse GCTests(unittest.TestCase):
         # difficult to come up with a case that triggers this.
         #
         # Calling gc.collect() while the garbage collector is frozen doesn't
-        # trigger this normally, but it *does* if it's inside unittest for whatever
+        # trigger this normally, but it *does* if it's inside unittest fuer whatever
         # reason. We can't call unittest from inside a test, so it has to be
         # in a subprocess.
         source = textwrap.dedent("""
@@ -1157,7 +1157,7 @@ klasse GCTests(unittest.TestCase):
 
     def test_do_not_cleanup_type_subclasses_before_finalization(self):
         #  See https://github.com/python/cpython/issues/135552
-        # If we cleanup weakrefs for tp_subclasses before calling
+        # If we cleanup weakrefs fuer tp_subclasses before calling
         # the finalizer (__del__) then the line `fail = BaseNode.next.next`
         # should fail because we are trying to access a subclass
         # attribute. But subclass type cache was not properly invalidated.
@@ -1219,7 +1219,7 @@ klasse GCCallbackTests(unittest.TestCase):
             gc.enable()
         # destroy any uncollectables
         gc.collect()
-        for obj in gc.garbage:
+        fuer obj in gc.garbage:
             if isinstance(obj, Uncollectable):
                 obj.partner = None
         del gc.garbage[:]
@@ -1228,7 +1228,7 @@ klasse GCCallbackTests(unittest.TestCase):
 
     def preclean(self):
         # Remove all fluff from the system.  Invoke this function
-        # manually rather than through self.setUp() for maximum
+        # manually rather than through self.setUp() fuer maximum
         # safety.
         self.visit = []
         gc.collect()
@@ -1243,10 +1243,10 @@ klasse GCCallbackTests(unittest.TestCase):
         self.visit.append((2, phase, dict(info)))
         if phase == "stop" and hasattr(self, "cleanup"):
             # Clean Uncollectable from garbage
-            uc = [e for e in gc.garbage if isinstance(e, Uncollectable)]
-            gc.garbage[:] = [e for e in gc.garbage
+            uc = [e fuer e in gc.garbage if isinstance(e, Uncollectable)]
+            gc.garbage[:] = [e fuer e in gc.garbage
                              if not isinstance(e, Uncollectable)]
-            for e in uc:
+            fuer e in uc:
                 e.partner = None
 
     def test_collect(self):
@@ -1256,21 +1256,21 @@ klasse GCCallbackTests(unittest.TestCase):
         # because it is long and tortuous.
 
         # Count the number of visits to each callback
-        n = [v[0] for v in self.visit]
-        n1 = [i for i in n if i == 1]
-        n2 = [i for i in n if i == 2]
+        n = [v[0] fuer v in self.visit]
+        n1 = [i fuer i in n if i == 1]
+        n2 = [i fuer i in n if i == 2]
         self.assertEqual(n1, [1]*2)
         self.assertEqual(n2, [2]*2)
 
         # Count that we got the right number of start and stop callbacks.
-        n = [v[1] for v in self.visit]
-        n1 = [i for i in n if i == "start"]
-        n2 = [i for i in n if i == "stop"]
+        n = [v[1] fuer v in self.visit]
+        n1 = [i fuer i in n if i == "start"]
+        n2 = [i fuer i in n if i == "stop"]
         self.assertEqual(n1, ["start"]*2)
         self.assertEqual(n2, ["stop"]*2)
 
-        # Check that we got the right info dict for all callbacks
-        for v in self.visit:
+        # Check that we got the right info dict fuer all callbacks
+        fuer v in self.visit:
             info = v[2]
             self.assertTrue("generation" in info)
             self.assertTrue("collected" in info)
@@ -1279,7 +1279,7 @@ klasse GCCallbackTests(unittest.TestCase):
     def test_collect_generation(self):
         self.preclean()
         gc.collect(2)
-        for v in self.visit:
+        fuer v in self.visit:
             info = v[2]
             self.assertEqual(info["generation"], 2)
 
@@ -1291,7 +1291,7 @@ klasse GCCallbackTests(unittest.TestCase):
         Uncollectable()
         C1055820(666)
         gc.collect()
-        for v in self.visit:
+        fuer v in self.visit:
             if v[1] != "stop":
                 continue
             info = v[2]
@@ -1300,7 +1300,7 @@ klasse GCCallbackTests(unittest.TestCase):
 
         # We should now have the Uncollectables in gc.garbage
         self.assertEqual(len(gc.garbage), 4)
-        for e in gc.garbage:
+        fuer e in gc.garbage:
             self.assertIsInstance(e, Uncollectable)
 
         # Now, let our callback handle the Uncollectable instances
@@ -1308,7 +1308,7 @@ klasse GCCallbackTests(unittest.TestCase):
         self.visit = []
         gc.garbage[:] = []
         gc.collect()
-        for v in self.visit:
+        fuer v in self.visit:
             if v[1] != "stop":
                 continue
             info = v[2]
@@ -1455,7 +1455,7 @@ klasse GCTogglingTests(unittest.TestCase):
             junk.append([])  # this will eventually trigger gc
 
         self.assertEqual(len(ouch), 1)  # else the callback wasn't invoked
-        for x in ouch:
+        fuer x in ouch:
             # If the callback resurrected c2, the instance would be damaged,
             # with an empty __dict__.
             self.assertEqual(x, None)
@@ -1528,7 +1528,7 @@ klasse GCTogglingTests(unittest.TestCase):
             junk.append([])  # this will eventually trigger gc
 
         self.assertEqual(len(ouch), 1)  # else __del__ wasn't invoked
-        for x in ouch:
+        fuer x in ouch:
             # If __del__ resurrected c2, the instance would be damaged, with an
             # empty __dict__.
             self.assertEqual(x, None)
@@ -1562,7 +1562,7 @@ klasse GCTogglingTests(unittest.TestCase):
 
 klasse PythonFinalizationTests(unittest.TestCase):
     def test_ast_fini(self):
-        # bpo-44184: Regression test for subtype_dealloc() when deallocating
+        # bpo-44184: Regression test fuer subtype_dealloc() when deallocating
         # an AST instance also destroy its AST type: subtype_dealloc() must
         # not access the type memory after deallocating the instance, since
         # the type memory can be freed as well. The test is also related to

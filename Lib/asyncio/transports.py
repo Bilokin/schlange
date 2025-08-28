@@ -7,7 +7,7 @@ __all__ = (
 
 
 klasse BaseTransport:
-    """Base klasse for transports."""
+    """Base klasse fuer transports."""
 
     __slots__ = ('_extra',)
 
@@ -44,7 +44,7 @@ klasse BaseTransport:
 
 
 klasse ReadTransport(BaseTransport):
-    """Interface for read-only transports."""
+    """Interface fuer read-only transports."""
 
     __slots__ = ()
 
@@ -70,12 +70,12 @@ klasse ReadTransport(BaseTransport):
 
 
 klasse WriteTransport(BaseTransport):
-    """Interface for write-only transports."""
+    """Interface fuer write-only transports."""
 
     __slots__ = ()
 
     def set_write_buffer_limits(self, high=None, low=None):
-        """Set the high- and low-water limits for write flow control.
+        """Set the high- and low-water limits fuer write flow control.
 
         These two values control when to call the protocol's
         pause_writing() and resume_writing() methods.  If specified,
@@ -89,8 +89,8 @@ klasse WriteTransport(BaseTransport):
         well, and causes pause_writing() to be called whenever the
         buffer becomes non-empty.  Setting low to zero causes
         resume_writing() to be called only once the buffer is empty.
-        Use of zero for either limit is generally sub-optimal as it
-        reduces opportunities for doing I/O and computation
+        Use of zero fuer either limit is generally sub-optimal as it
+        reduces opportunities fuer doing I/O and computation
         concurrently.
         """
         raise NotImplementedError
@@ -100,7 +100,7 @@ klasse WriteTransport(BaseTransport):
         raise NotImplementedError
 
     def get_write_buffer_limits(self):
-        """Get the high and low watermarks for write flow control.
+        """Get the high and low watermarks fuer write flow control.
         Return a tuple (low, high) where low and high are
         positive number of bytes."""
         raise NotImplementedError
@@ -108,7 +108,7 @@ klasse WriteTransport(BaseTransport):
     def write(self, data):
         """Write some data bytes to the transport.
 
-        This does not block; it buffers the data and arranges for it
+        This does not block; it buffers the data and arranges fuer it
         to be sent out asynchronously.
         """
         raise NotImplementedError
@@ -162,7 +162,7 @@ klasse Transport(ReadTransport, WriteTransport):
     protocol and hook them up by calling the protocol's
     connection_made() method, passing it the transport.
 
-    The implementation here raises NotImplemented for every method
+    The implementation here raises NotImplemented fuer every method
     except writelines(), which calls write() in a loop.
     """
 
@@ -170,14 +170,14 @@ klasse Transport(ReadTransport, WriteTransport):
 
 
 klasse DatagramTransport(BaseTransport):
-    """Interface for datagram (UDP) transports."""
+    """Interface fuer datagram (UDP) transports."""
 
     __slots__ = ()
 
     def sendto(self, data, addr=None):
         """Send data to the transport.
 
-        This does not block; it buffers the data and arranges for it
+        This does not block; it buffers the data and arranges fuer it
         to be sent out asynchronously.
         addr is target socket address.
         If addr is None use target address pointed on transport creation.
@@ -213,7 +213,7 @@ klasse SubprocessTransport(BaseTransport):
         raise NotImplementedError
 
     def get_pipe_transport(self, fd):
-        """Get transport for pipe with number fd."""
+        """Get transport fuer pipe with number fd."""
         raise NotImplementedError
 
     def send_signal(self, signal):
@@ -227,7 +227,7 @@ klasse SubprocessTransport(BaseTransport):
     def terminate(self):
         """Stop the subprocess.
 
-        Alias for close() method.
+        Alias fuer close() method.
 
         On Posix OSs the method sends SIGTERM to the subprocess.
         On Windows the Win32 API function TerminateProcess()
@@ -242,7 +242,7 @@ klasse SubprocessTransport(BaseTransport):
         """Kill the subprocess.
 
         On Posix OSs the function sends SIGKILL to the subprocess.
-        On Windows kill() is an alias for terminate().
+        On Windows kill() is an alias fuer terminate().
 
         See also:
         http://docs.python.org/3/library/subprocess#subprocess.Popen.kill
@@ -251,7 +251,7 @@ klasse SubprocessTransport(BaseTransport):
 
 
 klasse _FlowControlMixin(Transport):
-    """All the logic for (write) flow control in a mix-in base class.
+    """All the logic fuer (write) flow control in a mix-in base class.
 
     The subclass must implement get_write_buffer_size().  It must call
     _maybe_pause_protocol() whenever the write buffer size increases,

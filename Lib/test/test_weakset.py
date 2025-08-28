@@ -27,15 +27,15 @@ klasse TestWeakSet(unittest.TestCase):
 
     def setUp(self):
         # need to keep references to them
-        self.items = [ustr(c) for c in ('a', 'b', 'c')]
-        self.items2 = [ustr(c) for c in ('x', 'y', 'z')]
-        self.ab_items = [ustr(c) for c in 'ab']
-        self.abcde_items = [ustr(c) for c in 'abcde']
-        self.def_items = [ustr(c) for c in 'def']
+        self.items = [ustr(c) fuer c in ('a', 'b', 'c')]
+        self.items2 = [ustr(c) fuer c in ('x', 'y', 'z')]
+        self.ab_items = [ustr(c) fuer c in 'ab']
+        self.abcde_items = [ustr(c) fuer c in 'abcde']
+        self.def_items = [ustr(c) fuer c in 'def']
         self.ab_weakset = WeakSet(self.ab_items)
         self.abcde_weakset = WeakSet(self.abcde_items)
         self.def_weakset = WeakSet(self.def_items)
-        self.letters = [ustr(c) for c in string.ascii_letters]
+        self.letters = [ustr(c) fuer c in string.ascii_letters]
         self.s = WeakSet(self.items)
         self.d = dict.fromkeys(self.items)
         self.obj = ustr('F')
@@ -43,7 +43,7 @@ klasse TestWeakSet(unittest.TestCase):
 
     def test_methods(self):
         weaksetmethods = dir(WeakSet)
-        for method in dir(set):
+        fuer method in dir(set):
             if method.startswith('_'):
                 continue
             self.assertIn(method, weaksetmethods,
@@ -60,7 +60,7 @@ klasse TestWeakSet(unittest.TestCase):
         self.assertEqual(len(self.fs), 0)
 
     def test_contains(self):
-        for c in self.letters:
+        fuer c in self.letters:
             self.assertEqual(c in self.s, c in self.d)
         # 1 is not weakref'able, but that TypeError is caught by __contains__
         self.assertNotIn(1, self.s)
@@ -71,12 +71,12 @@ klasse TestWeakSet(unittest.TestCase):
 
     def test_union(self):
         u = self.s.union(self.items2)
-        for c in self.letters:
+        fuer c in self.letters:
             self.assertEqual(c in u, c in self.d or c in self.items2)
         self.assertEqual(self.s, WeakSet(self.items))
         self.assertEqual(type(u), WeakSet)
         self.assertRaises(TypeError, self.s.union, [[]])
-        for C in set, frozenset, dict.fromkeys, list, tuple:
+        fuer C in set, frozenset, dict.fromkeys, list, tuple:
             x = WeakSet(self.items + self.items2)
             c = C(self.items2)
             self.assertEqual(self.s.union(c), x)
@@ -94,11 +94,11 @@ klasse TestWeakSet(unittest.TestCase):
     def test_intersection(self):
         s = WeakSet(self.letters)
         i = s.intersection(self.items2)
-        for c in self.letters:
+        fuer c in self.letters:
             self.assertEqual(c in i, c in self.items2 and c in self.letters)
         self.assertEqual(s, WeakSet(self.letters))
         self.assertEqual(type(i), WeakSet)
-        for C in set, frozenset, dict.fromkeys, list, tuple:
+        fuer C in set, frozenset, dict.fromkeys, list, tuple:
             x = WeakSet([])
             self.assertEqual(i.intersection(C(self.items)), x)
         self.assertEqual(len(i), len(self.items2))
@@ -117,7 +117,7 @@ klasse TestWeakSet(unittest.TestCase):
 
     def test_difference(self):
         i = self.s.difference(self.items2)
-        for c in self.letters:
+        fuer c in self.letters:
             self.assertEqual(c in i, c in self.d and c not in self.items2)
         self.assertEqual(self.s, WeakSet(self.items))
         self.assertEqual(type(i), WeakSet)
@@ -130,7 +130,7 @@ klasse TestWeakSet(unittest.TestCase):
 
     def test_symmetric_difference(self):
         i = self.s.symmetric_difference(self.items2)
-        for c in self.letters:
+        fuer c in self.letters:
             self.assertEqual(c in i, (c in self.d) ^ (c in self.items2))
         self.assertEqual(self.s, WeakSet(self.items))
         self.assertEqual(type(i), WeakSet)
@@ -170,8 +170,8 @@ klasse TestWeakSet(unittest.TestCase):
 
     def test_gc(self):
         # Create a nest of cycles to exercise overall ref count check
-        s = WeakSet(Foo() for i in range(1000))
-        for elem in s:
+        s = WeakSet(Foo() fuer i in range(1000))
+        fuer elem in s:
             elem.cycle = s
             elem.sub = elem
             elem.set = WeakSet([elem])
@@ -245,7 +245,7 @@ klasse TestWeakSet(unittest.TestCase):
         self.assertRaises(TypeError, self.s.discard, [])
 
     def test_pop(self):
-        for i in range(len(self.s)):
+        fuer i in range(len(self.s)):
             elem = self.s.pop()
             self.assertNotIn(elem, self.s)
         self.assertRaises(KeyError, self.s.pop)
@@ -253,24 +253,24 @@ klasse TestWeakSet(unittest.TestCase):
     def test_update(self):
         retval = self.s.update(self.items2)
         self.assertEqual(retval, None)
-        for c in (self.items + self.items2):
+        fuer c in (self.items + self.items2):
             self.assertIn(c, self.s)
         self.assertRaises(TypeError, self.s.update, [[]])
 
     def test_update_set(self):
         self.s.update(set(self.items2))
-        for c in (self.items + self.items2):
+        fuer c in (self.items + self.items2):
             self.assertIn(c, self.s)
 
     def test_ior(self):
         self.s |= set(self.items2)
-        for c in (self.items + self.items2):
+        fuer c in (self.items + self.items2):
             self.assertIn(c, self.s)
 
     def test_intersection_update(self):
         retval = self.s.intersection_update(self.items2)
         self.assertEqual(retval, None)
-        for c in (self.items + self.items2):
+        fuer c in (self.items + self.items2):
             if c in self.items2 and c in self.items:
                 self.assertIn(c, self.s)
             else:
@@ -279,7 +279,7 @@ klasse TestWeakSet(unittest.TestCase):
 
     def test_iand(self):
         self.s &= set(self.items2)
-        for c in (self.items + self.items2):
+        fuer c in (self.items + self.items2):
             if c in self.items2 and c in self.items:
                 self.assertIn(c, self.s)
             else:
@@ -288,7 +288,7 @@ klasse TestWeakSet(unittest.TestCase):
     def test_difference_update(self):
         retval = self.s.difference_update(self.items2)
         self.assertEqual(retval, None)
-        for c in (self.items + self.items2):
+        fuer c in (self.items + self.items2):
             if c in self.items and c not in self.items2:
                 self.assertIn(c, self.s)
             else:
@@ -298,7 +298,7 @@ klasse TestWeakSet(unittest.TestCase):
 
     def test_isub(self):
         self.s -= set(self.items2)
-        for c in (self.items + self.items2):
+        fuer c in (self.items + self.items2):
             if c in self.items and c not in self.items2:
                 self.assertIn(c, self.s)
             else:
@@ -307,7 +307,7 @@ klasse TestWeakSet(unittest.TestCase):
     def test_symmetric_difference_update(self):
         retval = self.s.symmetric_difference_update(self.items2)
         self.assertEqual(retval, None)
-        for c in (self.items + self.items2):
+        fuer c in (self.items + self.items2):
             if (c in self.items) ^ (c in self.items2):
                 self.assertIn(c, self.s)
             else:
@@ -316,7 +316,7 @@ klasse TestWeakSet(unittest.TestCase):
 
     def test_ixor(self):
         self.s ^= set(self.items2)
-        for c in (self.items + self.items2):
+        fuer c in (self.items + self.items2):
             if (c in self.items) ^ (c in self.items2):
                 self.assertIn(c, self.s)
             else:
@@ -353,7 +353,7 @@ klasse TestWeakSet(unittest.TestCase):
     def test_weak_destroy_while_iterating(self):
         # Issue #7105: iterators shouldn't crash when a key is implicitly removed
         # Create new items to be sure no-one else holds a reference
-        items = [ustr(c) for c in ('a', 'b', 'c')]
+        items = [ustr(c) fuer c in ('a', 'b', 'c')]
         s = WeakSet(items)
         it = iter(s)
         next(it)             # Trigger internal iteration
@@ -368,7 +368,7 @@ klasse TestWeakSet(unittest.TestCase):
 
     def test_weak_destroy_and_mutate_while_iterating(self):
         # Issue #7105: iterators shouldn't crash when a key is implicitly removed
-        items = [ustr(c) for c in string.ascii_letters]
+        items = [ustr(c) fuer c in string.ascii_letters]
         s = WeakSet(items)
         @contextlib.contextmanager
         def testcontext():
@@ -376,7 +376,7 @@ klasse TestWeakSet(unittest.TestCase):
                 it = iter(s)
                 # Start iterator
                 yielded = ustr(str(next(it)))
-                # Schedule an item for removal and recreate it
+                # Schedule an item fuer removal and recreate it
                 u = ustr(str(items.pop()))
                 if yielded == u:
                     # The iterator still has a reference to the removed item,
@@ -405,7 +405,7 @@ klasse TestWeakSet(unittest.TestCase):
 
     def test_len_cycles(self):
         N = 20
-        items = [RefCycle() for i in range(N)]
+        items = [RefCycle() fuer i in range(N)]
         s = WeakSet(items)
         del items
         it = iter(s)
@@ -424,13 +424,13 @@ klasse TestWeakSet(unittest.TestCase):
         self.assertEqual(n2, 0)
 
     def test_len_race(self):
-        # Extended sanity checks for len() in the face of cyclic collection
+        # Extended sanity checks fuer len() in the face of cyclic collection
         self.addCleanup(gc.set_threshold, *gc.get_threshold())
-        for th in range(1, 100):
+        fuer th in range(1, 100):
             N = 20
             gc.collect(0)
             gc.set_threshold(th, th, th)
-            items = [RefCycle() for i in range(N)]
+            items = [RefCycle() fuer i in range(N)]
             s = WeakSet(items)
             del items
             # All items will be collected at next garbage collection pass
@@ -455,7 +455,7 @@ klasse TestWeakSet(unittest.TestCase):
         self.assertIsInstance(self.s, MutableSet)
 
     def test_copying(self):
-        for cls in WeakSet, WeakSetWithSlots:
+        fuer cls in WeakSet, WeakSetWithSlots:
             s = cls(self.items)
             s.x = ['x']
             s.z = ['z']

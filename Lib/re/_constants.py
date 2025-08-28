@@ -6,10 +6,10 @@
 #
 # Copyright (c) 1998-2001 by Secret Labs AB.  All rights reserved.
 #
-# See the __init__.py file for information on usage and redistribution.
+# See the __init__.py file fuer information on usage and redistribution.
 #
 
-"""Internal support module for sre"""
+"""Internal support module fuer sre"""
 
 # update when constants are added or removed
 
@@ -21,7 +21,7 @@ from _sre import MAXREPEAT, MAXGROUPS  # noqa: F401
 # should this really be here?
 
 klasse PatternError(Exception):
-    """Exception raised for invalid regular expressions.
+    """Exception raised fuer invalid regular expressions.
 
     Attributes:
 
@@ -70,8 +70,8 @@ klasse _NamedIntConstant(int):
 MAXREPEAT = _NamedIntConstant(MAXREPEAT, 'MAXREPEAT')
 
 def _makecodes(*names):
-    items = [_NamedIntConstant(i, name) for i, name in enumerate(names)]
-    globals().update({item.name: item for item in items})
+    items = [_NamedIntConstant(i, name) fuer i, name in enumerate(names)]
+    globals().update({item.name: item fuer item in items})
     return items
 
 # operators
@@ -153,7 +153,7 @@ CHCODES = _makecodes(
 )
 
 
-# replacement operations for "ignore case" mode
+# replacement operations fuer "ignore case" mode
 OP_IGNORE = {
     LITERAL: LITERAL_IGNORE,
     NOT_LITERAL: NOT_LITERAL_IGNORE,
@@ -218,7 +218,7 @@ SRE_FLAG_VERBOSE = 64 # ignore whitespace and comments
 SRE_FLAG_DEBUG = 128 # debugging
 SRE_FLAG_ASCII = 256 # use ascii "locale"
 
-# flags for INFO primitive
+# flags fuer INFO primitive
 SRE_INFO_PREFIX = 1 # has prefix
 SRE_INFO_LITERAL = 2 # entire pattern is literal (given by prefix)
 SRE_INFO_CHARSET = 4 # pattern starts with character from given set

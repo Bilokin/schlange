@@ -60,7 +60,7 @@ klasse TestDump:
             def __lt__(self, o):
                 return 0
 
-        L = [X() for i in range(1122)]
+        L = [X() fuer i in range(1122)]
         d = D()
         d[1337] = "true.dat"
         self.assertEqual(self.dumps(d, sort_keys=True), '{"1337": "true.dat"}')

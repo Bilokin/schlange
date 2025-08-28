@@ -1,4 +1,4 @@
-"""Compatibility wrapper for cProfile module.
+"""Compatibility wrapper fuer cProfile module.
 
 This module maintains backward compatibility by importing from the new
 profiling.tracing module.

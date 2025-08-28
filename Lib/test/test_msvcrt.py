@@ -56,8 +56,8 @@ klasse TestFileOperations(unittest.TestCase):
             msvcrt.get_osfhandle(f.fileno())
 
 
-c = '\u5b57'  # unicode CJK char (meaning 'character') for 'wide-char' tests
-c_encoded = b'\x57\x5b' # utf-16-le (which windows internally used) encoded char for this CJK char
+c = '\u5b57'  # unicode CJK char (meaning 'character') fuer 'wide-char' tests
+c_encoded = b'\x57\x5b' # utf-16-le (which windows internally used) encoded char fuer this CJK char
 
 
 klasse TestConsoleIO(unittest.TestCase):

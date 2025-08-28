@@ -4,7 +4,7 @@
 #
 #
 # Permission to use, copy, modify, and distribute this software and
-# its documentation for any purpose is hereby granted without fee,
+# its documentation fuer any purpose is hereby granted without fee,
 # provided that the above copyright notice appear in all copies and
 # that both that copyright notice and this permission notice appear in
 # supporting documentation.
@@ -104,7 +104,7 @@ VK_MAP: dict[int, str] = {
 
 # Virtual terminal output sequences
 # Reference: https://learn.microsoft.com/en-us/windows/console/console-virtual-terminal-sequences#output-sequences
-# Check `windows_eventqueue.py` for input sequences
+# Check `windows_eventqueue.py` fuer input sequences
 ERASE_IN_LINE = "\x1b[K"
 MOVE_LEFT = "\x1b[{}D"
 MOVE_RIGHT = "\x1b[{}C"
@@ -207,7 +207,7 @@ klasse WindowsConsole(Console):
             self.posxy = self.posxy[0], self.posxy[1] + scroll_lines
             self.__offset += scroll_lines
 
-            for i in range(scroll_lines):
+            fuer i in range(scroll_lines):
                 self.screen.append("")
         elif offset > 0 and len(screen) < offset + height:
             offset = max(len(screen) - height, 0)
@@ -219,7 +219,7 @@ klasse WindowsConsole(Console):
         self.__offset = offset
 
         self._hide_cursor()
-        for (
+        fuer (
             y,
             oldline,
             newline,
@@ -259,7 +259,7 @@ klasse WindowsConsole(Console):
 
         px_pos = 0
         j = 0
-        for c in oldline:
+        fuer c in oldline:
             if j >= px_coord:
                 break
             j += wlen(c)
@@ -334,7 +334,7 @@ klasse WindowsConsole(Console):
 
     def __write(self, text: str) -> None:
         if "\x1a" in text:
-            text = ''.join(["^Z" if x == '\x1a' else x for x in text])
+            text = ''.join(["^Z" if x == '\x1a' else x fuer x in text])
 
         if self.out is not None:
             self.out.write(text.encode(self.encoding, "replace"))
@@ -439,7 +439,7 @@ klasse WindowsConsole(Console):
 
     def get_event(self, block: bool = True) -> Event | None:
         """Return an Event instance.  Returns None if |block| is false
-        and there is no event pending, otherwise waits for the
+        and there is no event pending, otherwise waits fuer the
         completion of an event."""
 
         if not block and not self.wait(timeout=0):
@@ -477,7 +477,7 @@ klasse WindowsConsole(Console):
                     elif key_event.dwControlKeyState & ALT_ACTIVE:
                         # queue the key, return the meta command
                         self.event_queue.insert(Event(evt="key", data=key))
-                        return Event(evt="key", data="\033")  # keymap.py uses this for meta
+                        return Event(evt="key", data="\033")  # keymap.py uses this fuer meta
                     return Event(evt="key", data=key)
                 if block:
                     continue
@@ -485,7 +485,7 @@ klasse WindowsConsole(Console):
                 return None
             elif self.__vt_support:
                 # If virtual terminal is enabled, scanning VT sequences
-                for char in raw_key.encode(self.event_queue.encoding, "replace"):
+                fuer char in raw_key.encode(self.event_queue.encoding, "replace"):
                     self.event_queue.push(char)
                 continue
 
@@ -496,7 +496,7 @@ klasse WindowsConsole(Console):
                 if not key_event.dwControlKeyState & CTRL_ACTIVE:
                     # queue the key, return the meta command
                     self.event_queue.insert(Event(evt="key", data=key))
-                    return Event(evt="key", data="\033")  # keymap.py uses this for meta
+                    return Event(evt="key", data="\033")  # keymap.py uses this fuer meta
 
             return Event(evt="key", data=key)
         return self.event_queue.get()
@@ -518,7 +518,7 @@ klasse WindowsConsole(Console):
 
     def finish(self) -> None:
         """Move the cursor to the end of the display and otherwise get
-        ready for end.  XXX could be merged with restore?  Hmm."""
+        ready fuer end.  XXX could be merged with restore?  Hmm."""
         y = len(self.screen) - 1
         while y >= 0 and not self.screen[y]:
             y -= 1
@@ -548,10 +548,10 @@ klasse WindowsConsole(Console):
                 e.data += e2.data
 
         recs, rec_count = self._read_input_bulk(1024)
-        for i in range(rec_count):
+        fuer i in range(rec_count):
             rec = recs[i]
             # In case of a legacy console, we do not only receive a keydown
-            # event, but also a keyup event - and for uppercase letters
+            # event, but also a keyup event - and fuer uppercase letters
             # an additional SHIFT_PRESSED event.
             if rec and rec.EventType == KEY_EVENT:
                 key_event = rec.Event.KeyEvent
@@ -567,7 +567,7 @@ klasse WindowsConsole(Console):
         return e
 
     def wait(self, timeout: float | None) -> bool:
-        """Wait for an event."""
+        """Wait fuer an event."""
         if timeout is None:
             timeout = INFINITE
         else:

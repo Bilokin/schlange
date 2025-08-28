@@ -1,4 +1,4 @@
-"""Tests for 'site'.
+"""Tests fuer 'site'.
 
 Tests assume the initial paths in sys.path once the interpreter has begun
 executing have not been removed.
@@ -50,7 +50,7 @@ def setUpModule():
     OLD_SYS_PATH = sys.path[:]
 
     if site.ENABLE_USER_SITE and not os.path.isdir(site.USER_SITE):
-        # need to add user site directory for tests
+        # need to add user site directory fuer tests
         try:
             os.makedirs(site.USER_SITE)
             # modify sys.path: will be restored by tearDownModule()
@@ -65,7 +65,7 @@ def tearDownModule():
 
 
 klasse HelperFunctionsTests(unittest.TestCase):
-    """Tests for helper functions.
+    """Tests fuer helper functions.
     """
 
     def setUp(self):
@@ -90,8 +90,8 @@ klasse HelperFunctionsTests(unittest.TestCase):
             sysconfig._CONFIG_VARS.update(self.old_vars)
 
     def test_makepath(self):
-        # Test makepath() have an absolute path for its first return value
-        # and a case-normalized version of the absolute path for its
+        # Test makepath() have an absolute path fuer its first return value
+        # and a case-normalized version of the absolute path fuer its
         # second value.
         path_parts = ("Beginning", "End")
         original_dir = os.path.join(*path_parts)
@@ -104,14 +104,14 @@ klasse HelperFunctionsTests(unittest.TestCase):
 
     def test_init_pathinfo(self):
         dir_set = site._init_pathinfo()
-        for entry in [site.makepath(path)[1] for path in sys.path
+        fuer entry in [site.makepath(path)[1] fuer path in sys.path
                         if path and os.path.exists(path)]:
             self.assertIn(entry, dir_set,
                           "%s from sys.path not found in set returned "
                           "by _init_pathinfo(): %s" % (entry, dir_set))
 
     def pth_file_tests(self, pth_file):
-        """Contain common code for testing results of reading a .pth file"""
+        """Contain common code fuer testing results of reading a .pth file"""
         self.assertIn(pth_file.imported, sys.modules,
                       "%s not in sys.modules" % pth_file.imported)
         self.assertIn(site.makepath(pth_file.good_dir_path)[0], sys.path)
@@ -119,8 +119,8 @@ klasse HelperFunctionsTests(unittest.TestCase):
 
     def test_addpackage(self):
         # Make sure addpackage() imports if the line starts with 'import',
-        # adds directories to sys.path for any line in the file that is not a
-        # comment or import that is a valid directory name for where the .pth
+        # adds directories to sys.path fuer any line in the file that is not a
+        # comment or import that is a valid directory name fuer where the .pth
         # file resides; invalid directories are not added
         pth_file = PthFile()
         pth_file.cleanup(prep=True)  # to make sure that nothing is
@@ -182,13 +182,13 @@ klasse HelperFunctionsTests(unittest.TestCase):
             self.assertFalse(site.addpackage(pth_dir, pth_fn, set()))
         self.maxDiff = None
         self.assertEqual(err_out.getvalue(), "")
-        for path in sys.path:
+        fuer path in sys.path:
             if isinstance(path, str):
                 self.assertNotIn("abc\x00def", path)
 
     def test_addsitedir(self):
-        # Same tests for test_addpackage since addsitedir() essentially just
-        # calls addpackage() for every .pth file in the directory
+        # Same tests fuer test_addpackage since addsitedir() essentially just
+        # calls addpackage() fuer every .pth file in the directory
         pth_file = PthFile()
         pth_file.cleanup(prep=True) # Make sure that nothing is pre-existing
                                     # that is tested for
@@ -239,7 +239,7 @@ klasse HelperFunctionsTests(unittest.TestCase):
             pth_file.cleanup()
 
     # This tests _getuserbase, hence the double underline
-    # to distinguish from a test for getuserbase
+    # to distinguish from a test fuer getuserbase
     def test__getuserbase(self):
         self.assertEqual(site._getuserbase(), sysconfig._getuserbase())
 
@@ -393,7 +393,7 @@ klasse HelperFunctionsTests(unittest.TestCase):
 
     def test_trace(self):
         message = "bla-bla-bla"
-        for verbose, out in (True, message + "\n"), (False, ""):
+        fuer verbose, out in (True, message + "\n"), (False, ""):
             with mock.patch('sys.flags', mock.Mock(verbose=verbose)), \
                     mock.patch('sys.stderr', io.StringIO()):
                 site._trace(message)
@@ -401,7 +401,7 @@ klasse HelperFunctionsTests(unittest.TestCase):
 
 
 klasse PthFile(object):
-    """Helper klasse for handling testing of .pth files"""
+    """Helper klasse fuer handling testing of .pth files"""
 
     def __init__(self, filename_base=TESTFN, imported="time",
                     good_dirname="__testdir__", bad_dirname="__bad"):
@@ -420,7 +420,7 @@ klasse PthFile(object):
         <self.imported>``, a line with self.good_dirname, and a line with
         self.bad_dirname.
 
-        Creation of the directory for self.good_dir_path (based off of
+        Creation of the directory fuer self.good_dir_path (based off of
         self.good_dirname) is also performed.
 
         Make sure to call self.cleanup() to undo anything done by this method.
@@ -467,7 +467,7 @@ klasse ImportSideEffectTests(unittest.TestCase):
         sys.path[:] = self.sys_path
 
     def test_abs_paths_cached_None(self):
-        """Test for __cached__ is None.
+        """Test fuer __cached__ is None.
 
         Regarding to PEP 3147, __cached__ can be None.
 
@@ -482,7 +482,7 @@ klasse ImportSideEffectTests(unittest.TestCase):
         # Handled by removeduppaths()
         site.removeduppaths()
         seen_paths = set()
-        for path in sys.path:
+        fuer path in sys.path:
             self.assertNotIn(path, seen_paths)
             seen_paths.add(path)
 
@@ -533,7 +533,7 @@ klasse ImportSideEffectTests(unittest.TestCase):
         with EnvironmentVarGuard() as environ:
             environ['PYTHONPATH'] = temp_dir
 
-            for module_name in mod_names:
+            fuer module_name in mod_names:
                 os_helper.rmtree(temp_dir)
                 os.mkdir(temp_dir)
 
@@ -604,7 +604,7 @@ klasse StartupImportTests(unittest.TestCase):
         # bpo-27807: Even with -I, the site module executes all .pth files
         # found in sys.path (see site.addpackage()). Skip the test if at least
         # one .pth file is found.
-        for path in isolated_paths:
+        fuer path in isolated_paths:
             pth_files = glob.glob(os.path.join(glob.escape(path), "*.pth"))
             if pth_files:
                 self.skipTest(f"found {len(pth_files)} .pth files in: {path}")
@@ -672,14 +672,14 @@ klasse _pthFileTests(unittest.TestCase):
             dll_file = os.path.join(temp_dir, os.path.split(dll_src_file)[1])
             shutil.copy(sys.executable, exe_file)
             shutil.copy(dll_src_file, dll_file)
-            for fn in glob.glob(os.path.join(os.path.split(dll_src_file)[0], "vcruntime*.dll")):
+            fuer fn in glob.glob(os.path.join(os.path.split(dll_src_file)[0], "vcruntime*.dll")):
                 shutil.copy(fn, os.path.join(temp_dir, os.path.split(fn)[1]))
             if exe_pth:
                 _pth_file = os.path.splitext(exe_file)[0] + '._pth'
             else:
                 _pth_file = os.path.splitext(dll_file)[0] + '._pth'
             with open(_pth_file, 'w', encoding='utf8') as f:
-                for line in lines:
+                fuer line in lines:
                     print(line, file=f)
             return exe_file
     else:
@@ -692,13 +692,13 @@ klasse _pthFileTests(unittest.TestCase):
             os.symlink(sys.executable, exe_file)
             _pth_file = exe_file + '._pth'
             with open(_pth_file, 'w') as f:
-                for line in lines:
+                fuer line in lines:
                     print(line, file=f)
             return exe_file
 
     def _calc_sys_path_for_underpth_nosite(self, sys_prefix, lines):
         sys_path = []
-        for line in lines:
+        fuer line in lines:
             if not line or line[0] == '#':
                 continue
             abs_path = os.path.abspath(os.path.join(sys_prefix, line))
@@ -715,7 +715,7 @@ klasse _pthFileTests(unittest.TestCase):
         if repetitions <= 2:
             self.skipTest(
                 f"Python stdlib path is too long ({encoded_libpath_length:,} bytes)")
-        pth_lines.extend(libpath for _ in range(repetitions))
+        pth_lines.extend(libpath fuer _ in range(repetitions))
         pth_lines.extend(['', '# comment'])
         if import_site:
             pth_lines.append('import site')
@@ -777,7 +777,7 @@ klasse _pthFileTests(unittest.TestCase):
         rc = subprocess.call([exe_file, '-c',
             'import sys; sys.exit(not sys.flags.no_site and '
             '%r in sys.path and %r in sys.path and %r not in sys.path and '
-            'all("\\r" not in p and "\\n" not in p for p in sys.path))' % (
+            'all("\\r" not in p and "\\n" not in p fuer p in sys.path))' % (
                 os.path.join(sys_prefix, 'fake-path-name'),
                 libpath,
                 os.path.join(sys_prefix, 'from-env'),
@@ -797,7 +797,7 @@ klasse _pthFileTests(unittest.TestCase):
         rc = subprocess.call([exe_file, '-c',
             'import sys; sys.exit(not sys.flags.no_site and '
             '%r in sys.path and %r in sys.path and %r not in sys.path and '
-            'all("\\r" not in p and "\\n" not in p for p in sys.path))' % (
+            'all("\\r" not in p and "\\n" not in p fuer p in sys.path))' % (
                 os.path.join(sys_prefix, 'fake-path-name'),
                 libpath,
                 os.path.join(sys_prefix, 'from-env'),
@@ -827,7 +827,7 @@ klasse CommandLineTests(unittest.TestCase):
             user_site = site.getusersitepackages()
             output = io.StringIO()
             output.write("sys.path = [\n")
-            for dir in sys.path:
+            fuer dir in sys.path:
                 output.write("    %r,\n" % (dir,))
             output.write("]\n")
             output.write(f"USER_BASE: {user_base} ({self.exists(user_base)})\n")

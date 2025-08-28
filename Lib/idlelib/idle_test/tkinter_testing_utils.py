@@ -1,9 +1,9 @@
-"""Utilities for testing with Tkinter"""
+"""Utilities fuer testing with Tkinter"""
 import functools
 
 
 def run_in_tk_mainloop(delay=1):
-    """Decorator for running a test method with a real Tk mainloop.
+    """Decorator fuer running a test method with a real Tk mainloop.
 
     This starts a Tk mainloop before running the test, and stops it
     at the end. This is faster and more robust than the common
@@ -33,7 +33,7 @@ def run_in_tk_mainloop(delay=1):
             test_generator = test_method(self)
             root = self.root
             # Exceptions raised by self.assert...() need to be raised
-            # outside of the after() callback in order for the test
+            # outside of the after() callback in order fuer the test
             # harness to capture them.
             exception = None
             def after_callback():

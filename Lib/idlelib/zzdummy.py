@@ -1,7 +1,7 @@
-"""Example extension, also used for testing.
+"""Example extension, also used fuer testing.
 
-See extend.txt for more details on creating an extension.
-See config-extension.def for configuring an extension.
+See extend.txt fuer more details on creating an extension.
+See config-extension.def fuer configuring an extension.
 """
 
 from idlelib.config import idleConf
@@ -14,7 +14,7 @@ def format_selection(format_line):
     @wraps(format_line)
     def apply(self, event=None):
         head, tail, chars, lines = self.formatter.get_region()
-        for pos in range(len(lines) - 1):
+        fuer pos in range(len(lines) - 1):
             line = lines[pos]
             lines[pos] = format_line(self, line)
         self.formatter.set_region(head, tail, chars, lines)
@@ -35,7 +35,7 @@ klasse ZzDummy:
     ]
 
     def __init__(self, editwin):
-        "Initialize the settings for this extension."
+        "Initialize the settings fuer this extension."
         self.editwin = editwin
         self.text = editwin.text
         self.formatter = editwin.fregion

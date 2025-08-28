@@ -320,7 +320,7 @@ a = A(destroyed)"""
         # the annotations dict is stored in module.__dict__.
         # a freshly created module shouldn't have an annotations dict yet.
         foo = ModuleType("foo")
-        for i in range(4):
+        fuer i in range(4):
             self.assertFalse("__annotations__" in foo.__dict__)
             d = foo.__annotations__
             self.assertTrue("__annotations__" in foo.__dict__)
@@ -333,7 +333,7 @@ a = A(destroyed)"""
 
     def test_setting_annotations(self):
         foo = ModuleType("foo")
-        for i in range(4):
+        fuer i in range(4):
             self.assertFalse("__annotations__" in foo.__dict__)
             d = {'a': int}
             foo.__annotations__ = d
@@ -370,7 +370,7 @@ a = A(destroyed)"""
         m = ModuleType("test")
         d = m.__dict__
         count = 0
-        for _ in range(100):
+        fuer _ in range(100):
             m.attr = 1
             count += m.attr # Might be specialized
             d.pop("attr")

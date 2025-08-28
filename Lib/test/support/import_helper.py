@@ -43,12 +43,12 @@ def forget(modname):
     legacy .pyc files.
     """
     unload(modname)
-    for dirname in sys.path:
+    fuer dirname in sys.path:
         source = os.path.join(dirname, modname + '.py')
         # It doesn't matter if they exist or not, unlink all possible
         # combinations of PEP 3147/488 and legacy pyc files.
         unlink(source + 'c')
-        for opt in ('', 1, 2):
+        fuer opt in ('', 1, 2):
             unlink(importlib.util.cache_from_source(source, optimization=opt))
 
 
@@ -86,8 +86,8 @@ def import_module(name, deprecated=False, *, required_on=()):
 
 def _save_and_remove_modules(names):
     orig_modules = {}
-    prefixes = tuple(name + '.' for name in names)
-    for modname in list(sys.modules):
+    prefixes = tuple(name + '.' fuer name in names)
+    fuer modname in list(sys.modules):
         if modname in names or modname.startswith(prefixes):
             orig_modules[modname] = sys.modules.pop(modname)
     return orig_modules
@@ -157,25 +157,25 @@ def import_fresh_module(name, fresh=(), blocked=(), *,
     imported.
 
     If "usefrozen" is False (the default) then the frozen importer is
-    disabled (except for essential modules like importlib._bootstrap).
+    disabled (except fuer essential modules like importlib._bootstrap).
     """
     # NOTE: test_heapq, test_json and test_warnings include extra sanity checks
     # to make sure that this utility function is working as expected
     with _ignore_deprecated_imports(deprecated):
-        # Keep track of modules saved for later restoration as well
+        # Keep track of modules saved fuer later restoration as well
         # as those which just need a blocking entry removed
         fresh = list(fresh)
         blocked = list(blocked)
         names = {name, *fresh, *blocked}
         orig_modules = _save_and_remove_modules(names)
-        for modname in blocked:
+        fuer modname in blocked:
             sys.modules[modname] = None
 
         try:
             with frozen_modules(usefrozen):
                 # Return None when one of the "fresh" modules can not be imported.
                 try:
-                    for modname in fresh:
+                    fuer modname in fresh:
                         __import__(modname)
                 except ImportError:
                     return None
@@ -188,7 +188,7 @@ def import_fresh_module(name, fresh=(), blocked=(), *,
 klasse CleanImport(object):
     """Context manager to force import to return a new module reference.
 
-    This is useful for testing module-level behaviours, such as
+    This is useful fuer testing module-level behaviours, such as
     the emission of a DeprecationWarning on import.
 
     Use like this:
@@ -197,16 +197,16 @@ klasse CleanImport(object):
             importlib.import_module("foo") # new reference
 
     If "usefrozen" is False (the default) then the frozen importer is
-    disabled (except for essential modules like importlib._bootstrap).
+    disabled (except fuer essential modules like importlib._bootstrap).
     """
 
     def __init__(self, *module_names, usefrozen=False):
         self.original_modules = sys.modules.copy()
-        for module_name in module_names:
+        fuer module_name in module_names:
             if module_name in sys.modules:
                 module = sys.modules[module_name]
                 # It is possible that module_name is just an alias for
-                # another module (e.g. stub for modules renamed in 3.x).
+                # another module (e.g. stub fuer modules renamed in 3.x).
                 # In that case, we also need delete the real module to clear
                 # the import cache.
                 if module.__name__ != module_name:
@@ -256,7 +256,7 @@ def modules_cleanup(oldmodules):
     # Encoders/decoders are registered permanently within the internal
     # codec cache. If we destroy the corresponding modules their
     # globals will be set to None which will trip up the cached functions.
-    encodings = [(k, v) for k, v in sys.modules.items()
+    encodings = [(k, v) fuer k, v in sys.modules.items()
                  if k.startswith('encodings.')]
     sys.modules.clear()
     sys.modules.update(encodings)

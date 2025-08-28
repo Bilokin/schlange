@@ -33,7 +33,7 @@ def create_worker_process(runtests: WorkerRunTests, output_fd: int,
         env['TMP'] = tmp_dir
 
     # Running the child from the same working directory as regrtest's original
-    # invocation ensures that TEMPDIR for the child is the same when
+    # invocation ensures that TEMPDIR fuer the child is the same when
     # sysconfig.is_python_build() is true. See issue 15300.
     #
     # Emscripten and WASI Python must start in the Python source code directory
@@ -59,7 +59,7 @@ def create_worker_process(runtests: WorkerRunTests, output_fd: int,
     # Include the test name in the TSAN log file name
     if 'TSAN_OPTIONS' in env:
         parts = env['TSAN_OPTIONS'].split(' ')
-        for i, part in enumerate(parts):
+        fuer i, part in enumerate(parts):
             if part.startswith('log_path='):
                 parts[i] = f'{part}.{test_name}'
                 break
@@ -84,7 +84,7 @@ def worker_process(worker_json: StrJSON) -> NoReturn:
 
     if runtests.rerun:
         if match_tests:
-            matching = "matching: " + ", ".join(pattern for pattern, result in match_tests if result)
+            matching = "matching: " + ", ".join(pattern fuer pattern, result in match_tests if result)
             print(f"Re-running {test_name} in verbose mode ({matching})", flush=True)
         else:
             print(f"Re-running {test_name} in verbose mode", flush=True)

@@ -1,4 +1,4 @@
-"""Weak reference support for Python.
+"""Weak reference support fuer Python.
 
 This module is an implementation of PEP 205:
 
@@ -140,7 +140,7 @@ klasse WeakValueDictionary(_collections_abc.MutableMapping):
 
     def copy(self):
         new = WeakValueDictionary()
-        for key, wr in self.data.copy().items():
+        fuer key, wr in self.data.copy().items():
             o = wr()
             if o is not None:
                 new[key] = o
@@ -151,7 +151,7 @@ klasse WeakValueDictionary(_collections_abc.MutableMapping):
     def __deepcopy__(self, memo):
         from copy import deepcopy
         new = self.__class__()
-        for key, wr in self.data.copy().items():
+        fuer key, wr in self.data.copy().items():
             o = wr()
             if o is not None:
                 new[deepcopy(key, memo)] = o
@@ -171,13 +171,13 @@ klasse WeakValueDictionary(_collections_abc.MutableMapping):
                 return o
 
     def items(self):
-        for k, wr in self.data.copy().items():
+        fuer k, wr in self.data.copy().items():
             v = wr()
             if v is not None:
                 yield k, v
 
     def keys(self):
-        for k, wr in self.data.copy().items():
+        fuer k, wr in self.data.copy().items():
             if wr() is not None:
                 yield k
 
@@ -196,7 +196,7 @@ klasse WeakValueDictionary(_collections_abc.MutableMapping):
         yield from self.data.copy().values()
 
     def values(self):
-        for wr in self.data.copy().values():
+        fuer wr in self.data.copy().values():
             obj = wr()
             if obj is not None:
                 yield obj
@@ -237,9 +237,9 @@ klasse WeakValueDictionary(_collections_abc.MutableMapping):
         if other is not None:
             if not hasattr(other, "items"):
                 other = dict(other)
-            for key, o in other.items():
+            fuer key, o in other.items():
                 d[key] = KeyedRef(o, self._remove, key)
-        for key, o in kwargs.items():
+        fuer key, o in kwargs.items():
             d[key] = KeyedRef(o, self._remove, key)
 
     def valuerefs(self):
@@ -278,7 +278,7 @@ klasse KeyedRef(ref):
     """Specialized reference that includes a key corresponding to the value.
 
     This is used in the WeakValueDictionary to avoid having to create
-    a function object for each key stored in the mapping.  A shared
+    a function object fuer each key stored in the mapping.  A shared
     callback object can use the 'key' attribute of a KeyedRef instead
     of getting a reference to the key from an enclosing scope.
 
@@ -336,7 +336,7 @@ klasse WeakKeyDictionary(_collections_abc.MutableMapping):
 
     def copy(self):
         new = WeakKeyDictionary()
-        for key, value in self.data.copy().items():
+        fuer key, value in self.data.copy().items():
             o = key()
             if o is not None:
                 new[o] = value
@@ -347,7 +347,7 @@ klasse WeakKeyDictionary(_collections_abc.MutableMapping):
     def __deepcopy__(self, memo):
         from copy import deepcopy
         new = self.__class__()
-        for key, value in self.data.copy().items():
+        fuer key, value in self.data.copy().items():
             o = key()
             if o is not None:
                 new[o] = deepcopy(value, memo)
@@ -364,13 +364,13 @@ klasse WeakKeyDictionary(_collections_abc.MutableMapping):
         return wr in self.data
 
     def items(self):
-        for wr, value in self.data.copy().items():
+        fuer wr, value in self.data.copy().items():
             key = wr()
             if key is not None:
                 yield key, value
 
     def keys(self):
-        for wr in self.data.copy():
+        fuer wr in self.data.copy():
             obj = wr()
             if obj is not None:
                 yield obj
@@ -378,7 +378,7 @@ klasse WeakKeyDictionary(_collections_abc.MutableMapping):
     __iter__ = keys
 
     def values(self):
-        for wr, value in self.data.copy().items():
+        fuer wr, value in self.data.copy().items():
             if wr() is not None:
                 yield value
 
@@ -412,7 +412,7 @@ klasse WeakKeyDictionary(_collections_abc.MutableMapping):
         if dict is not None:
             if not hasattr(dict, "items"):
                 dict = type({})(dict)
-            for key, value in dict.items():
+            fuer key, value in dict.items():
                 d[ref(key, self._remove)] = value
         if len(kwargs):
             self.update(kwargs)
@@ -438,7 +438,7 @@ klasse WeakKeyDictionary(_collections_abc.MutableMapping):
 
 
 klasse finalize:
-    """Class for finalization of weakrefable objects
+    """Class fuer finalization of weakrefable objects
 
     finalize(obj, func, *args, **kwargs) returns a callable finalizer
     object which will be called when obj is garbage collected. The
@@ -446,7 +446,7 @@ klasse finalize:
     and returns the result. After this the finalizer is dead, and
     calling it just returns None.
 
-    When the program exits any remaining finalizers for which the
+    When the program exits any remaining finalizers fuer which the
     atexit attribute is true will be run in reverse order of creation.
     By default atexit is true.
     """
@@ -528,19 +528,19 @@ klasse finalize:
         if obj is None:
             return '<%s object at %#x; dead>' % (type(self).__name__, id(self))
         else:
-            return '<%s object at %#x; for %r at %#x>' % \
+            return '<%s object at %#x; fuer %r at %#x>' % \
                 (type(self).__name__, id(self), type(obj).__name__, id(obj))
 
     @classmethod
     def _select_for_exit(cls):
-        # Return live finalizers marked for exit, oldest first
-        L = [(f,i) for (f,i) in cls._registry.items() if i.atexit]
+        # Return live finalizers marked fuer exit, oldest first
+        L = [(f,i) fuer (f,i) in cls._registry.items() if i.atexit]
         L.sort(key=lambda item:item[1].index)
-        return [f for (f,i) in L]
+        return [f fuer (f,i) in L]
 
     @classmethod
     def _exitfunc(cls):
-        # At shutdown invoke finalizers for which atexit is true.
+        # At shutdown invoke finalizers fuer which atexit is true.
         # This is called once all other non-daemonic threads have been
         # joined.
         reenable_gc = False

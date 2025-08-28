@@ -18,7 +18,7 @@ klasse LazyImportTest(unittest.TestCase):
 
 
 klasse AddCallersTestCase(unittest.TestCase):
-    """Tests for pstats.add_callers helper."""
+    """Tests fuer pstats.add_callers helper."""
 
     def test_combine_results(self):
         # pstats.add_callers should combine the call results of both target
@@ -77,13 +77,13 @@ klasse StatsTestCase(unittest.TestCase):
                       0: 'calls',
                       1: 'time',
                       2: 'cumulative'}
-        for arg_int, arg_str in valid_args.items():
+        fuer arg_int, arg_str in valid_args.items():
             self.stats.sort_stats(arg_int)
             self.assertEqual(self.stats.sort_type,
                              self.stats.sort_arg_dict_default[arg_str][-1])
 
     def test_sort_stats_string(self):
-        for sort_name in ['calls', 'ncalls', 'cumtime', 'cumulative',
+        fuer sort_name in ['calls', 'ncalls', 'cumtime', 'cumulative',
                     'filename', 'line', 'module', 'name', 'nfl', 'pcalls',
                     'stdname', 'time', 'tottime']:
             self.stats.sort_stats(sort_name)
@@ -92,14 +92,14 @@ klasse StatsTestCase(unittest.TestCase):
 
     def test_sort_stats_partial(self):
         sortkey = 'filename'
-        for sort_name in ['f', 'fi', 'fil', 'file', 'filen', 'filena',
+        fuer sort_name in ['f', 'fi', 'fil', 'file', 'filen', 'filena',
                            'filenam', 'filename']:
             self.stats.sort_stats(sort_name)
             self.assertEqual(self.stats.sort_type,
                              self.stats.sort_arg_dict_default[sortkey][-1])
 
     def test_sort_stats_enum(self):
-        for member in SortKey:
+        fuer member in SortKey:
             self.stats.sort_stats(member)
             self.assertEqual(
                     self.stats.sort_type,
@@ -118,7 +118,7 @@ klasse StatsTestCase(unittest.TestCase):
                 value = values[0]
                 obj = str.__new__(cls, value)
                 obj._value_ = value
-                for other_value in values[1:]:
+                fuer other_value in values[1:]:
                     cls._value2member_map_[other_value] = obj
                 obj._all_values = values
                 return obj

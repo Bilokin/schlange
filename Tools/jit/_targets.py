@@ -59,7 +59,7 @@ klasse _Target(typing.Generic[_S, _R]):
         elif re.fullmatch(r"x86_64-.*|i686.*", self.triple):
             nop = b"\x90"
         else:
-            raise ValueError(f"NOP not defined for {self.triple}")
+            raise ValueError(f"NOP not defined fuer {self.triple}")
         return nop
 
     def _compute_digest(self) -> str:
@@ -70,8 +70,8 @@ klasse _Target(typing.Generic[_S, _R]):
         # These dependencies are also reflected in _JITSources in regen.targets:
         hasher.update(PYTHON_EXECUTOR_CASES_C_H.read_bytes())
         hasher.update((self.pyconfig_dir / "pyconfig.h").read_bytes())
-        for dirpath, _, filenames in sorted(os.walk(TOOLS_JIT)):
-            for filename in filenames:
+        fuer dirpath, _, filenames in sorted(os.walk(TOOLS_JIT)):
+            fuer filename in filenames:
                 hasher.update(pathlib.Path(dirpath, filename).read_bytes())
         return hasher.hexdigest()
 
@@ -84,7 +84,7 @@ klasse _Target(typing.Generic[_S, _R]):
             long, short = str(path), str(path.name)
             group.code.disassembly.extend(
                 line.expandtabs().strip().replace(long, short)
-                for line in output.splitlines()
+                fuer line in output.splitlines()
             )
         args = [
             "--elf-output-style=JSON",
@@ -104,7 +104,7 @@ klasse _Target(typing.Generic[_S, _R]):
         output = output[output.index("[", 1, None) :]
         output = output[: output.rindex("]", None, -1) + 1]
         sections: list[dict[typing.Literal["Section"], _S]] = json.loads(output)
-        for wrapped_section in sections:
+        fuer wrapped_section in sections:
             self._handle_section(wrapped_section["Section"], group)
         assert group.symbols["_JIT_ENTRY"] == (_stencils.HoleValue.CODE, 0)
         if group.data.body:
@@ -139,27 +139,27 @@ klasse _Target(typing.Generic[_S, _R]):
             f"-I{CPYTHON / 'Python'}",
             f"-I{CPYTHON / 'Tools' / 'jit'}",
             # -O2 and -O3 include some optimizations that make sense for
-            # standalone functions, but not for snippets of code that are going
+            # standalone functions, but not fuer snippets of code that are going
             # to be laid out end-to-end (like ours)... common examples include
             # passes like tail-duplication, or aligning jump targets with nops.
             # -Os is equivalent to -O2 with many of these problematic passes
-            # disabled. Based on manual review, for *our* purposes it usually
+            # disabled. Based on manual review, fuer *our* purposes it usually
             # generates better code than -O2 (and -O2 usually generates better
             # code than -O3). As a nice benefit, it uses less memory too:
             "-Os",
             "-S",
             # Shorten full absolute file paths in the generated code (like the
-            # __FILE__ macro and assert failure messages) for reproducibility:
+            # __FILE__ macro and assert failure messages) fuer reproducibility:
             f"-ffile-prefix-map={CPYTHON}=.",
             f"-ffile-prefix-map={tempdir}=.",
             # This debug info isn't necessary, and bloats out the JIT'ed code.
-            # We *may* be able to re-enable this, process it, and JIT it for a
+            # We *may* be able to re-enable this, process it, and JIT it fuer a
             # nicer debugging experience... but that needs a lot more research:
             "-fno-asynchronous-unwind-tables",
             # Don't call built-in functions that we can't find or patch:
             "-fno-builtin",
             # Emit relaxable 64-bit calls/jumps, so we don't have to worry about
-            # about emitting in-range trampolines for out-of-range targets.
+            # about emitting in-range trampolines fuer out-of-range targets.
             # We can probably remove this and emit trampolines in the future:
             "-fno-plt",
             # Don't call stack-smashing canaries that we can't find or patch:
@@ -194,7 +194,7 @@ klasse _Target(typing.Generic[_S, _R]):
                 coro = self._compile("trampoline", TOOLS_JIT / "trampoline.c", work)
                 tasks.append(group.create_task(coro, name="trampoline"))
                 template = TOOLS_JIT_TEMPLATE_C.read_text()
-                for case, opname in cases_and_opnames:
+                fuer case, opname in cases_and_opnames:
                     # Write out a copy of the template with *only* this case
                     # inserted. This is about twice as fast as #include'ing all
                     # of executor_cases.c.h each time we compile (since the C
@@ -204,8 +204,8 @@ klasse _Target(typing.Generic[_S, _R]):
                     c.write_text(template.replace("CASE", case))
                     coro = self._compile(opname, c, work)
                     tasks.append(group.create_task(coro, name=opname))
-        stencil_groups = {task.get_name(): task.result() for task in tasks}
-        for stencil_group in stencil_groups.values():
+        stencil_groups = {task.get_name(): task.result() fuer task in tasks}
+        fuer stencil_group in stencil_groups.values():
             stencil_group.process_relocations(self.known_symbols)
         return stencil_groups
 
@@ -219,7 +219,7 @@ klasse _Target(typing.Generic[_S, _R]):
         """Build jit_stencils.h in the given directory."""
         jit_stencils.parent.mkdir(parents=True, exist_ok=True)
         if not self.stable:
-            warning = f"JIT support for {self.triple} is still experimental!"
+            warning = f"JIT support fuer {self.triple} is still experimental!"
             request = "Please report any issues you encounter.".center(len(warning))
             outline = "=" * len(warning)
             print("\n".join(["", outline, warning, request, outline, ""]))
@@ -238,7 +238,7 @@ klasse _Target(typing.Generic[_S, _R]):
                 if comment:
                     file.write(f"// {comment}\n")
                 file.write("\n")
-                for line in _writer.dump(stencil_groups, self.known_symbols):
+                fuer line in _writer.dump(stencil_groups, self.known_symbols):
                     file.write(f"{line}\n")
             try:
                 jit_stencils_new.replace(jit_stencils)
@@ -256,7 +256,7 @@ klasse _COFF(
     def _handle_section(
         self, section: _schema.COFFSection, group: _stencils.StencilGroup
     ) -> None:
-        flags = {flag["Name"] for flag in section["Characteristics"]["Flags"]}
+        flags = {flag["Name"] fuer flag in section["Characteristics"]["Flags"]}
         if "SectionData" in section:
             section_data_bytes = section["SectionData"]["Bytes"]
         else:
@@ -273,14 +273,14 @@ klasse _COFF(
         base = len(stencil.body)
         group.symbols[section["Number"]] = value, base
         stencil.body.extend(section_data_bytes)
-        for wrapped_symbol in section["Symbols"]:
+        fuer wrapped_symbol in section["Symbols"]:
             symbol = wrapped_symbol["Symbol"]
             offset = base + symbol["Value"]
             name = symbol["Name"]
             name = name.removeprefix(self.symbol_prefix)
             if name not in group.symbols:
                 group.symbols[name] = value, offset
-        for wrapped_relocation in section["Relocations"]:
+        fuer wrapped_relocation in section["Relocations"]:
             relocation = wrapped_relocation["Relocation"]
             hole = self._handle_relocation(base, relocation, stencil.body)
             stencil.holes.append(hole)
@@ -360,13 +360,13 @@ klasse _ELF(
         self, section: _schema.ELFSection, group: _stencils.StencilGroup
     ) -> None:
         section_type = section["Type"]["Name"]
-        flags = {flag["Name"] for flag in section["Flags"]["Flags"]}
+        flags = {flag["Name"] fuer flag in section["Flags"]["Flags"]}
         if section_type == "SHT_RELA":
             assert "SHF_INFO_LINK" in flags, flags
             assert not section["Symbols"]
             maybe_symbol = group.symbols.get(section["Info"])
             if maybe_symbol is None:
-                # These are relocations for a section we're not emitting. Skip:
+                # These are relocations fuer a section we're not emitting. Skip:
                 return
             value, base = maybe_symbol
             if value is _stencils.HoleValue.CODE:
@@ -374,7 +374,7 @@ klasse _ELF(
             else:
                 assert value is _stencils.HoleValue.DATA
                 stencil = group.data
-            for wrapped_relocation in section["Relocations"]:
+            fuer wrapped_relocation in section["Relocations"]:
                 relocation = wrapped_relocation["Relocation"]
                 hole = self._handle_relocation(base, relocation, stencil.body)
                 stencil.holes.append(hole)
@@ -388,7 +388,7 @@ klasse _ELF(
                 value = _stencils.HoleValue.DATA
                 stencil = group.data
             group.symbols[section["Index"]] = value, len(stencil.body)
-            for wrapped_symbol in section["Symbols"]:
+            fuer wrapped_symbol in section["Symbols"]:
                 symbol = wrapped_symbol["Symbol"]
                 offset = len(stencil.body) + symbol["Value"]
                 name = symbol["Name"]["Name"]
@@ -454,7 +454,7 @@ klasse _MachO(
     ) -> None:
         assert section["Address"] >= len(group.code.body)
         assert "SectionData" in section
-        flags = {flag["Name"] for flag in section["Attributes"]["Flags"]}
+        flags = {flag["Name"] fuer flag in section["Attributes"]["Flags"]}
         name = section["Name"]["Value"]
         name = name.removeprefix(self.symbol_prefix)
         if "Debug" in flags:
@@ -476,14 +476,14 @@ klasse _MachO(
         )
         stencil.body.extend(section["SectionData"]["Bytes"])
         assert "Symbols" in section
-        for wrapped_symbol in section["Symbols"]:
+        fuer wrapped_symbol in section["Symbols"]:
             symbol = wrapped_symbol["Symbol"]
             offset = symbol["Value"] - start_address
             name = symbol["Name"]["Name"]
             name = name.removeprefix(self.symbol_prefix)
             group.symbols[name] = value, offset
         assert "Relocations" in section
-        for wrapped_relocation in section["Relocations"]:
+        fuer wrapped_relocation in section["Relocations"]:
             relocation = wrapped_relocation["Relocation"]
             hole = self._handle_relocation(base, relocation, stencil.body)
             stencil.holes.append(hole)
@@ -553,7 +553,7 @@ klasse _MachO(
 
 
 def get_target(host: str) -> _COFF32 | _COFF64 | _ELF | _MachO:
-    """Build a _Target for the given host "triple" and options."""
+    """Build a _Target fuer the given host "triple" and options."""
     optimizer: type[_optimizers.Optimizer]
     target: _COFF32 | _COFF64 | _ELF | _MachO
     if re.fullmatch(r"aarch64-apple-darwin.*", host):

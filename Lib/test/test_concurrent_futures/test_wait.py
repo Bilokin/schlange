@@ -46,7 +46,7 @@ klasse WaitTests:
             self.assertEqual(set([CANCELLED_FUTURE, future2]), not_done)
         finally:
             event.set()
-        future2.result()  # wait for job to finish
+        future2.result()  # wait fuer job to finish
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_first_completed_some_already_completed(self):
@@ -64,7 +64,7 @@ klasse WaitTests:
             self.assertEqual(set([future1]), pending)
         finally:
             event.set()
-        future1.result()  # wait for job to finish
+        future1.result()  # wait fuer job to finish
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_first_exception(self):
@@ -94,7 +94,7 @@ klasse WaitTests:
         finally:
             event1.set()
             event2.set()
-        future3.result()  # wait for job to finish
+        future3.result()  # wait fuer job to finish
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_first_exception_some_already_complete(self):
@@ -116,7 +116,7 @@ klasse WaitTests:
             self.assertEqual(set([CANCELLED_FUTURE, future2]), pending)
         finally:
             event.set()
-        future2.result()  # wait for job to finish
+        future2.result()  # wait fuer job to finish
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_first_exception_one_already_failed(self):
@@ -132,7 +132,7 @@ klasse WaitTests:
             self.assertEqual(set([future1]), pending)
         finally:
             event.set()
-        future1.result()  # wait for job to finish
+        future1.result()  # wait fuer job to finish
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_all_completed(self):
@@ -177,7 +177,7 @@ klasse WaitTests:
             self.assertEqual(set([future]), pending)
         finally:
             event.set()
-        future.result()  # wait for job to finish
+        future.result()  # wait fuer job to finish
 
 
 klasse ThreadPoolWaitTests(ThreadPoolMixin, WaitTests, BaseTestCase):
@@ -191,7 +191,7 @@ klasse ThreadPoolWaitTests(ThreadPoolMixin, WaitTests, BaseTestCase):
         oldswitchinterval = sys.getswitchinterval()
         support.setswitchinterval(1e-6)
         try:
-            fs = {self.executor.submit(future_func) for i in range(100)}
+            fs = {self.executor.submit(future_func) fuer i in range(100)}
             event.set()
             futures.wait(fs, return_when=futures.ALL_COMPLETED)
         finally:

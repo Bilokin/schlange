@@ -28,14 +28,14 @@ klasse FileCompareTestCase(unittest.TestCase):
         self.name_diff = os_helper.TESTFN + '-diff'
         self.name_same_shallow = os_helper.TESTFN + '-same-shallow'
         data = 'Contents of file go here.\n'
-        for name in [self.name, self.name_same, self.name_diff]:
+        fuer name in [self.name, self.name_same, self.name_diff]:
             with open(name, 'w', encoding="utf-8") as output:
                 output.write(data)
 
         with open(self.name_diff, 'a+', encoding="utf-8") as output:
             output.write('An extra line.\n')
 
-        for name in [self.name_same, self.name_diff]:
+        fuer name in [self.name_same, self.name_diff]:
             shutil.copystat(self.name, name)
 
         _create_file_shallow_equal(self.name, self.name_same_shallow)
@@ -100,7 +100,7 @@ klasse DirCompareTestCase(unittest.TestCase):
         with open(dir_file_path, 'w', encoding="utf-8") as output:
             output.write(data)
 
-        for dir in (self.dir_same, self.dir_same_shallow,
+        fuer dir in (self.dir_same, self.dir_same_shallow,
                     self.dir_diff, self.dir_diff_file):
             shutil.rmtree(dir, True)
             os.mkdir(dir)
@@ -127,7 +127,7 @@ klasse DirCompareTestCase(unittest.TestCase):
 
 
     def tearDown(self):
-        for dir in (self.dir, self.dir_same, self.dir_diff,
+        fuer dir in (self.dir, self.dir_same, self.dir_diff,
                     self.dir_same_shallow, self.dir_diff_file):
             shutil.rmtree(dir)
 
@@ -158,19 +158,19 @@ klasse DirCompareTestCase(unittest.TestCase):
 
     def test_cmpfiles_invalid_names(self):
         # See https://github.com/python/cpython/issues/122400.
-        for file, desc in [
+        fuer file, desc in [
             ('\x00', 'NUL bytes filename'),
             (__file__ + '\x00', 'filename with embedded NUL bytes'),
             ("\uD834\uDD1E.py", 'surrogate codes (MUSICAL SYMBOL G CLEF)'),
             ('a' * 1_000_000, 'very long filename'),
         ]:
-            for other_dir in [self.dir, self.dir_same, self.dir_diff]:
+            fuer other_dir in [self.dir, self.dir_same, self.dir_diff]:
                 with self.subTest(f'cmpfiles: {desc}', other_dir=other_dir):
                     res = filecmp.cmpfiles(self.dir, other_dir, [file])
                     self.assertTupleEqual(res, ([], [], [file]))
 
     def test_dircmp_invalid_names(self):
-        for bad_dir, desc in [
+        fuer bad_dir, desc in [
             ('\x00', 'NUL bytes dirname'),
             (f'Top{os.sep}Mid\x00', 'dirname with embedded NUL bytes'),
             ("\uD834\uDD1E", 'surrogate codes (MUSICAL SYMBOL G CLEF)'),
@@ -178,7 +178,7 @@ klasse DirCompareTestCase(unittest.TestCase):
         ]:
             d1 = filecmp.dircmp(self.dir, bad_dir)
             d2 = filecmp.dircmp(bad_dir, self.dir)
-            for target in [
+            fuer target in [
                 # attributes where os.listdir() raises OSError or ValueError
                 'left_list', 'right_list',
                 'left_only', 'right_only', 'common',
@@ -207,7 +207,7 @@ klasse DirCompareTestCase(unittest.TestCase):
         self._assert_dircmp_different_directories(shallow=False)
 
     def _assert_dircmp_identical_directories(self, **options):
-        # Check attributes for comparison of two identical directories
+        # Check attributes fuer comparison of two identical directories
         left_dir, right_dir = self.dir, self.dir_same
         d = filecmp.dircmp(left_dir, right_dir, **options)
         self.assertEqual(d.left, left_dir)
@@ -232,7 +232,7 @@ klasse DirCompareTestCase(unittest.TestCase):
         self._assert_report(d.report, expected_report)
 
     def _assert_dircmp_different_directories(self, **options):
-        # Check attributes for comparison of two different directories (right)
+        # Check attributes fuer comparison of two different directories (right)
         left_dir, right_dir = self.dir, self.dir_diff
         d = filecmp.dircmp(left_dir, right_dir, **options)
         self.assertEqual(d.left, left_dir)
@@ -253,7 +253,7 @@ klasse DirCompareTestCase(unittest.TestCase):
         ]
         self._assert_report(d.report, expected_report)
 
-        # Check attributes for comparison of two different directories (left)
+        # Check attributes fuer comparison of two different directories (left)
         left_dir, right_dir = self.dir_diff, self.dir
         d = filecmp.dircmp(left_dir, right_dir, **options)
         self.assertEqual(d.left, left_dir)

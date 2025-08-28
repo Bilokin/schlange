@@ -75,7 +75,7 @@ klasse CLanguage(Language):
         signatures: Iterable[Module | Class | Function]
     ) -> str:
         function = None
-        for o in signatures:
+        fuer o in signatures:
             if isinstance(o, Function):
                 if function:
                     fail("You may specify at most one function per block.\nFound a block containing at least two:\n\t" + repr(function) + " and " + repr(o))
@@ -88,8 +88,8 @@ klasse CLanguage(Language):
         parameters: list[Parameter],
     ) -> str | None:
         minversion: VersionTuple | None = None
-        for p in parameters:
-            for version in p.deprecated_positional, p.deprecated_keyword:
+        fuer p in parameters:
+            fuer version in p.deprecated_positional, p.deprecated_keyword:
                 if version and (not minversion or minversion > version):
                     minversion = version
         if not minversion:
@@ -128,10 +128,10 @@ klasse CLanguage(Language):
             f"{func.fulldisplayname}() is deprecated."
         )
 
-        for (major, minor), group in itertools.groupby(
+        fuer (major, minor), group in itertools.groupby(
             params.values(), key=attrgetter("deprecated_positional")
         ):
-            names = [repr(p.name) for p in group]
+            names = [repr(p.name) fuer p in group]
             pstr = libclinic.pprint_words(names)
             if len(names) == 1:
                 message += (
@@ -172,7 +172,7 @@ klasse CLanguage(Language):
         # Format the deprecation message.
         containscheck = ""
         conditions = []
-        for i, p in params.items():
+        fuer i, p in params.items():
             if p.is_optional():
                 if argname_fmt:
                     conditions.append(f"nargs < {i+1} && {argname_fmt % i}")
@@ -200,7 +200,7 @@ klasse CLanguage(Language):
                     condition = f"kwargs && PyDict_Size(kwargs) && {condition}"
                 else:
                     condition = f"kwargs && PyDict_GET_SIZE(kwargs) && {condition}"
-        names = [repr(p.name) for p in params.values()]
+        names = [repr(p.name) fuer p in params.values()]
         pstr = libclinic.pprint_words(names)
         pl = 's' if len(params) != 1 else ''
         message = (
@@ -208,10 +208,10 @@ klasse CLanguage(Language):
             f"{func.fulldisplayname}() is deprecated."
         )
 
-        for (major, minor), group in itertools.groupby(
+        fuer (major, minor), group in itertools.groupby(
             params.values(), key=attrgetter("deprecated_keyword")
         ):
-            names = [repr(p.name) for p in group]
+            names = [repr(p.name) fuer p in group]
             pstr = libclinic.pprint_words(names)
             pl = 's' if len(names) != 1 else ''
             message += (
@@ -287,7 +287,7 @@ klasse CLanguage(Language):
         required: list[Parameter] = []
         last: int | Literal[Sentinels.unspecified] = unspecified
 
-        for p in parameters:
+        fuer p in parameters:
             group_id = p.group
             if group_id != last:
                 last = group_id
@@ -309,7 +309,7 @@ klasse CLanguage(Language):
         else:
             nargs = 'PyTuple_GET_SIZE(args)'
         out.append(f"switch ({nargs}) {{\n")
-        for subset in permute_optional_groups(left, required, right):
+        fuer subset in permute_optional_groups(left, required, right):
             count = len(subset)
             count_min = min(count_min, count)
             count_max = max(count_max, count)
@@ -320,21 +320,21 @@ klasse CLanguage(Language):
 """)
                 continue
 
-            group_ids = {p.group for p in subset}  # eliminate duplicates
+            group_ids = {p.group fuer p in subset}  # eliminate duplicates
             d: dict[str, str | int] = {}
             d['count'] = count
             d['name'] = f.name
-            d['format_units'] = "".join(p.converter.format_unit for p in subset)
+            d['format_units'] = "".join(p.converter.format_unit fuer p in subset)
 
             parse_arguments: list[str] = []
-            for p in subset:
+            fuer p in subset:
                 p.converter.parse_argument(parse_arguments)
             d['parse_arguments'] = ", ".join(parse_arguments)
 
             group_ids.discard(0)
             lines = "\n".join([
                 self.group_to_variable_name(g) + " = 1;"
-                for g in group_ids
+                fuer g in group_ids
             ])
 
             s = """\
@@ -370,7 +370,7 @@ klasse CLanguage(Language):
 
         assert f.parameters, "We should always have a 'self' at this point!"
         parameters = f.render_parameters
-        converters = [p.converter for p in parameters]
+        converters = [p.converter fuer p in parameters]
 
         templates = self.output_templates(f, codegen)
 
@@ -398,7 +398,7 @@ klasse CLanguage(Language):
         has_option_groups = False
 
         # offset i by -1 because first_optional needs to ignore self
-        for i, p in enumerate(parameters, -1):
+        fuer i, p in enumerate(parameters, -1):
             c = p.converter
 
             if (i != -1) and (p.default is not unspecified):
@@ -423,7 +423,7 @@ klasse CLanguage(Language):
 
         # HACK
         # when we're METH_O, but have a custom return converter,
-        # we use "parser_parameters" for the parsing function
+        # we use "parser_parameters" fuer the parsing function
         # because that works better.  but that means we must
         # suppress actually declaring the impl's parameters
         # as variables in the parsing function.  but since it's
@@ -453,7 +453,7 @@ klasse CLanguage(Language):
         template_dict['docstring'] = libclinic.docstring_for_c_string(f.docstring)
         template_dict['self_name'] = template_dict['self_type'] = template_dict['self_type_check'] = ''
         template_dict['target_critical_section'] = ', '.join(f.target_critical_section)
-        for converter in converters:
+        fuer converter in converters:
             converter.set_template_dict(template_dict)
 
         if f.kind not in {SETTER, METHOD_INIT}:
@@ -464,10 +464,10 @@ klasse CLanguage(Language):
         template_dict['initializers'] = "\n\n".join(data.initializers)
         template_dict['modifications'] = '\n\n'.join(data.modifications)
         template_dict['keywords_c'] = ' '.join('"' + k + '",'
-                                               for k in data.keywords)
-        keywords = [k for k in data.keywords if k]
+                                               fuer k in data.keywords)
+        keywords = [k fuer k in data.keywords if k]
         template_dict['keywords_py'] = ' '.join(c_id(k) + ','
-                                                for k in keywords)
+                                                fuer k in keywords)
         template_dict['format_units'] = ''.join(data.format_units)
         template_dict['parse_arguments'] = ', '.join(data.parse_arguments)
         if data.parse_arguments:
@@ -497,7 +497,7 @@ klasse CLanguage(Language):
                                              limited_capi=codegen.limited_capi)
 
         # buffers, not destination
-        for name, destination in clinic.destination_buffers.items():
+        fuer name, destination in clinic.destination_buffers.items():
             template = templates[name]
             if has_option_groups:
                 template = libclinic.linear_format(template,

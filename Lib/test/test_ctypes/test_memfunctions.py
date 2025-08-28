@@ -80,7 +80,7 @@ klasse MemFunctionsTest(unittest.TestCase):
         b = (c_byte * 10)()
 
         size = len(b)
-        for foreign_ptr in (
+        fuer foreign_ptr in (
             b,
             cast(b, c_void_p),
             byref(b),
@@ -113,7 +113,7 @@ klasse MemFunctionsTest(unittest.TestCase):
         b = (c_byte * 10)()
 
         size = len(b)
-        for foreign_ptr in (
+        fuer foreign_ptr in (
             b,
             cast(b, c_void_p),
             byref(b),

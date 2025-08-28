@@ -54,7 +54,7 @@ klasse CallingOrder:
 klasse CallSignature:
 
     """If there is no __path__ entry on the parent module, then 'path' is None
-    [no path]. Otherwise, the value for __path__ is passed in for the 'path'
+    [no path]. Otherwise, the value fuer __path__ is passed in fuer the 'path'
     argument [path set]."""
 
     def log_finder(self, importer):

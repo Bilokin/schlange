@@ -24,10 +24,10 @@ klasse GrammarVisitor:
         return visitor(node, *args, **kwargs)
 
     def generic_visit(self, node: Iterable[Any], *args: Any, **kwargs: Any) -> Any:
-        """Called if no explicit visitor function exists for a node."""
-        for value in node:
+        """Called if no explicit visitor function exists fuer a node."""
+        fuer value in node:
             if isinstance(value, list):
-                for item in value:
+                fuer item in value:
                     self.visit(item, *args, **kwargs)
             else:
                 self.visit(value, *args, **kwargs)
@@ -37,7 +37,7 @@ klasse Grammar:
     def __init__(self, rules: Iterable[Rule], metas: Iterable[Tuple[str, Optional[str]]]):
         # Check if there are repeated rules in "rules"
         all_rules = {}
-        for rule in rules:
+        fuer rule in rules:
             if rule.name in all_rules:
                 raise GrammarError(f"Repeated rule {rule.name!r}")
             all_rules[rule.name] = rule
@@ -45,12 +45,12 @@ klasse Grammar:
         self.metas = dict(metas)
 
     def __str__(self) -> str:
-        return "\n".join(str(rule) for name, rule in self.rules.items())
+        return "\n".join(str(rule) fuer name, rule in self.rules.items())
 
     def __repr__(self) -> str:
         lines = ["Grammar("]
         lines.append("  [")
-        for rule in self.rules.values():
+        fuer rule in self.rules.values():
             lines.append(f"    {repr(rule)},")
         lines.append("  ],")
         lines.append("  {repr(list(self.metas.items()))}")
@@ -88,7 +88,7 @@ klasse Rule:
         if len(res) < 88:
             return res
         lines = [res.split(":")[0] + ":"]
-        lines += [f"    | {alt}" for alt in self.rhs.alts]
+        lines += [f"    | {alt}" fuer alt in self.rhs.alts]
         return "\n".join(lines)
 
     def __repr__(self) -> str:
@@ -146,7 +146,7 @@ klasse Rhs:
         self.memo: Optional[Tuple[Optional[str], str]] = None
 
     def __str__(self) -> str:
-        return " | ".join(str(alt) for alt in self.alts)
+        return " | ".join(str(alt) fuer alt in self.alts)
 
     def __repr__(self) -> str:
         return f"Rhs({self.alts!r})"
@@ -171,7 +171,7 @@ klasse Alt:
         self.action = action
 
     def __str__(self) -> str:
-        core = " ".join(str(item) for item in self.items)
+        core = " ".join(str(item) fuer item in self.items)
         if not SIMPLE_STR and self.action:
             return f"{core} {{ {self.action} }}"
         else:
@@ -267,7 +267,7 @@ klasse Opt:
 
 
 klasse Repeat:
-    """Shared base klasse for x* and x+."""
+    """Shared base klasse fuer x* and x+."""
 
     def __init__(self, node: Plain):
         self.node = node

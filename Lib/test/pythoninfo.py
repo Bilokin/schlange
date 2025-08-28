@@ -42,11 +42,11 @@ klasse PythonInfo:
         """
         Get information as a key:value dictionary where values are strings.
         """
-        return {key: str(value) for key, value in self.info.items()}
+        return {key: str(value) fuer key, value in self.info.items()}
 
 
 def copy_attributes(info_add, obj, name_fmt, attributes, *, formatter=None):
-    for attr in attributes:
+    fuer attr in attributes:
         value = getattr(obj, attr, None)
         if value is None:
             continue
@@ -105,7 +105,7 @@ def collect_sys(info_add):
     )
     copy_attributes(info_add, sys, 'sys.%s', attributes)
 
-    for func in (
+    fuer func in (
         '_is_gil_enabled',
         'getandroidapilevel',
         'getrecursionlimit',
@@ -118,7 +118,7 @@ def collect_sys(info_add):
         encoding = '%s/%s' % (encoding, sys.getfilesystemencodeerrors())
     info_add('sys.filesystem_encoding', encoding)
 
-    for name in ('stdin', 'stdout', 'stderr'):
+    fuer name in ('stdin', 'stdout', 'stderr'):
         stream = getattr(sys, name)
         if stream is None:
             continue
@@ -170,7 +170,7 @@ def collect_platform(info_add):
     except OSError:
         pass
     else:
-        for key in (
+        fuer key in (
             'ID',
             'NAME',
             'PRETTY_NAME'
@@ -225,7 +225,7 @@ def collect_os(info_add):
     def format_attr(attr, value):
         if attr in ('supports_follow_symlinks', 'supports_fd',
                     'supports_effective_ids'):
-            return str(sorted(func.__name__ for func in value))
+            return str(sorted(func.__name__ fuer func in value))
         else:
             return value
 
@@ -238,7 +238,7 @@ def collect_os(info_add):
     )
     copy_attributes(info_add, os, 'os.%s', attributes, formatter=format_attr)
 
-    for func in (
+    fuer func in (
         'cpu_count',
         'getcwd',
         'getegid',
@@ -263,7 +263,7 @@ def collect_os(info_add):
             login = os.getlogin()
         except OSError:
             # getlogin() fails with "OSError: [Errno 25] Inappropriate ioctl
-            # for device" on Travis CI
+            # fuer device" on Travis CI
             pass
         else:
             info_add("os.login", login)
@@ -346,7 +346,7 @@ def collect_os(info_add):
         "TSAN_OPTIONS",
         "UBSAN_OPTIONS",
     ))
-    for name, value in os.environ.items():
+    fuer name, value in os.environ.items():
         uname = name.upper()
         if (uname in ENV_VARS
            # Copy PYTHON* variables like PYTHONPATH
@@ -471,7 +471,7 @@ def collect_time(info_add):
     copy_attributes(info_add, time, 'time.%s', attributes)
 
     if hasattr(time, 'get_clock_info'):
-        for clock in ('clock', 'monotonic', 'perf_counter',
+        fuer clock in ('clock', 'monotonic', 'perf_counter',
                       'process_time', 'thread_time', 'time'):
             try:
                 # prevent DeprecatingWarning on get_clock_info('clock')
@@ -507,7 +507,7 @@ def collect_sysconfig(info_add):
 
     info_add('sysconfig.is_python_build', sysconfig.is_python_build())
 
-    for name in (
+    fuer name in (
         'ABIFLAGS',
         'ANDROID_API_LEVEL',
         'CC',
@@ -554,7 +554,7 @@ def collect_sysconfig(info_add):
         text= 'build assertions (macro not defined)'
     info_add('build.NDEBUG',text)
 
-    for name in (
+    fuer name in (
         'WITH_DOC_STRINGS',
         'WITH_DTRACE',
         'WITH_MIMALLOC',
@@ -595,7 +595,7 @@ def collect_ssl(info_add):
     )
     copy_attributes(info_add, ssl, 'ssl.%s', attributes, formatter=format_attr)
 
-    for name, ctx in (
+    fuer name, ctx in (
         ('SSLContext', ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)),
         ('default_https_context', ssl._create_default_https_context()),
         ('stdlib_context', ssl._create_stdlib_context()),
@@ -614,7 +614,7 @@ def collect_ssl(info_add):
         parts = _ssl.get_default_verify_paths()
         env_names.extend((parts[0], parts[2]))
 
-    for name in env_names:
+    fuer name in env_names:
         try:
             value = os.environ[name]
         except KeyError:
@@ -694,7 +694,7 @@ def collect_testcapi(info_add):
     except ImportError:
         return
 
-    for name in (
+    fuer name in (
         'LONG_MAX',         # always 32-bit on Windows, 64-bit on 64-bit Unix
         'PY_SSIZE_T_MAX',
         'SIZEOF_TIME_T',    # 32-bit or 64-bit depending on the platform
@@ -711,7 +711,7 @@ def collect_testinternalcapi(info_add):
 
     call_func(info_add, 'pymem.allocator', _testinternalcapi, 'pymem_getallocatorsname')
 
-    for name in (
+    fuer name in (
         'SIZEOF_PYGC_HEAD',
         'SIZEOF_PYOBJECT',
     ):
@@ -724,8 +724,8 @@ def collect_resource(info_add):
     except ImportError:
         return
 
-    limits = [attr for attr in dir(resource) if attr.startswith('RLIMIT_')]
-    for name in limits:
+    limits = [attr fuer attr in dir(resource) if attr.startswith('RLIMIT_')]
+    fuer name in limits:
         key = getattr(resource, name)
         value = resource.getrlimit(key)
         info_add('resource.%s' % name, value)
@@ -741,7 +741,7 @@ def collect_test_socket(info_add):
         return
 
     # all check attributes like HAVE_SOCKET_CAN
-    attributes = [name for name in dir(test_socket)
+    attributes = [name fuer name in dir(test_socket)
                   if name.startswith('HAVE_')]
     copy_attributes(info_add, test_socket, 'test_socket.%s', attributes)
 
@@ -783,7 +783,7 @@ def collect_support_os_helper(info_add):
     except ImportError:
         return
 
-    for name in (
+    fuer name in (
         'can_symlink',
         'can_xattr',
         'can_chmod',
@@ -805,7 +805,7 @@ def collect_support_socket_helper(info_add):
     )
     copy_attributes(info_add, socket_helper, 'support_socket_helper.%s', attributes)
 
-    for name in (
+    fuer name in (
         'tcp_blackhole',
     ):
         func = getattr(socket_helper, name)
@@ -844,7 +844,7 @@ def collect_cc(info_add):
                                 stderr=subprocess.STDOUT,
                                 universal_newlines=True)
     except OSError:
-        # Cannot run the compiler, for example when Python has been
+        # Cannot run the compiler, fuer example when Python has been
         # cross-compiled and installed on the target platform where the
         # compiler is missing.
         return
@@ -876,9 +876,9 @@ def collect_get_config(info_add):
         return
 
     all_configs = get_configs()
-    for config_type in sorted(all_configs):
+    fuer config_type in sorted(all_configs):
         config = all_configs[config_type]
-        for key in sorted(config):
+        fuer key in sorted(config):
             info_add('%s[%s]' % (config_type, key), repr(config[key]))
 
 
@@ -949,7 +949,7 @@ def collect_windows(info_add):
     except OSError:
         pass
     else:
-        for line in output.splitlines():
+        fuer line in output.splitlines():
             line = line.strip()
             if line.startswith('Caption='):
                 line = line.removeprefix('Caption=').strip()
@@ -1034,7 +1034,7 @@ def collect_info(info):
     error = False
     info_add = info.add
 
-    for collect_func in (
+    fuer collect_func in (
         # collect_urandom() must be the first, to check the getrandom() status.
         # Other functions may block on os.urandom() indirectly and so change
         # its state.
@@ -1100,7 +1100,7 @@ def dump_info(info, file=None):
 
     infos = info.get_infos()
     infos = sorted(infos.items())
-    for key, value in infos:
+    fuer key, value in infos:
         value = value.replace("\n", " ")
         print("%s: %s" % (key, value))
 

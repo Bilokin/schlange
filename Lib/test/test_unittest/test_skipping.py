@@ -80,13 +80,13 @@ klasse Test_TestSkipping(unittest.TestCase):
         self.assertEqual(events,
                          ['startTestRun', 'startTest', 'addSkip', 'addSkip',
                           'addSkip', 'stopTest', 'stopTestRun'])
-        self.assertEqual([msg for subtest, msg in result.skipped],
+        self.assertEqual([msg fuer subtest, msg in result.skipped],
                          ['skip 1', 'skip 2', 'skip 3'])
 
     def test_skipping_decorators(self):
         op_table = ((unittest.skipUnless, False, True),
                     (unittest.skipIf, True, False))
-        for deco, do_skip, dont_skip in op_table:
+        fuer deco, do_skip, dont_skip in op_table:
             klasse Foo(unittest.TestCase):
                 def defaultTestResult(self):
                     return LoggingResult(events)

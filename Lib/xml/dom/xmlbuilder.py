@@ -10,7 +10,7 @@ __all__ = ["DOMBuilder", "DOMEntityResolver", "DOMInputSource"]
 
 
 klasse Options:
-    """Features object that has variables set for each DOMBuilder feature.
+    """Features object that has variables set fuer each DOMBuilder feature.
 
     The DOMBuilder klasse uses an instance of this klasse to pass settings to
     the ExpatBuilder class.
@@ -81,7 +81,7 @@ klasse DOMBuilder:
                 raise xml.dom.NotSupportedErr(
                     "unsupported feature: %r" % (name,)) from None
             else:
-                for name, value in settings:
+                fuer name, value in settings:
                     setattr(self._options, name, value)
         else:
             raise xml.dom.NotFoundErr("unknown feature: " + repr(name))
@@ -309,7 +309,7 @@ klasse DOMBuilderFilter:
     a DOM instance.
     """
 
-    # There's really no need for this class; concrete implementations
+    # There's really no need fuer this class; concrete implementations
     # should just implement the endElement() and startElement()
     # methods as appropriate.  Using this makes it easy to only
     # implement one of them.
@@ -379,7 +379,7 @@ klasse DOMImplementationLS:
         if mode == self.MODE_ASYNCHRONOUS:
             raise xml.dom.NotSupportedErr(
                 "asynchronous builders are not supported")
-        raise ValueError("unknown value for mode")
+        raise ValueError("unknown value fuer mode")
 
     def createDOMWriter(self):
         raise NotImplementedError(

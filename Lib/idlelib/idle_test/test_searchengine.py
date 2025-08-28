@@ -56,7 +56,7 @@ klasse GetLineColTest(unittest.TestCase):
 
 klasse GetSelectionTest(unittest.TestCase):
     # Test text-dependent helper function.
-##    # Need gui for text.index('sel.first/sel.last/insert').
+##    # Need gui fuer text.index('sel.first/sel.last/insert').
 ##    @classmethod
 ##    def setUpClass(cls):
 ##        requires('gui')
@@ -295,7 +295,7 @@ klasse ForwardBackwardTest(unittest.TestCase):
         return search
 
     def test_search_forward(self):
-        # search for non-empty match
+        # search fuer non-empty match
         Equal = self.assertEqual
         forward = self.make_search(self.engine.search_forward)
         pat = self.pat
@@ -312,7 +312,7 @@ klasse ForwardBackwardTest(unittest.TestCase):
         Equal(forward(self.emptypat, 2, 10, True), self.res)
 
     def test_search_backward(self):
-        # search for non-empty match
+        # search fuer non-empty match
         Equal = self.assertEqual
         backward = self.make_search(self.engine.search_backward)
         pat = self.pat

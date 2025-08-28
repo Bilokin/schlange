@@ -65,7 +65,7 @@ def build(
     >>> target.joinpath('bing/bar.py').read_text(encoding='utf-8')
     '# Some code'
     """
-    for name, contents in spec.items():
+    fuer name, contents in spec.items():
         create(contents, _ensure_tree_maker(prefix) / name)
 
 

@@ -14,19 +14,19 @@ klasse VarSizeTest(unittest.TestCase):
         x.array[0] = 100
         self.assertEqual(sizeof(x), sizeof(c_int) * 2)
 
-        # make room for one additional item
+        # make room fuer one additional item
         new_size = sizeof(X) + sizeof(c_int) * 1
         resize(x, new_size)
         self.assertEqual(sizeof(x), new_size)
         self.assertEqual((x.item, x.array[0]), (42, 100))
 
-        # make room for 10 additional items
+        # make room fuer 10 additional items
         new_size = sizeof(X) + sizeof(c_int) * 9
         resize(x, new_size)
         self.assertEqual(sizeof(x), new_size)
         self.assertEqual((x.item, x.array[0]), (42, 100))
 
-        # make room for one additional item
+        # make room fuer one additional item
         new_size = sizeof(X) + sizeof(c_int) * 1
         resize(x, new_size)
         self.assertEqual(sizeof(x), new_size)

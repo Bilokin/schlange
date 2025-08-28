@@ -34,9 +34,9 @@ def my_file_and_modname():
 def get_firstlineno(func):
     return func.__code__.co_firstlineno
 
-#-------------------- Target functions for tracing ---------------------------#
+#-------------------- Target functions fuer tracing ---------------------------#
 #
-# The relative line numbers of lines in these functions matter for verifying
+# The relative line numbers of lines in these functions matter fuer verifying
 # tracing. Please modify the appropriate tests if you change one of the
 # functions. Absolute line numbers don't matter.
 #
@@ -49,7 +49,7 @@ def traced_func_linear(x, y):
 
 def traced_func_loop(x, y):
     c = x
-    for i in range(5):
+    fuer i in range(5):
         c += y
     return c
 
@@ -67,12 +67,12 @@ def traced_func_importing_caller(x):
 
 def traced_func_generator(num):
     c = 5       # executed once
-    for i in range(num):
+    fuer i in range(num):
         yield i + c
 
 def traced_func_calling_generator():
     k = 0
-    for i in traced_func_generator(10):
+    fuer i in traced_func_generator(10):
         k += i
 
 def traced_doubler(num):
@@ -83,7 +83,7 @@ def traced_capturer(*args, **kwargs):
 
 def traced_caller_list_comprehension():
     k = 10
-    mylist = [traced_doubler(i) for i in range(k)]
+    mylist = [traced_doubler(i) fuer i in range(k)]
     return mylist
 
 def traced_decorated_function():
@@ -137,7 +137,7 @@ klasse TestLineCounts(unittest.TestCase):
         # all lines are executed once
         expected = {}
         firstlineno = get_firstlineno(traced_func_linear)
-        for i in range(1, 5):
+        fuer i in range(1, 5):
             expected[(self.my_py_filename, firstlineno +  i)] = 1
 
         self.assertEqual(self.tracer.results().counts, expected)
@@ -217,7 +217,7 @@ klasse TestLineCounts(unittest.TestCase):
         # XXX todo: later add 'static_method_linear' and 'class_method_linear'
         # here, once issue1764286 is resolved
         #
-        for methname in ['inst_method_linear',]:
+        fuer methname in ['inst_method_linear',]:
             tracer = Trace(count=1, trace=0, countfuncs=0, countcallers=0)
             traced_obj = TracedClass(25)
             method = getattr(traced_obj, methname)
@@ -254,7 +254,7 @@ klasse TestRunExecCounts(unittest.TestCase):
         # the settrace of threading, which we ignore, just making sure that the
         # counts fo traced_func_loop were right.
         #
-        for k in expected.keys():
+        fuer k in expected.keys():
             self.assertEqual(self.tracer.results().counts[k], expected[k])
 
 
@@ -352,7 +352,7 @@ klasse TestCallers(unittest.TestCase):
         self.assertEqual(self.tracer.results().callers, expected)
 
 
-# Created separately for issue #3821
+# Created separately fuer issue #3821
 klasse TestCoverage(unittest.TestCase):
     def setUp(self):
         self.addCleanup(sys.settrace, sys.gettrace())
@@ -410,7 +410,7 @@ klasse TestCoverage(unittest.TestCase):
         stdout.seek(0)
         stdout.readline()
         coverage = {}
-        for line in stdout:
+        fuer line in stdout:
             lines, cov, module = line.split()[:3]
             coverage[module] = (float(lines), float(cov[:-1]))
         # XXX This is needed to run regrtest.py as a script
@@ -442,7 +442,7 @@ klasse Test_Ignore(unittest.TestCase):
         # Matched before.
         self.assertTrue(ignore.names(jn('bar', 'baz.py'), 'baz'))
 
-# Created for Issue 31908 -- CLI utility not writing cover files
+# Created fuer Issue 31908 -- CLI utility not writing cover files
 klasse TestCoverageCommandLineOutput(unittest.TestCase):
 
     codefile = 'tmp.py'
@@ -462,7 +462,7 @@ klasse TestCoverageCommandLineOutput(unittest.TestCase):
         unlink(self.coverfile)
 
     def test_cover_files_written_no_highlight(self):
-        # Test also that the cover file for the trace module is not created
+        # Test also that the cover file fuer the trace module is not created
         # (issue #34171).
         tracedir = os.path.dirname(os.path.abspath(trace.__file__))
         tracecoverpath = os.path.join(tracedir, 'trace.cover')
@@ -504,7 +504,7 @@ klasse TestCommandLine(unittest.TestCase):
             (b'-r/--report requires -f/--file', '-r'),
             (b'--summary can only be used with --count or --report', '-sT'),
             (b'unrecognized arguments: -y', '-y'))
-        for message, *args in _errors:
+        fuer message, *args in _errors:
             *_, stderr = assert_python_failure('-m', 'trace', *args)
             self.assertIn(message, stderr)
 
@@ -545,7 +545,7 @@ klasse TestCommandLine(unittest.TestCase):
                 def f():
                     return x + y
 
-                for i in range(10):
+                fuer i in range(10):
                     f()
             """))
         status, stdout, _ = assert_python_ok('-m', 'trace', '-cs', filename,

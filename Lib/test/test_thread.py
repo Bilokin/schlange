@@ -18,7 +18,7 @@ NUMTRIPS = 3
 _print_mutex = thread.allocate_lock()
 
 def verbose_print(arg):
-    """Helper function for printing out debugging output."""
+    """Helper function fuer printing out debugging output."""
     if support.verbose:
         with _print_mutex:
             print(arg)
@@ -52,7 +52,7 @@ klasse ThreadRunningTests(BasicThreadTest):
     def task(self, ident):
         with self.random_mutex:
             delay = random.random() / 10000.0
-        verbose_print("task %s will run for %sus" % (ident, round(delay*1e6)))
+        verbose_print("task %s will run fuer %sus" % (ident, round(delay*1e6)))
         time.sleep(delay)
         verbose_print("task %s done" % ident)
         with self.running_mutex:
@@ -62,10 +62,10 @@ klasse ThreadRunningTests(BasicThreadTest):
 
     def test_starting_threads(self):
         with threading_helper.wait_threads_exit():
-            # Basic test for thread creation.
-            for i in range(NUMTASKS):
+            # Basic test fuer thread creation.
+            fuer i in range(NUMTASKS):
                 self.newtask()
-            verbose_print("waiting for tasks to complete...")
+            verbose_print("waiting fuer tasks to complete...")
             self.done_mutex.acquire()
             verbose_print("all tasks done")
 
@@ -76,7 +76,7 @@ klasse ThreadRunningTests(BasicThreadTest):
         thread.stack_size(0)
         self.assertEqual(thread.stack_size(), 0, "stack_size not reset to default")
 
-    @unittest.skipIf(os.name not in ("nt", "posix"), 'test meant for nt and posix')
+    @unittest.skipIf(os.name not in ("nt", "posix"), 'test meant fuer nt and posix')
     def test_nt_and_posix_stack_size(self):
         try:
             thread.stack_size(4096)
@@ -88,20 +88,20 @@ klasse ThreadRunningTests(BasicThreadTest):
                           "size")
 
         fail_msg = "stack_size(%d) failed - should succeed"
-        for tss in (262144, 0x100000, 0):
+        fuer tss in (262144, 0x100000, 0):
             thread.stack_size(tss)
             self.assertEqual(thread.stack_size(), tss, fail_msg % tss)
             verbose_print("successfully set stack_size(%d)" % tss)
 
-        for tss in (262144, 0x100000):
+        fuer tss in (262144, 0x100000):
             verbose_print("trying stack_size = (%d)" % tss)
             self.next_ident = 0
             self.created = 0
             with threading_helper.wait_threads_exit():
-                for i in range(NUMTASKS):
+                fuer i in range(NUMTASKS):
                     self.newtask()
 
-                verbose_print("waiting for all tasks to complete")
+                verbose_print("waiting fuer all tasks to complete")
                 self.done_mutex.acquire()
                 verbose_print("all tasks done")
 
@@ -121,7 +121,7 @@ klasse ThreadRunningTests(BasicThreadTest):
 
         with threading_helper.wait_threads_exit():
             thread.start_new_thread(task, ())
-            for _ in support.sleeping_retry(support.LONG_TIMEOUT):
+            fuer _ in support.sleeping_retry(support.LONG_TIMEOUT):
                 if started:
                     break
             self.assertEqual(thread._count(), orig + 1)
@@ -130,13 +130,13 @@ klasse ThreadRunningTests(BasicThreadTest):
             mut.release()
 
             # The only reliable way to be sure that the thread ended from the
-            # interpreter's point of view is to wait for the function object to
+            # interpreter's point of view is to wait fuer the function object to
             # be destroyed.
             done = []
             wr = weakref.ref(task, lambda _: done.append(None))
             del task
 
-            for _ in support.sleeping_retry(support.LONG_TIMEOUT):
+            fuer _ in support.sleeping_retry(support.LONG_TIMEOUT):
                 if done:
                     break
                 support.gc_collect()  # For PyPy or other GCs.
@@ -235,7 +235,7 @@ klasse ThreadRunningTests(BasicThreadTest):
 
     def test_join_then_self_join(self):
         # make sure we can't deadlock in the following scenario with
-        # threads t0 and t1 (see comment in `ThreadHandle_join()` for more
+        # threads t0 and t1 (see comment in `ThreadHandle_join()` fuer more
         # details):
         #
         # - t0 joins t1
@@ -267,13 +267,13 @@ klasse ThreadRunningTests(BasicThreadTest):
 
         with threading_helper.wait_threads_exit():
             self_joiner_handle = thread.start_joinable_thread(self_joiner)
-            # Wait for the self-joining thread to start
+            # Wait fuer the self-joining thread to start
             self_joiner_started.acquire()
 
             # Start the thread that joins the self-joiner
             joiner_handle = thread.start_joinable_thread(joiner)
 
-            # Wait for the joiner to start
+            # Wait fuer the joiner to start
             joiner_started.acquire()
 
             # Not great, but I don't think there's a deterministic way to make
@@ -369,14 +369,14 @@ klasse BarrierTest(BasicThreadTest):
         with threading_helper.wait_threads_exit():
             self.bar = Barrier(NUMTASKS)
             self.running = NUMTASKS
-            for i in range(NUMTASKS):
+            fuer i in range(NUMTASKS):
                 thread.start_new_thread(self.task2, (i,))
-            verbose_print("waiting for tasks to end")
+            verbose_print("waiting fuer tasks to end")
             self.done_mutex.acquire()
             verbose_print("tasks done")
 
     def task2(self, ident):
-        for i in range(NUMTRIPS):
+        fuer i in range(NUMTRIPS):
             if ident == 0:
                 # give it a good chance to enter the next
                 # barrier before the others are all out
@@ -385,7 +385,7 @@ klasse BarrierTest(BasicThreadTest):
             else:
                 with self.random_mutex:
                     delay = random.random() / 10000.0
-            verbose_print("task %s will run for %sus" %
+            verbose_print("task %s will run fuer %sus" %
                           (ident, round(delay * 1e6)))
             time.sleep(delay)
             verbose_print("task %s entering %s" % (ident, i))

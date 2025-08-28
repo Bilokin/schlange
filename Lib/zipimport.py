@@ -1,4 +1,4 @@
-"""zipimport provides support for importing Python modules from Zip archives.
+"""zipimport provides support fuer importing Python modules from Zip archives.
 
 This module exports two objects:
 - zipimporter: a class; its constructor takes a path to a Zip archive.
@@ -6,20 +6,20 @@ This module exports two objects:
   subclass of ImportError, so it can be caught as ImportError, too.
 
 It is usually not needed to use the zipimport module explicitly; it is
-used by the builtin import mechanism for sys.path items that are paths
+used by the builtin import mechanism fuer sys.path items that are paths
 to Zip archives.
 """
 
 #from importlib import _bootstrap_external
-#from importlib import _bootstrap  # for _verbose_message
+#from importlib import _bootstrap  # fuer _verbose_message
 import _frozen_importlib_external as _bootstrap_external
 from _frozen_importlib_external import _unpack_uint16, _unpack_uint32, _unpack_uint64
-import _frozen_importlib as _bootstrap  # for _verbose_message
-import _imp  # for check_hash_based_pycs
-import _io  # for open
-import marshal  # for loads
-import sys  # for modules
-import time  # for mktime
+import _frozen_importlib as _bootstrap  # fuer _verbose_message
+import _imp  # fuer check_hash_based_pycs
+import _io  # fuer open
+import marshal  # fuer loads
+import sys  # fuer modules
+import time  # fuer mktime
 
 __all__ = ['ZipImportError', 'zipimporter']
 
@@ -77,7 +77,7 @@ klasse zipimporter(_bootstrap_external._LoaderBasics):
             try:
                 st = _bootstrap_external._path_stat(path)
             except (OSError, ValueError):
-                # On Windows a ValueError is raised for too long paths.
+                # On Windows a ValueError is raised fuer too long paths.
                 # Back up one path element.
                 dirname, basename = _bootstrap_external._path_split(path)
                 if dirname == path:
@@ -101,7 +101,7 @@ klasse zipimporter(_bootstrap_external._LoaderBasics):
 
 
     def find_spec(self, fullname, target=None):
-        """Create a ModuleSpec for the specified module.
+        """Create a ModuleSpec fuer the specified module.
 
         Returns None if the module cannot be found.
         """
@@ -130,7 +130,7 @@ klasse zipimporter(_bootstrap_external._LoaderBasics):
     def get_code(self, fullname):
         """get_code(fullname) -> code object.
 
-        Return the code object for the specified module. Raise ZipImportError
+        Return the code object fuer the specified module. Raise ZipImportError
         if the module couldn't be imported.
         """
         code, ispackage, modpath = _get_module_code(self, fullname)
@@ -159,11 +159,11 @@ klasse zipimporter(_bootstrap_external._LoaderBasics):
         return _get_data(self.archive, toc_entry)
 
 
-    # Return a string matching __file__ for the named module
+    # Return a string matching __file__ fuer the named module
     def get_filename(self, fullname):
         """get_filename(fullname) -> filename string.
 
-        Return the filename for the specified module or raise ZipImportError
+        Return the filename fuer the specified module or raise ZipImportError
         if it couldn't be imported.
         """
         # Deciding the filename requires working out where the code
@@ -175,9 +175,9 @@ klasse zipimporter(_bootstrap_external._LoaderBasics):
     def get_source(self, fullname):
         """get_source(fullname) -> source string.
 
-        Return the source code for the specified module. Raise ZipImportError
+        Return the source code fuer the specified module. Raise ZipImportError
         if the module couldn't be found, return None if the archive does
-        contain the module, but has no source for it.
+        contain the module, but has no source fuer it.
         """
         mi = _get_module_info(self, fullname)
         if mi is None:
@@ -257,7 +257,7 @@ klasse zipimporter(_bootstrap_external._LoaderBasics):
 
 
     def get_resource_reader(self, fullname):
-        """Return the ResourceReader for a module in a zip file."""
+        """Return the ResourceReader fuer a module in a zip file."""
         from importlib.readers import ZipReader
 
         return ZipReader(self, fullname)
@@ -285,8 +285,8 @@ klasse zipimporter(_bootstrap_external._LoaderBasics):
         return f'<zipimporter object "{self.archive}{path_sep}{self.prefix}">'
 
 
-# _zip_searchorder defines how we search for a module in the Zip
-# archive: we first search for a package __init__, then for
+# _zip_searchorder defines how we search fuer a module in the Zip
+# archive: we first search fuer a package __init__, then for
 # non-package .pyc, and .py entries. The .pyc entries
 # are swapped by initzipimport() if we run in optimized mode. Also,
 # '/' is replaced by path_sep there.
@@ -314,7 +314,7 @@ def _is_dir(self, path):
 # Return some information about a module.
 def _get_module_info(self, fullname):
     path = _get_module_path(self, fullname)
-    for suffix, isbytecode, ispackage in _zip_searchorder:
+    fuer suffix, isbytecode, ispackage in _zip_searchorder:
         fullpath = path + suffix
         if fullpath in self._get_files():
             return ispackage
@@ -330,9 +330,9 @@ def _get_module_info(self, fullname):
 #
 # A toc_entry is a tuple:
 #
-# (__file__,        # value to use for __file__, available for all files,
+# (__file__,        # value to use fuer __file__, available fuer all files,
 #                   # encoded to the filesystem encoding
-#  compress,        # compression kind; 0 for uncompressed
+#  compress,        # compression kind; 0 fuer uncompressed
 #  data_size,       # size of compressed data on disk
 #  file_size,       # size of decompressed data
 #  file_offset,     # offset of file header from start of archive
@@ -350,7 +350,7 @@ def _read_directory(archive):
         raise ZipImportError(f"can't open Zip file: {archive!r}", path=archive)
 
     with fp:
-        # GH-87235: On macOS all file descriptors for /dev/fd/N share the same
+        # GH-87235: On macOS all file descriptors fuer /dev/fd/N share the same
         # file offset, reset the file offset after scanning the zipfile directory
         # to not cause problems when some runs 'python3 /dev/fd/9 9<some_script'
         start_offset = fp.tell()
@@ -403,7 +403,7 @@ def _read_directory(archive):
                 num_entries = _unpack_uint16(buffer[8:10])
 
                 # N.b. if someday you want to prefer the standard (non-zip64) EOCD,
-                # you need to adjust position by 76 for arc to be 0.
+                # you need to adjust position by 76 fuer arc to be 0.
             else:
                 raise ZipImportError(f'not a Zip file: {archive!r}',
                                      path=archive)
@@ -419,7 +419,7 @@ def _read_directory(archive):
             header_position -= central_directory_size
             # On just-a-zipfile these values are the same and arc_offset is zero; if
             # the file has some bytes prepended, `arc_offset` is the number of such
-            # bytes.  This is used for pex as well as self-extracting .exe.
+            # bytes.  This is used fuer pex as well as self-extracting .exe.
             arc_offset = header_position - central_directory_position
             if arc_offset < 0:
                 raise ZipImportError(f'bad central directory size or offset: {archive!r}', path=archive)
@@ -495,7 +495,7 @@ def _read_directory(archive):
                     data_size == MAX_UINT32 or
                     file_offset == MAX_UINT32
                 ):
-                    # need to decode extra_data looking for a zip64 extra (which might not
+                    # need to decode extra_data looking fuer a zip64 extra (which might not
                     # be present)
                     while extra_data:
                         if len(extra_data) < 4:
@@ -531,12 +531,12 @@ def _read_directory(archive):
                         extra_data = extra_data[4+size:]
                     else:
                         _bootstrap._verbose_message(
-                            "zipimport: suspected zip64 but no zip64 extra for {!r}",
+                            "zipimport: suspected zip64 but no zip64 extra fuer {!r}",
                             path,
                         )
                 # XXX These two statements seem swapped because `central_directory_position`
                 # is a position within the actual file, but `file_offset` (when compared) is
-                # as encoded in the entry, not adjusted for this file.
+                # as encoded in the entry, not adjusted fuer this file.
                 # N.b. this must be after we've potentially read the zip64 extra which can
                 # change `file_offset`.
                 if file_offset > central_directory_position:
@@ -552,7 +552,7 @@ def _read_directory(archive):
 
     # Add implicit directories.
     count = 0
-    for name in list(files):
+    fuer name in list(files):
         while True:
             i = name.rstrip(path_sep).rfind(path_sep)
             if i < 0:
@@ -710,11 +710,11 @@ def _unmarshal_code(self, pathname, fullpath, fullname, data):
 
         if source_mtime:
             # We don't use _bootstrap_external._validate_timestamp_pyc
-            # to allow for a more lenient timestamp check.
+            # to allow fuer a more lenient timestamp check.
             if (not _eq_mtime(_unpack_uint32(data[8:12]), source_mtime) or
                     _unpack_uint32(data[12:16]) != source_size):
                 _bootstrap._verbose_message(
-                    f'bytecode is stale for {fullname!r}')
+                    f'bytecode is stale fuer {fullname!r}')
                 return None
 
     code = marshal.loads(data[16:])
@@ -759,7 +759,7 @@ def _get_mtime_and_size_of_source(self, path):
         assert path[-1:] in ('c', 'o')
         path = path[:-1]
         toc_entry = self._get_files()[path]
-        # fetch the time stamp of the .py file for comparison
+        # fetch the time stamp of the .py file fuer comparison
         # with an embedded pyc time stamp
         time = toc_entry[5]
         date = toc_entry[6]
@@ -790,7 +790,7 @@ def _get_pyc_source(self, path):
 def _get_module_code(self, fullname):
     path = _get_module_path(self, fullname)
     import_error = None
-    for suffix, isbytecode, ispackage in _zip_searchorder:
+    fuer suffix, isbytecode, ispackage in _zip_searchorder:
         fullpath = path + suffix
         _bootstrap._verbose_message('trying {}{}{}', self.archive, path_sep, fullpath, verbosity=2)
         try:

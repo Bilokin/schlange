@@ -15,10 +15,10 @@ def _complete(text, state):
 
     if state == 0:
         if text.startswith('.'):
-            _completion_matches = [c for c in CLI_COMMANDS if c.startswith(text)]
+            _completion_matches = [c fuer c in CLI_COMMANDS if c.startswith(text)]
         else:
             text_upper = text.upper()
-            _completion_matches = [c for c in SQLITE_KEYWORDS if c.startswith(text_upper)]
+            _completion_matches = [c fuer c in SQLITE_KEYWORDS if c.startswith(text_upper)]
     try:
         return _completion_matches[state] + " "
     except IndexError:

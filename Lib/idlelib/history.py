@@ -41,7 +41,7 @@ klasse History:
     def fetch(self, reverse):
         '''Fetch statement and replace current line in text widget.
 
-        Set prefix and pointer as needed for successive fetches.
+        Set prefix and pointer as needed fuer successive fetches.
         Reset them to None, None when returning to the start line.
         Sound bell when return to start line or cannot leave a line
         because cyclic is False.

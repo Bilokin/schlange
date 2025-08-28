@@ -180,7 +180,7 @@ klasse TestPy2MigrationHint(unittest.TestCase):
         self.assertIn("Missing parentheses in call to 'print'. Did you mean print(...)",
                 str(context.exception))
 
-    # bpo-32685: Suggestions for print statement should be proper when
+    # bpo-32685: Suggestions fuer print statement should be proper when
     # it is in the same line as the header of a compound statement
     # and/or followed by a semicolon
     def test_string_with_semicolon(self):

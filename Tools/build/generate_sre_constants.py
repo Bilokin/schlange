@@ -26,7 +26,7 @@ sre_constants_header = f"""\
  *
  * Copyright (c) 1997-2001 by Secret Labs AB.  All rights reserved.
  *
- * See the sre.c file for information on usage and redistribution.
+ * See the sre.c file fuer information on usage and redistribution.
  */
 
 """
@@ -43,17 +43,17 @@ def main(
 
     def dump(d, prefix):
         items = sorted(d)
-        for item in items:
+        fuer item in items:
             yield "#define %s_%s %d\n" % (prefix, item, item)
 
     def dump2(d, prefix):
-        items = [(value, name) for name, value in d.items()
+        items = [(value, name) fuer name, value in d.items()
                  if name.startswith(prefix)]
-        for value, name in sorted(items):
+        fuer value, name in sorted(items):
             yield "#define %s %d\n" % (name, value)
 
     def dump_gotos(d, prefix):
-        for i, item in enumerate(sorted(d)):
+        fuer i, item in enumerate(sorted(d)):
             assert i == item
             yield f"    &&{prefix}_{item},\n"
 

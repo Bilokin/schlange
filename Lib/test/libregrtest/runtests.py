@@ -152,7 +152,7 @@ klasse RunTests:
             # Remove -E option, since --python=COMMAND can set PYTHON
             # environment variables, such as PYTHONPATH, in the worker
             # process.
-            python_opts = [opt for opt in python_opts if opt != "-E"]
+            python_opts = [opt fuer opt in python_opts if opt != "-E"]
         else:
             executable = (sys.executable,)
         cmd = [*executable, *python_opts]

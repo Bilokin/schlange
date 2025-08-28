@@ -20,7 +20,7 @@ klasse EditorWindowTest(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         cls.root.update_idletasks()
-        for id in cls.root.tk.call('after', 'info'):
+        fuer id in cls.root.tk.call('after', 'info'):
             cls.root.after_cancel(id)
         cls.root.destroy()
         del cls.root
@@ -33,8 +33,8 @@ klasse EditorWindowTest(unittest.TestCase):
 
 klasse GetLineIndentTest(unittest.TestCase):
     def test_empty_lines(self):
-        for tabwidth in [1, 2, 4, 6, 8]:
-            for line in ['', '\n']:
+        fuer tabwidth in [1, 2, 4, 6, 8]:
+            fuer line in ['', '\n']:
                 with self.subTest(line=line, tabwidth=tabwidth):
                     self.assertEqual(
                         editor.get_line_indent(line, tabwidth=tabwidth),
@@ -59,7 +59,7 @@ klasse GetLineIndentTest(unittest.TestCase):
                  # Only checks spaces and tabs.
                  ('\nnewline test', (0, 0)))
 
-        for line, expected in tests:
+        fuer line, expected in tests:
             with self.subTest(line=line):
                 self.assertEqual(
                     editor.get_line_indent(line, tabwidth=4),
@@ -84,7 +84,7 @@ klasse GetLineIndentTest(unittest.TestCase):
                  # Only checks spaces and tabs.
                  ('\nnewline test', (0, 0)))
 
-        for line, expected in tests:
+        fuer line, expected in tests:
             with self.subTest(line=line):
                 self.assertEqual(
                     editor.get_line_indent(line, tabwidth=8),
@@ -95,7 +95,7 @@ klasse GetLineIndentTest(unittest.TestCase):
 def insert(text, string):
     text.delete('1.0', 'end')
     text.insert('end', string)
-    text.update_idletasks()  # Force update for colorizer to finish.
+    text.update_idletasks()  # Force update fuer colorizer to finish.
 
 
 klasse IndentAndNewlineTest(unittest.TestCase):
@@ -114,7 +114,7 @@ klasse IndentAndNewlineTest(unittest.TestCase):
         cls.window._close()
         del cls.window
         cls.root.update_idletasks()
-        for id in cls.root.tk.call('after', 'info'):
+        fuer id in cls.root.tk.call('after', 'info'):
             cls.root.after_cancel(id)
         cls.root.destroy()
         del cls.root
@@ -166,7 +166,7 @@ klasse IndentAndNewlineTest(unittest.TestCase):
                           '2.end'),
                  )
 
-        for test in tests:
+        fuer test in tests:
             with self.subTest(label=test.label):
                 insert(text, test.text)
                 text.mark_set('insert', test.mark)
@@ -204,7 +204,7 @@ klasse IndentSearcherTest(unittest.TestCase):
                      ("if 1:\n", ('if 1:\n', None)),
                      ("if 1:\n  2\n  3\n", ('if 1:\n', '  2\n')),
                      )
-        for code, expected_pair in test_info:
+        fuer code, expected_pair in test_info:
             with self.subTest(code=code):
                 insert(text, code)
                 actual_pair = editor.IndentSearcher(text).run()
@@ -225,7 +225,7 @@ klasse RMenuTest(unittest.TestCase):
         cls.window._close()
         del cls.window
         cls.root.update_idletasks()
-        for id in cls.root.tk.call('after', 'info'):
+        fuer id in cls.root.tk.call('after', 'info'):
             cls.root.after_cancel(id)
         cls.root.destroy()
         del cls.root

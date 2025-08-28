@@ -45,7 +45,7 @@ klasse VirtualEnvironment:
         if len(data.splitlines()) == 1:
             return indent + f'{name}: {data}'
         else:
-            prefixed_lines = '\n'.join(indent + '> ' + line for line in data.splitlines())
+            prefixed_lines = '\n'.join(indent + '> ' + line fuer line in data.splitlines())
             return indent + f'{name}:\n' + prefixed_lines
 
     def run(self, *args, **subprocess_args):

@@ -1,4 +1,4 @@
-# This is the Python mapping for interface NodeFilter from
+# This is the Python mapping fuer interface NodeFilter from
 # DOM2-Traversal-Range. It contains only constants.
 
 klasse NodeFilter:

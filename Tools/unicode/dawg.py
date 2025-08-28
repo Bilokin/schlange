@@ -1,8 +1,8 @@
 # Original Algorithm:
 # By Steve Hanov, 2011. Released to the public domain.
-# Please see http://stevehanov.ca/blog/index.php?id=115 for the accompanying article.
+# Please see http://stevehanov.ca/blog/index.php?id=115 fuer the accompanying article.
 #
-# Adapted for PyPy/CPython by Carl Friedrich Bolz-Tereick
+# Adapted fuer PyPy/CPython by Carl Friedrich Bolz-Tereick
 #
 # Based on Daciuk, Jan, et al. "Incremental construction of minimal acyclic finite-state automata."
 # Computational linguistics 26.1 (2000): 3-16.
@@ -16,7 +16,7 @@ from functools import cached_property
 
 
 # This klasse represents a node in the directed acyclic word graph (DAWG). It
-# has a list of edges to other nodes. It has functions for testing whether it
+# has a list of edges to other nodes. It has functions fuer testing whether it
 # is equivalent to another node. Nodes are equivalent if they have identical
 # edges, and each identical edge leads to identical states. The __hash__ and
 # __eq__ functions allow it to be used as a key in a python dictionary.
@@ -38,7 +38,7 @@ klasse DawgNode:
         else:
             arr = ["0"]
 
-        for (label, node) in sorted(self.edges.items()):
+        fuer (label, node) in sorted(self.edges.items()):
             arr.append(label)
             arr.append(str(node.id))
 
@@ -47,7 +47,7 @@ klasse DawgNode:
 
     def _as_tuple(self):
         edges = sorted(self.edges.items())
-        edge_tuple = tuple((label, node.id) for label, node in edges)
+        edge_tuple = tuple((label, node.id) fuer label, node in edges)
         return (self.final, edge_tuple)
 
     def __hash__(self):
@@ -65,7 +65,7 @@ klasse DawgNode:
         # staying at self counts as a path if self is final
         if self.final:
             count += 1
-        for label, node in self.linear_edges:
+        fuer label, node in self.linear_edges:
             count += node.num_reachable_linear
 
         return count
@@ -77,14 +77,14 @@ klasse Dawg:
         self.next_id = 0
         self.root = DawgNode(self)
 
-        # Here is a list of nodes that have not been checked for duplication.
+        # Here is a list of nodes that have not been checked fuer duplication.
         self.unchecked_nodes = []
 
         # To deduplicate, maintain a dictionary with
         # minimized_nodes[canonical_node] is canonical_node.
         # Based on __hash__ and __eq__, minimized_nodes[n] is the
         # canonical node equal to n.
-        # In other words, self.minimized_nodes[x] == x for all nodes found in
+        # In other words, self.minimized_nodes[x] == x fuer all nodes found in
         # the dict.
         self.minimized_nodes = {}
 
@@ -94,21 +94,21 @@ klasse Dawg:
         self.inverse = {}
 
     def insert(self, word, value):
-        if not all(0 <= ord(c) < 128 for c in word):
+        if not all(0 <= ord(c) < 128 fuer c in word):
             raise ValueError("Use 7-bit ASCII characters only")
         if word <= self.previous_word:
             raise ValueError("Error: Words must be inserted in alphabetical order.")
         if value in self.inverse:
-            raise ValueError(f"value {value} is duplicate, got it for word {self.inverse[value]} and now {word}")
+            raise ValueError(f"value {value} is duplicate, got it fuer word {self.inverse[value]} and now {word}")
 
         # find common prefix between word and previous word
         common_prefix = 0
-        for i in range(min(len(word), len(self.previous_word))):
+        fuer i in range(min(len(word), len(self.previous_word))):
             if word[i] != self.previous_word[i]:
                 break
             common_prefix += 1
 
-        # Check the unchecked_nodes for redundant nodes, proceeding from last
+        # Check the unchecked_nodes fuer redundant nodes, proceeding from last
         # one down to the common prefix size. Then truncate the list at that
         # point.
         self._minimize(common_prefix)
@@ -123,7 +123,7 @@ klasse Dawg:
         else:
             node = self.unchecked_nodes[-1][2]
 
-        for letter in word[common_prefix:]:
+        fuer letter in word[common_prefix:]:
             next_node = DawgNode(self)
             node.edges[letter] = next_node
             self.unchecked_nodes.append((node, letter, next_node))
@@ -145,7 +145,7 @@ klasse Dawg:
 
     def _minimize(self, down_to):
         # proceed from the leaf up to a certain point
-        for i in range(len(self.unchecked_nodes) - 1, down_to - 1, -1):
+        fuer i in range(len(self.unchecked_nodes) - 1, down_to - 1, -1):
             (parent, letter, child) = self.unchecked_nodes[i]
             if child in self.minimized_nodes:
                 # replace the child with the previously encountered one
@@ -162,7 +162,7 @@ klasse Dawg:
         skipped = 0  # keep track of number of final nodes that we skipped
         index = 0
         while index < len(word):
-            for label, child in node.linear_edges:
+            fuer label, child in node.linear_edges:
                 if word[index] == label[0]:
                     if word[index:index + len(label)] == label:
                         if node.final:
@@ -186,14 +186,14 @@ klasse Dawg:
                 continue
             yield node
             done.add(node.id)
-            for label, child in sorted(node.edges.items()):
+            fuer label, child in sorted(node.edges.items()):
                 stack.append(child)
 
     def prettyprint(self):
-        for node in sorted(self.enum_all_nodes(), key=lambda e: e.id):
+        fuer node in sorted(self.enum_all_nodes(), key=lambda e: e.id):
             s_final = " final" if node.final else ""
             print(f"{node.id}: ({node}) {s_final}")
-            for label, child in sorted(node.edges.items()):
+            fuer label, child in sorted(node.edges.items()):
                 print(f"    {label} goto {child.id}")
 
     def _inverse_lookup(self, number):
@@ -205,7 +205,7 @@ klasse Dawg:
                 if pos == 0:
                     return "".join(result)
                 pos -= 1
-            for label, child in sorted(node.edges.items()):
+            fuer label, child in sorted(node.edges.items()):
                 nextpos = pos - child.num_reachable_linear
                 if nextpos < 0:
                     result.append(label)
@@ -224,12 +224,12 @@ klasse Dawg:
         # characters)
         incoming = defaultdict(list)
         nodes = sorted(self.enum_all_nodes(), key=lambda e: e.id)
-        for node in nodes:
-            for label, child in sorted(node.edges.items()):
+        fuer node in nodes:
+            fuer label, child in sorted(node.edges.items()):
                 incoming[child].append(node)
-        for node in nodes:
+        fuer node in nodes:
             node.linear_edges = []
-            for label, child in sorted(node.edges.items()):
+            fuer label, child in sorted(node.edges.items()):
                 s = [label]
                 while len(child.edges) == 1 and len(incoming[child]) == 1 and not child.final:
                     (c, child), = child.edges.items()
@@ -237,7 +237,7 @@ klasse Dawg:
                 node.linear_edges.append((''.join(s), child))
 
     def _topological_order(self):
-        # compute reachable linear nodes, and the set of incoming edges for each node
+        # compute reachable linear nodes, and the set of incoming edges fuer each node
         order = []
         stack = [self.root]
         seen = set()
@@ -248,13 +248,13 @@ klasse Dawg:
                 continue
             seen.add(node.id)
             order.append(node)
-            for label, child in node.linear_edges:
+            fuer label, child in node.linear_edges:
                 stack.append(child)
 
         # do a (slightly bad) topological sort
         incoming = defaultdict(set)
-        for node in order:
-            for label, child in node.linear_edges:
+        fuer node in order:
+            fuer label, child in node.linear_edges:
                 incoming[child].add((label, node))
         no_incoming = [order[0]]
         topoorder = []
@@ -266,7 +266,7 @@ klasse Dawg:
             # use "reversed" to make sure that the linear_edges get reorderd
             # from their alphabetical order as little as necessary (no_incoming
             # is LIFO)
-            for label, child in reversed(node.linear_edges):
+            fuer label, child in reversed(node.linear_edges):
                 incoming[child].discard((label, node))
                 if not incoming[child]:
                     no_incoming.append(child)
@@ -275,11 +275,11 @@ klasse Dawg:
         assert set(topoorder) == set(order)
         assert len(set(topoorder)) == len(topoorder)
 
-        for node in order:
+        fuer node in order:
             node.linear_edges.sort(key=lambda element: positions[element[1]])
 
-        for node in order:
-            for label, child in node.linear_edges:
+        fuer node in order:
+            fuer label, child in node.linear_edges:
                 assert positions[child] > positions[node]
         # number the nodes. afterwards every input string in the set has a
         # unique number in the 0 <= number < len(data). We then put the data in
@@ -287,7 +287,7 @@ klasse Dawg:
         topoorder[0].num_reachable_linear
         linear_data = [None] * len(self.data)
         inverse = {} # maps value back to index
-        for word, value in self.data.items():
+        fuer word, value in self.data.items():
             index = self._lookup(word)
             linear_data[index] = value
             inverse[value] = index
@@ -296,7 +296,7 @@ klasse Dawg:
 
     def compute_packed(self, order):
         def compute_chunk(node, offsets):
-            """ compute the packed node/edge data for a node. result is a
+            """ compute the packed node/edge data fuer a node. result is a
             list of bytes as long as order. the jump distance calculations use
             the offsets dictionary to know where in the final big output
             bytestring the individual nodes will end up. """
@@ -307,7 +307,7 @@ klasse Dawg:
                 assert node.final
                 encode_varint_unsigned(0, result) # add a 0 saying "done"
             prev_child_offset = offset + len(result)
-            for edgeindex, (label, targetnode) in enumerate(node.linear_edges):
+            fuer edgeindex, (label, targetnode) in enumerate(node.linear_edges):
                 label = label.encode('ascii')
                 child_offset = offsets[targetnode]
                 child_offset_difference = child_offset - prev_child_offset
@@ -330,7 +330,7 @@ klasse Dawg:
             new_offsets = {}
             curr_offset = 0
             should_continue = False
-            for node, result in zip(order, chunks):
+            fuer node, result in zip(order, chunks):
                 if curr_offset < offsets[node]:
                     # the new offset is below the current assumption, this
                     # means we can shrink the output more
@@ -343,7 +343,7 @@ klasse Dawg:
 
         # assign initial offsets to every node
         offsets = {}
-        for i, node in enumerate(order):
+        fuer i, node in enumerate(order):
             # we don't know position of the edge yet, just use something big as
             # the starting position. we'll have to do further iterations anyway,
             # but the size is at least a lower limit then
@@ -357,7 +357,7 @@ klasse Dawg:
         # to have the correct jump distances
         last_offsets = None
         while 1:
-            chunks = [compute_chunk(node, offsets) for node in order]
+            chunks = [compute_chunk(node, offsets) fuer node in order]
             last_offsets = offsets
             offsets = compute_new_offsets(chunks, offsets)
             if offsets is None: # couldn't shrink
@@ -365,7 +365,7 @@ klasse Dawg:
 
         # build the final packed string
         total_result = bytearray()
-        for node, result in zip(order, chunks):
+        fuer node, result in zip(order, chunks):
             node_offset = last_offsets[node]
             if node_offset > len(total_result):
                 # need to pad to get the offsets correct
@@ -380,7 +380,7 @@ klasse Dawg:
 # the following functions operate on the packed representation
 
 def number_add_bits(x, *bits):
-    for bit in bits:
+    fuer bit in bits:
         assert bit == 0 or bit == 1
         x = (x << 1) | bit
     return x
@@ -440,7 +440,7 @@ def _match_edge(packed, s, size, node_offset, stringpos):
     if size > 1 and stringpos + size > len(s):
         # past the end of the string, can't match
         return False
-    for i in range(size):
+    fuer i in range(size):
         if packed[node_offset + i] != s[stringpos + i]:
             # if a subsequent char of an edge doesn't match, the word isn't in
             # the dawg
@@ -522,12 +522,12 @@ def _inverse_lookup(packed, pos):
 def build_compression_dawg(ucdata):
     d = Dawg()
     ucdata.sort()
-    for name, value in ucdata:
+    fuer name, value in ucdata:
         d.insert(name, value)
     packed, pos_to_code, reversedict = d.finish()
     print("size of dawg [KiB]", round(len(packed) / 1024, 2))
     # check that lookup and inverse_lookup work correctly on the input data
-    for name, value in ucdata:
+    fuer name, value in ucdata:
         assert lookup(packed, pos_to_code, name.encode('ascii')) == value
         assert inverse_lookup(packed, reversedict, value) == name.encode('ascii')
     return packed, pos_to_code

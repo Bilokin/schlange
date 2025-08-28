@@ -63,7 +63,7 @@ klasse NetrcTestCase(unittest.TestCase):
             "machine host.domain.com login \"\" password",
             "machine host.domain.com account \"\" password"
         )
-        for item in data:
+        fuer item in data:
             nrc = self.make_nrc(item)
             self.assertEqual(nrc.hosts['host.domain.com'], ('', '', ''))
         data = (
@@ -75,7 +75,7 @@ klasse NetrcTestCase(unittest.TestCase):
             "default login \"\" password",
             "default account \"\" password"
         )
-        for item in data:
+        fuer item in data:
             nrc = self.make_nrc(item)
             self.assertEqual(nrc.hosts['default'], ('', '', ''))
 
@@ -87,7 +87,7 @@ klasse NetrcTestCase(unittest.TestCase):
             "default host.domain.com invalid",
             "default host.domain.com login log password pass account acct invalid"
         )
-        for item in data:
+        fuer item in data:
             self.assertRaises(netrc.NetrcParseError, self.make_nrc, item)
 
     def _test_token_x(self, nrc, token, value):

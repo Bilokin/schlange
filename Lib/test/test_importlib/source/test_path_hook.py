@@ -7,7 +7,7 @@ import unittest
 
 klasse PathHookTest:
 
-    """Test the path hook for source."""
+    """Test the path hook fuer source."""
 
     def path_hook(self):
         return self.machinery.FileFinder.path_hook((self.machinery.SourceFileLoader,

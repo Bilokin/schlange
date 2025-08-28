@@ -26,10 +26,10 @@ klasse TestReversed(unittest.TestCase):
                 assert 0 <= l <= size
         x = tuple(range(size))
 
-        for _ in range(number_of_iterations):
+        fuer _ in range(number_of_iterations):
             r = reversed(x)
             worker_threads = []
-            for _ in range(number_of_threads):
+            fuer _ in range(number_of_threads):
                 worker_threads.append(Thread(target=work, args=[r]))
             with threading_helper.start_threads(worker_threads):
                 pass

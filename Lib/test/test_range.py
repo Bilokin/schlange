@@ -6,7 +6,7 @@ import pickle
 import itertools
 from test.support import ALWAYS_EQ
 
-# pure Python implementations (3 args only), for comparison
+# pure Python implementations (3 args only), fuer comparison
 def pyrange(start, stop, step):
     if (start - stop) // step < 0:
         # replace stop with next element in the sequence of integers
@@ -30,7 +30,7 @@ klasse RangeTest(unittest.TestCase):
             ys = itertools.islice(ys, limit)
         sentinel = object()
         pairs = itertools.zip_longest(xs, ys, fillvalue=sentinel)
-        for i, (x, y) in enumerate(pairs):
+        fuer i, (x, y) in enumerate(pairs):
             if x == y:
                 continue
             elif x == sentinel:
@@ -125,7 +125,7 @@ klasse RangeTest(unittest.TestCase):
         self.assertTrue(x)
 
         # Now test range() with longs
-        for x in [range(-2**100),
+        fuer x in [range(-2**100),
                   range(0, -2**100),
                   range(0, 2**100, -1)]:
             self.assertEqual(list(x), [])
@@ -366,8 +366,8 @@ klasse RangeTest(unittest.TestCase):
     def test_pickling(self):
         testcases = [(13,), (0, 11), (-22, 10), (20, 3, -1),
                      (13, 21, 3), (-2, 2, 2), (2**65, 2**65+2)]
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
-            for t in testcases:
+        fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
+            fuer t in testcases:
                 with self.subTest(proto=proto, test=t):
                     r = range(*t)
                     self.assertEqual(list(pickle.loads(pickle.dumps(r, proto))),
@@ -376,15 +376,15 @@ klasse RangeTest(unittest.TestCase):
     def test_iterator_pickling(self):
         testcases = [(13,), (0, 11), (-22, 10), (20, 3, -1), (13, 21, 3),
                      (-2, 2, 2)]
-        for M in 2**31, 2**63:
+        fuer M in 2**31, 2**63:
             testcases += [
                 (M-3, M-1), (4*M, 4*M+2),
                 (M-2, M-1, 2), (-M+1, -M, -2),
                 (1, 2, M-1), (-1, -2, -M),
                 (1, M-1, M-1), (-1, -M, -M),
             ]
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
-            for t in testcases:
+        fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
+            fuer t in testcases:
                 with self.subTest(proto=proto, t=t):
                     it = itorg = iter(range(*t))
                     data = list(range(*t))
@@ -404,7 +404,7 @@ klasse RangeTest(unittest.TestCase):
                     self.assertEqual(list(it), data[1:])
 
     def test_iterator_pickling_overflowing_index(self):
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             with self.subTest(proto=proto):
                 it = iter(range(2**32 + 2))
                 it.__setstate__(2**32 + 1)  # undocumented way to advance an iterator
@@ -413,7 +413,7 @@ klasse RangeTest(unittest.TestCase):
                 self.assertEqual(next(it), 2**32 + 1)
 
     def test_exhausted_iterator_pickling(self):
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             r = range(2**65, 2**65+2)
             i = iter(r)
             while True:
@@ -426,7 +426,7 @@ klasse RangeTest(unittest.TestCase):
             self.assertEqual(list(i2), [])
 
     def test_large_exhausted_iterator_pickling(self):
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             r = range(20)
             i = iter(r)
             while True:
@@ -452,7 +452,7 @@ klasse RangeTest(unittest.TestCase):
             b'\x80\x03cbuiltins\niter\ncbuiltins\nrange\n\x8a\t\x00\x00\x00\x00\x00\x00\x00\x00\xfeK\x14K\x02\x87R\x85R\x8a\t\x07\x00\x00\x00\x00\x00\x00\x00\x01b.',
             b'\x80\x04\x95C\x00\x00\x00\x00\x00\x00\x00\x8c\x08builtins\x8c\x04iter\x93\x8c\x08builtins\x8c\x05range\x93\x8a\t\x00\x00\x00\x00\x00\x00\x00\x00\xfeK\x14K\x02\x87R\x85R\x8a\t\x07\x00\x00\x00\x00\x00\x00\x00\x01b.',
         ]
-        for t in testcases:
+        fuer t in testcases:
             it = pickle.loads(t)
             self.assertEqual(list(it), [14, 16, 18])
 
@@ -486,7 +486,7 @@ klasse RangeTest(unittest.TestCase):
 
         self.assertIn(ALWAYS_EQ, range(3))
 
-        # Objects are never coerced into other types for comparison.
+        # Objects are never coerced into other types fuer comparison.
         klasse C2:
             def __int__(self): return 1
             def __index__(self): return 1
@@ -495,7 +495,7 @@ klasse RangeTest(unittest.TestCase):
         self.assertIn(int(C2()), range(3))
 
         # Check that the range.__contains__ optimization is only
-        # used for ints, not for instances of subclasses of int.
+        # used fuer ints, not fuer instances of subclasses of int.
         klasse C3(int):
             def __eq__(self, other): return True
         self.assertIn(C3(11), range(10))
@@ -535,16 +535,16 @@ klasse RangeTest(unittest.TestCase):
         # exercise 'fast' iterators, that use a rangeiterobject internally.
         # see issue 7298
         limits = [base + jiggle
-                  for M in (2**32, 2**64)
-                  for base in (-M, -M//2, 0, M//2, M)
-                  for jiggle in (-2, -1, 0, 1, 2)]
+                  fuer M in (2**32, 2**64)
+                  fuer base in (-M, -M//2, 0, M//2, M)
+                  fuer jiggle in (-2, -1, 0, 1, 2)]
         test_ranges = [(start, end, step)
-                       for start in limits
-                       for end in limits
-                       for step in (-2**63, -2**31, -2, -1, 1, 2)]
-        test_ranges += [(-2**63, 2**63-2, 1)] # regression test for gh-100810
+                       fuer start in limits
+                       fuer end in limits
+                       fuer step in (-2**63, -2**31, -2, -1, 1, 2)]
+        test_ranges += [(-2**63, 2**63-2, 1)] # regression test fuer gh-100810
 
-        for start, end, step in test_ranges:
+        fuer start, end, step in test_ranges:
             iter1 = range(start, end, step)
             iter2 = pyrange(start, end, step)
             test_id = "range({}, {}, {})".format(start, end, step)
@@ -569,7 +569,7 @@ klasse RangeTest(unittest.TestCase):
             i = slice(start, stop, step)
             self.assertEqual(list(r[i]), list(r)[i])
             self.assertEqual(len(r[i]), len(list(r)[i]))
-        for r in [range(10),
+        fuer r in [range(10),
                   range(0),
                   range(1, 9, 3),
                   range(8, 0, -3),
@@ -619,7 +619,7 @@ klasse RangeTest(unittest.TestCase):
         self.assertNotIn("", r)
 
     def test_reverse_iteration(self):
-        for r in [range(10),
+        fuer r in [range(10),
                   range(0),
                   range(1, 9, 3),
                   range(8, 0, -3),
@@ -631,9 +631,9 @@ klasse RangeTest(unittest.TestCase):
         r = range(*slice(1, 18, 2).indices(20))
         values = {None, 0, 1, -1, 2, -2, 5, -5, 19, -19,
                   20, -20, 21, -21, 30, -30, 99, -99}
-        for i in values:
-            for j in values:
-                for k in values - {0}:
+        fuer i in values:
+            fuer j in values:
+                fuer k in values - {0}:
                     r[i:j:k]
 
     def test_comparison(self):
@@ -644,18 +644,18 @@ klasse RangeTest(unittest.TestCase):
         test_tuples = list(map(tuple, test_ranges))
 
         # Check that equality of ranges matches equality of the corresponding
-        # tuples for each pair from the test lists above.
-        ranges_eq = [a == b for a in test_ranges for b in test_ranges]
-        tuples_eq = [a == b for a in test_tuples for b in test_tuples]
+        # tuples fuer each pair from the test lists above.
+        ranges_eq = [a == b fuer a in test_ranges fuer b in test_ranges]
+        tuples_eq = [a == b fuer a in test_tuples fuer b in test_tuples]
         self.assertEqual(ranges_eq, tuples_eq)
 
         # Check that != correctly gives the logical negation of ==
-        ranges_ne = [a != b for a in test_ranges for b in test_ranges]
-        self.assertEqual(ranges_ne, [not x for x in ranges_eq])
+        ranges_ne = [a != b fuer a in test_ranges fuer b in test_ranges]
+        self.assertEqual(ranges_ne, [not x fuer x in ranges_eq])
 
         # Equal ranges should have equal hashes.
-        for a in test_ranges:
-            for b in test_ranges:
+        fuer a in test_ranges:
+            fuer b in test_ranges:
                 if a == b:
                     self.assertEqual(hash(a), hash(b))
 
@@ -678,7 +678,7 @@ klasse RangeTest(unittest.TestCase):
         self.assertNotEqual(range(2**200, 2**201, 2**100),
                             range(2**200, 2**201 + 1, 2**100))
 
-        # Order comparisons are not implemented for ranges.
+        # Order comparisons are not implemented fuer ranges.
         with self.assertRaises(TypeError):
             range(0) < range(0)
         with self.assertRaises(TypeError):

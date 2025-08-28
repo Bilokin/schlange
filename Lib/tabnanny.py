@@ -29,7 +29,7 @@ filename_only = 0
 
 def errprint(*args):
     sep = ""
-    for arg in args:
+    fuer arg in args:
         sys.stderr.write(sep + str(arg))
         sep = " "
     sys.stderr.write("\n")
@@ -43,14 +43,14 @@ def main():
         opts, args = getopt.getopt(sys.argv[1:], "qv")
     except getopt.error as msg:
         errprint(msg)
-    for o, a in opts:
+    fuer o, a in opts:
         if o == '-q':
             filename_only = filename_only + 1
         if o == '-v':
             verbose = verbose + 1
     if not args:
         errprint("Usage:", sys.argv[0], "[-v] file_or_directory ...")
-    for arg in args:
+    fuer arg in args:
         check(arg)
 
 klasse NannyNag(Exception):
@@ -73,7 +73,7 @@ def check(file):
     If file_or_dir is a directory and not a symbolic link, then recursively
     descend the directory tree named by file_or_dir, checking all .py files
     along the way. If file_or_dir is an ordinary Python source file, it is
-    checked for whitespace related problems. The diagnostic messages are
+    checked fuer whitespace related problems. The diagnostic messages are
     written to standard output using the print statement.
     """
 
@@ -81,7 +81,7 @@ def check(file):
         if verbose:
             print("%r: listing directory" % (file,))
         names = os.listdir(file)
-        for name in names:
+        fuer name in names:
             fullname = os.path.join(file, name)
             if (os.path.isdir(fullname) and
                 not os.path.islink(fullname) or
@@ -133,7 +133,7 @@ def check(file):
         print("%r: Clean bill of health." % (file,))
 
 klasse Whitespace:
-    # the characters used for space and tab
+    # the characters used fuer space and tab
     S, T = ' \t'
 
     # members:
@@ -151,7 +151,7 @@ klasse Whitespace:
     #       trailing
     #           the number of trailing spaces in raw[:n]
     #       It's A Theorem that m.indent_level(t) ==
-    #       n.indent_level(t) for all t >= 1 iff m.norm == n.norm.
+    #       n.indent_level(t) fuer all t >= 1 iff m.norm == n.norm.
     #   is_simple
     #       true iff raw[:n] is of the form (T*)(S*)
 
@@ -160,7 +160,7 @@ klasse Whitespace:
         S, T = Whitespace.S, Whitespace.T
         count = []
         b = n = nt = 0
-        for ch in self.raw:
+        fuer ch in self.raw:
             if ch == S:
                 n = n + 1
                 b = b + 1
@@ -186,7 +186,7 @@ klasse Whitespace:
 
     def indent_level(self, tabsize):
         # count, il = self.norm
-        # for i in range(len(count)):
+        # fuer i in range(len(count)):
         #    if count[i]:
         #        il = il + (i//tabsize + 1)*tabsize * count[i]
         # return il
@@ -201,12 +201,12 @@ klasse Whitespace:
 
         count, trailing = self.norm
         il = 0
-        for i in range(tabsize, len(count)):
+        fuer i in range(tabsize, len(count)):
             il = il + i//tabsize * count[i]
         return trailing + tabsize * (il + self.nt)
 
     # return true iff self.indent_level(t) == other.indent_level(t)
-    # for all t >= 1
+    # fuer all t >= 1
     def equal(self, other):
         return self.norm == other.norm
 
@@ -218,7 +218,7 @@ klasse Whitespace:
         n = max(self.longest_run_of_spaces(),
                 other.longest_run_of_spaces()) + 1
         a = []
-        for ts in range(1, n+1):
+        fuer ts in range(1, n+1):
             if self.indent_level(ts) != other.indent_level(ts):
                 a.append( (ts,
                            self.indent_level(ts),
@@ -226,7 +226,7 @@ klasse Whitespace:
         return a
 
     # Return True iff self.indent_level(t) < other.indent_level(t)
-    # for all t >= 1.
+    # fuer all t >= 1.
     # The algorithm is due to Vincent Broman.
     # Easy to prove it's correct.
     # XXXpost that.
@@ -245,8 +245,8 @@ klasse Whitespace:
             return self.nt <= other.nt
         n = max(self.longest_run_of_spaces(),
                 other.longest_run_of_spaces()) + 1
-        # the self.n >= other.n test already did it for ts=1
-        for ts in range(2, n+1):
+        # the self.n >= other.n test already did it fuer ts=1
+        fuer ts in range(2, n+1):
             if self.indent_level(ts) >= other.indent_level(ts):
                 return False
         return True
@@ -259,7 +259,7 @@ klasse Whitespace:
         n = max(self.longest_run_of_spaces(),
                 other.longest_run_of_spaces()) + 1
         a = []
-        for ts in range(1, n+1):
+        fuer ts in range(1, n+1):
             if self.indent_level(ts) >= other.indent_level(ts):
                 a.append( (ts,
                            self.indent_level(ts),
@@ -267,7 +267,7 @@ klasse Whitespace:
         return a
 
 def format_witnesses(w):
-    firsts = (str(tup[0]) for tup in w)
+    firsts = (str(tup[0]) fuer tup in w)
     prefix = "at tab size"
     if len(w) > 1:
         prefix = prefix + "s"
@@ -287,7 +287,7 @@ def _process_tokens(tokens):
     indents = [Whitespace("")]
     check_equal = 0
 
-    for (type, token, start, end, line) in tokens:
+    fuer (type, token, start, end, line) in tokens:
         if type == NEWLINE:
             # a program statement, or ENDMARKER, will eventually follow,
             # after some (possibly empty) run of tokens of the form
@@ -323,7 +323,7 @@ def _process_tokens(tokens):
             # this is the first "real token" following a NEWLINE, so it
             # must be the first token of the next program statement, or an
             # ENDMARKER; the "line" argument exposes the leading whitespace
-            # for this statement; in the case of ENDMARKER, line is an empty
+            # fuer this statement; in the case of ENDMARKER, line is an empty
             # string, so will properly match the empty string with which the
             # "indents" stack was seeded
             check_equal = 0

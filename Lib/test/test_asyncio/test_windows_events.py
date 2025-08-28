@@ -134,7 +134,7 @@ klasse ProactorTests(WindowsEventsTestCase):
         self.assertIsInstance(server, windows_events.PipeServer)
 
         clients = []
-        for i in range(5):
+        fuer i in range(5):
             stream_reader = asyncio.StreamReader(loop=self.loop)
             protocol = asyncio.StreamReaderProtocol(stream_reader,
                                                     loop=self.loop)
@@ -144,10 +144,10 @@ klasse ProactorTests(WindowsEventsTestCase):
             self.assertEqual(protocol, proto)
             clients.append((stream_reader, trans))
 
-        for i, (r, w) in enumerate(clients):
+        fuer i, (r, w) in enumerate(clients):
             w.write('lower-{}\n'.format(i).encode())
 
-        for i, (r, w) in enumerate(clients):
+        fuer i, (r, w) in enumerate(clients):
             response = await r.readline()
             self.assertEqual(response, 'LOWER-{}\n'.format(i).encode())
             w.close()
@@ -177,7 +177,7 @@ klasse ProactorTests(WindowsEventsTestCase):
         event = _overlapped.CreateEvent(None, True, False, None)
         self.addCleanup(_winapi.CloseHandle, event)
 
-        # Wait for unset event with 0.5s timeout;
+        # Wait fuer unset event with 0.5s timeout;
         # result should be False at timeout
         timeout = 0.5
         fut = self.loop._proactor.wait_for_handle(event, timeout)
@@ -191,7 +191,7 @@ klasse ProactorTests(WindowsEventsTestCase):
 
         _overlapped.SetEvent(event)
 
-        # Wait for set event;
+        # Wait fuer set event;
         # result should be True immediately
         fut = self.loop._proactor.wait_for_handle(event, 10)
         done = self.loop.run_until_complete(fut)
@@ -207,7 +207,7 @@ klasse ProactorTests(WindowsEventsTestCase):
         event = _overlapped.CreateEvent(None, True, False, None)
         self.addCleanup(_winapi.CloseHandle, event)
 
-        # Wait for unset event with a cancelled future;
+        # Wait fuer unset event with a cancelled future;
         # CancelledError should be raised immediately
         fut = self.loop._proactor.wait_for_handle(event, 10)
         fut.cancel()
@@ -221,7 +221,7 @@ klasse ProactorTests(WindowsEventsTestCase):
         fut.cancel()
 
     def test_read_self_pipe_restart(self):
-        # Regression test for https://bugs.python.org/issue39010
+        # Regression test fuer https://bugs.python.org/issue39010
         # Previously, restarting a proactor event loop in certain states
         # would lead to spurious ConnectionResetErrors being logged.
         self.loop.call_exception_handler = mock.Mock()
@@ -238,9 +238,9 @@ klasse ProactorTests(WindowsEventsTestCase):
         # Shut everything down cleanly. This is an important part of the
         # test - in issue 39010, the error occurred during loop.close(),
         # so we want to close the loop during the test instead of leaving
-        # it for tearDown.
+        # it fuer tearDown.
         #
-        # First wait for f to complete to avoid a "future's result was never
+        # First wait fuer f to complete to avoid a "future's result was never
         # retrieved" error.
         self.loop.run_until_complete(f)
         # Now shut down the loop itself (self.close_loop also shuts down the
@@ -249,7 +249,7 @@ klasse ProactorTests(WindowsEventsTestCase):
         self.assertFalse(self.loop.call_exception_handler.called)
 
     def test_address_argument_type_error(self):
-        # Regression test for https://github.com/python/cpython/issues/98793
+        # Regression test fuer https://github.com/python/cpython/issues/98793
         proactor = self.loop._proactor
         sock = socket.socket(type=socket.SOCK_DGRAM)
         bad_address = None
@@ -264,7 +264,7 @@ klasse ProactorTests(WindowsEventsTestCase):
         self.assertEqual(res, 'done')
 
     async def _test_client_pipe_stat(self):
-        # Regression test for https://github.com/python/cpython/issues/100573
+        # Regression test fuer https://github.com/python/cpython/issues/100573
         ADDRESS = r'\\.\pipe\test_client_pipe_stat-%s' % os.getpid()
 
         async def probe():
@@ -287,7 +287,7 @@ klasse ProactorTests(WindowsEventsTestCase):
         errors = []
         self.loop.set_exception_handler(lambda _, data: errors.append(data))
 
-        for i in range(5):
+        fuer i in range(5):
             await self.loop.create_task(probe())
 
         self.assertEqual(len(errors), 0, errors)
@@ -300,7 +300,7 @@ klasse ProactorTests(WindowsEventsTestCase):
         return "done"
 
     def test_loop_restart(self):
-        # We're fishing for the "RuntimeError: <_overlapped.Overlapped object at XXX>
+        # We're fishing fuer the "RuntimeError: <_overlapped.Overlapped object at XXX>
         # still has pending operation at deallocation, the process may crash" error
         stop = threading.Event()
         def threadMain():
@@ -312,7 +312,7 @@ klasse ProactorTests(WindowsEventsTestCase):
         # In 10 60-second runs of this test prior to the fix:
         # time in seconds until failure: (none), 15.0, 6.4, (none), 7.6, 8.3, 1.7, 22.2, 23.5, 8.3
         # 10 seconds had a 50% failure rate but longer would be more costly
-        end_time = time.time() + 10 # Run for 10 seconds
+        end_time = time.time() + 10 # Run fuer 10 seconds
         self.loop.call_soon(thr.start)
         while not self._unraisable: # Stop if we got an unraisable exc
             self.loop.stop()

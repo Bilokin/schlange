@@ -1,4 +1,4 @@
-# Check for a module in a set of extension directories.
+# Check fuer a module in a set of extension directories.
 # An extension directory should contain a Setup file
 # and one or more .o files or a lib.a file.
 
@@ -9,14 +9,14 @@ def checkextensions(unknown, extensions):
     files = []
     modules = []
     edict = {}
-    for e in extensions:
+    fuer e in extensions:
         setup = os.path.join(e, 'Setup')
         liba = os.path.join(e, 'lib.a')
         if not os.path.isfile(liba):
             liba = None
         edict[e] = parsesetup.getsetupinfo(setup), liba
-    for mod in unknown:
-        for e in extensions:
+    fuer mod in unknown:
+        fuer e in extensions:
             (mods, vars), liba = edict[e]
             if mod not in mods:
                 continue
@@ -28,7 +28,7 @@ def checkextensions(unknown, extensions):
                 if liba in files:
                     break
                 files.append(liba)
-                for m in list(mods.keys()):
+                fuer m in list(mods.keys()):
                     files = files + select(e, mods, vars,
                                            m, 1)
                 break
@@ -38,12 +38,12 @@ def checkextensions(unknown, extensions):
 
 def select(e, mods, vars, mod, skipofiles):
     files = []
-    for w in mods[mod]:
+    fuer w in mods[mod]:
         w = treatword(w)
         if not w:
             continue
         w = expandvars(w, vars)
-        for w in w.split():
+        fuer w in w.split():
             if skipofiles and w[-2:] == '.o':
                 continue
             # Assume $var expands to absolute pathname

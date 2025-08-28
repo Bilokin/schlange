@@ -44,7 +44,7 @@ klasse TestPerfTrampoline(unittest.TestCase):
         files_to_delete = (
             set(pathlib.Path("/tmp/").glob("perf-*.map")) - self.perf_files
         )
-        for file in files_to_delete:
+        fuer file in files_to_delete:
             file.unlink()
 
     @unittest.skipIf(support.check_bolt_optimized(), "fails on BOLT instrumented binaries")
@@ -85,9 +85,9 @@ klasse TestPerfTrampoline(unittest.TestCase):
             f"py::bar:{script}",
             f"py::baz:{script}",
         ]
-        for expected_symbol in expected_symbols:
+        fuer expected_symbol in expected_symbols:
             perf_line = next(
-                (line for line in perf_lines if expected_symbol in line), None
+                (line fuer line in perf_lines if expected_symbol in line), None
             )
             self.assertIsNotNone(
                 perf_line, f"Could not find {expected_symbol} in perf file"
@@ -162,7 +162,7 @@ klasse TestPerfTrampoline(unittest.TestCase):
 
     @unittest.skipIf(support.check_bolt_optimized(), "fails on BOLT instrumented binaries")
     def test_sys_api(self):
-        for define_eval_hook in (False, True):
+        fuer define_eval_hook in (False, True):
             code = """if 1:
                     import sys
                     def foo():
@@ -364,7 +364,7 @@ klasse TestPerfProfilerMixin:
             code = """if 1:
                 def foo(n):
                     x = 0
-                    for i in range(n):
+                    fuer i in range(n):
                         x += i
 
                 def bar(n):
@@ -388,7 +388,7 @@ klasse TestPerfProfilerMixin:
             code = """if 1:
                 def foo(n):
                     x = 0
-                    for i in range(n):
+                    fuer i in range(n):
                         x += i
 
                 def bar(n):
@@ -430,7 +430,7 @@ klasse TestPerfProfiler(unittest.TestCase, TestPerfProfilerMixin):
         files_to_delete = (
             set(pathlib.Path("/tmp/").glob("perf-*.map")) - self.perf_files
         )
-        for file in files_to_delete:
+        fuer file in files_to_delete:
             file.unlink()
 
     def test_pre_fork_compile(self):
@@ -457,7 +457,7 @@ klasse TestPerfProfiler(unittest.TestCase, TestPerfProfilerMixin):
 
                 def compile_trampolines_for_all_functions():
                     perf_trampoline_set_persist_after_fork(1)
-                    for _, obj in globals().items():
+                    fuer _, obj in globals().items():
                         if callable(obj) and hasattr(obj, '__code__'):
                             compile_perf_trampoline_entry(obj.__code__)
 
@@ -504,7 +504,7 @@ klasse TestPerfProfiler(unittest.TestCase, TestPerfProfilerMixin):
         # Pre-compiled perf-map entries of a forked process must be
         # identical in both the parent and child perf-map files.
         perf_file_lines = perf_file_contents.split("\n")
-        for line in perf_file_lines:
+        fuer line in perf_file_lines:
             if f"py::foo_fork:{script}" in line or f"py::bar_fork:{script}" in line:
                 self.assertIn(line, child_perf_file_contents)
 
@@ -515,7 +515,7 @@ def _is_perf_version_at_least(major, minor):
     # a commit hash in the version string, like "6.12.9.g242e6068fd5c"
     #
     # PermissionError is raised if perf does not exist on the Windows Subsystem
-    # for Linux, see #134987
+    # fuer Linux, see #134987
     try:
         output = subprocess.check_output(["perf", "--version"], text=True)
     except (subprocess.CalledProcessError, FileNotFoundError, PermissionError):
@@ -549,7 +549,7 @@ klasse TestPerfProfilerWithDwarf(unittest.TestCase, TestPerfProfilerMixin):
         files_to_delete = set(pathlib.Path("/tmp/").glob("jit*.dump"))
         files_to_delete |= set(pathlib.Path("/tmp/").glob("jitted-*.so"))
         files_to_delete = files_to_delete - self.perf_files
-        for file in files_to_delete:
+        fuer file in files_to_delete:
             file.unlink()
 
 

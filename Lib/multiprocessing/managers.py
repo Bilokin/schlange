@@ -1,5 +1,5 @@
 #
-# Module providing manager classes for dealing
+# Module providing manager classes fuer dealing
 # with shared objects
 #
 # multiprocessing/managers.py
@@ -42,22 +42,22 @@ else:
     __all__.append('SharedMemoryManager')
 
 #
-# Register some things for pickling
+# Register some things fuer pickling
 #
 
 def reduce_array(a):
     return array.array, (a.typecode, a.tobytes())
 reduction.register(array.array, reduce_array)
 
-view_types = [type(getattr({}, name)()) for name in ('items','keys','values')]
+view_types = [type(getattr({}, name)()) fuer name in ('items','keys','values')]
 def rebuild_as_list(obj):
     return list, (list(obj),)
-for view_type in view_types:
+fuer view_type in view_types:
     reduction.register(view_type, rebuild_as_list)
 del view_type, view_types
 
 #
-# Type for identifying shared objects
+# Type fuer identifying shared objects
 #
 
 klasse Token(object):
@@ -80,7 +80,7 @@ klasse Token(object):
                (self.__class__.__name__, self.typeid, self.address, self.id)
 
 #
-# Function for communication with a manager's server process
+# Function fuer communication with a manager's server process
 #
 
 def dispatch(c, id, methodname, args=(), kwds={}):
@@ -116,7 +116,7 @@ klasse RemoteError(Exception):
         return ('\n' + '-'*75 + '\n' + str(self.args[0]) + '-'*75)
 
 #
-# Functions for finding the method names of an object
+# Functions fuer finding the method names of an object
 #
 
 def all_methods(obj):
@@ -124,7 +124,7 @@ def all_methods(obj):
     Return a list of names of methods of `obj`
     '''
     temp = []
-    for name in dir(obj):
+    fuer name in dir(obj):
         func = getattr(obj, name)
         if callable(func):
             temp.append(name)
@@ -134,7 +134,7 @@ def public_methods(obj):
     '''
     Return a list of names of methods of `obj` which do not start with '_'
     '''
-    return [name for name in all_methods(obj) if name[0] != '_']
+    return [name fuer name in all_methods(obj) if name[0] != '_']
 
 #
 # Server which is run in a process controlled by a manager
@@ -347,7 +347,7 @@ klasse Server(object):
             result = []
             keys = list(self.id_to_refcount.keys())
             keys.sort()
-            for ident in keys:
+            fuer ident in keys:
                 if ident != '0':
                     result.append('  %s:       refcount=%s\n    %s' %
                                   (ident, self.id_to_refcount[ident],
@@ -494,7 +494,7 @@ listener_client = {
 
 klasse BaseManager(object):
     '''
-    Base klasse for managers
+    Base klasse fuer managers
     '''
     _registry = {}
     _Server = Server
@@ -538,7 +538,7 @@ klasse BaseManager(object):
 
     def start(self, initializer=None, initargs=()):
         '''
-        Spawn a server process for this manager object
+        Spawn a server process fuer this manager object
         '''
         if self._state.value != State.INITIAL:
             if self._state.value == State.STARTED:
@@ -561,7 +561,7 @@ klasse BaseManager(object):
             args=(self._registry, self._address, self._authkey,
                   self._serializer, writer, initializer, initargs),
             )
-        ident = ':'.join(str(i) for i in self._process._identity)
+        ident = ':'.join(str(i) fuer i in self._process._identity)
         self._process.name = type(self).__name__  + '-' + ident
         self._process.start()
 
@@ -716,7 +716,7 @@ klasse BaseManager(object):
                            getattr(proxytype, '_method_to_typeid_', None)
 
         if method_to_typeid:
-            for key, value in list(method_to_typeid.items()): # isinstance?
+            fuer key, value in list(method_to_typeid.items()): # isinstance?
                 assert type(key) is str, '%r is not a string' % key
                 assert type(value) is str, '%r is not a string' % value
 
@@ -754,7 +754,7 @@ klasse ProcessLocalSet(set):
 
 klasse BaseProxy(object):
     '''
-    A base for proxies of shared objects
+    A base fuer proxies of shared objects
     '''
     _address_to_local = {}
     _mutex = util.ForkAwareThreadLock()
@@ -779,7 +779,7 @@ klasse BaseProxy(object):
         self._tls = tls_serials[0]
 
         # self._all_serials is a set used to record the identities of all
-        # shared objects for which the current process owns references and
+        # shared objects fuer which the current process owns references and
         # which are in the manager at token.address
         self._all_serials = tls_serials[1]
 
@@ -893,7 +893,7 @@ klasse BaseProxy(object):
             util.debug('DECREF %r -- manager already shutdown', token.id)
 
         # check whether we can close this thread's connection because
-        # the process owns no more references to objects for this manager
+        # the process owns no more references to objects fuer this manager
         if not idset and hasattr(tls, 'connection'):
             util.debug('thread %r has no more proxies so closing conn',
                        threading.current_thread().name)
@@ -905,7 +905,7 @@ klasse BaseProxy(object):
         try:
             self._incref()
         except Exception as e:
-            # the proxy may just be for a manager which has shutdown
+            # the proxy may just be fuer a manager which has shutdown
             util.info('incref failed: %s' % e)
 
     def __reduce__(self):
@@ -938,12 +938,12 @@ klasse BaseProxy(object):
             return repr(self)[:-1] + "; '__str__()' failed>"
 
 #
-# Function used for unpickling
+# Function used fuer unpickling
 #
 
 def RebuildProxy(func, token, serializer, kwds):
     '''
-    Function used for unpickling proxy objects.
+    Function used fuer unpickling proxy objects.
     '''
     server = getattr(process.current_process(), '_manager_server', None)
     if server and server.address == token.address:
@@ -974,7 +974,7 @@ def MakeProxyType(name, exposed, _cache={}):
 
     dic = {}
 
-    for meth in exposed:
+    fuer meth in exposed:
         exec('''def %s(self, /, *args, **kwds):
         return self._callmethod(%r, args, kwds)''' % (meth, meth), dic)
 
@@ -987,7 +987,7 @@ def MakeProxyType(name, exposed, _cache={}):
 def AutoProxy(token, serializer, manager=None, authkey=None,
               exposed=None, incref=True, manager_owned=False):
     '''
-    Return an auto-proxy for `token`
+    Return an auto-proxy fuer `token`
     '''
     _Client = listener_client[serializer][1]
 
@@ -1019,7 +1019,7 @@ klasse Namespace(object):
     def __repr__(self):
         items = list(self.__dict__.items())
         temp = []
-        for name, value in items:
+        fuer name, value in items:
             if not name.startswith('_'):
                 temp.append('%s=%r' % (name, value))
         temp.sort()
@@ -1257,7 +1257,7 @@ klasse SyncManager(BaseManager):
     '''
     Subclass of `BaseManager` which supports a number of shared object types.
 
-    The types registered are those intended for the synchronization
+    The types registered are those intended fuer the synchronization
     of threads, plus `dict`, `list` and `Namespace`.
 
     The `multiprocessing.Manager()` function creates started instances of
@@ -1314,7 +1314,7 @@ if HAS_SHMEM:
 
         def unlink(self):
             "Calls destroy_segment() on all tracked shared memory blocks."
-            for segment_name in self.segment_names[:]:
+            fuer segment_name in self.segment_names[:]:
                 self.destroy_segment(segment_name)
 
         def __del__(self):
@@ -1347,7 +1347,7 @@ if HAS_SHMEM:
             """Create a new distributed-shared object (not backed by a shared
             memory block) and return its id to be used in a Proxy Object."""
             # Unless set up as a shared proxy, don't make shared_memory_context
-            # a standard part of kwargs.  This makes things easier for supplying
+            # a standard part of kwargs.  This makes things easier fuer supplying
             # simple functions.
             if hasattr(self.registry[typeid][-1], "_shared_memory_proxy"):
                 kwargs['shared_memory_context'] = self.shared_memory_context
@@ -1376,8 +1376,8 @@ if HAS_SHMEM:
     klasse SharedMemoryManager(BaseManager):
         """Like SyncManager but uses SharedMemoryServer instead of Server.
 
-        It provides methods for creating and returning SharedMemory instances
-        and for creating a list-like object (ShareableList) backed by shared
+        It provides methods fuer creating and returning SharedMemory instances
+        and fuer creating a list-like object (ShareableList) backed by shared
         memory.  It also provides methods that create and return Proxy Objects
         that support synchronization across processes (i.e. multi-process-safe
         locks and semaphores).
@@ -1401,7 +1401,7 @@ if HAS_SHMEM:
             util.debug(f"{self.__class__.__name__}.__del__ by pid {getpid()}")
 
         def get_server(self):
-            'Better than monkeypatching for now; merge into Server ultimately'
+            'Better than monkeypatching fuer now; merge into Server ultimately'
             if self._state.value != State.INITIAL:
                 if self._state.value == State.STARTED:
                     raise ProcessError("Already started SharedMemoryServer")

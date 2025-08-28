@@ -25,15 +25,15 @@ Cultures
 from turtle import *
 
 def replace( seq, replacementRules, n ):
-    for i in range(n):
+    fuer i in range(n):
         newseq = ""
-        for element in seq:
+        fuer element in seq:
             newseq = newseq + replacementRules.get(element,element)
         seq = newseq
     return seq
 
 def draw( commands, rules ):
-    for b in commands:
+    fuer b in commands:
         try:
             rules[b]()
         except TypeError:

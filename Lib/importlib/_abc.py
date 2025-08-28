@@ -5,7 +5,7 @@ import abc
 
 klasse Loader(metaclass=abc.ABCMeta):
 
-    """Abstract base klasse for import loaders."""
+    """Abstract base klasse fuer import loaders."""
 
     def create_module(self, spec):
         """Return a module to initialize and into which to load.
@@ -14,7 +14,7 @@ klasse Loader(metaclass=abc.ABCMeta):
         from creating a new module.  It may return None to indicate
         that the spec should create the new module.
         """
-        # By default, defer to default semantics for the new module.
+        # By default, defer to default semantics fuer the new module.
         return None
 
     # We don't define exec_module() here since that would break
@@ -30,7 +30,7 @@ klasse Loader(metaclass=abc.ABCMeta):
 
         This method is deprecated in favor of loader.exec_module(). If
         exec_module() exists then it is used to provide a backwards-compatible
-        functionality for this method.
+        functionality fuer this method.
 
         """
         if not hasattr(self, 'exec_module'):

@@ -12,52 +12,52 @@ doctests = """
 
 Test simple loop with conditional
 
-    >>> sum([i*i for i in range(100) if i&1 == 1])
+    >>> sum([i*i fuer i in range(100) if i&1 == 1])
     166650
 
 Test simple nesting
 
-    >>> [(i,j) for i in range(3) for j in range(4)]
+    >>> [(i,j) fuer i in range(3) fuer j in range(4)]
     [(0, 0), (0, 1), (0, 2), (0, 3), (1, 0), (1, 1), (1, 2), (1, 3), (2, 0), (2, 1), (2, 2), (2, 3)]
 
 Test nesting with the inner expression dependent on the outer
 
-    >>> [(i,j) for i in range(4) for j in range(i)]
+    >>> [(i,j) fuer i in range(4) fuer j in range(i)]
     [(1, 0), (2, 0), (2, 1), (3, 0), (3, 1), (3, 2)]
 
-Test the idiom for temporary variable assignment in comprehensions.
+Test the idiom fuer temporary variable assignment in comprehensions.
 
-    >>> [j*j for i in range(4) for j in [i+1]]
+    >>> [j*j fuer i in range(4) fuer j in [i+1]]
     [1, 4, 9, 16]
-    >>> [j*k for i in range(4) for j in [i+1] for k in [j+1]]
+    >>> [j*k fuer i in range(4) fuer j in [i+1] fuer k in [j+1]]
     [2, 6, 12, 20]
-    >>> [j*k for i in range(4) for j, k in [(i+1, i+2)]]
+    >>> [j*k fuer i in range(4) fuer j, k in [(i+1, i+2)]]
     [2, 6, 12, 20]
 
 Not assignment
 
-    >>> [i*i for i in [*range(4)]]
+    >>> [i*i fuer i in [*range(4)]]
     [0, 1, 4, 9]
-    >>> [i*i for i in (*range(4),)]
+    >>> [i*i fuer i in (*range(4),)]
     [0, 1, 4, 9]
 
 Make sure the induction variable is not exposed
 
     >>> i = 20
-    >>> sum([i*i for i in range(100)])
+    >>> sum([i*i fuer i in range(100)])
     328350
 
     >>> i
     20
 
-Verify that syntax error's are raised for listcomps used as lvalues
+Verify that syntax error's are raised fuer listcomps used as lvalues
 
-    >>> [y for y in (1,2)] = 10          # doctest: +IGNORE_EXCEPTION_DETAIL
+    >>> [y fuer y in (1,2)] = 10          # doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
        ...
     SyntaxError: ...
 
-    >>> [y for y in (1,2)] += 10         # doctest: +IGNORE_EXCEPTION_DETAIL
+    >>> [y fuer y in (1,2)] += 10         # doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
        ...
     SyntaxError: ...
@@ -68,20 +68,20 @@ Verify that syntax error's are raised for listcomps used as lvalues
 Make a nested list comprehension that acts like range()
 
     >>> def frange(n):
-    ...     return [i for i in range(n)]
+    ...     return [i fuer i in range(n)]
     >>> frange(10)
     [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 Same again, only as a lambda expression instead of a function definition
 
-    >>> lrange = lambda n:  [i for i in range(n)]
+    >>> lrange = lambda n:  [i fuer i in range(n)]
     >>> lrange(10)
     [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 Generators can call other generators:
 
     >>> def grange(n):
-    ...     for x in [i for i in range(n)]:
+    ...     fuer x in [i fuer i in range(n)]:
     ...         yield x
     >>> list(grange(5))
     [0, 1, 2, 3, 4]
@@ -89,7 +89,7 @@ Generators can call other generators:
 
 Make sure that None is a valid return value
 
-    >>> [None for i in range(10)]
+    >>> [None fuer i in range(10)]
     [None, None, None, None, None, None, None, None, None, None]
 
 """
@@ -100,7 +100,7 @@ klasse ListComprehensionTest(unittest.TestCase):
                          exec_func=exec):
         code = textwrap.dedent(code)
         scopes = scopes or ["module", "class", "function"]
-        for scope in scopes:
+        fuer scope in scopes:
             with self.subTest(scope=scope):
                 if scope == "class":
                     newcode = textwrap.dedent("""
@@ -129,21 +129,21 @@ klasse ListComprehensionTest(unittest.TestCase):
                     # We care about e.g. NameError vs UnboundLocalError
                     self.assertIs(type(e), raises)
                 else:
-                    for k, v in (outputs or {}).items():
+                    fuer k, v in (outputs or {}).items():
                         self.assertEqual(get_output(newns, k), v, k)
 
     def test_lambdas_with_iteration_var_as_default(self):
         code = """
-            items = [(lambda i=i: i) for i in range(5)]
-            y = [x() for x in items]
+            items = [(lambda i=i: i) fuer i in range(5)]
+            y = [x() fuer x in items]
         """
         outputs = {"y": [0, 1, 2, 3, 4]}
         self._check_in_scopes(code, outputs)
 
     def test_lambdas_with_free_var(self):
         code = """
-            items = [(lambda: i) for i in range(5)]
-            y = [x() for x in items]
+            items = [(lambda: i) fuer i in range(5)]
+            y = [x() fuer x in items]
         """
         outputs = {"y": [4, 4, 4, 4, 4]}
         self._check_in_scopes(code, outputs)
@@ -153,28 +153,28 @@ klasse ListComprehensionTest(unittest.TestCase):
             def method(self):
                 super()
                 return __class__
-            items = [(lambda: i) for i in range(5)]
-            y = [x() for x in items]
+            items = [(lambda: i) fuer i in range(5)]
+            y = [x() fuer x in items]
 
         self.assertEqual(C.y, [4, 4, 4, 4, 4])
         self.assertIs(C().method(), C)
 
     def test_references_super(self):
         code = """
-            res = [super for x in [1]]
+            res = [super fuer x in [1]]
         """
         self._check_in_scopes(code, outputs={"res": [super]})
 
     def test_references___class__(self):
         code = """
-            res = [__class__ for x in [1]]
+            res = [__class__ fuer x in [1]]
         """
         self._check_in_scopes(code, raises=NameError)
 
     def test_references___class___defined(self):
         code = """
             __class__ = 2
-            res = [__class__ for x in [1]]
+            res = [__class__ fuer x in [1]]
         """
         self._check_in_scopes(
                 code, outputs={"res": [2]}, scopes=["module", "function"])
@@ -184,23 +184,23 @@ klasse ListComprehensionTest(unittest.TestCase):
         code = """
             __class__ = 2
             klasse C:
-                res = [__class__ for x in [1]]
+                res = [__class__ fuer x in [1]]
             res = C.res
         """
         self._check_in_scopes(code, raises=NameError)
 
     def test_super_and_class_cell_in_sibling_comps(self):
         code = """
-            [super for _ in [1]]
-            [__class__ for _ in [1]]
+            [super fuer _ in [1]]
+            [__class__ fuer _ in [1]]
         """
         self._check_in_scopes(code, raises=NameError)
 
     def test_inner_cell_shadows_outer(self):
         code = """
-            items = [(lambda: i) for i in range(5)]
+            items = [(lambda: i) fuer i in range(5)]
             i = 20
-            y = [x() for x in items]
+            y = [x() fuer x in items]
         """
         outputs = {"y": [4, 4, 4, 4, 4], "i": 20}
         self._check_in_scopes(code, outputs)
@@ -208,18 +208,18 @@ klasse ListComprehensionTest(unittest.TestCase):
     def test_inner_cell_shadows_outer_no_store(self):
         code = """
             def f(x):
-                return [lambda: x for x in range(x)], x
+                return [lambda: x fuer x in range(x)], x
             fns, x = f(2)
-            y = [fn() for fn in fns]
+            y = [fn() fuer fn in fns]
         """
         outputs = {"y": [1, 1], "x": 2}
         self._check_in_scopes(code, outputs)
 
     def test_closure_can_jump_over_comp_scope(self):
         code = """
-            items = [(lambda: y) for i in range(5)]
+            items = [(lambda: y) fuer i in range(5)]
             y = 2
-            z = [x() for x in items]
+            z = [x() fuer x in items]
         """
         outputs = {"z": [2, 2, 2, 2, 2]}
         self._check_in_scopes(code, outputs, scopes=["module", "function"])
@@ -227,9 +227,9 @@ klasse ListComprehensionTest(unittest.TestCase):
     def test_cell_inner_free_outer(self):
         code = """
             def f():
-                return [lambda: x for x in (x, [1])[1]]
+                return [lambda: x fuer x in (x, [1])[1]]
             x = ...
-            y = [fn() for fn in f()]
+            y = [fn() fuer fn in f()]
         """
         outputs = {"y": [1]}
         self._check_in_scopes(code, outputs, scopes=["module", "function"])
@@ -239,7 +239,7 @@ klasse ListComprehensionTest(unittest.TestCase):
             g = 2
             def f():
                 return g
-            y = [g for x in [1]]
+            y = [g fuer x in [1]]
         """
         outputs = {"y": [2]}
         self._check_in_scopes(code, outputs, scopes=["module", "function"])
@@ -248,10 +248,10 @@ klasse ListComprehensionTest(unittest.TestCase):
     def test_inner_cell_shadows_outer_redefined(self):
         code = """
             y = 10
-            items = [(lambda: y) for y in range(5)]
+            items = [(lambda: y) fuer y in range(5)]
             x = y
             y = 20
-            out = [z() for z in items]
+            out = [z() fuer z in items]
         """
         outputs = {"x": 10, "out": [4, 4, 4, 4, 4]}
         self._check_in_scopes(code, outputs)
@@ -260,7 +260,7 @@ klasse ListComprehensionTest(unittest.TestCase):
         code = """
             def inner():
                 return g
-            [g for g in range(5)]
+            [g fuer g in range(5)]
             x = inner()
         """
         outputs = {"x": -1}
@@ -271,7 +271,7 @@ klasse ListComprehensionTest(unittest.TestCase):
             global g
             x = g
             g = 2
-            items = [g for g in [1]]
+            items = [g fuer g in [1]]
             y = g
         """
         outputs = {"x": 1, "y": 2, "items": [1]}
@@ -282,7 +282,7 @@ klasse ListComprehensionTest(unittest.TestCase):
             global g
             x = g
             g = 2
-            items = [g for x in [1]]
+            items = [g fuer x in [1]]
             y = g
         """
         outputs = {"x": 1, "y": 2, "items": [2]}
@@ -291,8 +291,8 @@ klasse ListComprehensionTest(unittest.TestCase):
     def test_explicit_global_3(self):
         code = """
             global g
-            fns = [lambda: g for g in [2]]
-            items = [fn() for fn in fns]
+            fns = [lambda: g fuer g in [2]]
+            items = [fn() fuer fn in fns]
         """
         outputs = {"items": [2]}
         self._check_in_scopes(code, outputs, ns={"g": 1})
@@ -300,7 +300,7 @@ klasse ListComprehensionTest(unittest.TestCase):
     def test_assignment_expression(self):
         code = """
             x = -1
-            items = [(x:=y) for y in range(3)]
+            items = [(x:=y) fuer y in range(3)]
         """
         outputs = {"x": 2}
         # assignment expression in comprehension is disallowed in klasse scope
@@ -309,9 +309,9 @@ klasse ListComprehensionTest(unittest.TestCase):
     def test_free_var_in_comp_child(self):
         code = """
             lst = range(3)
-            funcs = [lambda: x for x in lst]
-            inc = [x + 1 for x in lst]
-            [x for x in inc]
+            funcs = [lambda: x fuer x in lst]
+            inc = [x + 1 fuer x in lst]
+            [x fuer x in inc]
             x = funcs[0]()
         """
         outputs = {"x": 2}
@@ -321,8 +321,8 @@ klasse ListComprehensionTest(unittest.TestCase):
         code = """
             lst = range(3)
             x = -1
-            funcs = [lambda: x for x in lst]
-            items = [x + 1 for x in lst]
+            funcs = [lambda: x fuer x in lst]
+            items = [x + 1 fuer x in lst]
         """
         outputs = {"x": -1}
         self._check_in_scopes(code, outputs)
@@ -330,7 +330,7 @@ klasse ListComprehensionTest(unittest.TestCase):
     def test_shadow_comp_iterable_name(self):
         code = """
             x = [1]
-            y = [x for x in x]
+            y = [x fuer x in x]
         """
         outputs = {"x": [1]}
         self._check_in_scopes(code, outputs)
@@ -339,7 +339,7 @@ klasse ListComprehensionTest(unittest.TestCase):
         code = """
             x = 1
             def g():
-                [x for x in range(3)]
+                [x fuer x in range(3)]
                 return x
             g()
         """
@@ -349,7 +349,7 @@ klasse ListComprehensionTest(unittest.TestCase):
     def test_introspecting_frame_locals(self):
         code = """
             import sys
-            [i for i in range(2)]
+            [i fuer i in range(2)]
             i = 20
             sys._getframe().f_locals
         """
@@ -359,7 +359,7 @@ klasse ListComprehensionTest(unittest.TestCase):
     def test_nested(self):
         code = """
             l = [2, 3]
-            y = [[x ** 2 for x in range(x)] for x in l]
+            y = [[x ** 2 fuer x in range(x)] fuer x in l]
         """
         outputs = {"y": [[0, 1], [0, 1, 4]]}
         self._check_in_scopes(code, outputs)
@@ -368,7 +368,7 @@ klasse ListComprehensionTest(unittest.TestCase):
         code = """
             l = [1, 2, 3]
             x = 3
-            y = [x for [x ** x for x in range(x)][x - 1] in l]
+            y = [x fuer [x ** x fuer x in range(x)][x - 1] in l]
         """
         outputs = {"y": [3, 3, 3]}
         self._check_in_scopes(code, outputs, scopes=["module", "function"])
@@ -377,22 +377,22 @@ klasse ListComprehensionTest(unittest.TestCase):
     def test_nested_3(self):
         code = """
             l = [(1, 2), (3, 4), (5, 6)]
-            y = [x for (x, [x ** x for x in range(x)][x - 1]) in l]
+            y = [x fuer (x, [x ** x fuer x in range(x)][x - 1]) in l]
         """
         outputs = {"y": [1, 3, 5]}
         self._check_in_scopes(code, outputs)
 
     def test_nested_4(self):
         code = """
-            items = [([lambda: x for x in range(2)], lambda: x) for x in range(3)]
-            out = [([fn() for fn in fns], fn()) for fns, fn in items]
+            items = [([lambda: x fuer x in range(2)], lambda: x) fuer x in range(3)]
+            out = [([fn() fuer fn in fns], fn()) fuer fns, fn in items]
         """
         outputs = {"out": [([1, 1], 2), ([1, 1], 2), ([1, 1], 2)]}
         self._check_in_scopes(code, outputs)
 
     def test_nameerror(self):
         code = """
-            [x for x in [1]]
+            [x fuer x in [1]]
             x
         """
 
@@ -400,7 +400,7 @@ klasse ListComprehensionTest(unittest.TestCase):
 
     def test_dunder_name(self):
         code = """
-            y = [__x for __x in [1]]
+            y = [__x fuer __x in [1]]
         """
         outputs = {"y": [1]}
         self._check_in_scopes(code, outputs)
@@ -409,7 +409,7 @@ klasse ListComprehensionTest(unittest.TestCase):
         def f():
             if False:
                 x = 0
-            [x for x in [1]]
+            [x fuer x in [1]]
             return x
 
         with self.assertRaises(UnboundLocalError):
@@ -418,7 +418,7 @@ klasse ListComprehensionTest(unittest.TestCase):
     def test_unbound_local_inside_comprehension(self):
         def f():
             l = [None]
-            return [1 for (l[0], l) in [[1, 2]]]
+            return [1 fuer (l[0], l) in [[1, 2]]]
 
         with self.assertRaises(UnboundLocalError):
             f()
@@ -427,7 +427,7 @@ klasse ListComprehensionTest(unittest.TestCase):
         code = """
             a = 1
             def f():
-                func, = [(lambda: b) for b in [a]]
+                func, = [(lambda: b) fuer b in [a]]
                 return b, func()
             x = f()
         """
@@ -440,7 +440,7 @@ klasse ListComprehensionTest(unittest.TestCase):
         code = """
             a = 1
             def f():
-                (func, inner_b), = [[lambda: b for b in c] + [b] for c in [[a]]]
+                (func, inner_b), = [[lambda: b fuer b in c] + [b] fuer c in [[a]]]
                 return b, inner_b, func()
             x = f()
         """
@@ -452,14 +452,14 @@ klasse ListComprehensionTest(unittest.TestCase):
     def test_name_error_in_class_scope(self):
         code = """
             y = 1
-            [x + y for x in range(2)]
+            [x + y fuer x in range(2)]
         """
         self._check_in_scopes(code, raises=NameError, scopes=["class"])
 
     def test_global_in_class_scope(self):
         code = """
             y = 2
-            vals = [(x, y) for x in range(2)]
+            vals = [(x, y) fuer x in range(2)]
         """
         outputs = {"vals": [(0, 1), (1, 1)]}
         self._check_in_scopes(code, outputs, ns={"y": 1}, scopes=["class"])
@@ -468,7 +468,7 @@ klasse ListComprehensionTest(unittest.TestCase):
         code = """
             klasse C:
                 y = 2
-                vals = [(x, y) for x in range(2)]
+                vals = [(x, y) fuer x in range(2)]
             vals = C.vals
         """
         outputs = {"vals": [(0, 1), (1, 1)]}
@@ -479,7 +479,7 @@ klasse ListComprehensionTest(unittest.TestCase):
             y = 1
             klasse C:
                 y = 2
-                vals = [(x, y) for x in range(2)]
+                vals = [(x, y) fuer x in range(2)]
             vals = C.vals
         """
         outputs = {"vals": [(0, 1), (1, 1)]}
@@ -494,7 +494,7 @@ klasse ListComprehensionTest(unittest.TestCase):
                 # Ensure the listcomp uses the global, not the value in the
                 # klasse namespace
                 locals()['y'] = 3
-                vals = [(x, y) for x in range(2)]
+                vals = [(x, y) fuer x in range(2)]
             vals = C.vals
         """
         outputs = {"vals": [(0, 2), (1, 2)]}
@@ -511,7 +511,7 @@ klasse ListComprehensionTest(unittest.TestCase):
                 # Ensure the listcomp uses the global, not the value in the
                 # klasse namespace
                 locals()['y'] = 3
-                vals = [(x, y) for x in range(2)]
+                vals = [(x, y) fuer x in range(2)]
             vals = C.vals
         """
         outputs = {"vals": [(0, 2), (1, 2)]}
@@ -519,7 +519,7 @@ klasse ListComprehensionTest(unittest.TestCase):
 
     def test_nested_has_free_var(self):
         code = """
-            items = [a for a in [1] if [a for _ in [0]]]
+            items = [a fuer a in [1] if [a fuer _ in [0]]]
         """
         outputs = {"items": [1]}
         self._check_in_scopes(code, outputs, scopes=["class"])
@@ -527,26 +527,26 @@ klasse ListComprehensionTest(unittest.TestCase):
     def test_nested_free_var_not_bound_in_outer_comp(self):
         code = """
             z = 1
-            items = [a for a in [1] if [x for x in [1] if z]]
+            items = [a fuer a in [1] if [x fuer x in [1] if z]]
         """
         self._check_in_scopes(code, {"items": [1]}, scopes=["module", "function"])
         self._check_in_scopes(code, {"items": []}, ns={"z": 0}, scopes=["class"])
 
     def test_nested_free_var_in_iter(self):
         code = """
-            items = [_C for _C in [1] for [0, 1][[x for x in [1] if _C][0]] in [2]]
+            items = [_C fuer _C in [1] fuer [0, 1][[x fuer x in [1] if _C][0]] in [2]]
         """
         self._check_in_scopes(code, {"items": [1]})
 
     def test_nested_free_var_in_expr(self):
         code = """
-            items = [(_C, [x for x in [1] if _C]) for _C in [0, 1]]
+            items = [(_C, [x fuer x in [1] if _C]) fuer _C in [0, 1]]
         """
         self._check_in_scopes(code, {"items": [(0, []), (1, [1])]})
 
     def test_nested_listcomp_in_lambda(self):
         code = """
-            f = [(z, lambda y: [(x, y, z) for x in [3]]) for z in [1]]
+            f = [(z, lambda y: [(x, y, z) fuer x in [3]]) fuer z in [1]]
             (z, func), = f
             out = func(2)
         """
@@ -554,7 +554,7 @@ klasse ListComprehensionTest(unittest.TestCase):
 
     def test_lambda_in_iter(self):
         code = """
-            (func, c), = [(a, b) for b in [1] for a in [lambda : a]]
+            (func, c), = [(a, b) fuer b in [1] fuer a in [lambda : a]]
             d = func()
             assert d is func
             # must use "a" in this scope
@@ -564,14 +564,14 @@ klasse ListComprehensionTest(unittest.TestCase):
 
     def test_assign_to_comp_iter_var_in_outer_function(self):
         code = """
-            a = [1 for a in [0]]
+            a = [1 fuer a in [0]]
         """
         self._check_in_scopes(code, {"a": [1]}, scopes=["function"])
 
     def test_no_leakage_to_locals(self):
         code = """
             def b():
-                [a for b in [1] for _ in []]
+                [a fuer b in [1] fuer _ in []]
                 return b, locals()
             r, s = b()
             x = r is b
@@ -585,12 +585,12 @@ klasse ListComprehensionTest(unittest.TestCase):
         code = """
             l = [1, 2]
             y = 0
-            items = [locals()["x"] for x in l]
-            items2 = [vars()["x"] for x in l]
-            items3 = [("x" in dir()) for x in l]
-            items4 = [eval("x") for x in l]
+            items = [locals()["x"] fuer x in l]
+            items2 = [vars()["x"] fuer x in l]
+            items3 = [("x" in dir()) fuer x in l]
+            items4 = [eval("x") fuer x in l]
             # x is available, and does not overwrite y
-            [exec("y = x") for x in l]
+            [exec("y = x") fuer x in l]
         """
         self._check_in_scopes(
             code,
@@ -608,7 +608,7 @@ klasse ListComprehensionTest(unittest.TestCase):
             value = ["ab"]
             result = snapshot = None
             try:
-                result = [{func}(value) for value in value]
+                result = [{func}(value) fuer value in value]
             except ValueError:
                 snapshot = value
                 raise
@@ -626,7 +626,7 @@ klasse ListComprehensionTest(unittest.TestCase):
             value = ["ab"]
             result = snapshot = None
             try:
-                result = [{func}(value) for value in value]
+                result = [{func}(value) fuer value in value]
             finally:
                 snapshot = value
         """
@@ -642,7 +642,7 @@ klasse ListComprehensionTest(unittest.TestCase):
         code = """
             value = [1, None]
             try:
-                [v for v in value].sort()
+                [v fuer v in value].sort()
             except TypeError:
                 pass
         """
@@ -650,13 +650,13 @@ klasse ListComprehensionTest(unittest.TestCase):
 
     def test_frame_locals(self):
         code = """
-            val = "a" in [sys._getframe().f_locals for a in [0]][0]
+            val = "a" in [sys._getframe().f_locals fuer a in [0]][0]
         """
         import sys
         self._check_in_scopes(code, {"val": False}, ns={"sys": sys})
 
         code = """
-            val = [sys._getframe().f_locals["a"] for a in [0]][0]
+            val = [sys._getframe().f_locals["a"] fuer a in [0]][0]
         """
         self._check_in_scopes(code, {"val": 0}, ns={"sys": sys})
 
@@ -664,7 +664,7 @@ klasse ListComprehensionTest(unittest.TestCase):
         if not isinstance(maybe_code, types.CodeType):
             return maybe_code
         return maybe_code.replace(co_consts=tuple(
-            self._recursive_replace(c) for c in maybe_code.co_consts
+            self._recursive_replace(c) fuer c in maybe_code.co_consts
         ))
 
     def _replacing_exec(self, code_string, ns):
@@ -675,7 +675,7 @@ klasse ListComprehensionTest(unittest.TestCase):
     def test_code_replace(self):
         code = """
             x = 3
-            [x for x in (1, 2)]
+            [x fuer x in (1, 2)]
             dir()
             y = [x]
         """
@@ -684,15 +684,15 @@ klasse ListComprehensionTest(unittest.TestCase):
 
     def test_code_replace_extended_arg(self):
         num_names = 300
-        assignments = "; ".join(f"x{i} = {i}" for i in range(num_names))
-        name_list = ", ".join(f"x{i}" for i in range(num_names))
+        assignments = "; ".join(f"x{i} = {i}" fuer i in range(num_names))
+        name_list = ", ".join(f"x{i}" fuer i in range(num_names))
         expected = {
             "y": list(range(num_names)),
-            **{f"x{i}": i for i in range(num_names)}
+            **{f"x{i}": i fuer i in range(num_names)}
         }
         code = f"""
             {assignments}
-            [({name_list}) for {name_list} in (range(300),)]
+            [({name_list}) fuer {name_list} in (range(300),)]
             dir()
             y = [{name_list}]
         """
@@ -701,15 +701,15 @@ klasse ListComprehensionTest(unittest.TestCase):
 
     def test_multiple_comprehension_name_reuse(self):
         code = """
-            [x for x in [1]]
-            y = [x for _ in [1]]
+            [x fuer x in [1]]
+            y = [x fuer _ in [1]]
         """
         self._check_in_scopes(code, {"y": [3]}, ns={"x": 3})
 
         code = """
             x = 2
-            [x for x in [1]]
-            y = [x for _ in [1]]
+            [x fuer x in [1]]
+            y = [x fuer _ in [1]]
         """
         self._check_in_scopes(code, {"x": 2, "y": [3]}, ns={"x": 3}, scopes=["class"])
         self._check_in_scopes(code, {"x": 2, "y": [2]}, ns={"x": 3}, scopes=["function", "module"])
@@ -720,23 +720,23 @@ klasse ListComprehensionTest(unittest.TestCase):
 
         def init_raises():
             try:
-                [x for x in BrokenIter(init_raises=True)]
+                [x fuer x in BrokenIter(init_raises=True)]
             except Exception as e:
                 return e
 
         def next_raises():
             try:
-                [x for x in BrokenIter(next_raises=True)]
+                [x fuer x in BrokenIter(next_raises=True)]
             except Exception as e:
                 return e
 
         def iter_raises():
             try:
-                [x for x in BrokenIter(iter_raises=True)]
+                [x fuer x in BrokenIter(iter_raises=True)]
             except Exception as e:
                 return e
 
-        for func, expected in [(init_raises, "BrokenIter(init_raises=True)"),
+        fuer func, expected in [(init_raises, "BrokenIter(init_raises=True)"),
                                (next_raises, "BrokenIter(next_raises=True)"),
                                (iter_raises, "BrokenIter(iter_raises=True)"),
                               ]:

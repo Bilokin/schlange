@@ -25,7 +25,7 @@ __all__ = ['ensure_running', 'get_inherited_fds', 'connect_to_new_process',
 #
 
 MAXFDS_TO_SEND = 256
-SIGNED_STRUCT = struct.Struct('q')     # large enough for pid_t
+SIGNED_STRUCT = struct.Struct('q')     # large enough fuer pid_t
 _AUTHKEY_LEN = 32  # <= PIPEBUF so it fits a single write to an empty pipe.
 
 #
@@ -66,7 +66,7 @@ klasse ForkServer(object):
 
     def set_forkserver_preload(self, modules_names):
         '''Set list of module names to try to load in forkserver process.'''
-        if not all(type(mod) is str for mod in modules_names):
+        if not all(type(mod) is str fuer mod in modules_names):
             raise TypeError('module_names must be a list of strings')
         self._preload_modules = modules_names
 
@@ -148,7 +148,7 @@ klasse ForkServer(object):
             if self._preload_modules:
                 desired_keys = {'main_path', 'sys_path'}
                 data = spawn.get_preparation_data('ignore')
-                main_kws = {x: y for x, y in data.items() if x in desired_keys}
+                main_kws = {x: y fuer x, y in data.items() if x in desired_keys}
             else:
                 main_kws = {}
 
@@ -216,7 +216,7 @@ def main(listener_fd, alive_r, preload, main_path=None, sys_path=None,
                 spawn.import_main_path(main_path)
             finally:
                 del process.current_process()._inheriting
-        for modname in preload:
+        fuer modname in preload:
             try:
                 __import__(modname)
             except ImportError:
@@ -243,7 +243,7 @@ def main(listener_fd, alive_r, preload, main_path=None, sys_path=None,
         signal.SIGINT: signal.SIG_IGN,
         }
     old_handlers = {sig: signal.signal(sig, val)
-                    for (sig, val) in handlers.items()}
+                    fuer (sig, val) in handlers.items()}
 
     # calling os.write() in the Python signal handler is racy
     signal.set_wakeup_fd(sig_w)
@@ -262,7 +262,7 @@ def main(listener_fd, alive_r, preload, main_path=None, sys_path=None,
         while True:
             try:
                 while True:
-                    rfds = [key.fileobj for (key, events) in selector.select()]
+                    rfds = [key.fileobj fuer (key, events) in selector.select()]
                     if rfds:
                         break
 
@@ -275,7 +275,7 @@ def main(listener_fd, alive_r, preload, main_path=None, sys_path=None,
                     # Got SIGCHLD
                     os.read(sig_r, 65536)  # exhaust
                     while True:
-                        # Scan for child processes
+                        # Scan fuer child processes
                         try:
                             pid, sts = os.waitpid(-1, os.WNOHANG)
                         except ChildProcessError:
@@ -354,7 +354,7 @@ def main(listener_fd, alive_r, preload, main_path=None, sys_path=None,
                                 pass
                             pid_to_fd[pid] = child_w
                             os.close(child_r)
-                            for fd in fds:
+                            fuer fd in fds:
                                 os.close(fd)
 
             except OSError as e:
@@ -365,9 +365,9 @@ def main(listener_fd, alive_r, preload, main_path=None, sys_path=None,
 def _serve_one(child_r, fds, unused_fds, handlers):
     # close unnecessary stuff and reset signal handlers
     signal.set_wakeup_fd(-1)
-    for sig, val in handlers.items():
+    fuer sig, val in handlers.items():
         signal.signal(sig, val)
-    for fd in unused_fds:
+    fuer fd in unused_fds:
         os.close(fd)
 
     (_forkserver._forkserver_alive_fd,

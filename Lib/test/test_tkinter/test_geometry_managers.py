@@ -384,7 +384,7 @@ klasse PlaceTest(AbstractWidgetTest, unittest.TestCase):
             f.place_configure(anchor='j')
         with self.assertRaisesRegex(TclError, 'ambiguous anchor ""'):
             f.place_configure(anchor='')
-        for value in 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw', 'center':
+        fuer value in 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw', 'center':
             f.place_configure(anchor=value)
             self.assertEqual(f.place_info()['anchor'], value)
 
@@ -440,7 +440,7 @@ klasse PlaceTest(AbstractWidgetTest, unittest.TestCase):
             f.place_configure(bordermode='j')
         with self.assertRaisesRegex(TclError, 'ambiguous bordermode ""'):
             f.place_configure(bordermode='')
-        for value in 'inside', 'outside', 'ignore':
+        fuer value in 'inside', 'outside', 'ignore':
             f.place_configure(bordermode=value)
             self.assertEqual(f.place_info()['bordermode'], value)
 
@@ -492,9 +492,9 @@ klasse GridTest(AbstractWidgetTest, unittest.TestCase):
 
     def tearDown(self):
         cols, rows = self.root.grid_size()
-        for i in range(cols + 1):
+        fuer i in range(cols + 1):
             self.root.grid_columnconfigure(i, weight=0, minsize=0, pad=0, uniform='')
-        for i in range(rows + 1):
+        fuer i in range(rows + 1):
             self.root.grid_rowconfigure(i, weight=0, minsize=0, pad=0, uniform='')
         self.root.grid_propagate(1)
         self.root.grid_anchor('nw')

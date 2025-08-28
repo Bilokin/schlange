@@ -327,7 +327,7 @@ klasse InterpreterPoolExecutorTest(
         self.assertEqual(str(captured.exception), 'spam')
         cause = captured.exception.__cause__
         self.assertIs(type(cause), interpreters.ExecutionFailed)
-        for attr in ('__name__', '__qualname__', '__module__'):
+        fuer attr in ('__name__', '__qualname__', '__module__'):
             self.assertEqual(getattr(cause.excinfo.type, attr),
                              getattr(Exception, attr))
         self.assertEqual(cause.excinfo.msg, 'spam')
@@ -340,7 +340,7 @@ klasse InterpreterPoolExecutorTest(
         self.assertEqual(str(captured.exception), 'spam')
         cause = captured.exception.__cause__
         self.assertIs(type(cause), interpreters.ExecutionFailed)
-        for attr in ('__name__', '__qualname__', '__module__'):
+        fuer attr in ('__name__', '__qualname__', '__module__'):
             self.assertEqual(getattr(cause.excinfo.type, attr),
                              getattr(Exception, attr))
         self.assertEqual(cause.excinfo.msg, 'spam')
@@ -349,15 +349,15 @@ klasse InterpreterPoolExecutorTest(
         blocker = queues.create()
         executor = self.executor_type(4)
 
-        for i in range(15 * executor._max_workers):
+        fuer i in range(15 * executor._max_workers):
             executor.submit(blocker.get)
         self.assertEqual(len(executor._threads), executor._max_workers)
-        for i in range(15 * executor._max_workers):
+        fuer i in range(15 * executor._max_workers):
             blocker.put_nowait(None)
         executor.shutdown(wait=True)
 
     def test_blocking(self):
-        # There is no guarantee that a worker will be created for every
+        # There is no guarantee that a worker will be created fuer every
         # submitted task.  That's because there's a race between:
         #
         # * a new worker thread, created when task A was just submitted,
@@ -366,7 +366,7 @@ klasse InterpreterPoolExecutorTest(
         #   is started only if there are no idle workers
         #   (the check in ThreadPoolExecutor._adjust_thread_count())
         #
-        # That means we must not block waiting for *all* tasks to report
+        # That means we must not block waiting fuer *all* tasks to report
         # "ready" before we unblock the known-ready workers.
         ready = queues.create()
         blocker = queues.create()
@@ -380,14 +380,14 @@ klasse InterpreterPoolExecutorTest(
         futures = []
         with self.executor_type() as executor:
             # Request the jobs.
-            for i in range(numtasks):
+            fuer i in range(numtasks):
                 fut = executor.submit(run, i, ready, blocker)
                 futures.append(fut)
             pending = numtasks
             while pending > 0:
-                # Wait for any to be ready.
+                # Wait fuer any to be ready.
                 done = 0
-                for _ in range(pending):
+                fuer _ in range(pending):
                     try:
                         ready.get(timeout=1)  # blocking
                     except interpreters.QueueEmpty:
@@ -396,7 +396,7 @@ klasse InterpreterPoolExecutorTest(
                         done += 1
                 pending -= done
                 # Unblock the workers.
-                for _ in range(done):
+                fuer _ in range(done):
                     blocker.put_nowait(None)
 
     def test_blocking_with_limited_workers(self):
@@ -415,14 +415,14 @@ klasse InterpreterPoolExecutorTest(
         futures = []
         with self.executor_type(4) as executor:
             # Request the jobs.
-            for i in range(numtasks):
+            fuer i in range(numtasks):
                 fut = executor.submit(run, i, ready, blocker)
                 futures.append(fut)
             pending = numtasks
             while pending > 0:
-                # Wait for any to be ready.
+                # Wait fuer any to be ready.
                 done = 0
-                for _ in range(pending):
+                fuer _ in range(pending):
                     try:
                         ready.get(timeout=1)  # blocking
                     except interpreters.QueueEmpty:
@@ -431,7 +431,7 @@ klasse InterpreterPoolExecutorTest(
                         done += 1
                 pending -= done
                 # Unblock the workers.
-                for _ in range(done):
+                fuer _ in range(done):
                     blocker.put_nowait(None)
 
     @support.requires_gil_enabled("gh-117344: test is flaky without the GIL")

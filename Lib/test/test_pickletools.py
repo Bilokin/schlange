@@ -21,9 +21,9 @@ klasse OptimizedPickleTests(AbstractPickleTests, unittest.TestCase):
     test_framed_write_sizes_with_delayed_writer = None
 
     def test_optimize_long_binget(self):
-        data = [str(i) for i in range(257)]
+        data = [str(i) fuer i in range(257)]
         data.append(data[-1])
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             pickled = pickle.dumps(data, proto)
             unpickled = pickle.loads(pickled)
             self.assertEqual(unpickled, data)
@@ -85,7 +85,7 @@ klasse SimpleReader:
 klasse GenopsTests(unittest.TestCase):
     def test_genops(self):
         it = pickletools.genops(b'(I123\nK\x12J\x12\x34\x56\x78t.')
-        self.assertEqual([(item[0].name,) +  item[1:] for item in it], [
+        self.assertEqual([(item[0].name,) +  item[1:] fuer item in it], [
             ('MARK', None, 0),
             ('INT', 123, 1),
             ('BININT1', 0x12, 6),
@@ -98,7 +98,7 @@ klasse GenopsTests(unittest.TestCase):
         f = io.BytesIO(b'prefix(I123\nK\x12J\x12\x34\x56\x78t.suffix')
         self.assertEqual(f.read(6), b'prefix')
         it = pickletools.genops(f)
-        self.assertEqual([(item[0].name,) +  item[1:] for item in it], [
+        self.assertEqual([(item[0].name,) +  item[1:] fuer item in it], [
             ('MARK', None, 6),
             ('INT', 123, 7),
             ('BININT1', 0x12, 12),
@@ -111,7 +111,7 @@ klasse GenopsTests(unittest.TestCase):
     def test_without_pos(self):
         f = SimpleReader(b'(I123\nK\x12J\x12\x34\x56\x78t.')
         it = pickletools.genops(f)
-        self.assertEqual([(item[0].name,) +  item[1:] for item in it], [
+        self.assertEqual([(item[0].name,) +  item[1:] fuer item in it], [
             ('MARK', None, None),
             ('INT', 123, None),
             ('BININT1', 0x12, None),
@@ -473,12 +473,12 @@ highest protocol among opcodes = 0
 ''')
 
     def test_nondecimal_integers(self):
-        self.check_dis_error(b'I0b10\n.', '', 'invalid literal for int')
-        self.check_dis_error(b'I0o10\n.', '', 'invalid literal for int')
-        self.check_dis_error(b'I0x10\n.', '', 'invalid literal for int')
-        self.check_dis_error(b'L0b10L\n.', '', 'invalid literal for int')
-        self.check_dis_error(b'L0o10L\n.', '', 'invalid literal for int')
-        self.check_dis_error(b'L0x10L\n.', '', 'invalid literal for int')
+        self.check_dis_error(b'I0b10\n.', '', 'invalid literal fuer int')
+        self.check_dis_error(b'I0o10\n.', '', 'invalid literal fuer int')
+        self.check_dis_error(b'I0x10\n.', '', 'invalid literal fuer int')
+        self.check_dis_error(b'L0b10L\n.', '', 'invalid literal fuer int')
+        self.check_dis_error(b'L0o10L\n.', '', 'invalid literal fuer int')
+        self.check_dis_error(b'L0x10L\n.', '', 'invalid literal fuer int')
 
 
 klasse MiscTestCase(unittest.TestCase):

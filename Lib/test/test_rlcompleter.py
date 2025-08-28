@@ -34,9 +34,9 @@ klasse TestRlcompleter(unittest.TestCase):
     def test_global_matches(self):
         # test with builtins namespace
         self.assertEqual(sorted(self.stdcompleter.global_matches('di')),
-                         [x+'(' for x in dir(builtins) if x.startswith('di')])
+                         [x+'(' fuer x in dir(builtins) if x.startswith('di')])
         self.assertEqual(sorted(self.stdcompleter.global_matches('st')),
-                         [x+'(' for x in dir(builtins) if x.startswith('st')])
+                         [x+'(' fuer x in dir(builtins) if x.startswith('st')])
         self.assertEqual(self.stdcompleter.global_matches('akaksajadhak'), [])
 
         # test with a customized namespace
@@ -51,7 +51,7 @@ klasse TestRlcompleter(unittest.TestCase):
     def test_attr_matches(self):
         # test with builtins namespace
         self.assertEqual(self.stdcompleter.attr_matches('str.s'),
-                         ['str.{}('.format(x) for x in dir(str)
+                         ['str.{}('.format(x) fuer x in dir(str)
                           if x.startswith('s')])
         self.assertEqual(self.stdcompleter.attr_matches('tuple.foospamegg'), [])
 
@@ -64,7 +64,7 @@ klasse TestRlcompleter(unittest.TestCase):
                 parentheses = ('__init_subclass__',)
 
             items = set()
-            for x in dir(None):
+            fuer x in dir(None):
                 if x in parentheses:
                     items.add(f'None.{x}()')
                 elif x == '__doc__':
@@ -87,7 +87,7 @@ klasse TestRlcompleter(unittest.TestCase):
         self.assertEqual(self.completer.attr_matches('CompleteMe._'),
                          ['CompleteMe._ham'])
         matches = self.completer.attr_matches('CompleteMe.__')
-        for x in matches:
+        fuer x in matches:
             self.assertStartsWith(x, 'CompleteMe.__')
         self.assertIn('CompleteMe.__name__', matches)
         self.assertIn('CompleteMe.__new__(', matches)
@@ -96,13 +96,13 @@ klasse TestRlcompleter(unittest.TestCase):
             self.assertEqual(self.completer.attr_matches('CompleteMe.me.me.sp'),
                              ['CompleteMe.me.me.spam'])
             self.assertEqual(self.completer.attr_matches('egg.s'),
-                             ['egg.{}('.format(x) for x in dir(str)
+                             ['egg.{}('.format(x) fuer x in dir(str)
                               if x.startswith('s')])
 
     def test_excessive_getattr(self):
         """Ensure getattr() is invoked no more than once per attribute"""
 
-        # note the special case for @property methods below; that is why
+        # note the special case fuer @property methods below; that is why
         # we use __dir__ and __getattr__ in klasse Foo to create a "magic"
         # klasse attribute 'bar'. This forces `getattr` to call __getattr__
         # (which is doesn't necessarily do).

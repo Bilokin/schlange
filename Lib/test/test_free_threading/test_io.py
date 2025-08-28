@@ -16,7 +16,7 @@ klasse ThreadSafetyMixin:
         barrier = threading.Barrier(len(funcs))
         threads = []
 
-        for func in funcs:
+        fuer func in funcs:
             thread = threading.Thread(target=func, args=(barrier, *args))
 
             threads.append(thread)
@@ -27,7 +27,7 @@ klasse ThreadSafetyMixin:
     @threading_helper.requires_working_threading()
     @threading_helper.reap_threads
     def test_free_threading(self):
-        """Test for segfaults and aborts."""
+        """Test fuer segfaults and aborts."""
 
         def write(barrier, b, *ignore):
             barrier.wait()
@@ -108,7 +108,7 @@ klasse ThreadSafetyMixin:
         self.check([truncate] + [setstate] * 10, self.ioclass(b'0\n'*204800), state)
         self.check([truncate] + [sizeof] * 10, self.ioclass(b'0\n'*204800))
 
-        # no tests for seek or tell because they don't break anything
+        # no tests fuer seek or tell because they don't break anything
 
 klasse CBytesIOTest(ThreadSafetyMixin, TestCase):
     ioclass = io.BytesIO

@@ -23,7 +23,7 @@ from dataclasses import dataclass
 from typing import TextIO
 from stack import get_stack_effect
 
-# Constants used instead of size for macro expansions.
+# Constants used instead of size fuer macro expansions.
 # Note: 1, 2, 4 must match actual cache entry sizes.
 OPARG_KINDS = {
     "OPARG_SIMPLE": 0,
@@ -60,9 +60,9 @@ FLAGS = [
 
 
 def generate_flag_macros(out: CWriter) -> None:
-    for i, flag in enumerate(FLAGS):
+    fuer i, flag in enumerate(FLAGS):
         out.emit(f"#define HAS_{flag}_FLAG ({1<<i})\n")
-    for i, flag in enumerate(FLAGS):
+    fuer i, flag in enumerate(FLAGS):
         out.emit(
             f"#define OPCODE_HAS_{flag}(OP) (_PyOpcode_opcode_metadata[OP].flags & (HAS_{flag}_FLAG))\n"
         )
@@ -70,7 +70,7 @@ def generate_flag_macros(out: CWriter) -> None:
 
 
 def generate_oparg_macros(out: CWriter) -> None:
-    for name, value in OPARG_KINDS.items():
+    fuer name, value in OPARG_KINDS.items():
         out.emit(f"#define {name} {value}\n")
     out.emit("\n")
 
@@ -82,7 +82,7 @@ def emit_stack_effect_function(
     out.emit("#ifdef NEED_OPCODE_METADATA\n")
     out.emit(f"int _PyOpcode_num_{direction}(int opcode, int oparg)  {{\n")
     out.emit("switch(opcode) {\n")
-    for name, effect in data:
+    fuer name, effect in data:
         out.emit(f"case {name}:\n")
         out.emit(f"    return {effect};\n")
     out.emit("default:\n")
@@ -103,9 +103,9 @@ def generate_stack_effect_functions(analysis: Analysis, out: CWriter) -> None:
         popped_data.append((inst.name, popped))
         pushed_data.append((inst.name, pushed))
 
-    for inst in analysis.instructions.values():
+    fuer inst in analysis.instructions.values():
         add(inst)
-    for pseudo in analysis.pseudos.values():
+    fuer pseudo in analysis.pseudos.values():
         add(pseudo)
 
     emit_stack_effect_function(out, "popped", sorted(popped_data))
@@ -115,7 +115,7 @@ def generate_stack_effect_functions(analysis: Analysis, out: CWriter) -> None:
 def generate_is_pseudo(analysis: Analysis, out: CWriter) -> None:
     """Write the IS_PSEUDO_INSTR macro"""
     out.emit("\n\n#define IS_PSEUDO_INSTR(OP)  ( \\\n")
-    for op in analysis.pseudos:
+    fuer op in analysis.pseudos:
         out.emit(f"((OP) == {op}) || \\\n")
     out.emit("0")
     out.emit(")\n\n")
@@ -135,12 +135,12 @@ def get_format(inst: Instruction) -> str:
 def generate_instruction_formats(analysis: Analysis, out: CWriter) -> None:
     # Compute the set of all instruction formats.
     formats: set[str] = set()
-    for inst in analysis.instructions.values():
+    fuer inst in analysis.instructions.values():
         formats.add(get_format(inst))
-    # Generate an enum for it
+    # Generate an enum fuer it
     out.emit("enum InstructionFormat {\n")
     next_id = 1
-    for format in sorted(formats):
+    fuer format in sorted(formats):
         out.emit(f"{format} = {next_id},\n")
         next_id += 1
     out.emit("};\n\n")
@@ -151,19 +151,19 @@ def generate_deopt_table(analysis: Analysis, out: CWriter) -> None:
     out.emit("#ifdef NEED_OPCODE_METADATA\n")
     out.emit("const uint8_t _PyOpcode_Deopt[256] = {\n")
     deopts: list[tuple[str, str]] = []
-    for inst in analysis.instructions.values():
+    fuer inst in analysis.instructions.values():
         deopt = inst.name
         if inst.family is not None:
             deopt = inst.family.name
         deopts.append((inst.name, deopt))
     defined = set(analysis.opmap.values())
-    for i in range(256):
+    fuer i in range(256):
         if i not in defined:
             deopts.append((f'{i}', f'{i}'))
 
     assert len(deopts) == 256
-    assert len(set(x[0] for x in deopts)) == 256
-    for name, deopt in sorted(deopts):
+    assert len(set(x[0] fuer x in deopts)) == 256
+    fuer name, deopt in sorted(deopts):
         out.emit(f"[{name}] = {deopt},\n")
     out.emit("};\n\n")
     out.emit("#endif // NEED_OPCODE_METADATA\n\n")
@@ -173,7 +173,7 @@ def generate_cache_table(analysis: Analysis, out: CWriter) -> None:
     out.emit("extern const uint8_t _PyOpcode_Caches[256];\n")
     out.emit("#ifdef NEED_OPCODE_METADATA\n")
     out.emit("const uint8_t _PyOpcode_Caches[256] = {\n")
-    for inst in analysis.instructions.values():
+    fuer inst in analysis.instructions.values():
         if inst.family and inst.family.name != inst.name:
             continue
         if inst.name.startswith("INSTRUMENTED"):
@@ -190,7 +190,7 @@ def generate_name_table(analysis: Analysis, out: CWriter) -> None:
     out.emit("#ifdef NEED_OPCODE_METADATA\n")
     out.emit(f"const char *_PyOpcode_OpName[{table_size}] = {{\n")
     names = list(analysis.instructions) + list(analysis.pseudos)
-    for name in sorted(names):
+    fuer name in sorted(names):
         out.emit(f'[{name}] = "{name}",\n')
     out.emit("};\n")
     out.emit("#endif\n\n")
@@ -210,13 +210,13 @@ def generate_metadata_table(analysis: Analysis, out: CWriter) -> None:
     out.emit(
         f"const struct opcode_metadata _PyOpcode_opcode_metadata[{table_size}] = {{\n"
     )
-    for inst in sorted(analysis.instructions.values(), key=lambda t: t.name):
+    fuer inst in sorted(analysis.instructions.values(), key=lambda t: t.name):
         out.emit(
             f"[{inst.name}] = {{ true, {get_format(inst)}, {cflags(inst.properties)} }},\n"
         )
-    for pseudo in sorted(analysis.pseudos.values(), key=lambda t: t.name):
+    fuer pseudo in sorted(analysis.pseudos.values(), key=lambda t: t.name):
         flags = cflags(pseudo.properties)
-        for flag in pseudo.flags:
+        fuer flag in pseudo.flags:
             if flags == "0":
                 flags = f"{flag}_FLAG"
             else:
@@ -228,7 +228,7 @@ def generate_metadata_table(analysis: Analysis, out: CWriter) -> None:
 
 def generate_expansion_table(analysis: Analysis, out: CWriter) -> None:
     expansions_table: dict[str, list[tuple[str, str, int]]] = {}
-    for inst in sorted(analysis.instructions.values(), key=lambda t: t.name):
+    fuer inst in sorted(analysis.instructions.values(), key=lambda t: t.name):
         offset: int = 0  # Cache effect offset
         expansions: list[tuple[str, str, int]] = []  # [(name, size, offset), ...]
         if inst.is_super():
@@ -241,14 +241,14 @@ def generate_expansion_table(analysis: Analysis, out: CWriter) -> None:
             assert name2 in analysis.instructions, f"{name2} doesn't match any instr"
             instr1 = analysis.instructions[name1]
             instr2 = analysis.instructions[name2]
-            for part in instr1.parts:
+            fuer part in instr1.parts:
                 expansions.append((part.name, "OPARG_TOP", 0))
-            for part in instr2.parts:
+            fuer part in instr2.parts:
                 expansions.append((part.name, "OPARG_BOTTOM", 0))
         elif not is_viable_expansion(inst):
             continue
         else:
-            for part in inst.parts:
+            fuer part in inst.parts:
                 size = part.size
                 if isinstance(part, Uop):
                     # Skip specializations
@@ -264,14 +264,14 @@ def generate_expansion_table(analysis: Analysis, out: CWriter) -> None:
                         fmt = "OPARG_REPLACED"
                     expansions.append((part.name, fmt, offset))
                     if len(part.caches) > 1:
-                        # Add expansion for the second operand
+                        # Add expansion fuer the second operand
                         internal_offset = 0
-                        for cache in part.caches[:-1]:
+                        fuer cache in part.caches[:-1]:
                             internal_offset += cache.size
                         expansions.append((part.name, f"OPERAND1_{part.caches[-1].size}", offset+internal_offset))
                 offset += part.size
         expansions_table[inst.name] = expansions
-    max_uops = max(len(ex) for ex in expansions_table.values())
+    max_uops = max(len(ex) fuer ex in expansions_table.values())
     out.emit(f"#define MAX_UOP_PER_EXPANSION {max_uops}\n")
     out.emit("struct opcode_macro_expansion {\n")
     out.emit("int nuops;\n")
@@ -285,9 +285,9 @@ def generate_expansion_table(analysis: Analysis, out: CWriter) -> None:
     out.emit("#ifdef NEED_OPCODE_METADATA\n")
     out.emit("const struct opcode_macro_expansion\n")
     out.emit("_PyOpcode_macro_expansion[256] = {\n")
-    for inst_name, expansions in expansions_table.items():
+    fuer inst_name, expansions in expansions_table.items():
         uops = [
-            f"{{ {name}, {size}, {offset} }}" for (name, size, offset) in expansions
+            f"{{ {name}, {size}, {offset} }}" fuer (name, size, offset) in expansions
         ]
         out.emit(
             f'[{inst_name}] = {{ .nuops = {len(expansions)}, .uops = {{ {", ".join(uops)} }} }},\n'
@@ -297,8 +297,8 @@ def generate_expansion_table(analysis: Analysis, out: CWriter) -> None:
 
 
 def is_viable_expansion(inst: Instruction) -> bool:
-    "An instruction can be expanded if all its parts are viable for tier 2"
-    for part in inst.parts:
+    "An instruction can be expanded if all its parts are viable fuer tier 2"
+    fuer part in inst.parts:
         if isinstance(part, Uop):
             # Skip specializing and replaced uops
             if "specializing" in part.annotations:
@@ -313,7 +313,7 @@ def is_viable_expansion(inst: Instruction) -> bool:
 def generate_extra_cases(analysis: Analysis, out: CWriter) -> None:
     out.emit("#define EXTRA_CASES \\\n")
     valid_opcodes = set(analysis.opmap.values())
-    for op in range(256):
+    fuer op in range(256):
         if op not in valid_opcodes:
             out.emit(f"    case {op}: \\\n")
     out.emit("        ;\n")
@@ -321,7 +321,7 @@ def generate_extra_cases(analysis: Analysis, out: CWriter) -> None:
 
 def generate_pseudo_targets(analysis: Analysis, out: CWriter) -> None:
     table_size = len(analysis.pseudos)
-    max_targets = max(len(pseudo.targets) for pseudo in analysis.pseudos.values())
+    max_targets = max(len(pseudo.targets) fuer pseudo in analysis.pseudos.values())
     out.emit("struct pseudo_targets {\n")
     out.emit(f"uint8_t as_sequence;\n")
     out.emit(f"uint8_t targets[{max_targets + 1}];\n")
@@ -333,10 +333,10 @@ def generate_pseudo_targets(analysis: Analysis, out: CWriter) -> None:
     out.emit(
         f"const struct pseudo_targets _PyOpcode_PseudoTargets[{table_size}] = {{\n"
     )
-    for pseudo in analysis.pseudos.values():
+    fuer pseudo in analysis.pseudos.values():
         as_sequence = "1" if pseudo.as_sequence else "0"
         targets = ["0"] * (max_targets + 1)
-        for i, target in enumerate(pseudo.targets):
+        fuer i, target in enumerate(pseudo.targets):
             targets[i] = target.name
         out.emit(f"[{pseudo.name}-256] = {{ {as_sequence}, {{ {', '.join(targets)} }} }},\n")
     out.emit("};\n\n")

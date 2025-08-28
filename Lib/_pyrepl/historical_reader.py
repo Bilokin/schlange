@@ -4,7 +4,7 @@
 #
 #
 # Permission to use, copy, modify, and distribute this software and
-# its documentation for any purpose is hereby granted without fee,
+# its documentation fuer any purpose is hereby granted without fee,
 # provided that the above copyright notice appear in all copies and
 # that both that copyright notice and this permission notice appear in
 # supporting documentation.
@@ -31,11 +31,11 @@ if False:
 
 
 isearch_keymap: tuple[tuple[KeySpec, CommandName], ...] = tuple(
-    [("\\%03o" % c, "isearch-end") for c in range(256) if chr(c) != "\\"]
-    + [(c, "isearch-add-character") for c in map(chr, range(32, 127)) if c != "\\"]
+    [("\\%03o" % c, "isearch-end") fuer c in range(256) if chr(c) != "\\"]
+    + [(c, "isearch-add-character") fuer c in map(chr, range(32, 127)) if c != "\\"]
     + [
         ("\\%03o" % c, "isearch-add-character")
-        for c in range(256)
+        fuer c in range(256)
         if chr(c).isalpha() and chr(c) != "\\"
     ]
     + [
@@ -229,7 +229,7 @@ klasse HistoricalReader(Reader):
 
     def __post_init__(self) -> None:
         super().__post_init__()
-        for c in [
+        fuer c in [
             next_history,
             previous_history,
             restore_history,
@@ -326,7 +326,7 @@ klasse HistoricalReader(Reader):
             return super().get_prompt(lineno, cursor_on_line)
 
     def search_next(self, *, forwards: bool) -> None:
-        """Search history for the current line contents up to the cursor.
+        """Search history fuer the current line contents up to the cursor.
 
         Selects the first item found. If nothing is under the cursor, any next
         item in history is selected.
@@ -371,7 +371,7 @@ klasse HistoricalReader(Reader):
                 return
 
             len_acc = 0
-            for i, line in enumerate(s.splitlines(keepends=True)):
+            fuer i, line in enumerate(s.splitlines(keepends=True)):
                 if line.startswith(prefix):
                     self.select_item(history_index)
                     self.pos = pos + len_acc
@@ -409,7 +409,7 @@ klasse HistoricalReader(Reader):
     def finish(self) -> None:
         super().finish()
         ret = self.get_unicode()
-        for i, t in self.transient_history.items():
+        fuer i, t in self.transient_history.items():
             if i < len(self.history) and i != self.historyi:
                 self.history[i] = t
         if ret and should_auto_add_history:

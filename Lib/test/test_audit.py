@@ -1,4 +1,4 @@
-"""Tests for sys.audit and sys.addaudithook
+"""Tests fuer sys.audit and sys.addaudithook
 """
 
 import subprocess
@@ -45,7 +45,7 @@ klasse AuditTest(unittest.TestCase):
             sys.stderr.write(stderr)
         return (
             proc.returncode,
-            [line.strip().partition(" ") for line in stdout.splitlines()],
+            [line.strip().partition(" ") fuer line in stdout.splitlines()],
             stderr,
         )
 
@@ -106,7 +106,7 @@ klasse AuditTest(unittest.TestCase):
         self.assertEqual(events[0][0], "sys.unraisablehook")
         self.assertEqual(
             events[0][2],
-            "RuntimeError('nonfatal-error') Exception ignored for audit hook test",
+            "RuntimeError('nonfatal-error') Exception ignored fuer audit hook test",
         )
 
     def test_winreg(self):
@@ -144,7 +144,7 @@ klasse AuditTest(unittest.TestCase):
         if support.verbose:
             print(*events, sep='\n')
         self.assertEqual(
-            [event[0] for event in events],
+            [event[0] fuer event in events],
             ["gc.get_objects", "gc.get_referrers", "gc.get_referents"]
         )
 
@@ -173,7 +173,7 @@ klasse AuditTest(unittest.TestCase):
 
         if support.verbose:
             print(*events, sep='\n')
-        actual = [ev[0] for ev in events]
+        actual = [ev[0] fuer ev in events]
         expected = ["sqlite3.connect", "sqlite3.connect/handle"] * 2
 
         if hasattr(sqlite3.Connection, "enable_load_extension"):
@@ -191,7 +191,7 @@ klasse AuditTest(unittest.TestCase):
 
         if support.verbose:
             print(*events, sep='\n')
-        actual = [(ev[0], ev[2]) for ev in events]
+        actual = [(ev[0], ev[2]) fuer ev in events]
         expected = [("sys._getframe", "test_sys_getframe")]
 
         self.assertEqual(actual, expected)
@@ -203,7 +203,7 @@ klasse AuditTest(unittest.TestCase):
 
         if support.verbose:
             print(*events, sep='\n')
-        actual = [(ev[0], ev[2]) for ev in events]
+        actual = [(ev[0], ev[2]) fuer ev in events]
         expected = [("sys._getframemodulename", "0")]
 
         self.assertEqual(actual, expected)
@@ -216,7 +216,7 @@ klasse AuditTest(unittest.TestCase):
 
         if support.verbose:
             print(*events, sep='\n')
-        actual = [(ev[0], ev[2]) for ev in events]
+        actual = [(ev[0], ev[2]) fuer ev in events]
         expected = [
             ("_thread.start_new_thread", "(<test_func>, (), None)"),
             ("test.test_func", "()"),
@@ -235,7 +235,7 @@ klasse AuditTest(unittest.TestCase):
 
         if support.verbose:
             print(*events, sep='\n')
-        actual = [(ev[0], ev[2]) for ev in events]
+        actual = [(ev[0], ev[2]) fuer ev in events]
         expected = [("_wmi.exec_query", "SELECT * FROM Win32_OperatingSystem")]
 
         self.assertEqual(actual, expected)
@@ -276,7 +276,7 @@ klasse AuditTest(unittest.TestCase):
         if support.verbose:
             print(*events, sep='\n')
 
-        actual = [(ev[0], ev[2]) for ev in events]
+        actual = [(ev[0], ev[2]) fuer ev in events]
         expected = [("time.sleep", "0"),
                     ("time.sleep", "0.0625"),
                     ("time.sleep", "-1")]
@@ -296,7 +296,7 @@ klasse AuditTest(unittest.TestCase):
 
         if support.verbose:
             print(*events, sep='\n')
-        actual = [(ev[0], ev[2]) for ev in events]
+        actual = [(ev[0], ev[2]) fuer ev in events]
         expected = [("sys.monitoring.register_callback", "(None,)")]
 
         self.assertEqual(actual, expected)
@@ -311,7 +311,7 @@ klasse AuditTest(unittest.TestCase):
 
         if support.verbose:
             print(*events, sep='\n')
-        actual = [(ev[0], ev[2]) for ev in events]
+        actual = [(ev[0], ev[2]) fuer ev in events]
         expected = [("_winapi.CreateNamedPipe", f"({pipe_name!r}, 3, 8)")]
 
         self.assertEqual(actual, expected)
@@ -326,8 +326,8 @@ klasse AuditTest(unittest.TestCase):
     @support.cpython_only
     def test_sys_remote_exec(self):
         returncode, events, stderr = self.run_python("test_sys_remote_exec")
-        self.assertTrue(any(["sys.remote_exec" in event for event in events]))
-        self.assertTrue(any(["cpython.remote_debugger_script" in event for event in events]))
+        self.assertTrue(any(["sys.remote_exec" in event fuer event in events]))
+        self.assertTrue(any(["cpython.remote_debugger_script" in event fuer event in events]))
         if returncode:
             self.fail(stderr)
 

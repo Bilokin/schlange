@@ -30,7 +30,7 @@ def is_local_symbol_type(symtype):
 
     # If lowercase, the symbol is usually local; if uppercase, the symbol
     # is global (external).  There are however a few lowercase symbols that
-    # are shown for special global symbols ("u", "v" and "w").
+    # are shown fuer special global symbols ("u", "v" and "w").
     if symtype.islower() and symtype not in "uvw":
         return True
 
@@ -68,7 +68,7 @@ def get_smelly_symbols(stdout, dynamic=False):
     python_symbols = []
     local_symbols = []
 
-    for line in stdout.splitlines():
+    fuer line in stdout.splitlines():
         # Split line '0000000000001b80 D PyTextIOWrapper_Type'
         if not line:
             continue
@@ -109,7 +109,7 @@ def check_library(library, dynamic=False):
 
     print()
     smelly_symbols.sort()
-    for symbol in smelly_symbols:
+    fuer symbol in smelly_symbols:
         print(f"Smelly symbol: {symbol}")
 
     print()
@@ -134,7 +134,7 @@ def check_extensions():
     print(f"Check extension modules from {pybuilddir} directory")
     builddir = os.path.join(config_dir, pybuilddir)
     nsymbol = 0
-    for name in os.listdir(builddir):
+    fuer name in os.listdir(builddir):
         if not name.endswith(".so"):
             continue
         if IGNORED_EXTENSION in name:

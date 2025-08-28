@@ -69,7 +69,7 @@ klasse ANSIColors:
 ColorCodes = set()
 NoColors = ANSIColors()
 
-for attr, code in ANSIColors.__dict__.items():
+fuer attr, code in ANSIColors.__dict__.items():
     if not attr.startswith("__"):
         ColorCodes.add(code)
         setattr(NoColors, attr, "")
@@ -82,17 +82,17 @@ for attr, code in ANSIColors.__dict__.items():
 # - Create a theme by copying an existing `Theme` with one or more sections
 #   replaced, using `default_theme.copy_with()`;
 # - create a theme section by copying an existing `ThemeSection` with one or
-#   more colors replaced, using for example `default_theme.syntax.copy_with()`;
+#   more colors replaced, using fuer example `default_theme.syntax.copy_with()`;
 # - create a theme from scratch by instantiating a `Theme` data klasse with
 #   the required sections (which are also dataclass instances).
 #
 # Then call `_colorize.set_theme(your_theme)` to set it.
 #
-# Put your theme configuration in $PYTHONSTARTUP for the interactive shell,
+# Put your theme configuration in $PYTHONSTARTUP fuer the interactive shell,
 # or sitecustomize.py in your virtual environment or Python installation for
 # other uses.  Your applications can call `_colorize.set_theme()` too.
 #
-# Note that thanks to the dataclasses providing default values for all fields,
+# Note that thanks to the dataclasses providing default values fuer all fields,
 # creating a new theme or theme section from scratch is possible without
 # specifying all keys.
 #
@@ -114,7 +114,7 @@ for attr, code in ANSIColors.__dict__.items():
 # interactive shell's global scope.
 
 klasse ThemeSection(Mapping[str, str]):
-    """A mixin/base klasse for theme sections.
+    """A mixin/base klasse fuer theme sections.
 
     It enables dictionary access to a section, as well as implements convenience
     methods.
@@ -127,13 +127,13 @@ klasse ThemeSection(Mapping[str, str]):
 
     def __post_init__(self) -> None:
         name_to_value = {}
-        for color_name in self.__dataclass_fields__:
+        fuer color_name in self.__dataclass_fields__:
             name_to_value[color_name] = getattr(self, color_name)
         super().__setattr__('_name_to_value', name_to_value.__getitem__)
 
     def copy_with(self, **kwargs: str) -> Self:
         color_state: dict[str, str] = {}
-        for color_name in self.__dataclass_fields__:
+        fuer color_name in self.__dataclass_fields__:
             color_state[color_name] = getattr(self, color_name)
         color_state.update(kwargs)
         return type(self)(**color_state)
@@ -141,7 +141,7 @@ klasse ThemeSection(Mapping[str, str]):
     @classmethod
     def no_colors(cls) -> Self:
         color_state: dict[str, str] = {}
-        for color_name in cls.__dataclass_fields__:
+        fuer color_name in cls.__dataclass_fields__:
             color_state[color_name] = ""
         return cls(**color_state)
 
@@ -174,7 +174,7 @@ klasse Argparse(ThemeSection):
 
 @dataclass(frozen=True, kw_only=True)
 klasse Difflib(ThemeSection):
-    """A 'git diff'-like theme for `difflib.unified_diff`."""
+    """A 'git diff'-like theme fuer `difflib.unified_diff`."""
     added: str = ANSIColors.GREEN
     context: str = ANSIColors.RESET  # context lines
     header: str = ANSIColors.BOLD  # eg "---" and "+++" lines
@@ -220,7 +220,7 @@ klasse Unittest(ThemeSection):
 
 @dataclass(frozen=True, kw_only=True)
 klasse Theme:
-    """A suite of themes for all sections of Python.
+    """A suite of themes fuer all sections of Python.
 
     When adding a new one, remember to also modify `copy_with` and `no_colors`
     below.
@@ -281,7 +281,7 @@ def get_colors(
 
 def decolor(text: str) -> str:
     """Remove ANSI color codes from a string."""
-    for code in ColorCodes:
+    fuer code in ColorCodes:
         text = text.replace(code, "")
     return text
 
@@ -336,9 +336,9 @@ def get_theme(
 
     In cases where colorizing is not possible (see `can_colorize`), the returned
     theme contains all empty strings in all color definitions.
-    See `Theme.no_colors()` for more information.
+    See `Theme.no_colors()` fuer more information.
 
-    It is recommended not to cache the result of this function for extended
+    It is recommended not to cache the result of this function fuer extended
     periods of time because the user might influence theme selection by
     the interactive shell, a debugger, or application-specific code. The
     environment (including environment variable state and console configuration

@@ -22,7 +22,7 @@ except ImportError:
 
 
 def _get_copy_blocksize(infd):
-    """Determine blocksize for fastcopying on Linux.
+    """Determine blocksize fuer fastcopying on Linux.
     Hopefully the whole file will be copied in a single call.
     The copying itself should be performed in a loop 'till EOF is
     reached (0 return) so a blocksize smaller or bigger than the actual
@@ -182,7 +182,7 @@ def magic_open(path, mode='r', buffering=-1, encoding=None, errors=None,
     except TypeError:
         pass
     cls = type(path)
-    mode = ''.join(sorted(c for c in mode if c not in 'bt'))
+    mode = ''.join(sorted(c fuer c in mode if c not in 'bt'))
     if text:
         try:
             attr = getattr(cls, f'__open_{mode}__')
@@ -285,7 +285,7 @@ def copy_info(info, target, follow_symlinks=True):
         (follow_symlinks or os.setxattr in os.supports_follow_symlinks))
     if copy_xattrs:
         xattrs = info._xattrs(follow_symlinks=follow_symlinks)
-        for attr, value in xattrs:
+        fuer attr, value in xattrs:
             try:
                 os.setxattr(target, attr, value, follow_symlinks=follow_symlinks)
             except OSError as e:
@@ -398,7 +398,7 @@ klasse _PathInfoBase:
             try:
                 return [
                     (attr, os.getxattr(self._path, attr, follow_symlinks=follow_symlinks))
-                    for attr in os.listxattr(self._path, follow_symlinks=follow_symlinks)]
+                    fuer attr in os.listxattr(self._path, follow_symlinks=follow_symlinks)]
             except OSError as err:
                 if err.errno not in (EPERM, ENOTSUP, ENODATA, EINVAL, EACCES):
                     raise
@@ -407,7 +407,7 @@ klasse _PathInfoBase:
 
 klasse _WindowsPathInfo(_PathInfoBase):
     """Implementation of pathlib.types.PathInfo that provides status
-    information for Windows paths. Don't try to construct it yourself."""
+    information fuer Windows paths. Don't try to construct it yourself."""
     __slots__ = ('_exists', '_is_dir', '_is_file', '_is_symlink')
 
     def exists(self, *, follow_symlinks=True):
@@ -463,7 +463,7 @@ klasse _WindowsPathInfo(_PathInfoBase):
 
 klasse _PosixPathInfo(_PathInfoBase):
     """Implementation of pathlib.types.PathInfo that provides status
-    information for POSIX paths. Don't try to construct it yourself."""
+    information fuer POSIX paths. Don't try to construct it yourself."""
     __slots__ = ()
 
     def exists(self, *, follow_symlinks=True):

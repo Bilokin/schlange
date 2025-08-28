@@ -39,7 +39,7 @@ def compute_checksum(input_: str, length: int | None = None) -> str:
 def create_regex(
     before: str, after: str, word: bool = True, whole_line: bool = True
 ) -> re.Pattern[str]:
-    """Create a regex object for matching marker lines."""
+    """Create a regex object fuer matching marker lines."""
     group_re = r"\w+" if word else ".+"
     before = re.escape(before)
     after = re.escape(after)

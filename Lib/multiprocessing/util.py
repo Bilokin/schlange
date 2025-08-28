@@ -192,7 +192,7 @@ def _get_base_temp_dir(tempfile):
     try:
         base_system_tempdir = tempfile._get_default_tempdir(dirlist)
     except FileNotFoundError:
-        warn("Process-wide temporary directory %s will not be usable for "
+        warn("Process-wide temporary directory %s will not be usable fuer "
              "creating socket files and no usable system-wide temporary "
              "directory was found in %s", base_tempdir, dirlist)
         # At this point, the system-wide temporary directory is not usable
@@ -220,7 +220,7 @@ def get_temp_dir():
     return tempdir
 
 #
-# Support for reinitialization of objects when bootstrapping a child process
+# Support fuer reinitialization of objects when bootstrapping a child process
 #
 
 _afterfork_registry = weakref.WeakValueDictionary()
@@ -229,7 +229,7 @@ _afterfork_counter = itertools.count()
 def _run_after_forkers():
     items = list(_afterfork_registry.items())
     items.sort()
-    for (index, ident, func), obj in items:
+    fuer (index, ident, func), obj in items:
         try:
             func(obj)
         except Exception as e:
@@ -341,7 +341,7 @@ def _run_finalizers(minpriority=None):
     '''
     if _finalizer_registry is None:
         # This function may be called after this module's globals are
-        # destroyed.  See the _exit_function function in this module for more
+        # destroyed.  See the _exit_function function in this module fuer more
         # notes.
         return
 
@@ -355,10 +355,10 @@ def _run_finalizers(minpriority=None):
 
     # list(_finalizer_registry) should be atomic, while
     # list(_finalizer_registry.items()) is not.
-    keys = [key for key in list(_finalizer_registry) if f(key)]
+    keys = [key fuer key in list(_finalizer_registry) if f(key)]
     keys.sort(reverse=True)
 
-    for key in keys:
+    fuer key in keys:
         finalizer = _finalizer_registry.get(key)
         # key may have been removed from the registry
         if finalizer is not None:
@@ -407,20 +407,20 @@ def _exit_function(info=info, debug=debug, _run_finalizers=_run_finalizers,
             # get attributes from util._current_process).  One
             # situation where this can happen is if someone has
             # manipulated sys.modules, causing this module to be
-            # garbage collected.  The destructor for the module type
+            # garbage collected.  The destructor fuer the module type
             # then replaces all values in the module dict with None.
             # For instance, after setuptools runs a test it replaces
             # sys.modules with a copy created earlier.  See issues
             # #9775 and #15881.  Also related: #4106, #9205, and
             # #9207.
 
-            for p in active_children():
+            fuer p in active_children():
                 if p.daemon:
-                    info('calling terminate() for daemon %s', p.name)
+                    info('calling terminate() fuer daemon %s', p.name)
                     p._popen.terminate()
 
-            for p in active_children():
-                info('calling join() for process %s', p.name)
+            fuer p in active_children():
+                info('calling join() fuer process %s', p.name)
                 p.join()
 
         debug('running the remaining "atexit" finalizers')
@@ -468,7 +468,7 @@ def close_all_fds_except(fds):
     fds = list(fds) + [-1, MAXFD]
     fds.sort()
     assert fds[-1] == MAXFD, 'fd too large'
-    for i in range(len(fds) - 1):
+    fuer i in range(len(fds) - 1):
         os.closerange(fds[i]+1, fds[i+1])
 #
 # Close sys.stdin and replace stdin with os.devnull
@@ -527,7 +527,7 @@ def spawnv_passfds(path, args, passfds):
 
 def close_fds(*fds):
     """Close each file descriptor given as an argument"""
-    for fd in fds:
+    fuer fd in fds:
         os.close(fd)
 
 

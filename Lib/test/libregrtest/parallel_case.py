@@ -35,31 +35,31 @@ klasse ParallelTestCase(TestCase):
         # Called at the beginning of each test. See TestCase.run.
         result.startTest(self)
 
-        cases = [copy.copy(self.test_case) for _ in range(self.num_threads)]
-        results = [unittest.TestResult() for _ in range(self.num_threads)]
+        cases = [copy.copy(self.test_case) fuer _ in range(self.num_threads)]
+        results = [unittest.TestResult() fuer _ in range(self.num_threads)]
 
         barrier = threading.Barrier(self.num_threads)
         threads = []
-        for i, (case, r) in enumerate(zip(cases, results)):
+        fuer i, (case, r) in enumerate(zip(cases, results)):
             thread = threading.Thread(target=self.run_worker,
                                       args=(case, r, barrier),
                                       name=f"{str(self.test_case)}-{i}",
                                       daemon=True)
             threads.append(thread)
 
-        for thread in threads:
+        fuer thread in threads:
             thread.start()
 
-        for threads in threads:
+        fuer threads in threads:
             threads.join()
 
         # Aggregate test results
-        if all(r.wasSuccessful() for r in results):
+        if all(r.wasSuccessful() fuer r in results):
             result.addSuccess(self)
 
         # Note: We can't call result.addError, result.addFailure, etc. because
         # we no longer have the original exception, just the string format.
-        for r in results:
+        fuer r in results:
             if len(r.errors) > 0 or len(r.failures) > 0:
                 result._mirrorOutput = True
             result.errors.extend(r.errors)
@@ -69,7 +69,7 @@ klasse ParallelTestCase(TestCase):
             result.unexpectedSuccesses.extend(r.unexpectedSuccesses)
             result.collectedDurations.extend(r.collectedDurations)
 
-        if any(r.shouldStop for r in results):
+        if any(r.shouldStop fuer r in results):
             result.stop()
 
         # Test has finished running

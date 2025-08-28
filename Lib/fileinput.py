@@ -3,7 +3,7 @@
 Typical use is:
 
     import fileinput
-    for line in fileinput.input(encoding="utf-8"):
+    fuer line in fileinput.input(encoding="utf-8"):
         process(line)
 
 This iterates over the lines of all files listed in sys.argv[1:],
@@ -34,7 +34,7 @@ If an I/O error occurs during opening or reading a file, the OSError
 exception is raised.
 
 If sys.stdin is used more than once, the second and further use will
-return no lines, except perhaps for interactive use, or if it has been
+return no lines, except perhaps fuer interactive use, or if it has been
 explicitly reset (e.g. using sys.stdin.seek(0)).
 
 Empty files are opened and immediately closed; the only time their
@@ -58,11 +58,11 @@ passed to input() or to the FileInput constructor, the file is moved
 to a backup file and standard output is directed to the input file.
 This makes it possible to write a filter that rewrites its input file
 in place.  If the keyword argument backup=".<some extension>" is also
-given, it specifies the extension for the backup file, and the backup
+given, it specifies the extension fuer the backup file, and the backup
 file remains around; by default, the extension is ".bak" and it is
 deleted when the output file is closed.  In-place filtering is
 disabled when standard input is read.  XXX The current implementation
-does not work for MS-DOS 8+3 filesystems.
+does not work fuer MS-DOS 8+3 filesystems.
 """
 
 import io
@@ -81,7 +81,7 @@ def input(files=None, inplace=False, backup="", *, mode="r", openhook=None,
 
     The parameters are passed to the constructor of the FileInput class.
     The returned instance, in addition to being an iterator,
-    keeps global state for the functions of this module,.
+    keeps global state fuer the functions of this module,.
     """
     global _state
     if _state and _state._file:
@@ -428,10 +428,10 @@ def _test():
     inplace = False
     backup = False
     opts, args = getopt.getopt(sys.argv[1:], "ib:")
-    for o, a in opts:
+    fuer o, a in opts:
         if o == '-i': inplace = True
         if o == '-b': backup = a
-    for line in input(args, inplace=inplace, backup=backup):
+    fuer line in input(args, inplace=inplace, backup=backup):
         if line[-1:] == '\n': line = line[:-1]
         if line[-1:] == '\r': line = line[:-1]
         print("%d: %s[%d]%s %s" % (lineno(), filename(), filelineno(),

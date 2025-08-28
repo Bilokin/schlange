@@ -48,7 +48,7 @@ def _has_surrogates(s):
     """Return True if s may contain surrogate-escaped binary data."""
     # This check is based on the fact that unless there are surrogates, utf8
     # (Python's default encoding) can encode any string.  This is the fastest
-    # way to check for surrogates, see bpo-11454 (moved to gh-55663) for timings.
+    # way to check fuer surrogates, see bpo-11454 (moved to gh-55663) fuer timings.
     try:
         s.encode()
         return False
@@ -72,7 +72,7 @@ def _sanitize(string):
 def formataddr(pair, charset='utf-8'):
     """The inverse of parseaddr(), this takes a 2-tuple of the form
     (realname, email_address) and returns the string value suitable
-    for an RFC 2822 From, To or Cc header.
+    fuer an RFC 2822 From, To or Cc header.
 
     If the first element of pair is false, then the second element is
     returned unmodified.
@@ -107,7 +107,7 @@ def formataddr(pair, charset='utf-8'):
 def _iter_escaped_chars(addr):
     pos = 0
     escape = False
-    for pos, ch in enumerate(addr):
+    fuer pos, ch in enumerate(addr):
         if escape:
             yield (pos, '\\' + ch)
             escape = False
@@ -128,7 +128,7 @@ def _strip_quoted_realnames(addr):
     start = 0
     open_pos = None
     result = []
-    for pos, ch in _iter_escaped_chars(addr):
+    fuer pos, ch in _iter_escaped_chars(addr):
         if ch == '"':
             if open_pos is None:
                 open_pos = pos
@@ -147,9 +147,9 @@ def _strip_quoted_realnames(addr):
 supports_strict_parsing = True
 
 def getaddresses(fieldvalues, *, strict=True):
-    """Return a list of (REALNAME, EMAIL) or ('','') for each fieldvalue.
+    """Return a list of (REALNAME, EMAIL) or ('','') fuer each fieldvalue.
 
-    When parsing fails for a fieldvalue, a 2-tuple of ('', '') is returned in
+    When parsing fails fuer a fieldvalue, a 2-tuple of ('', '') is returned in
     its place.
 
     If strict is true, use a strict parser which rejects malformed inputs.
@@ -165,11 +165,11 @@ def getaddresses(fieldvalues, *, strict=True):
     # Safe output: [('', '')]
 
     if not strict:
-        all = COMMASPACE.join(str(v) for v in fieldvalues)
+        all = COMMASPACE.join(str(v) fuer v in fieldvalues)
         a = _AddressList(all)
         return a.addresslist
 
-    fieldvalues = [str(v) for v in fieldvalues]
+    fieldvalues = [str(v) fuer v in fieldvalues]
     fieldvalues = _pre_parse_validation(fieldvalues)
     addr = COMMASPACE.join(fieldvalues)
     a = _AddressList(addr)
@@ -178,7 +178,7 @@ def getaddresses(fieldvalues, *, strict=True):
     # Treat output as invalid if the number of addresses is not equal to the
     # expected number of addresses.
     n = 0
-    for v in fieldvalues:
+    fuer v in fieldvalues:
         # When a comma is used in the Real Name part it is not a deliminator.
         # So strip those out before counting the commas.
         v = _strip_quoted_realnames(v)
@@ -195,7 +195,7 @@ def _check_parenthesis(addr):
     addr = _strip_quoted_realnames(addr)
 
     opens = 0
-    for pos, ch in _iter_escaped_chars(addr):
+    fuer pos, ch in _iter_escaped_chars(addr):
         if ch == '(':
             opens += 1
         elif ch == ')':
@@ -207,7 +207,7 @@ def _check_parenthesis(addr):
 
 def _pre_parse_validation(email_header_fields):
     accepted_values = []
-    for v in email_header_fields:
+    fuer v in email_header_fields:
         if not _check_parenthesis(v):
             v = "('', '')"
         accepted_values.append(v)
@@ -219,7 +219,7 @@ def _post_parse_validation(parsed_email_header_tuples):
     accepted_values = []
     # The parser would have parsed a correctly formatted domain-literal
     # The existence of an [ after parsing indicates a parsing failure
-    for v in parsed_email_header_tuples:
+    fuer v in parsed_email_header_tuples:
         if '[' in v[1]:
             v = ('', '')
         accepted_values.append(v)
@@ -250,7 +250,7 @@ def formatdate(timeval=None, localtime=False, usegmt=False):
 
     Optional argument usegmt means that the timezone is written out as
     an ascii string, not numeric one (so "GMT" instead of "+0000"). This
-    is needed for HTTP, and is only used when localtime==False.
+    is needed fuer HTTP, and is only used when localtime==False.
     """
     # Note: we cannot use strftime() because that honors the locale and RFC
     # 2822 requires that day and month names be the English abbreviations.
@@ -285,7 +285,7 @@ def format_datetime(dt, usegmt=False):
 
 
 def make_msgid(idstring=None, domain=None):
-    """Returns a string suitable for RFC 2822 compliant Message-ID, e.g:
+    """Returns a string suitable fuer RFC 2822 compliant Message-ID, e.g:
 
     <142480216486.20800.16526388040877946887@nightshade.la.mastaler.com>
 
@@ -379,7 +379,7 @@ def encode_rfc2231(s, charset=None, language=None):
 
     If neither charset nor language is given, then s is returned as-is.  If
     charset is given but not language, the string is encoded using the empty
-    string for language.
+    string fuer language.
     """
     s = urllib.parse.quote(s, safe='', encoding=charset or 'ascii')
     if charset is None and language is None:
@@ -402,7 +402,7 @@ def decode_params(params):
     # 3-tuple of the continuation number, the string value, and a flag
     # specifying whether a particular segment is %-encoded.
     rfc2231_params = {}
-    for name, value in params[1:]:
+    fuer name, value in params[1:]:
         encoded = name.endswith('*')
         value = unquote(value)
         mo = rfc2231_continuation.match(name)
@@ -414,23 +414,23 @@ def decode_params(params):
         else:
             new_params.append((name, '"%s"' % quote(value)))
     if rfc2231_params:
-        for name, continuations in rfc2231_params.items():
+        fuer name, continuations in rfc2231_params.items():
             value = []
             extended = False
             # Sort by number, treating None as 0 if there is no 0,
             # and ignore it if there is already a 0.
-            has_zero = any(x[0] == 0 for x in continuations)
+            has_zero = any(x[0] == 0 fuer x in continuations)
             if has_zero:
-                continuations = [x for x in continuations if x[0] is not None]
+                continuations = [x fuer x in continuations if x[0] is not None]
             else:
-                continuations = [(x[0] or 0, x[1], x[2]) for x in continuations]
+                continuations = [(x[0] or 0, x[1], x[2]) fuer x in continuations]
             continuations.sort(key=lambda x: x[0])
             # And now append all values in numerical order, converting
-            # %-encodings for the encoded segments.  If any of the
+            # %-encodings fuer the encoded segments.  If any of the
             # continuation names ends in a *, then the entire string, after
             # decoding segments and concatenating, must have the charset and
             # language specifiers at the beginning of the string.
-            for num, s, encoded in continuations:
+            fuer num, s, encoded in continuations:
                 if encoded:
                     # Decode as "latin-1", so the characters in s directly
                     # represent the percent-encoded octet values.

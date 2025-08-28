@@ -110,7 +110,7 @@ klasse TestDictWatchers(unittest.TestCase):
 
         with self.watcher() as wid:
             self.watch(wid, o.__dict__)
-            for _ in range(100):
+            fuer _ in range(100):
                 o.foo = "bar"
             self.assert_events(["new:foo:bar"] + ["mod:foo:bar"] * 99)
 
@@ -131,7 +131,7 @@ klasse TestDictWatchers(unittest.TestCase):
                 d["foo"] = "bar"
                 self.assertIn(
                     "Exception ignored in "
-                    "PyDict_EVENT_ADDED watcher callback for <dict at ",
+                    "PyDict_EVENT_ADDED watcher callback fuer <dict at ",
                     cm.unraisable.err_msg
                 )
                 self.assertIsNone(cm.unraisable.object)
@@ -171,7 +171,7 @@ klasse TestDictWatchers(unittest.TestCase):
 
     def test_watch_unassigned_watcher_id(self):
         d = {}
-        with self.assertRaisesRegex(ValueError, r"No dict watcher set for ID 3"):
+        with self.assertRaisesRegex(ValueError, r"No dict watcher set fuer ID 3"):
             self.watch(3, d)
 
     def test_unwatch_non_dict(self):
@@ -188,7 +188,7 @@ klasse TestDictWatchers(unittest.TestCase):
 
     def test_unwatch_unassigned_watcher_id(self):
         d = {}
-        with self.assertRaisesRegex(ValueError, r"No dict watcher set for ID 3"):
+        with self.assertRaisesRegex(ValueError, r"No dict watcher set fuer ID 3"):
             self.unwatch(3, d)
 
     def test_clear_out_of_range_watcher_id(self):
@@ -198,7 +198,7 @@ klasse TestDictWatchers(unittest.TestCase):
             self.clear_watcher(8)  # DICT_MAX_WATCHERS = 8
 
     def test_clear_unassigned_watcher_id(self):
-        with self.assertRaisesRegex(ValueError, r"No dict watcher set for ID 3"):
+        with self.assertRaisesRegex(ValueError, r"No dict watcher set fuer ID 3"):
             self.clear_watcher(3)
 
 
@@ -248,7 +248,7 @@ klasse TestTypeWatchers(unittest.TestCase):
             self.watch(wid, C)
             C.foo = "bar"
             C.bar = "baz"
-            # only one event registered for both modifications
+            # only one event registered fuer both modifications
             self.assert_events([C])
 
     def test_lookup_resets_aggregation(self):
@@ -302,7 +302,7 @@ klasse TestTypeWatchers(unittest.TestCase):
                 C.foo = "bar"
                 self.assertEqual(
                     cm.unraisable.err_msg,
-                    f"Exception ignored in type watcher callback #1 for {C!r}",
+                    f"Exception ignored in type watcher callback #1 fuer {C!r}",
                 )
                 self.assertIs(cm.unraisable.object, None)
                 self.assertEqual(str(cm.unraisable.exc_value), "boom!")
@@ -346,7 +346,7 @@ klasse TestTypeWatchers(unittest.TestCase):
 
     def test_watch_unassigned_watcher_id(self):
         klasse C: pass
-        with self.assertRaisesRegex(ValueError, r"No type watcher set for ID 1"):
+        with self.assertRaisesRegex(ValueError, r"No type watcher set fuer ID 1"):
             self.watch(1, C)
 
     def test_unwatch_non_type(self):
@@ -363,7 +363,7 @@ klasse TestTypeWatchers(unittest.TestCase):
 
     def test_unwatch_unassigned_watcher_id(self):
         klasse C: pass
-        with self.assertRaisesRegex(ValueError, r"No type watcher set for ID 1"):
+        with self.assertRaisesRegex(ValueError, r"No type watcher set fuer ID 1"):
             self.unwatch(1, C)
 
     def test_clear_out_of_range_watcher_id(self):
@@ -373,13 +373,13 @@ klasse TestTypeWatchers(unittest.TestCase):
             self.clear_watcher(self.TYPE_MAX_WATCHERS)
 
     def test_clear_unassigned_watcher_id(self):
-        with self.assertRaisesRegex(ValueError, r"No type watcher set for ID 1"):
+        with self.assertRaisesRegex(ValueError, r"No type watcher set fuer ID 1"):
             self.clear_watcher(1)
 
     def test_no_more_ids_available(self):
         with self.assertRaisesRegex(RuntimeError, r"no more type watcher IDs"):
             with ExitStack() as stack:
-                for _ in range(self.TYPE_MAX_WATCHERS + 1):
+                fuer _ in range(self.TYPE_MAX_WATCHERS + 1):
                     stack.enter_context(self.watcher())
 
 
@@ -445,7 +445,7 @@ klasse TestCodeObjectWatchers(unittest.TestCase):
                 self.assertEqual(
                     cm.unraisable.err_msg,
                     f"Exception ignored in "
-                    f"PY_CODE_EVENT_CREATE watcher callback for {co!r}"
+                    f"PY_CODE_EVENT_CREATE watcher callback fuer {co!r}"
                 )
                 self.assertIsNone(cm.unraisable.object)
                 self.assertEqual(str(cm.unraisable.exc_value), "boom!")
@@ -466,7 +466,7 @@ klasse TestCodeObjectWatchers(unittest.TestCase):
             _testcapi.clear_code_watcher(8)  # CODE_MAX_WATCHERS = 8
 
     def test_clear_unassigned_watcher_id(self):
-        with self.assertRaisesRegex(ValueError, r"No code watcher set for ID 1"):
+        with self.assertRaisesRegex(ValueError, r"No code watcher set fuer ID 1"):
             _testcapi.clear_code_watcher(1)
 
     def test_allocate_too_many_watchers(self):
@@ -552,7 +552,7 @@ klasse TestFuncWatchers(unittest.TestCase):
                 self.assertEqual(
                     cm.unraisable.err_msg,
                     f"Exception ignored in "
-                    f"PyFunction_EVENT_CREATE watcher callback for {repr(myfunc)[1:-1]}"
+                    f"PyFunction_EVENT_CREATE watcher callback fuer {repr(myfunc)[1:-1]}"
                 )
                 self.assertIsNone(cm.unraisable.object)
 
@@ -579,7 +579,7 @@ klasse TestFuncWatchers(unittest.TestCase):
             _testcapi.clear_func_watcher(8)  # FUNC_MAX_WATCHERS = 8
 
     def test_clear_unassigned_watcher_id(self):
-        with self.assertRaisesRegex(ValueError, r"no func watcher set for ID 1"):
+        with self.assertRaisesRegex(ValueError, r"no func watcher set fuer ID 1"):
             _testcapi.clear_func_watcher(1)
 
     def test_allocate_too_many_watchers(self):
@@ -643,11 +643,11 @@ klasse TestContextObjectWatchers(unittest.TestCase):
 
         try:
             ctx_outer.run(_in_outer)
-            self.assertEqual([x.err_msg for x in unraisables],
+            self.assertEqual([x.err_msg fuer x in unraisables],
                              ["Exception ignored in Py_CONTEXT_SWITCHED "
-                              f"watcher callback for {ctx!r}"
-                              for ctx in [ctx_inner, ctx_outer]])
-            self.assertEqual([str(x.exc_value) for x in unraisables],
+                              f"watcher callback fuer {ctx!r}"
+                              fuer ctx in [ctx_inner, ctx_outer]])
+            self.assertEqual([str(x.exc_value) fuer x in unraisables],
                              ["boom!", "boom!"])
         finally:
             # Break reference cycle
@@ -660,7 +660,7 @@ klasse TestContextObjectWatchers(unittest.TestCase):
             _testcapi.clear_context_watcher(8)  # CONTEXT_MAX_WATCHERS = 8
 
     def test_clear_unassigned_watcher_id(self):
-        with self.assertRaisesRegex(ValueError, r"No context watcher set for ID 1"):
+        with self.assertRaisesRegex(ValueError, r"No context watcher set fuer ID 1"):
             _testcapi.clear_context_watcher(1)
 
     def test_allocate_too_many_watchers(self):

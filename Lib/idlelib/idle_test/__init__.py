@@ -7,9 +7,9 @@ any direct use is at your own risk.
 """
 from os.path import dirname
 
-# test_idle imports load_tests for test discovery (default all).
+# test_idle imports load_tests fuer test discovery (default all).
 # To run subsets of idlelib module tests, insert '[<chars>]' after '_'.
-# Example: insert '[ac]' for modules beginning with 'a' or 'c'.
+# Example: insert '[ac]' fuer modules beginning with 'a' or 'c'.
 # Additional .discover/.addTest pairs with separate inserts work.
 # Example: pairs with 'c' and 'g' test c* files and grep.
 

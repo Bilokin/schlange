@@ -19,7 +19,7 @@ klasse EmscriptenAsyncInputDeviceTest(unittest.TestCase):
             return
 
         with open(p, "r") as f:
-            for _ in range(10):
+            fuer _ in range(10):
                 self.assertEqual(f.readline().strip(), "ab")
                 self.assertEqual(f.readline().strip(), "fi")
                 self.assertEqual(f.readline().strip(), "xy")

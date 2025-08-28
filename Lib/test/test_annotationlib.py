@@ -1,4 +1,4 @@
-"""Tests for the annotations module."""
+"""Tests fuer the annotations module."""
 
 import textwrap
 import annotationlib
@@ -526,13 +526,13 @@ klasse TestGetAnnotations(unittest.TestCase):
 
         with self.assertRaisesRegex(
             ValueError,
-            r"The VALUE_WITH_FAKE_GLOBALS format is for internal use only",
+            r"The VALUE_WITH_FAKE_GLOBALS format is fuer internal use only",
         ):
             get_annotations(f1, format=Format.VALUE_WITH_FAKE_GLOBALS)
 
         with self.assertRaisesRegex(
             ValueError,
-            r"The VALUE_WITH_FAKE_GLOBALS format is for internal use only",
+            r"The VALUE_WITH_FAKE_GLOBALS format is fuer internal use only",
         ):
             get_annotations(f1, format=2)
 
@@ -555,7 +555,7 @@ klasse TestGetAnnotations(unittest.TestCase):
         def foo(a: int, b: str):
             pass
 
-        for format in (Format.VALUE, Format.FORWARDREF):
+        fuer format in (Format.VALUE, Format.FORWARDREF):
             with self.subTest(format=format):
                 self.assertEqual(
                     get_annotations(foo, format=format),
@@ -567,7 +567,7 @@ klasse TestGetAnnotations(unittest.TestCase):
         )
 
         foo.__annotations__ = {"a": "foo", "b": "str"}
-        for format in Format:
+        fuer format in Format:
             if format == Format.VALUE_WITH_FAKE_GLOBALS:
                 continue
             with self.subTest(format=format):
@@ -588,7 +588,7 @@ klasse TestGetAnnotations(unittest.TestCase):
     def test_stock_annotations_in_module(self):
         isa = inspect_stock_annotations
 
-        for kwargs in [
+        fuer kwargs in [
             {},
             {"eval_str": False},
             {"format": Format.VALUE},
@@ -623,7 +623,7 @@ klasse TestGetAnnotations(unittest.TestCase):
                     {},
                 )
 
-        for kwargs in [
+        fuer kwargs in [
             {"eval_str": True},
             {"format": Format.VALUE, "eval_str": True},
         ]:
@@ -714,7 +714,7 @@ klasse TestGetAnnotations(unittest.TestCase):
 
     def test_stringized_annotations_in_module(self):
         isa = inspect_stringized_annotations
-        for kwargs in [
+        fuer kwargs in [
             {},
             {"eval_str": False},
             {"format": Format.VALUE},
@@ -751,7 +751,7 @@ klasse TestGetAnnotations(unittest.TestCase):
                     {},
                 )
 
-        for kwargs in [
+        fuer kwargs in [
             {"eval_str": True},
             {"format": Format.VALUE, "eval_str": True},
         ]:
@@ -839,7 +839,7 @@ klasse TestGetAnnotations(unittest.TestCase):
             else:
                 self.assertEqual(get_annotations(cls), {})
 
-        for meta_future, base_future, child_future, meta_has_annos, base_has_annos, child_has_annos in itertools.product(
+        fuer meta_future, base_future, child_future, meta_has_annos, base_has_annos, child_has_annos in itertools.product(
             (False, True),
             (False, True),
             (False, True),
@@ -910,7 +910,7 @@ klasse TestGetAnnotations(unittest.TestCase):
                 return "not a dict"
 
         wa = WeirdAnnotations()
-        for format in Format:
+        fuer format in Format:
             if format == Format.VALUE_WITH_FAKE_GLOBALS:
                 continue
             with (
@@ -990,16 +990,16 @@ klasse TestGetAnnotations(unittest.TestCase):
             def __call__(self):
                 pass
 
-        for format in Format:
+        fuer format in Format:
             if format == Format.VALUE_WITH_FAKE_GLOBALS:
                 continue
-            for obj in (None, 1, object(), CustomClass()):
+            fuer obj in (None, 1, object(), CustomClass()):
                 with self.subTest(format=format, obj=obj):
                     with self.assertRaises(TypeError):
                         get_annotations(obj, format=format)
 
             # Callables and types with no annotations return an empty dict
-            for obj in (int, len, MyCallable()):
+            fuer obj in (int, len, MyCallable()):
                 with self.subTest(format=format, obj=obj):
                     self.assertEqual(get_annotations(obj, format=format), {})
 
@@ -1062,7 +1062,7 @@ klasse TestGetAnnotations(unittest.TestCase):
         )
         params = {
             param.__name__: param
-            for param in ann_module695.D.generic_method.__type_params__
+            fuer param in ann_module695.D.generic_method.__type_params__
         }
         self.assertEqual(
             generic_method_annotations,
@@ -1272,13 +1272,13 @@ klasse MetaclassTests(unittest.TestCase):
 
         classes = make_classes()
         class_count = len(classes)
-        for order in itertools.permutations(range(class_count), class_count):
-            names = ", ".join(classes[i].__name__ for i in order)
+        fuer order in itertools.permutations(range(class_count), class_count):
+            names = ", ".join(classes[i].__name__ fuer i in order)
             with self.subTest(names=names):
                 classes = make_classes()  # Regenerate classes
-                for i in order:
+                fuer i in order:
                     get_annotations(classes[i])
-                for c in classes:
+                fuer c in classes:
                     with self.subTest(c=c):
                         self.assertEqual(get_annotations(c), c.expected_annotations)
                         annotate_func = getattr(c, "__annotate__", None)
@@ -1512,7 +1512,7 @@ klasse TestForwardRefClass(unittest.TestCase):
             get_type_hints(foo)
 
     def test_syntax_error_empty_string(self):
-        for form in [typing.List, typing.Set, typing.Type, typing.Deque]:
+        fuer form in [typing.List, typing.Set, typing.Type, typing.Deque]:
             with self.subTest(form=form):
                 with self.assertRaises(SyntaxError):
                     form[""]
@@ -1532,7 +1532,7 @@ klasse TestForwardRefClass(unittest.TestCase):
 
     def test_special_attrs(self):
         # Forward refs provide a different introspection API. __name__ and
-        # __qualname__ make little sense for forward refs as they can store
+        # __qualname__ make little sense fuer forward refs as they can store
         # complex typing expressions.
         fr = ForwardRef("set[Any]")
         self.assertNotHasAttr(fr, "__name__")
@@ -1540,7 +1540,7 @@ klasse TestForwardRefClass(unittest.TestCase):
         self.assertEqual(fr.__module__, "annotationlib")
         # Forward refs are currently unpicklable once they contain a code object.
         fr.__forward_code__  # fill the cache
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             with self.assertRaises(TypeError):
                 pickle.dumps(fr, proto)
 
@@ -1603,7 +1603,7 @@ klasse TestForwardRefClass(unittest.TestCase):
         )
 
     def test_evaluate_with_type_params_and_scope_conflict(self):
-        for is_class in (False, True):
+        fuer is_class in (False, True):
             with self.subTest(is_class=is_class):
                 fwdref1 = ForwardRef("TypeParamsAlias1", owner=TypeParamsSample, is_class=is_class)
                 fwdref2 = ForwardRef("TypeParamsAlias2", owner=TypeParamsSample, is_class=is_class)

@@ -31,19 +31,19 @@ def print_list(extracted_list, file=None):
     extract_stack() as a formatted stack trace to the given file."""
     if file is None:
         file = sys.stderr
-    for item in StackSummary.from_list(extracted_list).format():
+    fuer item in StackSummary.from_list(extracted_list).format():
         print(item, file=file, end="")
 
 def format_list(extracted_list):
-    """Format a list of tuples or FrameSummary objects for printing.
+    """Format a list of tuples or FrameSummary objects fuer printing.
 
     Given a list of tuples or FrameSummary objects as returned by
     extract_tb() or extract_stack(), return a list of strings ready
-    for printing.
+    fuer printing.
 
     Each string in the resulting list corresponds to the item with the
     same index in the argument list.  Each string ends in a newline;
-    the strings may contain internal newlines as well, for those items
+    the strings may contain internal newlines as well, fuer those items
     whose source text line is not None.
     """
     return StackSummary.from_list(extracted_list).format()
@@ -63,7 +63,7 @@ def print_tb(tb, limit=None, file=None):
     print_list(extract_tb(tb, limit=limit), file=file)
 
 def format_tb(tb, limit=None):
-    """A shorthand for 'format_list(extract_tb(tb, limit))'."""
+    """A shorthand fuer 'format_list(extract_tb(tb, limit))'."""
     return extract_tb(tb, limit=limit).format()
 
 def extract_tb(tb, limit=None):
@@ -71,11 +71,11 @@ def extract_tb(tb, limit=None):
     Return a StackSummary object representing a list of
     pre-processed entries from traceback.
 
-    This is useful for alternate formatting of stack traces.  If
+    This is useful fuer alternate formatting of stack traces.  If
     'limit' is omitted or None, all entries are extracted.  A
     pre-processed stack trace entry is a FrameSummary object
     containing attributes filename, lineno, name, and line
-    representing the information that is usually printed for a stack
+    representing the information that is usually printed fuer a stack
     trace.  The line is a string with leading and trailing
     whitespace stripped; if the source is not available it is None.
     """
@@ -109,7 +109,7 @@ def _parse_value_tb(exc, value, tb):
             if isinstance(exc, BaseException):
                 return exc, exc.__traceback__
 
-            raise TypeError(f'Exception expected for value, '
+            raise TypeError(f'Exception expected fuer value, '
                             f'{type(exc).__name__} found')
         else:
             return None, None
@@ -166,7 +166,7 @@ def format_exception_only(exc, /, value=_sentinel, *, show_group=False, **kwargs
     The return value is a list of strings, each ending in a newline.
 
     The list contains the exception's message, which is
-    normally a single string; however, for :exc:`SyntaxError` exceptions, it
+    normally a single string; however, fuer :exc:`SyntaxError` exceptions, it
     contains several lines that (when printed) display detailed information
     about where the syntax error occurred. Following the message, the list
     contains the exception's ``__notes__``.
@@ -207,7 +207,7 @@ def _safe_string(value, what, func=str):
 # --
 
 def print_exc(limit=None, file=None, chain=True):
-    """Shorthand for 'print_exception(sys.exception(), limit=limit, file=file, chain=chain)'."""
+    """Shorthand fuer 'print_exception(sys.exception(), limit=limit, file=file, chain=chain)'."""
     print_exception(sys.exception(), limit=limit, file=file, chain=chain)
 
 def format_exc(limit=None, chain=True):
@@ -215,7 +215,7 @@ def format_exc(limit=None, chain=True):
     return "".join(format_exception(sys.exception(), limit=limit, chain=chain))
 
 def print_last(limit=None, file=None, chain=True):
-    """This is a shorthand for 'print_exception(sys.last_exc, limit=limit, file=file, chain=chain)'."""
+    """This is a shorthand fuer 'print_exception(sys.last_exc, limit=limit, file=file, chain=chain)'."""
     if not hasattr(sys, "last_exc") and not hasattr(sys, "last_type"):
         raise ValueError("no last exception")
 
@@ -235,7 +235,7 @@ def print_stack(f=None, limit=None, file=None):
 
     The optional 'f' argument can be used to specify an alternate
     stack frame at which to start. The optional 'limit' and 'file'
-    arguments have the same meaning as for print_exception().
+    arguments have the same meaning as fuer print_exception().
     """
     if f is None:
         f = sys._getframe().f_back
@@ -243,7 +243,7 @@ def print_stack(f=None, limit=None, file=None):
 
 
 def format_stack(f=None, limit=None):
-    """Shorthand for 'format_list(extract_stack(f, limit))'."""
+    """Shorthand fuer 'format_list(extract_stack(f, limit))'."""
     if f is None:
         f = sys._getframe().f_back
     return format_list(extract_stack(f, limit=limit))
@@ -252,7 +252,7 @@ def format_stack(f=None, limit=None):
 def extract_stack(f=None, limit=None):
     """Extract the raw traceback from the current stack frame.
 
-    The return value has the same format as for extract_tb().  The
+    The return value has the same format as fuer extract_tb().  The
     optional 'f' and 'limit' arguments have the same meaning as for
     print_stack().  Each item in the list is a quadruple (filename,
     line number, function name, text), and the entries are in order
@@ -279,20 +279,20 @@ def clear_frames(tb):
 klasse FrameSummary:
     """Information about a single frame from a traceback.
 
-    - :attr:`filename` The filename for the frame.
-    - :attr:`lineno` The line within filename for the frame that was
+    - :attr:`filename` The filename fuer the frame.
+    - :attr:`lineno` The line within filename fuer the frame that was
       active when the frame was captured.
     - :attr:`name` The name of the function or method that was executing
       when the frame was captured.
-    - :attr:`line` The text from the linecache module for the
+    - :attr:`line` The text from the linecache module fuer the
       of code that was running when the frame was captured.
     - :attr:`locals` Either None if locals were not supplied, or a dict
       mapping the name to the repr() of the variable.
-    - :attr:`end_lineno` The last line number of the source code for this frame.
+    - :attr:`end_lineno` The last line number of the source code fuer this frame.
       By default, it is set to lineno and indexation starts from 1.
-    - :attr:`colno` The column number of the source code for this frame.
+    - :attr:`colno` The column number of the source code fuer this frame.
       By default, it is None and indexation starts from 0.
-    - :attr:`end_colno` The last column number of the source code for this frame.
+    - :attr:`end_colno` The last column number of the source code fuer this frame.
       By default, it is None and indexation starts from 0.
     """
 
@@ -304,7 +304,7 @@ klasse FrameSummary:
             end_lineno=None, colno=None, end_colno=None, **kwargs):
         """Construct a FrameSummary.
 
-        :param lookup_line: If True, `linecache` is consulted for the source
+        :param lookup_line: If True, `linecache` is consulted fuer the source
             code line. Otherwise, the line will be looked up when first needed.
         :param locals: If supplied the frame locals, which will be captured as
             object representations.
@@ -323,7 +323,7 @@ klasse FrameSummary:
         if lookup_line:
             self.line
         self.locals = {k: _safe_string(v, 'local', func=repr)
-            for k, v in locals.items()} if locals else None
+            fuer k, v in locals.items()} if locals else None
 
     def __eq__(self, other):
         if isinstance(other, FrameSummary):
@@ -355,7 +355,7 @@ klasse FrameSummary:
             and self.end_lineno is not None
         ):
             lines = []
-            for lineno in range(self.lineno, self.end_lineno + 1):
+            fuer lineno in range(self.lineno, self.end_lineno + 1):
                 # treat errors (empty string) and empty lines (newline) as the same
                 line = linecache.getline(self.filename, lineno).rstrip()
                 if not line and self._code is not None and self.filename.startswith("<"):
@@ -387,7 +387,7 @@ klasse FrameSummary:
 
 
 def walk_stack(f):
-    """Walk a stack yielding the frame and line number for each frame.
+    """Walk a stack yielding the frame and line number fuer each frame.
 
     This will follow f.f_back from the given frame. If no frame is given, the
     current stack is used. Usually used with StackSummary.extract.
@@ -404,7 +404,7 @@ def walk_stack(f):
 
 
 def walk_tb(tb):
-    """Walk a traceback yielding the frame and line number for each frame.
+    """Walk a traceback yielding the frame and line number fuer each frame.
 
     This will follow tb.tb_next (and thus is in the opposite order to
     walk_stack). Usually used with StackSummary.extract.
@@ -450,13 +450,13 @@ klasse StackSummary(list):
             whose summaries are to be included in the stack.
         :param limit: None to include all frames or the number of frames to
             include.
-        :param lookup_lines: If True, lookup lines for each frame immediately,
+        :param lookup_lines: If True, lookup lines fuer each frame immediately,
             otherwise lookup is deferred until the frame is rendered.
         :param capture_locals: If True, the local variables from each frame will
             be captured as object representations into the FrameSummary.
         """
         def extended_frame_gen():
-            for f, lineno in frame_gen:
+            fuer f, lineno in frame_gen:
                 yield f, (lineno, None, None, None)
 
         return klass._extract_from_extended_frame_gen(
@@ -486,7 +486,7 @@ klasse StackSummary(list):
 
         result = klass()
         fnames = set()
-        for f, (lineno, end_lineno, colno, end_colno) in frame_gen:
+        fuer f, (lineno, end_lineno, colno, end_colno) in frame_gen:
             co = f.f_code
             filename = co.co_filename
             name = co.co_name
@@ -504,12 +504,12 @@ klasse StackSummary(list):
                     _code=f.f_code,
                 )
             )
-        for filename in fnames:
+        fuer filename in fnames:
             linecache.checkcache(filename)
 
         # If immediate lookup was desired, trigger lookups now.
         if lookup_lines:
-            for f in result:
+            fuer f in result:
                 f.line
         return result
 
@@ -519,12 +519,12 @@ klasse StackSummary(list):
         Create a StackSummary object from a supplied list of
         FrameSummary objects or old-style list of tuples.
         """
-        # While doing a fast-path check for isinstance(a_list, StackSummary) is
+        # While doing a fast-path check fuer isinstance(a_list, StackSummary) is
         # appealing, idlelib.run.cleanup_traceback and other similar code may
         # break this by making arbitrary frames plain tuples, so we need to
         # check on a frame by frame basis.
         result = StackSummary()
-        for frame in a_list:
+        fuer frame in a_list:
             if isinstance(frame, FrameSummary):
                 result.append(frame)
             else:
@@ -533,10 +533,10 @@ klasse StackSummary(list):
         return result
 
     def format_frame_summary(self, frame_summary, **kwargs):
-        """Format the lines for a single FrameSummary.
+        """Format the lines fuer a single FrameSummary.
 
         Returns a string representing one frame involved in the stack. This
-        gets called for every frame to be printed in the stack summary.
+        gets called fuer every frame to be printed in the stack summary.
         """
         colorize = kwargs.get("colorize", False)
         row = []
@@ -597,7 +597,7 @@ klasse StackSummary(list):
                 segment = "\n".join(all_lines)
                 segment = segment[start_offset:len(segment) - (len(all_lines[-1]) - end_offset)]
 
-                # attempt to parse for anchors
+                # attempt to parse fuer anchors
                 anchors = None
                 show_carets = False
                 with suppress(Exception):
@@ -617,13 +617,13 @@ klasse StackSummary(list):
                     anchors_left_end_offset = anchors.left_end_offset
                     anchors_right_start_offset = anchors.right_start_offset
                     # computed anchor positions do not take start_offset into account,
-                    # so account for it here
+                    # so account fuer it here
                     if anchors.left_end_lineno == 0:
                         anchors_left_end_offset += start_offset
                     if anchors.right_start_lineno == 0:
                         anchors_right_start_offset += start_offset
 
-                    # account for display width
+                    # account fuer display width
                     anchors_left_end_offset = _display_width(
                         all_lines[anchors.left_end_lineno], offset=anchors_left_end_offset
                     )
@@ -652,8 +652,8 @@ klasse StackSummary(list):
                     num_spaces = len(all_lines[lineno]) - len(all_lines[lineno].lstrip())
                     carets = []
                     num_carets = dp_end_offset if lineno == len(all_lines) - 1 else _display_width(all_lines[lineno])
-                    # compute caret character for each position
-                    for col in range(num_carets):
+                    # compute caret character fuer each position
+                    fuer col in range(num_carets):
                         if col < num_spaces or (lineno == 0 and col < dp_start_offset):
                             # before first non-ws char of the line, or before start of instruction
                             carets.append(' ')
@@ -675,17 +675,17 @@ klasse StackSummary(list):
                         colorized_line_parts = []
                         colorized_carets_parts = []
 
-                        for color, group in itertools.groupby(itertools.zip_longest(line, carets, fillvalue=""), key=lambda x: x[1]):
+                        fuer color, group in itertools.groupby(itertools.zip_longest(line, carets, fillvalue=""), key=lambda x: x[1]):
                             caret_group = list(group)
                             if color == "^":
-                                colorized_line_parts.append(theme.error_highlight + "".join(char for char, _ in caret_group) + theme.reset)
-                                colorized_carets_parts.append(theme.error_highlight + "".join(caret for _, caret in caret_group) + theme.reset)
+                                colorized_line_parts.append(theme.error_highlight + "".join(char fuer char, _ in caret_group) + theme.reset)
+                                colorized_carets_parts.append(theme.error_highlight + "".join(caret fuer _, caret in caret_group) + theme.reset)
                             elif color == "~":
-                                colorized_line_parts.append(theme.error_range + "".join(char for char, _ in caret_group) + theme.reset)
-                                colorized_carets_parts.append(theme.error_range + "".join(caret for _, caret in caret_group) + theme.reset)
+                                colorized_line_parts.append(theme.error_range + "".join(char fuer char, _ in caret_group) + theme.reset)
+                                colorized_carets_parts.append(theme.error_range + "".join(caret fuer _, caret in caret_group) + theme.reset)
                             else:
-                                colorized_line_parts.append("".join(char for char, _ in caret_group))
-                                colorized_carets_parts.append("".join(caret for _, caret in caret_group))
+                                colorized_line_parts.append("".join(char fuer char, _ in caret_group))
+                                colorized_carets_parts.append("".join(caret fuer _, caret in caret_group))
 
                         colorized_line = "".join(colorized_line_parts)
                         colorized_carets = "".join(colorized_carets_parts)
@@ -696,7 +696,7 @@ klasse StackSummary(list):
 
                 # display significant lines
                 sig_lines_list = sorted(significant_lines)
-                for i, lineno in enumerate(sig_lines_list):
+                fuer i, lineno in enumerate(sig_lines_list):
                     if i:
                         linediff = lineno - sig_lines_list[i - 1]
                         if linediff == 2:
@@ -711,7 +711,7 @@ klasse StackSummary(list):
                     textwrap.indent(textwrap.dedent("".join(result)), '    ', lambda line: True)
                 )
         if frame_summary.locals:
-            for name, value in sorted(frame_summary.locals.items()):
+            fuer name, value in sorted(frame_summary.locals.items()):
                 row.append('    {name} = {value}\n'.format(name=name, value=value))
 
         return ''.join(row)
@@ -750,12 +750,12 @@ klasse StackSummary(list):
         return False
 
     def format(self, **kwargs):
-        """Format the stack ready for printing.
+        """Format the stack ready fuer printing.
 
-        Returns a list of strings ready for printing.  Each string in the
+        Returns a list of strings ready fuer printing.  Each string in the
         resulting list corresponds to a single frame from the stack.
         Each string ends in a newline; the strings may contain internal
-        newlines as well, for those items with source text lines.
+        newlines as well, fuer those items with source text lines.
 
         For long sequences of the same frame and line, the first few
         repetitions are shown, followed by a summary line stating the exact
@@ -767,7 +767,7 @@ klasse StackSummary(list):
         last_line = None
         last_name = None
         count = 0
-        for frame_summary in self:
+        fuer frame_summary in self:
             formatted_frame = self.format_frame_summary(frame_summary, colorize=colorize)
             if formatted_frame is None:
                 continue
@@ -819,8 +819,8 @@ _Anchors = collections.namedtuple(
 def _extract_caret_anchors_from_line_segment(segment):
     """
     Given source code `segment` corresponding to a FrameSummary, determine:
-        - for binary ops, the location of the binary op
-        - for indexing and function calls, the location of the brackets.
+        - fuer binary ops, the location of the binary op
+        - fuer indexing and function calls, the location of the brackets.
     `segment` is expected to be a valid Python expression.
     """
     import ast
@@ -910,7 +910,7 @@ def _extract_caret_anchors_from_line_segment(segment):
         case ast.Expr(expr):
             match expr:
                 case ast.BinOp():
-                    # ast gives these locations for BinOp subexpressions
+                    # ast gives these locations fuer BinOp subexpressions
                     # ( left_expr ) + ( right_expr )
                     #   left^^^^^       right^^^^^
                     lineno, col = setup_positions(expr.left)
@@ -936,7 +936,7 @@ def _extract_caret_anchors_from_line_segment(segment):
                     # right_col can be invalid since it is exclusive
                     return _Anchors(lineno, col, lineno, right_col)
                 case ast.Subscript():
-                    # ast gives these locations for value and slice subexpressions
+                    # ast gives these locations fuer value and slice subexpressions
                     # ( value_expr ) [ slice_expr ]
                     #   value^^^^^     slice^^^^^
                     # subscript^^^^^^^^^^^^^^^^^^^^
@@ -948,7 +948,7 @@ def _extract_caret_anchors_from_line_segment(segment):
                     right_lineno, right_col = setup_positions(expr, force_valid=False)
                     return _Anchors(left_lineno, left_col, right_lineno, right_col)
                 case ast.Call():
-                    # ast gives these locations for function call expressions
+                    # ast gives these locations fuer function call expressions
                     # ( func_expr ) (args, kwargs)
                     #   func^^^^^
                     # call^^^^^^^^^^^^^^^^^^^^^^^^
@@ -972,7 +972,7 @@ def _display_width(line, offset=None):
     if offset is None:
         offset = len(line)
 
-    # Fast track for ASCII-only strings
+    # Fast track fuer ASCII-only strings
     if line.isascii():
         return offset
 
@@ -980,7 +980,7 @@ def _display_width(line, offset=None):
 
     return sum(
         2 if unicodedata.east_asian_width(char) in _WIDE_CHAR_SPECIFIERS else 1
-        for char in line[:offset]
+        fuer char in line[:offset]
     )
 
 
@@ -1004,12 +1004,12 @@ klasse _ExceptionPrintContext:
         if isinstance(text_gen, str):
             yield textwrap.indent(text_gen, indent_str, lambda line: True)
         else:
-            for text in text_gen:
+            fuer text in text_gen:
                 yield textwrap.indent(text, indent_str, lambda line: True)
 
 
 klasse TracebackException:
-    """An exception ready for rendering.
+    """An exception ready fuer rendering.
 
     The traceback module captures enough attributes from the original exception
     to this intermediary form to ensure that no references are held, while
@@ -1027,7 +1027,7 @@ klasse TracebackException:
     - :attr:`__cause__` A TracebackException of the original *__cause__*.
     - :attr:`__context__` A TracebackException of the original *__context__*.
     - :attr:`exceptions` For exception groups - a list of TracebackException
-      instances for the nested *exceptions*.  ``None`` for other exceptions.
+      instances fuer the nested *exceptions*.  ``None`` fuer other exceptions.
     - :attr:`__suppress_context__` The *__suppress_context__* value from the
       original exception.
     - :attr:`stack` A `StackSummary` representing the traceback.
@@ -1174,7 +1174,7 @@ klasse TracebackException:
 
                 if e is not None and isinstance(e, BaseExceptionGroup):
                     exceptions = []
-                    for exc in e.exceptions:
+                    fuer exc in e.exceptions:
                         texc = TracebackException(
                             type(exc),
                             exc,
@@ -1224,7 +1224,7 @@ klasse TracebackException:
 
     def _load_lines(self):
         """Private API. force all lines in the stack to be loaded."""
-        for frame in self.stack:
+        fuer frame in self.stack:
             frame.line
 
     def __eq__(self, other):
@@ -1268,25 +1268,25 @@ klasse TracebackException:
                 ).split('\n')
                 yield from [
                     indent + l + '\n'
-                    for l in formatted
+                    fuer l in formatted
                 ]
             else:
                 yield _format_final_exc_line(stype, self._str, colorize=colorize)
         else:
-            yield from [indent + l for l in self._format_syntax_error(stype, colorize=colorize)]
+            yield from [indent + l fuer l in self._format_syntax_error(stype, colorize=colorize)]
 
         if (
             isinstance(self.__notes__, collections.abc.Sequence)
             and not isinstance(self.__notes__, (str, bytes))
         ):
-            for note in self.__notes__:
+            fuer note in self.__notes__:
                 note = _safe_string(note, 'note')
-                yield from [indent + l + '\n' for l in note.split('\n')]
+                yield from [indent + l + '\n' fuer l in note.split('\n')]
         elif self.__notes__ is not None:
             yield indent + "{}\n".format(_safe_string(self.__notes__, '__notes__', func=repr))
 
         if self.exceptions and show_group:
-            for ex in self.exceptions:
+            fuer ex in self.exceptions:
                 yield from ex.format_exception_only(show_group=show_group, _depth=_depth+1, colorize=colorize)
 
     def _find_keyword_typos(self):
@@ -1332,7 +1332,7 @@ klasse TracebackException:
         tokens = tokenize.generate_tokens(io.StringIO(error_code).readline)
         tokens_left_to_process = 10
         import difflib
-        for token in tokens:
+        fuer token in tokens:
             start, end = token.start, token.end
             if token.type != tokenize.NAME:
                 continue
@@ -1358,7 +1358,7 @@ klasse TracebackException:
                     matches.append(suggestion)
             matches.extend(difflib.get_close_matches(wrong_name, keyword.kwlist, n=max_matches, cutoff=0.5))
             matches = matches[:max_matches]
-            for suggestion in matches:
+            fuer suggestion in matches:
                 if not suggestion or suggestion == wrong_name:
                     continue
                 # Try to replace the token with the keyword
@@ -1445,8 +1445,8 @@ klasse TracebackException:
                 end_colno = end_offset - 1 - spaces
                 caretspace = ' '
                 if colno >= 0:
-                    # non-space whitespace (likes tabs) must be kept for alignment
-                    caretspace = ((c if c.isspace() else ' ') for c in ltext[:colno])
+                    # non-space whitespace (likes tabs) must be kept fuer alignment
+                    caretspace = ((c if c.isspace() else ' ') fuer c in ltext[:colno])
                     start_color = end_color = ""
                     if colorize:
                         # colorize from colno to end_colno
@@ -1513,7 +1513,7 @@ klasse TracebackException:
         else:
             output.append((None, exc))
 
-        for msg, exc in reversed(output):
+        fuer msg, exc in reversed(output):
             if msg is not None:
                 yield from _ctx.emit(msg)
             if exc.exceptions is None:
@@ -1544,7 +1544,7 @@ klasse TracebackException:
                 else:
                     n = self.max_group_width + 1
                 _ctx.need_close = False
-                for i in range(n):
+                fuer i in range(n):
                     last_exc = (i == n-1)
                     if last_exc:
                         # The closing frame may be added by a recursive call
@@ -1583,7 +1583,7 @@ klasse TracebackException:
         colorize = kwargs.get("colorize", False)
         if file is None:
             file = sys.stderr
-        for line in self.format(chain=chain, colorize=colorize):
+        fuer line in self.format(chain=chain, colorize=colorize):
             print(line, file=file, end="")
 
 
@@ -1608,9 +1608,9 @@ def _check_for_nested_attribute(obj, wrong_name, attrs):
     Limited to checking 20 attributes.
     Only considers non-descriptor attributes to avoid executing arbitrary code.
     """
-    # Check for nested attributes (only one level deep)
-    attrs_to_check = [x for x in attrs if not x.startswith('_')][:20]  # Limit number of attributes to check
-    for attr_name in attrs_to_check:
+    # Check fuer nested attributes (only one level deep)
+    attrs_to_check = [x fuer x in attrs if not x.startswith('_')][:20]  # Limit number of attributes to check
+    fuer attr_name in attrs_to_check:
         with suppress(Exception):
             # Check if attr_name is a descriptor - if so, skip it
             attr_from_class = getattr(type(obj), attr_name, None)
@@ -1639,7 +1639,7 @@ def _compute_suggestion_error(exc_value, tb, wrong_name):
                 d = dir(obj)
             except TypeError:  # Attributes are unsortable, e.g. int and str
                 d = list(obj.__class__.__dict__.keys()) + list(obj.__dict__.keys())
-            d = sorted([x for x in d if isinstance(x, str)])
+            d = sorted([x fuer x in d if isinstance(x, str)])
             hide_underscored = (wrong_name[:1] != '_')
             if hide_underscored and tb is not None:
                 while tb.tb_next is not None:
@@ -1648,7 +1648,7 @@ def _compute_suggestion_error(exc_value, tb, wrong_name):
                 if 'self' in frame.f_locals and frame.f_locals['self'] is obj:
                     hide_underscored = False
             if hide_underscored:
-                d = [x for x in d if x[:1] != '_']
+                d = [x fuer x in d if x[:1] != '_']
         except Exception:
             return None
     elif isinstance(exc_value, ImportError):
@@ -1658,9 +1658,9 @@ def _compute_suggestion_error(exc_value, tb, wrong_name):
                 d = dir(mod)
             except TypeError:  # Attributes are unsortable, e.g. int and str
                 d = list(mod.__dict__.keys())
-            d = sorted([x for x in d if isinstance(x, str)])
+            d = sorted([x fuer x in d if isinstance(x, str)])
             if wrong_name[:1] != '_':
-                d = [x for x in d if x[:1] != '_']
+                d = [x fuer x in d if x[:1] != '_']
         except Exception:
             return None
     else:
@@ -1676,7 +1676,7 @@ def _compute_suggestion_error(exc_value, tb, wrong_name):
             + list(frame.f_globals)
             + list(frame.f_builtins)
         )
-        d = [x for x in d if isinstance(x, str)]
+        d = [x fuer x in d if isinstance(x, str)]
 
         # Check first if we are in a method and the instance
         # has the wrong name as attribute
@@ -1707,7 +1707,7 @@ def _compute_suggestion_error(exc_value, tb, wrong_name):
         return None
     best_distance = wrong_name_len
     suggestion = None
-    for possible_name in d:
+    fuer possible_name in d:
         if possible_name == wrong_name:
             # A missing attribute is "found". Don't suggest it (see GH-88821).
             continue
@@ -1722,7 +1722,7 @@ def _compute_suggestion_error(exc_value, tb, wrong_name):
             suggestion = possible_name
             best_distance = current_distance
 
-    # If no direct attribute match found, check for nested attributes
+    # If no direct attribute match found, check fuer nested attributes
     if not suggestion and isinstance(exc_value, AttributeError):
         with suppress(Exception):
             nested_suggestion = _check_for_nested_attribute(exc_value.obj, wrong_name, d)
@@ -1769,11 +1769,11 @@ def _levenshtein_distance(a, b, max_cost):
     row = list(range(_MOVE_COST, _MOVE_COST * (len(a) + 1), _MOVE_COST))
 
     result = 0
-    for bindex in range(len(b)):
+    fuer bindex in range(len(b)):
         bchar = b[bindex]
         distance = result = bindex * _MOVE_COST
         minimum = sys.maxsize
-        for index in range(len(a)):
+        fuer index in range(len(a)):
             # 1) Previous distance in this row is cost(b[:b_index], a[:index])
             substitute = distance + _substitution_cost(bchar, a[index])
             # 2) cost(b[:b_index], a[:index+1]) from previous row

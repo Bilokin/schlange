@@ -29,7 +29,7 @@ klasse _SQLiteDbmTests(unittest.TestCase):
         db.close()
 
     def tearDown(self):
-        for suffix in "", "-wal", "-shm":
+        fuer suffix in "", "-wal", "-shm":
             os_helper.unlink(self.filename + suffix)
 
 
@@ -41,7 +41,7 @@ klasse URI(unittest.TestCase):
             ("PRE#MID##END", "PRE%23MID%23%23END"),
             ("%#?%%#", "%25%23%3F%25%25%23"),
         )
-        for path, normalized in dataset:
+        fuer path, normalized in dataset:
             with self.subTest(path=path, normalized=normalized):
                 self.assertEndsWith(_normalize_uri(path), normalized)
 
@@ -58,7 +58,7 @@ klasse URI(unittest.TestCase):
             (r"C:Projects\apilibrary\apilibrary.sln",
              "/C:Projects/apilibrary/apilibrary.sln"),
         )
-        for path, normalized in dataset:
+        fuer path, normalized in dataset:
             with self.subTest(path=path, normalized=normalized):
                 if not Path(path).is_absolute():
                     self.skipTest(f"skipping relative path: {path!r}")
@@ -94,7 +94,7 @@ klasse ReadOnly(_SQLiteDbmTests):
         self.assertEqual(self.db.keys(), [b"key1", b"key2"])
 
     def test_readonly_iter(self):
-        self.assertEqual([k for k in self.db], [b"key1", b"key2"])
+        self.assertEqual([k fuer k in self.db], [b"key1", b"key2"])
 
 
 @unittest.skipIf(root_in_posix, "test is meanless with root privilege")
@@ -153,8 +153,8 @@ klasse ReadWrite(_SQLiteDbmTests):
 
     def db_content(self):
         with closing(sqlite3.connect(self.filename)) as cx:
-            keys = [r[0] for r in cx.execute("SELECT key FROM Dict")]
-            vals = [r[0] for r in cx.execute("SELECT value FROM Dict")]
+            keys = [r[0] fuer r in cx.execute("SELECT key FROM Dict")]
+            vals = [r[0] fuer r in cx.execute("SELECT value FROM Dict")]
         return keys, vals
 
     def test_readwrite_unique_key(self):
@@ -254,7 +254,7 @@ klasse Misuse(_SQLiteDbmTests):
             self.db.__init__("new.db", flag="n", mode=0o666)
 
     def test_misuse_empty_filename(self):
-        for flag in "r", "w", "c", "n":
+        fuer flag in "r", "w", "c", "n":
             with self.assertRaises(dbm_sqlite3.error):
                 db = dbm_sqlite3.open("", flag="c")
 
@@ -278,13 +278,13 @@ klasse DataTypes(_SQLiteDbmTests):
         super().tearDown()
 
     def test_datatypes_values(self):
-        for raw, coerced in self.dataset:
+        fuer raw, coerced in self.dataset:
             with self.subTest(raw=raw, coerced=coerced):
                 self.db["key"] = raw
                 self.assertEqual(self.db[b"key"], coerced)
 
     def test_datatypes_keys(self):
-        for raw, coerced in self.dataset:
+        fuer raw, coerced in self.dataset:
             with self.subTest(raw=raw, coerced=coerced):
                 self.db[raw] = "value"
                 self.assertEqual(self.db[coerced], b"value")
@@ -339,7 +339,7 @@ klasse CorruptDatabase(_SQLiteDbmTests):
         len(db)
 
     def test_corrupt_readwrite(self):
-        for flag in "r", "w", "c":
+        fuer flag in "r", "w", "c":
             with self.subTest(flag=flag):
                 check = partial(self.check, flag=flag)
                 check(fn=self.read)

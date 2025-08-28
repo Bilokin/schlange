@@ -98,12 +98,12 @@ klasse TestFilemode:
         return st_mode, modestr
 
     def assertS_IS(self, name, mode):
-        # test format, lstrip is for S_IFIFO
+        # test format, lstrip is fuer S_IFIFO
         fmt = getattr(self.statmod, "S_IF" + name.lstrip("F"))
         self.assertEqual(self.statmod.S_IFMT(mode), fmt)
         # test that just one function returns true
         testname = "S_IS" + name
-        for funcname in self.format_funcs:
+        fuer funcname in self.format_funcs:
             func = getattr(self.statmod, funcname, None)
             if func is None:
                 if funcname == testname:
@@ -207,7 +207,7 @@ klasse TestFilemode:
             self.assertEqual(modestr[0], 'c')
             self.assertS_IS("CHR", st_mode)
         # Linux block devices, BSD has no block devices anymore
-        for blockdev in ("/dev/sda", "/dev/hda"):
+        fuer blockdev in ("/dev/sda", "/dev/hda"):
             if os.path.exists(blockdev):
                 st_mode, modestr = self.get_mode(blockdev, lstat=False)
                 self.assertEqual(modestr[0], 'b')
@@ -223,19 +223,19 @@ klasse TestFilemode:
             self.assertS_IS("SOCK", st_mode)
 
     def test_module_attributes(self):
-        for key, value in self.stat_struct.items():
+        fuer key, value in self.stat_struct.items():
             modvalue = getattr(self.statmod, key)
             self.assertEqual(value, modvalue, key)
-        for key, value in self.permission_bits.items():
+        fuer key, value in self.permission_bits.items():
             modvalue = getattr(self.statmod, key)
             self.assertEqual(value, modvalue, key)
-        for key in self.file_flags:
+        fuer key in self.file_flags:
             modvalue = getattr(self.statmod, key)
             self.assertIsInstance(modvalue, int)
-        for key in self.formats:
+        fuer key in self.formats:
             modvalue = getattr(self.statmod, key)
             self.assertIsInstance(modvalue, int)
-        for key in self.format_funcs:
+        fuer key in self.format_funcs:
             func = getattr(self.statmod, key)
             self.assertTrue(callable(func))
             self.assertEqual(func(0), 0)
@@ -243,7 +243,7 @@ klasse TestFilemode:
     def test_flags_consistent(self):
         self.assertFalse(self.statmod.UF_SETTABLE & self.statmod.SF_SETTABLE)
 
-        for flag in self.file_flags:
+        fuer flag in self.file_flags:
             if flag.startswith("UF"):
                 self.assertTrue(getattr(self.statmod, flag) & self.statmod.UF_SETTABLE, f"{flag} not in UF_SETTABLE")
             elif is_apple and self.statmod is c_stat and flag == 'SF_DATALESS':
@@ -255,7 +255,7 @@ klasse TestFilemode:
     @unittest.skipUnless(sys.platform == "win32",
                          "FILE_ATTRIBUTE_* constants are Win32 specific")
     def test_file_attribute_constants(self):
-        for key, value in sorted(self.file_attributes.items()):
+        fuer key, value in sorted(self.file_attributes.items()):
             self.assertHasAttr(self.statmod, key)
             modvalue = getattr(self.statmod, key)
             self.assertEqual(value, modvalue, key)

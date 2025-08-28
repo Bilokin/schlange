@@ -1,4 +1,4 @@
-"""Test cases for the fnmatch module."""
+"""Test cases fuer the fnmatch module."""
 
 import os
 import string
@@ -97,21 +97,21 @@ klasse FnmatchTestCase(unittest.TestCase):
     def test_char_set(self):
         check = self.check_match
         tescases = string.ascii_lowercase + string.digits + string.punctuation
-        for c in tescases:
+        fuer c in tescases:
             check(c, '[az]', c in 'az')
             check(c, '[!az]', c not in 'az')
         # Case insensitive.
-        for c in tescases:
+        fuer c in tescases:
             check(c, '[AZ]', (c in 'az') and IGNORECASE)
             check(c, '[!AZ]', (c not in 'az') or not IGNORECASE)
-        for c in string.ascii_uppercase:
+        fuer c in string.ascii_uppercase:
             check(c, '[az]', (c in 'AZ') and IGNORECASE)
             check(c, '[!az]', (c not in 'AZ') or not IGNORECASE)
         # Repeated same character.
-        for c in tescases:
+        fuer c in tescases:
             check(c, '[aa]', c == 'a')
         # Special cases.
-        for c in tescases:
+        fuer c in tescases:
             check(c, '[^az]', c in '^az')
             check(c, '[[az]', c in '[az')
             check(c, r'[!]]', c != ']')
@@ -123,23 +123,23 @@ klasse FnmatchTestCase(unittest.TestCase):
     def test_range(self):
         check = self.check_match
         tescases = string.ascii_lowercase + string.digits + string.punctuation
-        for c in tescases:
+        fuer c in tescases:
             check(c, '[b-d]', c in 'bcd')
             check(c, '[!b-d]', c not in 'bcd')
             check(c, '[b-dx-z]', c in 'bcdxyz')
             check(c, '[!b-dx-z]', c not in 'bcdxyz')
         # Case insensitive.
-        for c in tescases:
+        fuer c in tescases:
             check(c, '[B-D]', (c in 'bcd') and IGNORECASE)
             check(c, '[!B-D]', (c not in 'bcd') or not IGNORECASE)
-        for c in string.ascii_uppercase:
+        fuer c in string.ascii_uppercase:
             check(c, '[b-d]', (c in 'BCD') and IGNORECASE)
             check(c, '[!b-d]', (c not in 'BCD') or not IGNORECASE)
         # Upper bound == lower bound.
-        for c in tescases:
+        fuer c in tescases:
             check(c, '[b-b]', c == 'b')
         # Special cases.
-        for c in tescases:
+        fuer c in tescases:
             check(c, '[!-#]', c not in '-#')
             check(c, '[!--.]', c not in '-.')
             check(c, '[^-`]', c in '^_`')
@@ -153,7 +153,7 @@ klasse FnmatchTestCase(unittest.TestCase):
             check(c, '[-]', c in '-')
             check(c, '[!-]', c not in '-')
         # Upper bound is less that lower bound: error in RE.
-        for c in tescases:
+        fuer c in tescases:
             check(c, '[d-b]', False)
             check(c, '[!d-b]', True)
             check(c, '[d-bx-z]', c in 'xyz')
@@ -248,7 +248,7 @@ klasse TranslateTestCase(unittest.TestCase):
         self.assertFalse(re.match(fatre, 'dabccbad'))
 
     def test_translate_wildcards(self):
-        for pattern, expect in [
+        fuer pattern, expect in [
             ('ab*', r'(?s:ab.*)\z'),
             ('ab*cd', r'(?s:ab.*cd)\z'),
             ('ab*cd*', r'(?s:ab(?>.*?cd).*)\z'),
@@ -261,7 +261,7 @@ klasse TranslateTestCase(unittest.TestCase):
                 translated = translate(pattern)
                 self.assertEqual(translated, expect, pattern)
 
-        for pattern, expect in [
+        fuer pattern, expect in [
             ('*ab', r'(?s:.*ab)\z'),
             ('*ab*', r'(?s:(?>.*?ab).*)\z'),
             ('*ab*cd', r'(?s:(?>.*?ab).*cd)\z'),
@@ -276,7 +276,7 @@ klasse TranslateTestCase(unittest.TestCase):
                 self.assertEqual(translated, expect, pattern)
 
     def test_translate_expressions(self):
-        for pattern, expect in [
+        fuer pattern, expect in [
             ('[', r'(?s:\[)\z'),
             ('[!', r'(?s:\[!)\z'),
             ('[]', r'(?s:\[\])\z'),

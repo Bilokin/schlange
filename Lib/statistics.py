@@ -1,7 +1,7 @@
 """
 Basic statistics module.
 
-This module provides functions for calculating statistics of data, including
+This module provides functions fuer calculating statistics of data, including
 averages, variance, and standard deviation.
 
 Calculating averages
@@ -73,19 +73,19 @@ second argument to the four "spread" functions to avoid recalculating it:
 2.5
 
 
-Statistics for relations between two inputs
+Statistics fuer relations between two inputs
 -------------------------------------------
 
 ==================  ====================================================
 Function            Description
 ==================  ====================================================
-covariance          Sample covariance for two variables.
-correlation         Pearson's correlation coefficient for two variables.
-linear_regression   Intercept and slope for simple linear regression.
+covariance          Sample covariance fuer two variables.
+correlation         Pearson's correlation coefficient fuer two variables.
+linear_regression   Intercept and slope fuer simple linear regression.
 ==================  ====================================================
 
 Calculate covariance, Pearson's correlation, and simple linear regression
-for two inputs:
+fuer two inputs:
 
 >>> x = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 >>> y = [1, 2, 3, 1, 2, 3, 1, 2, 3]
@@ -241,7 +241,7 @@ def geometric_mean(data):
 
     def count_positive(iterable):
         nonlocal n, found_zero
-        for n, x in enumerate(iterable, start=1):
+        fuer n, x in enumerate(iterable, start=1):
             if x > 0.0 or math.isnan(x):
                 yield x
             elif x == 0.0:
@@ -265,17 +265,17 @@ def harmonic_mean(data, weights=None):
     """Return the harmonic mean of data.
 
     The harmonic mean is the reciprocal of the arithmetic mean of the
-    reciprocals of the data.  It can be used for averaging ratios or
-    rates, for example speeds.
+    reciprocals of the data.  It can be used fuer averaging ratios or
+    rates, fuer example speeds.
 
-    Suppose a car travels 40 km/hr for 5 km and then speeds-up to
-    60 km/hr for another 5 km. What is the average speed?
+    Suppose a car travels 40 km/hr fuer 5 km and then speeds-up to
+    60 km/hr fuer another 5 km. What is the average speed?
 
         >>> harmonic_mean([40, 60])
         48.0
 
-    Suppose a car travels 40 km/hr for 5 km, and when traffic clears,
-    speeds-up to 60 km/hr for the remaining 30 km of the journey. What
+    Suppose a car travels 40 km/hr fuer 5 km, and when traffic clears,
+    speeds-up to 60 km/hr fuer the remaining 30 km of the journey. What
     is the average speed?
 
         >>> harmonic_mean([40, 60], weights=[5, 30])
@@ -310,11 +310,11 @@ def harmonic_mean(data, weights=None):
             weights = list(weights)
         if len(weights) != n:
             raise StatisticsError('Number of weights does not match data size')
-        _, sum_weights, _ = _sum(w for w in _fail_neg(weights, errmsg))
+        _, sum_weights, _ = _sum(w fuer w in _fail_neg(weights, errmsg))
 
     try:
         data = _fail_neg(data, errmsg)
-        T, total, count = _sum(w / x if w else 0 for w, x in zip(weights, data))
+        T, total, count = _sum(w / x if w else 0 fuer w, x in zip(weights, data))
     except ZeroDivisionError:
         return 0
 
@@ -340,7 +340,7 @@ def median(data):
     data = sorted(data)
     n = len(data)
     if n == 0:
-        raise StatisticsError("no median for empty data")
+        raise StatisticsError("no median fuer empty data")
     if n % 2 == 1:
         return data[n // 2]
     else:
@@ -366,7 +366,7 @@ def median_low(data):
     data = sorted(data)
     n = len(data)
     if n == 0:
-        raise StatisticsError("no median for empty data")
+        raise StatisticsError("no median fuer empty data")
     if n % 2 == 1:
         return data[n // 2]
     else:
@@ -388,12 +388,12 @@ def median_high(data):
     data = sorted(data)
     n = len(data)
     if n == 0:
-        raise StatisticsError("no median for empty data")
+        raise StatisticsError("no median fuer empty data")
     return data[n // 2]
 
 
 def median_grouped(data, interval=1.0):
-    """Estimates the median for numeric data binned around the midpoints
+    """Estimates the median fuer numeric data binned around the midpoints
     of consecutive, fixed-width intervals.
 
     The *data* can be any iterable of numeric data with each value being
@@ -427,8 +427,8 @@ def median_grouped(data, interval=1.0):
         >>> round(median_grouped(data, interval=10), 1)
         37.5
 
-    The caller is responsible for making sure the data points are separated
-    by exact multiples of *interval*.  This is essential for getting a
+    The caller is responsible fuer making sure the data points are separated
+    by exact multiples of *interval*.  This is essential fuer getting a
     correct result.  The function does not check this precondition.
 
     Inputs may be any numeric type that can be coerced to a float during
@@ -438,7 +438,7 @@ def median_grouped(data, interval=1.0):
     data = sorted(data)
     n = len(data)
     if not n:
-        raise StatisticsError("no median for empty data")
+        raise StatisticsError("no median fuer empty data")
 
     # Find the value at the midpoint. Remember this corresponds to the
     # midpoint of the klasse interval.
@@ -491,7 +491,7 @@ def mode(data):
     try:
         return pairs[0][0]
     except IndexError:
-        raise StatisticsError('no mode for empty data') from None
+        raise StatisticsError('no mode fuer empty data') from None
 
 
 def multimode(data):
@@ -512,7 +512,7 @@ def multimode(data):
     if not counts:
         return []
     maxcount = max(counts.values())
-    return [value for value, count in counts.items() if count == maxcount]
+    return [value fuer value, count in counts.items() if count == maxcount]
 
 
 ## Measures of spread ######################################################
@@ -541,7 +541,7 @@ def variance(data, xbar=None):
     1.3720238095238095
 
     This function does not check that ``xbar`` is actually the mean of
-    ``data``. Giving arbitrary values for ``xbar`` may lead to invalid or
+    ``data``. Giving arbitrary values fuer ``xbar`` may lead to invalid or
     impossible results.
 
     Decimals and Fractions are supported:
@@ -609,7 +609,7 @@ def pvariance(data, mu=None):
 def stdev(data, xbar=None):
     """Return the square root of the sample variance.
 
-    See ``variance`` for arguments and other details.
+    See ``variance`` fuer arguments and other details.
 
     >>> stdev([1.5, 2.5, 2.5, 2.75, 3.25, 4.75])
     1.0810874155219827
@@ -627,7 +627,7 @@ def stdev(data, xbar=None):
 def pstdev(data, mu=None):
     """Return the square root of the population variance.
 
-    See ``pvariance`` for arguments and other details.
+    See ``pvariance`` fuer arguments and other details.
 
     >>> pstdev([1.5, 2.5, 2.5, 2.75, 3.25, 4.75])
     0.986893273527251
@@ -642,7 +642,7 @@ def pstdev(data, mu=None):
     return _float_sqrt_of_frac(mss.numerator, mss.denominator)
 
 
-## Statistics for relations between two inputs #############################
+## Statistics fuer relations between two inputs #############################
 
 def covariance(x, y, /):
     """Covariance
@@ -669,14 +669,14 @@ def covariance(x, y, /):
         raise StatisticsError('covariance requires at least two data points')
     xbar = fsum(x) / n
     ybar = fsum(y) / n
-    sxy = sumprod((xi - xbar for xi in x), (yi - ybar for yi in y))
+    sxy = sumprod((xi - xbar fuer xi in x), (yi - ybar fuer yi in y))
     return sxy / (n - 1)
 
 
 def correlation(x, y, /, *, method='linear'):
     """Pearson's correlation coefficient
 
-    Return the Pearson's correlation coefficient for two inputs. Pearson's
+    Return the Pearson's correlation coefficient fuer two inputs. Pearson's
     correlation coefficient *r* takes values between -1 and +1. It measures
     the strength and direction of a linear relationship.
 
@@ -688,13 +688,13 @@ def correlation(x, y, /, *, method='linear'):
     -1.0
 
     If *method* is "ranked", computes Spearman's rank correlation coefficient
-    for two inputs.  The data is replaced by ranks.  Ties are averaged
+    fuer two inputs.  The data is replaced by ranks.  Ties are averaged
     so that equal values receive the same rank.  The resulting coefficient
     measures the strength of a monotonic relationship.
 
-    Spearman's rank correlation coefficient is appropriate for ordinal
-    data or for continuous data that doesn't meet the linear proportion
-    requirement for Pearson's correlation coefficient.
+    Spearman's rank correlation coefficient is appropriate fuer ordinal
+    data or fuer continuous data that doesn't meet the linear proportion
+    requirement fuer Pearson's correlation coefficient.
 
     """
     # https://en.wikipedia.org/wiki/Pearson_correlation_coefficient
@@ -715,8 +715,8 @@ def correlation(x, y, /, *, method='linear'):
     else:
         xbar = fsum(x) / n
         ybar = fsum(y) / n
-        x = [xi - xbar for xi in x]
-        y = [yi - ybar for yi in y]
+        x = [xi - xbar fuer xi in x]
+        y = [yi - ybar fuer yi in y]
 
     sxy = sumprod(x, y)
     sxx = sumprod(x, x)
@@ -732,7 +732,7 @@ LinearRegression = namedtuple('LinearRegression', ('slope', 'intercept'))
 
 
 def linear_regression(x, y, /, *, proportional=False):
-    """Slope and intercept for simple linear regression.
+    """Slope and intercept fuer simple linear regression.
 
     Return the slope and intercept of simple linear regression
     parameters estimated using ordinary least squares. Simple linear
@@ -751,7 +751,7 @@ def linear_regression(x, y, /, *, proportional=False):
 
     >>> x = [1, 2, 3, 4, 5]
     >>> noise = NormalDist().samples(5, seed=42)
-    >>> y = [3 * x[i] + 2 + noise[i] for i in range(5)]
+    >>> y = [3 * x[i] + 2 + noise[i] fuer i in range(5)]
     >>> linear_regression(x, y)  #doctest: +ELLIPSIS
     LinearRegression(slope=3.17495..., intercept=1.00925...)
 
@@ -764,7 +764,7 @@ def linear_regression(x, y, /, *, proportional=False):
 
         y = slope * x + noise
 
-    >>> y = [3 * x[i] + noise[i] for i in range(5)]
+    >>> y = [3 * x[i] + noise[i] fuer i in range(5)]
     >>> linear_regression(x, y, proportional=True)  #doctest: +ELLIPSIS
     LinearRegression(slope=2.90475..., intercept=0.0)
 
@@ -779,8 +779,8 @@ def linear_regression(x, y, /, *, proportional=False):
     if not proportional:
         xbar = fsum(x) / n
         ybar = fsum(y) / n
-        x = [xi - xbar for xi in x]  # List because used three times below
-        y = (yi - ybar for yi in y)  # Generator because only used once below
+        x = [xi - xbar fuer xi in x]  # List because used three times below
+        y = (yi - ybar fuer yi in y)  # Generator because only used once below
 
     sxy = sumprod(x, y) + 0.0        # Add zero to coerce result to a float
     sxx = sumprod(x, x)
@@ -802,7 +802,7 @@ def register(*kernels):
     "Load the kernel's pdf, cdf, invcdf, and support into _kernel_specs."
     def deco(builder):
         spec = dict(zip(('pdf', 'cdf', 'invcdf', 'support'), builder()))
-        for kernel in kernels:
+        fuer kernel in kernels:
             _kernel_specs[kernel] = spec
         return builder
     return deco
@@ -968,14 +968,14 @@ def kde(data, h, kernel='normal', *, cumulative=False):
 
     Compute the area under the curve:
 
-        >>> area = sum(f_hat(x) for x in range(-20, 20))
+        >>> area = sum(f_hat(x) fuer x in range(-20, 20))
         >>> round(area, 4)
         1.0
 
     Plot the estimated probability density function at
     evenly spaced points from -6 to 10:
 
-        >>> for x in range(-6, 11):
+        >>> fuer x in range(-6, 11):
         ...     density = f_hat(x)
         ...     plot = ' ' * int(density * 400) + 'x'
         ...     print(f'{x:2}: {density:.3f} {plot}')
@@ -1042,10 +1042,10 @@ def kde(data, h, kernel='normal', *, cumulative=False):
     if support is None:
 
         def pdf(x):
-            return sum(K((x - x_i) / h) for x_i in data) / (len(data) * h)
+            return sum(K((x - x_i) / h) fuer x_i in data) / (len(data) * h)
 
         def cdf(x):
-            return sum(W((x - x_i) / h) for x_i in data) / len(data)
+            return sum(W((x - x_i) / h) fuer x_i in data) / len(data)
 
     else:
 
@@ -1060,7 +1060,7 @@ def kde(data, h, kernel='normal', *, cumulative=False):
             i = bisect_left(sample, x - bandwidth)
             j = bisect_right(sample, x + bandwidth)
             supported = sample[i : j]
-            return sum(K((x - x_i) / h) for x_i in supported) / (n * h)
+            return sum(K((x - x_i) / h) fuer x_i in supported) / (n * h)
 
         def cdf(x):
             nonlocal n, sample
@@ -1070,7 +1070,7 @@ def kde(data, h, kernel='normal', *, cumulative=False):
             i = bisect_left(sample, x - bandwidth)
             j = bisect_right(sample, x + bandwidth)
             supported = sample[i : j]
-            return sum((W((x - x_i) / h) for x_i in supported), i) / n
+            return sum((W((x - x_i) / h) fuer x_i in supported), i) / n
 
     if cumulative:
         cdf.__doc__ = f'CDF estimate with {h=!r} and {kernel=!r}'
@@ -1094,8 +1094,8 @@ def kde_random(data, h, kernel='normal', *, seed=None):
 
     >>> data = [-2.1, -1.3, -0.4, 1.9, 5.1, 6.2]
     >>> rand = kde_random(data, h=1.5, seed=8675309)
-    >>> new_selections = [rand() for i in range(10)]
-    >>> [round(x, 1) for x in new_selections]
+    >>> new_selections = [rand() fuer i in range(10)]
+    >>> [round(x, 1) fuer x in new_selections]
     [0.7, 6.2, 1.2, 6.9, 7.0, 1.8, 2.5, -0.5, -1.8, 5.6]
 
     """
@@ -1139,7 +1139,7 @@ def kde_random(data, h, kernel='normal', *, seed=None):
 # value of rank order statistics". The alternative method is known as
 # "R7", "PERCENTILE.INC", or "mode of rank order statistics".
 
-# For sample data where there is a positive probability for values
+# For sample data where there is a positive probability fuer values
 # beyond the range of the data, the R6 exclusive method is a
 # reasonable choice.  Consider a random sample of nine values from a
 # population with a uniform distribution from 0.0 to 1.0.  The
@@ -1153,22 +1153,22 @@ def kde_random(data, h, kernel='normal', *, seed=None):
 # For describing population data where the end points are known to
 # be included in the data, the R7 inclusive method is a reasonable
 # choice.  Instead of the mean, it uses the mode of the beta
-# distribution for the interior points.  Per Hyndman & Fan, "One nice
+# distribution fuer the interior points.  Per Hyndman & Fan, "One nice
 # property is that the vertices of Q7(p) divide the range into n - 1
 # intervals, and exactly 100p% of the intervals lie to the left of
 # Q7(p) and 100(1 - p)% of the intervals lie to the right of Q7(p)."
 
-# If needed, other methods could be added.  However, for now, the
-# position is that fewer options make for easier choices and that
-# external packages can be used for anything more advanced.
+# If needed, other methods could be added.  However, fuer now, the
+# position is that fewer options make fuer easier choices and that
+# external packages can be used fuer anything more advanced.
 
 def quantiles(data, *, n=4, method='exclusive'):
     """Divide *data* into *n* continuous intervals with equal probability.
 
     Returns a list of (n - 1) cut points separating the intervals.
 
-    Set *n* to 4 for quartiles (the default).  Set *n* to 10 for deciles.
-    Set *n* to 100 for percentiles which gives the 99 cuts points that
+    Set *n* to 4 fuer quartiles (the default).  Set *n* to 10 fuer deciles.
+    Set *n* to 100 fuer percentiles which gives the 99 cuts points that
     separate *data* in to 100 equal sized groups.
 
     The *data* can be any iterable containing sample.
@@ -1193,7 +1193,7 @@ def quantiles(data, *, n=4, method='exclusive'):
     if method == 'inclusive':
         m = ld - 1
         result = []
-        for i in range(1, n):
+        fuer i in range(1, n):
             j, delta = divmod(i * m, n)
             interpolated = (data[j] * (n - delta) + data[j + 1] * delta) / n
             result.append(interpolated)
@@ -1202,7 +1202,7 @@ def quantiles(data, *, n=4, method='exclusive'):
     if method == 'exclusive':
         m = ld + 1
         result = []
-        for i in range(1, n):
+        fuer i in range(1, n):
             j = i * m // n                               # rescale i to m/n
             j = 1 if j < 1 else ld-1 if j > ld-1 else j  # clamp to 1 .. ld-1
             delta = i*m - j*n                            # exact integer math
@@ -1238,12 +1238,12 @@ klasse NormalDist:
         return cls(*_mean_stdev(data))
 
     def samples(self, n, *, seed=None):
-        "Generate *n* samples for a given mean and standard deviation."
+        "Generate *n* samples fuer a given mean and standard deviation."
         rnd = random.random if seed is None else random.Random(seed).random
         inv_cdf = _normal_dist_inv_cdf
         mu = self._mu
         sigma = self._sigma
-        return [inv_cdf(rnd(), mu, sigma) for _ in repeat(None, n)]
+        return [inv_cdf(rnd(), mu, sigma) fuer _ in repeat(None, n)]
 
     def pdf(self, x):
         "Probability density function.  P(x <= X < x+dx) / dx"
@@ -1278,11 +1278,11 @@ klasse NormalDist:
 
         Returns a list of (n - 1) cut points separating the intervals.
 
-        Set *n* to 4 for quartiles (the default).  Set *n* to 10 for deciles.
-        Set *n* to 100 for percentiles which gives the 99 cuts points that
+        Set *n* to 4 fuer quartiles (the default).  Set *n* to 10 fuer deciles.
+        Set *n* to 100 fuer percentiles which gives the 99 cuts points that
         separate the normal distribution in to 100 equal sized groups.
         """
-        return [self.inv_cdf(i / n) for i in range(1, n)]
+        return [self.inv_cdf(i / n) fuer i in range(1, n)]
 
     def overlap(self, other):
         """Compute the overlapping coefficient (OVL) between two normal distributions.
@@ -1389,7 +1389,7 @@ klasse NormalDist:
     def __mul__(x1, x2):
         """Multiply both mu and sigma by a constant.
 
-        Used for rescaling, perhaps to change measurement units.
+        Used fuer rescaling, perhaps to change measurement units.
         Sigma is scaled with the absolute value of the constant.
         """
         return NormalDist(x1._mu * x2, x1._sigma * fabs(x2))
@@ -1397,7 +1397,7 @@ klasse NormalDist:
     def __truediv__(x1, x2):
         """Divide both mu and sigma by a constant.
 
-        Used for rescaling, perhaps to change measurement units.
+        Used fuer rescaling, perhaps to change measurement units.
         Sigma is scaled with the absolute value of the constant.
         """
         return NormalDist(x1._mu / x2, x1._sigma / fabs(x2))
@@ -1479,9 +1479,9 @@ def _sum(data):
     partials = {}
     partials_get = partials.get
 
-    for typ, values in groupby(data, type):
+    fuer typ, values in groupby(data, type):
         types_add(typ)
-        for n, d in map(_exact_ratio, values):
+        fuer n, d in map(_exact_ratio, values):
             count += 1
             partials[d] = partials_get(d, 0) + n
 
@@ -1492,7 +1492,7 @@ def _sum(data):
         assert not _isfinite(total)
     else:
         # Sum all the partial sums using builtin sum.
-        total = sum(Fraction(n, d) for d, n in partials.items())
+        total = sum(Fraction(n, d) fuer d, n in partials.items())
 
     T = reduce(_coerce, types, int)  # or raise TypeError
     return (T, total, count)
@@ -1508,7 +1508,7 @@ def _ss(data, c=None):
 
     """
     if c is not None:
-        T, ssd, count = _sum((d := x - c) * d for x in data)
+        T, ssd, count = _sum((d := x - c) * d fuer x in data)
         return (T, ssd, c, count)
 
     count = 0
@@ -1517,9 +1517,9 @@ def _ss(data, c=None):
     sx_partials = defaultdict(int)
     sxx_partials = defaultdict(int)
 
-    for typ, values in groupby(data, type):
+    fuer typ, values in groupby(data, type):
         types_add(typ)
-        for n, d in map(_exact_ratio, values):
+        fuer n, d in map(_exact_ratio, values):
             count += 1
             sx_partials[d] += n
             sxx_partials[d] += n * n
@@ -1534,9 +1534,9 @@ def _ss(data, c=None):
         assert not _isfinite(ssd)
 
     else:
-        sx = sum(Fraction(n, d) for d, n in sx_partials.items())
-        sxx = sum(Fraction(n, d*d) for d, n in sxx_partials.items())
-        # This formula has poor numeric properties for floats,
+        sx = sum(Fraction(n, d) fuer d, n in sx_partials.items())
+        sxx = sum(Fraction(n, d*d) fuer d, n in sxx_partials.items())
+        # This formula has poor numeric properties fuer floats,
         # but with fractions it is exact.
         ssd = (count * sxx - sx * sx) / count
         c = sx / count
@@ -1556,7 +1556,7 @@ def _coerce(T, S):
     """Coerce types T and S to a common type, or raise TypeError.
 
     Coercion rules are currently an implementation detail. See the CoerceTest
-    test klasse in test_statistics for details.
+    test klasse in test_statistics fuer details.
 
     """
     # See http://bugs.python.org/issue24068.
@@ -1632,7 +1632,7 @@ def _convert(value, T):
 
 def _fail_neg(values, errmsg='negative value'):
     """Iterate over values, failing if any are less than zero."""
-    for x in values:
+    fuer x in values:
         if x < 0:
             raise StatisticsError(errmsg)
         yield x
@@ -1665,7 +1665,7 @@ def _rank(data, /, *, key=None, reverse=False, ties='average', start=1) -> list[
 
         >>> prize = ['Gold', 'Silver', 'Bronze', 'Certificate']
         >>> scores = [8.1, 7.3, 9.4, 8.3]
-        >>> [prize[int(i)] for i in _rank(scores, start=0, reverse=True)]
+        >>> [prize[int(i)] fuer i in _rank(scores, start=0, reverse=True)]
         ['Bronze', 'Certificate', 'Gold', 'Silver']
 
     """
@@ -1682,11 +1682,11 @@ def _rank(data, /, *, key=None, reverse=False, ties='average', start=1) -> list[
     val_pos = sorted(zip(data, count()), reverse=reverse)
     i = start - 1
     result = [0] * len(val_pos)
-    for _, g in groupby(val_pos, key=itemgetter(0)):
+    fuer _, g in groupby(val_pos, key=itemgetter(0)):
         group = list(g)
         size = len(group)
         rank = i + (size + 1) / 2
-        for value, orig_pos in group:
+        fuer value, orig_pos in group:
             result[orig_pos] = rank
         i += size
     return result
@@ -1785,7 +1785,7 @@ def _sqrtprod(x: float, y: float) -> float:
 
 
 def _normal_dist_inv_cdf(p, mu, sigma):
-    # There is no closed-form solution to the inverse CDF for the normal
+    # There is no closed-form solution to the inverse CDF fuer the normal
     # distribution, so we use a rational approximation instead:
     # Wichura, M.J. (1988). "Algorithm AS241: The Percentage Points of the
     # Normal Distribution".  Applied Statistics. Blackwell Publishing. 37

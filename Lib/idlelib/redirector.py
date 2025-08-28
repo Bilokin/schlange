@@ -1,7 +1,7 @@
 from tkinter import TclError
 
 klasse WidgetRedirector:
-    """Support for redirecting arbitrary widget subcommands.
+    """Support fuer redirecting arbitrary widget subcommands.
 
     Some Tk operations don't normally pass through tkinter.  For example, if a
     character is inserted into a Text widget by pressing a key, a default Tk
@@ -33,7 +33,7 @@ klasse WidgetRedirector:
         orig: new name of the original tcl command.
 
         Since renaming to orig fails with TclError when orig already
-        exists, only one WidgetDirector can exist for a given widget.
+        exists, only one WidgetDirector can exist fuer a given widget.
         '''
         self._operations = {}
         self.widget = widget            # widget instance
@@ -52,7 +52,7 @@ klasse WidgetRedirector:
 
     def close(self):
         "Unregister operations and revert redirection created by .__init__."
-        for operation in list(self._operations):
+        fuer operation in list(self._operations):
             self.unregister(operation)
         widget = self.widget
         tk = widget.tk
@@ -71,7 +71,7 @@ klasse WidgetRedirector:
         klasse instance method.  Method masking operates independently
         from command dispatch.
 
-        If a second function is registered for the same operation, the
+        If a second function is registered fuer the same operation, the
         first function is replaced in both places.
         '''
         self._operations[operation] = function
@@ -79,7 +79,7 @@ klasse WidgetRedirector:
         return OriginalCommand(self, operation)
 
     def unregister(self, operation):
-        '''Return the function for the operation, or None.
+        '''Return the function fuer the operation, or None.
 
         Deleting the instance attribute unmasks the klasse attribute.
         '''
@@ -118,7 +118,7 @@ klasse WidgetRedirector:
 
 
 klasse OriginalCommand:
-    '''Callable for original tk command that has been redirected.
+    '''Callable fuer original tk command that has been redirected.
 
     Returned by .register; can be used in the function registered.
     redir = WidgetRedirector(text)
@@ -129,9 +129,9 @@ klasse OriginalCommand:
     '''
 
     def __init__(self, redir, operation):
-        '''Create .tk_call and .orig_and_operation for .__call__ method.
+        '''Create .tk_call and .orig_and_operation fuer .__call__ method.
 
-        .redir and .operation store the input args for __repr__.
+        .redir and .operation store the input args fuer __repr__.
         .tk and .orig copy attributes of .redir (probably not needed).
         '''
         self.redir = redir

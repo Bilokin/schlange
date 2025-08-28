@@ -21,7 +21,7 @@ klasse Test(unittest.TestCase):
         self.assertEqual(c_int.mro(), [c_int, _SimpleCData, _CData, object])
 
     def test_type_flags(self):
-        for cls in _SimpleCData, PyCSimpleType:
+        fuer cls in _SimpleCData, PyCSimpleType:
             with self.subTest(cls=cls):
                 self.assertTrue(_SimpleCData.__flags__ & Py_TPFLAGS_IMMUTABLETYPE)
                 self.assertFalse(_SimpleCData.__flags__ & Py_TPFLAGS_DISALLOW_INSTANTIATION)
@@ -30,7 +30,7 @@ klasse Test(unittest.TestCase):
         # Abstract classes (whose metaclass __init__ was not called) can't be
         # instantiated directly
         NewT = PyCSimpleType.__new__(PyCSimpleType, 'NewT', (_SimpleCData,), {})
-        for cls in _SimpleCData, NewT:
+        fuer cls in _SimpleCData, NewT:
             with self.subTest(cls=cls):
                 with self.assertRaisesRegex(TypeError, "abstract class"):
                     obj = cls()

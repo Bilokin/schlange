@@ -43,12 +43,12 @@ klasse CReturnConverterAutoRegister(type):
 
 klasse CReturnConverter(metaclass=CReturnConverterAutoRegister):
 
-    # The C type to use for this variable.
+    # The C type to use fuer this variable.
     # 'type' should be a Python string specifying the type, e.g. "int".
     # If this is a pointer type, the type string should end with ' *'.
     type = 'PyObject *'
 
-    # The Python default value for this parameter, as a Python value.
+    # The Python default value fuer this parameter, as a Python value.
     # Or the magic value "unspecified" if there is no default.
     default: object = None
 
@@ -62,7 +62,7 @@ klasse CReturnConverter(metaclass=CReturnConverterAutoRegister):
         try:
             self.return_converter_init(**kwargs)
         except TypeError as e:
-            s = ', '.join(name + '=' + repr(value) for name, value in kwargs.items())
+            s = ', '.join(name + '=' + repr(value) fuer name, value in kwargs.items())
             sys.exit(self.__class__.__name__ + '(' + s + ')\n' + str(e))
 
     def return_converter_init(self) -> None: ...

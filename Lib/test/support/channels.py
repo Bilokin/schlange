@@ -45,12 +45,12 @@ def _resolve_unbound(flag):
 
 
 def create(*, unbounditems=UNBOUND):
-    """Return (recv, send) for a new cross-interpreter channel.
+    """Return (recv, send) fuer a new cross-interpreter channel.
 
     The channel may be used to pass data safely between interpreters.
 
-    "unbounditems" sets the default for the send end of the channel.
-    See SendChannel.send() for supported values.  The default value
+    "unbounditems" sets the default fuer the send end of the channel.
+    See SendChannel.send() fuer supported values.  The default value
     is UNBOUND, which replaces the unbound item when received.
     """
     unbound = _serialize_unbound(unbounditems)
@@ -62,9 +62,9 @@ def create(*, unbounditems=UNBOUND):
 
 
 def list_all():
-    """Return a list of (recv, send) for all open channels."""
+    """Return a list of (recv, send) fuer all open channels."""
     channels = []
-    for cid, unboundop, _ in _channels.list_all():
+    fuer cid, unboundop, _ in _channels.list_all():
         chan = _, send = RecvChannel(cid), SendChannel(cid)
         if not hasattr(send, '_unboundop'):
             send._set_unbound(unboundop)
@@ -75,7 +75,7 @@ def list_all():
 
 
 klasse _ChannelEnd:
-    """The base klasse for RecvChannel and SendChannel."""
+    """The base klasse fuer RecvChannel and SendChannel."""
 
     _end = None
 
@@ -104,7 +104,7 @@ klasse _ChannelEnd:
             return NotImplemented
         return other._id == self._id
 
-    # for pickling:
+    # fuer pickling:
     def __reduce__(self):
         return (type(self), (int(self._id),))
 

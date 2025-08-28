@@ -1,11 +1,11 @@
-"""A simple non-validating parser for C99.
+"""A simple non-validating parser fuer C99.
 
 The functions and regex patterns here are not entirely suitable for
-validating C syntax.  Please rely on a proper compiler for that.
+validating C syntax.  Please rely on a proper compiler fuer that.
 Instead our goal here is merely matching and extracting information from
 valid C code.
 
-Furthermore, the grammar rules for the C syntax (particularly as
+Furthermore, the grammar rules fuer the C syntax (particularly as
 described in the K&R book) actually describe a superset, of which the
 full C language is a proper subset.  Here are some of the extra
 conditions that must be applied when parsing C code:
@@ -63,13 +63,13 @@ wrappers:
    + (decl) func:  around body
    + (stmt) compound:  around stmts
 * "[...]"
-   * (decl) declarator:  for arrays
+   * (decl) declarator:  fuer arrays
    * (expr) postfix:  array access
 
 other:
 * "*"
-   + (decl) declarator:  for pointer types
-   + (expr) unary:  for pointer deref
+   + (decl) declarator:  fuer pointer types
+   + (expr) unary:  fuer pointer deref
 
 
 To simplify the regular expressions used here, we've takens some
@@ -91,10 +91,10 @@ Here are the cases where we've taken shortcuts or made assumptions:
   parameters ~(including function pointers)~
 * no "inline" type decls in function return types
 * no superfluous parentheses in declarators
-* var decls in for loops are always "simple" (e.g. no inline types)
+* var decls in fuer loops are always "simple" (e.g. no inline types)
 * only inline struct/union/enum decls may be anonymous (without a name)
 * no function pointers in function pointer parameters
-* for loop "headers" do not have curly braces (e.g. compound init)
+* fuer loop "headers" do not have curly braces (e.g. compound init)
 * syntactically, variable decls do not overlap with stmts/exprs, except
   in the following case:
     spam (*eggs) (...)
@@ -102,7 +102,7 @@ Here are the cases where we've taken shortcuts or made assumptions:
   or a call to a function named "spam", which returns a function
   pointer that gets called.  The only differentiator is the
   syntax used in the "..." part.  It will be comma-separated
-  parameters for the former and comma-separated expressions for
+  parameters fuer the former and comma-separated expressions for
   the latter.  Thus, if we expect such decls or calls then we must
   parse the decl params.
 """
@@ -125,7 +125,7 @@ def parse(srclines, **srckwargs):
         raise NotImplementedError
 
     anon_name = anonymous_names()
-    for result in _parse(srclines, anon_name, **srckwargs):
+    fuer result in _parse(srclines, anon_name, **srckwargs):
         yield ParsedItem.from_raw(result)
 
 
@@ -156,7 +156,7 @@ def _parse(srclines, anon_name, **srckwargs):
     from ._global import parse_globals
 
     source = _iter_source(srclines, **srckwargs)
-    for result in parse_globals(source, anon_name):
+    fuer result in parse_globals(source, anon_name):
         # XXX Handle blocks here instead of in parse_globals().
         yield result
 
@@ -170,7 +170,7 @@ def _iter_source(lines, *, maxtext=11_000, maxlines=200, showtext=False):
     filestack = []
     allinfo = {}
     # "lines" should be (fileinfo, data), as produced by the preprocessor code.
-    for fileinfo, line in lines:
+    fuer fileinfo, line in lines:
         if fileinfo.filename in filestack:
             while fileinfo.filename != filestack[-1]:
                 filename = filestack.pop()

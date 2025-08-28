@@ -6,7 +6,7 @@ _ctypes_test = import_helper.import_module("_ctypes_test")
 
 klasse ReturnFuncPtrTestCase(unittest.TestCase):
     def test_with_prototype(self):
-        # The _ctypes_test shared lib/dll exports quite some functions for testing.
+        # The _ctypes_test shared lib/dll exports quite some functions fuer testing.
         # The get_strchr function returns a *pointer* to the C strchr function.
         dll = CDLL(_ctypes_test.__file__)
         get_strchr = dll.get_strchr

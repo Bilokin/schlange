@@ -29,7 +29,7 @@ klasse ExecutorShutdownTest:
                           pow, 2, 5)
 
     def test_interpreter_shutdown(self):
-        # Test the atexit hook for shutdown of worker threads and processes
+        # Test the atexit hook fuer shutdown of worker threads and processes
         rc, out, err = assert_python_ok('-c', """if 1:
             from concurrent.futures import {executor_type}
             from time import sleep
@@ -52,7 +52,7 @@ klasse ExecutorShutdownTest:
 
     @support.force_not_colorized
     def test_submit_after_interpreter_shutdown(self):
-        # Test the atexit hook for shutdown of worker threads and processes
+        # Test the atexit hook fuer shutdown of worker threads and processes
         rc, out, err = assert_python_ok('-c', """if 1:
             import atexit
             @atexit.register
@@ -81,27 +81,27 @@ klasse ExecutorShutdownTest:
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_hang_issue12364(self):
-        fs = [self.executor.submit(time.sleep, 0.1) for _ in range(50)]
+        fs = [self.executor.submit(time.sleep, 0.1) fuer _ in range(50)]
         self.executor.shutdown()
-        for f in fs:
+        fuer f in fs:
             f.result()
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_cancel_futures(self):
         assert self.worker_count <= 5, "test needs few workers"
-        fs = [self.executor.submit(time.sleep, .1) for _ in range(50)]
+        fs = [self.executor.submit(time.sleep, .1) fuer _ in range(50)]
         self.executor.shutdown(cancel_futures=True)
         # We can't guarantee the exact number of cancellations, but we can
         # guarantee that *some* were cancelled. With few workers, many of
         # the submitted futures should have been cancelled.
-        cancelled = [fut for fut in fs if fut.cancelled()]
+        cancelled = [fut fuer fut in fs if fut.cancelled()]
         self.assertGreater(len(cancelled), 20)
 
         # Ensure the other futures were able to finish.
         # Use "not fut.cancelled()" instead of "fut.done()" to include futures
         # that may have been left in a pending state.
-        others = [fut for fut in fs if not fut.cancelled()]
-        for fut in others:
+        others = [fut fuer fut in fs if not fut.cancelled()]
+        fuer fut in others:
             self.assertTrue(fut.done(), msg=f"{fut._state=}")
             self.assertIsNone(fut.exception())
 
@@ -144,7 +144,7 @@ klasse ExecutorShutdownTest:
                 "Tested platform does not support the alarm signal")
 
         def timeout(_signum, _frame):
-            raise RuntimeError("timed out waiting for shutdown")
+            raise RuntimeError("timed out waiting fuer shutdown")
 
         kwargs = {}
         if getattr(self, 'ctx', None):
@@ -167,13 +167,13 @@ klasse ThreadPoolShutdownTest(ThreadPoolMixin, ExecutorShutdownTest, BaseTestCas
             lock.acquire()
 
         sem = threading.Semaphore(0)
-        for i in range(3):
+        fuer i in range(3):
             self.executor.submit(acquire_lock, sem)
         self.assertEqual(len(self.executor._threads), 3)
-        for i in range(3):
+        fuer i in range(3):
             sem.release()
         self.executor.shutdown()
-        for t in self.executor._threads:
+        fuer t in self.executor._threads:
             t.join()
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
@@ -183,7 +183,7 @@ klasse ThreadPoolShutdownTest(ThreadPoolMixin, ExecutorShutdownTest, BaseTestCas
             self.assertEqual(list(e.map(abs, range(-5, 5))),
                              [5, 4, 3, 2, 1, 0, 1, 2, 3, 4])
 
-        for t in executor._threads:
+        fuer t in executor._threads:
             t.join()
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
@@ -193,12 +193,12 @@ klasse ThreadPoolShutdownTest(ThreadPoolMixin, ExecutorShutdownTest, BaseTestCas
         threads = executor._threads
         del executor
 
-        for t in threads:
+        fuer t in threads:
             t.join()
 
         # Make sure the results were all computed before the
         # executor got shutdown.
-        assert all([r == abs(v) for r, v in zip(res, range(-5, 5))])
+        assert all([r == abs(v) fuer r, v in zip(res, range(-5, 5))])
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_shutdown_no_wait(self):
@@ -208,12 +208,12 @@ klasse ThreadPoolShutdownTest(ThreadPoolMixin, ExecutorShutdownTest, BaseTestCas
         res = executor.map(abs, range(-5, 5))
         threads = executor._threads
         executor.shutdown(wait=False)
-        for t in threads:
+        fuer t in threads:
             t.join()
 
         # Make sure the results were all computed before the
         # executor got shutdown.
-        assert all([r == abs(v) for r, v in zip(res, range(-5, 5))])
+        assert all([r == abs(v) fuer r, v in zip(res, range(-5, 5))])
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_thread_names_assigned(self):
@@ -224,7 +224,7 @@ klasse ThreadPoolShutdownTest(ThreadPoolMixin, ExecutorShutdownTest, BaseTestCas
         del executor
         support.gc_collect()  # For PyPy or other GCs.
 
-        for t in threads:
+        fuer t in threads:
             self.assertRegex(t.name, r'^SpecialPool_[0-4]$')
             t.join()
 
@@ -236,14 +236,14 @@ klasse ThreadPoolShutdownTest(ThreadPoolMixin, ExecutorShutdownTest, BaseTestCas
         del executor
         support.gc_collect()  # For PyPy or other GCs.
 
-        for t in threads:
+        fuer t in threads:
             # Ensure that our default name is reasonably sane and unique when
             # no thread_name_prefix was supplied.
             self.assertRegex(t.name, r'ThreadPoolExecutor-\d+_[0-4]$')
             t.join()
 
     def test_cancel_futures_wait_false(self):
-        # Can only be reliably tested for TPE, since PPE often hangs with
+        # Can only be reliably tested fuer TPE, since PPE often hangs with
         # `wait=False` (even without *cancel_futures*).
         rc, out, err = assert_python_ok('-c', """if True:
             from concurrent.futures import ThreadPoolExecutor
@@ -275,15 +275,15 @@ klasse ProcessPoolShutdownTest(ExecutorShutdownTest):
             expected_num_processes = 3
 
         sem = mp_context.Semaphore(0)
-        for _ in range(3):
+        fuer _ in range(3):
             self.executor.submit(acquire_lock, sem)
         self.assertEqual(len(self.executor._processes), expected_num_processes)
-        for _ in range(3):
+        fuer _ in range(3):
             sem.release()
         processes = self.executor._processes
         self.executor.shutdown()
 
-        for p in processes.values():
+        fuer p in processes.values():
             p.join()
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
@@ -294,7 +294,7 @@ klasse ProcessPoolShutdownTest(ExecutorShutdownTest):
             self.assertEqual(list(e.map(abs, range(-5, 5))),
                              [5, 4, 3, 2, 1, 0, 1, 2, 3, 4])
 
-        for p in processes.values():
+        fuer p in processes.values():
             p.join()
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
@@ -312,13 +312,13 @@ klasse ProcessPoolShutdownTest(ExecutorShutdownTest):
         # Make sure that all the executor resources were properly cleaned by
         # the shutdown process
         executor_manager_thread.join()
-        for p in processes.values():
+        fuer p in processes.values():
             p.join()
         call_queue.join_thread()
 
         # Make sure the results were all computed before the
         # executor got shutdown.
-        assert all([r == abs(v) for r, v in zip(res, range(-5, 5))])
+        assert all([r == abs(v) fuer r, v in zip(res, range(-5, 5))])
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_shutdown_no_wait(self):
@@ -335,13 +335,13 @@ klasse ProcessPoolShutdownTest(ExecutorShutdownTest):
         # Make sure that all the executor resources were properly cleaned by
         # the shutdown process
         executor_manager_thread.join()
-        for p in processes.values():
+        fuer p in processes.values():
             p.join()
         call_queue.join_thread()
 
         # Make sure the results were all computed before the executor got
         # shutdown.
-        assert all([r == abs(v) for r, v in zip(res, range(-5, 5))])
+        assert all([r == abs(v) fuer r, v in zip(res, range(-5, 5))])
 
     @classmethod
     def _failing_task_gh_132969(cls, n):
@@ -363,7 +363,7 @@ klasse ProcessPoolShutdownTest(ExecutorShutdownTest):
         start_method = self.get_context().get_start_method()
         if (start_method == "fork" or
            (start_method == "forkserver" and sys.platform.startswith("win"))):
-                self.skipTest(f"Skipping test for {start_method = }")
+                self.skipTest(f"Skipping test fuer {start_method = }")
         executor = futures.ProcessPoolExecutor(
                 max_workers=max_workers,
                 max_tasks_per_child=1,

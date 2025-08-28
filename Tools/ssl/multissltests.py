@@ -15,7 +15,7 @@ The script must be run with Python's build directory as current working
 directory.
 
 The script uses LD_RUN_PATH, LD_LIBRARY_PATH, CPPFLAGS and LDFLAGS to bend
-search paths for header files and shared libraries. It's known to work on
+search paths fuer header files and shared libraries. It's known to work on
 Linux with GCC and clang.
 
 Please keep this script compatible with Python 2.7, and 3.4 to 3.7.
@@ -53,7 +53,7 @@ OPENSSL_RECENT_VERSIONS = [
     "3.3.4",
     "3.4.2",
     "3.5.2",
-    # See make_ssl_data.py for notes on adding a new version.
+    # See make_ssl_data.py fuer notes on adding a new version.
 ]
 
 LIBRESSL_OLD_VERSIONS = [
@@ -123,7 +123,7 @@ parser.add_argument(
 parser.add_argument(
     '--base-directory',
     default=MULTISSL_DIR,
-    help="Base directory for crypto library sources and builds."
+    help="Base directory fuer crypto library sources and builds."
 )
 parser.add_argument(
     '--no-network',
@@ -156,7 +156,7 @@ parser.add_argument(
     '--keep-sources',
     action='store_true',
     dest='keep_sources',
-    help="Keep original sources for debugging."
+    help="Keep original sources fuer debugging."
 )
 
 
@@ -195,7 +195,7 @@ klasse AbstractBuilder(object):
         self.system = args.system
 
     def __str__(self):
-        return "<{0.__class__.__name__} for {0.version}>".format(self)
+        return "<{0.__class__.__name__} fuer {0.version}>".format(self)
 
     def __eq__(self, other):
         if not isinstance(other, AbstractBuilder):
@@ -210,7 +210,7 @@ klasse AbstractBuilder(object):
 
     @property
     def short_version(self):
-        """Short version for OpenSSL download URL"""
+        """Short version fuer OpenSSL download URL"""
         return None
 
     @property
@@ -267,7 +267,7 @@ klasse AbstractBuilder(object):
         if not os.path.isdir(src_dir):
             os.makedirs(src_dir)
         data = None
-        for url_template in self.url_templates:
+        fuer url_template in self.url_templates:
             url = url_template.format(v=self.version, s=self.short_version)
             log.info("Downloading from {}".format(url))
             try:
@@ -299,7 +299,7 @@ klasse AbstractBuilder(object):
         base = name + '/'
         # force extraction into build dir
         members = tf.getmembers()
-        for member in list(members):
+        fuer member in list(members):
             if member.name == name:
                 members.remove(member)
             elif not member.name.startswith(base):
@@ -362,11 +362,11 @@ klasse AbstractBuilder(object):
     def recompile_pymods(self):
         log.warning("Using build from {}".format(self.build_dir))
         # force a rebuild of all modules that use OpenSSL APIs
-        for fname in self.module_files:
+        fuer fname in self.module_files:
             os.utime(fname, None)
         # remove all build artefacts
-        for root, dirs, files in os.walk('build'):
-            for filename in files:
+        fuer root, dirs, files in os.walk('build'):
+            fuer filename in files:
                 if filename.startswith(self.module_libs):
                     os.unlink(os.path.join(root, filename))
 
@@ -445,15 +445,15 @@ klasse BuildOpenSSL(AbstractBuilder):
 
     @property
     def short_version(self):
-        """Short version for OpenSSL download URL"""
+        """Short version fuer OpenSSL download URL"""
         mo = re.search(r"^(\d+)\.(\d+)\.(\d+)", self.version)
-        parsed = tuple(int(m) for m in mo.groups())
+        parsed = tuple(int(m) fuer m in mo.groups())
         if parsed < (1, 0, 0):
             return "0.9.x"
         if parsed >= (3, 0, 0):
             # OpenSSL 3.0.0 -> /old/3.0/
             parsed = parsed[:2]
-        return ".".join(str(i) for i in parsed)
+        return ".".join(str(i) fuer i in parsed)
 
 
 klasse BuildLibreSSL(AbstractBuilder):
@@ -523,7 +523,7 @@ def main():
     start = datetime.now()
 
     if args.steps in {'modules', 'tests'}:
-        for name in ['Makefile.pre.in', 'Modules/_ssl.c']:
+        fuer name in ['Makefile.pre.in', 'Modules/_ssl.c']:
             if not os.path.isfile(os.path.join(PYTHONROOT, name)):
                 parser.error(
                     "Must be executed from CPython build dir"
@@ -532,23 +532,23 @@ def main():
             parser.error(
                 "Must be executed with ./python from CPython build dir"
             )
-        # check for configure and run make
+        # check fuer configure and run make
         configure_make()
 
     # download and register builder
     builds = []
-    for build_class, versions in [
+    fuer build_class, versions in [
         (BuildOpenSSL, args.openssl),
         (BuildLibreSSL, args.libressl),
         (BuildAWSLC, args.awslc),
     ]:
-        for version in versions:
+        fuer version in versions:
             build = build_class(version, args)
             build.install()
             builds.append(build)
 
     if args.steps in {'modules', 'tests'}:
-        for build in builds:
+        fuer build in builds:
             try:
                 build.recompile_pymods()
                 build.check_pyssl()
@@ -574,7 +574,7 @@ def main():
             print('Executed all SSL tests.')
 
     print('OpenSSL / LibreSSL / AWS-LC versions:')
-    for build in builds:
+    fuer build in builds:
         print("    * {0.library} {0.version}".format(build))
 
 

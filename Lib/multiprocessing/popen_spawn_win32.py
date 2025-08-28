@@ -28,7 +28,7 @@ WINENV = not _path_eq(sys.executable, sys._base_executable)
 
 
 def _close_handles(*handles):
-    for handle in handles:
+    fuer handle in handles:
         _winapi.CloseHandle(handle)
 
 
@@ -68,7 +68,7 @@ klasse Popen(object):
         else:
             env = None
 
-        cmd = ' '.join('"%s"' % x for x in cmd)
+        cmd = ' '.join('"%s"' % x fuer x in cmd)
 
         with open(wfd, 'wb', closefd=True) as to_child:
             # start process

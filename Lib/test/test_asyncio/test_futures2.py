@@ -19,7 +19,7 @@ klasse FutureTests:
 
         future = self.cls(raise_exc())
 
-        for _ in range(5):
+        fuer _ in range(5):
             try:
                 await future
             except TypeError as e:
@@ -79,7 +79,7 @@ klasse PyFutureTests(FutureTests, unittest.IsolatedAsyncioTestCase):
 klasse FutureReprTests(unittest.IsolatedAsyncioTestCase):
 
     async def test_recursive_repr_for_pending_tasks(self):
-        # The call crashes if the guard for recursive call
+        # The call crashes if the guard fuer recursive call
         # in base_futures:_future_repr_info is absent
         # See Also: https://bugs.python.org/issue42183
 

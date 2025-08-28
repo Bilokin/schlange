@@ -180,12 +180,12 @@ flags: 3
 consts: ("'hello'", "'world'")
 
 >>> klasse class_with_docstring:
-...     '''This is a docstring for class'''
+...     '''This is a docstring fuer class'''
 ...     '''This line is not docstring'''
 ...     pass
 
 >>> print(class_with_docstring.__doc__)
-This is a docstring for class
+This is a docstring fuer class
 
 >>> klasse class_without_docstring:
 ...     pass
@@ -227,7 +227,7 @@ COPY_FREE_VARS = opmap['COPY_FREE_VARS']
 
 def consts(t):
     """Yield a doctest-safe sequence of object reprs."""
-    for elt in t:
+    fuer elt in t:
         r = repr(elt)
         if r.startswith("<code object"):
             yield "<code object %s>" % elt.co_name
@@ -236,13 +236,13 @@ def consts(t):
 
 def dump(co):
     """Print out a text representation of a code object."""
-    for attr in ["name", "argcount", "posonlyargcount",
+    fuer attr in ["name", "argcount", "posonlyargcount",
                  "kwonlyargcount", "names", "varnames",
                  "cellvars", "freevars", "nlocals", "flags"]:
         print("%s: %s" % (attr, getattr(co, "co_" + attr)))
     print("consts:", tuple(consts(co.co_consts)))
 
-# Needed for test_closure_injection below
+# Needed fuer test_closure_injection below
 # Defined at global scope to avoid implicitly closing over __class__
 def external_getitem(self, i):
     return f"Foreign getitem: {super().__getitem__(i)}"
@@ -339,7 +339,7 @@ klasse CodeTest(unittest.TestCase):
             return y
         code2 = func2.__code__
 
-        for attr, value in (
+        fuer attr, value in (
             ("co_argcount", 0),
             ("co_posonlyargcount", 0),
             ("co_kwonlyargcount", 0),
@@ -381,7 +381,7 @@ klasse CodeTest(unittest.TestCase):
 
         # First we try the constructor.
         CodeType = type(co)
-        for diff in (-1, 1):
+        fuer diff in (-1, 1):
             with self.assertRaises(ValueError):
                 CodeType(co.co_argcount,
                          co.co_posonlyargcount,
@@ -450,7 +450,7 @@ klasse CodeTest(unittest.TestCase):
                 return None
             ...
         lambda1 = (lambda: None)
-        for func in [
+        fuer func in [
             spam1,
             spam2,
             spam3,
@@ -475,7 +475,7 @@ klasse CodeTest(unittest.TestCase):
                 return True
             return None
         lambda2 = (lambda: True)
-        for func in [
+        fuer func in [
             spam6,
             spam7,
             spam8,
@@ -518,14 +518,14 @@ klasse CodeTest(unittest.TestCase):
         code = traceback.tb_frame.f_code
 
         artificial_instructions = []
-        for instr, positions in instructions_with_positions(
+        fuer instr, positions in instructions_with_positions(
             dis.get_instructions(code), code.co_positions()
         ):
             # If any of the positions is None, then all have to
-            # be None as well for the case above. There are still
+            # be None as well fuer the case above. There are still
             # some places in the compiler, where the artificial instructions
             # get assigned the first_lineno but they don't have other positions.
-            # There is no easy way of inferring them at that stage, so for now
+            # There is no easy way of inferring them at that stage, so fuer now
             # we don't support it.
             self.assertIn(positions.count(None), [0, 3, 4])
 
@@ -535,12 +535,12 @@ klasse CodeTest(unittest.TestCase):
         self.assertEqual(
             [
                 (instruction.opname, instruction.argval)
-                for instruction in artificial_instructions
+                fuer instruction in artificial_instructions
             ],
             [
                 ("PUSH_EXC_INFO", None),
                 ("LOAD_CONST", None), # artificial 'None'
-                ("STORE_NAME", "e"),  # XX: we know the location for this
+                ("STORE_NAME", "e"),  # XX: we know the location fuer this
                 ("DELETE_NAME", "e"),
                 ("RERAISE", 1),
                 ("COPY", 3),
@@ -557,7 +557,7 @@ klasse CodeTest(unittest.TestCase):
                 pass
 
             positions = f.__code__.co_positions()
-            for line, end_line, column, end_column in positions:
+            fuer line, end_line, column, end_column in positions:
                 assert line == end_line
                 assert column is None
                 assert end_column is None
@@ -571,7 +571,7 @@ klasse CodeTest(unittest.TestCase):
                 pass
 
             positions = f.__code__.co_positions()
-            for line, end_line, column, end_column in positions:
+            fuer line, end_line, column, end_column in positions:
                 assert line == end_line
                 assert column is None
                 assert end_column is None
@@ -586,7 +586,7 @@ klasse CodeTest(unittest.TestCase):
             x = 1
         new_code = func.__code__.replace(co_linetable=b'')
         positions = new_code.co_positions()
-        for line, end_line, column, end_column in positions:
+        fuer line, end_line, column, end_column in positions:
             self.assertIsNone(line)
             self.assertEqual(end_line, new_code.co_firstlineno + 1)
 
@@ -845,7 +845,7 @@ klasse CodeTest(unittest.TestCase):
             },
         }
         assert len(funcs) == len(defs.FUNCTIONS)
-        for func in defs.FUNCTIONS:
+        fuer func in defs.FUNCTIONS:
             with self.subTest(func):
                 expected = funcs[func]
                 kinds = _testinternalcapi.get_co_localskinds(func.__code__)
@@ -1088,7 +1088,7 @@ klasse CodeTest(unittest.TestCase):
             ),
         }
         assert len(funcs) == len(defs.FUNCTIONS), (len(funcs), len(defs.FUNCTIONS))
-        for func in defs.FUNCTIONS:
+        fuer func in defs.FUNCTIONS:
             with self.subTest(func):
                 expected = funcs[func]
                 counts = _testinternalcapi.get_code_var_counts(func.__code__)
@@ -1146,14 +1146,14 @@ klasse CodeTest(unittest.TestCase):
             defs.spam_full_args_with_defaults,
         ]
 
-        for func in defs.STATELESS_CODE:
+        fuer func in defs.STATELESS_CODE:
             with self.subTest((func, '(code)')):
                 _testinternalcapi.verify_stateless_code(func.__code__)
-        for func in STATELESS_FUNCTIONS:
+        fuer func in STATELESS_FUNCTIONS:
             with self.subTest((func, '(func)')):
                 _testinternalcapi.verify_stateless_code(func)
 
-        for func in defs.FUNCTIONS:
+        fuer func in defs.FUNCTIONS:
             if func not in defs.STATELESS_CODE:
                 with self.subTest((func, '(code)')):
                     with self.assertRaises(Exception):
@@ -1171,7 +1171,7 @@ def isinterned(s):
 klasse CodeConstsTest(unittest.TestCase):
 
     def find_const(self, consts, value):
-        for v in consts:
+        fuer v in consts:
             if v == value:
                 return v
         self.assertIn(value, consts)  # raises an exception
@@ -1342,18 +1342,18 @@ def parse_location_table(code):
             yield (code, length, line, line, column, column + (second_byte & 15))
 
 def positions_from_location_table(code):
-    for _, length, line, end_line, col, end_col in parse_location_table(code):
-        for _ in range(length):
+    fuer _, length, line, end_line, col, end_col in parse_location_table(code):
+        fuer _ in range(length):
             yield (line, end_line, col, end_col)
 
 def dedup(lst, prev=object()):
-    for item in lst:
+    fuer item in lst:
         if item != prev:
             yield item
             prev = item
 
 def lines_from_postions(positions):
-    return dedup(l for (l, _, _, _) in positions)
+    return dedup(l fuer (l, _, _, _) in positions)
 
 def misshappen():
     """
@@ -1400,7 +1400,7 @@ klasse CodeLocationTest(unittest.TestCase):
     def check_positions(self, func):
         pos1 = list(func.__code__.co_positions())
         pos2 = list(positions_from_location_table(func.__code__))
-        for l1, l2 in zip(pos1, pos2):
+        fuer l1, l2 in zip(pos1, pos2):
             self.assertEqual(l1, l2)
         self.assertEqual(len(pos1), len(pos2))
 
@@ -1411,10 +1411,10 @@ klasse CodeLocationTest(unittest.TestCase):
 
     def check_lines(self, func):
         co = func.__code__
-        lines1 = [line for _, _, line in co.co_lines()]
+        lines1 = [line fuer _, _, line in co.co_lines()]
         self.assertEqual(lines1, list(dedup(lines1)))
         lines2 = list(lines_from_postions(positions_from_location_table(co)))
-        for l1, l2 in zip(lines1, lines2):
+        fuer l1, l2 in zip(lines1, lines2):
             self.assertEqual(l1, l2)
         self.assertEqual(len(lines1), len(lines2))
 
@@ -1478,7 +1478,7 @@ klasse CodeLocationTest(unittest.TestCase):
                 pass
 
 
-            for func in [has_docstring, no_docstring(4), async_func]:
+            fuer func in [has_docstring, no_docstring(4), async_func]:
                 assert(func.__doc__ is None)
             ''')
 
@@ -1494,7 +1494,7 @@ klasse CodeLocationTest(unittest.TestCase):
                     code_offset_to_line(code, src) - base,
                     code_offset_to_line(code, left) - base,
                     code_offset_to_line(code, right) - base
-                ) for (src, left, right) in
+                ) fuer (src, left, right) in
                 code.co_branches()
             ]
 
@@ -1523,7 +1523,7 @@ klasse CodeLocationTest(unittest.TestCase):
             [(1,2,8)])
 
         async def afunc():
-            async for letter in async_iter1:
+            async fuer letter in async_iter1:
                 2
             3
 

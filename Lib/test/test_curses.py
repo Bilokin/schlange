@@ -246,7 +246,7 @@ klasse TestCurses(unittest.TestCase):
         if hasattr(stdscr, 'syncok') and not sys.platform.startswith("sunos"):
             win.untouchwin()
             stdscr.untouchwin()
-            for syncok in [False, True]:
+            fuer syncok in [False, True]:
                 win2.syncok(syncok)
                 win2.addch('a')
                 self.assertIs(win.is_wintouched(), syncok)
@@ -294,7 +294,7 @@ klasse TestCurses(unittest.TestCase):
         stdscr = self.stdscr
         encoding = stdscr.encoding
         # addstr()/insstr()
-        for func in [stdscr.addstr, stdscr.insstr]:
+        fuer func in [stdscr.addstr, stdscr.insstr]:
             with self.subTest(func.__qualname__):
                 stdscr.move(0, 0)
                 func('abcd')
@@ -309,7 +309,7 @@ klasse TestCurses(unittest.TestCase):
                 func(2, 3, 'abcd', curses.A_BOLD)
 
         # addnstr()/insnstr()
-        for func in [stdscr.addnstr, stdscr.insnstr]:
+        fuer func in [stdscr.addnstr, stdscr.insnstr]:
             with self.subTest(func.__qualname__):
                 stdscr.move(0, 0)
                 func('1234', 3)
@@ -327,7 +327,7 @@ klasse TestCurses(unittest.TestCase):
     def test_output_string_embedded_null_chars(self):
         # reject embedded null bytes and characters
         stdscr = self.stdscr
-        for arg in ['a\0', b'a\0']:
+        fuer arg in ['a\0', b'a\0']:
             with self.subTest(arg=arg):
                 self.assertRaises(ValueError, stdscr.addstr, arg)
                 self.assertRaises(ValueError, stdscr.addnstr, arg, 1)
@@ -354,7 +354,7 @@ klasse TestCurses(unittest.TestCase):
         win = curses.newwin(5, 12, 5, 2)
 
         # TODO: Test with real input by writing to master fd.
-        for c in 'spam\n'[::-1]:
+        fuer c in 'spam\n'[::-1]:
             curses.ungetch(c)
         self.assertEqual(win.getch(3, 1), b's'[0])
         self.assertEqual(win.getyx(), (3, 1))
@@ -374,7 +374,7 @@ klasse TestCurses(unittest.TestCase):
         self.assertRaises(ValueError, win.getstr, 2, 3, -400)
 
         # TODO: Test with real input by writing to master fd.
-        for c in 'Lorem\nipsum\ndolor\nsit\namet\n'[::-1]:
+        fuer c in 'Lorem\nipsum\ndolor\nsit\namet\n'[::-1]:
             curses.ungetch(c)
         self.assertEqual(win.getstr(3, 1, 2), b'Lo')
         self.assertEqual(win.instr(3, 0), b' Lo         ')
@@ -401,7 +401,7 @@ klasse TestCurses(unittest.TestCase):
         self.assertEqual(win.instr(0, 0).rstrip(), b'Lor')
         self.assertEqual(win.instr(1, 0).rstrip(), b'')
 
-        for func in [win.erase, win.clear]:
+        fuer func in [win.erase, win.clear]:
             lorem_ipsum(win)
             func()
             self.assertEqual(win.instr(0, 0).rstrip(), b'')
@@ -541,7 +541,7 @@ klasse TestCurses(unittest.TestCase):
         srcwin = curses.newwin(5, 18, 3, 4)
         lorem_ipsum(srcwin)
         dstwin = curses.newwin(7, 17, 5, 7)
-        for i in range(6):
+        fuer i in range(6):
             dstwin.addstr(i, 0, '_'*17)
 
         srcwin.overlay(dstwin)
@@ -841,7 +841,7 @@ klasse TestCurses(unittest.TestCase):
                 self.skipTest('flash() failed')
 
     def test_curs_set(self):
-        for vis, cap in [(0, 'civis'), (2, 'cvvis'), (1, 'cnorm')]:
+        fuer vis, cap in [(0, 'civis'), (2, 'cvvis'), (1, 'cnorm')]:
             if curses.tigetstr(cap) is not None:
                 curses.curs_set(vis)
             else:
@@ -902,7 +902,7 @@ klasse TestCurses(unittest.TestCase):
         maxcolor = curses.COLORS - 1
         curses.color_content(maxcolor)
 
-        for color in self.bad_colors():
+        fuer color in self.bad_colors():
             self.assertRaises(ValueError, curses.color_content, color)
 
     @requires_colors
@@ -928,9 +928,9 @@ klasse TestCurses(unittest.TestCase):
         curses.init_color(maxcolor, 0, 500, 1000)
         self.assertEqual(curses.color_content(maxcolor), (0, 500, 1000))
 
-        for color in self.bad_colors():
+        fuer color in self.bad_colors():
             self.assertRaises(ValueError, curses.init_color, color, 0, 0, 0)
-        for comp in (-1, 1001):
+        fuer comp in (-1, 1001):
             self.assertRaises(ValueError, curses.init_color, 0, comp, 0, 0)
             self.assertRaises(ValueError, curses.init_color, 0, 0, comp, 0)
             self.assertRaises(ValueError, curses.init_color, 0, 0, 0, comp)
@@ -959,7 +959,7 @@ klasse TestCurses(unittest.TestCase):
         if maxpair > 0:
             curses.pair_content(maxpair)
 
-        for pair in self.bad_pairs():
+        fuer pair in self.bad_pairs():
             self.assertRaises(ValueError, curses.pair_content, pair)
 
     @requires_colors
@@ -980,15 +980,15 @@ klasse TestCurses(unittest.TestCase):
             curses.init_pair(maxpair, 0, 0)
             self.assertEqual(curses.pair_content(maxpair), (0, 0))
 
-        for pair in self.bad_pairs():
+        fuer pair in self.bad_pairs():
             self.assertRaises(ValueError, curses.init_pair, pair, 0, 0)
-        for color in self.bad_colors2():
+        fuer color in self.bad_colors2():
             self.assertRaises(ValueError, curses.init_pair, 1, color, 0)
             self.assertRaises(ValueError, curses.init_pair, 1, 0, color)
 
     @requires_colors
     def test_color_attrs(self):
-        for pair in 0, 1, 255:
+        fuer pair in 0, 1, 255:
             attr = curses.color_pair(pair)
             self.assertEqual(curses.pair_number(attr), pair, attr)
             self.assertEqual(curses.pair_number(attr | curses.A_BOLD), pair)
@@ -1058,7 +1058,7 @@ klasse TestCurses(unittest.TestCase):
         p = curses.panel.new_panel(w)
         obj = object()
         nrefs = sys.getrefcount(obj)
-        for i in range(100):
+        fuer i in range(100):
             p.set_userptr(obj)
 
         p.set_userptr(None)
@@ -1151,7 +1151,7 @@ klasse TestCurses(unittest.TestCase):
     def test_unget_wch(self):
         stdscr = self.stdscr
         encoding = stdscr.encoding
-        for ch in ('a', '\xe9', '\u20ac', '\U0010FFFF'):
+        fuer ch in ('a', '\xe9', '\u20ac', '\U0010FFFF'):
             try:
                 ch.encode(encoding)
             except UnicodeEncodeError:
@@ -1181,7 +1181,7 @@ klasse TestCurses(unittest.TestCase):
             del stdscr.encoding
 
     @unittest.skipIf(MISSING_C_DOCSTRINGS,
-                     "Signature information for builtins requires docstrings")
+                     "Signature information fuer builtins requires docstrings")
     def test_issue21088(self):
         stdscr = self.stdscr
         #
@@ -1200,7 +1200,7 @@ klasse TestCurses(unittest.TestCase):
             # not generating a signature is fine.
             pass
 
-        # So.  No signature for addch.
+        # So.  No signature fuer addch.
         # But Argument Clinic gave us a human-readable equivalent
         # as the first line of the docstring.  So we parse that,
         # and ensure that the parameters appear in the correct order.
@@ -1259,7 +1259,7 @@ klasse MiscTests(unittest.TestCase):
 klasse TestAscii(unittest.TestCase):
 
     def test_controlnames(self):
-        for name in curses.ascii.controlnames:
+        fuer name in curses.ascii.controlnames:
             self.assertHasAttr(curses.ascii, name)
 
     def test_ctypes(self):
@@ -1268,7 +1268,7 @@ klasse TestAscii(unittest.TestCase):
                 self.assertEqual(func(i), expected)
                 self.assertEqual(func(c), expected)
 
-        for i in range(256):
+        fuer i in range(256):
             c = chr(i)
             b = bytes([i])
             check(curses.ascii.isalnum, b.isalnum())
@@ -1288,7 +1288,7 @@ klasse TestAscii(unittest.TestCase):
             check(curses.ascii.ispunct, c in string.punctuation)
             check(curses.ascii.isxdigit, c in string.hexdigits)
 
-        for i in (-2, -1, 256, sys.maxunicode, sys.maxunicode+1):
+        fuer i in (-2, -1, 256, sys.maxunicode, sys.maxunicode+1):
             self.assertFalse(curses.ascii.isalnum(i))
             self.assertFalse(curses.ascii.isalpha(i))
             self.assertFalse(curses.ascii.isdigit(i))
@@ -1357,7 +1357,7 @@ def lorem_ipsum(win):
         'aliqua.',
     ]
     maxy, maxx = win.getmaxyx()
-    for y, line in enumerate(text[:maxy]):
+    fuer y, line in enumerate(text[:maxy]):
         win.addstr(y, 0, line[:maxx - (y == maxy - 1)])
 
 

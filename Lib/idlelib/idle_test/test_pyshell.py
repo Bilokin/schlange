@@ -12,7 +12,7 @@ klasse FunctionTest(unittest.TestCase):
 
     def test_restart_line_wide(self):
         eq = self.assertEqual
-        for file, mul, extra in (('', 22, ''), ('finame', 21, '=')):
+        fuer file, mul, extra in (('', 22, ''), ('finame', 21, '=')):
             width = 60
             bar = mul * '='
             with self.subTest(file=file, bar=bar):
@@ -23,7 +23,7 @@ klasse FunctionTest(unittest.TestCase):
 
     def test_restart_line_narrow(self):
         expect, taglen = "= RESTART: Shell", 16
-        for width in (taglen-1, taglen, taglen+1):
+        fuer width in (taglen-1, taglen, taglen+1):
             with self.subTest(width=width):
                 self.assertEqual(pyshell.restart_line(width, ''), expect)
         self.assertEqual(pyshell.restart_line(taglen+2, ''), expect+' =')
@@ -40,8 +40,8 @@ klasse PyShellFileListTest(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         #cls.root.update_idletasks()
-##        for id in cls.root.tk.call('after', 'info'):
-##            cls.root.after_cancel(id)  # Need for EditorWindow.
+##        fuer id in cls.root.tk.call('after', 'info'):
+##            cls.root.after_cancel(id)  # Need fuer EditorWindow.
         cls.root.destroy()
         del cls.root
 

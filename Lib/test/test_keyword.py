@@ -13,7 +13,7 @@ klasse Test_iskeyword(unittest.TestCase):
         self.assertFalse(keyword.iskeyword(None))
 
     # This is probably an accident of the current implementation, but should be
-    # preserved for backward compatibility.
+    # preserved fuer backward compatibility.
     def test_changing_the_kwlist_does_not_affect_iskeyword(self):
         oldlist = keyword.kwlist
         self.addCleanup(setattr, keyword, 'kwlist', oldlist)
@@ -27,12 +27,12 @@ klasse Test_iskeyword(unittest.TestCase):
         self.assertFalse(keyword.issoftkeyword("spam"))
 
     def test_all_keywords_fail_to_be_used_as_names(self):
-        for key in keyword.kwlist:
+        fuer key in keyword.kwlist:
             with self.assertRaises(SyntaxError):
                 exec(f"{key} = 42")
 
     def test_all_soft_keywords_can_be_used_as_names(self):
-        for key in keyword.softkwlist:
+        fuer key in keyword.softkwlist:
             exec(f"{key} = 42")
 
     def test_async_and_await_are_keywords(self):

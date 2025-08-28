@@ -10,8 +10,8 @@ cygwin in no-cygwin mode).
 #
 # * if you use a msvc compiled python version (1.5.2)
 #   1. you have to insert a __GNUC__ section in its config.h
-#   2. you have to generate an import library for its dll
-#      - create a def-file for python??.dll
+#   2. you have to generate an import library fuer its dll
+#      - create a def-file fuer python??.dll
 #      - create an import library using
 #             dlltool --dllname python15.dll --def python15.def \
 #                       --output-lib libpython15.a
@@ -26,7 +26,7 @@ cygwin in no-cygwin mode).
 # tested configurations:
 #
 # * cygwin gcc 2.91.57/ld 2.9.4/dllwrap 0.2.4 works
-#   (after patching python's config.h and for C++ some other include files)
+#   (after patching python's config.h and fuer C++ some other include files)
 #   see also http://starship.python.net/crew/kernr/mingw32/Notes.html
 # * mingw32 gcc 2.95.2/ld 2.9.4/dllwrap 0.2.4 works
 #   (ld doesn't support -shared, so we use dllwrap)
@@ -274,10 +274,10 @@ def _find_exe_version(cmd):
 def get_versions():
     """ Try to find out the versions of gcc, ld and dllwrap.
 
-    If not possible it returns None for it.
+    If not possible it returns None fuer it.
     """
     commands = ['gcc -dumpversion', 'ld -v', 'dllwrap --version']
-    return tuple([_find_exe_version(cmd) for cmd in commands])
+    return tuple([_find_exe_version(cmd) fuer cmd in commands])
 
 def is_cygwingcc():
     '''Try to determine if the gcc that would be used is from cygwin.'''

@@ -1,7 +1,7 @@
 # Copyright 2007 Google, Inc. All Rights Reserved.
 # Licensed to PSF under a Contributor Agreement.
 
-"""Abstract Base Classes (ABCs) for collections, according to PEP 3119.
+"""Abstract Base Classes (ABCs) fuer collections, according to PEP 3119.
 
 Unit tests are in test_collections.
 """
@@ -16,7 +16,7 @@ Unit tests are in test_collections.
 # new mixin method, registered classes would become non-compliant and
 # violate the contract promised by ``isinstance(someobj, SomeABC)``.
 #
-# Though irritating, the correct procedure for adding new abstract or
+# Though irritating, the correct procedure fuer adding new abstract or
 # mixin methods is to create a new ABC as a subclass of the previous
 # ABC.  For example, union(), intersection(), and difference() cannot
 # be added to Set but could go into a new ABC that extends Set.
@@ -24,7 +24,7 @@ Unit tests are in test_collections.
 # Because they are so hard to change, new ABCs should have their APIs
 # carefully thought through prior to publication.
 #
-# Since ABCMeta only checks for the presence of methods, it is possible
+# Since ABCMeta only checks fuer the presence of methods, it is possible
 # to alter the signature of a method by adding optional arguments
 # or changing parameters names.  This is still a bit dubious but at
 # least it won't cause isinstance() to return an incorrect result.
@@ -107,8 +107,8 @@ del _ag
 
 def _check_methods(C, *methods):
     mro = C.__mro__
-    for method in methods:
-        for B in mro:
+    fuer method in methods:
+        fuer B in mro:
             if method in B.__dict__:
                 if B.__dict__[method] is None:
                     return NotImplemented
@@ -487,7 +487,7 @@ klasse _CallableGenericAlias(GenericAlias):
             return super().__repr__()
         from annotationlib import type_repr
         return (f'collections.abc.Callable'
-                f'[[{", ".join([type_repr(a) for a in self.__args__[:-1]])}], '
+                f'[[{", ".join([type_repr(a) fuer a in self.__args__[:-1]])}], '
                 f'{type_repr(self.__args__[-1])}]')
 
     def __reduce__(self):
@@ -523,7 +523,7 @@ def _is_param_expr(obj):
         return True
     obj = type(obj)
     names = ('ParamSpec', '_ConcatenateGenericAlias')
-    return obj.__module__ == 'typing' and any(obj.__name__ == name for name in names)
+    return obj.__module__ == 'typing' and any(obj.__name__ == name fuer name in names)
 
 
 klasse Callable(metaclass=ABCMeta):
@@ -550,9 +550,9 @@ klasse Set(Collection):
     """A set is a finite, iterable container.
 
     This klasse provides concrete generic implementations of all
-    methods except for __contains__, __iter__ and __len__.
+    methods except fuer __contains__, __iter__ and __len__.
 
-    To override the comparisons (presumably for speed, as the
+    To override the comparisons (presumably fuer speed, as the
     semantics are fixed), redefine __le__ and __ge__,
     then the other operations will automatically follow suit.
     """
@@ -564,7 +564,7 @@ klasse Set(Collection):
             return NotImplemented
         if len(self) > len(other):
             return False
-        for elem in self:
+        fuer elem in self:
             if elem not in other:
                 return False
         return True
@@ -584,7 +584,7 @@ klasse Set(Collection):
             return NotImplemented
         if len(self) < len(other):
             return False
-        for elem in other:
+        fuer elem in other:
             if elem not in self:
                 return False
         return True
@@ -599,20 +599,20 @@ klasse Set(Collection):
         '''Construct an instance of the klasse from any iterable input.
 
         Must override this method if the klasse constructor signature
-        does not accept an iterable for an input.
+        does not accept an iterable fuer an input.
         '''
         return cls(it)
 
     def __and__(self, other):
         if not isinstance(other, Iterable):
             return NotImplemented
-        return self._from_iterable(value for value in other if value in self)
+        return self._from_iterable(value fuer value in other if value in self)
 
     __rand__ = __and__
 
     def isdisjoint(self, other):
         'Return True if two sets have a null intersection.'
-        for value in other:
+        fuer value in other:
             if value in self:
                 return False
         return True
@@ -620,7 +620,7 @@ klasse Set(Collection):
     def __or__(self, other):
         if not isinstance(other, Iterable):
             return NotImplemented
-        chain = (e for s in (self, other) for e in s)
+        chain = (e fuer s in (self, other) fuer e in s)
         return self._from_iterable(chain)
 
     __ror__ = __or__
@@ -630,7 +630,7 @@ klasse Set(Collection):
             if not isinstance(other, Iterable):
                 return NotImplemented
             other = self._from_iterable(other)
-        return self._from_iterable(value for value in self
+        return self._from_iterable(value fuer value in self
                                    if value not in other)
 
     def __rsub__(self, other):
@@ -638,7 +638,7 @@ klasse Set(Collection):
             if not isinstance(other, Iterable):
                 return NotImplemented
             other = self._from_iterable(other)
-        return self._from_iterable(value for value in other
+        return self._from_iterable(value fuer value in other
                                    if value not in self)
 
     def __xor__(self, other):
@@ -662,7 +662,7 @@ klasse Set(Collection):
         All sets ought to compare equal if they contain the same
         elements, regardless of how they are implemented, and
         regardless of the order of the elements; so there's not much
-        freedom for __eq__ or __hash__.  We match the algorithm used
+        freedom fuer __eq__ or __hash__.  We match the algorithm used
         by the built-in frozenset type.
         """
         MAX = sys.maxsize
@@ -670,7 +670,7 @@ klasse Set(Collection):
         n = len(self)
         h = 1927868237 * (n + 1)
         h &= MASK
-        for x in self:
+        fuer x in self:
             hx = hash(x)
             h ^= (hx ^ (hx << 16) ^ 89869747)  * 3644798167
             h &= MASK
@@ -691,10 +691,10 @@ klasse MutableSet(Set):
     """A mutable set is a finite, iterable container.
 
     This klasse provides concrete generic implementations of all
-    methods except for __contains__, __iter__, __len__,
+    methods except fuer __contains__, __iter__, __len__,
     add(), and discard().
 
-    To override the comparisons (presumably for speed, as the
+    To override the comparisons (presumably fuer speed, as the
     semantics are fixed), all you have to do is redefine __le__ and
     then the other operations will automatically follow suit.
     """
@@ -736,12 +736,12 @@ klasse MutableSet(Set):
             pass
 
     def __ior__(self, it):
-        for value in it:
+        fuer value in it:
             self.add(value)
         return self
 
     def __iand__(self, it):
-        for value in (self - it):
+        fuer value in (self - it):
             self.discard(value)
         return self
 
@@ -751,7 +751,7 @@ klasse MutableSet(Set):
         else:
             if not isinstance(it, Set):
                 it = self._from_iterable(it)
-            for value in it:
+            fuer value in it:
                 if value in self:
                     self.discard(value)
                 else:
@@ -762,7 +762,7 @@ klasse MutableSet(Set):
         if it is self:
             self.clear()
         else:
-            for value in it:
+            fuer value in it:
                 self.discard(value)
         return self
 
@@ -773,11 +773,11 @@ MutableSet.register(set)
 ### MAPPINGS ###
 
 klasse Mapping(Collection):
-    """A Mapping is a generic container for associating key/value
+    """A Mapping is a generic container fuer associating key/value
     pairs.
 
     This klasse provides concrete generic implementations of all
-    methods except for __getitem__, __iter__, and __len__.
+    methods except fuer __getitem__, __iter__, and __len__.
     """
 
     __slots__ = ()
@@ -879,7 +879,7 @@ klasse ItemsView(MappingView, Set):
             return v is value or v == value
 
     def __iter__(self):
-        for key in self._mapping:
+        fuer key in self._mapping:
             yield (key, self._mapping[key])
 
 
@@ -891,14 +891,14 @@ klasse ValuesView(MappingView, Collection):
     __slots__ = ()
 
     def __contains__(self, value):
-        for key in self._mapping:
+        fuer key in self._mapping:
             v = self._mapping[key]
             if v is value or v == value:
                 return True
         return False
 
     def __iter__(self):
-        for key in self._mapping:
+        fuer key in self._mapping:
             yield self._mapping[key]
 
 
@@ -906,11 +906,11 @@ ValuesView.register(dict_values)
 
 
 klasse MutableMapping(Mapping):
-    """A MutableMapping is a generic container for associating
+    """A MutableMapping is a generic container fuer associating
     key/value pairs.
 
     This klasse provides concrete generic implementations of all
-    methods except for __getitem__, __setitem__, __delitem__,
+    methods except fuer __getitem__, __setitem__, __delitem__,
     __iter__, and __len__.
     """
 
@@ -962,20 +962,20 @@ klasse MutableMapping(Mapping):
 
     def update(self, other=(), /, **kwds):
         ''' D.update([E, ]**F) -> None.  Update D from mapping/iterable E and F.
-            If E present and has a .keys() method, does:     for k in E.keys(): D[k] = E[k]
-            If E present and lacks .keys() method, does:     for (k, v) in E: D[k] = v
-            In either case, this is followed by: for k, v in F.items(): D[k] = v
+            If E present and has a .keys() method, does:     fuer k in E.keys(): D[k] = E[k]
+            If E present and lacks .keys() method, does:     fuer (k, v) in E: D[k] = v
+            In either case, this is followed by: fuer k, v in F.items(): D[k] = v
         '''
         if isinstance(other, Mapping):
-            for key in other:
+            fuer key in other:
                 self[key] = other[key]
         elif hasattr(other, "keys"):
-            for key in other.keys():
+            fuer key in other.keys():
                 self[key] = other[key]
         else:
-            for key, value in other:
+            fuer key, value in other:
                 self[key] = value
-        for key, value in kwds.items():
+        fuer key, value in kwds.items():
             self[key] = value
 
     def setdefault(self, key, default=None):
@@ -1019,13 +1019,13 @@ klasse Sequence(Reversible, Collection):
             return
 
     def __contains__(self, value):
-        for v in self:
+        fuer v in self:
             if v is value or v == value:
                 return True
         return False
 
     def __reversed__(self):
-        for i in reversed(range(len(self))):
+        fuer i in reversed(range(len(self))):
             yield self[i]
 
     def index(self, value, start=0, stop=None):
@@ -1053,7 +1053,7 @@ klasse Sequence(Reversible, Collection):
 
     def count(self, value):
         'S.count(value) -> integer -- return number of occurrences of value'
-        return sum(1 for v in self if v is value or v == value)
+        return sum(1 fuer v in self if v is value or v == value)
 
 Sequence.register(tuple)
 Sequence.register(str)
@@ -1099,14 +1099,14 @@ klasse MutableSequence(Sequence):
     def reverse(self):
         'S.reverse() -- reverse *IN PLACE*'
         n = len(self)
-        for i in range(n//2):
+        fuer i in range(n//2):
             self[i], self[n-i-1] = self[n-i-1], self[i]
 
     def extend(self, values):
         'S.extend(iterable) -- extend sequence by appending elements from the iterable'
         if values is self:
             values = list(values)
-        for v in values:
+        fuer v in values:
             self.append(v)
 
     def pop(self, index=-1):

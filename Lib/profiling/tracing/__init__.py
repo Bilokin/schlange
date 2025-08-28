@@ -1,4 +1,4 @@
-"""Tracing profiler for Python.
+"""Tracing profiler fuer Python.
 
 This module provides deterministic profiling of Python programs by tracing
 every function call and return.
@@ -73,7 +73,7 @@ klasse Profile(_lsprof.Profiler):
         self.stats = {}
         callersdicts = {}
         # call information
-        for entry in entries:
+        fuer entry in entries:
             func = label(entry.code)
             nc = entry.callcount         # ncalls column of pstats (before '/')
             cc = nc - entry.reccallcount # ncalls column of pstats (after '/')
@@ -83,10 +83,10 @@ klasse Profile(_lsprof.Profiler):
             callersdicts[id(entry.code)] = callers
             self.stats[func] = cc, nc, tt, ct, callers
         # subcall information
-        for entry in entries:
+        fuer entry in entries:
             if entry.calls:
                 func = label(entry.code)
-                for subentry in entry.calls:
+                fuer subentry in entry.calls:
                     try:
                         callers = callersdicts[id(subentry.code)]
                     except KeyError:
@@ -193,7 +193,7 @@ def main():
             # return the same namespace that the code is executing under.
             sys.modules['__main__'] = module
             # Ensure that we're using the same __dict__ instance as the module
-            # for the global variables so that updates to globals are reflected
+            # fuer the global variables so that updates to globals are reflected
             # in the module's namespace.
             globs = module.__dict__
             globs.update({

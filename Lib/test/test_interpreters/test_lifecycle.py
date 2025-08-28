@@ -152,7 +152,7 @@ klasse StartupTests(TestBase):
             ('-m pkg.script', cwd),
             ('-c "import script"', ''),
         ]
-        for argv, expected in cases:
+        fuer argv, expected in cases:
             with self.subTest(f'python3 {argv}'):
                 out = self.run_python(argv, cwd=cwd)
                 data = json.loads(out)

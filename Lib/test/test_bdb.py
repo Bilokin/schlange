@@ -77,12 +77,12 @@ def reset_Breakpoint():
     _bdb.Breakpoint.clearBreakpoints()
 
 def info_breakpoints():
-    bp_list = [bp for  bp in _bdb.Breakpoint.bpbynumber if bp]
+    bp_list = [bp fuer  bp in _bdb.Breakpoint.bpbynumber if bp]
     if not bp_list:
         return ''
 
     header_added = False
-    for bp in bp_list:
+    fuer bp in bp_list:
         if not header_added:
             info = 'BpNum Temp Enb Hits Ignore Where\n'
             header_added = True
@@ -162,13 +162,13 @@ klasse Bdb(_bdb.Bdb):
         self.frame = self.stack[self.index][0]
 
 klasse Tracer(Bdb):
-    """A tracer for testing the bdb module."""
+    """A tracer fuer testing the bdb module."""
 
     def __init__(self, expect_set, skip=None, dry_run=False, test_case=None):
         super().__init__(skip=skip)
         self.expect_set = expect_set
         self.dry_run = dry_run
-        self.header = ('Dry-run results for %s:' % test_case if
+        self.header = ('Dry-run results fuer %s:' % test_case if
                        test_case is not None else None)
         self.init_test()
 
@@ -212,7 +212,7 @@ klasse Tracer(Bdb):
         if self.dry_run and self.breakpoint_hits:
             info = info_breakpoints().strip('\n')
             # Indent each line.
-            for line in info.split('\n'):
+            fuer line in info.split('\n'):
                 print('  ' + line)
         self.delete_temporaries()
         self.breakpoint_hits = None
@@ -239,7 +239,7 @@ klasse Tracer(Bdb):
 
     def delete_temporaries(self):
         if self.breakpoint_hits:
-            for n in self.breakpoint_hits[1]:
+            fuer n in self.breakpoint_hits[1]:
                 self.clear_bpbynumber(n)
 
     def pop_next(self):
@@ -289,7 +289,7 @@ klasse Tracer(Bdb):
                         self.expect_set_no)
                 self.check_equal(bpnums, self.breakpoint_hits[0],
                     'Breakpoint numbers do not match')
-                self.check_equal([bps[n] for n in bpnums],
+                self.check_equal([bps[n] fuer n in bpnums],
                     [self.get_bpbynumber(n).hits for
                         n in self.breakpoint_hits[0]],
                     'Wrong breakpoint hit count')
@@ -340,7 +340,7 @@ klasse Tracer(Bdb):
         state = "('%s', %d, '%s'" % (self.event, lineno, co_name)
         if self.breakpoint_hits:
             bps = '{'
-            for n in self.breakpoint_hits[0]:
+            fuer n in self.breakpoint_hits[0]:
                 if bps != '{':
                     bps += ', '
                 bps += '%s: %s' % (n, self.get_bpbynumber(n).hits)
@@ -415,7 +415,7 @@ klasse Tracer(Bdb):
                                  self.set_tuple)
 
 klasse TracerRun():
-    """Provide a context for running a Tracer instance with a test case."""
+    """Provide a context fuer running a Tracer instance with a test case."""
 
     def __init__(self, test_case, skip=None):
         self.test_case = test_case
@@ -540,7 +540,7 @@ def create_modules(modules):
     with os_helper.temp_cwd():
         sys.path.append(os.getcwd())
         try:
-            for m in modules:
+            fuer m in modules:
                 fname = m + '.py'
                 with open(fname, 'w', encoding="utf-8") as f:
                     f.write(textwrap.dedent(modules[m]))
@@ -548,7 +548,7 @@ def create_modules(modules):
             importlib.invalidate_caches()
             yield
         finally:
-            for m in modules:
+            fuer m in modules:
                 import_helper.forget(m)
             sys.path.pop()
 
@@ -578,7 +578,7 @@ def tfunc_second():
     lno = 2
 
 klasse BaseTestCase(unittest.TestCase):
-    """Base klasse for all tests."""
+    """Base klasse fuer all tests."""
 
     dry_run = dry_run
 
@@ -601,7 +601,7 @@ klasse StateTestCase(BaseTestCase):
             tracer.runcall(tfunc_main)
 
     def test_step_next_on_last_statement(self):
-        for set_type in ('step', 'next'):
+        fuer set_type in ('step', 'next'):
             with self.subTest(set_type=set_type):
                 self.expect_set = [
                     ('line', 2, 'tfunc_main'),               ('step', ),
@@ -736,7 +736,7 @@ klasse StateTestCase(BaseTestCase):
         # Remove all but the standard importers.
         sys.meta_path[:] = (
             item
-            for item in sys.meta_path
+            fuer item in sys.meta_path
             if item.__module__.startswith('_frozen_importlib')
         )
 
@@ -756,7 +756,7 @@ klasse StateTestCase(BaseTestCase):
 
     def test_skip_with_no_name_module(self):
         # some frames have `globals` with no `__name__`
-        # for instance the second frame in this traceback
+        # fuer instance the second frame in this traceback
         # exec(compile('raise ValueError()', '', 'exec'), {})
         bdb = Bdb(skip=['anything*'])
         self.assertIs(bdb.is_skipped_module(None), False)
@@ -808,7 +808,7 @@ klasse BreakpointTestCase(BaseTestCase):
                 lno = 3
 
             def main():
-                for i in range(2):
+                fuer i in range(2):
                     func()
         """
         modules = { TEST_MODULE: code }
@@ -831,7 +831,7 @@ klasse BreakpointTestCase(BaseTestCase):
                 lno = 3
 
             def main():
-                for i in range(3):
+                fuer i in range(3):
                     func()
         """
         modules = { TEST_MODULE: code }
@@ -859,7 +859,7 @@ klasse BreakpointTestCase(BaseTestCase):
                 lno = 3
 
             def main():
-                for i in range(3):
+                fuer i in range(3):
                     func(i)
         """
         modules = { TEST_MODULE: code }
@@ -898,7 +898,7 @@ klasse BreakpointTestCase(BaseTestCase):
                 lno = 3
 
             def main():
-                for i in range(2):
+                fuer i in range(2):
                     func()
         """
         modules = { TEST_MODULE: code }
@@ -919,7 +919,7 @@ klasse BreakpointTestCase(BaseTestCase):
                 lno = 3
 
             def main():
-                for i in range(3):
+                fuer i in range(3):
                     func()
         """
         modules = { TEST_MODULE: code }
@@ -947,7 +947,7 @@ klasse BreakpointTestCase(BaseTestCase):
                 lno = 4
 
             def main():
-                for i in range(3):
+                fuer i in range(3):
                     func()
         """
         modules = { TEST_MODULE: code }
@@ -1101,7 +1101,7 @@ klasse IssuesTestCase(BaseTestCase):
                 lno = 11
         """
         modules = { TEST_MODULE: code }
-        for set_type in ('next', 'until', 'return'):
+        fuer set_type in ('next', 'until', 'return'):
             with self.subTest(set_type=set_type):
                 with create_modules(modules):
                     self.expect_set = [
@@ -1134,7 +1134,7 @@ klasse IssuesTestCase(BaseTestCase):
                 return 123
 
             def main():
-                for i in test_gen():
+                fuer i in test_gen():
                     lno = 10
                 lno = 11
         """
@@ -1167,7 +1167,7 @@ klasse IssuesTestCase(BaseTestCase):
                 return 456
 
             def main():
-                for i in test_gen():
+                fuer i in test_gen():
                     lno = 12
                 lno = 13
         """
@@ -1198,7 +1198,7 @@ klasse IssuesTestCase(BaseTestCase):
                 return 456
 
             def main():
-                for i in test_gen():
+                fuer i in test_gen():
                     lno = 12
                 lno = 13
         """

@@ -21,7 +21,7 @@ klasse TextInfo:
 
     def __repr__(self):
         args = (f'{a}={getattr(self, a)!r}'
-                for a in ['text', 'start', 'end'])
+                fuer a in ['text', 'start', 'end'])
         return f'{type(self).__name__}({", ".join(args)})'
 
     def add_line(self, line, lno=None):
@@ -60,7 +60,7 @@ klasse SourceInfo:
 
     def __repr__(self):
         args = (f'{a}={getattr(self, a)!r}'
-                for a in ['filename', '_current'])
+                fuer a in ['filename', '_current'])
         return f'{type(self).__name__}({", ".join(args)})'
 
     @property

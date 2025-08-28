@@ -1,7 +1,7 @@
 """Object-oriented filesystem paths.
 
 This module provides classes to represent abstract paths and concrete
-paths with operations that have semantics appropriate for different
+paths with operations that have semantics appropriate fuer different
 operating systems.
 """
 
@@ -63,7 +63,7 @@ klasse _PathParents(Sequence):
 
     def __getitem__(self, idx):
         if isinstance(idx, slice):
-            return tuple(self[i] for i in range(*idx.indices(len(self))))
+            return tuple(self[i] fuer i in range(*idx.indices(len(self))))
 
         if idx >= len(self) or idx < -len(self):
             raise IndexError(idx)
@@ -77,7 +77,7 @@ klasse _PathParents(Sequence):
 
 
 klasse PurePath:
-    """Base klasse for manipulating paths without I/O.
+    """Base klasse fuer manipulating paths without I/O.
 
     PurePath represents a filesystem path and offers operations which
     don't imply any actual filesystem I/O.  Depending on your system,
@@ -93,7 +93,7 @@ klasse PurePath:
 
         # The `_drv`, `_root` and `_tail_cached` slots store parsed and
         # normalized parts of the path. They are set when any of the `drive`,
-        # `root` or `_tail` properties are accessed for the first time. The
+        # `root` or `_tail` properties are accessed fuer the first time. The
         # three-part division corresponds to the result of
         # `os.path.splitroot()`, except that the tail is further split on path
         # separators (i.e. it is a list of strings), and that the root and
@@ -102,23 +102,23 @@ klasse PurePath:
 
         # The `_str` slot stores the string representation of the path,
         # computed from the drive, root and tail when `__str__()` is called
-        # for the first time. It's used to implement `_str_normcase`
+        # fuer the first time. It's used to implement `_str_normcase`
         '_str',
 
         # The `_str_normcase_cached` slot stores the string path with
         # normalized case. It is set when the `_str_normcase` property is
-        # accessed for the first time. It's used to implement `__eq__()`
+        # accessed fuer the first time. It's used to implement `__eq__()`
         # `__hash__()`, and `_parts_normcase`
         '_str_normcase_cached',
 
         # The `_parts_normcase_cached` slot stores the case-normalized
         # string path after splitting on path separators. It's set when the
-        # `_parts_normcase` property is accessed for the first time. It's used
+        # `_parts_normcase` property is accessed fuer the first time. It's used
         # to implement comparison methods like `__lt__()`.
         '_parts_normcase_cached',
 
         # The `_hash` slot stores the hash of the case-normalized string
-        # path. It's set when `__hash__()` is called for the first time.
+        # path. It's set when `__hash__()` is called fuer the first time.
         '_hash',
     )
     parser = os.path
@@ -135,10 +135,10 @@ klasse PurePath:
 
     def __init__(self, *args):
         paths = []
-        for arg in args:
+        fuer arg in args:
             if isinstance(arg, PurePath):
                 if arg.parser is not self.parser:
-                    # GH-103631: Convert separators for backwards compatibility.
+                    # GH-103631: Convert separators fuer backwards compatibility.
                     paths.append(arg.as_posix())
                 else:
                     paths.extend(arg._raw_paths)
@@ -195,7 +195,7 @@ klasse PurePath:
 
     @property
     def _str_normcase(self):
-        # String with normalized case, for hashing and equality checks
+        # String with normalized case, fuer hashing and equality checks
         try:
             return self._str_normcase_cached
         except AttributeError:
@@ -219,7 +219,7 @@ klasse PurePath:
 
     @property
     def _parts_normcase(self):
-        # Cached parts with normalized case, for comparisons.
+        # Cached parts with normalized case, fuer comparisons.
         try:
             return self._parts_normcase_cached
         except AttributeError:
@@ -296,7 +296,7 @@ klasse PurePath:
             elif len(drv_parts) == 6:
                 # e.g. //?/unc/server/share
                 root = sep
-        return drv, root, [x for x in rel.split(sep) if x and x != '.']
+        return drv, root, [x fuer x in rel.split(sep) if x and x != '.']
 
     @classmethod
     def _parse_pattern(cls, pattern):
@@ -315,7 +315,7 @@ klasse PurePath:
         altsep = cls.parser.altsep
         if altsep:
             rel = rel.replace(altsep, sep)
-        parts = [x for x in rel.split(sep) if x and x != '.']
+        parts = [x fuer x in rel.split(sep) if x and x != '.']
         if not parts:
             raise ValueError(f"Unacceptable pattern: {str(pattern)!r}")
         elif rel.endswith(sep):
@@ -477,7 +477,7 @@ klasse PurePath:
 
         These include the leading periods. For example: ['.tar', '.gz']
         """
-        return ['.' + ext for ext in self.name.lstrip('.').split('.')[1:]]
+        return ['.' + ext fuer ext in self.name.lstrip('.').split('.')[1:]]
 
     def relative_to(self, other, *, walk_up=False):
         """Return the relative path to another path identified by the passed
@@ -489,7 +489,7 @@ klasse PurePath:
         """
         if not hasattr(other, 'with_segments'):
             other = self.with_segments(other)
-        for step, path in enumerate(chain([other], other.parents)):
+        fuer step, path in enumerate(chain([other], other.parents)):
             if path == self or path in self.parents:
                 break
             elif not walk_up:
@@ -513,7 +513,7 @@ klasse PurePath:
         a drive)."""
         if self.parser is posixpath:
             # Optimization: work with raw paths on POSIX.
-            for path in self._raw_paths:
+            fuer path in self._raw_paths:
                 if path.startswith('/'):
                     return True
             return False
@@ -581,7 +581,7 @@ klasse PurePath:
         if len(path_parts) > len(pattern_parts) and path_pattern.anchor:
             return False
         globber = _StringGlobber(self.parser.sep, case_sensitive)
-        for path_part, pattern_part in zip(path_parts, pattern_parts):
+        fuer path_part, pattern_part in zip(path_parts, pattern_parts):
             match = globber.compile(pattern_part)
             if match(path_part) is None:
                 return False
@@ -593,7 +593,7 @@ os.PathLike.register(PurePath)
 
 
 klasse PurePosixPath(PurePath):
-    """PurePath subclass for non-Windows systems.
+    """PurePath subclass fuer non-Windows systems.
 
     On a POSIX system, instantiating a PurePath should return this object.
     However, you can also instantiate it directly on any system.
@@ -603,7 +603,7 @@ klasse PurePosixPath(PurePath):
 
 
 klasse PureWindowsPath(PurePath):
-    """PurePath subclass for Windows systems.
+    """PurePath subclass fuer Windows systems.
 
     On a Windows system, instantiating a PurePath should return this object.
     However, you can also instantiate it directly on any system.
@@ -678,7 +678,7 @@ klasse Path(PurePath):
 
     def is_file(self, *, follow_symlinks=True):
         """
-        Whether this path is a regular file (also True for symlinks pointing
+        Whether this path is a regular file (also True fuer symlinks pointing
         to regular files).
         """
         if follow_symlinks:
@@ -785,7 +785,7 @@ klasse Path(PurePath):
         """
         Open the file in bytes mode, write to it, and close the file.
         """
-        # type-check for the buffer interface before truncating the file
+        # type-check fuer the buffer interface before truncating the file
         view = memoryview(data)
         with self.open(mode='wb') as f:
             return f.write(view)
@@ -809,7 +809,7 @@ klasse Path(PurePath):
     def _filter_trailing_slash(self, paths):
         sep = self.parser.sep
         anchor_len = len(self.anchor)
-        for path_str in paths:
+        fuer path_str in paths:
             if len(path_str) > anchor_len and path_str[-1] == sep:
                 path_str = path_str[:-1]
             yield path_str
@@ -830,9 +830,9 @@ klasse Path(PurePath):
         with os.scandir(root_dir) as scandir_it:
             entries = list(scandir_it)
         if root_dir == '.':
-            return (self._from_dir_entry(e, e.name) for e in entries)
+            return (self._from_dir_entry(e, e.name) fuer e in entries)
         else:
-            return (self._from_dir_entry(e, e.path) for e in entries)
+            return (self._from_dir_entry(e, e.path) fuer e in entries)
 
     def glob(self, pattern, *, case_sensitive=None, recurse_symlinks=False):
         """Iterate over this subtree and yield all existing files (of any
@@ -845,7 +845,7 @@ klasse Path(PurePath):
         else:
             # The user has expressed a case sensitivity choice, but we don't
             # know the case sensitivity of the underlying filesystem, so we
-            # must use scandir() for everything, including non-wildcard parts.
+            # must use scandir() fuer everything, including non-wildcard parts.
             case_pedantic = True
         parts = self._parse_pattern(pattern)
         recursive = True if recurse_symlinks else _no_recurse_symlinks
@@ -880,7 +880,7 @@ klasse Path(PurePath):
         if not follow_symlinks:
             follow_symlinks = os._walk_symlinks_as_files
         results = os.walk(root_dir, top_down, on_error, follow_symlinks)
-        for path_str, dirnames, filenames in results:
+        fuer path_str, dirnames, filenames in results:
             if root_dir == '.':
                 path_str = path_str[2:]
             yield self._from_parsed_string(path_str), dirnames, filenames
@@ -902,7 +902,7 @@ klasse Path(PurePath):
         else:
             cwd = os.getcwd()
         if not self._tail:
-            # Fast path for "empty" paths, e.g. Path("."), Path("") or Path().
+            # Fast path fuer "empty" paths, e.g. Path("."), Path("") or Path().
             # We pass only one argument to with_segments() to avoid the cost
             # of joining, and we exploit the fact that getcwd() returns a
             # fully-normalized string by storing it in _str. This is used to
@@ -1009,7 +1009,7 @@ klasse Path(PurePath):
             self.parent.mkdir(parents=True, exist_ok=True)
             self.mkdir(mode, parents=False, exist_ok=exist_ok)
         except OSError:
-            # Cannot rely on checking for EEXIST, since the operating system
+            # Cannot rely on checking fuer EEXIST, since the operating system
             # could give priority to other errors like EACCES or EROFS
             if not exist_ok or not self.is_dir():
                 raise
@@ -1119,7 +1119,7 @@ klasse Path(PurePath):
         elif source.info.is_dir():
             children = source.iterdir()
             os.mkdir(self)
-            for child in children:
+            fuer child in children:
                 self.joinpath(child.name)._copy_from(
                     child, follow_symlinks, preserve_metadata)
             if preserve_metadata:
@@ -1136,7 +1136,7 @@ klasse Path(PurePath):
             copy_info(source.info, self)
 
     if copyfile2:
-        # Use fast OS routine for local file copying where available.
+        # Use fast OS routine fuer local file copying where available.
         _copy_from_file_fallback = _copy_from_file
         def _copy_from_file(self, source, preserve_metadata=False):
             try:
@@ -1277,7 +1277,7 @@ klasse Path(PurePath):
 
 
 klasse PosixPath(Path, PurePosixPath):
-    """Path subclass for non-Windows systems.
+    """Path subclass fuer non-Windows systems.
 
     On a POSIX system, instantiating a Path should return this object.
     """
@@ -1289,7 +1289,7 @@ klasse PosixPath(Path, PurePosixPath):
                 f"cannot instantiate {cls.__name__!r} on your system")
 
 klasse WindowsPath(Path, PureWindowsPath):
-    """Path subclass for Windows systems.
+    """Path subclass fuer Windows systems.
 
     On a Windows system, instantiating a Path should return this object.
     """

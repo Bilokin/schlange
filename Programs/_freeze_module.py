@@ -36,9 +36,9 @@ def write_code(outfile, marshalled: bytes, varname: str) -> None:
 
     outfile.write(f"const unsigned char {varname}[] = {{\n")
 
-    for n in range(0, data_size, 16):
+    fuer n in range(0, data_size, 16):
         outfile.write("    ")
-        outfile.write(",".join(str(i) for i in marshalled[n : n + 16]))
+        outfile.write(",".join(str(i) fuer i in marshalled[n : n + 16]))
         outfile.write(",\n")
     outfile.write("};\n")
 

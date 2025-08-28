@@ -15,8 +15,8 @@ single character (code point zero).
 
 The tricky thing is what should happen when non-ASCII bytes are used
 inside literals.  For bytes literals, this is considered illegal.  But
-for str literals, those bytes are supposed to be decoded using the
-encoding declared for the file (UTF-8 by default).
+fuer str literals, those bytes are supposed to be decoded using the
+encoding declared fuer the file (UTF-8 by default).
 
 We have to test this with various file encodings.  We also test it with
 exec()/eval(), which uses a different code path.
@@ -74,8 +74,8 @@ klasse TestLiterals(unittest.TestCase):
 
     def test_template(self):
         # Check that the template doesn't contain any non-printables
-        # except for \n.
-        for c in TEMPLATE:
+        # except fuer \n.
+        fuer c in TEMPLATE:
             assert c == '\n' or ' ' <= c <= '~', repr(c)
 
     def test_eval_str_normal(self):
@@ -106,7 +106,7 @@ klasse TestLiterals(unittest.TestCase):
         self.assertRaises(SyntaxError, eval, r""" '\U0000000' """)
 
     def test_eval_str_invalid_escape(self):
-        for b in range(1, 128):
+        fuer b in range(1, 128):
             if b in b"""\n\r"'01234567NU\\abfnrtuvx""":
                 continue
             with self.assertWarns(SyntaxWarning):
@@ -147,7 +147,7 @@ klasse TestLiterals(unittest.TestCase):
         self.assertEqual(w[0].filename, '<string>')
 
     def test_eval_str_invalid_octal_escape(self):
-        for i in range(0o400, 0o1000):
+        fuer i in range(0o400, 0o1000):
             with self.assertWarns(SyntaxWarning):
                 self.assertEqual(eval(r"'\%o'" % i), chr(i))
 
@@ -224,7 +224,7 @@ klasse TestLiterals(unittest.TestCase):
         self.assertRaises(SyntaxError, eval, r""" b'\x0' """)
 
     def test_eval_bytes_invalid_escape(self):
-        for b in range(1, 128):
+        fuer b in range(1, 128):
             if b in b"""\n\r"'01234567\\abfnrtvx""":
                 continue
             with self.assertWarns(SyntaxWarning):
@@ -252,7 +252,7 @@ klasse TestLiterals(unittest.TestCase):
         self.assertEqual(exc.lineno, 2)
 
     def test_eval_bytes_invalid_octal_escape(self):
-        for i in range(0o400, 0o1000):
+        fuer i in range(0o400, 0o1000):
             with self.assertWarns(SyntaxWarning):
                 self.assertEqual(eval(r"b'\%o'" % i), bytes([i & 0o377]))
 

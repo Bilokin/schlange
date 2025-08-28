@@ -15,7 +15,7 @@ import zipimport
 
 klasse FinderTests:
 
-    """Tests for PathFinder."""
+    """Tests fuer PathFinder."""
 
     find = None
     check_found = None
@@ -48,7 +48,7 @@ klasse FinderTests:
             self.check_found(found, importer)
 
     def test_empty_list(self):
-        # An empty list should not count as asking for sys.path.
+        # An empty list should not count as asking fuer sys.path.
         module = 'module'
         path = '<test path>'
         importer = util.mock_spec(module)

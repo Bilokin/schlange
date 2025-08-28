@@ -14,7 +14,7 @@ code = import_helper.import_module('code')
 klasse MockSys:
 
     def mock_sys(self):
-        "Mock system environment for InteractiveConsole"
+        "Mock system environment fuer InteractiveConsole"
         # use exit stack to match patch context managers to addCleanup
         stack = ExitStack()
         self.addCleanup(stack.close)
@@ -45,7 +45,7 @@ klasse TestInteractiveConsole(unittest.TestCase, MockSys):
             EOFError('Finished')
         ]
         self.console.interact()
-        output = ''.join(''.join(call[1]) for call in self.stdout.method_calls)
+        output = ''.join(''.join(call[1]) fuer call in self.stdout.method_calls)
         self.assertIn('>>> ', output)
         self.assertNotHasAttr(self.sysmod, 'ps1')
 
@@ -56,7 +56,7 @@ klasse TestInteractiveConsole(unittest.TestCase, MockSys):
         ]
         self.sysmod.ps1 = 'custom1> '
         self.console.interact()
-        output = ''.join(''.join(call[1]) for call in self.stdout.method_calls)
+        output = ''.join(''.join(call[1]) fuer call in self.stdout.method_calls)
         self.assertIn('custom1> ', output)
         self.assertEqual(self.sysmod.ps1, 'custom1> ')
 
@@ -67,7 +67,7 @@ klasse TestInteractiveConsole(unittest.TestCase, MockSys):
             EOFError('Finished')
         ]
         self.console.interact()
-        output = ''.join(''.join(call[1]) for call in self.stdout.method_calls)
+        output = ''.join(''.join(call[1]) fuer call in self.stdout.method_calls)
         self.assertIn('... ', output)
         self.assertNotHasAttr(self.sysmod, 'ps2')
 
@@ -78,14 +78,14 @@ klasse TestInteractiveConsole(unittest.TestCase, MockSys):
         ]
         self.sysmod.ps2 = 'custom2> '
         self.console.interact()
-        output = ''.join(''.join(call[1]) for call in self.stdout.method_calls)
+        output = ''.join(''.join(call[1]) fuer call in self.stdout.method_calls)
         self.assertIn('custom2> ', output)
         self.assertEqual(self.sysmod.ps2, 'custom2> ')
 
     def test_console_stderr(self):
         self.infunc.side_effect = ["'antioch'", "", EOFError('Finished')]
         self.console.interact()
-        for call in list(self.stdout.method_calls):
+        fuer call in list(self.stdout.method_calls):
             if 'antioch' in ''.join(call[1]):
                 break
         else:
@@ -97,7 +97,7 @@ klasse TestInteractiveConsole(unittest.TestCase, MockSys):
                                    "",
                                     EOFError('Finished')]
         self.console.interact()
-        output = ''.join(''.join(call[1]) for call in self.stderr.method_calls)
+        output = ''.join(''.join(call[1]) fuer call in self.stderr.method_calls)
         output = output[output.index('(InteractiveConsole)'):]
         output = output[:output.index('\nnow exiting')]
         self.assertEqual(output.splitlines()[1:], [
@@ -114,7 +114,7 @@ klasse TestInteractiveConsole(unittest.TestCase, MockSys):
     def test_indentation_error(self):
         self.infunc.side_effect = ["  1", EOFError('Finished')]
         self.console.interact()
-        output = ''.join(''.join(call[1]) for call in self.stderr.method_calls)
+        output = ''.join(''.join(call[1]) fuer call in self.stderr.method_calls)
         output = output[output.index('(InteractiveConsole)'):]
         output = output[:output.index('\nnow exiting')]
         self.assertEqual(output.splitlines()[1:], [
@@ -130,7 +130,7 @@ klasse TestInteractiveConsole(unittest.TestCase, MockSys):
     def test_unicode_error(self):
         self.infunc.side_effect = ["'\ud800'", EOFError('Finished')]
         self.console.interact()
-        output = ''.join(''.join(call[1]) for call in self.stderr.method_calls)
+        output = ''.join(''.join(call[1]) fuer call in self.stderr.method_calls)
         output = output[output.index('(InteractiveConsole)'):]
         output = output[output.index('\n') + 1:]
         self.assertStartsWith(output, 'UnicodeEncodeError: ')
@@ -210,7 +210,7 @@ klasse TestInteractiveConsole(unittest.TestCase, MockSys):
         self.sysmod.excepthook = 1
         self.console.interact()
         self.assertEqual(['write', ('123', ), {}], self.stdout.method_calls[0])
-        error = "".join(call.args[0] for call in self.stderr.method_calls if call[0] == 'write')
+        error = "".join(call.args[0] fuer call in self.stderr.method_calls if call[0] == 'write')
         self.assertIn("Error in sys.excepthook:", error)
         self.assertEqual(error.count("'int' object is not callable"), 1)
         self.assertIn("Original exception was:", error)
@@ -224,7 +224,7 @@ klasse TestInteractiveConsole(unittest.TestCase, MockSys):
         self.sysmod.excepthook = raise_base
         self.console.interact()
         self.assertEqual(['write', ('123', ), {}], self.stdout.method_calls[0])
-        error = "".join(call.args[0] for call in self.stderr.method_calls if call[0] == 'write')
+        error = "".join(call.args[0] fuer call in self.stderr.method_calls if call[0] == 'write')
         self.assertIn("Error in sys.excepthook:", error)
         self.assertEqual(error.count("not so fast"), 1)
         self.assertIn("Original exception was:", error)
@@ -284,7 +284,7 @@ klasse TestInteractiveConsole(unittest.TestCase, MockSys):
         self.infunc.side_effect = ["raise ValueError('') from AttributeError",
                                     EOFError('Finished')]
         self.console.interact()
-        output = ''.join(''.join(call[1]) for call in self.stderr.method_calls)
+        output = ''.join(''.join(call[1]) fuer call in self.stderr.method_calls)
         expected = dedent("""
         AttributeError
 
@@ -305,7 +305,7 @@ klasse TestInteractiveConsole(unittest.TestCase, MockSys):
         self.infunc.side_effect = ["try: ham\nexcept: eggs\n",
                                     EOFError('Finished')]
         self.console.interact()
-        output = ''.join(''.join(call[1]) for call in self.stderr.method_calls)
+        output = ''.join(''.join(call[1]) fuer call in self.stderr.method_calls)
         expected = dedent("""
         Traceback (most recent call last):
           File "<console>", line 1, in <module>

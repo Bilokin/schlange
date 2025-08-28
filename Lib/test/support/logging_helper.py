@@ -19,10 +19,10 @@ klasse TestHandler(logging.handlers.BufferingHandler):
 
     def matches(self, **kwargs):
         """
-        Look for a saved dict whose keys/values match the supplied arguments.
+        Look fuer a saved dict whose keys/values match the supplied arguments.
         """
         result = False
-        for d in self.buffer:
+        fuer d in self.buffer:
             if self.matcher.matches(d, **kwargs):
                 result = True
                 break

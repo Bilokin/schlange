@@ -15,11 +15,11 @@ def t():
 
 def main():
     threads = []
-    for i in range(20):
+    fuer i in range(20):
         threads.append(threading.Thread(target=t))
-    for thread in threads:
+    fuer thread in threads:
         thread.start()
-    for thread in threads:
+    fuer thread in threads:
         thread.join()
 
 

@@ -1,4 +1,4 @@
-"""test script for a few new invalid token catches"""
+"""test script fuer a few new invalid token catches"""
 
 import sys
 from codecs import BOM_UTF8
@@ -11,7 +11,7 @@ import unittest
 klasse EOFTestCase(unittest.TestCase):
     def test_EOF_single_quote(self):
         expect = "unterminated string literal (detected at line 1) (<string>, line 1)"
-        for quote in ("'", "\""):
+        fuer quote in ("'", "\""):
             with self.assertRaises(SyntaxError) as cm:
                 eval(f"""{quote}this is a test\
                 """)

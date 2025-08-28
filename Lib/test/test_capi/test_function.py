@@ -227,7 +227,7 @@ klasse FunctionTest(unittest.TestCase):
         self.assertIsInstance(closure, tuple)
         self.assertEqual(len(closure), 1)
         self.assertEqual(len(closure), len(func.__code__.co_freevars))
-        for cell in closure:
+        fuer cell in closure:
             self.assertIsInstance(cell, CellType)
         self.assertTrue(closure[0].cell_contents, 5)
 
@@ -237,9 +237,9 @@ klasse FunctionTest(unittest.TestCase):
         self.assertIsInstance(closure, tuple)
         self.assertEqual(len(closure), 4)
         self.assertEqual(len(closure), len(func.__code__.co_freevars))
-        for cell in closure:
+        fuer cell in closure:
             self.assertIsInstance(cell, CellType)
-        self.assertEqual([cell.cell_contents for cell in closure],
+        self.assertEqual([cell.cell_contents fuer cell in closure],
                          [1, 2, 3, 4])
 
     def test_function_get_closure_error(self):
@@ -262,15 +262,15 @@ klasse FunctionTest(unittest.TestCase):
         func = function_without_closure
         _testcapi.function_set_closure(func, (CellType(1), CellType(1)))
         closure = _testcapi.function_get_closure(func)
-        self.assertEqual([c.cell_contents for c in closure], [1, 1])
-        self.assertEqual([c.cell_contents for c in func.__closure__], [1, 1])
+        self.assertEqual([c.cell_contents fuer c in closure], [1, 1])
+        self.assertEqual([c.cell_contents fuer c in func.__closure__], [1, 1])
 
         func = function_with_closure(1)
         _testcapi.function_set_closure(func,
                                        (CellType(1), CellType(2), CellType(3)))
         closure = _testcapi.function_get_closure(func)
-        self.assertEqual([c.cell_contents for c in closure], [1, 2, 3])
-        self.assertEqual([c.cell_contents for c in func.__closure__], [1, 2, 3])
+        self.assertEqual([c.cell_contents fuer c in closure], [1, 2, 3])
+        self.assertEqual([c.cell_contents fuer c in func.__closure__], [1, 2, 3])
 
     def test_function_set_closure_none(self):
         # Test PyFunction_SetClosure()

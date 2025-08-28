@@ -64,7 +64,7 @@ klasse CAPITest(unittest.TestCase):
                 0xDEADCAFE,
             )
 
-        for value in values:
+        fuer value in values:
             expected = python_hash_pointer(value)
             with self.subTest(value=value):
                 self.assertEqual(hash_pointer(value), expected,

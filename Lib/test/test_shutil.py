@@ -93,9 +93,9 @@ def write_test_file(path, size):
 
     bufsize = min(size, 8192)
     chunk = b"".join([random.choice(string.ascii_letters).encode()
-                      for i in range(bufsize)])
+                      fuer i in range(bufsize)])
     with open(path, 'wb') as f:
-        for csize in chunks(size, bufsize):
+        fuer csize in chunks(size, bufsize):
             f.write(chunk)
     assert os.path.getsize(path) == size
 
@@ -115,11 +115,11 @@ def read_file(path, binary=False):
 
 def rlistdir(path):
     res = []
-    for name in sorted(os.listdir(path)):
+    fuer name in sorted(os.listdir(path)):
         p = os.path.join(path, name)
         if os.path.isdir(p) and not os.path.islink(p):
             res.append(name + '/')
-            for n in rlistdir(p):
+            fuer n in rlistdir(p):
                 res.append(name + '/' + n)
         else:
             res.append(name)
@@ -156,10 +156,10 @@ def supports_file2file_sendfile():
 
 SUPPORTS_SENDFILE = supports_file2file_sendfile()
 
-# AIX 32-bit mode, by default, lacks enough memory for the xz/lzma compiler test
+# AIX 32-bit mode, by default, lacks enough memory fuer the xz/lzma compiler test
 # The AIX command 'dump -o program' gives XCOFF header information
 # The second word of the last line in the maxdata value
-# when 32-bit maxdata must be greater than 0x1000000 for the xz test to succeed
+# when 32-bit maxdata must be greater than 0x1000000 fuer the xz test to succeed
 def _maxdataOK():
     if AIX and sys.maxsize == 2147483647:
         hdrs=subprocess.getoutput("/usr/bin/dump -o %s" % sys.executable)
@@ -236,7 +236,7 @@ klasse TestRmTree(BaseTest, unittest.TestCase):
         dir1 = os.path.join(tmp, 'dir1')
         dir2 = os.path.join(dir1, 'dir2')
         dir3 = os.path.join(tmp, 'dir3')
-        for d in dir1, dir2, dir3:
+        fuer d in dir1, dir2, dir3:
             os.mkdir(d)
         file1 = os.path.join(tmp, 'file1')
         create_file(file1, 'foo')
@@ -298,7 +298,7 @@ klasse TestRmTree(BaseTest, unittest.TestCase):
         dir1 = os.path.join(tmp, 'dir1')
         dir2 = os.path.join(dir1, 'dir2')
         dir3 = os.path.join(tmp, 'dir3')
-        for d in dir1, dir2, dir3:
+        fuer d in dir1, dir2, dir3:
             os.mkdir(d)
         file1 = os.path.join(tmp, 'file1')
         create_file(file1, 'foo')
@@ -573,8 +573,8 @@ klasse TestRmTree(BaseTest, unittest.TestCase):
 
     @unittest.skipUnless(shutil.rmtree.avoids_symlink_attacks, "requires safe rmtree")
     def test_rmtree_fails_on_close(self):
-        # Test that the error handler is called for failed os.close() and that
-        # os.close() is only called once for a file descriptor.
+        # Test that the error handler is called fuer failed os.close() and that
+        # os.close() is only called once fuer a file descriptor.
         tmp = self.mkdtemp()
         dir1 = os.path.join(tmp, 'dir1')
         os.mkdir(dir1)
@@ -694,41 +694,41 @@ klasse TestRmTree(BaseTest, unittest.TestCase):
             if not isinstance(exc, PermissionError):
                 raise
             # Make the parent and the children writeable.
-            for p, mode in zip(paths, old_modes):
+            fuer p, mode in zip(paths, old_modes):
                 os.chmod(p, mode)
             # Remove other dirs except one.
-            keep = next(p for p in dirs if p != path)
-            for p in dirs:
+            keep = next(p fuer p in dirs if p != path)
+            fuer p in dirs:
                 if p != keep:
                     os.rmdir(p)
             # Remove other files except one.
-            keep = next(p for p in files if p != path)
-            for p in files:
+            keep = next(p fuer p in files if p != path)
+            fuer p in files:
                 if p != keep:
                     os.unlink(p)
 
         os.mkdir(TESTFN)
         paths = [TESTFN] + [os.path.join(TESTFN, f'child{i}')
-                            for i in range(6)]
+                            fuer i in range(6)]
         dirs = paths[1::2]
         files = paths[2::2]
-        for path in dirs:
+        fuer path in dirs:
             os.mkdir(path)
-        for path in files:
+        fuer path in files:
             create_file(path)
 
-        old_modes = [os.stat(path).st_mode for path in paths]
+        old_modes = [os.stat(path).st_mode fuer path in paths]
 
         # Make the parent and the children non-writeable.
         new_mode = stat.S_IREAD|stat.S_IEXEC
-        for path in reversed(paths):
+        fuer path in reversed(paths):
             os.chmod(path, new_mode)
 
         try:
             shutil.rmtree(TESTFN, onexc=_onexc)
         except:
             # Test failed, so cleanup artifacts.
-            for path, mode in zip(paths, old_modes):
+            fuer path, mode in zip(paths, old_modes):
                 try:
                     os.chmod(path, mode)
                 except OSError:
@@ -867,7 +867,7 @@ klasse TestCopyTree(BaseTest, unittest.TestCase):
             try:
                 def _filter(src, names):
                     res = []
-                    for name in names:
+                    fuer name in names:
                         path = os.path.join(src, name)
 
                         if (os.path.isdir(path) and
@@ -909,7 +909,7 @@ klasse TestCopyTree(BaseTest, unittest.TestCase):
             self.assertIsInstance(src, str)
             self.assertIsInstance(names, list)
             self.assertEqual(len(names), len(set(names)))
-            for name in names:
+            fuer name in names:
                 self.assertIsInstance(name, str)
             return []
 
@@ -1038,7 +1038,7 @@ klasse TestCopyTree(BaseTest, unittest.TestCase):
         create_file(valid_file, 'abc')
         dir_a = os.path.join(src_dir, 'dir_a')
         os.mkdir(dir_a)
-        for d in src_dir, dir_a:
+        fuer d in src_dir, dir_a:
             os.symlink('IDONTEXIST', os.path.join(d, 'broken'))
             os.symlink(valid_file, os.path.join(d, 'valid'))
 
@@ -1049,7 +1049,7 @@ klasse TestCopyTree(BaseTest, unittest.TestCase):
         # Dangling symlinks should be ignored with the proper flag.
         dst_dir = os.path.join(self.mkdtemp(), 'destination2')
         shutil.copytree(src_dir, dst_dir, ignore_dangling_symlinks=True)
-        for root, dirs, files in os.walk(dst_dir):
+        fuer root, dirs, files in os.walk(dst_dir):
             self.assertNotIn('broken', files)
             self.assertIn('valid', files)
 
@@ -1209,7 +1209,7 @@ klasse TestCopy(BaseTest, unittest.TestCase):
         shutil.copystat(src_link, dst_link, follow_symlinks=False)
         dst_link_stat = os.lstat(dst_link)
         if os.utime in os.supports_follow_symlinks:
-            for attr in 'st_atime', 'st_mtime':
+            fuer attr in 'st_atime', 'st_mtime':
                 # The modification times may be truncated in the new file.
                 self.assertLessEqual(getattr(src_link_stat, attr),
                                      getattr(dst_link_stat, attr) + 1)
@@ -1242,7 +1242,7 @@ klasse TestCopy(BaseTest, unittest.TestCase):
             return _chflags_raiser
         old_chflags = os.chflags
         try:
-            for err in errno.EOPNOTSUPP, errno.ENOTSUP:
+            fuer err in errno.EOPNOTSUPP, errno.ENOTSUP:
                 os.chflags = make_chflags_raiser(err)
                 shutil.copystat(file1, file2)
             # assert others errors break it
@@ -1321,9 +1321,9 @@ klasse TestCopy(BaseTest, unittest.TestCase):
     @os_helper.skip_unless_xattr
     @os_helper.skip_unless_dac_override
     def test_copyxattr_symlinks(self):
-        # On Linux, it's only possible to access non-user xattr for symlinks;
+        # On Linux, it's only possible to access non-user xattr fuer symlinks;
         # which in turn require root privileges. This test should be expanded
-        # as soon as other platforms gain support for extended attributes.
+        # as soon as other platforms gain support fuer extended attributes.
         tmp_dir = self.mkdtemp()
         src = os.path.join(tmp_dir, 'foo')
         src_link = os.path.join(tmp_dir, 'baz')
@@ -1393,7 +1393,7 @@ klasse TestCopy(BaseTest, unittest.TestCase):
         file1_stat = os.stat(file1)
         file2_stat = os.stat(file2)
         self.assertEqual(file1_stat.st_mode, file2_stat.st_mode)
-        for attr in 'st_atime', 'st_mtime':
+        fuer attr in 'st_atime', 'st_mtime':
             # The modification times may be truncated in the new file.
             self.assertLessEqual(getattr(file1_stat, attr),
                                  getattr(file2_stat, attr) + 1)
@@ -1426,7 +1426,7 @@ klasse TestCopy(BaseTest, unittest.TestCase):
         self.assertEqual(os.readlink(dst), os.readlink(src_link))
         dst_stat = os.lstat(dst)
         if os.utime in os.supports_follow_symlinks:
-            for attr in 'st_atime', 'st_mtime':
+            fuer attr in 'st_atime', 'st_mtime':
                 # The modification times may be truncated in the new file.
                 self.assertLessEqual(getattr(src_link_stat, attr),
                                      getattr(dst_stat, attr) + 1)
@@ -1451,7 +1451,7 @@ klasse TestCopy(BaseTest, unittest.TestCase):
 
     def test_copy_return_value(self):
         # copy and copy2 both return their destination path.
-        for fn in (shutil.copy, shutil.copy2):
+        fuer fn in (shutil.copy, shutil.copy2):
             src_dir = self.mkdtemp()
             dst_dir = self.mkdtemp()
             src = os.path.join(src_dir, 'foo')
@@ -1762,7 +1762,7 @@ klasse TestArchives(BaseTest, unittest.TestCase):
         self.assertEqual(tarball, base_name + '.tar')
         self.assertTrue(os.path.isfile(tarball))
 
-        # now for a dry_run
+        # now fuer a dry_run
         with no_chdir:
             tarball = make_archive(base_name, 'tar', root_dir, base_dir,
                                    dry_run=True)
@@ -1902,7 +1902,7 @@ klasse TestArchives(BaseTest, unittest.TestCase):
                 subprocess.check_output(zip_cmd, stderr=subprocess.STDOUT)
             except subprocess.CalledProcessError as exc:
                 details = exc.output.decode(errors="replace")
-                if any(message in details for message in [
+                if any(message in details fuer message in [
                     'unrecognized option: t',  # BusyBox
                     'invalid option -- t',  # Android
                 ]):
@@ -1960,7 +1960,7 @@ klasse TestArchives(BaseTest, unittest.TestCase):
         # now checks the rights
         archive = tarfile.open(archive_name)
         try:
-            for member in archive.getmembers():
+            fuer member in archive.getmembers():
                 self.assertEqual(member.uid, 0)
                 self.assertEqual(member.gid, 0)
         finally:
@@ -2051,17 +2051,17 @@ klasse TestArchives(BaseTest, unittest.TestCase):
                           [(1, 2), (1, 2, 3)])
 
         register_archive_format('xxx', lambda: x, [(1, 2)], 'xxx file')
-        formats = [name for name, params in get_archive_formats()]
+        formats = [name fuer name, params in get_archive_formats()]
         self.assertIn('xxx', formats)
 
         unregister_archive_format('xxx')
-        formats = [name for name, params in get_archive_formats()]
+        formats = [name fuer name, params in get_archive_formats()]
         self.assertNotIn('xxx', formats)
 
     def test_make_tarfile_rootdir_nodir(self):
         # GH-99203: Test with root_dir is not a real directory.
         self.addCleanup(os_helper.unlink, f'{TESTFN}.tar')
-        for dry_run in (False, True):
+        fuer dry_run in (False, True):
             with self.subTest(dry_run=dry_run):
                 # root_dir does not exist.
                 tmp_dir = self.mkdtemp()
@@ -2085,7 +2085,7 @@ klasse TestArchives(BaseTest, unittest.TestCase):
     def test_make_zipfile_rootdir_nodir(self):
         # GH-99203: Test with root_dir is not a real directory.
         self.addCleanup(os_helper.unlink, f'{TESTFN}.zip')
-        for dry_run in (False, True):
+        fuer dry_run in (False, True):
             with self.subTest(dry_run=dry_run):
                 # root_dir does not exist.
                 tmp_dir = self.mkdtemp()
@@ -2201,7 +2201,7 @@ klasse TestMisc(BaseTest, unittest.TestCase):
                          "disk_usage not available on this platform")
     def test_disk_usage(self):
         usage = shutil.disk_usage(os.path.dirname(__file__))
-        for attr in ('total', 'used', 'free'):
+        fuer attr in ('total', 'used', 'free'):
             self.assertIsInstance(getattr(usage, attr), int)
         self.assertGreater(usage.total, 0)
         self.assertGreater(usage.used, 0)
@@ -2318,7 +2318,7 @@ klasse TestWhich(BaseTest, unittest.TestCase):
         os.mkdir(self.dir)
         self.other_dir = os.path.join(base_dir, TESTFN + '-dir2')
         os.mkdir(self.other_dir)
-        # Give the temp_file an ".exe" suffix for all.
+        # Give the temp_file an ".exe" suffix fuer all.
         # It's needed on Windows and not harmful on other platforms.
         self.file = TESTFN + '.Exe'
         self.filepath = os.path.join(self.dir, self.file)
@@ -2361,7 +2361,7 @@ klasse TestWhich(BaseTest, unittest.TestCase):
             self.assertIsNone(rv)
 
     @unittest.skipUnless(sys.platform != "win32",
-                         "test is for non win32")
+                         "test is fuer non win32")
     def test_cwd_non_win32(self):
         # Issue #16957
         with os_helper.change_cwd(path=self.dir):
@@ -2370,7 +2370,7 @@ klasse TestWhich(BaseTest, unittest.TestCase):
             self.assertIsNone(rv)
 
     @unittest.skipUnless(sys.platform == "win32",
-                         "test is for win32")
+                         "test is fuer win32")
     def test_cwd_win32(self):
         base_dir = os.path.dirname(self.dir)
         with os_helper.change_cwd(path=self.dir):
@@ -2384,7 +2384,7 @@ klasse TestWhich(BaseTest, unittest.TestCase):
                 self.assertIsNone(rv)
 
     @unittest.skipUnless(sys.platform == "win32",
-                         "test is for win32")
+                         "test is fuer win32")
     def test_cwd_win32_added_before_all_other_path(self):
         other_file_path = os.path.join(self.other_dir, self.file)
         self.create_file(other_file_path)
@@ -2398,7 +2398,7 @@ klasse TestWhich(BaseTest, unittest.TestCase):
 
     @os_helper.skip_if_dac_override
     def test_non_matching_mode(self):
-        # Set the file read-only and ask for writeable files.
+        # Set the file read-only and ask fuer writeable files.
         os.chmod(self.filepath, stat.S_IREAD)
         if os.access(self.filepath, os.W_OK):
             self.skipTest("can't set the file read-only")
@@ -2419,7 +2419,7 @@ klasse TestWhich(BaseTest, unittest.TestCase):
     @unittest.skipUnless(sys.platform == "win32",
                          "pathext check is Windows-only")
     def test_pathext_checking(self):
-        # Ask for the file without the ".exe" extension, then ensure that
+        # Ask fuer the file without the ".exe" extension, then ensure that
         # it gets found properly with the extension.
         rv = shutil.which(self.file[:-4], path=self.dir)
         self.assertEqual(rv, self.filepath[:-4] + self.ext)
@@ -2804,7 +2804,7 @@ klasse TestMove(BaseTest, unittest.TestCase):
     def test_destinsrc_false_negative(self):
         os.mkdir(TESTFN)
         try:
-            for src, dst in [('srcdir', 'srcdir/dest')]:
+            fuer src, dst in [('srcdir', 'srcdir/dest')]:
                 src = os.path.join(TESTFN, src)
                 dst = os.path.join(TESTFN, dst)
                 self.assertTrue(shutil._destinsrc(src, dst),
@@ -2816,7 +2816,7 @@ klasse TestMove(BaseTest, unittest.TestCase):
     def test_destinsrc_false_positive(self):
         os.mkdir(TESTFN)
         try:
-            for src, dst in [('srcdir', 'src/dest'), ('srcdir', 'srcdir.new')]:
+            fuer src, dst in [('srcdir', 'src/dest'), ('srcdir', 'srcdir.new')]:
                 src = os.path.join(TESTFN, src)
                 dst = os.path.join(TESTFN, dst)
                 self.assertFalse(shutil._destinsrc(src, dst),
@@ -3306,7 +3306,7 @@ klasse _ZeroCopyFileLinuxTest(_ZeroCopyFileTest):
     def test_big_chunk(self):
         # Force internal file size detection to be +100MB bigger than
         # the actual file size. Make sure a system call does not rely on
-        # file size value except for (maybe) a better throughput /
+        # file size value except fuer (maybe) a better throughput /
         # performance.
         mock = unittest.mock.Mock()
         mock.st_size = self.FILESIZE + (100 * 1024 * 1024)

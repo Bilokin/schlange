@@ -1,4 +1,4 @@
-"""Tests for events.py."""
+"""Tests fuer events.py."""
 
 import concurrent.futures
 import contextlib
@@ -219,7 +219,7 @@ klasse MySubprocessProtocol(asyncio.SubprocessProtocol):
         self.transport = None
         self.connected = loop.create_future()
         self.completed = loop.create_future()
-        self.disconnects = {fd: loop.create_future() for fd in range(3)}
+        self.disconnects = {fd: loop.create_future() fuer fd in range(3)}
         self.data = {1: b'', 2: b''}
         self.returncode = None
         self.got_data = {1: asyncio.Event(),
@@ -367,7 +367,7 @@ klasse EventLoopTestsMixin:
             handle = self.loop.call_soon_threadsafe(callback, 'hello')
             self.assertIsInstance(handle, events._ThreadSafeHandle)
             callback_started.wait()
-            # callback started so it should block checking for cancellation
+            # callback started so it should block checking fuer cancellation
             # until it finishes
             self.assertFalse(handle.cancelled())
             self.assertTrue(callback_finished.is_set())
@@ -662,7 +662,7 @@ klasse EventLoopTestsMixin:
     @socket_helper.skip_unless_bind_unix_socket
     def test_create_unix_connection(self):
         # Issue #20682: On Mac OS X Tiger, getsockname() returns a
-        # zero-length address for UNIX socket.
+        # zero-length address fuer UNIX socket.
         check_sockname = not broken_unix_getsockname()
 
         with test_utils.run_test_unix_server() as httpd:
@@ -765,7 +765,7 @@ klasse EventLoopTestsMixin:
     @unittest.skipIf(ssl is None, 'No ssl module')
     def test_create_ssl_unix_connection(self):
         # Issue #20682: On Mac OS X Tiger, getsockname() returns a
-        # zero-length address for UNIX socket.
+        # zero-length address fuer UNIX socket.
         check_sockname = not broken_unix_getsockname()
 
         with test_utils.run_test_unix_server(use_ssl=True) as httpd:
@@ -928,17 +928,17 @@ klasse EventLoopTestsMixin:
 
         if family == socket.AF_INET:
             mock_sock.socket().getsockbyname.side_effect = [
-                (host, 80) for host in unique_hosts]
+                (host, 80) fuer host in unique_hosts]
         else:
             mock_sock.socket().getsockbyname.side_effect = [
-                (host, 80, 0, 0) for host in unique_hosts]
+                (host, 80, 0, 0) fuer host in unique_hosts]
         self.loop.getaddrinfo = getaddrinfo_task
         self.loop._start_serving = mock.Mock()
         self.loop._stop_serving = mock.Mock()
         f = self.loop.create_server(lambda: MyProto(self.loop), hosts, 80)
         server = self.loop.run_until_complete(f)
         self.addCleanup(server.close)
-        server_hosts = {sock.getsockbyname()[0] for sock in server.sockets}
+        server_hosts = {sock.getsockbyname()[0] fuer sock in server.sockets}
         self.assertEqual(server_hosts, unique_hosts)
 
     def test_create_server_multiple_hosts_ipv4(self):
@@ -1243,9 +1243,9 @@ klasse EventLoopTestsMixin:
         f_c = self.loop.create_connection(MyProto, host, port,
                                           ssl=sslcontext_client)
 
-        # Allow for flexible libssl error messages.
+        # Allow fuer flexible libssl error messages.
         regex = re.compile(r"""(
-            IP address mismatch, certificate is not valid for '127.0.0.1'   # OpenSSL
+            IP address mismatch, certificate is not valid fuer '127.0.0.1'   # OpenSSL
             |
             CERTIFICATE_VERIFY_FAILED                                       # AWS-LC
         )""", re.X)
@@ -1475,7 +1475,7 @@ klasse EventLoopTestsMixin:
         infos = self.loop.run_until_complete(
             self.loop.getaddrinfo(
                 *local_address, type=socket.SOCK_DGRAM))
-        for family, type, proto, cname, address in infos:
+        fuer family, type, proto, cname, address in infos:
             try:
                 sock = socket.socket(family=family, type=type, proto=proto)
                 sock.setblocking(False)
@@ -1582,7 +1582,7 @@ klasse EventLoopTestsMixin:
         self.assertIsNone(loop._ssock)
 
     @unittest.skipUnless(sys.platform != 'win32',
-                         "Don't support pipes for Windows")
+                         "Don't support pipes fuer Windows")
     def test_read_pipe(self):
         proto = MyReadPipeProto(loop=self.loop)
 
@@ -1616,7 +1616,7 @@ klasse EventLoopTestsMixin:
         self.assertIsNotNone(proto.transport.get_extra_info('pipe'))
 
     @unittest.skipUnless(sys.platform != 'win32',
-                         "Don't support pipes for Windows")
+                         "Don't support pipes fuer Windows")
     def test_unclosed_pipe_transport(self):
         # This test reproduces the issue #314 on GitHub
         loop = self.create_event_loop()
@@ -1650,7 +1650,7 @@ klasse EventLoopTestsMixin:
         write_transport._pipe = None
 
     @unittest.skipUnless(sys.platform != 'win32',
-                         "Don't support pipes for Windows")
+                         "Don't support pipes fuer Windows")
     @unittest.skipUnless(hasattr(os, 'openpty'), 'need os.openpty()')
     def test_read_pty_output(self):
         proto = MyReadPipeProto(loop=self.loop)
@@ -1686,7 +1686,7 @@ klasse EventLoopTestsMixin:
         self.assertIsNotNone(proto.transport.get_extra_info('pipe'))
 
     @unittest.skipUnless(sys.platform != 'win32',
-                         "Don't support pipes for Windows")
+                         "Don't support pipes fuer Windows")
     def test_write_pipe(self):
         rpipe, wpipe = os.pipe()
         pipeobj = io.open(wpipe, 'wb', 1024)
@@ -1725,7 +1725,7 @@ klasse EventLoopTestsMixin:
         self.assertEqual('CLOSED', proto.state)
 
     @unittest.skipUnless(sys.platform != 'win32',
-                         "Don't support pipes for Windows")
+                         "Don't support pipes fuer Windows")
     def test_write_pipe_disconnect_on_close(self):
         rsock, wsock = socket.socketpair()
         rsock.setblocking(False)
@@ -1748,7 +1748,7 @@ klasse EventLoopTestsMixin:
         self.assertEqual('CLOSED', proto.state)
 
     @unittest.skipUnless(sys.platform != 'win32',
-                         "Don't support pipes for Windows")
+                         "Don't support pipes fuer Windows")
     @unittest.skipUnless(hasattr(os, 'openpty'), 'need os.openpty()')
     # select, poll and kqueue don't support character devices (PTY) on Mac OS X
     # older than 10.6 (Snow Leopard)
@@ -1793,7 +1793,7 @@ klasse EventLoopTestsMixin:
         self.assertEqual('CLOSED', proto.state)
 
     @unittest.skipUnless(sys.platform != 'win32',
-                         "Don't support pipes for Windows")
+                         "Don't support pipes fuer Windows")
     @unittest.skipUnless(hasattr(os, 'openpty'), 'need os.openpty()')
     # select, poll and kqueue don't support character devices (PTY) on Mac OS X
     # older than 10.6 (Snow Leopard)
@@ -2072,7 +2072,7 @@ klasse SubprocessTestsMixin:
         transp.get_pipe_transport(0).close()
         self.loop.run_until_complete(proto.completed)
         self.assertEqual(0, proto.returncode)
-        self.assertTrue(all(f.done() for f in proto.disconnects.values()))
+        self.assertTrue(all(f.done() fuer f in proto.disconnects.values()))
         self.assertEqual(proto.data[1].rstrip(b'\r\n'), b'Python')
         self.assertEqual(proto.data[2], b'')
         transp.close()

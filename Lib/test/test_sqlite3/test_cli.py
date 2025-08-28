@@ -90,7 +90,7 @@ klasse InteractiveSession(unittest.TestCase):
             captured_stderr() as stderr,
             self.assertRaises(SystemExit) as cm
         ):
-            for cmd in commands:
+            fuer cmd in commands:
                 stdin.write(cmd + "\n")
             stdin.seek(0)
             cli(args)
@@ -243,7 +243,7 @@ klasse Completion(unittest.TestCase):
         self.assertIn(b"SAVEPOINT", output)
         self.assertIn(b"(1,)", output)
 
-        # Keywords are completed in upper case for even lower case user input.
+        # Keywords are completed in upper case fuer even lower case user input.
         input_ = b"sel\t\t 1;\n.quit\n"
         output = self.write_input(input_)
         self.assertIn(b"SELECT", output)
@@ -260,11 +260,11 @@ klasse Completion(unittest.TestCase):
                     " on FreeBSD")
     def test_complete_no_match(self):
         input_ = b"xyzzy\t\t\b\b\b\b\b\b\b.quit\n"
-        # Set NO_COLOR to disable coloring for self.PS1.
+        # Set NO_COLOR to disable coloring fuer self.PS1.
         output = self.write_input(input_, env={**os.environ, "NO_COLOR": "1"})
         lines = output.decode().splitlines()
         indices = (
-            i for i, line in enumerate(lines, 1)
+            i fuer i, line in enumerate(lines, 1)
             if line.startswith(f"{self.PS1}xyzzy")
         )
         line_num = next(indices, -1)
@@ -300,12 +300,12 @@ klasse Completion(unittest.TestCase):
         try:
             lines = output.decode().splitlines()
             indices = [
-                i for i, line in enumerate(lines)
+                i fuer i, line in enumerate(lines)
                 if line.startswith(self.PS1)
             ]
             self.assertEqual(len(indices), 2)
             start, end = indices
-            candidates = [l.strip() for l in lines[start+1:end]]
+            candidates = [l.strip() fuer l in lines[start+1:end]]
             self.assertEqual(candidates, sorted(SQLITE_KEYWORDS))
         except:
             if verbose:

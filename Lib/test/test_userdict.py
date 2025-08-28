@@ -52,8 +52,8 @@ klasse UserDictTest(mapping_tests.TestHashMappingProtocol):
 
         # Test rich comparison and __len__
         all = [d0, d1, d2, u, u0, u1, u2, uu, uu0, uu1, uu2]
-        for a in all:
-            for b in all:
+        fuer a in all:
+            fuer b in all:
                 self.assertEqual(a == b, len(a) == len(b))
 
         # Test __getitem__
@@ -97,7 +97,7 @@ klasse UserDictTest(mapping_tests.TestHashMappingProtocol):
         self.assertEqual(sorted(u2.values()), sorted(d2.values()))
 
         # Test "in".
-        for i in u2.keys():
+        fuer i in u2.keys():
             self.assertIn(i, u2)
             self.assertEqual(i in u1, i in d1)
             self.assertEqual(i in u0, i in d0)
@@ -108,16 +108,16 @@ klasse UserDictTest(mapping_tests.TestHashMappingProtocol):
         self.assertEqual(t, u2)
 
         # Test get
-        for i in u2.keys():
+        fuer i in u2.keys():
             self.assertEqual(u2.get(i), u2[i])
             self.assertEqual(u1.get(i), d1.get(i))
             self.assertEqual(u0.get(i), d0.get(i))
 
         # Test "in" iteration.
-        for i in range(20):
+        fuer i in range(20):
             u2[i] = str(i)
         ikeys = []
-        for k in u2:
+        fuer k in u2:
             ikeys.append(k)
         keys = u2.keys()
         self.assertEqual(set(ikeys), set(keys))
@@ -142,7 +142,7 @@ klasse UserDictTest(mapping_tests.TestHashMappingProtocol):
         self.assertRaises(KeyError, t.popitem)
 
     def test_init(self):
-        for kw in 'self', 'other', 'iterable':
+        fuer kw in 'self', 'other', 'iterable':
             self.assertEqual(list(collections.UserDict(**{kw: 42}).items()),
                              [(kw, 42)])
         self.assertEqual(list(collections.UserDict({}, dict=42).items()),
@@ -156,7 +156,7 @@ klasse UserDictTest(mapping_tests.TestHashMappingProtocol):
         self.assertRaises(TypeError, collections.UserDict.__init__)
 
     def test_update(self):
-        for kw in 'self', 'dict', 'other', 'iterable':
+        fuer kw in 'self', 'dict', 'other', 'iterable':
             d = collections.UserDict()
             d.update(**{kw: 42})
             self.assertEqual(list(d.items()), [(kw, 42)])

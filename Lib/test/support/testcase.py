@@ -24,7 +24,7 @@ klasse ExceptionIsLikeMixin:
         else:
             self.assertEqual(exc.message, template.message)
             self.assertEqual(len(exc.exceptions), len(template.exceptions))
-            for e, t in zip(exc.exceptions, template.exceptions):
+            fuer e, t in zip(exc.exceptions, template.exceptions):
                 self.assertExceptionIsLike(e, t)
 
 

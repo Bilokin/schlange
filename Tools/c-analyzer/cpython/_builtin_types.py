@@ -218,7 +218,7 @@ klasse BuiltinTypeInfo(namedtuple('BuiltinTypeInfo', 'file lno name static decl'
     def render_rowvalues(self, kinds):
         row = {
             'name': self.name,
-            **{k: '' for k in kinds},
+            **{k: '' fuer k in kinds},
             'filename': f'{self.relfile}:{self.lno}',
         }
         if self.static:
@@ -253,32 +253,32 @@ def _ensure_decl(decl, decls):
 def iter_builtin_types(filenames=None):
     decls = {}
     seen = set()
-    for filename in iter_header_files():
+    fuer filename in iter_header_files():
         seen.add(filename)
         with open(filename) as infile:
-            for lno, line in enumerate(infile, 1):
+            fuer lno, line in enumerate(infile, 1):
                 decl = BuiltinTypeDecl.from_line(line, filename, lno)
                 if not decl:
                     continue
                 _ensure_decl(decl, decls)
     srcfiles = []
-    for filename in iter_filenames():
+    fuer filename in iter_filenames():
         if filename.endswith('.c'):
             srcfiles.append(filename)
             continue
         if filename in seen:
             continue
         with open(filename) as infile:
-            for lno, line in enumerate(infile, 1):
+            fuer lno, line in enumerate(infile, 1):
                 decl = BuiltinTypeDecl.from_line(line, filename, lno)
                 if not decl:
                     continue
                 _ensure_decl(decl, decls)
 
-    for filename in srcfiles:
+    fuer filename in srcfiles:
         with open(filename) as infile:
             localdecls = {}
-            for lno, line in enumerate(infile, 1):
+            fuer lno, line in enumerate(infile, 1):
                 parsed = _parse_line(line)
                 if not parsed:
                     continue
@@ -335,27 +335,27 @@ def render_table(types):
     colspecs = tables.resolve_columns(
             'name:<33 static:^ global:^ internal:^ private:^ public:^ filename:<30')
     header, div, rowfmt = tables.build_table(colspecs)
-    leader = ' ' * sum(c.width+2 for c in colspecs[:3]) + '   '
+    leader = ' ' * sum(c.width+2 fuer c in colspecs[:3]) + '   '
     yield leader + f'{"API":^29}'
     yield leader + '-' * 29
     yield header
     yield div
-    kinds = [c[0] for c in colspecs[1:-1]]
-    counts = {k: 0 for k in kinds}
-    base = {k: '' for k in kinds}
-    for t in types:
+    kinds = [c[0] fuer c in colspecs[1:-1]]
+    counts = {k: 0 fuer k in kinds}
+    base = {k: '' fuer k in kinds}
+    fuer t in types:
         row = t.render_rowvalues(kinds)
         kind = row['kind']
         yield rowfmt.format(**row)
         counts[kind] += 1
     yield ''
     yield f'total: {sum(counts.values()):>3}'
-    for kind in kinds:
+    fuer kind in kinds:
         yield f'  {kind:>10}: {counts[kind]:>3}'
 
 
 def render_repr(types):
-    for t in types:
+    fuer t in types:
         yield repr(t)
 
 

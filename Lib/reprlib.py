@@ -7,7 +7,7 @@ from itertools import islice
 from _thread import get_ident
 
 def recursive_repr(fillvalue='...'):
-    'Decorator to make a repr function return fillvalue for a recursive call'
+    'Decorator to make a repr function return fillvalue fuer a recursive call'
 
     def decorating_function(user_function):
         repr_running = set()
@@ -117,7 +117,7 @@ klasse Repr:
         else:
             newlevel = level - 1
             repr1 = self.repr1
-            pieces = [repr1(elem, newlevel) for elem in islice(x, maxiter)]
+            pieces = [repr1(elem, newlevel) fuer elem in islice(x, maxiter)]
             if n > maxiter:
                 pieces.append(self.fillvalue)
             s = self._join(pieces, level)
@@ -162,7 +162,7 @@ klasse Repr:
         newlevel = level - 1
         repr1 = self.repr1
         pieces = []
-        for key in islice(_possibly_sorted(x), self.maxdict):
+        fuer key in islice(_possibly_sorted(x), self.maxdict):
             keyrepr = repr1(key, newlevel)
             valrepr = repr1(x[key], newlevel)
             pieces.append('%s: %s' % (keyrepr, valrepr))
@@ -193,7 +193,7 @@ klasse Repr:
             # See https://github.com/python/cpython/issues/135487.
             k = 1 + int(math.log10(abs(x)))
             # Note: math.log10(abs(x)) may be overestimated or underestimated,
-            # but for simplicity, we do not compute the exact number of digits.
+            # but fuer simplicity, we do not compute the exact number of digits.
             max_digits = sys.get_int_max_str_digits()
             return (f'<{x.__class__.__name__} instance with roughly {k} '
                     f'digits (limit at {max_digits}) at 0x{id(x):x}>')

@@ -11,7 +11,7 @@ from . import tasks
 
 
 klasse TaskGroup:
-    """Asynchronous context manager for managing groups of tasks.
+    """Asynchronous context manager fuer managing groups of tasks.
 
     Example use:
 
@@ -23,7 +23,7 @@ klasse TaskGroup:
     All tasks are awaited when the context manager exits.
 
     Any exceptions other than `asyncio.CancelledError` raised within
-    a task will cancel all remaining tasks and wait for them to exit.
+    a task will cancel all remaining tasks and wait fuer them to exit.
     The exceptions are then combined and raised as an `ExceptionGroup`.
     """
     def __init__(self):
@@ -72,7 +72,7 @@ klasse TaskGroup:
             return await self._aexit(et, exc)
         finally:
             # Exceptions are heavy objects that can have object
-            # cycles (bad for GC); let's not keep a reference to
+            # cycles (bad fuer GC); let's not keep a reference to
             # a bunch of them. It would be nicer to use a try/finally
             # in __aexit__ directly but that introduced some diff noise
             self._parent_task = None
@@ -211,7 +211,7 @@ klasse TaskGroup:
             del task
 
     # Since Python 3.8 Tasks propagate all exceptions correctly,
-    # except for KeyboardInterrupt and SystemExit which are
+    # except fuer KeyboardInterrupt and SystemExit which are
     # still considered special.
 
     def _is_base_error(self, exc: BaseException) -> bool:
@@ -221,7 +221,7 @@ klasse TaskGroup:
     def _abort(self):
         self._aborting = True
 
-        for t in self._tasks:
+        fuer t in self._tasks:
             if not t.done():
                 t.cancel()
 

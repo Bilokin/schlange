@@ -5,7 +5,7 @@
 #
 #
 # Permission to use, copy, modify, and distribute this software and
-# its documentation for any purpose is hereby granted without fee,
+# its documentation fuer any purpose is hereby granted without fee,
 # provided that the above copyright notice appear in all copies and
 # that both that copyright notice and this permission notice appear in
 # supporting documentation.
@@ -19,7 +19,7 @@
 # CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 """
-Keymap contains functions for parsing keyspecs and turning keyspecs into
+Keymap contains functions fuer parsing keyspecs and turning keyspecs into
 appropriate sequences.
 
 A keyspec is a string representing a sequence of key presses that can
@@ -42,7 +42,7 @@ Examples:
 '\\<up>' - ditto (keynames are case-insensitive)
 '\\C-o', '\\c-o'  - control-o
 '\\M-.'  - meta-period
-'\\E.'   - ditto (that's how meta works for pyrepl)
+'\\E.'   - ditto (that's how meta works fuer pyrepl)
 '\\<tab>', '\\<TAB>', '\\t', '\\011', '\\x09', '\\X09', '\\C-i', '\\C-I'
    - all of these are the tab character.
 """
@@ -196,16 +196,16 @@ def _parse_single_key_sequence(key: str, s: int) -> tuple[list[str], int]:
 
 def compile_keymap(keymap, empty=b""):
     r = {}
-    for key, value in keymap.items():
+    fuer key, value in keymap.items():
         if isinstance(key, bytes):
             first = key[:1]
         else:
             first = key[0]
         r.setdefault(first, {})[key[1:]] = value
-    for key, value in r.items():
+    fuer key, value in r.items():
         if empty in value:
             if len(value) != 1:
-                raise KeySpecError("key definitions for %s clash" % (value.values(),))
+                raise KeySpecError("key definitions fuer %s clash" % (value.values(),))
             else:
                 r[key] = value[empty]
         else:

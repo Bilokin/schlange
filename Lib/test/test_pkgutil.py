@@ -17,7 +17,7 @@ from test.support.os_helper import FakePath
 from test.test_importlib.util import uncache
 
 # Note: pkgutil.walk_packages is currently tested in test_runpy. This is
-# a hack to get a major issue resolved for 3.3b2. Longer term, it should
+# a hack to get a major issue resolved fuer 3.3b2. Longer term, it should
 # be moved back here, perhaps by factoring out the helper code for
 # creating interesting package layouts to a separate module.
 # Issue #15348 declares this is indeed a dodgy hack ;)
@@ -87,7 +87,7 @@ klasse PkgutilTests(unittest.TestCase):
         self.assertEqual(res2, RESOURCE_DATA)
 
         names = []
-        for moduleinfo in pkgutil.iter_modules([zip_file]):
+        fuer moduleinfo in pkgutil.iter_modules([zip_file]):
             self.assertIsInstance(moduleinfo, pkgutil.ModuleInfo)
             names.append(moduleinfo.name)
         self.assertEqual(names, ['test_getdata_zipfile'])
@@ -122,7 +122,7 @@ klasse PkgutilTests(unittest.TestCase):
 
             # make sure iter_modules accepts Path objects
             names = []
-            for moduleinfo in pkgutil.iter_modules([FakePath(zip_file)]):
+            fuer moduleinfo in pkgutil.iter_modules([FakePath(zip_file)]):
                 self.assertIsInstance(moduleinfo, pkgutil.ModuleInfo)
                 names.append(moduleinfo.name)
             self.assertEqual(names, [pkg])
@@ -131,7 +131,7 @@ klasse PkgutilTests(unittest.TestCase):
             sys.modules.pop(pkg, None)
 
         # assert path must be None or list of paths
-        expected_msg = "path must be None or list of paths to look for modules in"
+        expected_msg = "path must be None or list of paths to look fuer modules in"
         with self.assertRaisesRegex(ValueError, expected_msg):
             list(pkgutil.iter_modules("invalid_path"))
 
@@ -143,7 +143,7 @@ klasse PkgutilTests(unittest.TestCase):
         #   but the test should not fail anyway
         os.mkdir(d, 0)
         self.addCleanup(os.rmdir, d)
-        for t in pkgutil.walk_packages(path=[self.dirname]):
+        fuer t in pkgutil.walk_packages(path=[self.dirname]):
             self.fail("unexpected package found")
 
     def test_walkpackages_filesys(self):
@@ -178,10 +178,10 @@ klasse PkgutilTests(unittest.TestCase):
             'test_walkpackages_filesys.sub',
             'test_walkpackages_filesys.sub.mod',
         ]
-        actual= [e[1] for e in pkgutil.walk_packages([self.dirname])]
+        actual= [e[1] fuer e in pkgutil.walk_packages([self.dirname])]
         self.assertEqual(actual, expected)
 
-        for pkg in expected:
+        fuer pkg in expected:
             if pkg.endswith('mod'):
                 continue
             del sys.modules[pkg]
@@ -212,11 +212,11 @@ klasse PkgutilTests(unittest.TestCase):
             'test_walkpackages_zipfile.sub',
             'test_walkpackages_zipfile.sub.mod',
         ]
-        actual= [e[1] for e in pkgutil.walk_packages([zip_file])]
+        actual= [e[1] fuer e in pkgutil.walk_packages([zip_file])]
         self.assertEqual(actual, expected)
         del sys.path[0]
 
-        for pkg in expected:
+        fuer pkg in expected:
             if pkg.endswith('mod'):
                 continue
             del sys.modules[pkg]
@@ -289,7 +289,7 @@ klasse PkgutilTests(unittest.TestCase):
                          '\u0441\u043f\u0430\u0441\u0438\u0431\u043e',
                          '\u73b0\u4ee3\u6c49\u8bed\u5e38\u7528\u5b57\u8868')
 
-        for uw in unicode_words:
+        fuer uw in unicode_words:
             d = os.path.join(self.dirname, uw)
             try:
                 os.makedirs(d, exist_ok=True)
@@ -312,18 +312,18 @@ klasse PkgutilTests(unittest.TestCase):
         # add an example with a Unicode digit at the start
         failure_cases += ('\u0966\u0935\u092e\u0938', ValueError),
 
-        for s, expected in success_cases:
+        fuer s, expected in success_cases:
             with self.subTest(s=s):
                 o = pkgutil.resolve_name(s)
                 self.assertEqual(o, expected)
 
-        for s, exc in failure_cases:
+        fuer s, exc in failure_cases:
             with self.subTest(s=s):
                 with self.assertRaises(exc):
                     pkgutil.resolve_name(s)
 
     def test_name_resolution_import_rebinding(self):
-        # The same data is also used for testing import in test_import and
+        # The same data is also used fuer testing import in test_import and
         # mock.patch in test_unittest.
         path = os.path.join(os.path.dirname(__file__), 'test_import', 'data')
         with uncache('package3', 'package3.submodule'), DirsOnSysPath(path):
@@ -464,7 +464,7 @@ klasse ExtendPathTests(unittest.TestCase):
 
             importers = list(iter_importers(fullname))
             expected_importer = get_importer(pathitem)
-            for finder in importers:
+            fuer finder in importers:
                 spec = finder.find_spec(fullname)
                 loader = spec.loader
                 try:
@@ -621,7 +621,7 @@ klasse ImportlibMigrationTests(unittest.TestCase):
 
     def test_iter_importers_avoids_emulation(self):
         with check_warnings() as w:
-            for importer in pkgutil.iter_importers(): pass
+            fuer importer in pkgutil.iter_importers(): pass
             self.assertEqual(len(w.warnings), 0)
 
 

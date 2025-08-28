@@ -24,7 +24,7 @@ FAIL = {
     'deps': _errors.MissingDependenciesError,
     'os': _errors.OSMismatchError,
 }
-FAIL_DEFAULT = tuple(v for v in FAIL if v != 'os')
+FAIL_DEFAULT = tuple(v fuer v in FAIL if v != 'os')
 
 
 logger = logging.getLogger(__name__)
@@ -62,7 +62,7 @@ def _iter_preprocessed(filename, *,
                        pure=False,
                        ):
     preprocess = get_preprocessor(filename)
-    for line in preprocess(tool=not pure) or ():
+    fuer line in preprocess(tool=not pure) or ():
         if match_kind is not None and not match_kind(line.kind):
             continue
         yield line
@@ -95,12 +95,12 @@ def cmd_preprocess(filenames, *,
         kwargs['get_file_preprocessor'] = _get_preprocessor()
     if raw:
         def show_file(filename, lines):
-            for line in lines:
+            fuer line in lines:
                 print(line)
                 #print(line.raw)
     else:
         def show_file(filename, lines):
-            for line in lines:
+            fuer line in lines:
                 linefile = ''
                 if line.filename != filename:
                     linefile = f' ({line.filename})'
@@ -111,7 +111,7 @@ def cmd_preprocess(filenames, *,
                 print(f' {line.lno:>4} {line.kind:10} | {text}')
 
     filenames = main_for_filenames(filenames, iter_filenames)
-    for filename in filenames:
+    fuer filename in filenames:
         lines = _iter_preprocessed(filename, **kwargs)
         show_file(filename, lines)
 
@@ -158,7 +158,7 @@ def parse_args(argv=sys.argv[1:], prog=sys.argv[0], *,
 
     processors = add_commands_cli(
         parser,
-        commands={k: v[1] for k, v in COMMANDS.items()},
+        commands={k: v[1] fuer k, v in COMMANDS.items()},
         commonspecs=[
             add_verbosity_cli,
             add_traceback_cli,

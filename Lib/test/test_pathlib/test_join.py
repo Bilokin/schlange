@@ -1,5 +1,5 @@
 """
-Tests for pathlib.types._JoinablePath
+Tests fuer pathlib.types._JoinablePath
 """
 
 import unittest
@@ -48,7 +48,7 @@ klasse JoinTestBase:
         self.assertEqual(42, p.with_suffix('.foo').session_id)
         self.assertEqual(42, p.with_segments('foo').session_id)
         self.assertEqual(42, p.parent.session_id)
-        for parent in p.parents:
+        fuer parent in p.parents:
             self.assertEqual(42, parent.session_id)
 
     def test_join(self):

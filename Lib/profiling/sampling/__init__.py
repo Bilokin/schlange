@@ -1,4 +1,4 @@
-"""Statistical sampling profiler for Python.
+"""Statistical sampling profiler fuer Python.
 
 This module provides low-overhead profiling by periodically sampling the
 call stack rather than tracing every function call.

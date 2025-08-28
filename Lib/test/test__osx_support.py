@@ -1,5 +1,5 @@
 """
-Test suite for _osx_support: shared OS X support functions.
+Test suite fuer _osx_support: shared OS X support functions.
 """
 
 import os
@@ -29,10 +29,10 @@ klasse Test_OSXSupport(unittest.TestCase):
         )
 
     def add_expected_saved_initial_values(self, config_vars, expected_vars):
-        # Ensure that the initial values for all modified config vars
+        # Ensure that the initial values fuer all modified config vars
         # are also saved with modified keys.
         expected_vars.update(('_OSX_SUPPORT_INITIAL_'+ k,
-                config_vars[k]) for k in config_vars
+                config_vars[k]) fuer k in config_vars
                     if config_vars[k] != expected_vars[k])
 
     def test__find_executable(self):
@@ -108,7 +108,7 @@ klasse Test_OSXSupport(unittest.TestCase):
 
     def test__supports_universal_builds(self):
         import platform
-        mac_ver_tuple = tuple(int(i) for i in
+        mac_ver_tuple = tuple(int(i) fuer i in
                             platform.mac_ver()[0].split('.')[0:2])
         self.assertEqual(mac_ver_tuple >= (10, 4),
                             _osx_support._supports_universal_builds())
@@ -142,7 +142,7 @@ klasse Test_OSXSupport(unittest.TestCase):
 
         suffix = (':' + self.env['PATH']) if self.env['PATH'] else ''
         self.env['PATH'] = os.path.abspath(self.temp_path_dir) + suffix
-        for c_name, c_output in compilers:
+        fuer c_name, c_output in compilers:
             os_helper.unlink(c_name)
             self.addCleanup(os_helper.unlink, c_name)
             with open(c_name, 'w') as f:

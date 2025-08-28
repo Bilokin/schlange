@@ -4,7 +4,7 @@
 #
 #
 # Permission to use, copy, modify, and distribute this software and
-# its documentation for any purpose is hereby granted without fee,
+# its documentation fuer any purpose is hereby granted without fee,
 # provided that the above copyright notice appear in all copies and
 # that both that copyright notice and this permission notice appear in
 # supporting documentation.
@@ -95,7 +95,7 @@ klasse Console(ABC):
     @abstractmethod
     def get_event(self, block: bool = True) -> Event | None:
         """Return an Event instance.  Returns None if |block| is false
-        and there is no event pending, otherwise waits for the
+        and there is no event pending, otherwise waits fuer the
         completion of an event."""
         ...
 
@@ -117,7 +117,7 @@ klasse Console(ABC):
     @abstractmethod
     def finish(self) -> None:
         """Move the cursor to the end of the display and otherwise get
-        ready for end.  XXX could be merged with restore?  Hmm."""
+        ready fuer end.  XXX could be merged with restore?  Hmm."""
         ...
 
     @abstractmethod
@@ -139,7 +139,7 @@ klasse Console(ABC):
 
     @abstractmethod
     def wait(self, timeout: float | None) -> bool:
-        """Wait for an event. The return value is True if an event is
+        """Wait fuer an event. The return value is True if an event is
         available, False if the timeout has been reached. If timeout is
         None, wait forever. The timeout is in milliseconds."""
         ...
@@ -213,7 +213,7 @@ klasse InteractiveColoredConsole(code.InteractiveConsole):
             return False
         if tree.body:
             *_, last_stmt = tree.body
-        for stmt in tree.body:
+        fuer stmt in tree.body:
             wrapper = ast.Interactive if stmt is last_stmt else ast.Module
             the_symbol = symbol if stmt is last_stmt else "exec"
             item = wrapper([stmt])

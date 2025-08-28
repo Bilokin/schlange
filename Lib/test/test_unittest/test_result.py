@@ -35,13 +35,13 @@ def bad_cleanup2():
 
 @force_not_colorized_test_class
 klasse Test_TestResult(unittest.TestCase):
-    # Note: there are not separate tests for TestResult.wasSuccessful(),
+    # Note: there are not separate tests fuer TestResult.wasSuccessful(),
     # TestResult.errors, TestResult.failures, TestResult.testsRun or
     # TestResult.shouldStop because these only have meaning in terms of
     # other TestResult methods.
     #
-    # Accordingly, tests for the aforenamed attributes are incorporated
-    # in with the tests for the defining methods.
+    # Accordingly, tests fuer the aforenamed attributes are incorporated
+    # in with the tests fuer the defining methods.
     ################################################################
 
     def test_init(self):
@@ -227,7 +227,7 @@ klasse Test_TestResult(unittest.TestCase):
         result.stopTest(test)
 
         formatted_exc = result.failures[0][1]
-        dropped = [l for l in full_exc if l not in formatted_exc]
+        dropped = [l fuer l in full_exc if l not in formatted_exc]
         self.assertEqual(len(dropped), 1)
         self.assertIn("raise self.failureException(msg)", dropped[0])
 
@@ -256,7 +256,7 @@ klasse Test_TestResult(unittest.TestCase):
         result.stopTest(test)
 
         formatted_exc = result.failures[0][1]
-        dropped = [l for l in full_exc if l not in formatted_exc]
+        dropped = [l fuer l in full_exc if l not in formatted_exc]
         self.assertEqual(len(dropped), 1)
         self.assertIn("raise self.failureException(msg)", dropped[0])
 
@@ -296,7 +296,7 @@ klasse Test_TestResult(unittest.TestCase):
                 # __cause__ in one direction, __context__ in the other
                 A, B, C = Exception("A"), Exception("B"), Exception("C")
                 edges = [(C, B), (B, A), (A, C)]
-                for ex1, ex2 in edges:
+                fuer ex1, ex2 in edges:
                     ex1.__cause__ = ex2
                     ex2.__context__ = ex1
                 raise C
@@ -495,7 +495,7 @@ klasse Test_TextTestResult(unittest.TestCase):
     def testGetSubTestDescriptionForFalseValues(self):
         expected = 'testGetSubTestDescriptionForFalseValues (%s.Test_TextTestResult.testGetSubTestDescriptionForFalseValues) [%s]'
         result = unittest.TextTestResult(None, True, 1)
-        for arg in [0, None, []]:
+        fuer arg in [0, None, []]:
             with self.subTest(arg):
                 self.assertEqual(
                     result.getDescription(self._subtest),
@@ -524,18 +524,18 @@ klasse Test_TextTestResult(unittest.TestCase):
     @unittest.skipIf(sys.flags.optimize >= 2,
                      "Docstrings are omitted with -O2 and above")
     def testGetDescriptionWithOneLineDocstring(self):
-        """Tests getDescription() for a method with a docstring."""
+        """Tests getDescription() fuer a method with a docstring."""
         result = unittest.TextTestResult(None, True, 1)
         self.assertEqual(
                 result.getDescription(self),
                ('testGetDescriptionWithOneLineDocstring '
                 '(' + __name__ + '.Test_TextTestResult.testGetDescriptionWithOneLineDocstring)\n'
-                'Tests getDescription() for a method with a docstring.'))
+                'Tests getDescription() fuer a method with a docstring.'))
 
     @unittest.skipIf(sys.flags.optimize >= 2,
                      "Docstrings are omitted with -O2 and above")
     def testGetSubTestDescriptionWithOneLineDocstring(self):
-        """Tests getDescription() for a method with a docstring."""
+        """Tests getDescription() fuer a method with a docstring."""
         result = unittest.TextTestResult(None, True, 1)
         with self.subTest(foo=1, bar=2):
             self.assertEqual(
@@ -544,12 +544,12 @@ klasse Test_TextTestResult(unittest.TestCase):
                 '(' + __name__ + '.Test_TextTestResult.testGetSubTestDescriptionWithOneLineDocstring) '
                 '(foo=1, bar=2)\n'
 
-                'Tests getDescription() for a method with a docstring.'))
+                'Tests getDescription() fuer a method with a docstring.'))
 
     @unittest.skipIf(sys.flags.optimize >= 2,
                      "Docstrings are omitted with -O2 and above")
     def testGetDescriptionWithMultiLineDocstring(self):
-        """Tests getDescription() for a method with a longer docstring.
+        """Tests getDescription() fuer a method with a longer docstring.
         The second line of the docstring.
         """
         result = unittest.TextTestResult(None, True, 1)
@@ -557,13 +557,13 @@ klasse Test_TextTestResult(unittest.TestCase):
                 result.getDescription(self),
                ('testGetDescriptionWithMultiLineDocstring '
                 '(' + __name__ + '.Test_TextTestResult.testGetDescriptionWithMultiLineDocstring)\n'
-                'Tests getDescription() for a method with a longer '
+                'Tests getDescription() fuer a method with a longer '
                 'docstring.'))
 
     @unittest.skipIf(sys.flags.optimize >= 2,
                      "Docstrings are omitted with -O2 and above")
     def testGetSubTestDescriptionWithMultiLineDocstring(self):
-        """Tests getDescription() for a method with a longer docstring.
+        """Tests getDescription() fuer a method with a longer docstring.
         The second line of the docstring.
         """
         result = unittest.TextTestResult(None, True, 1)
@@ -573,7 +573,7 @@ klasse Test_TextTestResult(unittest.TestCase):
                ('testGetSubTestDescriptionWithMultiLineDocstring '
                 '(' + __name__ + '.Test_TextTestResult.testGetSubTestDescriptionWithMultiLineDocstring) '
                 '(foo=1, bar=2)\n'
-                'Tests getDescription() for a method with a longer '
+                'Tests getDescription() fuer a method with a longer '
                 'docstring.'))
 
     klasse Test(unittest.TestCase):
@@ -692,7 +692,7 @@ klasse Test_TextTestResult(unittest.TestCase):
 
 
 klasseDict = dict(unittest.TestResult.__dict__)
-for m in ('addSkip', 'addExpectedFailure', 'addUnexpectedSuccess',
+fuer m in ('addSkip', 'addExpectedFailure', 'addUnexpectedSuccess',
            '__init__'):
     del classDict[m]
 
@@ -727,7 +727,7 @@ klasse Test_OldTestResult(unittest.TestCase):
             def testUnexpectedSuccess(self):
                 pass
 
-        for test_name, should_pass in (('testSkip', True),
+        fuer test_name, should_pass in (('testSkip', True),
                                        ('testExpectedFail', True),
                                        ('testUnexpectedSuccess', False)):
             test = Test(test_name)
@@ -843,7 +843,7 @@ klasse TestOutputBuffering(unittest.TestCase):
         unittest.result.traceback = MockTraceback
         self.addCleanup(restore_traceback)
 
-        for message_attr, add_attr, include_error in [
+        fuer message_attr, add_attr, include_error in [
             ('errors', 'addError', True),
             ('failures', 'addFailure', False),
             ('errors', 'addError', True),

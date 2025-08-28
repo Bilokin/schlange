@@ -8,7 +8,7 @@ parseString("<foo><bar/></foo>")
 
 Todo:
 =====
- * convenience methods for getting elements and text.
+ * convenience methods fuer getting elements and text.
  * more testing
  * bring some of the writer and linearizer code into conformance with this
         interface
@@ -32,13 +32,13 @@ _nodeTypes_with_children = (xml.dom.Node.ELEMENT_NODE,
 
 
 klasse Node(xml.dom.Node):
-    namespaceURI = None # this is non-null only for elements and attributes
+    namespaceURI = None # this is non-null only fuer elements and attributes
     parentNode = None
     ownerDocument = None
     nextSibling = None
     previousSibling = None
 
-    prefix = EMPTY_PREFIX # non-null only for NS elements and attributes
+    prefix = EMPTY_PREFIX # non-null only fuer NS elements and attributes
 
     def __bool__(self):
         return True
@@ -81,7 +81,7 @@ klasse Node(xml.dom.Node):
 
     def insertBefore(self, newChild, refChild):
         if newChild.nodeType == self.DOCUMENT_FRAGMENT_NODE:
-            for c in tuple(newChild.childNodes):
+            fuer c in tuple(newChild.childNodes):
                 self.insertBefore(c, refChild)
             ### The DOM does not clearly specify what to return in this case
             return newChild
@@ -113,7 +113,7 @@ klasse Node(xml.dom.Node):
 
     def appendChild(self, node):
         if node.nodeType == self.DOCUMENT_FRAGMENT_NODE:
-            for c in tuple(node.childNodes):
+            fuer c in tuple(node.childNodes):
                 self.appendChild(c)
             ### The DOM does not clearly specify what to return in this case
             return node
@@ -178,7 +178,7 @@ klasse Node(xml.dom.Node):
 
     def normalize(self):
         L = []
-        for child in self.childNodes:
+        fuer child in self.childNodes:
             if child.nodeType == Node.TEXT_NODE:
                 if not child.data:
                     # empty text node; discard
@@ -244,7 +244,7 @@ klasse Node(xml.dom.Node):
         if key in d:
             old = d[key][0]
         if data is None:
-            # ignore handlers passed for None
+            # ignore handlers passed fuer None
             handler = None
             if old is not None:
                 del d[key]
@@ -254,7 +254,7 @@ klasse Node(xml.dom.Node):
 
     def _call_user_data_handler(self, operation, src, dst):
         if hasattr(self, "_user_data"):
-            for key, (data, handler) in list(self._user_data.items()):
+            fuer key, (data, handler) in list(self._user_data.items()):
                 if handler is not None:
                     handler.handle(operation, key, data, src, dst)
 
@@ -263,7 +263,7 @@ klasse Node(xml.dom.Node):
     def unlink(self):
         self.parentNode = self.ownerDocument = None
         if self.childNodes:
-            for child in self.childNodes:
+            fuer child in self.childNodes:
                 child.unlink()
             self.childNodes = NodeList()
         self.previousSibling = None
@@ -304,7 +304,7 @@ def _write_data(writer, text, attr):
     "Writes datachars to writer."
     if not text:
         return
-    # See the comments in ElementTree.py for behavior and
+    # See the comments in ElementTree.py fuer behavior and
     # implementation details.
     if "&" in text:
         text = text.replace("&", "&amp;")
@@ -324,7 +324,7 @@ def _write_data(writer, text, attr):
     writer.write(text)
 
 def _get_elements_by_tagName_helper(parent, name, rc):
-    for node in parent.childNodes:
+    fuer node in parent.childNodes:
         if node.nodeType == Node.ELEMENT_NODE and \
             (name == "*" or node.tagName == name):
             rc.append(node)
@@ -332,7 +332,7 @@ def _get_elements_by_tagName_helper(parent, name, rc):
     return rc
 
 def _get_elements_by_tagName_ns_helper(parent, nsURI, localName, rc):
-    for node in parent.childNodes:
+    fuer node in parent.childNodes:
         if node.nodeType == Node.ELEMENT_NODE:
             if ((localName == "*" or node.localName == localName) and
                 (nsURI == "*" or node.namespaceURI == nsURI)):
@@ -422,7 +422,7 @@ klasse Attr(Node):
         if prefix == "xmlns":
             if nsuri and nsuri != XMLNS_NAMESPACE:
                 raise xml.dom.NamespaceErr(
-                    "illegal use of 'xmlns' prefix for the wrong namespace")
+                    "illegal use of 'xmlns' prefix fuer the wrong namespace")
         self._prefix = prefix
         if prefix is None:
             newName = self.localName
@@ -447,7 +447,7 @@ klasse Attr(Node):
                 self._is_id = False
                 elem._magic_id_nodes -= 1
                 self.ownerDocument._magic_id_count -= 1
-        for child in self.childNodes:
+        fuer child in self.childNodes:
             child.unlink()
         del self.childNodes[:]
 
@@ -483,7 +483,7 @@ klasse Attr(Node):
 
 defproperty(Attr, "isId",       doc="True if this attribute is an ID.")
 defproperty(Attr, "localName",  doc="Namespace-local name of this attribute.")
-defproperty(Attr, "schemaType", doc="Schema type for this attribute.")
+defproperty(Attr, "schemaType", doc="Schema type fuer this attribute.")
 
 
 klasse NamedNodeMap(object):
@@ -513,13 +513,13 @@ klasse NamedNodeMap(object):
 
     def items(self):
         L = []
-        for node in self._attrs.values():
+        fuer node in self._attrs.values():
             L.append((node.nodeName, node.value))
         return L
 
     def itemsNS(self):
         L = []
-        for node in self._attrs.values():
+        fuer node in self._attrs.values():
             L.append(((node.namespaceURI, node.localName), node.value))
         return L
 
@@ -709,7 +709,7 @@ klasse Element(Node):
         #    URI,localName -> Attribute
         # in the future: consider lazy generation
         # of attribute objects this is too tricky
-        # for now because of headaches with
+        # fuer now because of headaches with
         # namespaces.
         self._attrs = None
         self._attrsNS = None
@@ -730,7 +730,7 @@ klasse Element(Node):
 
     def unlink(self):
         if self._attrs is not None:
-            for attr in list(self._attrs.values()):
+            fuer attr in list(self._attrs.values()):
                 attr.unlink()
         self._attrs = None
         self._attrsNS = None
@@ -897,7 +897,7 @@ klasse Element(Node):
 
         attrs = self._get_attributes()
 
-        for a_name in attrs.keys():
+        fuer a_name in attrs.keys():
             writer.write(" %s=\"" % a_name)
             _write_data(writer, attrs[a_name].value, True)
             writer.write("\"")
@@ -909,7 +909,7 @@ klasse Element(Node):
                 self.childNodes[0].writexml(writer, '', '', '')
             else:
                 writer.write(newl)
-                for node in self.childNodes:
+                fuer node in self.childNodes:
                     node.writexml(writer, indent+addindent, addindent, newl)
                 writer.write(indent)
             writer.write("</%s>%s" % (self.tagName, newl))
@@ -1013,14 +1013,14 @@ klasse ProcessingInstruction(Childless, Node):
         self.target = target
         self.data = data
 
-    # nodeValue is an alias for data
+    # nodeValue is an alias fuer data
     def _get_nodeValue(self):
         return self.data
     def _set_nodeValue(self, value):
         self.data = value
     nodeValue = property(_get_nodeValue, _set_nodeValue)
 
-    # nodeName is an alias for target
+    # nodeName is an alias fuer target
     def _get_nodeName(self):
         return self.target
     def _set_nodeName(self, value):
@@ -1254,12 +1254,12 @@ klasse ReadOnlySequentialNamedNodeMap(object):
         return len(self._seq)
 
     def getNamedItem(self, name):
-        for n in self._seq:
+        fuer n in self._seq:
             if n.nodeName == name:
                 return n
 
     def getNamedItemNS(self, namespaceURI, localName):
-        for n in self._seq:
+        fuer n in self._seq:
             if n.namespaceURI == namespaceURI and n.localName == localName:
                 return n
 
@@ -1350,11 +1350,11 @@ klasse DocumentType(Identified, Childless, Node):
             if deep:
                 clone.entities._seq = []
                 clone.notations._seq = []
-                for n in self.notations._seq:
+                fuer n in self.notations._seq:
                     notation = Notation(n.nodeName, n.publicId, n.systemId)
                     clone.notations._seq.append(notation)
                     n._call_user_data_handler(operation, n, notation)
-                for e in self.entities._seq:
+                fuer e in self.entities._seq:
                     entity = Entity(e.nodeName, e.publicId, e.systemId,
                                     e.notationName)
                     entity.actualEncoding = e.actualEncoding
@@ -1460,8 +1460,8 @@ klasse DOMImplementation(DOMImplementationLS):
             # The spec is unclear what to raise here; SyntaxErr
             # would be the other obvious candidate. Since Xerces raises
             # InvalidCharacterErr, and since SyntaxErr is not listed
-            # for createDocument, that seems to be the better choice.
-            # XXX: need to check for illegal characters here and in
+            # fuer createDocument, that seems to be the better choice.
+            # XXX: need to check fuer illegal characters here and in
             # createElement.
 
             # DOM Level III clears this up when talking about the return value
@@ -1510,7 +1510,7 @@ klasse DOMImplementation(DOMImplementationLS):
         return Document()
 
 klasse ElementInfo(object):
-    """Object that represents content-model information for an element.
+    """Object that represents content-model information fuer an element.
 
     This implementation is not expected to be used in practice; DOM
     builders should provide implementations which do the right thing
@@ -1655,7 +1655,7 @@ klasse Document(Node, DocumentLS):
         return oldChild
 
     def _get_documentElement(self):
-        for node in self.childNodes:
+        fuer node in self.childNodes:
             if node.nodeType == Node.ELEMENT_NODE:
                 return node
 
@@ -1672,7 +1672,7 @@ klasse Document(Node, DocumentLS):
         clone.encoding = self.encoding
         clone.standalone = self.standalone
         clone.version = self.version
-        for n in self.childNodes:
+        fuer n in self.childNodes:
             childclone = _clone_node(n, deep, clone)
             assert childclone.ownerDocument.isSameNode(clone)
             clone.childNodes.append(childclone)
@@ -1773,8 +1773,8 @@ klasse Document(Node, DocumentLS):
         result = None
         while stack:
             node = stack.pop()
-            # add child elements to stack for continued searching
-            stack.extend([child for child in node.childNodes
+            # add child elements to stack fuer continued searching
+            stack.extend([child fuer child in node.childNodes
                           if child.nodeType in _nodeTypes_with_children])
             # check this node
             info = self._get_elem_info(node)
@@ -1782,7 +1782,7 @@ klasse Document(Node, DocumentLS):
                 # We have to process all ID attributes before
                 # returning in order to get all the attributes set to
                 # be IDs using Element.setIdAttribute*().
-                for attr in node.attributes.values():
+                fuer attr in node.attributes.values():
                     if attr.namespaceURI:
                         if info.isIdNS(attr.namespaceURI, attr.localName):
                             self._id_cache[attr.value] = node
@@ -1803,7 +1803,7 @@ klasse Document(Node, DocumentLS):
                         elif node._magic_id_nodes == 1:
                             break
             elif node._magic_id_nodes:
-                for attr in node.attributes.values():
+                fuer attr in node.attributes.values():
                     if attr._is_id:
                         self._id_cache[attr.value] = node
                         if attr.value == id:
@@ -1840,7 +1840,7 @@ klasse Document(Node, DocumentLS):
 
         writer.write(f'<?xml version="1.0" {" ".join(declarations)}?>{newl}')
 
-        for node in self.childNodes:
+        fuer node in self.childNodes:
             node.writexml(writer, indent, addindent, newl)
 
     # DOM Level 3 (WD 9 April 2002)
@@ -1892,7 +1892,7 @@ klasse Document(Node, DocumentLS):
                 if is_id:
                     element.setIdAttributeNode(n)
         # It's not clear from a semantic perspective whether we should
-        # call the user data handlers for the NODE_RENAMED event since
+        # call the user data handlers fuer the NODE_RENAMED event since
         # we're re-using the existing node.  The draft spec has been
         # interpreted as meaning "no, don't call the handler unless a
         # new node is created."
@@ -1914,20 +1914,20 @@ def _clone_node(node, deep, newOwnerDocument):
     if node.nodeType == Node.ELEMENT_NODE:
         clone = newOwnerDocument.createElementNS(node.namespaceURI,
                                                  node.nodeName)
-        for attr in node.attributes.values():
+        fuer attr in node.attributes.values():
             clone.setAttributeNS(attr.namespaceURI, attr.nodeName, attr.value)
             a = clone.getAttributeNodeNS(attr.namespaceURI, attr.localName)
             a.specified = attr.specified
 
         if deep:
-            for child in node.childNodes:
+            fuer child in node.childNodes:
                 c = _clone_node(child, deep, newOwnerDocument)
                 clone.appendChild(c)
 
     elif node.nodeType == Node.DOCUMENT_FRAGMENT_NODE:
         clone = newOwnerDocument.createDocumentFragment()
         if deep:
-            for child in node.childNodes:
+            fuer child in node.childNodes:
                 c = _clone_node(child, deep, newOwnerDocument)
                 clone.appendChild(c)
 
@@ -1954,13 +1954,13 @@ def _clone_node(node, deep, newOwnerDocument):
         if deep:
             clone.entities._seq = []
             clone.notations._seq = []
-            for n in node.notations._seq:
+            fuer n in node.notations._seq:
                 notation = Notation(n.nodeName, n.publicId, n.systemId)
                 notation.ownerDocument = newOwnerDocument
                 clone.notations._seq.append(notation)
                 if hasattr(n, '_call_user_data_handler'):
                     n._call_user_data_handler(operation, n, notation)
-            for e in node.entities._seq:
+            fuer e in node.entities._seq:
                 entity = Entity(e.nodeName, e.publicId, e.systemId,
                                 e.notationName)
                 entity.actualEncoding = e.actualEncoding
@@ -1976,7 +1976,7 @@ def _clone_node(node, deep, newOwnerDocument):
         # directly in the cloneNode() methods.
         raise xml.dom.NotSupportedErr("Cannot clone node %s" % repr(node))
 
-    # Check for _call_user_data_handler() since this could conceivably
+    # Check fuer _call_user_data_handler() since this could conceivably
     # used with other DOM implementations (one of the FourThought
     # DOMs, perhaps?).
     if hasattr(node, '_call_user_data_handler'):
@@ -2023,7 +2023,7 @@ def getDOMImplementation(features=None):
     if features:
         if isinstance(features, str):
             features = domreg._parse_feature_string(features)
-        for f, v in features:
+        fuer f, v in features:
             if not Document.implementation.hasFeature(f, v):
                 return None
     return Document.implementation

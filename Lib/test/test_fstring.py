@@ -2,7 +2,7 @@
 # There are tests here with unicode string literals and
 # identifiers. There's a code in ast.c that was added because of a
 # failure with a non-ascii-only expression.  So, I have tests for
-# that.  There are workarounds that would let me run tests for that
+# that.  There are workarounds that would let me run tests fuer that
 # code without unicode identifiers and strings, but just using them
 # directly seems like the easiest and therefore safest thing to do.
 # Unicode identifiers in tests is allowed by PEP 3131.
@@ -22,7 +22,7 @@ from test.support.script_helper import assert_python_failure, assert_python_ok
 
 a_global = 'global variable'
 
-# You could argue that I'm too strict in looking for specific error
+# You could argue that I'm too strict in looking fuer specific error
 #  values with assertRaisesRegex, but without it it's way too easy to
 #  make a syntax error in the test strings. Especially with all of the
 #  triple quotes, raw strings, backslashes, etc. I think it's a
@@ -31,7 +31,7 @@ a_global = 'global variable'
 
 klasse TestCase(unittest.TestCase):
     def assertAllRaise(self, exception_type, regex, error_strings):
-        for str in error_strings:
+        fuer str in error_strings:
             with self.subTest(str=str):
                 with self.assertRaisesRegex(exception_type, regex):
                     eval(str)
@@ -305,7 +305,7 @@ f'{a * x()} {a * x()} {a * x()}'
         self.assertEqual(name.end_col_offset, 25)
 
     def test_ast_line_numbers_multiline_fstring(self):
-        # See bpo-30465 for details.
+        # See bpo-30465 fuer details.
         expr = """
 a = 10
 f'''
@@ -440,21 +440,21 @@ y = (
         # Check the single quoted string offsets first.
         offsets = [
             (elt.col_offset, elt.end_col_offset)
-            for elt in x.value.elts
+            fuer elt in x.value.elts
         ]
         self.assertTrue(all(
             offset == (4, 10)
-            for offset in offsets
+            fuer offset in offsets
         ))
 
         # Check the triple quoted string offsets.
         offsets = [
             (elt.col_offset, elt.end_col_offset)
-            for elt in y.value.elts
+            fuer elt in y.value.elts
         ]
         self.assertTrue(all(
             offset == (4, 14)
-            for offset in offsets
+            fuer offset in offsets
         ))
 
         expr = """
@@ -658,7 +658,7 @@ x = (
         raises_syntax_or_memory_error("f'{" + "("*10_000 + "}'")
 
     def test_syntax_error_in_nested_fstring(self):
-        # See gh-104016 for more information on this crash
+        # See gh-104016 fuer more information on this crash
         self.assertAllRaise(SyntaxError,
                             "invalid syntax",
                             ['f"{1 1:' + ('{f"1:' * 199)])
@@ -789,8 +789,8 @@ x = (
     def test_many_expressions(self):
         # Create a string with many expressions in it. Note that
         #  because we have a space in here as a literal, we're actually
-        #  going to use twice as many ast nodes: one for each literal
-        #  plus one for each expression.
+        #  going to use twice as many ast nodes: one fuer each literal
+        #  plus one fuer each expression.
         def build_fstr(n, extra=''):
             return "f'" + ('{x} ' * n) + extra + "'"
 
@@ -798,7 +798,7 @@ x = (
         width = 1
 
         # Test around 256.
-        for i in range(250, 260):
+        fuer i in range(250, 260):
             self.assertEqual(eval(build_fstr(i)), (x+' ')*i)
 
         # Test concatenating 2 largs fstrings.
@@ -921,7 +921,7 @@ x = (
                              "f'{='",
                              ])
 
-        # Different error message is raised for other whitespace characters.
+        # Different error message is raised fuer other whitespace characters.
         self.assertAllRaise(SyntaxError, r"invalid non-printable character U\+00A0",
                             ["f'''{\xa0}'''",
                              "\xa0",
@@ -1041,12 +1041,12 @@ x = (
         # so they are also invalid in f-strings as well.
         cases = [
             formatting.format(expr=expr)
-            for formatting in [
+            fuer formatting in [
                 "{expr}",
                 "f'{{{expr}}}'",
                 "rf'{{{expr}}}'",
             ]
-            for expr in [
+            fuer expr in [
                 r"\'a\'",
                 r"\t3",
                 r"\\"[0],
@@ -1090,7 +1090,7 @@ x = (
                              "f'{lambda :}'",
                              ])
         # Ensure the detection of invalid lambdas doesn't trigger detection
-        # for valid lambdas in the second error pass
+        # fuer valid lambdas in the second error pass
         with self.assertRaisesRegex(SyntaxError, "invalid syntax"):
             compile("lambda name_3=f'{name_4}': {name_3}\n1 $ 1", "<string>", "exec")
 
@@ -1120,7 +1120,7 @@ x = (
             (r"f'\}}{1+1}'", '\\}2'),
             (r"f'{1+1}\}}'", '2\\}')
         ]
-        for case, expected_result in deprecated_cases:
+        fuer case, expected_result in deprecated_cases:
             with self.subTest(case=case, expected_result=expected_result):
                 with self.assertWarns(SyntaxWarning):
                     result = eval(case)
@@ -1303,7 +1303,7 @@ x = (
                              "bF''",
                              "Bf''",
                              "BF''",]
-        double_quote_cases = [case.replace("'", '"') for case in single_quote_cases]
+        double_quote_cases = [case.replace("'", '"') fuer case in single_quote_cases]
         self.assertAllRaise(SyntaxError, 'prefixes are incompatible',
                             single_quote_cases + double_quote_cases)
 
@@ -1313,15 +1313,15 @@ x = (
         self.assertEqual(f'{3 }', '3')
         self.assertEqual(f'{3  }', '3')
 
-        self.assertEqual(f'expr={ {x: y for x, y in [(1, 2), ]}}',
+        self.assertEqual(f'expr={ {x: y fuer x, y in [(1, 2), ]}}',
                          'expr={1: 2}')
-        self.assertEqual(f'expr={ {x: y for x, y in [(1, 2), ]} }',
+        self.assertEqual(f'expr={ {x: y fuer x, y in [(1, 2), ]} }',
                          'expr={1: 2}')
 
     def test_not_equal(self):
-        # There's a special test for this because there's a special
-        #  case in the f-string parser to look for != as not ending an
-        #  expression. Normally it would, while looking for !s or !r.
+        # There's a special test fuer this because there's a special
+        #  case in the f-string parser to look fuer != as not ending an
+        #  expression. Normally it would, while looking fuer !s or !r.
 
         self.assertEqual(f'{3!=4}', 'True')
         self.assertEqual(f'{3!=4:}', 'True')
@@ -1330,7 +1330,7 @@ x = (
 
     def test_equal_equal(self):
         # Because an expression ending in = has special meaning,
-        # there's a special test for ==. Make sure it works.
+        # there's a special test fuer ==. Make sure it works.
 
         self.assertEqual(f'{0==1}', 'False')
 
@@ -1366,18 +1366,18 @@ x = (
                              "f'{3!:}'",
                              ])
 
-        for conv_identifier in 'g', 'A', 'G', 'ä', 'ɐ':
+        fuer conv_identifier in 'g', 'A', 'G', 'ä', 'ɐ':
             self.assertAllRaise(SyntaxError,
                                 "f-string: invalid conversion character %r: "
                                 "expected 's', 'r', or 'a'" % conv_identifier,
                                 ["f'{3!" + conv_identifier + "}'"])
 
-        for conv_non_identifier in '3', '!':
+        fuer conv_non_identifier in '3', '!':
             self.assertAllRaise(SyntaxError,
                                 "f-string: invalid conversion character",
                                 ["f'{3!" + conv_non_identifier + "}'"])
 
-        for conv in ' s', ' s ':
+        fuer conv in ' s', ' s ':
             self.assertAllRaise(SyntaxError,
                                 "f-string: conversion type must come right after the"
                                 " exclamation mark",
@@ -1448,7 +1448,7 @@ x = (
 
     def test_if_conditional(self):
         # There's special logic in compile.c to test if the
-        #  conditional for an if (and while) are constants. Exercise
+        #  conditional fuer an if (and while) are constants. Exercise
         #  that code.
 
         def test_fstring(x, expected):
@@ -1524,7 +1524,7 @@ x = (
         self.assertIn(file_path.encode('ascii', 'backslashreplace'), stderr)
 
     def test_loop(self):
-        for i in range(1000):
+        fuer i in range(1000):
             self.assertEqual(f'i:{i}', 'i:' + str(i))
 
     def test_dict(self):
@@ -1667,7 +1667,7 @@ x = (
         # work in f-strings.
         # patchcheck doesn't like these tabs.  So the only way to test
         # this will be to dynamically created and exec the f-strings.  But
-        # that's such a hassle I'll save it for another day.  For now, convert
+        # that's such a hassle I'll save it fuer another day.  For now, convert
         # the tabs to spaces just to shut up patchcheck.
         #self.assertEqual(f'X{x =}Y', 'Xx\t='+repr(x)+'Y')
         #self.assertEqual(f'X{x =       }Y', 'Xx\t=\t'+repr(x)+'Y')
@@ -1784,9 +1784,9 @@ print(f'''{{
         # f-string without any formatting should emit the same bytecode
         # as a normal string. See gh-99606.
         def get_code(s):
-            return [(i.opname, i.oparg) for i in dis.get_instructions(s)]
+            return [(i.opname, i.oparg) fuer i in dis.get_instructions(s)]
 
-        for s in ["", "some string"]:
+        fuer s in ["", "some string"]:
             self.assertEqual(get_code(f"'{s}'"), get_code(f"f'{s}'"))
 
     def test_gh129093(self):
@@ -1828,7 +1828,7 @@ print(f'''{{
             """f'''{1:d\n}'''""",
         ]
 
-        for case in valid_cases:
+        fuer case in valid_cases:
             compile(case, "<string>", "exec")
 
     def test_raw_fstring_format_spec(self):

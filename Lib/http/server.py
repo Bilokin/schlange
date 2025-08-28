@@ -1,7 +1,7 @@
 """HTTP server classes.
 
 Note: BaseHTTPRequestHandler doesn't implement any HTTP request; see
-SimpleHTTPRequestHandler for simple implementations of GET, HEAD and POST.
+SimpleHTTPRequestHandler fuer simple implementations of GET, HEAD and POST.
 
 It does, however, optionally implement HTTP/1.1 persistent connections.
 
@@ -25,7 +25,7 @@ XXX To do:
 # and
 #
 # Network Working Group                                      R. Fielding
-# Request for Comments: 2616                                       et al
+# Request fuer Comments: 2616                                       et al
 # Obsoletes: 2068                                              June 1999
 # Category: Standards Track
 #
@@ -41,9 +41,9 @@ XXX To do:
 # | host rfc931 authuser [DD/Mon/YYYY:hh:mm:ss] "request" ddd bbbb
 # |
 # |        host: Either the DNS name or the IP number of the remote client
-# |        rfc931: Any information returned by identd for this person,
+# |        rfc931: Any information returned by identd fuer this person,
 # |                - otherwise.
-# |        authuser: If user sent a userid for authentication, the user name,
+# |        authuser: If user sent a userid fuer authentication, the user name,
 # |                  - otherwise.
 # |        DD: Day
 # |        Mon: Month (calendar name)
@@ -194,18 +194,18 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
     <command> <path> <version>
 
     where <command> is a (case-sensitive) keyword such as GET or POST,
-    <path> is a string containing path information for the request,
+    <path> is a string containing path information fuer the request,
     and <version> should be the string "HTTP/1.0" or "HTTP/1.1".
     <path> is encoded using the URL encoding scheme (using %xx to signify
     the ASCII character with hex code xx).
 
     The specification specifies that lines are separated by CRLF but
-    for compatibility with the widest range of clients recommends
+    fuer compatibility with the widest range of clients recommends
     servers also handle LF.  Similarly, whitespace in the request line
     is treated sensibly (allowing multiple spaces between components
     and allowing trailing whitespace).
 
-    Similarly, for output, lines ought to be separated by CRLF pairs
+    Similarly, fuer output, lines ought to be separated by CRLF pairs
     but most clients grok LF characters just fine.
 
     If the first line of the request has the form
@@ -254,10 +254,10 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
     - headers is an instance of email.message.Message (or a derived
     class) containing the header information;
 
-    - rfile is a file object open for reading positioned at the
+    - rfile is a file object open fuer reading positioned at the
     start of the optional input data part;
 
-    - wfile is a file object open for writing.
+    - wfile is a file object open fuer writing.
 
     IT IS IMPORTANT TO ADHERE TO THE PROTOCOL FOR WRITING!
 
@@ -298,7 +298,7 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
         are in self.command, self.path, self.request_version and
         self.headers.
 
-        Return True for success, False for failure; on failure, any relevant
+        Return True fuer success, False fuer failure; on failure, any relevant
         error response has already been sent back.
 
         """
@@ -327,9 +327,9 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
                 #   - Leading zeros MUST be ignored by recipients.
                 if len(version_number) != 2:
                     raise ValueError
-                if any(not component.isdigit() for component in version_number):
+                if any(not component.isdigit() fuer component in version_number):
                     raise ValueError("non digit in http version")
-                if any(len(component) > 10 for component in version_number):
+                if any(len(component) > 10 fuer component in version_number):
                     raise ValueError("unreasonable length http version")
                 version_number = int(version_number[0]), int(version_number[1])
             except (ValueError, IndexError):
@@ -368,7 +368,7 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
         if self.path.startswith('//'):
             self.path = '/' + self.path.lstrip('/')  # Reduce to a single /
 
-        # Examine the headers and look for a Connection directive.
+        # Examine the headers and look fuer a Connection directive.
         try:
             self.headers = http.client.parse_headers(self.rfile,
                                                      _class=self.MessageClass)
@@ -392,7 +392,7 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
         elif (conntype.lower() == 'keep-alive' and
               self.protocol_version >= "HTTP/1.1"):
             self.close_connection = False
-        # Examine the headers and look for an Expect directive
+        # Examine the headers and look fuer an Expect directive
         expect = self.headers.get('Expect', "")
         if (expect.lower() == "100-continue" and
                 self.protocol_version >= "HTTP/1.1" and
@@ -406,7 +406,7 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
 
         If the client is expecting a 100 Continue response, we must
         respond with either a 100 Continue or a final response before
-        waiting for the request body. The default is to always respond
+        waiting fuer the request body. The default is to always respond
         with a 100 Continue. You can behave differently (for example,
         reject unauthorized requests) by overriding this method.
 
@@ -423,7 +423,7 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
         """Handle a single HTTP request.
 
         You normally don't need to override this method; see the class
-        __doc__ string for information on how to handle specific HTTP
+        __doc__ string fuer information on how to handle specific HTTP
         commands such as GET and POST.
 
         """
@@ -494,7 +494,7 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
         self.send_response(code, message)
         self.send_header('Connection', 'close')
 
-        # Message body is omitted for cases described in:
+        # Message body is omitted fuer cases described in:
         #  - RFC7230: 3.3. 1xx, 204(No Content), 304(Not Modified)
         #  - RFC7231: 6.3.6. 205(Reset Content)
         body = None
@@ -586,7 +586,7 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
         This is called when a request cannot be fulfilled.  By
         default it passes the message on to log_message().
 
-        Arguments are the same as for log_message().
+        Arguments are the same as fuer log_message().
 
         XXX This should go to the separate error log.
 
@@ -596,7 +596,7 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
 
     # https://en.wikipedia.org/wiki/List_of_Unicode_characters#Control_codes
     _control_char_table = str.maketrans(
-            {c: fr'\x{c:02x}' for c in itertools.chain(range(0x20), range(0x7f,0xa0))})
+            {c: fr'\x{c:02x}' fuer c in itertools.chain(range(0x20), range(0x7f,0xa0))})
     _control_char_table[ord('\\')] = r'\\'
 
     def log_message(self, format, *args):
@@ -605,7 +605,7 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
         This is used by all other logging functions.  Override
         it if you have specific logging wishes.
 
-        The first argument, FORMAT, is a format string for the
+        The first argument, FORMAT, is a format string fuer the
         message to be logged.  If the format string contains
         any % escapes requiring parameters, they should be
         specified as subsequent arguments (it's just like
@@ -630,13 +630,13 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
         return self.server_version + ' ' + self.sys_version
 
     def date_time_string(self, timestamp=None):
-        """Return the current date and time formatted for a message header."""
+        """Return the current date and time formatted fuer a message header."""
         if timestamp is None:
             timestamp = time.time()
         return email.utils.formatdate(timestamp, usegmt=True)
 
     def log_date_time_string(self):
-        """Return the current time formatted for logging."""
+        """Return the current time formatted fuer logging."""
         now = time.time()
         year, month, day, hh, mm, ss, x, y, z = time.localtime(now)
         s = "%02d/%3s/%04d %02d:%02d:%02d" % (
@@ -666,7 +666,7 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
     # hack to maintain backwards compatibility
     responses = {
         v: (v.phrase, v.description)
-        for v in HTTPStatus.__members__.values()
+        fuer v in HTTPStatus.__members__.values()
     }
 
 
@@ -675,7 +675,7 @@ klasse SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
     """Simple HTTP request handler with GET and HEAD commands.
 
     This serves files from the current directory and any of its
-    subdirectories.  The MIME type for files is determined by
+    subdirectories.  The MIME type fuer files is determined by
     calling the .guess_type() method.
 
     The GET and HEAD requests are identical except that the HEAD
@@ -714,7 +714,7 @@ klasse SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             f.close()
 
     def send_head(self):
-        """Common code for GET and HEAD commands.
+        """Common code fuer GET and HEAD commands.
 
         This sends the response code and MIME headers.
 
@@ -738,7 +738,7 @@ klasse SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                 self.send_header("Content-Length", "0")
                 self.end_headers()
                 return None
-            for index in self.index_pages:
+            fuer index in self.index_pages:
                 index = os.path.join(path, index)
                 if os.path.isfile(index):
                     path = index
@@ -746,8 +746,8 @@ klasse SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             else:
                 return self.list_directory(path)
         ctype = self.guess_type(path)
-        # check for trailing "/" which should return 404. See Issue17324
-        # The test for this was added in test_httpserver.py
+        # check fuer trailing "/" which should return 404. See Issue17324
+        # The test fuer this was added in test_httpserver.py
         # However, some OS platforms accept a trailingSlash as a filename
         # See discussion on python-dev and Issue34711 regarding
         # parsing and rejection of filenames with a trailing slash
@@ -806,7 +806,7 @@ klasse SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
 
         Return value is either a file object, or None (indicating an
         error).  In either case, the headers are sent, making the
-        interface the same as for send_head().
+        interface the same as fuer send_head().
 
         """
         try:
@@ -828,7 +828,7 @@ klasse SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             displaypath = urllib.parse.unquote(displaypath)
         displaypath = html.escape(displaypath, quote=False)
         enc = sys.getfilesystemencoding()
-        title = f'Directory listing for {displaypath}'
+        title = f'Directory listing fuer {displaypath}'
         r.append('<!DOCTYPE HTML>')
         r.append('<html lang="en">')
         r.append('<head>')
@@ -837,10 +837,10 @@ klasse SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         r.append(f'<title>{title}</title>\n</head>')
         r.append(f'<body>\n<h1>{title}</h1>')
         r.append('<hr>\n<ul>')
-        for name in list:
+        fuer name in list:
             fullname = os.path.join(path, name)
             displayname = linkname = name
-            # Append / for directories or @ for symbolic links
+            # Append / fuer directories or @ fuer symbolic links
             if os.path.isdir(fullname):
                 displayname = name + "/"
                 linkname = name + "/"
@@ -883,7 +883,7 @@ klasse SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         words = path.split('/')
         words = filter(None, words)
         path = self.directory
-        for word in words:
+        fuer word in words:
             if os.path.dirname(word) or word in (os.curdir, os.pardir):
                 # Ignore components that are not a simple file/directory name
                 continue
@@ -895,12 +895,12 @@ klasse SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
     def copyfile(self, source, outputfile):
         """Copy all data between two file objects.
 
-        The SOURCE argument is a file object open for reading
+        The SOURCE argument is a file object open fuer reading
         (or anything with a read() method) and the DESTINATION
-        argument is a file object open for writing (or
+        argument is a file object open fuer writing (or
         anything with a write() method).
 
-        The only reason for overriding this would be to change
+        The only reason fuer overriding this would be to change
         the block size or perhaps to replace newlines by CRLF
         -- note however that this the default server uses this
         to copy binary data as well.
@@ -914,7 +914,7 @@ klasse SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         Argument is a PATH (a filename).
 
         Return value is a string of the form type/subtype,
-        usable for a MIME Content-type header.
+        usable fuer a MIME Content-type header.
 
         The default implementation looks the file's extension
         up in the table self.extensions_map, using application/octet-stream
@@ -948,12 +948,12 @@ def nobody_uid():
     try:
         nobody = pwd.getpwnam('nobody')[2]
     except KeyError:
-        nobody = 1 + max(x[2] for x in pwd.getpwall())
+        nobody = 1 + max(x[2] fuer x in pwd.getpwall())
     return nobody
 
 
 def executable(path):
-    """Test for executable file."""
+    """Test fuer executable file."""
     return os.access(path, os.X_OK)
 
 
@@ -1020,7 +1020,7 @@ def _main(args=None):
     parser.add_argument('--tls-key', metavar='PATH',
                         help='path to the TLS key file')
     parser.add_argument('--tls-password-file', metavar='PATH',
-                        help='path to the password file for the TLS key')
+                        help='path to the password file fuer the TLS key')
     parser.add_argument('port', default=8000, type=int, nargs='?',
                         help='bind to this port '
                              '(default: %(default)s)')

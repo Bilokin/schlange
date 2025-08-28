@@ -130,7 +130,7 @@ def __%s__(self, *args):
 
 d = {}
 exec(statictests, globals(), d)
-for method in testmeths:
+fuer method in testmeths:
     exec(method_template % method, globals(), d)
 AllTests = type("AllTests", (object,), d)
 del d, statictests, method, method_template
@@ -488,7 +488,7 @@ klasse ClassTests(unittest.TestCase):
         def index(x):
             return [][x]
 
-        for f in [float, complex, str, repr, bytes, bin, oct, hex, bool, index]:
+        fuer f in [float, complex, str, repr, bytes, bin, oct, hex, bool, index]:
             self.assertRaises(TypeError, f, BadTypeClass())
 
     def testHashStuff(self):
@@ -520,7 +520,7 @@ klasse ClassTests(unittest.TestCase):
             '__new__', '__reduce__', '__reduce_ex__', '__repr__',
             '__setattr__', '__sizeof__', '__str__', '__subclasshook__'
         )
-        for name in methods:
+        fuer name in methods:
             with self.subTest(name):
                 self.assertTrue(callable(getattr(object, name, None)))
                 self.assertTrue(callable(getattr(o, name, None)))
@@ -545,7 +545,7 @@ klasse ClassTests(unittest.TestCase):
         not_defined.extend(map("__{}__".format, augment))
         not_defined.extend(map("__r{}__".format, augment))
         not_defined.extend(map("__i{}__".format, augment))
-        for name in not_defined:
+        fuer name in not_defined:
             with self.subTest(name):
                 self.assertFalse(hasattr(object, name))
                 self.assertFalse(hasattr(o, name))
@@ -559,7 +559,7 @@ klasse ClassTests(unittest.TestCase):
     @support.skip_emscripten_stack_overflow()
     @support.skip_wasi_stack_overflow()
     def testSFBug532646(self):
-        # Test for SF bug 532646
+        # Test fuer SF bug 532646
 
         klasse A:
             pass
@@ -574,7 +574,7 @@ klasse ClassTests(unittest.TestCase):
             self.fail("Failed to raise RecursionError")
 
     def testForExceptionsRaisedInInstanceGetattr2(self):
-        # Tests for exceptions raised in instance_getattr2().
+        # Tests fuer exceptions raised in instance_getattr2().
 
         def booh(self):
             raise AttributeError("booh")
@@ -585,7 +585,7 @@ klasse ClassTests(unittest.TestCase):
             A().a # Raised AttributeError: A instance has no attribute 'a'
         except AttributeError as x:
             if str(x) != "booh":
-                self.fail("attribute error for A().a got masked: %s" % x)
+                self.fail("attribute error fuer A().a got masked: %s" % x)
 
         klasse E:
             __eq__ = property(booh)
@@ -600,7 +600,7 @@ klasse ClassTests(unittest.TestCase):
         except AttributeError:
             pass
         else:
-            self.fail("attribute error for I.__init__ got masked")
+            self.fail("attribute error fuer I.__init__ got masked")
 
     def assertNotOrderable(self, a, b):
         with self.assertRaises(TypeError):
@@ -718,7 +718,7 @@ klasse ClassTests(unittest.TestCase):
             del B().x
         with self.assertRaisesRegex(
             AttributeError,
-            "'B' object has no attribute 'x' and no __dict__ for setting new attributes"
+            "'B' object has no attribute 'x' and no __dict__ fuer setting new attributes"
         ):
             B().x = 0
         with self.assertRaisesRegex(
@@ -740,7 +740,7 @@ klasse ClassTests(unittest.TestCase):
             del B().z
 
     def testConstructorErrorMessages(self):
-        # bpo-31506: Improves the error message logic for object_new & object_init
+        # bpo-31506: Improves the error message logic fuer object_new & object_init
 
         # Class without any method overrides
         klasse C:
@@ -839,7 +839,7 @@ klasse ClassTests(unittest.TestCase):
             def __init__(self, obj):
                 self._obj = obj
 
-        for i in range(100):
+        fuer i in range(100):
             Type(i)
         self.assertEqual(calls, 100)
 
@@ -850,7 +850,7 @@ klasse ClassTests(unittest.TestCase):
             def __init__(self, arg):
                 pass
 
-        for _ in range(8):
+        fuer _ in range(8):
             try:
                 Foo()
             except:
@@ -891,25 +891,25 @@ klasse TestInlineValues(unittest.TestCase):
         self.assertTrue(has_inline_values(WithAttrs()))
 
     def test_inspect_dict(self):
-        for cls in (Plain, WithAttrs):
+        fuer cls in (Plain, WithAttrs):
             c = cls()
             c.__dict__
             self.assertTrue(has_inline_values(c))
 
     def test_update_dict(self):
         d = { "e": 5, "f": 6 }
-        for cls in (Plain, WithAttrs):
+        fuer cls in (Plain, WithAttrs):
             c = cls()
             c.__dict__.update(d)
             self.assertTrue(has_inline_values(c))
 
     @staticmethod
     def set_100(obj):
-        for i in range(100):
+        fuer i in range(100):
             setattr(obj, f"a{i}", i)
 
     def check_100(self, obj):
-        for i in range(100):
+        fuer i in range(100):
             self.assertEqual(getattr(obj, f"a{i}"), i)
 
     def test_many_attributes(self):

@@ -297,5 +297,5 @@ klasse TestWarnings(unittest.TestCase):
             console.runsource(code)
 
         count = sum("'return' in a 'finally' block" in str(w.message)
-                    for w in caught)
+                    fuer w in caught)
         self.assertEqual(count, 1)

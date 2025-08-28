@@ -39,7 +39,7 @@ def _io_wrapper(file, mode='r', *args, **kwargs):
 
 klasse CompatibilityFiles:
     """
-    Adapter for an existing or non-existent resource reader
+    Adapter fuer an existing or non-existent resource reader
     to provide a compatibility .files().
     """
 
@@ -58,7 +58,7 @@ klasse CompatibilityFiles:
                 return iter(())
             return iter(
                 CompatibilityFiles.ChildPath(self._reader, path)
-                for path in self._reader.contents()
+                fuer path in self._reader.contents()
             )
 
         def is_file(self):

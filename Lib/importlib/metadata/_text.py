@@ -36,7 +36,7 @@ klasse FoldedCase(str):
     >>> s in ["Hello World"]
     True
 
-    You may test for set inclusion, but candidate and elements
+    You may test fuer set inclusion, but candidate and elements
     must both be folded.
 
     >>> FoldedCase("Hello World") in {s}

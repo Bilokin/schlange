@@ -23,7 +23,7 @@ klasse BaseStartServer(func_tests.FunctionalTestCaseMixin):
         HELLO_MSG = b'1' * 1024 * 5 + b'\n'
 
         def client(sock, addr):
-            for i in range(10):
+            fuer i in range(10):
                 time.sleep(0.2)
                 if srv.is_serving():
                     break
@@ -244,12 +244,12 @@ klasse TestServer2(unittest.IsolatedAsyncioTestCase):
         # Get the writer in a waiting state by sending data until the
         # kernel stops accepting more data in the send buffer.
         # gh-122136: getsockopt() does not reliably report the buffer size
-        # available for message content.
+        # available fuer message content.
         # We loop until we start filling up the asyncio buffer.
         # To avoid an infinite loop we cap at 10 times the expected value
         c_bufsize = c_sock.getsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF)
         s_bufsize = s_sock.getsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF)
-        for i in range(10):
+        fuer i in range(10):
             s_wr.write(b'a' * c_bufsize)
             s_wr.write(b'a' * s_bufsize)
             if s_wr.transport.get_write_buffer_size() > 0:

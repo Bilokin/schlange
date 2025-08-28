@@ -42,8 +42,8 @@ klasse PolicyAPITests(unittest.TestCase):
         })
 
     # For each policy under test, we give here what we expect the defaults to
-    # be for that policy.  The second argument to make defaults is the
-    # difference between the base defaults and that for the particular policy.
+    # be fuer that policy.  The second argument to make defaults is the
+    # difference between the base defaults and that fuer the particular policy.
     new_policy = email.policy.EmailPolicy()
     policies = {
         email.policy.compat32: make_defaults(compat32_defaults, {}),
@@ -65,16 +65,16 @@ klasse PolicyAPITests(unittest.TestCase):
     policies[new_policy]['header_factory'] = new_policy.header_factory
 
     def test_defaults(self):
-        for policy, expected in self.policies.items():
-            for attr, value in expected.items():
+        fuer policy, expected in self.policies.items():
+            fuer attr, value in expected.items():
                 with self.subTest(policy=policy, attr=attr):
                     self.assertEqual(getattr(policy, attr), value,
                                     ("change {} docs/docstrings if defaults have "
                                     "changed").format(policy))
 
     def test_all_attributes_covered(self):
-        for policy, expected in self.policies.items():
-            for attr in dir(policy):
+        fuer policy, expected in self.policies.items():
+            fuer attr in dir(policy):
                 with self.subTest(policy=policy, attr=attr):
                     if (attr.startswith('_') or
                             isinstance(getattr(email.policy.EmailPolicy, attr),
@@ -93,12 +93,12 @@ klasse PolicyAPITests(unittest.TestCase):
                             'header_fetch_parse',
                             'header_source_parse',
                             'header_store_parse')
-        for method in abstract_methods:
+        fuer method in abstract_methods:
             self.assertIn(method, msg)
 
     def test_policy_is_immutable(self):
-        for policy, defaults in self.policies.items():
-            for attr in defaults:
+        fuer policy, defaults in self.policies.items():
+            fuer attr in defaults:
                 with self.assertRaisesRegex(AttributeError, attr+".*read-only"):
                     setattr(policy, attr, None)
             with self.assertRaisesRegex(AttributeError, 'no attribute.*foo'):
@@ -107,14 +107,14 @@ klasse PolicyAPITests(unittest.TestCase):
     def test_set_policy_attrs_when_cloned(self):
         # None of the attributes has a default value of None, so we set them
         # all to None in the clone call and check that it worked.
-        for policyclass, defaults in self.policies.items():
-            testattrdict = {attr: None for attr in defaults}
+        fuer policyclass, defaults in self.policies.items():
+            testattrdict = {attr: None fuer attr in defaults}
             policy = policyclass.clone(**testattrdict)
-            for attr in defaults:
+            fuer attr in defaults:
                 self.assertIsNone(getattr(policy, attr))
 
     def test_reject_non_policy_keyword_when_called(self):
-        for policyclass in self.policies:
+        fuer policyclass in self.policies:
             with self.assertRaises(TypeError):
                 policyclass(this_keyword_should_not_be_valid=None)
             with self.assertRaises(TypeError):
@@ -126,14 +126,14 @@ klasse PolicyAPITests(unittest.TestCase):
         p2 = email.policy.default.clone(max_line_length=50)
         added = p1 + p2
         expected.update(max_line_length=50)
-        for attr, value in expected.items():
+        fuer attr, value in expected.items():
             self.assertEqual(getattr(added, attr), value)
         added = p2 + p1
         expected.update(max_line_length=100)
-        for attr, value in expected.items():
+        fuer attr, value in expected.items():
             self.assertEqual(getattr(added, attr), value)
         added = added + email.policy.default
-        for attr, value in expected.items():
+        fuer attr, value in expected.items():
             self.assertEqual(getattr(added, attr), value)
 
     def test_fold_utf8(self):
@@ -279,7 +279,7 @@ klasse PolicyAPITests(unittest.TestCase):
     def test_short_maxlen_error(self):
         # RFC 2047 chrome takes up 7 characters, plus the length of the charset
         # name, so folding should fail if maxlen is lower than the minimum
-        # required length for a line.
+        # required length fuer a line.
 
         # Note: This is only triggered when there is a single word longer than
         # max_line_length, hence the 1234567890 at the end of this whimsical
@@ -289,7 +289,7 @@ klasse PolicyAPITests(unittest.TestCase):
         # contain the RFC 2047 chrome (`?=<charset>?q??=`), we fail.
         subject = "Melt away the pounds with this one simple trick! 1234567890"
 
-        for maxlen in [3, 7, 9]:
+        fuer maxlen in [3, 7, 9]:
             with self.subTest(maxlen=maxlen):
                 policy = email.policy.default.clone(max_line_length=maxlen)
                 with self.assertRaises(email.errors.HeaderParseError):
@@ -298,7 +298,7 @@ klasse PolicyAPITests(unittest.TestCase):
     def test_verify_generated_headers(self):
         """Turning protection off allows header injection"""
         policy = email.policy.default.clone(verify_generated_headers=False)
-        for text in (
+        fuer text in (
             'Header: Value\r\nBad: Injection\r\n',
             'Header: NoNewLine'
         ):
@@ -359,7 +359,7 @@ klasse TestPolicyPropagation(unittest.TestCase):
         with self.assertRaisesRegex(TestException, "^test$"):
             email.message_from_binary_file(f, policy=self.MyPolicy)
 
-    # These are redundant, but we need them for black-box completeness.
+    # These are redundant, but we need them fuer black-box completeness.
 
     def test_parser(self):
         p = email.parser.Parser(policy=self.MyPolicy)
@@ -399,7 +399,7 @@ klasse TestPolicyPropagation(unittest.TestCase):
             test2
             --XXX--
             """))
-        for part in msg.walk():
+        fuer part in msg.walk():
             self.assertIs(part.policy, self.policy)
 
     def test_message_policy_propagates_to_generator(self):

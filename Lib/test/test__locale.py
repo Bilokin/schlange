@@ -12,9 +12,9 @@ from platform import uname
 from test import support
 
 if uname().system == "Darwin":
-    maj, min, mic = [int(part) for part in uname().release.split(".")]
+    maj, min, mic = [int(part) fuer part in uname().release.split(".")]
     if (maj, min, mic) < (8, 0, 0):
-        raise unittest.SkipTest("locale support broken for OS X < 10.4")
+        raise unittest.SkipTest("locale support broken fuer OS X < 10.4")
 
 candidate_locales = ['es_UY', 'fr_FR', 'fi_FI', 'es_CO', 'pt_PT', 'it_IT',
     'et_EE', 'es_PY', 'no_NO', 'nl_NL', 'lv_LV', 'el_GR', 'be_BY', 'fr_BE',
@@ -41,7 +41,7 @@ def setUpModule():
         old_locale = locale.setlocale(locale.LC_ALL)
         try:
             locales = []
-            for loc in candidate_locales:
+            fuer loc in candidate_locales:
                 try:
                     locale.setlocale(locale.LC_ALL, loc)
                 except Error:
@@ -58,12 +58,12 @@ def setUpModule():
         finally:
             locale.setlocale(locale.LC_ALL, old_locale)
 
-    # Workaround for MSVC6(debug) crash bug
+    # Workaround fuer MSVC6(debug) crash bug
     if "MSC v.1200" in sys.version:
         def accept(loc):
             a = loc.split(".")
             return not(len(a) == 2 and len(a[-1]) >= 9)
-        candidate_locales = [loc for loc in candidate_locales if accept(loc)]
+        candidate_locales = [loc fuer loc in candidate_locales if accept(loc)]
 
 # List known locale values to test against when available.
 # Dict formatted as ``<locale> : (<decimal_point>, <thousands_sep>)``.  If a
@@ -116,9 +116,9 @@ klasse _LocaleTests(unittest.TestCase):
         setlocale(LC_ALL, self.oldlocale)
 
     # Want to know what value was calculated, what it was compared against,
-    # what function was used for the calculation, what type of data was used,
+    # what function was used fuer the calculation, what type of data was used,
     # the locale that was supposedly set, and the actual locale that is set.
-    lc_numeric_err_msg = "%s != %s (%s for %s; set to %s, using %s)"
+    lc_numeric_err_msg = "%s != %s (%s fuer %s; set to %s, using %s)"
 
     def numeric_tester(self, calc_type, calc_value, data_type, used_locale):
         """Compare calculation against known value, if available"""
@@ -142,12 +142,12 @@ klasse _LocaleTests(unittest.TestCase):
         # Test nl_langinfo against known values
         tested = False
         oldloc = setlocale(LC_CTYPE)
-        for loc in candidate_locales:
+        fuer loc in candidate_locales:
             try:
                 setlocale(LC_NUMERIC, loc)
             except Error:
                 continue
-            for li, lc in ((RADIXCHAR, "decimal_point"),
+            fuer li, lc in ((RADIXCHAR, "decimal_point"),
                             (THOUSEP, "thousands_sep")):
                 if self.numeric_tester('nl_langinfo', nl_langinfo(li), lc, loc):
                     tested = True
@@ -160,13 +160,13 @@ klasse _LocaleTests(unittest.TestCase):
         # Test localeconv against known values
         tested = False
         oldloc = setlocale(LC_CTYPE)
-        for loc in candidate_locales:
+        fuer loc in candidate_locales:
             try:
                 setlocale(LC_NUMERIC, loc)
             except Error:
                 continue
             formatting = localeconv()
-            for lc in ("decimal_point",
+            fuer lc in ("decimal_point",
                         "thousands_sep"):
                 if self.numeric_tester('localeconv', formatting[lc], lc, loc):
                     tested = True
@@ -179,12 +179,12 @@ klasse _LocaleTests(unittest.TestCase):
         # Test nl_langinfo against localeconv
         tested = False
         oldloc = setlocale(LC_CTYPE)
-        for loc in candidate_locales:
+        fuer loc in candidate_locales:
             try:
                 setlocale(LC_NUMERIC, loc)
             except Error:
                 continue
-            for li, lc in ((RADIXCHAR, "decimal_point"),
+            fuer li, lc in ((RADIXCHAR, "decimal_point"),
                             (THOUSEP, "thousands_sep")):
                 nl_radixchar = nl_langinfo(li)
                 li_radixchar = localeconv()[lc]
@@ -208,7 +208,7 @@ klasse _LocaleTests(unittest.TestCase):
     def test_alt_digits_nl_langinfo(self):
         # Test nl_langinfo(ALT_DIGITS)
         tested = False
-        for loc in candidate_locales:
+        fuer loc in candidate_locales:
             with self.subTest(locale=loc):
                 try:
                     setlocale(LC_TIME, loc)
@@ -226,9 +226,9 @@ klasse _LocaleTests(unittest.TestCase):
                     if loc1 in known_alt_digits:
                         count, samples = known_alt_digits[loc1]
                         if count and not alt_digits:
-                            self.skipTest(f'ALT_DIGITS is not set for locale {loc!r} on this platform')
+                            self.skipTest(f'ALT_DIGITS is not set fuer locale {loc!r} on this platform')
                         self.assertEqual(len(alt_digits), count, alt_digits)
-                        for i in samples:
+                        fuer i in samples:
                             self.assertEqual(alt_digits[i], samples[i])
                     tested = True
         if not tested:
@@ -240,7 +240,7 @@ klasse _LocaleTests(unittest.TestCase):
     def test_era_nl_langinfo(self):
         # Test nl_langinfo(ERA)
         tested = False
-        for loc in candidate_locales:
+        fuer loc in candidate_locales:
             with self.subTest(locale=loc):
                 try:
                     setlocale(LC_TIME, loc)
@@ -259,7 +259,7 @@ klasse _LocaleTests(unittest.TestCase):
                         count, sample = known_era[loc1]
                         if count:
                             if not era:
-                                self.skipTest(f'ERA is not set for locale {loc!r} on this platform')
+                                self.skipTest(f'ERA is not set fuer locale {loc!r} on this platform')
                             self.assertGreaterEqual(era.count(';') + 1, count)
                             self.assertIn(sample, era)
                         else:
@@ -273,7 +273,7 @@ klasse _LocaleTests(unittest.TestCase):
         # locales.
         tested = False
         oldloc = setlocale(LC_CTYPE)
-        for loc in candidate_locales:
+        fuer loc in candidate_locales:
             try:
                 setlocale(LC_NUMERIC, loc)
             except Error:
@@ -284,9 +284,9 @@ klasse _LocaleTests(unittest.TestCase):
                 continue
 
             self.assertEqual(int(eval('3.14') * 100), 314,
-                                "using eval('3.14') failed for %s" % loc)
+                                "using eval('3.14') failed fuer %s" % loc)
             self.assertEqual(int(float('3.14') * 100), 314,
-                                "using float('3.14') failed for %s" % loc)
+                                "using float('3.14') failed fuer %s" % loc)
             if localeconv()['decimal_point'] != '.':
                 self.assertRaises(ValueError, float,
                                   localeconv()['decimal_point'].join(['1', '23']))

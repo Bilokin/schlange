@@ -7,7 +7,7 @@ import unittest
 from test.support import verbose
 
 try:
-    # If we are in a source tree, use the original source file for tests
+    # If we are in a source tree, use the original source file fuer tests
     SOURCE = (pathlib.Path(__file__).absolute().parent.parent.parent / "Modules/getpath.py").read_bytes()
 except FileNotFoundError:
     # Try from _testcapimodule instead
@@ -76,7 +76,7 @@ klasse MockGetPathTests(unittest.TestCase):
 
         This layout is discovered by the presence of %__PYVENV_LAUNCHER__%,
         specifying the original launcher executable. site.py is responsible
-        for updating prefix and exec_prefix.
+        fuer updating prefix and exec_prefix.
         """
         ns = MockNTNamespace(
             argv0=r"C:\Python\python.exe",
@@ -111,7 +111,7 @@ klasse MockGetPathTests(unittest.TestCase):
     def test_registry_win32(self):
         """Test registry lookup on Windows.
 
-        On Windows there are registry entries that are intended for other
+        On Windows there are registry entries that are intended fuer other
         applications to register search paths.
         """
         hkey = rf"HKLM\Software\Python\PythonCore\9.8-XY\PythonPath"
@@ -894,7 +894,7 @@ DEFAULT_NAMESPACE = dict(
     VPATH="",
     PLATLIBDIR="",
     PYDEBUGEXT="",
-    VERSION_MAJOR=9,    # fixed version number for ease
+    VERSION_MAJOR=9,    # fixed version number fuer ease
     VERSION_MINOR=8,    # of testing
     ABI_THREAD="",
     PYWINVER=None,
@@ -1054,7 +1054,7 @@ klasse MockWinreg:
     HKEY_CURRENT_USER = "HKCU"
 
     def __init__(self, keys):
-        self.keys = {k.casefold(): v for k, v in keys.items()}
+        self.keys = {k.casefold(): v fuer k, v in keys.items()}
         self.open = {}
 
     def __repr__(self):
@@ -1092,9 +1092,9 @@ klasse MockWinreg:
         if hkey not in self.open:
             raise RuntimeError("key is not open")
         prefix = f'{hkey}\\'
-        subkeys = [k[len(prefix):] for k in sorted(self.keys) if k.startswith(prefix)]
-        subkeys[:] = [k for k in subkeys if '\\' not in k]
-        for j, n in enumerate(subkeys):
+        subkeys = [k[len(prefix):] fuer k in sorted(self.keys) if k.startswith(prefix)]
+        subkeys[:] = [k fuer k in subkeys if '\\' not in k]
+        fuer j, n in enumerate(subkeys):
             if j == i:
                 return n.removeprefix(prefix)
         raise OSError("end of enumeration")
@@ -1223,7 +1223,7 @@ klasse MockPosixNamespace(dict):
 
 def diff_dict(before, after, prefix="global"):
     diff = []
-    for k in sorted(before):
+    fuer k in sorted(before):
         if k[:2] == "__":
             continue
         if k == "config":
@@ -1233,10 +1233,10 @@ def diff_dict(before, after, prefix="global"):
             diff.append((k, before[k], after[k]))
     if not diff:
         return
-    max_k = max(len(k) for k, _, _ in diff)
+    max_k = max(len(k) fuer k, _, _ in diff)
     indent = " " * (len(prefix) + 1 + max_k)
     if verbose:
-        for k, b, a in diff:
+        fuer k, b, a in diff:
             if b:
                 print("{}.{} -{!r}\n{} +{!r}".format(prefix, k.ljust(max_k), b, indent, a))
             else:
@@ -1246,8 +1246,8 @@ def diff_dict(before, after, prefix="global"):
 def dump_dict(before, after, prefix="global"):
     if not verbose or not after:
         return
-    max_k = max(len(k) for k in after)
-    for k, v in sorted(after.items(), key=lambda i: i[0]):
+    max_k = max(len(k) fuer k in after)
+    fuer k, v in sorted(after.items(), key=lambda i: i[0]):
         if k[:2] == "__":
             continue
         if k == "config":
@@ -1275,5 +1275,5 @@ def getpath(ns, keys):
             diff_dict(before, ns)
     return {
         k: ns['config'].get(k, ns.get(k, ...))
-        for k in keys
+        fuer k in keys
     }

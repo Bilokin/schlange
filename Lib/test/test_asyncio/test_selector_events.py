@@ -1,4 +1,4 @@
-"""Tests for selector_events.py"""
+"""Tests fuer selector_events.py"""
 
 import collections
 import selectors
@@ -40,7 +40,7 @@ klasse TestBaseSelectorEventLoop(BaseSelectorEventLoop):
 
 def list_to_buffer(l=()):
     buffer = collections.deque()
-    buffer.extend((memoryview(i) for i in l))
+    buffer.extend((memoryview(i) fuer i in l))
     return buffer
 
 
@@ -162,7 +162,7 @@ klasse BaseSelectorEventLoopTests(test_utils.TestCase):
     @mock.patch('socket.getaddrinfo')
     def test_sock_connect_resolve_using_socket_params(self, m_gai):
         addr = ('need-resolution.com', 8080)
-        for sock_type in [socket.SOCK_STREAM, socket.SOCK_DGRAM]:
+        fuer sock_type in [socket.SOCK_STREAM, socket.SOCK_DGRAM]:
             with self.subTest(sock_type):
                 sock = test_utils.mock_nonblocking_socket(type=sock_type)
 
@@ -348,7 +348,7 @@ klasse BaseSelectorEventLoopTests(test_utils.TestCase):
         self.loop._remove_writer.assert_called_with(1)
 
     def test_accept_connection_zero_one(self):
-        for backlog in [0, 1]:
+        fuer backlog in [0, 1]:
             sock = mock.Mock()
             sock.accept.return_value = (mock.Mock(), mock.Mock())
             with self.subTest(backlog):
@@ -363,7 +363,7 @@ klasse BaseSelectorEventLoopTests(test_utils.TestCase):
         sock = mock.Mock()
         sock.accept.return_value = (mock.Mock(), mock.Mock())
         backlog = 100
-        # Mock the coroutine generation for a connection to prevent
+        # Mock the coroutine generation fuer a connection to prevent
         # warnings related to un-awaited coroutines. _accept_connection2
         # is an async function that is patched with AsyncMock. create_task
         # creates a task out of coroutine returned by AsyncMock, so use

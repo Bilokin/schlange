@@ -10,7 +10,7 @@ This avoids all the overhead of SAX and pulldom to gain performance.
 # minidom DOM and can't be used with other DOM implementations.  This
 # is due, in part, to a lack of appropriate methods in the DOM (there is
 # no way to create Entity and Notation nodes via the DOM Level 2
-# interface), and for performance.  The latter is the cause of some fairly
+# interface), and fuer performance.  The latter is the cause of some fairly
 # cryptic code.
 #
 # Performance hacks:
@@ -23,7 +23,7 @@ This avoids all the overhead of SAX and pulldom to gain performance.
 #      separate normalization pass.
 #
 #   -  Determining that a node exists is done using an identity comparison
-#      with None rather than a truth test; this avoids searching for and
+#      with None rather than a truth test; this avoids searching fuer and
 #      calling any methods on the node object if it exists.  (A rather
 #      nice speedup is achieved this way as well!)
 
@@ -72,7 +72,7 @@ klasse ElementInfo(object):
         self._attr_info, self._model, self.tagName = state
 
     def getAttributeType(self, aname):
-        for info in self._attr_info:
+        fuer info in self._attr_info:
             if info[1] == aname:
                 t = info[-2]
                 if t[0] == "(":
@@ -99,7 +99,7 @@ klasse ElementInfo(object):
             return False
 
     def isId(self, aname):
-        for info in self._attr_info:
+        fuer info in self._attr_info:
             if info[1] == aname:
                 return info[-2] == "ID"
         return False
@@ -302,7 +302,7 @@ klasse ExpatBuilder:
     def entity_decl_handler(self, entityName, is_parameter_entity, value,
                             base, systemId, publicId, notationName):
         if is_parameter_entity:
-            # we don't care about parameter entities for the DOM
+            # we don't care about parameter entities fuer the DOM
             return
         if not self._options.entities:
             return
@@ -352,7 +352,7 @@ klasse ExpatBuilder:
         self.curNode = node
 
         if attributes:
-            for i in range(0, len(attributes), 2):
+            fuer i in range(0, len(attributes), 2):
                 a = minidom.Attr(attributes[i], EMPTY_NAMESPACE,
                                  None, EMPTY_PREFIX)
                 value = attributes[i+1]
@@ -366,7 +366,7 @@ klasse ExpatBuilder:
     def _finish_start_element(self, node):
         if self._filter:
             # To be general, we'd have to call isSameNode(), but this
-            # is sufficient for minidom:
+            # is sufficient fuer minidom:
             if node is self.document.documentElement:
                 return
             filt = self._filter.startContainer(node)
@@ -408,15 +408,15 @@ klasse ExpatBuilder:
             return
 
         # We have element type information and should remove ignorable
-        # whitespace; identify for text nodes which contain only
+        # whitespace; identify fuer text nodes which contain only
         # whitespace.
         L = []
-        for child in node.childNodes:
+        fuer child in node.childNodes:
             if child.nodeType == TEXT_NODE and not child.data.strip():
                 L.append(child)
 
         # Remove ignorable whitespace from the tree.
-        for child in L:
+        fuer child in L:
             node.removeChild(child)
 
     def element_decl_handler(self, name, model):
@@ -481,7 +481,7 @@ klasse FilterVisibilityController(object):
             if val == FILTER_SKIP:
                 # move all child nodes to the parent, and remove this node
                 parent = node.parentNode
-                for child in node.childNodes[:]:
+                fuer child in node.childNodes[:]:
                     parent.appendChild(child)
                 # node is handled by the caller
                 return FILTER_REJECT
@@ -526,7 +526,7 @@ klasse Rejecter(FilterCrutch):
     def __init__(self, builder):
         FilterCrutch.__init__(self, builder)
         parser = builder._parser
-        for name in ("ProcessingInstructionHandler",
+        fuer name in ("ProcessingInstructionHandler",
                      "CommentHandler",
                      "CharacterDataHandler",
                      "StartCdataSectionHandler",
@@ -570,7 +570,7 @@ klasse Skipper(FilterCrutch):
 
 
 # framework document used by the fragment builder.
-# Takes a string for the doctype, subset string, and namespace attrs string.
+# Takes a string fuer the doctype, subset string, and namespace attrs string.
 
 _FRAGMENT_BUILDER_INTERNAL_SYSTEM_ID = \
     "http://xml.python.org/entities/fragment-builder/internal"
@@ -652,7 +652,7 @@ klasse FragmentBuilder(ExpatBuilder):
         doctype = self.context.ownerDocument.doctype
         s = ""
         if doctype:
-            for i in range(doctype.notations.length):
+            fuer i in range(doctype.notations.length):
                 notation = doctype.notations.item(i)
                 if s:
                     s = s + "\n  "
@@ -662,7 +662,7 @@ klasse FragmentBuilder(ExpatBuilder):
                         % (s, notation.publicId, notation.systemId)
                 else:
                     s = '%s SYSTEM "%s">' % (s, notation.systemId)
-            for i in range(doctype.entities.length):
+            fuer i in range(doctype.entities.length):
                 entity = doctype.entities.item(i)
                 if s:
                     s = s + "\n  "
@@ -706,7 +706,7 @@ klasse FragmentBuilder(ExpatBuilder):
 
 
 klasse Namespaces:
-    """Mix-in klasse for builders; adds support for namespaces."""
+    """Mix-in klasse fuer builders; adds support fuer namespaces."""
 
     def _initNamespaces(self):
         # list of (prefix, uri) ns declarations.  Namespace attrs are
@@ -744,7 +744,7 @@ klasse Namespaces:
         self.curNode = node
 
         if self._ns_ordered_prefixes:
-            for prefix, uri in self._ns_ordered_prefixes:
+            fuer prefix, uri in self._ns_ordered_prefixes:
                 if prefix:
                     a = minidom.Attr(_intern(self, 'xmlns:' + prefix),
                                      XMLNS_NAMESPACE, prefix, "xmlns")
@@ -760,7 +760,7 @@ klasse Namespaces:
             node._ensure_attributes()
             _attrs = node._attrs
             _attrsNS = node._attrsNS
-            for i in range(0, len(attributes), 2):
+            fuer i in range(0, len(attributes), 2):
                 aname = attributes[i]
                 value = attributes[i+1]
                 if ' ' in aname:
@@ -828,7 +828,7 @@ klasse FragmentBuilderNS(Namespaces, FragmentBuilder):
         L = []
         while context:
             if hasattr(context, '_ns_prefix_uri'):
-                for prefix, uri in context._ns_prefix_uri.items():
+                fuer prefix, uri in context._ns_prefix_uri.items():
                     # add every new NS decl from context to L and attrs string
                     if prefix in L:
                         continue

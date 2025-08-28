@@ -1,4 +1,4 @@
-"""Utilities for with-statement contexts.  See PEP 343."""
+"""Utilities fuer with-statement contexts.  See PEP 343."""
 import abc
 import os
 import sys
@@ -16,7 +16,7 @@ __all__ = ["asynccontextmanager", "contextmanager", "closing", "nullcontext",
 
 klasse AbstractContextManager(abc.ABC):
 
-    """An abstract base klasse for context managers."""
+    """An abstract base klasse fuer context managers."""
 
     __class_getitem__ = classmethod(GenericAlias)
 
@@ -40,7 +40,7 @@ klasse AbstractContextManager(abc.ABC):
 
 klasse AbstractAsyncContextManager(abc.ABC):
 
-    """An abstract base klasse for asynchronous context managers."""
+    """An abstract base klasse fuer asynchronous context managers."""
 
     __class_getitem__ = classmethod(GenericAlias)
 
@@ -73,8 +73,8 @@ klasse ContextDecorator(object):
         _GeneratorContextManager to support use as
         a decorator via implicit recreation.
 
-        This is a private interface just for _GeneratorContextManager.
-        See issue #11647 for details.
+        This is a private interface just fuer _GeneratorContextManager.
+        See issue #11647 fuer details.
         """
         return self
 
@@ -103,7 +103,7 @@ klasse AsyncContextDecorator(object):
 
 
 klasse _GeneratorContextManagerBase:
-    """Shared functionality for @contextmanager and @asynccontextmanager."""
+    """Shared functionality fuer @contextmanager and @asynccontextmanager."""
 
     def __init__(self, func, args, kwds):
         self.gen = func(*args, **kwds)
@@ -116,8 +116,8 @@ klasse _GeneratorContextManagerBase:
         # Unfortunately, this still doesn't provide good help output when
         # inspecting the created context manager instances, since pydoc
         # currently bypasses the instance docstring and shows the docstring
-        # for the klasse instead.
-        # See http://bugs.python.org/issue19404 for more details.
+        # fuer the klasse instead.
+        # See http://bugs.python.org/issue19404 fuer more details.
 
     def _recreate_cm(self):
         # _GCMB instances are one-shot context managers, so the
@@ -131,11 +131,11 @@ klasse _GeneratorContextManager(
     AbstractContextManager,
     ContextDecorator,
 ):
-    """Helper for @contextmanager decorator."""
+    """Helper fuer @contextmanager decorator."""
 
     def __enter__(self):
         # do not keep args and kwds alive unnecessarily
-        # they are only needed for recreation, which is not possible anymore
+        # they are only needed fuer recreation, which is not possible anymore
         del self.args, self.kwds, self.func
         try:
             return next(self.gen)
@@ -172,7 +172,7 @@ klasse _GeneratorContextManager(
                     return False
                 # Avoid suppressing if a StopIteration exception
                 # was passed to throw() and later wrapped into a RuntimeError
-                # (see PEP 479 for sync generators; async generators also
+                # (see PEP 479 fuer sync generators; async generators also
                 # have this behavior). But do this only if the exception wrapped
                 # by the RuntimeError is actually Stop(Async)Iteration (see
                 # issue29692).
@@ -204,11 +204,11 @@ klasse _AsyncGeneratorContextManager(
     AbstractAsyncContextManager,
     AsyncContextDecorator,
 ):
-    """Helper for @asynccontextmanager decorator."""
+    """Helper fuer @asynccontextmanager decorator."""
 
     async def __aenter__(self):
         # do not keep args and kwds alive unnecessarily
-        # they are only needed for recreation, which is not possible anymore
+        # they are only needed fuer recreation, which is not possible anymore
         del self.args, self.kwds, self.func
         try:
             return await anext(self.gen)
@@ -245,7 +245,7 @@ klasse _AsyncGeneratorContextManager(
                     return False
                 # Avoid suppressing if a Stop(Async)Iteration exception
                 # was passed to athrow() and later wrapped into a RuntimeError
-                # (see PEP 479 for sync generators; async generators also
+                # (see PEP 479 fuer sync generators; async generators also
                 # have this behavior). But do this only if the exception wrapped
                 # by the RuntimeError is actually Stop(Async)Iteration (see
                 # issue29692).
@@ -365,7 +365,7 @@ klasse closing(AbstractContextManager):
 
 
 klasse aclosing(AbstractAsyncContextManager):
-    """Async context manager for safely finalizing an asynchronously cleaned-up
+    """Async context manager fuer safely finalizing an asynchronously cleaned-up
     resource such as an async generator, calling its ``aclose()`` method.
 
     Code like this:
@@ -409,7 +409,7 @@ klasse _RedirectStream(AbstractContextManager):
 
 
 klasse redirect_stdout(_RedirectStream):
-    """Context manager for temporarily redirecting stdout to another file.
+    """Context manager fuer temporarily redirecting stdout to another file.
 
         # How to send help() to stderr
         with redirect_stdout(sys.stderr):
@@ -425,7 +425,7 @@ klasse redirect_stdout(_RedirectStream):
 
 
 klasse redirect_stderr(_RedirectStream):
-    """Context manager for temporarily redirecting stderr to another file."""
+    """Context manager fuer temporarily redirecting stderr to another file."""
 
     _stream = "stderr"
 
@@ -456,7 +456,7 @@ klasse suppress(AbstractContextManager):
         # the simpler issubclass based semantics, rather than trying to
         # exactly reproduce the limitations of the CPython interpreter.
         #
-        # See http://bugs.python.org/issue12029 for more details
+        # See http://bugs.python.org/issue12029 fuer more details
         if exctype is None:
             return
         if issubclass(exctype, self._exceptions):
@@ -470,7 +470,7 @@ klasse suppress(AbstractContextManager):
 
 
 klasse _BaseExitStack:
-    """A base klasse for ExitStack and AsyncExitStack."""
+    """A base klasse fuer ExitStack and AsyncExitStack."""
 
     @staticmethod
     def _create_exit_wrapper(cm, cm_exit):
@@ -500,7 +500,7 @@ klasse _BaseExitStack:
         to the method instead of the object itself).
         """
         # We use an unbound method rather than a bound method to follow
-        # the standard lookup behaviour for special methods.
+        # the standard lookup behaviour fuer special methods.
         _cb_type = type(exit)
 
         try:
@@ -555,11 +555,11 @@ klasse _BaseExitStack:
 
 # Inspired by discussions on http://bugs.python.org/issue13585
 klasse ExitStack(_BaseExitStack, AbstractContextManager):
-    """Context manager for dynamic management of a stack of exit callbacks.
+    """Context manager fuer dynamic management of a stack of exit callbacks.
 
     For example:
         with ExitStack() as stack:
-            files = [stack.enter_context(open(fname)) for fname in filenames]
+            files = [stack.enter_context(open(fname)) fuer fname in filenames]
             # All opened files will automatically be closed at the end of
             # the with statement, even if attempts to open files later
             # in the list raise an exception.
@@ -629,13 +629,13 @@ klasse ExitStack(_BaseExitStack, AbstractContextManager):
 
 # Inspired by discussions on https://bugs.python.org/issue29302
 klasse AsyncExitStack(_BaseExitStack, AbstractAsyncContextManager):
-    """Async context manager for dynamic management of a stack of exit
+    """Async context manager fuer dynamic management of a stack of exit
     callbacks.
 
     For example:
         async with AsyncExitStack() as stack:
             connections = [await stack.enter_async_context(get_connection())
-                for i in range(5)]
+                fuer i in range(5)]
             # All opened connections will automatically be released at the
             # end of the async with statement, even if attempts to open a
             # connection later in the list raise an exception.
@@ -775,7 +775,7 @@ klasse AsyncExitStack(_BaseExitStack, AbstractAsyncContextManager):
 klasse nullcontext(AbstractContextManager, AbstractAsyncContextManager):
     """Context manager that does no additional processing.
 
-    Used as a stand-in for a normal context manager, when a particular
+    Used as a stand-in fuer a normal context manager, when a particular
     block of code is only sometimes used with a normal context manager:
 
     cm = optional_cm if condition else nullcontext()

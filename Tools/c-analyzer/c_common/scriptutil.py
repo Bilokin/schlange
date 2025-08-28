@@ -15,7 +15,7 @@ _NOT_SET = object()
 def get_prog(spec=None, *, absolute=False, allowsuffix=True):
     if spec is None:
         _, spec = _find_script()
-        # This is more natural for prog than __file__ would be.
+        # This is more natural fuer prog than __file__ would be.
         filename = sys.argv[0]
     elif isinstance(spec, str):
         filename = os.path.normpath(spec)
@@ -123,10 +123,10 @@ def normalize_selection(selected: str, *, possible=None):
 
     unsupported = []
     _selected = set()
-    for item in selected:
+    fuer item in selected:
         if not item:
             continue
-        for value in item.strip().replace(',', ' ').split():
+        fuer value in item.strip().replace(',', ' ').split():
             if not value:
                 continue
             # XXX Handle subtraction (leading "-").
@@ -149,8 +149,8 @@ klasse CLIArgSpec(tuple):
 
     def __repr__(self):
         args, kwargs = self
-        args = [repr(arg) for arg in args]
-        for name, value in kwargs.items():
+        args = [repr(arg) fuer arg in args]
+        fuer name, value in kwargs.items():
             args.append(f'{name}={value!r}')
         return f'{type(self).__name__}({", ".join(args)})'
 
@@ -165,7 +165,7 @@ klasse CLIArgSpec(tuple):
 
 def apply_cli_argspecs(parser, specs):
     processors = []
-    for spec in specs:
+    fuer spec in specs:
         if callable(spec):
             procs = spec(parser)
             _add_procs(processors, procs)
@@ -182,8 +182,8 @@ def _add_procs(flattened, procs):
     if callable(procs):
         flattened.append(procs)
     else:
-        #processors.extend(p for p in procs if callable(p))
-        for proc in procs:
+        #processors.extend(p fuer p in procs if callable(p))
+        fuer proc in procs:
             _add_procs(flattened, proc)
 
 
@@ -268,8 +268,8 @@ def add_sepval_cli(parser, opt, dest, choices, *, sep=',', **kwargs):
         if isinstance(ns[dest], str):
             ns[dest] = [ns[dest]]
         selections = []
-        for many in ns[dest] or ():
-            for value in many.split(sep):
+        fuer many in ns[dest] or ():
+            fuer value in many.split(sep):
                 if value not in choices:
                     parser.error(f'unknown {dest} {value!r}')
                 selections.append(value)
@@ -304,7 +304,7 @@ def add_file_filtering_cli(parser, *, excluded=None):
             start=ns.pop('start'),
             include=tuple(_parse_files(_include)),
             exclude=tuple(_parse_files(_exclude)),
-            # We use the default for "show_header"
+            # We use the default fuer "show_header"
         )
         def process_filenames(filenames, relroot=None):
             return fsutil.process_filenames(filenames, relroot=relroot, **kwargs)
@@ -313,7 +313,7 @@ def add_file_filtering_cli(parser, *, excluded=None):
 
 
 def _parse_files(filenames):
-    for filename, _ in strutil.parse_entries(filenames):
+    fuer filename, _ in strutil.parse_entries(filenames):
         yield filename.strip()
 
 
@@ -358,7 +358,7 @@ def add_failure_filtering_cli(parser, pool, *, default=False):
                     return True
             else:
                 def ignore_exc(exc):
-                    for err in fail:
+                    fuer err in fail:
                         if type(exc) == pool[err]:
                             return False
                     else:
@@ -374,7 +374,7 @@ def add_kind_filtering_cli(parser, *, default=None):
         ns = vars(args)
 
         kinds = []
-        for kind in ns.pop('kinds') or default or ():
+        fuer kind in ns.pop('kinds') or default or ():
             kinds.extend(kind.strip().replace(',', ' ').split())
 
         if not kinds:
@@ -382,7 +382,7 @@ def add_kind_filtering_cli(parser, *, default=None):
         else:
             included = set()
             excluded = set()
-            for kind in kinds:
+            fuer kind in kinds:
                 if kind.startswith('-'):
                     kind = kind[1:]
                     excluded.add(kind)
@@ -427,18 +427,18 @@ def add_commands_cli(parser, commands, *, commonspecs=COMMON_CLI, subset=None):
         elif not subset:
             raise NotImplementedError
         elif isinstance(subset, set):
-            cmdnames = [k for k in commands if k in subset]
+            cmdnames = [k fuer k in commands if k in subset]
             subset = sorted(subset)
         else:
-            cmdnames = [n for n in subset if n in commands]
+            cmdnames = [n fuer n in subset if n in commands]
         if len(cmdnames) < len(subset):
-            bad = tuple(n for n in subset if n not in commands)
+            bad = tuple(n fuer n in subset if n not in commands)
             raise ValueError(f'unsupported subset {bad}')
 
         common = argparse.ArgumentParser(add_help=False)
         common_processors = apply_cli_argspecs(common, commonspecs)
         subs = parser.add_subparsers(dest='cmd')
-        for cmdname in cmdnames:
+        fuer cmdname in cmdnames:
             description, argspecs, _ = commands[cmdname]
             sub = subs.add_parser(
                 cmdname,
@@ -453,7 +453,7 @@ def add_commands_cli(parser, commands, *, commonspecs=COMMON_CLI, subset=None):
 def _add_cmd_cli(parser, commonspecs, argspecs):
     processors = []
     argspecs = list(commonspecs or ()) + list(argspecs or ())
-    for argspec in argspecs:
+    fuer argspec in argspecs:
         if callable(argspec):
             procs = argspec(parser)
             _add_procs(processors, procs)
@@ -476,7 +476,7 @@ def _add_cmd_cli(parser, commonspecs, argspecs):
 
 
 def _flatten_processors(processors):
-    for proc in processors:
+    fuer proc in processors:
         if proc is None:
             continue
         if callable(proc):
@@ -490,16 +490,16 @@ def process_args(args, argv, processors, *, keys=None):
     ns = vars(args)
     extracted = {}
     if keys is None:
-        for process_args in processors:
-            for key in process_args(args, argv=argv):
+        fuer process_args in processors:
+            fuer key in process_args(args, argv=argv):
                 extracted[key] = ns.pop(key)
     else:
         remainder = set(keys)
-        for process_args in processors:
+        fuer process_args in processors:
             hanging = process_args(args, argv=argv)
             if isinstance(hanging, str):
                 hanging = [hanging]
-            for key in hanging or ():
+            fuer key in hanging or ():
                 if key not in remainder:
                     raise NotImplementedError(key)
                 extracted[key] = ns.pop(key)
@@ -511,7 +511,7 @@ def process_args(args, argv, processors, *, keys=None):
 
 def process_args_by_key(args, argv, processors, keys):
     extracted = process_args(args, argv, processors, keys=keys)
-    return [extracted[key] for key in keys]
+    return [extracted[key] fuer key in keys]
 
 
 ##################################
@@ -532,7 +532,7 @@ def set_command(name, add_cli):
 
 def filter_filenames(filenames, process_filenames=None, relroot=fsutil.USE_CWD):
     # We expect each filename to be a normalized, absolute path.
-    for filename, _, check, _ in _iter_filenames(filenames, process_filenames, relroot):
+    fuer filename, _, check, _ in _iter_filenames(filenames, process_filenames, relroot):
         if (reason := check()):
             logger.debug(f'{filename}: {reason}')
             continue
@@ -541,7 +541,7 @@ def filter_filenames(filenames, process_filenames=None, relroot=fsutil.USE_CWD):
 
 def main_for_filenames(filenames, process_filenames=None, relroot=fsutil.USE_CWD):
     filenames, relroot = fsutil.fix_filenames(filenames, relroot=relroot)
-    for filename, relfile, check, show in _iter_filenames(filenames, process_filenames, relroot):
+    fuer filename, relfile, check, show in _iter_filenames(filenames, process_filenames, relroot):
         if show:
             print()
             print(relfile)
@@ -566,7 +566,7 @@ def _iter_filenames(filenames, process, relroot):
         if relroot and relroot is not fsutil.USE_CWD:
             relroot = os.path.abspath(relroot)
         check = (lambda: True)
-        for filename, ismany in iterutil.iter_many(items, onempty):
+        fuer filename, ismany in iterutil.iter_many(items, onempty):
             relfile = fsutil.format_filename(filename, relroot, fixroot=False)
             yield filename, relfile, check, ismany
     elif len(peeked) == 4:
@@ -578,7 +578,7 @@ def _iter_filenames(filenames, process, relroot):
 def track_progress_compact(items, *, groups=5, **mark_kwargs):
     last = os.linesep
     marks = iter_marks(groups=groups, **mark_kwargs)
-    for item in items:
+    fuer item in items:
         last = next(marks)
         print(last, end='', flush=True)
         yield item
@@ -587,7 +587,7 @@ def track_progress_compact(items, *, groups=5, **mark_kwargs):
 
 
 def track_progress_flat(items, fmt='<{}>'):
-    for item in items:
+    fuer item in items:
         print(fmt.format(item), flush=True)
         yield item
 

@@ -16,7 +16,7 @@ DEVNULL = subprocess.DEVNULL
 
 klasse SubprocessStreamProtocol(streams.FlowControlMixin,
                                protocols.SubprocessProtocol):
-    """Like StreamReaderProtocol, but for a subprocess."""
+    """Like StreamReaderProtocol, but fuer a subprocess."""
 
     def __init__(self, limit, loop):
         super().__init__(loop=loop)

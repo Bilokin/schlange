@@ -11,13 +11,13 @@ from email.mime.nonmultipart import MIMENonMultipart
 
 
 klasse MIMEImage(MIMENonMultipart):
-    """Class for generating image/* type MIME documents."""
+    """Class fuer generating image/* type MIME documents."""
 
     def __init__(self, _imagedata, _subtype=None,
                  _encoder=encoders.encode_base64, *, policy=None, **_params):
         """Create an image/* type MIME document.
 
-        _imagedata contains the bytes for the raw image data.  If the data
+        _imagedata contains the bytes fuer the raw image data.  If the data
         type can be detected (jpeg, png, gif, tiff, rgb, pbm, pgm, ppm,
         rast, xbm, bmp, webp, and exr attempted), then the subtype will be
         automatically included in the Content-Type header. Otherwise, you can
@@ -48,7 +48,7 @@ _rules = []
 
 # Originally from the imghdr module.
 def _what(data):
-    for rule in _rules:
+    fuer rule in _rules:
         if res := rule(data):
             return res
     else:

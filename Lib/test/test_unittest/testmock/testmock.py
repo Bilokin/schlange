@@ -83,7 +83,7 @@ klasse MockTest(unittest.TestCase):
         self.assertEqual(mock.method_calls, [],
                           "method_calls not initialised correctly")
 
-        # Can't use hasattr for this test as it always returns True on a mock
+        # Can't use hasattr fuer this test as it always returns True on a mock
         self.assertNotIn('_items', mock.__dict__,
                          "default mock should not have '_items' attribute")
 
@@ -140,7 +140,7 @@ klasse MockTest(unittest.TestCase):
         self.assertIn("'%s'" % id(mock), repr(mock))
 
         mocks = [(Mock(), 'mock'), (Mock(name='bar'), 'bar')]
-        for mock, name in mocks:
+        fuer mock, name in mocks:
             self.assertIn('%s.bar' % name, repr(mock.bar))
             self.assertIn('%s.foo()' % name, repr(mock.foo()))
             self.assertIn('%s.foo().bing' % name, repr(mock.foo().bing))
@@ -208,7 +208,7 @@ klasse MockTest(unittest.TestCase):
         self.assertEqual(mock(), sentinel.RETURN)
 
     def test_autospec_side_effect(self):
-        # Test for issue17826
+        # Test fuer issue17826
         results = [1, 2, 3]
         def effect():
             return results.pop()
@@ -226,7 +226,7 @@ klasse MockTest(unittest.TestCase):
                           "callable side effect not used correctly")
 
     def test_autospec_side_effect_exception(self):
-        # Test for issue 23661
+        # Test fuer issue 23661
         def f(): pass
 
         mock = create_autospec(f)
@@ -595,7 +595,7 @@ klasse MockTest(unittest.TestCase):
         something = mock.something
         self.assertTrue(is_instance(something, Mock), "attribute isn't a mock")
         self.assertEqual(mock.something, something,
-                         "different attributes returned for same name")
+                         "different attributes returned fuer same name")
 
         # Usage example
         mock = Mock()
@@ -656,8 +656,8 @@ klasse MockTest(unittest.TestCase):
 
 
     def test_only_allowed_methods_exist(self):
-        for spec in ['something'], ('something',):
-            for arg in 'spec', 'spec_set':
+        fuer spec in ['something'], ('something',):
+            fuer arg in 'spec', 'spec_set':
                 mock = Mock(**{arg: spec})
 
                 # this should be allowed
@@ -857,7 +857,7 @@ klasse MockTest(unittest.TestCase):
 
     def test_magic_method_wraps_dict(self):
         # bpo-25597: MagicMock with wrap doesn't call wrapped object's
-        # method for magic methods with default values.
+        # method fuer magic methods with default values.
         data = {'foo': 'bar'}
 
         wrapped_dict = MagicMock(wraps=data)
@@ -1054,7 +1054,7 @@ klasse MockTest(unittest.TestCase):
     def test_dir(self):
         mock = Mock()
         attrs = set(dir(mock))
-        type_attrs = set([m for m in dir(Mock) if not m.startswith('_')])
+        type_attrs = set([m fuer m in dir(Mock) if not m.startswith('_')])
 
         # all public attributes from the type are included
         self.assertEqual(set(), type_attrs - attrs)
@@ -1155,7 +1155,7 @@ klasse MockTest(unittest.TestCase):
         asserters = [
             mock.foo.assert_called_with, mock.foo.assert_called_once_with
         ]
-        for meth in asserters:
+        fuer meth in asserters:
             actual = "foo(1, '2', 3, foo='foo')"
             expected = "foo(1, '2', 3, bar='foo')"
             message = 'expected call not found.\nExpected: %s\n  Actual: %s'
@@ -1165,7 +1165,7 @@ klasse MockTest(unittest.TestCase):
             )
 
         # just kwargs
-        for meth in asserters:
+        fuer meth in asserters:
             actual = "foo(1, '2', 3, foo='foo')"
             expected = "foo(bar='foo')"
             message = 'expected call not found.\nExpected: %s\n  Actual: %s'
@@ -1175,7 +1175,7 @@ klasse MockTest(unittest.TestCase):
             )
 
         # just args
-        for meth in asserters:
+        fuer meth in asserters:
             actual = "foo(1, '2', 3, foo='foo')"
             expected = "foo(1, 2, 3)"
             message = 'expected call not found.\nExpected: %s\n  Actual: %s'
@@ -1185,7 +1185,7 @@ klasse MockTest(unittest.TestCase):
             )
 
         # empty
-        for meth in asserters:
+        fuer meth in asserters:
             actual = "foo(1, '2', 3, foo='foo')"
             expected = "foo()"
             message = 'expected call not found.\nExpected: %s\n  Actual: %s'
@@ -1233,7 +1233,7 @@ klasse MockTest(unittest.TestCase):
         self.assertEqual(mock().mock_calls,
                          call.foo.bar().baz().call_list())
 
-        for kwargs in dict(), dict(name='bar'):
+        fuer kwargs in dict(), dict(name='bar'):
             mock = MagicMock(**kwargs)
             int(mock.foo)
             expected = [('foo.__int__', (), {})]
@@ -1362,13 +1362,13 @@ klasse MockTest(unittest.TestCase):
 
         def assert_attrs(mock):
             names = 'call_args_list', 'method_calls', 'mock_calls'
-            for name in names:
+            fuer name in names:
                 attr = getattr(mock, name)
                 self.assertIsInstance(attr, _CallList)
                 self.assertIsInstance(attr, list)
                 self.assertEqual(attr, [])
 
-        for mock in mocks:
+        fuer mock in mocks:
             assert_attrs(mock)
 
             if callable(mock):
@@ -1397,7 +1397,7 @@ klasse MockTest(unittest.TestCase):
         self.assertEqual(mock.call_args.kwargs, dict(b=4))
 
         expected_list = [((1,), dict(a=3)), ((2,), dict(b=4))]
-        for expected, call_args in zip(expected_list, mock.call_args_list):
+        fuer expected, call_args in zip(expected_list, mock.call_args_list):
             self.assertEqual(len(call_args), 2)
             self.assertEqual(expected[0], call_args[0])
             self.assertEqual(expected[1], call_args[1])
@@ -1428,7 +1428,7 @@ klasse MockTest(unittest.TestCase):
 
 
     def test_side_effect_iterator_exceptions(self):
-        for Klass in Mock, MagicMock:
+        fuer Klass in Mock, MagicMock:
             iterable = (ValueError, 3, KeyError, 6)
             m = Klass(side_effect=iterable)
             self.assertRaises(ValueError, m)
@@ -1477,10 +1477,10 @@ klasse MockTest(unittest.TestCase):
             ('', (1, 2)), ('', {'a': 3}),
             ('', (1, 2), {}), ('', (), {'a': 3})
         ]
-        for kall in kalls:
+        fuer kall in kalls:
             mock.assert_has_calls([kall], any_order=True)
 
-        for kall in call(1, '2'), call(b=3), call(), 3, None, 'foo':
+        fuer kall in call(1, '2'), call(b=3), call(), 3, None, 'foo':
             self.assertRaises(
                 AssertionError, mock.assert_has_calls,
                 [kall], any_order=True
@@ -1492,7 +1492,7 @@ klasse MockTest(unittest.TestCase):
             [call(b=6), call(b=6)],
         ]
 
-        for kall_list in kall_lists:
+        fuer kall_list in kall_lists:
             mock.assert_has_calls(kall_list, any_order=True)
 
         kall_lists = [
@@ -1501,7 +1501,7 @@ klasse MockTest(unittest.TestCase):
             [call(3, 4), call(1, 2), call(5, 7)],
             [call(b=6), call(3, 4), call(b=6), call(1, 2), call(b=6)],
         ]
-        for kall_list in kall_lists:
+        fuer kall_list in kall_lists:
             self.assertRaises(
                 AssertionError, mock.assert_has_calls,
                 kall_list, any_order=True
@@ -1518,7 +1518,7 @@ klasse MockTest(unittest.TestCase):
         kalls2.extend(call.bam(set(), foo={}).fish([1]).call_list())
 
         mocks = []
-        for mock in Mock(), MagicMock():
+        fuer mock in Mock(), MagicMock():
             mock(1, 2)
             mock(a=3)
             mock(3, 4)
@@ -1533,9 +1533,9 @@ klasse MockTest(unittest.TestCase):
         mock.bam(set(), foo={}).fish([1])
         mocks.append((mock, kalls2))
 
-        for mock, kalls in mocks:
-            for i in range(len(kalls)):
-                for step in 1, 2, 3:
+        fuer mock, kalls in mocks:
+            fuer i in range(len(kalls)):
+                fuer step in 1, 2, 3:
                     these = kalls[i:i+step]
                     mock.assert_has_calls(these)
 
@@ -1560,14 +1560,14 @@ klasse MockTest(unittest.TestCase):
 
         mock_class = create_autospec(Something)
 
-        for m in [mock_class, mock_class()]:
+        fuer m in [mock_class, mock_class()]:
             m.meth(1, 2, 3, d=1)
             m.assert_has_calls([call.meth(1, 2, 3, d=1)])
             m.assert_has_calls([call.meth(1, 2, 3, 1)])
 
         mock_class.reset_mock()
 
-        for m in [mock_class, mock_class()]:
+        fuer m in [mock_class, mock_class()]:
             self.assertRaises(AssertionError, m.assert_has_calls, [call.Foo()])
             m.Foo(1).meth1(1, 2)
             m.assert_has_calls([call.Foo(1), call.Foo(1).meth1(1, 2)])
@@ -1580,7 +1580,7 @@ klasse MockTest(unittest.TestCase):
                          call.Foo().non_existent(1),
                          call.Foo().meth(1, 2, 3, 4)]
 
-        for kall in invalid_calls:
+        fuer kall in invalid_calls:
             self.assertRaises(AssertionError,
                               mock_class.assert_has_calls,
                               [kall]
@@ -1715,7 +1715,7 @@ klasse MockTest(unittest.TestCase):
             create_autospec(f),
             create_autospec(obj).f
         ]
-        for func in funcs:
+        fuer func in funcs:
             func(1, 2)
             func(3, 4)
 
@@ -1736,7 +1736,7 @@ klasse MockTest(unittest.TestCase):
 
             @staticmethod
             def static_method(): pass
-        for method in ('class_method', 'static_method'):
+        fuer method in ('class_method', 'static_method'):
             with self.subTest(method=method):
                 mock_method = mock.create_autospec(getattr(TestClass, method))
                 mock_method()
@@ -1746,7 +1746,7 @@ klasse MockTest(unittest.TestCase):
     #Issue21238
     def test_mock_unsafe(self):
         m = Mock()
-        msg = "is not a valid assertion. Use a spec for the mock"
+        msg = "is not a valid assertion. Use a spec fuer the mock"
         with self.assertRaisesRegex(AttributeError, msg):
             m.assert_foo_call()
         with self.assertRaisesRegex(AttributeError, msg):
@@ -1857,7 +1857,7 @@ klasse MockTest(unittest.TestCase):
         text = "call(name='hello', daddy='hero')"
         self.assertEqual(repr(m.hello.call_args), text)
 
-    #Issue21270 overrides tuple methods for mock.call objects
+    #Issue21270 overrides tuple methods fuer mock.call objects
     def test_override_tuple_methods(self):
         c = call.count()
         i = call.index(132,'hello')
@@ -1908,18 +1908,18 @@ klasse MockTest(unittest.TestCase):
         klasses = [
             Mock, MagicMock, NonCallableMock, NonCallableMagicMock
         ]
-        for Klass in list(klasses):
+        fuer Klass in list(klasses):
             klasses.append(lambda K=Klass: K(spec=Anything))
             klasses.append(lambda K=Klass: K(spec_set=Anything))
 
-        for Klass in klasses:
-            for kwargs in dict(), dict(spec_set=True):
+        fuer Klass in klasses:
+            fuer kwargs in dict(), dict(spec_set=True):
                 mock = Klass()
                 #no error
                 mock.one, mock.two, mock.three
 
-                for One, Two in [(_One, _Two), (['one'], ['two'])]:
-                    for kwargs in dict(), dict(spec_set=True):
+                fuer One, Two in [(_One, _Two), (['one'], ['two'])]:
+                    fuer kwargs in dict(), dict(spec_set=True):
                         mock.mock_add_spec(One, **kwargs)
 
                         mock.one
@@ -1951,7 +1951,7 @@ klasse MockTest(unittest.TestCase):
 
 
     def test_mock_add_spec_magic_methods(self):
-        for Klass in MagicMock, NonCallableMagicMock:
+        fuer Klass in MagicMock, NonCallableMagicMock:
             mock = Klass()
             int(mock)
 
@@ -1968,7 +1968,7 @@ klasse MockTest(unittest.TestCase):
 
 
     def test_adding_child_mock(self):
-        for Klass in (NonCallableMock, Mock, MagicMock, NonCallableMagicMock,
+        fuer Klass in (NonCallableMock, Mock, MagicMock, NonCallableMagicMock,
                       AsyncMock):
             mock = Klass()
 
@@ -1993,7 +1993,7 @@ klasse MockTest(unittest.TestCase):
 
 
     def test_adding_return_value_mock(self):
-        for Klass in Mock, MagicMock:
+        fuer Klass in Mock, MagicMock:
             mock = Klass()
             mock.return_value = MagicMock()
 
@@ -2024,7 +2024,7 @@ klasse MockTest(unittest.TestCase):
 
 
     def test_magic_methods_mock_calls(self):
-        for Klass in Mock, MagicMock:
+        fuer Klass in Mock, MagicMock:
             m = Klass()
             m.__int__ = Mock(return_value=3)
             m.__float__ = MagicMock(return_value=3.0)
@@ -2047,7 +2047,7 @@ klasse MockTest(unittest.TestCase):
         # consumes the iterator.
         mocked_open = mock.mock_open(read_data='Remarkable\nNorwegian Blue')
         f1 = mocked_open('a-name')
-        lines = [line for line in f1]
+        lines = [line fuer line in f1]
         self.assertEqual(lines[0], 'Remarkable\n')
         self.assertEqual(lines[1], 'Norwegian Blue')
         self.assertEqual(list(f1), [])
@@ -2057,7 +2057,7 @@ klasse MockTest(unittest.TestCase):
         f1 = mocked_open('a-name')
         line1 = next(f1)
         line2 = f1.__next__()
-        lines = [line for line in f1]
+        lines = [line fuer line in f1]
         self.assertEqual(line1, '1st line\n')
         self.assertEqual(line2, '2nd line\n')
         self.assertEqual(lines[0], '3rd line')
@@ -2102,7 +2102,7 @@ klasse MockTest(unittest.TestCase):
         self.assertEqual([], h.readlines())
 
     def test_mock_parents(self):
-        for Klass in Mock, MagicMock:
+        fuer Klass in Mock, MagicMock:
             m = Klass()
             original_repr = repr(m)
             m.return_value = m
@@ -2132,8 +2132,8 @@ klasse MockTest(unittest.TestCase):
 
     def test_attach_mock(self):
         classes = Mock, MagicMock, NonCallableMagicMock, NonCallableMock
-        for Klass in classes:
-            for Klass2 in classes:
+        fuer Klass in classes:
+            fuer Klass2 in classes:
                 m = Klass()
 
                 m2 = Klass2(name='foo')
@@ -2149,8 +2149,8 @@ klasse MockTest(unittest.TestCase):
 
     def test_attach_mock_return_value(self):
         classes = Mock, MagicMock, NonCallableMagicMock, NonCallableMock
-        for Klass in Mock, MagicMock:
-            for Klass2 in classes:
+        fuer Klass in Mock, MagicMock:
+            fuer Klass2 in classes:
                 m = Klass()
 
                 m2 = Klass2(name='foo')
@@ -2213,7 +2213,7 @@ klasse MockTest(unittest.TestCase):
 
 
     def test_attribute_deletion(self):
-        for mock in (Mock(), MagicMock(), NonCallableMagicMock(),
+        fuer mock in (Mock(), MagicMock(), NonCallableMagicMock(),
                      NonCallableMock()):
             self.assertHasAttr(mock, 'm')
 
@@ -2227,7 +2227,7 @@ klasse MockTest(unittest.TestCase):
 
     def test_mock_does_not_raise_on_repeated_attribute_deletion(self):
         # bpo-20239: Assigning and deleting twice an attribute raises.
-        for mock in (Mock(), MagicMock(), NonCallableMagicMock(),
+        fuer mock in (Mock(), MagicMock(), NonCallableMagicMock(),
                      NonCallableMock()):
             mock.foo = 3
             self.assertHasAttr(mock, 'foo')
@@ -2245,7 +2245,7 @@ klasse MockTest(unittest.TestCase):
 
 
     def test_mock_raises_when_deleting_nonexistent_attribute(self):
-        for mock in (Mock(), MagicMock(), NonCallableMagicMock(),
+        fuer mock in (Mock(), MagicMock(), NonCallableMagicMock(),
                      NonCallableMock()):
             del mock.foo
             with self.assertRaises(AttributeError):
@@ -2263,7 +2263,7 @@ klasse MockTest(unittest.TestCase):
 
 
     def test_class_assignable(self):
-        for mock in Mock(), MagicMock():
+        fuer mock in Mock(), MagicMock():
             self.assertNotIsInstance(mock, int)
 
             mock.__class__ = int
@@ -2311,7 +2311,7 @@ klasse MockTest(unittest.TestCase):
 
 
     def test_isinstance_under_settrace(self):
-        # bpo-36593 : __class__ is not set for a klasse that has __class__
+        # bpo-36593 : __class__ is not set fuer a klasse that has __class__
         # property defined when it's used with sys.settrace(trace) set.
         # Delete the module to force reimport with tracing function set
         # restore the old reference later since there are other tests that are
@@ -2345,7 +2345,7 @@ klasse MockTest(unittest.TestCase):
                 Mock, MagicMock, NonCallableMock, NonCallableMagicMock, AsyncMock
             ]
 
-            for mock in mocks:
+            fuer mock in mocks:
                 obj = mock(spec=Something)
                 self.assertIsInstance(obj, Something)
 
@@ -2362,7 +2362,7 @@ klasse MockTest(unittest.TestCase):
     def test_misspelled_arguments(self):
         klasse Foo():
             one = 'one'
-        # patch, patch.object and create_autospec need to check for misspelled
+        # patch, patch.object and create_autospec need to check fuer misspelled
         # arguments explicitly and throw a RuntimeError if found.
         with self.assertRaises(RuntimeError):
             with patch(f'{__name__}.Something.meth', autospect=True): pass
@@ -2423,7 +2423,7 @@ klasse MockTest(unittest.TestCase):
             async def method(self):
                 pass
         mock = Mock(spec=Foo)
-        for m in (mock.method, mock.class_method, mock.static_method):
+        fuer m in (mock.method, mock.class_method, mock.static_method):
             self.assertIsInstance(m, AsyncMock)
 
 if __name__ == '__main__':

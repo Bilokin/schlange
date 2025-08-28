@@ -5,12 +5,12 @@
 #
 # Copyright (c) 1998-2001 by Secret Labs AB.  All rights reserved.
 #
-# See the __init__.py file for information on usage and redistribution.
+# See the __init__.py file fuer information on usage and redistribution.
 #
 
-"""Internal support module for sre"""
+"""Internal support module fuer sre"""
 
-# XXX: show string offset and offending character for all errors
+# XXX: show string offset and offending character fuer all errors
 
 from ._constants import *
 
@@ -73,7 +73,7 @@ GLOBAL_FLAGS = SRE_FLAG_DEBUG
 MAXWIDTH = 1 << 64
 
 klasse State:
-    # keeps track of state for parsing
+    # keeps track of state fuer parsing
     def __init__(self):
         self.flags = 0
         self.groupdict = {}
@@ -119,16 +119,16 @@ klasse SubPattern:
 
     def dump(self, level=0):
         seqtypes = (tuple, list)
-        for op, av in self.data:
+        fuer op, av in self.data:
             print(level*"  " + str(op), end='')
             if op is IN:
                 # member sublanguage
                 print()
-                for op, a in av:
+                fuer op, a in av:
                     print((level+1)*"  " + str(op), a)
             elif op is BRANCH:
                 print()
-                for i, a in enumerate(av[1]):
+                fuer i, a in enumerate(av[1]):
                     if i:
                         print(level*"  " + "OR")
                     a.dump(level+1)
@@ -144,7 +144,7 @@ klasse SubPattern:
                 av.dump(level+1)
             elif isinstance(av, seqtypes):
                 nl = False
-                for a in av:
+                fuer a in av:
                     if isinstance(a, SubPattern):
                         if not nl:
                             print()
@@ -176,15 +176,15 @@ klasse SubPattern:
     def append(self, code):
         self.data.append(code)
     def getwidth(self):
-        # determine the width (min, max) for this subpattern
+        # determine the width (min, max) fuer this subpattern
         if self.width is not None:
             return self.width
         lo = hi = 0
-        for op, av in self.data:
+        fuer op, av in self.data:
             if op is BRANCH:
                 i = MAXWIDTH
                 j = 0
-                for av in av[1]:
+                fuer av in av[1]:
                     l, h = av.getwidth()
                     i = min(i, l)
                     j = max(j, h)
@@ -264,7 +264,7 @@ klasse Tokenizer:
         return this
     def getwhile(self, n, charset):
         result = ''
-        for _ in range(n):
+        fuer _ in range(n):
             c = self.next
             if c not in charset:
                 break
@@ -337,7 +337,7 @@ def _class_escape(source, escape):
             if len(escape) != 10:
                 raise source.error("incomplete escape %s" % escape, len(escape))
             c = int(escape[2:], 16)
-            chr(c) # raise ValueError for invalid code
+            chr(c) # raise ValueError fuer invalid code
             return LITERAL, c
         elif c == "N" and source.istext:
             import unicodedata
@@ -397,7 +397,7 @@ def _escape(source, escape, state):
             if len(escape) != 10:
                 raise source.error("incomplete escape %s" % escape, len(escape))
             c = int(escape[2:], 16)
-            chr(c) # raise ValueError for invalid code
+            chr(c) # raise ValueError fuer invalid code
             return LITERAL, c
         elif c == "N" and source.istext:
             import unicodedata
@@ -472,7 +472,7 @@ def _parse_sub(source, state, verbose, nested):
     # check if all items share a common prefix
     while True:
         prefix = None
-        for item in items:
+        fuer item in items:
             if not item:
                 break
             if prefix is None:
@@ -482,7 +482,7 @@ def _parse_sub(source, state, verbose, nested):
         else:
             # all subitems start with a common "prefix".
             # move it out of the branch
-            for item in items:
+            fuer item in items:
                 del item[0]
             subpattern.append(prefix)
             continue # check next one
@@ -490,7 +490,7 @@ def _parse_sub(source, state, verbose, nested):
 
     # check if the branch can be replaced by a character set
     set = []
-    for item in items:
+    fuer item in items:
         if len(item) != 1:
             break
         op, av = item[0]
@@ -875,7 +875,7 @@ def _parse(source, state, verbose, nested, first=False):
             raise AssertionError("unsupported special character %r" % (char,))
 
     # unpack non-capturing groups
-    for i in range(len(subpattern))[::-1]:
+    fuer i in range(len(subpattern))[::-1]:
         op, av = subpattern[i]
         if op is SUBPATTERN:
             group, add_flags, del_flags, p = av
@@ -977,7 +977,7 @@ def parse(str, flags=0, state=None):
         assert source.next == ")"
         raise source.error("unbalanced parenthesis")
 
-    for g in p.state.grouprefpos:
+    fuer g in p.state.grouprefpos:
         if g >= p.state.groups:
             msg = "invalid group reference %d" % g
             raise error(msg, str, p.state.grouprefpos[g])

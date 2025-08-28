@@ -8,7 +8,7 @@ import os
 from genmap_support import *
 
 
-# ranges for (lead byte, follower byte)
+# ranges fuer (lead byte, follower byte)
 BIG5_C1 = (0xa1, 0xfe)
 BIG5_C2 = (0x40, 0xfe)
 BIG5HKSCS_C1 = (0x87, 0xfe)
@@ -18,7 +18,7 @@ MAPPINGS_BIG5 = 'https://unicode.org/Public/MAPPINGS/OBSOLETE/EASTASIA/OTHER/BIG
 MAPPINGS_CP950 = 'https://www.unicode.org/Public/MAPPINGS/VENDORS/MICSFT/WINDOWS/CP950.TXT'
 
 HKSCS_VERSION = '2004'
-# The files for HKSCS mappings are available under a restrictive license.
+# The files fuer HKSCS mappings are available under a restrictive license.
 # Users of the script need to download the files from the HKSARG CCLI website:
 MAPPINGS_HKSCS = f'https://www.ccli.gov.hk/en/archive/terms_hkscs-{HKSCS_VERSION}-big5-iso.html'
 
@@ -35,7 +35,7 @@ def split_bytes(code):
 def parse_hkscs_map(fo):
     fo.seek(0, 0)
     table = []
-    for line in fo:
+    fuer line in fo:
         line = line.split('#', 1)[0].strip()
         # We expect 4 columns in supported HKSCS files:
         # [1999]: unsupported
@@ -51,7 +51,7 @@ def parse_hkscs_map(fo):
         try:
             hkscs_col, _, _, uni_col = line.split()
             hkscs = int(hkscs_col, 16)
-            seq = tuple(int(cp, 16) for cp in uni_col.strip('<>').split(','))
+            seq = tuple(int(cp, 16) fuer cp in uni_col.strip('<>').split(','))
         except ValueError:
             continue
         table.append((hkscs, seq))
@@ -67,7 +67,7 @@ def make_hkscs_map(table):
     single_cp_table = []
     # Determine multi-codepoint sequences, and sequence beginnings that encode
     # multiple multibyte (i.e. Big-5) codes.
-    for mbcode, cp_seq in table:
+    fuer mbcode, cp_seq in table:
         cp, *_ = cp_seq
         if len(cp_seq) == 1:
             single_cp_table.append((mbcode, cp))
@@ -75,12 +75,12 @@ def make_hkscs_map(table):
             sequences.append((mbcode, cp_seq))
         beginnings.setdefault(cp, []).append(mbcode)
     # Decode table only cares about single code points (no sequences) currently
-    for mbcode, cp in single_cp_table:
+    fuer mbcode, cp in single_cp_table:
         b1, b2 = split_bytes(mbcode)
         decode_map.setdefault(b1, {})
         decode_map[b1][b2] = cp & 0xffff
     # Encode table needs to mark code points beginning a sequence as tuples.
-    for cp, mbcodes in beginnings.items():
+    fuer cp, mbcodes in beginnings.items():
         plane = cp >> 16
         if plane == 0:
             encode_map = encode_map_bmp
@@ -104,11 +104,11 @@ def load_big5_map():
     mapfile = open_mapping_file('python-mappings/BIG5.txt', MAPPINGS_BIG5)
     with mapfile:
         big5decmap = loadmap(mapfile)
-    # big5 mapping fix: use the cp950 mapping for these characters as the file
+    # big5 mapping fix: use the cp950 mapping fuer these characters as the file
     # provided by unicode.org doesn't define a mapping. See notes in BIG5.txt.
     # Since U+5341, U+5345, U+FF0F, U+FF3C already have a big5 mapping, no
-    # roundtrip compatibility is guaranteed for those.
-    for m in """\
+    # roundtrip compatibility is guaranteed fuer those.
+    fuer m in """\
     0xA15A      0x2574
     0xA1C3      0xFFE3
     0xA1C5      0x02CD
@@ -120,12 +120,12 @@ def load_big5_map():
         big5decmap[bcode >> 8][bcode & 0xff] = ucode
     # encoding map
     big5encmap = {}
-    for c1, m in list(big5decmap.items()):
-        for c2, code in list(m.items()):
+    fuer c1, m in list(big5decmap.items()):
+        fuer c2, code in list(m.items()):
             big5encmap.setdefault(code >> 8, {})
             if code & 0xff not in big5encmap[code >> 8]:
                 big5encmap[code >> 8][code & 0xff] = c1 << 8 | c2
-    # fix unicode->big5 priority for the above-mentioned duplicate characters
+    # fix unicode->big5 priority fuer the above-mentioned duplicate characters
     big5encmap[0xFF][0x0F] = 0xA241
     big5encmap[0xFF][0x3C] = 0xA242
     big5encmap[0x53][0x41] = 0xA451
@@ -139,8 +139,8 @@ def load_cp950_map():
     with mapfile:
         cp950decmap = loadmap(mapfile)
     cp950encmap = {}
-    for c1, m in list(cp950decmap.items()):
-        for c2, code in list(m.items()):
+    fuer c1, m in list(cp950decmap.items()):
+        fuer c2, code in list(m.items()):
             cp950encmap.setdefault(code >> 8, {})
             if code & 0xff not in cp950encmap[code >> 8]:
                 cp950encmap[code >> 8][code & 0xff] = c1 << 8 | c2
@@ -155,15 +155,15 @@ def main_tw():
     cp950decmap, cp950encmap = load_cp950_map()
 
     # CP950 extends Big5, and the codec can use the Big5 lookup tables
-    # for most entries. So the CP950 tables should only include entries
+    # fuer most entries. So the CP950 tables should only include entries
     # that are not in Big5:
-    for c1, m in list(cp950encmap.items()):
-        for c2, code in list(m.items()):
+    fuer c1, m in list(cp950encmap.items()):
+        fuer c2, code in list(m.items()):
             if (c1 in big5encmap and c2 in big5encmap[c1]
                     and big5encmap[c1][c2] == code):
                 del cp950encmap[c1][c2]
-    for c1, m in list(cp950decmap.items()):
-        for c2, code in list(m.items()):
+    fuer c1, m in list(cp950decmap.items()):
+        fuer c2, code in list(m.items()):
             if (c1 in big5decmap and c2 in big5decmap[c1]
                     and big5decmap[c1][c2] == code):
                 del cp950decmap[c1][c2]
@@ -196,9 +196,9 @@ klasse HintsWriter:
     def fillhints(self, hintfrom, hintto):
         name = f'{self.prefix}_phint_{hintfrom}'
         self.fp.write(f'static const unsigned char {name}[] = {{\n')
-        for msbcode in range(hintfrom, hintto+1, 8):
+        fuer msbcode in range(hintfrom, hintto+1, 8):
             v = 0
-            for c in range(msbcode, msbcode+8):
+            fuer c in range(msbcode, msbcode+8):
                 v |= self.isbmpmap.get(c, 0) << (c - msbcode)
             self.filler.write('%d,' % v)
         self.filler.printout(self.fp)

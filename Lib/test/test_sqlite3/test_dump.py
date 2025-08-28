@@ -44,9 +44,9 @@ klasse DumpTests(MemoryDatabaseMixin, unittest.TestCase):
                 "CREATE VIEW v1 as select * from t1 left join t2 " \
                 "using (id);"
                 ]
-        [self.cu.execute(s) for s in expected_sqls]
+        [self.cu.execute(s) fuer s in expected_sqls]
         i = self.cx.iterdump()
-        actual_sqls = [s for s in i]
+        actual_sqls = [s fuer s in i]
         expected_sqls = [
             "PRAGMA foreign_keys=OFF;",
             "BEGIN TRANSACTION;",
@@ -54,7 +54,7 @@ klasse DumpTests(MemoryDatabaseMixin, unittest.TestCase):
             "COMMIT;",
         ]
         [self.assertEqual(expected_sqls[i], actual_sqls[i])
-            for i in range(len(expected_sqls))]
+            fuer i in range(len(expected_sqls))]
 
     def test_table_dump_filter(self):
         all_table_sqls = [
@@ -70,7 +70,7 @@ klasse DumpTests(MemoryDatabaseMixin, unittest.TestCase):
             """CREATE VIEW "view_2" AS SELECT * FROM "test_table_1";""",
         ]
         # Create database structure.
-        for sql in [*all_table_sqls, *all_views_sqls]:
+        fuer sql in [*all_table_sqls, *all_views_sqls]:
             self.cu.execute(sql)
         # %_table_% matches all tables.
         dump_sqls = list(self.cx.iterdump(filter="%_table_%"))
@@ -143,15 +143,15 @@ klasse DumpTests(MemoryDatabaseMixin, unittest.TestCase):
             'COMMIT;',
         ])
 
-        actual = [stmt for stmt in self.cx.iterdump()]
+        actual = [stmt fuer stmt in self.cx.iterdump()]
         self.assertEqual(expected, actual)
 
     def test_dump_autoincrement_create_new_db(self):
         self.cu.execute("BEGIN TRANSACTION")
         self.cu.execute("CREATE TABLE t1 (id integer primary key autoincrement)")
         self.cu.execute("CREATE TABLE t2 (id integer primary key autoincrement)")
-        self.cu.executemany("INSERT INTO t1 VALUES(?)", ((None,) for _ in range(9)))
-        self.cu.executemany("INSERT INTO t2 VALUES(?)", ((None,) for _ in range(4)))
+        self.cu.executemany("INSERT INTO t1 VALUES(?)", ((None,) fuer _ in range(9)))
+        self.cu.executemany("INSERT INTO t2 VALUES(?)", ((None,) fuer _ in range(4)))
         self.cx.commit()
 
         with memory_database() as cx2:
@@ -163,7 +163,7 @@ klasse DumpTests(MemoryDatabaseMixin, unittest.TestCase):
                 ("t1", 9),
                 ("t2", 4),
             )
-            for table, seq in dataset:
+            fuer table, seq in dataset:
                 with self.subTest(table=table, seq=seq):
                     res = cu2.execute("""
                         SELECT "seq" FROM "sqlite_sequence" WHERE "name" == ?
@@ -195,7 +195,7 @@ klasse DumpTests(MemoryDatabaseMixin, unittest.TestCase):
     def test_dump_custom_row_factory(self):
         # gh-118221: iterdump should be able to cope with custom row factories.
         def dict_factory(cu, row):
-            fields = [col[0] for col in cu.description]
+            fields = [col[0] fuer col in cu.description]
             return dict(zip(fields, row))
 
         self.cx.row_factory = dict_factory

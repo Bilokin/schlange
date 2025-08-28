@@ -56,7 +56,7 @@ klasse OperatorsTest(unittest.TestCase):
             'ge': '>=',
         }
 
-        for name, expr in list(self.binops.items()):
+        fuer name, expr in list(self.binops.items()):
             if expr.islower():
                 expr = expr + "(a, b)"
             else:
@@ -72,7 +72,7 @@ klasse OperatorsTest(unittest.TestCase):
             'float': 'float',
         }
 
-        for name, expr in list(self.unops.items()):
+        fuer name, expr in list(self.unops.items()):
             if expr.islower():
                 expr = expr + "(a)"
             else:
@@ -206,18 +206,18 @@ klasse OperatorsTest(unittest.TestCase):
 
         d = {1:2, 3:4}
         l1 = []
-        for i in list(d.keys()):
+        fuer i in list(d.keys()):
             l1.append(i)
         l = []
-        for i in iter(d):
+        fuer i in iter(d):
             l.append(i)
         self.assertEqual(l, l1)
         l = []
-        for i in d.__iter__():
+        fuer i in d.__iter__():
             l.append(i)
         self.assertEqual(l, l1)
         l = []
-        for i in dict.__iter__(d):
+        fuer i in dict.__iter__(d):
             l.append(i)
         self.assertEqual(l, l1)
         d = {1:2, 3:4}
@@ -227,18 +227,18 @@ klasse OperatorsTest(unittest.TestCase):
         self.set2op_test({1:2,3:4}, 2, 3, {1:2,2:3,3:4}, "a[b]=c",
                         "__setitem__")
 
-    # Tests for unary and binary operators
+    # Tests fuer unary and binary operators
     def number_operators(self, a, b, skip=[]):
         dict = {'a': a, 'b': b}
 
-        for name, expr in self.binops.items():
+        fuer name, expr in self.binops.items():
             if name not in skip:
                 name = "__%s__" % name
                 if hasattr(a, name):
                     res = eval(expr, dict)
                     self.binop_test(a, b, res, expr, name)
 
-        for name, expr in list(self.unops.items()):
+        fuer name, expr in list(self.unops.items()):
             if name not in skip:
                 name = "__%s__" % name
                 if hasattr(a, name):
@@ -358,7 +358,7 @@ klasse OperatorsTest(unittest.TestCase):
         def spamdict(d, memo=None):
             import xxsubtype as spam
             sd = spam.spamdict()
-            for k, v in list(d.items()):
+            fuer k, v in list(d.items()):
                 sd[k] = v
             return sd
         # This is an ugly hack:
@@ -369,18 +369,18 @@ klasse OperatorsTest(unittest.TestCase):
         self.binop_test(spamdict({1:2,3:4}), 1, 2, "a[b]", "__getitem__")
         d = spamdict({1:2,3:4})
         l1 = []
-        for i in list(d.keys()):
+        fuer i in list(d.keys()):
             l1.append(i)
         l = []
-        for i in iter(d):
+        fuer i in iter(d):
             l.append(i)
         self.assertEqual(l, l1)
         l = []
-        for i in d.__iter__():
+        fuer i in d.__iter__():
             l.append(i)
         self.assertEqual(l, l1)
         l = []
-        for i in type(spamdict({})).__iter__(d):
+        fuer i in type(spamdict({})).__iter__(d):
             l.append(i)
         self.assertEqual(l, l1)
         straightd = {1:2, 3:4}
@@ -422,7 +422,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
                     self.assertEqual(len(a), 1)
                     self_local.state = a[0]
                 if kw:
-                    for k, v in list(kw.items()):
+                    fuer k, v in list(kw.items()):
                         self_local[v] = k
             def __getitem__(self, key):
                 return self.get(key, 0)
@@ -451,12 +451,12 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         a[42] = 24
         self.assertEqual(a[42], 24)
         N = 50
-        for i in range(N):
+        fuer i in range(N):
             a[i] = C()
-            for j in range(N):
+            fuer j in range(N):
                 a[i][j] = i*j
-        for i in range(N):
-            for j in range(N):
+        fuer i in range(N):
+            fuer j in range(N):
                 self.assertEqual(a[i][j], i*j)
 
     def test_python_lists(self):
@@ -516,7 +516,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
             def __call__(self):
                 it = _instance()
                 # Early binding of methods
-                for key in self.dict:
+                fuer key in self.dict:
                     if key.startswith("__"):
                         continue
                     setattr(it, key, self.dict[key].__get__(it, self))
@@ -534,11 +534,11 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
 
         klasse autosuper(type):
             # Automatically add __super to the class
-            # This trick only works for dynamic classes
+            # This trick only works fuer dynamic classes
             def __new__(metaclass, name, bases, dict):
                 cls = super(autosuper, metaclass).__new__(metaclass,
                                                           name, bases, dict)
-                # Name mangling for __super removes leading underscores
+                # Name mangling fuer __super removes leading underscores
                 while name[:1] == "_":
                     name = name[1:]
                 if name:
@@ -570,7 +570,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
             # named _get_x and/or _set_x are found
             def __new__(metaclass, name, bases, dict):
                 hits = {}
-                for key, val in dict.items():
+                fuer key, val in dict.items():
                     if key.startswith("_get_"):
                         key = key[5:]
                         get, set = hits.get(key, (None, None))
@@ -581,7 +581,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
                         get, set = hits.get(key, (None, None))
                         set = val
                         hits[key] = get, set
-                for key, (get, set) in hits.items():
+                fuer key, (get, set) in hits.items():
                     dict[key] = property(get, set)
                 return super(autoproperty, metaclass).__new__(metaclass,
                                                             name, bases, dict)
@@ -854,7 +854,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
             return ''.join(random.choices(string.ascii_letters, k=10))
         klasse A:
             pass
-        subclasses = [type(random_name(), (A,), {}) for i in range(100)]
+        subclasses = [type(random_name(), (A,), {}) fuer i in range(100)]
         self.assertEqual(A.__subclasses__(), subclasses)
 
     def test_multiple_inheritance(self):
@@ -945,7 +945,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         klasse Z(X,B,Y,C): pass
         self.assertEqual(Z.__mro__, (Z, X, B, Y, A, C, object))
 
-    # see "A Monotonic Superclass Linearization for Dylan",
+    # see "A Monotonic Superclass Linearization fuer Dylan",
     # by Kim Barrett et al. (OOPSLA 1996)
     def test_monotonicity(self):
         # Testing MRO monotonicity...
@@ -966,7 +966,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
               (Pedalo, PedalWheelBoat, EngineLess, SmallCatamaran,
                SmallMultihull, DayBoat, WheelBoat, Boat, object))
 
-    # see "A Monotonic Superclass Linearization for Dylan",
+    # see "A Monotonic Superclass Linearization fuer Dylan",
     # by Kim Barrett et al. (OOPSLA 1996)
     def test_consistency_with_epg(self):
         # Testing consistency with EPG...
@@ -982,9 +982,9 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
                 ScrollingMixin, EditingMixin, object))
 
     def test_mro_disagreement(self):
-        # Testing error messages for MRO disagreement...
+        # Testing error messages fuer MRO disagreement...
         mro_err_msg = ("Cannot create a consistent method resolution "
-                       "order (MRO) for bases ")
+                       "order (MRO) fuer bases ")
 
         def raises(exc, expected, callable, *args):
             try:
@@ -1062,7 +1062,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         # assignment, because the object instances may be interned.
         # We set __slots__ = () to ensure that the subclasses are
         # memory-layout compatible, and thus otherwise reasonable candidates
-        # for __class__ assignment.
+        # fuer __class__ assignment.
 
         # The following types have immutable instances, but are not
         # subclassable and thus don't need to be checked:
@@ -1282,7 +1282,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
                     return False
             g = G()
             orig_objects = len(gc.get_objects())
-            for i in range(10):
+            fuer i in range(10):
                 g==g
             new_objects = len(gc.get_objects())
             self.assertEqual(orig_objects, new_objects)
@@ -1558,7 +1558,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         self.assertEqual(d.goo(1), (D, 1))
         self.assertEqual(d.foo(1), (d, 1))
         self.assertEqual(D.foo(d, 1), (d, 1))
-        # Test for a specific crash (SF bug 528132)
+        # Test fuer a specific crash (SF bug 528132)
         def f(cls, arg):
             "f docstring"
             return (cls, arg)
@@ -1604,13 +1604,13 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         self.assertNotHasAttr(cm, "x")
 
     def test_classmethod_staticmethod_annotations(self):
-        for deco in (classmethod, staticmethod):
+        fuer deco in (classmethod, staticmethod):
             @deco
             def unannotated(cls): pass
             @deco
             def annotated(cls) -> int: pass
 
-            for method in (annotated, unannotated):
+            fuer method in (annotated, unannotated):
                 with self.subTest(deco=deco, method=method):
                     with self.assertRaises(AttributeError):
                         del unannotated.__annotations__
@@ -1657,7 +1657,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         gettotalrefcount = support.get_attribute(sys, 'gettotalrefcount')
         cm = classmethod(None)
         refs_before = gettotalrefcount()
-        for i in range(100):
+        fuer i in range(100):
             cm.__init__(None)
         self.assertAlmostEqual(gettotalrefcount() - refs_before, 0, delta=10)
 
@@ -1698,7 +1698,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
             spam_cm(spam.spamlist())
         self.assertEqual(
             str(cm.exception),
-            "descriptor 'classmeth' for type 'xxsubtype.spamlist' "
+            "descriptor 'classmeth' fuer type 'xxsubtype.spamlist' "
             "needs a type, not a 'xxsubtype.spamlist' as arg 2")
 
         with self.assertRaises(TypeError) as cm:
@@ -1741,7 +1741,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         gettotalrefcount = support.get_attribute(sys, 'gettotalrefcount')
         sm = staticmethod(None)
         refs_before = gettotalrefcount()
-        for i in range(100):
+        fuer i in range(100):
             sm.__init__(None)
         self.assertAlmostEqual(gettotalrefcount() - refs_before, 0, delta=10)
 
@@ -2030,13 +2030,13 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         klasse Numbers:
             def __getattr__(self, attr):
                 return int(attr.lstrip("_"))
-        attrs = ", ".join(f"Z._{n:03d}" for n in range(280))
+        attrs = ", ".join(f"Z._{n:03d}" fuer n in range(280))
         code = f"def number_attrs(Z):\n    return [ {attrs} ]"
         ns = {}
         exec(code, ns)
         number_attrs = ns["number_attrs"]
-        # Warm up the function for quickening (PEP 659)
-        for _ in range(30):
+        # Warm up the function fuer quickening (PEP 659)
+        fuer _ in range(30):
             self.assertEqual(number_attrs(Numbers()), list(range(280)))
 
     def test_methods(self):
@@ -2073,7 +2073,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
             set_add()
         self.assertEqual(cm.exception.args[0], expected_errmsg)
 
-        expected_errmsg = "descriptor 'add' for 'set' objects doesn't apply to a 'int' object"
+        expected_errmsg = "descriptor 'add' fuer 'set' objects doesn't apply to a 'int' object"
 
         with self.assertRaises(TypeError) as cm:
             set_add(0)
@@ -2163,10 +2163,10 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
             def __get__(self, obj, owner):
                 raise MyException
 
-        for name, runner, meth_impl, ok, env in specials:
+        fuer name, runner, meth_impl, ok, env in specials:
             klasse X(Checker):
                 pass
-            for attr, obj in env.items():
+            fuer attr, obj in env.items():
                 setattr(X, attr, obj)
             setattr(X, name, meth_impl)
             runner(X())
@@ -2174,7 +2174,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
             record = []
             klasse X(Checker):
                 pass
-            for attr, obj in env.items():
+            fuer attr, obj in env.items():
                 setattr(X, attr, obj)
             setattr(X, name, SpecialDescr(meth_impl))
             runner(X())
@@ -2182,16 +2182,16 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
 
             klasse X(Checker):
                 pass
-            for attr, obj in env.items():
+            fuer attr, obj in env.items():
                 setattr(X, attr, obj)
             setattr(X, name, ErrDescr())
             self.assertRaises(MyException, runner, X())
 
     def test_specials(self):
         # Testing special operators...
-        # Test operators like __hash__ for which a built-in default exists
+        # Test operators like __hash__ fuer which a built-in default exists
 
-        # Test the default behavior for static classes
+        # Test the default behavior fuer static classes
         klasse C(object):
             def __getitem__(self, i):
                 if 0 <= i < 10: return i
@@ -2211,10 +2211,10 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         self.assertGreaterEqual(str(c1).find('C object at '), 0)
         self.assertEqual(str(c1), repr(c1))
         self.assertNotIn(-1, c1)
-        for i in range(10):
+        fuer i in range(10):
             self.assertIn(i, c1)
         self.assertNotIn(10, c1)
-        # Test the default behavior for dynamic classes
+        # Test the default behavior fuer dynamic classes
         klasse D(object):
             def __getitem__(self, i):
                 if 0 <= i < 10: return i
@@ -2234,7 +2234,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         self.assertGreaterEqual(str(d1).find('D object at '), 0)
         self.assertEqual(str(d1), repr(d1))
         self.assertNotIn(-1, d1)
-        for i in range(10):
+        fuer i in range(10):
             self.assertIn(i, d1)
         self.assertNotIn(10, d1)
         # Test overridden behavior
@@ -2281,7 +2281,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         self.assertEqual(repr(p0), "Proxy(0)")
         p10 = Proxy(range(10))
         self.assertNotIn(-1, p10)
-        for i in range(10):
+        fuer i in range(10):
             self.assertIn(i, p10)
         self.assertNotIn(10, p10)
 
@@ -2353,7 +2353,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         self.assertIs(raw.fset, C.__dict__['setx'])
         self.assertIs(raw.fdel, C.__dict__['delx'])
 
-        for attr in "fget", "fset", "fdel":
+        fuer attr in "fget", "fset", "fdel":
             try:
                 setattr(raw, attr, 42)
             except AttributeError as msg:
@@ -2372,7 +2372,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
 
         d = D()
         try:
-            for i in d:
+            fuer i in d:
                 str(i)
         except ZeroDivisionError:
             pass
@@ -2490,7 +2490,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         self.assertEqual(d, dict([("one", 100), ("two", 200)], **d))
         self.assertEqual(d, dict(**d))
 
-        for badarg in 0, 0, 0j, "0", [0], (0,):
+        fuer badarg in 0, 0, 0j, "0", [0], (0,):
             try:
                 dict(badarg)
             except TypeError:
@@ -2540,10 +2540,10 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         self.assertEqual(d, {'Barry': 'Warsaw', 'Tim': 'Peters'})
 
         d = dict(zip(range(4), range(1, 5)))
-        self.assertEqual(d, dict([(i, i+1) for i in range(4)]))
+        self.assertEqual(d, dict([(i, i+1) fuer i in range(4)]))
 
         # Bad sequence lengths.
-        for bad in [('tooshort',)], [('too', 'long', 'by 1')]:
+        fuer bad in [('tooshort',)], [('too', 'long', 'by 1')]:
             try:
                 dict(bad)
             except ValueError:
@@ -2558,13 +2558,13 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         del junk
 
         # Just make sure these don't blow up!
-        for arg in 2, 2, 2j, 2e0, [2], "2", b"2", (2,), {2:2}, type, self.test_dir:
+        fuer arg in 2, 2, 2j, 2e0, [2], "2", b"2", (2,), {2:2}, type, self.test_dir:
             dir(arg)
 
         # Test dir on new-style classes.  Since these have object as a
         # base class, a lot more gets sucked in.
         def interesting(strings):
-            return [s for s in strings if not s.startswith('_')]
+            return [s fuer s in strings if not s.startswith('_')]
 
         klasse C(object):
             Cdata = 1
@@ -2604,7 +2604,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         minstance.a = 1
         default_attributes = ['__name__', '__doc__', '__package__',
                               '__loader__', '__spec__']
-        names = [x for x in dir(minstance) if x not in default_attributes]
+        names = [x fuer x in dir(minstance) if x not in default_attributes]
         self.assertEqual(names, ['a', 'b'])
 
         klasse M2(M):
@@ -2623,7 +2623,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         # from object.
         self.assertEqual(dir(object()), dir(Ellipsis))
 
-        # Nasty test case for proxied objects
+        # Nasty test case fuer proxied objects
         klasse Wrapper(object):
             def __init__(self, obj):
                 self.__obj = obj
@@ -2673,7 +2673,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
 
         self.assertEqual(D().meth(4), "D(4)C(4)B(4)A(4)")
 
-        # Test for subclassing super
+        # Test fuer subclassing super
 
         klasse mysuper(super):
             def __init__(self, *args):
@@ -2877,7 +2877,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         self.assertEqual(a, (1,2,3,4,5,6,7,8,9,0))
         self.assertEqual(a.rev(), madtuple((0,9,8,7,6,5,4,3,2,1)))
         self.assertEqual(a.rev().rev(), madtuple((1,2,3,4,5,6,7,8,9,0)))
-        for i in range(512):
+        fuer i in range(512):
             t = madtuple(range(i))
             u = t.rev()
             v = u.rev()
@@ -2912,7 +2912,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         self.assertEqual(s, "abcdefghijklmnopqrstuvwxyz")
         self.assertEqual(s.rev(), madstring("zyxwvutsrqponmlkjihgfedcba"))
         self.assertEqual(s.rev().rev(), madstring("abcdefghijklmnopqrstuvwxyz"))
-        for i in range(256):
+        fuer i in range(256):
             s = madstring("".join(map(chr, range(i))))
             t = s.rev()
             u = t.rev()
@@ -3074,7 +3074,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         ##     f.writelines(lines)
         ##     f.close()
         ##     f = CountedInput(os_helper.TESTFN)
-        ##     for (i, expected) in zip(range(1, 5) + [4], lines + 2 * [""]):
+        ##     fuer (i, expected) in zip(range(1, 5) + [4], lines + 2 * [""]):
         ##         got = f.readline()
         ##         self.assertEqual(expected, got)
         ##         self.assertEqual(f.lineno, i)
@@ -3104,7 +3104,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
             list(sequence=(0, 1, 2))
         # note: as of Python 2.3, dict() no longer has an "items" keyword arg
 
-        for constructor in (int, float, int, complex, str, str,
+        fuer constructor in (int, float, int, complex, str, str,
                             tuple, list):
             try:
                 constructor(bogus_keyword_arg=1)
@@ -3151,7 +3151,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         klasse classic:
             pass
 
-        for base in (classic, int, object):
+        fuer base in (classic, int, object):
             klasse C(base):
                 def __init__(self, value):
                     self.value = int(value)
@@ -3197,9 +3197,9 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
             c3 = C(3)
             self.assertEqual(c1, 1)
             c = {1: c1, 2: c2, 3: c3}
-            for x in 1, 2, 3:
-                for y in 1, 2, 3:
-                    for op in "<", "<=", "==", "!=", ">", ">=":
+            fuer x in 1, 2, 3:
+                fuer y in 1, 2, 3:
+                    fuer op in "<", "<=", "==", "!=", ">", ">=":
                         self.assertEqual(eval("c[x] %s c[y]" % op),
                                      eval("x %s y" % op),
                                      "x=%d, y=%d" % (x, y))
@@ -3229,7 +3229,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
 
         klasse classic:
             pass
-        for base in (classic, int, object, list):
+        fuer base in (classic, int, object, list):
             klasse C(base):
                 def __init__(self, value):
                     self.value = int(value)
@@ -3274,9 +3274,9 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
             c3 = C(3)
             self.assertEqual(c1, 1)
             c = {1: c1, 2: c2, 3: c3}
-            for x in 1, 2, 3:
-                for y in 1, 2, 3:
-                    for op in "<", "<=", "==", "!=", ">", ">=":
+            fuer x in 1, 2, 3:
+                fuer y in 1, 2, 3:
+                    fuer op in "<", "<=", "==", "!=", ">", ">=":
                         self.assertEqual(eval("c[x] %s c[y]" % op),
                                          eval("x %s y" % op),
                                          "x=%d, y=%d" % (x, y))
@@ -3316,8 +3316,8 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         klasse D(object): pass
         klasse E(object): pass
         klasse F(D, E): pass
-        for cls in C, D, E, F:
-            for cls2 in C, D, E, F:
+        fuer cls in C, D, E, F:
+            fuer cls2 in C, D, E, F:
                 x = cls()
                 x.__class__ = cls2
                 self.assertIs(x.__class__, cls2)
@@ -3372,19 +3372,19 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         klasse R(J):
             __slots__ = ["__dict__", "__weakref__"]
 
-        for cls, cls2 in ((G, H), (G, I), (I, H), (Q, R), (R, Q)):
+        fuer cls, cls2 in ((G, H), (G, I), (I, H), (Q, R), (R, Q)):
             x = cls()
             x.a = 1
             x.__class__ = cls2
             self.assertIs(x.__class__, cls2,
-                   "assigning %r as __class__ for %r silently failed" % (cls2, x))
+                   "assigning %r as __class__ fuer %r silently failed" % (cls2, x))
             self.assertEqual(x.a, 1)
             x.__class__ = cls
             self.assertIs(x.__class__, cls,
-                   "assigning %r as __class__ for %r silently failed" % (cls, x))
+                   "assigning %r as __class__ fuer %r silently failed" % (cls, x))
             self.assertEqual(x.a, 1)
-        for cls in G, J, K, L, M, N, P, R, list, Int:
-            for cls2 in G, J, K, L, M, N, P, R, list, Int:
+        fuer cls in G, J, K, L, M, N, P, R, list, Int:
+            fuer cls2 in G, J, K, L, M, N, P, R, list, Int:
                 if cls is cls2:
                     continue
                 cant(cls(), cls2)
@@ -3396,7 +3396,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         klasse A(object):
             def __del__(self):
                 self.__class__ = O
-        l = [A() for x in range(100)]
+        l = [A() fuer x in range(100)]
         del l
 
     def test_set_dict(self):
@@ -3447,7 +3447,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
             pass
         klasse E(object, metaclass=Meta2):
             pass
-        for cls in C, D, E:
+        fuer cls in C, D, E:
             verify_dict_readonly(cls)
             class_dict = cls.__dict__
             try:
@@ -3462,7 +3462,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
             pass
         klasse Module2(Base, types.ModuleType):
             pass
-        for ModuleType in Module1, Module2:
+        fuer ModuleType in Module1, Module2:
             mod = ModuleType("spam")
             verify_dict_readonly(mod)
             mod.__dict__["spam"] = "eggs"
@@ -3482,7 +3482,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
             pass
         klasse Exception2(Base, Exception):
             pass
-        for ExceptionType in Exception, Exception1, Exception2:
+        fuer ExceptionType in Exception, Exception1, Exception2:
             e = ExceptionType()
             e.__dict__ = {"a": 1}
             self.assertEqual(e.a, 1)
@@ -3821,7 +3821,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         self.assertEqual(D(1, 2), (D, D, 1, 2))
 
     def test_imul_bug(self):
-        # Testing for __imul__ problems...
+        # Testing fuer __imul__ problems...
         # SF bug 544647
         klasse C(object):
             def __imul__(self, other):
@@ -3952,7 +3952,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
             def __init__(self, x):
                 self.x = x
         o = None
-        for i in range(50000):
+        fuer i in range(50000):
             o = trash(o)
         del o
 
@@ -4029,11 +4029,11 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         x = None
         with self.assertRaises(TypeError) as cm:
             x **= 2
-        self.assertIn('unsupported operand type(s) for **=', str(cm.exception))
+        self.assertIn('unsupported operand type(s) fuer **=', str(cm.exception))
 
         with self.assertRaises(TypeError) as cm:
             y = x ** 2
-        self.assertIn('unsupported operand type(s) for **', str(cm.exception))
+        self.assertIn('unsupported operand type(s) fuer **', str(cm.exception))
 
     def test_pow_wrapper_error_messages(self):
         self.assertRaisesRegex(TypeError,
@@ -4088,7 +4088,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
             D.__bases__ = ()
         except TypeError as msg:
             if str(msg) == "a new-style klasse can't have only classic bases":
-                self.fail("wrong error message for .__bases__ = ()")
+                self.fail("wrong error message fuer .__bases__ = ()")
         else:
             self.fail("shouldn't be able to set .__bases__ to ()")
 
@@ -4131,7 +4131,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
             pass
 
         subclasses = []
-        for i in range(1000):
+        fuer i in range(1000):
             sc = type(f'Sub{i}', (B,), {})
             subclasses.append(sc)
 
@@ -4145,9 +4145,9 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
     def test_builtin_bases(self):
         # Make sure all the builtin types can have their base queried without
         # segfaulting. See issue #5787.
-        builtin_types = [tp for tp in builtins.__dict__.values()
+        builtin_types = [tp fuer tp in builtins.__dict__.values()
                          if isinstance(tp, type)]
-        for tp in builtin_types:
+        fuer tp in builtin_types:
             object.__getattribute__(tp, "__bases__")
             if tp is not object:
                 if tp is ExceptionGroup:
@@ -4236,7 +4236,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
                 # this is here to make sure that .mro()s aren't called
                 # with an exception set (which was possible at one point).
                 # An error message will be printed in a debug build.
-                # What's a good way to test for this?
+                # What's a good way to test fuer this?
                 return type.mro(self)
 
         klasse C(object):
@@ -4341,7 +4341,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         self.assertEqual(B(1) // 1, "B.__floordiv__")
         self.assertEqual(1 // B(1), "B.__rfloordiv__")
 
-        # Case 2: subclass of object; this is just the baseline for case 3
+        # Case 2: subclass of object; this is just the baseline fuer case 3
 
         klasse C(object):
             def __floordiv__(self, other):
@@ -4459,7 +4459,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         self.assertIsInstance(pa, C) # Test
 
     def test_proxy_super(self):
-        # Testing super() for a proxy object...
+        # Testing super() fuer a proxy object...
         klasse Proxy(object):
             def __init__(self, obj):
                 self.__obj = obj
@@ -4557,7 +4557,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
     def test_wrapper_segfault(self):
         # SF 927248: deeply nested wrappers could cause stack overflow
         f = lambda:None
-        for i in range(1000000):
+        fuer i in range(1000000):
             f = f.__call__
         f = None
 
@@ -4615,7 +4615,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         except TypeError:
             pass
         else:
-            self.fail("did not test __init__() for None return")
+            self.fail("did not test __init__() fuer None return")
 
     def assertNotOrderable(self, a, b):
         with self.assertRaises(TypeError):
@@ -4701,7 +4701,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
                                 # TypeErrors
         N2 = sys.maxsize         # if sizeof(int) < sizeof(long), might trigger
                                 #   ValueErrors instead of TypeErrors
-        for name, expr, iexpr in [
+        fuer name, expr, iexpr in [
                 ('__add__',      'x + y',                   'x += y'),
                 ('__sub__',      'x - y',                   'x -= y'),
                 ('__mul__',      'x * y',                   'x *= y'),
@@ -4777,7 +4777,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         x.a = 42
         self.assertEqual(x.a, 42)
 
-        # Also check type_getattro for correctness.
+        # Also check type_getattro fuer correctness.
         klasse Meta(type):
             pass
         klasse X(metaclass=Meta):
@@ -4819,7 +4819,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
                 raise AttributeError(name)
             def __getattribute__(self, name):
                 del EvilGetattribute.__getattr__
-                for i in range(5):
+                fuer i in range(5):
                     gc.collect()
                 raise AttributeError(name)
 
@@ -4874,24 +4874,24 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         klasse Thing:
             pass
         thing = Thing()
-        for i in range(20):
+        fuer i in range(20):
             with self.assertRaises(TypeError):
                 # CALL_METHOD_DESCRIPTOR_FAST_WITH_KEYWORDS
                 list.sort(thing)
-        for i in range(20):
+        fuer i in range(20):
             with self.assertRaises(TypeError):
                 # CALL_METHOD_DESCRIPTOR_FAST_WITH_KEYWORDS
                 str.split(thing)
-        for i in range(20):
+        fuer i in range(20):
             with self.assertRaises(TypeError):
                 # CALL_METHOD_DESCRIPTOR_NOARGS
                 str.upper(thing)
-        for i in range(20):
+        fuer i in range(20):
             with self.assertRaises(TypeError):
                 # CALL_METHOD_DESCRIPTOR_FAST
                 str.strip(thing)
         from collections import deque
-        for i in range(20):
+        fuer i in range(20):
             with self.assertRaises(TypeError):
                 # CALL_METHOD_DESCRIPTOR_O
                 deque.append(thing, thing)
@@ -4957,10 +4957,10 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         types = ['method', 'member', 'getset', 'wrapper']
 
         # make sure we have an example of each type of descriptor
-        for d, n in zip(descriptors, types):
+        fuer d, n in zip(descriptors, types):
             self.assertEqual(type(d).__name__, n + '_descriptor')
 
-        for d in descriptors:
+        fuer d in descriptors:
             qualname = d.__objclass__.__qualname__ + '.' + d.__name__
             self.assertEqual(d.__qualname__, qualname)
 
@@ -5006,7 +5006,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         del x
         support.gc_collect()
         self.assertIsNone(wr())
-        for o in gc.get_objects():
+        fuer o in gc.get_objects():
             self.assertIsNot(type(o), X)
 
     def test_object_new_and_init_with_parameters(self):
@@ -5023,7 +5023,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
                 return object.__init__(self, *args, **kwargs)
         klasse OverrideBoth(OverrideNew, OverrideInit):
             pass
-        for case in OverrideNew, OverrideInit, OverrideBoth:
+        fuer case in OverrideNew, OverrideInit, OverrideBoth:
             case(1)
             case(1, kw=2)
             self.assertRaises(TypeError, case, 1, 2, 3)
@@ -5105,7 +5105,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
             def __new__(cls):
                 cls.descr = None
                 # Create this large list to corrupt some unused memory
-                cls.lst = [2**i for i in range(10000)]
+                cls.lst = [2**i fuer i in range(10000)]
         X.descr
 
     def test_remove_subclass(self):
@@ -5126,7 +5126,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         self.assertEqual(Parent.__subclasses__(), [])
 
     def test_instance_method_get_behavior(self):
-        # test case for gh-113157
+        # test case fuer gh-113157
 
         klasse A:
             def meth(self):
@@ -5141,7 +5141,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         self.assertEqual(b.meth(), a)
 
     def test_attr_raise_through_property(self):
-        # test case for gh-103272
+        # test case fuer gh-103272
         klasse A:
             def __getattr__(self, name):
                 raise ValueError("FOO")
@@ -5153,7 +5153,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "FOO"):
             A().foo
 
-        # test case for gh-103551
+        # test case fuer gh-103551
         klasse B:
             @property
             def __getattr__(self, name):
@@ -5202,7 +5202,7 @@ klasse DictProxyTests(unittest.TestCase):
         # Testing dict-proxy iteritems...
         it = self.C.__dict__.items()
         self.assertNotIsInstance(it, list)
-        keys = [item[0] for item in it]
+        keys = [item[0] fuer item in it]
         keys.sort()
         self.assertEqual(keys, ['__dict__', '__doc__', '__firstlineno__',
                                 '__module__',
@@ -5227,7 +5227,7 @@ klasse DictProxyTests(unittest.TestCase):
         r = repr(self.C.__dict__)
         self.assertStartsWith(r, 'mappingproxy(')
         self.assertEndsWith(r, ')')
-        for k, v in self.C.__dict__.items():
+        fuer k, v in self.C.__dict__.items():
             self.assertIn('{!r}: {!r}'.format(k, v), r)
 
 
@@ -5242,7 +5242,7 @@ klasse AAAPTypesLongInitTest(unittest.TestCase):
         # This dumps core when SF bug 551412 isn't fixed --
         # but only when test_descr.py is run separately.
         # (That can't be helped -- as soon as PyType_Ready()
-        # is called for PyLong_Type, the bug is gone.)
+        # is called fuer PyLong_Type, the bug is gone.)
         klasse UserLong(object):
             def __pow__(self, *args):
                 pass
@@ -5260,7 +5260,7 @@ klasse MiscTests(unittest.TestCase):
     def test_type_lookup_mro_reference(self):
         # Issue #14199: _PyType_Lookup() has to keep a strong reference to
         # the type MRO because it may be modified during the lookup, if
-        # __bases__ is set during the lookup for example.
+        # __bases__ is set during the lookup fuer example.
         code = textwrap.dedent("""
         klasse MyKey(object):
             def __hash__(self):
@@ -5279,7 +5279,7 @@ klasse MiscTests(unittest.TestCase):
 
         X = type('X', (Base,), {MyKey(): 5})
 
-        bases_before = ",".join([c.__name__ for c in X.__bases__])
+        bases_before = ",".join([c.__name__ fuer c in X.__bases__])
         print(f"before={bases_before}")
 
         # mykey is initially read from Base, however, the lookup will be perfomed
@@ -5287,7 +5287,7 @@ klasse MiscTests(unittest.TestCase):
         # mro set by __eq__.
         print(X.mykey)
 
-        bases_after = ",".join([c.__name__ for c in X.__bases__])
+        bases_after = ",".join([c.__name__ fuer c in X.__bases__])
         print(f"after={bases_after}")
 
         # mykey2 is read from Base2 because MyKey.__eq__ has set __bases_
@@ -5344,19 +5344,19 @@ klasse PicklingTests(unittest.TestCase):
             def __getnewargs__(self):
                 return args
         obj = C1()
-        for proto in protocols:
+        fuer proto in protocols:
             self._check_reduce(proto, obj, args)
 
-        for name, value in state.items():
+        fuer name, value in state.items():
             setattr(obj, name, value)
-        for proto in protocols:
+        fuer proto in protocols:
             self._check_reduce(proto, obj, args, state=state)
 
         klasse C2:
             def __getnewargs__(self):
                 return "bad args"
         obj = C2()
-        for proto in protocols:
+        fuer proto in protocols:
             if proto >= 2:
                 with self.assertRaises(TypeError):
                     obj.__reduce_ex__(proto)
@@ -5365,7 +5365,7 @@ klasse PicklingTests(unittest.TestCase):
             def __getnewargs_ex__(self):
                 return (args, kwargs)
         obj = C3()
-        for proto in protocols:
+        fuer proto in protocols:
             if proto >= 2:
                 self._check_reduce(proto, obj, args, kwargs)
 
@@ -5381,8 +5381,8 @@ klasse PicklingTests(unittest.TestCase):
         klasse C7:
             def __getnewargs_ex__(self):
                 return "bad args"
-        for proto in protocols:
-            for cls in C4, C5, C6, C7:
+        fuer proto in protocols:
+            fuer cls in C4, C5, C6, C7:
                 obj = cls()
                 if proto >= 2:
                     with self.assertRaises((TypeError, ValueError)):
@@ -5392,14 +5392,14 @@ klasse PicklingTests(unittest.TestCase):
             def __getnewargs_ex__(self):
                 return (args, {})
         obj = C9()
-        for proto in protocols:
+        fuer proto in protocols:
             self._check_reduce(proto, obj, args)
 
         klasse C10:
             def __getnewargs_ex__(self):
                 raise IndexError
         obj = C10()
-        for proto in protocols:
+        fuer proto in protocols:
             if proto >= 2:
                 with self.assertRaises(IndexError):
                     obj.__reduce_ex__(proto)
@@ -5408,21 +5408,21 @@ klasse PicklingTests(unittest.TestCase):
             def __getstate__(self):
                 return state
         obj = C11()
-        for proto in protocols:
+        fuer proto in protocols:
             self._check_reduce(proto, obj, state=state)
 
         klasse C12:
             def __getstate__(self):
                 return "not dict"
         obj = C12()
-        for proto in protocols:
+        fuer proto in protocols:
             self._check_reduce(proto, obj, state="not dict")
 
         klasse C13:
             def __getstate__(self):
                 raise IndexError
         obj = C13()
-        for proto in protocols:
+        fuer proto in protocols:
             with self.assertRaises(IndexError):
                 obj.__reduce_ex__(proto)
             if proto < 2:
@@ -5432,11 +5432,11 @@ klasse PicklingTests(unittest.TestCase):
         klasse C14:
             __slots__ = tuple(state)
             def __init__(self):
-                for name, value in state.items():
+                fuer name, value in state.items():
                     setattr(self, name, value)
 
         obj = C14()
-        for proto in protocols:
+        fuer proto in protocols:
             if proto >= 2:
                 self._check_reduce(proto, obj, state=(None, state))
             else:
@@ -5448,13 +5448,13 @@ klasse PicklingTests(unittest.TestCase):
         klasse C15(dict):
             pass
         obj = C15({"quebec": -601})
-        for proto in protocols:
+        fuer proto in protocols:
             self._check_reduce(proto, obj, dictitems=dict(obj))
 
         klasse C16(list):
             pass
         obj = C16(["yukon"])
-        for proto in protocols:
+        fuer proto in protocols:
             self._check_reduce(proto, obj, listitems=list(obj))
 
     def test_special_method_lookup(self):
@@ -5467,7 +5467,7 @@ klasse PicklingTests(unittest.TestCase):
                 if attr in ("__getnewargs__", "__getnewargs_ex__"):
                     raise AssertionError(attr)
                 return None
-        for protocol in protocols:
+        fuer protocol in protocols:
             state = {} if protocol >= 2 else None
             self._check_reduce(protocol, Picky(), state=state)
 
@@ -5477,7 +5477,7 @@ klasse PicklingTests(unittest.TestCase):
         if msg is None:
             msg = "{!r} is not a copy of {!r}".format(obj, objcopy)
         if type(obj).__repr__ is object.__repr__:
-            # We have this limitation for now because we use the object's repr
+            # We have this limitation fuer now because we use the object's repr
             # to help us verify that the two objects are copies. This allows
             # us to delegate the non-generic verification logic to the objects
             # themselves.
@@ -5490,7 +5490,7 @@ klasse PicklingTests(unittest.TestCase):
             self.assertIsNot(obj.__dict__, objcopy.__dict__, msg=msg)
         if hasattr(obj, '__slots__'):
             self.assertListEqual(obj.__slots__, objcopy.__slots__, msg=msg)
-            for slot in obj.__slots__:
+            fuer slot in obj.__slots__:
                 self.assertEqual(
                     hasattr(obj, slot), hasattr(objcopy, slot), msg=msg)
                 self.assertEqual(getattr(obj, slot, None),
@@ -5517,7 +5517,7 @@ klasse PicklingTests(unittest.TestCase):
                         .format(self.proto,
                                 self.dumps.__module__, self.dumps.__qualname__,
                                 self.loads.__module__, self.loads.__qualname__))
-        return (PickleCopier(*args) for args in
+        return (PickleCopier(*args) fuer args in
                    itertools.product(range(pickle.HIGHEST_PROTOCOL + 1),
                                      {pickle.dumps, pickle._dumps},
                                      {pickle.loads, pickle._loads}))
@@ -5545,15 +5545,15 @@ klasse PicklingTests(unittest.TestCase):
             __slots__ = ['a']
             def __getstate__(self):
                 state = getattr(self, '__dict__', {}).copy()
-                for cls in type(self).__mro__:
-                    for slot in cls.__dict__.get('__slots__', ()):
+                fuer cls in type(self).__mro__:
+                    fuer slot in cls.__dict__.get('__slots__', ()):
                         try:
                             state[slot] = getattr(self, slot)
                         except AttributeError:
                             pass
                 return state
             def __setstate__(self, state):
-                for k, v in state.items():
+                fuer k, v in state.items():
                     setattr(self, k, v)
             def __repr__(self):
                 return "%s()<%r>" % (type(self).__name__, self.__getstate__())
@@ -5568,7 +5568,7 @@ klasse PicklingTests(unittest.TestCase):
             __slots__ = ['b']
 
         # Now it should work
-        for pickle_copier in self._generate_pickle_copiers():
+        fuer pickle_copier in self._generate_pickle_copiers():
             with self.subTest(pickle_copier=pickle_copier):
                 x = C()
                 y = pickle_copier.copy(x)
@@ -5683,7 +5683,7 @@ klasse PicklingTests(unittest.TestCase):
         test_classes = (C1, C2, C3, C4, C5)
         # Testing copying through pickle
         pickle_copiers = self._generate_pickle_copiers()
-        for cls, pickle_copier in itertools.product(test_classes, pickle_copiers):
+        fuer cls, pickle_copier in itertools.product(test_classes, pickle_copiers):
             with self.subTest(cls=cls, pickle_copier=pickle_copier):
                 kwargs = getattr(cls, 'KWARGS', {})
                 obj = cls(*cls.ARGS, **kwargs)
@@ -5700,7 +5700,7 @@ klasse PicklingTests(unittest.TestCase):
                     self._assert_is_copy(obj, objcopy2)
 
         # Testing copying through copy.deepcopy()
-        for cls in test_classes:
+        fuer cls in test_classes:
             with self.subTest(cls=cls):
                 kwargs = getattr(cls, 'KWARGS', {})
                 obj = cls(*cls.ARGS, **kwargs)
@@ -5757,7 +5757,7 @@ klasse SharedKeyTests(unittest.TestCase):
             pass
 
         #Shrink keys by repeatedly creating instances
-        [(A(), B()) for _ in range(30)]
+        [(A(), B()) fuer _ in range(30)]
 
         a, b = A(), B()
         self.assertEqual(sys.getsizeof(vars(a)), sys.getsizeof(vars(b)))
@@ -5786,7 +5786,7 @@ klasse DebugHelperMeta(type):
 
 klasse MroTest(unittest.TestCase):
     """
-    Regressions for some bugs revealed through
+    Regressions fuer some bugs revealed through
     mcsl.mro() customization (typeobject.c: mro_internal()) and
     cls.__bases__ assignment (typeobject.c: type_set_bases()).
     """
@@ -5857,7 +5857,7 @@ klasse MroTest(unittest.TestCase):
 
     def test_reent_set_bases_tp_base_cycle(self):
         """
-        type_set_bases must check for an inheritance cycle not only through
+        type_set_bases must check fuer an inheritance cycle not only through
         MRO of the type, which may be not yet updated in case of reentrance,
         but also through tp_base chain, which is assigned before diving into
         inner calls to mro().
@@ -5893,7 +5893,7 @@ klasse MroTest(unittest.TestCase):
 
     def test_tp_subclasses_cycle_in_update_slots(self):
         """
-        type_set_bases must check for reentrancy upon finishing its job
+        type_set_bases must check fuer reentrancy upon finishing its job
         by updating tp_subclasses of old/new bases of the type.
         Otherwise, an implicit inheritance cycle through tp_subclasses
         can break functions that recurse on elements of that field
@@ -6027,7 +6027,7 @@ klasse TestGenericDescriptors(unittest.TestCase):
         dict_descriptor = CustomClass.__dict__['__dict__']
         self.assertEqual(dict_descriptor.__objclass__, object)
 
-        for cls in CustomClass, SlotSubClass, IntSubclass:
+        fuer cls in CustomClass, SlotSubClass, IntSubclass:
             with self.subTest(cls=cls):
                 self.assertIs(cls.__dict__['__dict__'], dict_descriptor)
                 instance = cls()
@@ -6060,7 +6060,7 @@ klasse TestGenericDescriptors(unittest.TestCase):
         weakref_descriptor = CustomClass.__dict__['__weakref__']
         self.assertEqual(weakref_descriptor.__objclass__, object)
 
-        for cls in CustomClass, SlotSubClass:
+        fuer cls in CustomClass, SlotSubClass:
             with self.subTest(cls=cls):
                 self.assertIs(cls.__dict__['__weakref__'], weakref_descriptor)
                 instance = cls()

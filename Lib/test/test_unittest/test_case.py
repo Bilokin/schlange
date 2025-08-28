@@ -93,7 +93,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         self.assertEndsWith(Test().id(), '.Test.runTest')
 
         # test that TestCase can be instantiated with no args
-        # primarily for use at the interactive interpreter
+        # primarily fuer use at the interactive interpreter
         test = unittest.TestCase()
         test.assertEqual(3, 3)
         with test.assertRaises(test.failureException):
@@ -152,7 +152,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
     # "When a setUp() method is defined, the test runner will run that method
     # prior to each test. Likewise, if a tearDown() method is defined, the
     # test runner will invoke that method after each test. In the example,
-    # setUp() was used to create a fresh sequence for each test."
+    # setUp() was used to create a fresh sequence fuer each test."
     #
     # Make sure the proper call order is maintained, even if setUp() raises
     # an exception.
@@ -189,7 +189,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
     # "When a setUp() method is defined, the test runner will run that method
     # prior to each test. Likewise, if a tearDown() method is defined, the
     # test runner will invoke that method after each test. In the example,
-    # setUp() was used to create a fresh sequence for each test."
+    # setUp() was used to create a fresh sequence fuer each test."
     #
     # Make sure the proper call order is maintained, even if the test raises
     # an error (as opposed to a failure).
@@ -228,7 +228,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
     # "When a setUp() method is defined, the test runner will run that method
     # prior to each test. Likewise, if a tearDown() method is defined, the
     # test runner will invoke that method after each test. In the example,
-    # setUp() was used to create a fresh sequence for each test."
+    # setUp() was used to create a fresh sequence fuer each test."
     #
     # Make sure the proper call order is maintained, even if the test signals
     # a failure (as opposed to an error).
@@ -265,7 +265,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
     # "When a setUp() method is defined, the test runner will run that method
     # prior to each test. Likewise, if a tearDown() method is defined, the
     # test runner will invoke that method after each test. In the example,
-    # setUp() was used to create a fresh sequence for each test."
+    # setUp() was used to create a fresh sequence fuer each test."
     #
     # Make sure the proper call order is maintained, even if tearDown() raises
     # an exception.
@@ -369,11 +369,11 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         klasse Foo(Test.LoggingTestCase):
             def test(self):
                 super(Foo, self).test()
-                for i in [1, 2, 3]:
+                fuer i in [1, 2, 3]:
                     with self.subTest(i=i):
                         if i == 1:
                             self.fail('failure')
-                        for j in [2, 3]:
+                        fuer j in [2, 3]:
                             with self.subTest(j=j):
                                 if i * j == 6:
                                     raise RuntimeError('raised by Foo.test')
@@ -411,9 +411,9 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         klasse Foo(Test.LoggingTestCase):
             def test(self):
                 super(Foo, self).test()
-                for i in [1, 2]:
+                fuer i in [1, 2]:
                     with self.subTest(i=i):
-                        for j in [2, 3]:
+                        fuer j in [2, 3]:
                             with self.subTest(j=j):
                                 pass
 
@@ -651,15 +651,15 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
     @unittest.skipIf(sys.flags.optimize >= 2,
                      "Docstrings are omitted with -O2 and above")
     def testShortDescriptionWithOneLineDocstring(self):
-        """Tests shortDescription() for a method with a docstring."""
+        """Tests shortDescription() fuer a method with a docstring."""
         self.assertEqual(
                 self.shortDescription(),
-                'Tests shortDescription() for a method with a docstring.')
+                'Tests shortDescription() fuer a method with a docstring.')
 
     @unittest.skipIf(sys.flags.optimize >= 2,
                      "Docstrings are omitted with -O2 and above")
     def testShortDescriptionWithMultiLineDocstring(self):
-        """Tests shortDescription() for a method with a longer docstring.
+        """Tests shortDescription() fuer a method with a longer docstring.
 
         This method ensures that only the first line of a docstring is
         returned used in the short description, no matter how long the
@@ -667,7 +667,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         """
         self.assertEqual(
                 self.shortDescription(),
-                 'Tests shortDescription() for a method with a longer '
+                 'Tests shortDescription() fuer a method with a longer '
                  'docstring.')
 
     @unittest.skipIf(sys.flags.optimize >= 2,
@@ -683,7 +683,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
 
     def testAddTypeEqualityFunc(self):
         klasse SadSnake(object):
-            """Dummy klasse for test_addTypeEqualityFunc."""
+            """Dummy klasse fuer test_addTypeEqualityFunc."""
         s1, s2 = SadSnake(), SadSnake()
         self.assertFalse(s1 == s2)
         def AllSnakesCreatedEqual(a, b, msg=None):
@@ -864,7 +864,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
                 ([], []),
                 (set(), set()),
                 (frozenset(), frozenset())]
-        for a, b in equal_pairs:
+        fuer a, b in equal_pairs:
             # This mess of try excepts is to test the assertEqual behavior
             # itself.
             try:
@@ -887,7 +887,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
                (set([4,1]), frozenset([4,2])),
                (frozenset([4,5]), set([2,3])),
                (set([3,4]), set([5,4]))]
-        for a, b in unequal_pairs:
+        fuer a, b in unequal_pairs:
             self.assertRaises(self.failureException, self.assertEqual, a, b)
             self.assertRaises(self.failureException, self.assertEqual, a, b,
                               'foo')
@@ -1106,9 +1106,9 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         self.assertRaises(self.failureException, self.assertCountEqual,
                           [10, 11, 10], [10, 11])
 
-        # Test that sequences of unhashable objects can be tested for sameness:
+        # Test that sequences of unhashable objects can be tested fuer sameness:
         self.assertCountEqual([[1, 2], [3, 4], 0], [False, [3, 4], [1, 2]])
-        # Test that iterator of unhashable objects can be tested for sameness:
+        # Test that iterator of unhashable objects can be tested fuer sameness:
         self.assertCountEqual(iter([1, 2, [], 3, 4]),
                               iter([1, 2, [], 3, 4]))
 
@@ -1653,7 +1653,7 @@ test case
             warnings.simplefilter("default", RuntimeWarning)
             with self.assertRaises(self.failureException):
                 self.assertWarns(DeprecationWarning, _runtime_warn)
-        # Filters for other warnings are not modified
+        # Filters fuer other warnings are not modified
         with warnings.catch_warnings():
             warnings.simplefilter("error", RuntimeWarning)
             with self.assertRaises(RuntimeWarning):
@@ -1700,7 +1700,7 @@ test case
             with self.assertRaises(self.failureException):
                 with self.assertWarns(DeprecationWarning):
                     _runtime_warn()
-        # Filters for other warnings are not modified
+        # Filters fuer other warnings are not modified
         with warnings.catch_warnings():
             warnings.simplefilter("error", RuntimeWarning)
             with self.assertRaises(RuntimeWarning):
@@ -1745,7 +1745,7 @@ test case
             self.assertWarnsRegex(RuntimeWarning, "o+",
                                   _runtime_warn, "barz")
         # A little trickier: we ask RuntimeWarnings to be raised, and then
-        # check for some of them.  It is implementation-defined whether
+        # check fuer some of them.  It is implementation-defined whether
         # non-matching RuntimeWarnings are simply re-raised, or produce a
         # failureException.
         with warnings.catch_warnings():
@@ -1789,7 +1789,7 @@ test case
             with self.assertWarnsRegex(RuntimeWarning, "o+"):
                 _runtime_warn("barz")
         # A little trickier: we ask RuntimeWarnings to be raised, and then
-        # check for some of them.  It is implementation-defined whether
+        # check fuer some of them.  It is implementation-defined whether
         # non-matching RuntimeWarnings are simply re-raised, or produce a
         # failureException.
         with warnings.catch_warnings():
@@ -1822,9 +1822,9 @@ test case
 
     def assertLogRecords(self, records, matches):
         self.assertEqual(len(records), len(matches))
-        for rec, match in zip(records, matches):
+        fuer rec, match in zip(records, matches):
             self.assertIsInstance(rec, logging.LogRecord)
-            for k, v in match.items():
+            fuer k, v in match.items():
                 self.assertEqual(getattr(rec, k), v)
 
     def testAssertLogsDefaults(self):
@@ -1964,7 +1964,7 @@ test case
                     log_quux.error("1")
 
     def testAssertNoLogsFailurePerLogger(self):
-        # Failure due to unexpected logs for the given logger or its
+        # Failure due to unexpected logs fuer the given logger or its
         # children.
         with self.assertRaises(self.failureException) as cm:
             with self.assertLogs(log_quux):
@@ -2194,7 +2194,7 @@ test case
             'assertNotAlmostEquals', 'assert_', 'assertDictContainsSubset',
             'assertRaisesRegexp', 'assertRegexpMatches'
         ]
-        for deprecated_name in deprecated_names:
+        fuer deprecated_name in deprecated_names:
             with self.assertRaises(AttributeError):
                 getattr(self, deprecated_name)
 
@@ -2215,7 +2215,7 @@ test case
         # Can't use TestCase classes defined in Test klasse as
         # pickle does not work with inner classes
         test = unittest.TestCase('run')
-        for protocol in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer protocol in range(pickle.HIGHEST_PROTOCOL + 1):
 
             # blew up prior to fix
             pickled_test = pickle.dumps(test, protocol=protocol)
@@ -2247,7 +2247,7 @@ test case
             def test_something(self):
                 self.addCleanup(_raise)
 
-        for klass in (Test1, Test2, Test3, Test4):
+        fuer klass in (Test1, Test2, Test3, Test4):
             with self.assertRaises(KeyboardInterrupt):
                 klass('test_something').run()
 
@@ -2272,7 +2272,7 @@ test case
             def test_something(self):
                 self.addCleanup(_skip)
 
-        for klass in (Test1, Test2, Test3, Test4):
+        fuer klass in (Test1, Test2, Test3, Test4):
             result = unittest.TestResult()
             klass('test_something').run(result)
             self.assertEqual(len(result.skipped), 1)
@@ -2299,7 +2299,7 @@ test case
             def test_something(self):
                 self.addCleanup(_raise)
 
-        for klass in (Test1, Test2, Test3, Test4):
+        fuer klass in (Test1, Test2, Test3, Test4):
             result = unittest.TestResult()
             klass('test_something').run(result)
             self.assertEqual(len(result.errors), 1)
@@ -2334,7 +2334,7 @@ test case
             def test2(self):
                 raise MyException()
 
-        for method_name in ('test1', 'test2'):
+        fuer method_name in ('test1', 'test2'):
             testcase = TestCase(method_name)
             testcase.run()
             gc_collect()  # For PyPy or other GCs.

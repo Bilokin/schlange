@@ -42,7 +42,7 @@ klasse CFunctionTests(DebuggerTests):
 
         # Various optimizations multiply the code paths by which these are
         # called, so test a variety of calling conventions.
-        for obj in (
+        fuer obj in (
             '_testcapi',
             '_testcapi.MethClass',
             '_testcapi.MethClass()',

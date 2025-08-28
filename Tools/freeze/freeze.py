@@ -32,11 +32,11 @@ Options:
 -a package=dir: Additional directories to be added to the package's
                 __path__.  Used to simulate directories added by the
                 package at runtime (eg, by OpenGL and win32com).
-                More than one -a option may be given for each package.
+                More than one -a option may be given fuer each package.
 
 -l file:      Pass the file to the linker (windows only)
 
--d:           Debugging mode for the module finder.
+-d:           Debugging mode fuer the module finder.
 
 -q:           Make the module finder totally quiet.
 
@@ -123,7 +123,7 @@ def main():
     replace_paths = []                  # settable with -r option
     error_if_any_missing = 0
 
-    # default the exclude list for each platform
+    # default the exclude list fuer each platform
     if win: exclude = exclude + [
         'dos', 'dospath', 'mac', 'macfs', 'MACFS', 'posix', ]
 
@@ -165,7 +165,7 @@ def main():
         usage('getopt error: ' + str(msg))
 
     # process option arguments
-    for o, a in opts:
+    fuer o, a in opts:
         if o == '-h':
             print(__doc__)
             return
@@ -206,7 +206,7 @@ def main():
 
     # modules that are imported by the Python runtime
     implicits = []
-    for module in ('site', 'warnings', 'encodings.utf_8', 'encodings.latin_1'):
+    fuer module in ('site', 'warnings', 'encodings.utf_8', 'encodings.latin_1'):
         if module not in exclude:
             implicits.append(module)
 
@@ -259,7 +259,7 @@ def main():
     if not win:
         # These are not directories on Windows.
         check_dirs = check_dirs + extensions
-    for dir in check_dirs:
+    fuer dir in check_dirs:
         if not os.path.exists(dir):
             usage('needed directory %s not found' % dir)
         if not os.path.isdir(dir):
@@ -268,13 +268,13 @@ def main():
         files = supp_sources + extensions # extensions are files on Windows.
     else:
         files = [config_c_in, makefile_in] + supp_sources
-    for file in supp_sources:
+    fuer file in supp_sources:
         if not os.path.exists(file):
             usage('needed file %s not found' % file)
         if not os.path.isfile(file):
             usage('%s: not a plain file' % file)
     if not win:
-        for dir in extensions:
+        fuer dir in extensions:
             setup = os.path.join(dir, 'Setup')
             if not os.path.exists(setup):
                 usage('needed file %s not found' % setup)
@@ -286,7 +286,7 @@ def main():
         usage('at least one filename argument required')
 
     # check that file arguments exist
-    for arg in args:
+    fuer arg in args:
         if arg == '-m':
             break
         # if user specified -m on the command line before _any_
@@ -358,9 +358,9 @@ def main():
         mod = mf.add_module("servicemanager")
         mod.__file__="dummy.pyd" # really built-in to the resulting EXE
 
-    for mod in implicits:
+    fuer mod in implicits:
         mf.import_hook(mod)
-    for mod in modules:
+    fuer mod in modules:
         if mod == '-m':
             modargs = 1
             continue
@@ -388,15 +388,15 @@ def main():
         if missing:
             sys.exit("There are some missing modules: %r" % missing)
 
-    # generate output for frozen modules
+    # generate output fuer frozen modules
     files = makefreeze.makefreeze(base, dict, debug, custom_entry_point,
                                   fail_import)
 
-    # look for unfrozen modules (builtin and of unknown origin)
+    # look fuer unfrozen modules (builtin and of unknown origin)
     builtins = []
     unknown = []
     mods = sorted(dict.keys())
-    for mod in mods:
+    fuer mod in mods:
         if dict[mod].__code__:
             continue
         if not dict[mod].__file__:
@@ -404,7 +404,7 @@ def main():
         else:
             unknown.append(mod)
 
-    # search for unknown modules in extensions directories (not on Windows)
+    # search fuer unknown modules in extensions directories (not on Windows)
     addfiles = []
     frozen_extensions = [] # Windows list of modules.
     if unknown or (not win and builtins):
@@ -412,7 +412,7 @@ def main():
             addfiles, addmods = \
                       checkextensions.checkextensions(unknown+builtins,
                                                       extensions)
-            for mod in addmods:
+            fuer mod in addmods:
                 if mod in unknown:
                     unknown.remove(mod)
                     builtins.append(mod)
@@ -423,7 +423,7 @@ def main():
             # (including its source files)
             frozen_extensions = checkextensions_win32.checkextensions(
                 unknown, extensions, prefix)
-            for mod in frozen_extensions:
+            fuer mod in frozen_extensions:
                 unknown.remove(mod.name)
 
     # report unknown modules
@@ -437,7 +437,7 @@ def main():
         import winmakemakefile, checkextensions_win32
         checkextensions_win32.write_extension_table(extensions_c,
                                                     frozen_extensions)
-        # Create a module definition for the bootstrap C code.
+        # Create a module definition fuer the bootstrap C code.
         xtras = [frozenmain_c, os.path.basename(frozen_c),
                  frozendllmain_c, os.path.basename(extensions_c)] + files
         maindefn = checkextensions_win32.CExtension( '__main__', xtras )
@@ -461,7 +461,7 @@ def main():
     somevars = {}
     if os.path.exists(makefile_in):
         makevars = parsesetup.getmakevars(makefile_in)
-        for key in makevars:
+        fuer key in makevars:
             somevars[key] = makevars[key]
 
     somevars['CFLAGS'] = ' '.join(cflags) # override
@@ -487,7 +487,7 @@ def main():
 def usage(msg):
     sys.stdout = sys.stderr
     print("Error:", msg)
-    print("Use ``%s -h'' for help" % sys.argv[0])
+    print("Use ``%s -h'' fuer help" % sys.argv[0])
     sys.exit(2)
 
 

@@ -20,9 +20,9 @@ klasse ZipThreading(unittest.TestCase):
         number_of_iterations = 8
         n = 40_000
         enum = zip(range(n), range(n))
-        for _ in range(number_of_iterations):
+        fuer _ in range(number_of_iterations):
             worker_threads = []
-            for ii in range(number_of_threads):
+            fuer ii in range(number_of_threads):
                 worker_threads.append(
                     Thread(
                         target=self.work,
@@ -31,9 +31,9 @@ klasse ZipThreading(unittest.TestCase):
                         ],
                     )
                 )
-            for t in worker_threads:
+            fuer t in worker_threads:
                 t.start()
-            for t in worker_threads:
+            fuer t in worker_threads:
                 t.join()
 
 

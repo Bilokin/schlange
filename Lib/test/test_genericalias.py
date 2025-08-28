@@ -1,4 +1,4 @@
-"""Tests for C-implemented GenericAlias."""
+"""Tests fuer C-implemented GenericAlias."""
 
 import unittest
 import pickle
@@ -153,7 +153,7 @@ klasse BaseTest(unittest.TestCase):
         generic_types.append(Event)
 
     def test_subscriptable(self):
-        for t in self.generic_types:
+        fuer t in self.generic_types:
             if t is None:
                 continue
             tname = t.__name__
@@ -164,14 +164,14 @@ klasse BaseTest(unittest.TestCase):
                 self.assertEqual(alias.__parameters__, ())
 
     def test_unsubscriptable(self):
-        for t in int, str, float, Sized, Hashable:
+        fuer t in int, str, float, Sized, Hashable:
             tname = t.__name__
             with self.subTest(f"Testing {tname}"):
                 with self.assertRaisesRegex(TypeError, tname):
                     t[int]
 
     def test_instantiate(self):
-        for t in tuple, list, dict, set, frozenset, defaultdict, deque:
+        fuer t in tuple, list, dict, set, frozenset, defaultdict, deque:
             tname = t.__name__
             with self.subTest(f"Testing {tname}"):
                 alias = t[int]
@@ -382,8 +382,8 @@ klasse BaseTest(unittest.TestCase):
 
     def test_pickle(self):
         aliases = [GenericAlias(list, T)] + _UNPACKED_TUPLES
-        for alias in aliases:
-            for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer alias in aliases:
+            fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
                 with self.subTest(alias=alias, proto=proto):
                     s = pickle.dumps(alias, proto)
                     loaded = pickle.loads(s)
@@ -404,7 +404,7 @@ klasse BaseTest(unittest.TestCase):
             GenericAlias(deque, T),
             GenericAlias(X, T)
         ] + _UNPACKED_TUPLES
-        for alias in aliases:
+        fuer alias in aliases:
             with self.subTest(alias=alias):
                 copied = copy.copy(alias)
                 self.assertEqual(copied.__origin__, alias.__origin__)
@@ -434,11 +434,11 @@ klasse BaseTest(unittest.TestCase):
     def test_dir(self):
         dir_of_gen_alias = set(dir(list[int]))
         self.assertTrue(dir_of_gen_alias.issuperset(dir(list)))
-        for generic_alias_property in ("__origin__", "__args__", "__parameters__"):
+        fuer generic_alias_property in ("__origin__", "__args__", "__parameters__"):
             self.assertIn(generic_alias_property, dir_of_gen_alias)
 
     def test_weakref(self):
-        for t in self.generic_types:
+        fuer t in self.generic_types:
             if t is None:
                 continue
             tname = t.__name__
@@ -555,7 +555,7 @@ klasse TypeIterationTests(unittest.TestCase):
     _UNITERABLE_TYPES = (list, tuple)
 
     def test_cannot_iterate(self):
-        for test_type in self._UNITERABLE_TYPES:
+        fuer test_type in self._UNITERABLE_TYPES:
             with self.subTest(type=test_type):
                 expected_error_regex = "object is not iterable"
                 with self.assertRaisesRegex(TypeError, expected_error_regex):
@@ -563,11 +563,11 @@ klasse TypeIterationTests(unittest.TestCase):
                 with self.assertRaisesRegex(TypeError, expected_error_regex):
                     list(test_type)
                 with self.assertRaisesRegex(TypeError, expected_error_regex):
-                    for _ in test_type:
+                    fuer _ in test_type:
                         pass
 
     def test_is_not_instance_of_iterable(self):
-        for type_to_test in self._UNITERABLE_TYPES:
+        fuer type_to_test in self._UNITERABLE_TYPES:
             self.assertNotIsInstance(type_to_test, Iterable)
 
 

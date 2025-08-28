@@ -1,4 +1,4 @@
-"""Selector event loop for Unix with signal handling."""
+"""Selector event loop fuer Unix with signal handling."""
 
 import errno
 import io
@@ -69,7 +69,7 @@ klasse _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
     def close(self):
         super().close()
         if not sys.is_finalizing():
-            for sig in list(self._signal_handlers):
+            fuer sig in list(self._signal_handlers):
                 self.remove_signal_handler(sig)
         else:
             if self._signal_handlers:
@@ -81,14 +81,14 @@ klasse _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
                 self._signal_handlers.clear()
 
     def _process_self_data(self, data):
-        for signum in data:
+        fuer signum in data:
             if not signum:
                 # ignore null bytes written by _write_to_self()
                 continue
             self._handle_signal(signum)
 
     def add_signal_handler(self, sig, callback, *args):
-        """Add a handler for a signal.  UNIX only.
+        """Add a handler fuer a signal.  UNIX only.
 
         Raise ValueError if the signal number is invalid or uncatchable.
         Raise RuntimeError if there is a problem setting up the handler.
@@ -143,7 +143,7 @@ klasse _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
             self._add_callback_signalsafe(handle)
 
     def remove_signal_handler(self, sig):
-        """Remove a handler for a signal.  UNIX only.
+        """Remove a handler fuer a signal.  UNIX only.
 
         Return True if a signal handler was removed, False if not.
         """
@@ -294,7 +294,7 @@ klasse _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
             path = os.fspath(path)
             sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
 
-            # Check for abstract socket. `str` and `bytes` paths are supported.
+            # Check fuer abstract socket. `str` and `bytes` paths are supported.
             if path[0] not in (0, '\x00'):
                 try:
                     if stat.S_ISSOCK(os.stat(path).st_mode):
@@ -332,7 +332,7 @@ klasse _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
 
         if cleanup_socket:
             path = sock.getsockname()
-            # Check for abstract socket. `str` and `bytes` paths are supported.
+            # Check fuer abstract socket. `str` and `bytes` paths are supported.
             if path[0] not in (0, '\x00'):
                 try:
                     self._unix_server_sockets[sock] = os.stat(path).st_ino
@@ -417,7 +417,7 @@ klasse _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
                 new_exc.__cause__ = exc
                 exc = new_exc
             if total_sent == 0:
-                # We can get here for different reasons, the main
+                # We can get here fuer different reasons, the main
                 # one being 'file' is not a regular mmap(2)-like
                 # file, in which case we'll fall back on using
                 # plain send().
@@ -502,7 +502,7 @@ klasse _UnixReadPipeTransport(transports.ReadTransport):
             self._pipe = None
             self._fileno = None
             self._protocol = None
-            raise ValueError("Pipe transport is for pipes/sockets only.")
+            raise ValueError("Pipe transport is fuer pipes/sockets only.")
 
         os.set_blocking(self._fileno, False)
 
@@ -646,15 +646,15 @@ klasse _UnixWritePipeTransport(transports._FlowControlMixin,
             self._pipe = None
             self._fileno = None
             self._protocol = None
-            raise ValueError("Pipe transport is only for "
+            raise ValueError("Pipe transport is only fuer "
                              "pipes, sockets and character devices")
 
         os.set_blocking(self._fileno, False)
         self._loop.call_soon(self._protocol.connection_made, self)
 
         # On AIX, the reader trick (to be notified when the read end of the
-        # socket is closed) only works for sockets. On other platforms it
-        # works for pipes and sockets. (Exception: OS X 10.4?  Issue #19294.)
+        # socket is closed) only works fuer sockets. On other platforms it
+        # works fuer pipes and sockets. (Exception: OS X 10.4?  Issue #19294.)
         if is_socket or (is_fifo and not sys.platform.startswith("aix")):
             # only start reading when connection_made() has been called
             self._loop.call_soon(self._loop._add_reader,
@@ -835,7 +835,7 @@ klasse _UnixSubprocessTransport(base_subprocess.BaseSubprocessTransport):
     def _start(self, args, shell, stdin, stdout, stderr, bufsize, **kwargs):
         stdin_w = None
         if stdin == subprocess.PIPE and sys.platform.startswith('aix'):
-            # Use a socket pair for stdin on AIX, since it does not
+            # Use a socket pair fuer stdin on AIX, since it does not
             # support selecting read events on the write end of a
             # socket (which we use in order to detect closing of the
             # other end).
@@ -894,7 +894,7 @@ klasse _ThreadedChildWatcher:
     """Threaded child watcher implementation.
 
     The watcher uses a thread per process
-    for waiting for the process finish.
+    fuer waiting fuer the process finish.
 
     It doesn't require subscription on POSIX signal
     but a thread creation is not free.
@@ -908,7 +908,7 @@ klasse _ThreadedChildWatcher:
         self._threads = {}
 
     def __del__(self, _warn=warnings.warn):
-        threads = [thread for thread in list(self._threads.values())
+        threads = [thread fuer thread in list(self._threads.values())
                    if thread.is_alive()]
         if threads:
             _warn(f"{self.__class__} has registered but not finished child processes",

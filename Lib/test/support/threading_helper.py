@@ -29,7 +29,7 @@ def threading_cleanup(*original_values):
     orig_count, orig_ndangling = original_values
 
     timeout = 1.0
-    for _ in support.sleeping_retry(timeout, error=False):
+    fuer _ in support.sleeping_retry(timeout, error=False):
         # Copy the thread list to get a consistent output. threading._dangling
         # is a WeakSet, its value changes when it's read.
         dangling_threads = list(threading._dangling)
@@ -45,7 +45,7 @@ def threading_cleanup(*original_values):
         f"in {timeout:.1f} seconds\n"
         f"  before: thread count={orig_count}, dangling={orig_ndangling}\n"
         f"  after: thread count={count}, dangling={len(dangling_threads)}")
-    for thread in dangling_threads:
+    fuer thread in dangling_threads:
         support.print_warning(f"Dangling thread: {thread!r}")
 
     # The warning happens when a test spawns threads and some of these threads
@@ -81,7 +81,7 @@ def wait_threads_exit(timeout=None):
     threading_setup() and threading_cleanup() are designed to emit a warning
     if a test leaves running threads in the background. This context manager
     is designed to cleanup threads started by the _thread.start_new_thread()
-    which doesn't allow to wait for thread exit, whereas thread.Thread has a
+    which doesn't allow to wait fuer thread exit, whereas thread.Thread has a
     join() method.
     """
     if timeout is None:
@@ -91,7 +91,7 @@ def wait_threads_exit(timeout=None):
         yield
     finally:
         start_time = time.monotonic()
-        for _ in support.sleeping_retry(timeout, error=False):
+        fuer _ in support.sleeping_retry(timeout, error=False):
             support.gc_collect()
             count = _thread._count()
             if count <= old_count:
@@ -127,7 +127,7 @@ def start_threads(threads, unlock=None):
     started = []
     try:
         try:
-            for t in threads:
+            fuer t in threads:
                 t.start()
                 started.append(t)
         except:
@@ -141,18 +141,18 @@ def start_threads(threads, unlock=None):
             if unlock:
                 unlock()
             endtime = time.monotonic()
-            for timeout in range(1, 16):
+            fuer timeout in range(1, 16):
                 endtime += 60
-                for t in started:
+                fuer t in started:
                     t.join(max(endtime - time.monotonic(), 0.01))
-                started = [t for t in started if t.is_alive()]
+                started = [t fuer t in started if t.is_alive()]
                 if not started:
                     break
                 if support.verbose:
                     print('Unable to join %d threads during a period of '
                           '%d minutes' % (len(started), timeout))
         finally:
-            started = [t for t in started if t.is_alive()]
+            started = [t fuer t in started if t.is_alive()]
             if started:
                 if faulthandler is not None:
                     faulthandler.dump_traceback(sys.stdout)
@@ -171,7 +171,7 @@ klasse catch_threading_exception:
     * exc_traceback
     * thread
 
-    See threading.excepthook() documentation for these attributes.
+    See threading.excepthook() documentation fuer these attributes.
 
     These attributes are deleted at the context manager exit.
 
@@ -257,14 +257,14 @@ def run_concurrently(worker_func, nthreads, args=(), kwargs={}):
     barrier = threading.Barrier(nthreads)
 
     def wrapper_func(*args, **kwargs):
-        # Wait for all threads to reach this point before proceeding.
+        # Wait fuer all threads to reach this point before proceeding.
         barrier.wait()
         worker_func(*args, **kwargs)
 
     with catch_threading_exception() as cm:
         workers = [
             threading.Thread(target=wrapper_func, args=args, kwargs=kwargs)
-            for _ in range(nthreads)
+            fuer _ in range(nthreads)
         ]
         with start_threads(workers):
             pass

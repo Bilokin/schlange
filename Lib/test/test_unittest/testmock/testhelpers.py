@@ -51,7 +51,7 @@ klasse AnyTest(unittest.TestCase):
             def __eq__(self, other): pass
             def __ne__(self, other): pass
 
-        for d in datetime.now(), Foo():
+        fuer d in datetime.now(), Foo():
             mock.reset_mock()
 
             mock(d, foo=d, bar=d)
@@ -67,7 +67,7 @@ klasse AnyTest(unittest.TestCase):
             self.assertEqual(mock.mock_calls, expected)
 
     def test_any_no_spec(self):
-        # This is a regression test for bpo-37555
+        # This is a regression test fuer bpo-37555
         klasse Foo:
             def __eq__(self, other): pass
 
@@ -78,7 +78,7 @@ klasse AnyTest(unittest.TestCase):
         mock.assert_any_call(ANY, 1)
 
     def test_any_and_spec_set(self):
-        # This is a regression test for bpo-37555
+        # This is a regression test fuer bpo-37555
         klasse Foo:
             def __eq__(self, other): pass
 
@@ -218,7 +218,7 @@ klasse CallTest(unittest.TestCase):
 
     def test_call_non_tuples(self):
         kall = _Call(((1, 2, 3),))
-        for value in 1, None, self, int:
+        fuer value in 1, None, self, int:
             self.assertNotEqual(kall, value)
             self.assertFalse(kall == value)
 
@@ -496,7 +496,7 @@ klasse SpecSignatureTest(unittest.TestCase):
 
         sub_mock = create_autospec(Sub)
 
-        for mock in (sub_mock, sub_mock.attr):
+        fuer mock in (sub_mock, sub_mock.attr):
             self._check_someclass_mock(mock)
 
 
@@ -613,7 +613,7 @@ klasse SpecSignatureTest(unittest.TestCase):
         klasse Sub(SomeClass):
             attr = SomeClass()
 
-        for spec in (Sub, Sub()):
+        fuer spec in (Sub, Sub()):
             mock = create_autospec(spec, spec_set=True)
             self._check_someclass_mock(mock)
 
@@ -632,7 +632,7 @@ klasse SpecSignatureTest(unittest.TestCase):
 
         klasse Baz(SomeClass, Bar): pass
 
-        for spec in (Foo, Foo(), Bar, Bar(), Baz, Baz()):
+        fuer spec in (Foo, Foo(), Bar, Bar(), Baz, Baz()):
             mock = create_autospec(spec)
             mock.f(1, 2)
             mock.f.assert_called_once_with(1, 2)
@@ -673,7 +673,7 @@ klasse SpecSignatureTest(unittest.TestCase):
 
         self.assertIsNot(class_mock, class_mock())
 
-        for this_mock in class_mock, class_mock():
+        fuer this_mock in class_mock, class_mock():
             this_mock.a(x=5)
             this_mock.a.assert_called_with(x=5)
             this_mock.a.assert_called_with(5)
@@ -1045,7 +1045,7 @@ klasse SpecSignatureTest(unittest.TestCase):
                 self.a = 1
                 self.b = 2
 
-        for mock in [
+        fuer mock in [
             create_autospec(WithPostInit, instance=True),
             create_autospec(WithPostInit()),
         ]:
@@ -1068,7 +1068,7 @@ klasse SpecSignatureTest(unittest.TestCase):
             a: int
             b: int = 0
 
-        for mock in [
+        fuer mock in [
             create_autospec(WithDefault, instance=True),
             create_autospec(WithDefault(1)),
         ]:
@@ -1084,7 +1084,7 @@ klasse SpecSignatureTest(unittest.TestCase):
             def b(self) -> int:
                 return 1  # pragma: no cover
 
-        for mock in [
+        fuer mock in [
             create_autospec(WithMethod, instance=True),
             create_autospec(WithMethod(1)),
         ]:
@@ -1100,7 +1100,7 @@ klasse SpecSignatureTest(unittest.TestCase):
             b: InitVar[int]
 
         msg = "Mock object has no attribute"
-        for mock in [
+        fuer mock in [
             create_autospec(WithNonFields, instance=True),
             create_autospec(WithNonFields(1)),
         ]:
@@ -1116,7 +1116,7 @@ klasse SpecSignatureTest(unittest.TestCase):
         klasse Description:
             name: str
 
-        for mock in [
+        fuer mock in [
             create_autospec(Description, instance=True),
             create_autospec(Description(1)),
         ]:
@@ -1139,7 +1139,7 @@ klasse TestCallList(unittest.TestCase):
         mock(3, 4)
         mock(b=6)
 
-        for kall in call(1, 2), call(a=3), call(3, 4), call(b=6):
+        fuer kall in call(1, 2), call(a=3), call(3, 4), call(b=6):
             self.assertIn(kall, mock.call_args_list)
 
         calls = [call(a=3), call(3, 4)]
@@ -1231,7 +1231,7 @@ klasse TestCallList(unittest.TestCase):
 klasse TestCallablePredicate(unittest.TestCase):
 
     def test_type(self):
-        for obj in [str, bytes, int, list, tuple, SomeClass]:
+        fuer obj in [str, bytes, int, list, tuple, SomeClass]:
             self.assertTrue(_callable(obj))
 
     def test_call_magic_method(self):

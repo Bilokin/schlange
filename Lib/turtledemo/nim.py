@@ -32,7 +32,7 @@ def computerzug(state):
     xored = state[0] ^ state[1] ^ state[2]
     if xored == 0:
         return randommove(state)
-    for z in range(3):
+    fuer z in range(3):
         s = state[z] ^ xored
         if s <= state[z]:
             move = (z, s)
@@ -123,8 +123,8 @@ klasse NimView(object):
         self.writer.pu()
         self.writer.speed(0)
         self.sticks = {}
-        for row in range(3):
-            for col in range(MAXSTICKS):
+        fuer row in range(3):
+            fuer col in range(MAXSTICKS):
                 self.sticks[(row, col)] = Stick(row, col, game)
         self.display("... a moment please ...")
         self.screen.tracer(True)
@@ -143,11 +143,11 @@ klasse NimView(object):
 
     def setup(self):
         self.screen.tracer(False)
-        for row in range(3):
-            for col in range(self.model.sticks[row]):
+        fuer row in range(3):
+            fuer col in range(self.model.sticks[row]):
                 self.sticks[(row, col)].color(SCOLOR)
-        for row in range(3):
-            for col in range(self.model.sticks[row], MAXSTICKS):
+        fuer row in range(3):
+            fuer col in range(self.model.sticks[row], MAXSTICKS):
                 self.sticks[(row, col)].color("white")
         self.display("Your turn! Click leftmost stick to remove.")
         self.screen.tracer(True)
@@ -155,14 +155,14 @@ klasse NimView(object):
     def notify_move(self, row, col, maxspalte, player):
         if player == 0:
             farbe = HCOLOR
-            for s in range(col, maxspalte):
+            fuer s in range(col, maxspalte):
                 self.sticks[(row, s)].color(farbe)
         else:
             self.display(" ... thinking ...         ")
             time.sleep(0.5)
             self.display(" ... thinking ... aaah ...")
             farbe = COLOR
-            for s in range(maxspalte-1, col-1, -1):
+            fuer s in range(maxspalte-1, col-1, -1):
                 time.sleep(0.2)
                 self.sticks[(row, s)].color(farbe)
             self.display("Your turn! Click leftmost stick to remove.")
@@ -185,7 +185,7 @@ klasse NimController(object):
         self.game = game
         self.sticks = game.view.sticks
         self.BUSY = False
-        for stick in self.sticks.values():
+        fuer stick in self.sticks.values():
             stick.onclick(stick.makemove)
         self.game.screen.onkey(self.game.model.setup, "space")
         self.game.screen.onkey(self.game.view.clear, "Escape")

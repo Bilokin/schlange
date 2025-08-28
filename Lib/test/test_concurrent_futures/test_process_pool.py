@@ -57,7 +57,7 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
         # Get one of the processes, and terminate (kill) it
         p = next(iter(self.executor._processes.values()))
         p.terminate()
-        for fut in futures:
+        fuer fut in futures:
             self.assertRaises(BrokenProcessPool, fut.result)
         # Submitting other jobs fails as well.
         self.assertRaises(BrokenProcessPool, self.executor.submit, pow, 2, 8)
@@ -109,7 +109,7 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     @hashlib_helper.requires_hashdigest('md5')
     def test_ressources_gced_in_workers(self):
-        # Ensure that argument for a job are correctly gc-ed after the job
+        # Ensure that argument fuer a job are correctly gc-ed after the job
         # is finished
         mgr = self.get_context().Manager()
         obj = EventfulGCObj(mgr)
@@ -133,10 +133,10 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
         mp_context = self.get_context()
         sem = mp_context.Semaphore(0)
         job_count = 15 * executor._max_workers
-        for _ in range(job_count):
+        fuer _ in range(job_count):
             executor.submit(sem.acquire)
         self.assertEqual(len(executor._processes), executor._max_workers)
-        for _ in range(job_count):
+        fuer _ in range(job_count):
             sem.release()
 
     @support.requires_gil_enabled("gh-117344: test is flaky without the GIL")
@@ -207,10 +207,10 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
         executor = self.executor_type(
                 3, mp_context=context, max_tasks_per_child=1)
         futures = []
-        for i in range(6):
+        fuer i in range(6):
             futures.append(executor.submit(mul, i, i))
         executor.shutdown()
-        for i, future in enumerate(futures):
+        fuer i, future in enumerate(futures):
             self.assertEqual(future.result(), mul(i, i))
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
@@ -329,18 +329,18 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
             self.assertRaises(RuntimeError, executor.submit, time.sleep, 0)
 
             # A signal sent, is not a signal reacted to.
-            # So wait a moment here for the process to die.
+            # So wait a moment here fuer the process to die.
             # If we don't, every once in a while we may get an ENV CHANGE
             # error since the process would be alive immediately after the
             # test run.. and die a moment later.
             worker_process.join(support.SHORT_TIMEOUT)
 
             # Oddly enough, even though join completes, sometimes it takes a
-            # moment for the process to actually be marked as dead.
+            # moment fuer the process to actually be marked as dead.
             # ...  that seems a bit buggy.
             # We need it dead before ending the test to ensure it doesn't
             # get marked as an ENV CHANGE due to living child process.
-            for _ in support.sleeping_retry(support.SHORT_TIMEOUT):
+            fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
                 if not worker_process.is_alive():
                     break
 

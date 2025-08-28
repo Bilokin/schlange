@@ -1,4 +1,4 @@
-""" Tests for the internal type cache in CPython. """
+""" Tests fuer the internal type cache in CPython. """
 import dis
 import unittest
 import warnings
@@ -42,7 +42,7 @@ klasse TypeCacheTests(unittest.TestCase):
         all_version_tags = []
         append_result = all_version_tags.append
         assertNotEqual = self.assertNotEqual
-        for _ in range(30):
+        fuer _ in range(30):
             clear_type_cache()
             X = type('Y', (), {})
             X.x = 1
@@ -67,7 +67,7 @@ klasse TypeCacheTests(unittest.TestCase):
         self.assertNotEqual(type_get_version(C), c_ver)
 
     def test_type_assign_specific_version(self):
-        """meta-test for type_assign_specific_version_unsafe"""
+        """meta-test fuer type_assign_specific_version_unsafe"""
         klasse C:
             pass
 
@@ -91,7 +91,7 @@ klasse TypeCacheTests(unittest.TestCase):
 
         type_assign_version(C)
         orig_version = type_get_version(C)
-        for i in range(1001):
+        fuer i in range(1001):
             C.x = i
             type_assign_version(C)
 
@@ -110,7 +110,7 @@ klasse TypeCacheTests(unittest.TestCase):
         klasse HolderSub(Holder):
             pass
 
-        for _ in range(1050):
+        fuer _ in range(1050):
             Holder.set_value()
             HolderSub.value
 
@@ -127,16 +127,16 @@ klasse TypeCacheWithSpecializationTests(unittest.TestCase):
 
     def _no_more_versions(self, user_type):
         type_modified(user_type)
-        for _ in range(1001):
+        fuer _ in range(1001):
             type_assign_specific_version_unsafe(user_type, 1000_000_000)
         type_assign_specific_version_unsafe(user_type, 0)
         self.assertEqual(type_get_version(user_type), 0)
 
     def _all_opnames(self, func):
-        return set(instr.opname for instr in dis.Bytecode(func, adaptive=True))
+        return set(instr.opname fuer instr in dis.Bytecode(func, adaptive=True))
 
     def _check_specialization(self, func, arg, opname, *, should_specialize):
-        for _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
+        fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
             func(arg)
 
         if should_specialize:

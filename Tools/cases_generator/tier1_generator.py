@@ -55,14 +55,14 @@ def declare_variables(inst: Instruction, out: CWriter) -> None:
     except StackError as ex:
         raise analysis_error(ex.args[0], inst.where) from None
     seen = {"unused"}
-    for part in inst.parts:
+    fuer part in inst.parts:
         if not isinstance(part, Uop):
             continue
-        for var in part.stack.inputs:
+        fuer var in part.stack.inputs:
             if var.used and var.name not in seen:
                 seen.add(var.name)
                 declare_variable(var, out)
-        for var in part.stack.outputs:
+        fuer var in part.stack.outputs:
             if var.used and var.name not in seen:
                 seen.add(var.name)
                 declare_variable(var, out)
@@ -93,7 +93,7 @@ def write_uop(
         stack._print(emitter.out)
     storage = Storage.for_uop(stack, uop, emitter.out)
 
-    for cache in uop.caches:
+    fuer cache in uop.caches:
         if cache.name != "unused":
             if cache.size == 4:
                 type = "PyObject *"
@@ -119,18 +119,18 @@ def write_uop(
 def uses_this(inst: Instruction) -> bool:
     if inst.properties.needs_this:
         return True
-    for uop in inst.parts:
+    fuer uop in inst.parts:
         if not isinstance(uop, Uop):
             continue
-        for cache in uop.caches:
+        fuer cache in uop.caches:
             if cache.name != "unused":
                 return True
     # Can't be merged into the loop above, because
     # this must strictly be performed at the end.
-    for uop in inst.parts:
+    fuer uop in inst.parts:
         if not isinstance(uop, Uop):
             continue
-        for tkn in uop.body.tokens():
+        fuer tkn in uop.body.tokens():
             if (tkn.kind == "IDENTIFIER"
                     and (tkn.text in {"DEOPT_IF", "EXIT_IF", "AT_END_EXIT_IF"})):
                 return True
@@ -152,7 +152,7 @@ def generate_tier1(
     write_header(__file__, filenames, outfile)
     outfile.write("""
 #ifdef TIER_TWO
-    #error "This file is for Tier 1 only"
+    #error "This file is fuer Tier 1 only"
 #endif
 #define TIER_ONE 1
 """)
@@ -174,7 +174,7 @@ def generate_tier1(
 #if USE_COMPUTED_GOTOS
         _unknown_opcode:
 #else
-        EXTRA_CASES  // From pycore_opcode_metadata.h, a 'case' for each unused opcode
+        EXTRA_CASES  // From pycore_opcode_metadata.h, a 'case' fuer each unused opcode
 #endif
             /* Tell C compilers not to hold the opcode variable in the loop.
                next_instr points the current instruction without TARGET(). */
@@ -202,7 +202,7 @@ def generate_tier1_labels(
 ) -> None:
     emitter.emit("\n")
     # Emit tail-callable labels as function defintions
-    for name, label in analysis.labels.items():
+    fuer name, label in analysis.labels.items():
         emitter.emit(f"LABEL({name})\n")
         storage = Storage(Stack(), [], [], 0, False)
         if label.spilled:
@@ -220,7 +220,7 @@ def generate_tier1_cases(
     out = CWriter(outfile, 2, lines)
     emitter = Emitter(out, analysis.labels)
     out.emit("\n")
-    for name, inst in sorted(analysis.instructions.items()):
+    fuer name, inst in sorted(analysis.instructions.items()):
         out.emit("\n")
         out.emit(f"TARGET({name}) {{\n")
         popped = get_popped(inst, analysis)
@@ -258,9 +258,9 @@ def generate_tier1_cases(
         declare_variables(inst, out)
         offset = 1  # The instruction itself
         stack = Stack()
-        for part in inst.parts:
+        fuer part in inst.parts:
             # Only emit braces if more than one uop
-            insert_braces = len([p for p in inst.parts if isinstance(p, Uop)]) > 1
+            insert_braces = len([p fuer p in inst.parts if isinstance(p, Uop)]) > 1
             reachable, offset, stack = write_uop(part, emitter, offset, stack, inst, insert_braces)
         out.start_line()
         if reachable: # type: ignore[possibly-undefined]
@@ -272,7 +272,7 @@ def generate_tier1_cases(
 
 
 arg_parser = argparse.ArgumentParser(
-    description="Generate the code for the interpreter switch.",
+    description="Generate the code fuer the interpreter switch.",
     formatter_class=argparse.ArgumentDefaultsHelpFormatter,
 )
 

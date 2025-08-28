@@ -18,7 +18,7 @@ SENTINEL_VALUE = sentinel.SENTINEL_VALUE
 
 
 def get_test_tk_root(test_instance):
-    """Helper for tests: Create a root Tk object."""
+    """Helper fuer tests: Create a root Tk object."""
     requires('gui')
     root = Tk()
     root.withdraw()
@@ -32,7 +32,7 @@ def get_test_tk_root(test_instance):
 
 
 klasse CountLinesTest(unittest.TestCase):
-    """Tests for the count_lines_with_wrapping function."""
+    """Tests fuer the count_lines_with_wrapping function."""
     def check(self, expected, text, linewidth):
         return self.assertEqual(
             expected,
@@ -79,7 +79,7 @@ klasse CountLinesTest(unittest.TestCase):
 
 
 klasse SqueezerTest(unittest.TestCase):
-    """Tests for the Squeezer class."""
+    """Tests fuer the Squeezer class."""
     def make_mock_editor_window(self, with_text_widget=False):
         """Create a mock EditorWindow instance."""
         editwin = NonCallableMagicMock()
@@ -118,7 +118,7 @@ klasse SqueezerTest(unittest.TestCase):
         editwin = self.make_mock_editor_window()
         squeezer = self.make_squeezer_instance(editwin)
 
-        for text_code, line_width, expected in [
+        fuer text_code, line_width, expected in [
             (r"'\n'", 80, 1),
             (r"'\n' * 3", 80, 3),
             (r"'a' * 40 + '\n'", 80, 1),
@@ -145,7 +145,7 @@ klasse SqueezerTest(unittest.TestCase):
     def test_write_no_tags(self):
         """Test Squeezer's overriding of the EditorWindow's write() method."""
         editwin = self.make_mock_editor_window()
-        for text in ['', 'TEXT', 'LONG TEXT' * 1000, 'MANY_LINES\n' * 100]:
+        fuer text in ['', 'TEXT', 'LONG TEXT' * 1000, 'MANY_LINES\n' * 100]:
             editwin.write = orig_write = Mock(return_value=SENTINEL_VALUE)
             squeezer = self.make_squeezer_instance(editwin)
 
@@ -156,7 +156,7 @@ klasse SqueezerTest(unittest.TestCase):
 
     def test_write_not_stdout(self):
         """Test Squeezer's overriding of the EditorWindow's write() method."""
-        for text in ['', 'TEXT', 'LONG TEXT' * 1000, 'MANY_LINES\n' * 100]:
+        fuer text in ['', 'TEXT', 'LONG TEXT' * 1000, 'MANY_LINES\n' * 100]:
             editwin = self.make_mock_editor_window()
             editwin.write.return_value = SENTINEL_VALUE
             orig_write = editwin.write
@@ -172,7 +172,7 @@ klasse SqueezerTest(unittest.TestCase):
         """Test Squeezer's overriding of the EditorWindow's write() method."""
         editwin = self.make_mock_editor_window()
 
-        for text in ['', 'TEXT']:
+        fuer text in ['', 'TEXT']:
             editwin.write = orig_write = Mock(return_value=SENTINEL_VALUE)
             squeezer = self.make_squeezer_instance(editwin)
             squeezer.auto_squeeze_min_lines = 50
@@ -183,7 +183,7 @@ klasse SqueezerTest(unittest.TestCase):
             orig_write.assert_called_with(text, "stdout")
             self.assertEqual(len(squeezer.expandingbuttons), 0)
 
-        for text in ['LONG TEXT' * 1000, 'MANY_LINES\n' * 100]:
+        fuer text in ['LONG TEXT' * 1000, 'MANY_LINES\n' * 100]:
             editwin.write = orig_write = Mock(return_value=SENTINEL_VALUE)
             squeezer = self.make_squeezer_instance(editwin)
             squeezer.auto_squeeze_min_lines = 50
@@ -206,8 +206,8 @@ klasse SqueezerTest(unittest.TestCase):
 
     def test_squeeze_current_text(self):
         """Test the squeeze_current_text method."""
-        # Squeezing text should work for both stdout and stderr.
-        for tag_name in ["stdout", "stderr"]:
+        # Squeezing text should work fuer both stdout and stderr.
+        fuer tag_name in ["stdout", "stderr"]:
             editwin = self.make_mock_editor_window(with_text_widget=True)
             text_widget = editwin.text
             squeezer = self.make_squeezer_instance(editwin)
@@ -302,18 +302,18 @@ klasse SqueezerTest(unittest.TestCase):
 
 
 klasse ExpandingButtonTest(unittest.TestCase):
-    """Tests for the ExpandingButton class."""
+    """Tests fuer the ExpandingButton class."""
     # In these tests the squeezer instance is a mock, but actual tkinter
     # Text and Button instances are created.
     def make_mock_squeezer(self):
-        """Helper for tests: Create a mock Squeezer object."""
+        """Helper fuer tests: Create a mock Squeezer object."""
         root = get_test_tk_root(self)
         squeezer = Mock()
         squeezer.editwin.text = Text(root)
         squeezer.editwin.per = Percolator(squeezer.editwin.text)
         self.addCleanup(squeezer.editwin.per.close)
 
-        # Set default values for the configuration settings.
+        # Set default values fuer the configuration settings.
         squeezer.auto_squeeze_min_lines = 50
         return squeezer
 
@@ -374,7 +374,7 @@ klasse ExpandingButtonTest(unittest.TestCase):
         squeezer.expandingbuttons.remove.assert_called_with(expandingbutton)
 
     def test_expand_dangerous_oupput(self):
-        """Test that expanding very long output asks user for confirmation."""
+        """Test that expanding very long output asks user fuer confirmation."""
         squeezer = self.make_mock_squeezer()
         text = 'a' * 10**5
         expandingbutton = ExpandingButton(text, 'TAGS', 50, squeezer)
@@ -458,7 +458,7 @@ klasse ExpandingButtonTest(unittest.TestCase):
             expandingbutton.context_menu_event(event=mock_event)
             self.assertEqual(mock_menu.add_command.call_count,
                              len(expandingbutton.rmenu_specs))
-            for label, *data in expandingbutton.rmenu_specs:
+            fuer label, *data in expandingbutton.rmenu_specs:
                 mock_menu.add_command.assert_any_call(label=label, command=ANY)
 
 

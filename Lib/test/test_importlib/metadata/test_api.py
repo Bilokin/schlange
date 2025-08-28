@@ -45,13 +45,13 @@ klasse APITests(
 
     def test_name_normalization(self):
         names = 'pkg.dot', 'pkg_dot', 'pkg-dot', 'pkg..dot', 'Pkg.Dot'
-        for name in names:
+        fuer name in names:
             with self.subTest(name):
                 assert distribution(name).metadata['Name'] == 'pkg.dot'
 
     def test_prefix_not_matched(self):
         prefixes = 'p', 'pkg', 'pkg.'
-        for prefix in prefixes:
+        fuer prefix in prefixes:
             with self.subTest(prefix):
                 with self.assertRaises(PackageNotFoundError):
                     distribution(prefix)
@@ -61,7 +61,7 @@ klasse APITests(
             ('egginfo-pkg', 'mod'),
             ('egg_with_no_modules-pkg', ''),
         ]
-        for pkg_name, expect_content in tests:
+        fuer pkg_name, expect_content in tests:
             with self.subTest(pkg_name):
                 self.assertEqual(
                     distribution(pkg_name).read_text('top_level.txt').strip(),
@@ -73,10 +73,10 @@ klasse APITests(
             ('egginfo-pkg', 'mod\n'),
             ('egg_with_no_modules-pkg', '\n'),
         ]
-        for pkg_name, expect_content in tests:
+        fuer pkg_name, expect_content in tests:
             with self.subTest(pkg_name):
                 top_level = [
-                    path for path in files(pkg_name) if path.name == 'top_level.txt'
+                    path fuer path in files(pkg_name) if path.name == 'top_level.txt'
                 ][0]
                 self.assertEqual(top_level.read_text(), expect_content)
 
@@ -91,14 +91,14 @@ klasse APITests(
 
     def test_entry_points_distribution(self):
         entries = entry_points(group='entries')
-        for entry in ("main", "ns:sub"):
+        fuer entry in ("main", "ns:sub"):
             ep = entries[entry]
             self.assertIn(ep.dist.name, ('distinfo-pkg', 'egginfo-pkg'))
             self.assertEqual(ep.dist.version, "1.0.0")
 
     def test_entry_points_unique_packages_normalized(self):
         """
-        Entry points should only be exposed for the first package
+        Entry points should only be exposed fuer the first package
         on sys.path with a given name (even when normalized).
         """
         alt_site_dir = self.fixtures.enter_context(fixtures.tmp_path())
@@ -119,7 +119,7 @@ klasse APITests(
         entries = entry_points(group='entries')
         assert not any(
             ep.dist.name == 'distinfo-pkg' and ep.dist.version == '1.0.0'
-            for ep in entries
+            fuer ep in entries
         )
         # ns:sub doesn't exist in alt_pkg
         assert 'ns:sub' not in entries.names
@@ -169,7 +169,7 @@ klasse APITests(
     @staticmethod
     def _test_files(files):
         root = files[0].root
-        for file in files:
+        fuer file in files:
             assert file.root == root
             assert not file.hash or file.hash.value
             assert not file.hash or file.hash.mode == 'sha256'
@@ -180,7 +180,7 @@ klasse APITests(
                 file.read_text()
 
     def test_file_hash_repr(self):
-        util = [p for p in files('distinfo-pkg') if p.name == 'mod.py'][0]
+        util = [p fuer p in files('distinfo-pkg') if p.name == 'mod.py'][0]
         self.assertRegex(repr(util.hash), '<FileHash mode: sha256 value: .*>')
 
     def test_files_dist_info(self):
@@ -202,7 +202,7 @@ klasse APITests(
     def test_requires_egg_info(self):
         deps = requires('egginfo-pkg')
         assert len(deps) == 2
-        assert any(dep == 'wheel >= 1.0; python_version >= "2.7"' for dep in deps)
+        assert any(dep == 'wheel >= 1.0; python_version >= "2.7"' fuer dep in deps)
 
     def test_requires_egg_info_empty(self):
         fixtures.build_files(
@@ -280,13 +280,13 @@ klasse APITests(
 klasse LegacyDots(fixtures.DistInfoPkgWithDotLegacy, unittest.TestCase):
     def test_name_normalization(self):
         names = 'pkg.dot', 'pkg_dot', 'pkg-dot', 'pkg..dot', 'Pkg.Dot'
-        for name in names:
+        fuer name in names:
             with self.subTest(name):
                 assert distribution(name).metadata['Name'] == 'pkg.dot'
 
     def test_name_normalization_versionless_egg_info(self):
         names = 'pkg.lot', 'pkg_lot', 'pkg-lot', 'pkg..lot', 'Pkg.Lot'
-        for name in names:
+        fuer name in names:
             with self.subTest(name):
                 assert distribution(name).metadata['Name'] == 'pkg.lot'
 
@@ -294,7 +294,7 @@ klasse LegacyDots(fixtures.DistInfoPkgWithDotLegacy, unittest.TestCase):
 klasse OffSysPathTests(fixtures.DistInfoPkgOffPath, unittest.TestCase):
     def test_find_distributions_specified_path(self):
         dists = Distribution.discover(path=[str(self.site_dir)])
-        assert any(dist.metadata['Name'] == 'distinfo-pkg' for dist in dists)
+        assert any(dist.metadata['Name'] == 'distinfo-pkg' fuer dist in dists)
 
     def test_distribution_at_pathlib(self):
         """Demonstrate how to load metadata direct from a directory."""

@@ -1,16 +1,16 @@
 """
 Dialogs that query users and verify the answer before accepting.
 
-Query is the generic base klasse for a popup dialog.
+Query is the generic base klasse fuer a popup dialog.
 The user must either enter a valid answer or close the dialog.
 Entries are validated when <Return> is entered or [Ok] is clicked.
 Entries are ignored when [Cancel] or [X] are clicked.
 The 'return value' is .result set to either a valid answer or None.
 
-Subclass SectionName gets a name for a new config file section.
-Configdialog uses it for new highlight theme and keybinding set names.
-Subclass ModuleName gets a name for File => Open Module.
-Subclass HelpSource gets menu item and path for additions to Help menu.
+Subclass SectionName gets a name fuer a new config file section.
+Configdialog uses it fuer new highlight theme and keybinding set names.
+Subclass ModuleName gets a name fuer File => Open Module.
+Subclass HelpSource gets menu item and path fuer additions to Help menu.
 """
 # Query and Section name result from splitting GetCfgSectionNameDialog
 # of configSectionNameDialog.py (temporarily config_sec.py) into
@@ -22,7 +22,7 @@ Subclass HelpSource gets menu item and path for additions to Help menu.
 import importlib.util, importlib.abc
 import os
 import shlex
-from sys import executable, platform  # Platform is set for one test.
+from sys import executable, platform  # Platform is set fuer one test.
 
 from tkinter import Toplevel, StringVar, BooleanVar, W, E, S
 from tkinter.ttk import Frame, Button, Entry, Label, Checkbutton
@@ -31,7 +31,7 @@ from tkinter.font import Font
 from tkinter.simpledialog import _setup_dialog
 
 klasse Query(Toplevel):
-    """Base klasse for getting verified answer from a user.
+    """Base klasse fuer getting verified answer from a user.
 
     For this base class, accept any non-blank string.
     """
@@ -44,12 +44,12 @@ klasse Query(Toplevel):
 
         title - string, title of popup dialog
         message - string, informational message to display
-        text0 - initial value for entry
+        text0 - initial value fuer entry
         used_names - names already in use
         _htest - bool, change box location when running htest
         _utest - bool, leave window hidden and not modal
         """
-        self.parent = parent  # Needed for Font call.
+        self.parent = parent  # Needed fuer Font call.
         self.message = message
         self.text0 = text0
         self.used_names = used_names
@@ -70,7 +70,7 @@ klasse Query(Toplevel):
         self.bind("<KP_Enter>", self.ok)
 
         self.create_widgets()
-        self.update_idletasks()  # Need here for winfo_reqwidth below.
+        self.update_idletasks()  # Need here fuer winfo_reqwidth below.
         self.geometry(  # Center dialog over parent (or below htest box).
                 "+%d+%d" % (
                     parent.winfo_rootx() +
@@ -92,7 +92,7 @@ klasse Query(Toplevel):
         Entry stuff on rows 0-2, spanning cols 0-2.
         Buttons on row 99, cols 1, 2.
         """
-        # Bind to self the widgets needed for entry_ok or unittest.
+        # Bind to self the widgets needed fuer entry_ok or unittest.
         self.frame = frame = Frame(self, padding=10)
         frame.grid(column=0, row=0, sticky='news')
         frame.grid_columnconfigure(0, weight=1)
@@ -139,7 +139,7 @@ klasse Query(Toplevel):
     def ok(self, event=None):  # Do not replace.
         '''If entry is valid, bind it to 'result' and destroy tk widget.
 
-        Otherwise leave dialog open for user to correct entry or cancel.
+        Otherwise leave dialog open fuer user to correct entry or cancel.
         '''
         self.entry_error['text'] = ''
         entry = self.entry_ok()
@@ -161,7 +161,7 @@ klasse Query(Toplevel):
 
 
 klasse SectionName(Query):
-    "Get a name for a config file section name."
+    "Get a name fuer a config file section name."
     # Used in ConfigDialog.GetNewKeysName, .GetNewThemeName (837)
 
     def __init__(self, parent, title, message, used_names,
@@ -185,7 +185,7 @@ klasse SectionName(Query):
 
 
 klasse ModuleName(Query):
-    "Get a module name for Open Module menu entry."
+    "Get a module name fuer Open Module menu entry."
     # Used in open_module (editor.EditorWindow until move to iobinding).
 
     def __init__(self, parent, title, message, text0,
@@ -227,7 +227,7 @@ klasse ModuleName(Query):
 
 
 klasse Goto(Query):
-    "Get a positive line number for editor Go To Line."
+    "Get a positive line number fuer editor Go To Line."
     # Used in editor.EditorWindow.goto_line_event.
 
     def entry_ok(self):
@@ -243,18 +243,18 @@ klasse Goto(Query):
 
 
 klasse HelpSource(Query):
-    "Get menu name and help source for Help menu."
+    "Get menu name and help source fuer Help menu."
     # Used in ConfigDialog.HelpListItemAdd/Edit, (941/9)
 
     def __init__(self, parent, title, *, menuitem='', filepath='',
                  used_names={}, _htest=False, _utest=False):
-        """Get menu entry and url/local file for Additional Help.
+        """Get menu entry and url/local file fuer Additional Help.
 
-        User enters a name for the Help resource and a web url or file
-        name. The user can browse for the file.
+        User enters a name fuer the Help resource and a web url or file
+        name. The user can browse fuer the file.
         """
         self.filepath = filepath
-        message = 'Name for item on Help menu:'
+        message = 'Name fuer item on Help menu:'
         super().__init__(
                 parent, title, message, text0=menuitem,
                 used_names=used_names, _htest=_htest, _utest=_utest)
@@ -263,7 +263,7 @@ klasse HelpSource(Query):
         "Add path widjets to rows 10-12."
         frame = self.frame
         pathlabel = Label(frame, anchor='w', justify='left',
-                          text='Help File Path: Enter URL or browse for file')
+                          text='Help File Path: Enter URL or browse fuer file')
         self.pathvar = StringVar(self, self.filepath)
         self.path = Entry(frame, textvariable=self.pathvar, width=40)
         browse = Button(frame, text='Browse', width=8,
@@ -280,7 +280,7 @@ klasse HelpSource(Query):
                              sticky=W+E)
 
     def askfilename(self, filetypes, initdir, initfile):  # htest #
-        # Extracted from browse_file so can mock for unittests.
+        # Extracted from browse_file so can mock fuer unittests.
         # Cannot unittest as cannot simulate button clicks.
         # Test by running htest, such as by running this file.
         return filedialog.Open(parent=self, filetypes=filetypes)\
@@ -308,10 +308,10 @@ klasse HelpSource(Query):
         if file:
             self.pathvar.set(file)
 
-    item_ok = SectionName.entry_ok  # localize for test override
+    item_ok = SectionName.entry_ok  # localize fuer test override
 
     def path_ok(self):
-        "Simple validity check for menu file path"
+        "Simple validity check fuer menu file path"
         path = self.path.get().strip()
         if not path: #no path specified
             self.showerror('no help file path specified.', self.path_error)
@@ -323,7 +323,7 @@ klasse HelpSource(Query):
                 self.showerror('help file path does not exist.',
                                self.path_error)
                 return None
-            if platform == 'darwin':  # for Mac Safari
+            if platform == 'darwin':  # fuer Mac Safari
                 path =  "file://" + path
         return path
 
@@ -335,7 +335,7 @@ klasse HelpSource(Query):
         return None if name is None or path is None else (name, path)
 
 klasse CustomRun(Query):
-    """Get settings for custom run of module.
+    """Get settings fuer custom run of module.
 
     1. Command line arguments to extend sys.argv.
     2. Whether to restart Shell or not.
@@ -347,9 +347,9 @@ klasse CustomRun(Query):
         """cli_args is a list of strings.
 
         The list is assigned to the default Entry StringVar.
-        The strings are displayed joined by ' ' for display.
+        The strings are displayed joined by ' ' fuer display.
         """
-        message = 'Command Line Arguments for sys.argv:'
+        message = 'Command Line Arguments fuer sys.argv:'
         super().__init__(
                 parent, title, message, text0=cli_args,
                 _htest=_htest, _utest=_utest)

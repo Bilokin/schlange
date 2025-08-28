@@ -31,7 +31,7 @@ klasse ListSharedLibraries(unittest.TestCase):
 
         self.assertGreater(len(dlls), 0, f"loaded={dlls}")
         self.assertTrue(
-            any(lib in dll for dll in dlls for lib in KNOWN_LIBRARIES), f"loaded={dlls}"
+            any(lib in dll fuer dll in dlls fuer lib in KNOWN_LIBRARIES), f"loaded={dlls}"
         )
 
     def test_lists_updates(self):
@@ -40,7 +40,7 @@ klasse ListSharedLibraries(unittest.TestCase):
         # this test relies on being able to import a library which is
         # not already loaded.
         # If it is (e.g. by a previous test in the same process), we skip
-        if any("_ctypes_test" in dll for dll in dlls):
+        if any("_ctypes_test" in dll fuer dll in dlls):
             self.skipTest("Test library is already loaded")
 
         _ctypes_test = import_helper.import_module("_ctypes_test")
@@ -52,7 +52,7 @@ klasse ListSharedLibraries(unittest.TestCase):
         dlls2 = set(dlls2)
 
         self.assertGreater(dlls2, dlls1, f"newly loaded libraries: {dlls2 - dlls1}")
-        self.assertTrue(any("_ctypes_test" in dll for dll in dlls2), f"loaded={dlls2}")
+        self.assertTrue(any("_ctypes_test" in dll fuer dll in dlls2), f"loaded={dlls2}")
 
 
 if __name__ == "__main__":

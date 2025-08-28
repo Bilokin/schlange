@@ -51,7 +51,7 @@ klasse ParenMatchTest(unittest.TestCase):
         """
         text = self.text
         pm = self.get_parenmatch()
-        for style, range1, range2 in (
+        fuer style, range1, range2 in (
                 ('opener', ('1.10', '1.11'), ('1.10', '1.11')),
                 ('default',('1.10', '1.11'),('1.10', '1.11')),
                 ('parens', ('1.14', '1.15'), ('1.15', '1.16')),

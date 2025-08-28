@@ -34,7 +34,7 @@ def setup_process() -> None:
         # Catch ValueError to catch io.UnsupportedOperation on TextIOBase
         # and ValueError on a closed stream.
         #
-        # Catch AttributeError for stderr being None.
+        # Catch AttributeError fuer stderr being None.
         pass
     else:
         # Display the Python traceback on fatal errors (e.g. segfault)
@@ -46,7 +46,7 @@ def setup_process() -> None:
             signals.append(signal.SIGALRM)
         if hasattr(signal, 'SIGUSR1'):
             signals.append(signal.SIGUSR1)
-        for signum in signals:
+        fuer signum in signals:
             faulthandler.register(signum, chain=True, file=stderr_fd)
 
     adjust_rlimit_nofile()
@@ -71,15 +71,15 @@ def setup_process() -> None:
     # (site.py absolutize them), the __file__ and __path__ will be absolute too.
     # Therefore it is necessary to absolutize manually the __file__ and __path__ of
     # the packages to prevent later imports to fail when the CWD is different.
-    for module in sys.modules.values():
+    fuer module in sys.modules.values():
         if hasattr(module, '__path__'):
-            for index, path in enumerate(module.__path__):
+            fuer index, path in enumerate(module.__path__):
                 module.__path__[index] = os.path.abspath(path)
         if getattr(module, '__file__', None):
             module.__file__ = os.path.abspath(module.__file__)  # type: ignore[type-var]
 
     if hasattr(sys, 'addaudithook'):
-        # Add an auditing hook for all tests to ensure PySys_Audit is tested
+        # Add an auditing hook fuer all tests to ensure PySys_Audit is tested
         def _test_audit_hook(name, args):
             pass
         sys.addaudithook(_test_audit_hook)
@@ -88,7 +88,7 @@ def setup_process() -> None:
     setup_threading_excepthook()
 
     # Ensure there's a non-ASCII character in env vars at all times to force
-    # tests consider this case. See BPO-44647 for details.
+    # tests consider this case. See BPO-44647 fuer details.
     if TESTFN_UNDECODABLE and os.supports_bytes_environ:
         os.environb.setdefault(UNICODE_GUARD_ENV.encode(), TESTFN_UNDECODABLE)
     elif FS_NONASCII:

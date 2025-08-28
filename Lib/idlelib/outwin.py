@@ -21,10 +21,10 @@ file_line_progs = None
 
 
 def compile_progs():
-    "Compile the patterns for matching to file name and line number."
+    "Compile the patterns fuer matching to file name and line number."
     global file_line_progs
     file_line_progs = [re.compile(pat, re.IGNORECASE)
-                       for pat in file_line_pats]
+                       fuer pat in file_line_pats]
 
 
 def file_line_helper(line):
@@ -37,7 +37,7 @@ def file_line_helper(line):
     """
     if not file_line_progs:
         compile_progs()
-    for prog in file_line_progs:
+    fuer prog in file_line_progs:
         match = prog.search(line)
         if match:
             filename, lineno = match.group(1, 2)
@@ -58,7 +58,7 @@ def file_line_helper(line):
 klasse OutputWindow(EditorWindow):
     """An editor window that can serve as an output file.
 
-    Also the future base klasse for the Python shell window.
+    Also the future base klasse fuer the Python shell window.
     This klasse has no input facilities.
 
     Adds binding to open a file at a line to the text widget.
@@ -104,7 +104,7 @@ klasse OutputWindow(EditorWindow):
         Args:
             s: Text to insert into text widget.
             tags: Tuple of tag strings to apply on the insert.
-            mark: Index for the insert.
+            mark: Index fuer the insert.
 
         Return:
             Length of text inserted.
@@ -117,7 +117,7 @@ klasse OutputWindow(EditorWindow):
 
     def writelines(self, lines):
         "Write each item in lines iterable."
-        for line in lines:
+        fuer line in lines:
             self.write(line)
 
     def flush(self):
@@ -176,7 +176,7 @@ klasse OnDemandOutputWindow:
     def setup(self):
         self.owin = owin = OutputWindow(self.flist)
         text = owin.text
-        for tag, cnf in self.tagdefs.items():
+        fuer tag, cnf in self.tagdefs.items():
             if cnf:
                 text.tag_configure(tag, **cnf)
         text.tag_raise('sel')

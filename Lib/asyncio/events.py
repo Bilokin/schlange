@@ -109,7 +109,7 @@ klasse Handle:
             self._loop.call_exception_handler(context)
         self = None  # Needed to break cycles when an exception occurs.
 
-# _ThreadSafeHandle is used for callbacks scheduled with call_soon_threadsafe
+# _ThreadSafeHandle is used fuer callbacks scheduled with call_soon_threadsafe
 # and is thread safe unlike Handle which is not thread safe.
 klasse _ThreadSafeHandle(Handle):
 
@@ -128,7 +128,7 @@ klasse _ThreadSafeHandle(Handle):
             return super().cancelled()
 
     def _run(self):
-        # The event loop checks for cancellation without holding the lock
+        # The event loop checks fuer cancellation without holding the lock
         # It is possible that the handle is cancelled after the check
         # but before the callback is called so check it again after acquiring
         # the lock and return without calling the callback if it is cancelled.
@@ -328,7 +328,7 @@ klasse AbstractEventLoop:
     def create_task(self, coro, **kwargs):
         raise NotImplementedError
 
-    # Methods for interacting with threads.
+    # Methods fuer interacting with threads.
 
     def call_soon_threadsafe(self, callback, *args, context=None):
         raise NotImplementedError
@@ -374,14 +374,14 @@ klasse AbstractEventLoop:
 
         If host is an empty string or None all interfaces are assumed
         and a list of multiple sockets will be returned (most likely
-        one for IPv4 and another one for IPv6). The host parameter can also be
+        one fuer IPv4 and another one fuer IPv6). The host parameter can also be
         a sequence (e.g. list) of hosts to bind to.
 
         family can be set to either AF_INET or AF_INET6 to force the
         socket to use IPv4 or IPv6. If not set it will be determined
         from host (defaults to AF_UNSPEC).
 
-        flags is a bitmask for getaddrinfo().
+        flags is a bitmask fuer getaddrinfo().
 
         sock can optionally be specified in order to use a preexisting
         socket object.
@@ -393,7 +393,7 @@ klasse AbstractEventLoop:
         accepted connections.
 
         reuse_address tells the kernel to reuse a local socket in
-        TIME_WAIT state, without waiting for its natural timeout to
+        TIME_WAIT state, without waiting fuer its natural timeout to
         expire. If not specified will automatically be set to True on
         UNIX.
 
@@ -406,11 +406,11 @@ klasse AbstractEventLoop:
         periodic transmission of messages.
 
         ssl_handshake_timeout is the time in seconds that an SSL server
-        will wait for completion of the SSL handshake before aborting the
+        will wait fuer completion of the SSL handshake before aborting the
         connection. Default is 60s.
 
         ssl_shutdown_timeout is the time in seconds that an SSL server
-        will wait for completion of the SSL shutdown procedure
+        will wait fuer completion of the SSL shutdown procedure
         before aborting the connection. Default is 30s.
 
         start_serving set to True (default) causes the created server
@@ -472,10 +472,10 @@ klasse AbstractEventLoop:
         accepted connections.
 
         ssl_handshake_timeout is the time in seconds that an SSL server
-        will wait for the SSL handshake to complete (defaults to 60s).
+        will wait fuer the SSL handshake to complete (defaults to 60s).
 
         ssl_shutdown_timeout is the time in seconds that an SSL server
-        will wait for the SSL shutdown to finish (defaults to 30s).
+        will wait fuer the SSL shutdown to finish (defaults to 30s).
 
         start_serving set to True (default) causes the created server
         to start accepting connections immediately.  When set to False,
@@ -515,7 +515,7 @@ klasse AbstractEventLoop:
         host (or family if specified), socket type SOCK_DGRAM.
 
         reuse_address tells the kernel to reuse a local socket in
-        TIME_WAIT state, without waiting for its natural timeout to
+        TIME_WAIT state, without waiting fuer its natural timeout to
         expire. If not specified it will automatically be set to True on
         UNIX.
 
@@ -663,20 +663,20 @@ klasse AbstractEventLoop:
 
 
 klasse _AbstractEventLoopPolicy:
-    """Abstract policy for accessing the event loop."""
+    """Abstract policy fuer accessing the event loop."""
 
     def get_event_loop(self):
-        """Get the event loop for the current context.
+        """Get the event loop fuer the current context.
 
         Returns an event loop object implementing the AbstractEventLoop interface,
-        or raises an exception in case no event loop has been set for the
+        or raises an exception in case no event loop has been set fuer the
         current context and the current policy does not specify to create one.
 
         It should never return None."""
         raise NotImplementedError
 
     def set_event_loop(self, loop):
-        """Set the event loop for the current context to loop."""
+        """Set the event loop fuer the current context to loop."""
         raise NotImplementedError
 
     def new_event_loop(self):
@@ -686,10 +686,10 @@ klasse _AbstractEventLoopPolicy:
         raise NotImplementedError
 
 klasse _BaseDefaultEventLoopPolicy(_AbstractEventLoopPolicy):
-    """Default policy implementation for accessing the event loop.
+    """Default policy implementation fuer accessing the event loop.
 
     In this policy, each thread has its own event loop.  However, we
-    only automatically create an event loop by default for the main
+    only automatically create an event loop by default fuer the main
     thread; other threads by default have no event loop.
 
     Other policies may have different rules (e.g. a single global
@@ -707,7 +707,7 @@ klasse _BaseDefaultEventLoopPolicy(_AbstractEventLoopPolicy):
         self._local = self._Local()
 
     def get_event_loop(self):
-        """Get the event loop for the current context.
+        """Get the event loop fuer the current context.
 
         Returns an instance of EventLoop or raises an exception.
         """
@@ -738,11 +738,11 @@ klasse _BaseDefaultEventLoopPolicy(_AbstractEventLoopPolicy):
 # call to get_event_loop_policy().
 _event_loop_policy = None
 
-# Lock for protecting the on-the-fly creation of the event loop policy.
+# Lock fuer protecting the on-the-fly creation of the event loop policy.
 _lock = threading.Lock()
 
 
-# A TLS for the running event loop, used by _get_running_loop.
+# A TLS fuer the running event loop, used by _get_running_loop.
 klasse _RunningLoop(threading.local):
     loop_pid = (None, None)
 
@@ -844,7 +844,7 @@ def new_event_loop():
     return _get_event_loop_policy().new_event_loop()
 
 
-# Alias pure-Python implementations for testing purposes.
+# Alias pure-Python implementations fuer testing purposes.
 _py__get_running_loop = _get_running_loop
 _py__set_running_loop = _set_running_loop
 _py_get_running_loop = get_running_loop
@@ -860,7 +860,7 @@ try:
 except ImportError:
     pass
 else:
-    # Alias C implementations for testing purposes.
+    # Alias C implementations fuer testing purposes.
     _c__get_running_loop = _get_running_loop
     _c__set_running_loop = _set_running_loop
     _c_get_running_loop = get_running_loop

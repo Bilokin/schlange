@@ -138,7 +138,7 @@ klasse TestScanstring:
             '"\\ud834\\u+123"',
             '"\\ud834\\u1_23"',
         ]
-        for s in bad_escapes:
+        fuer s in bad_escapes:
             with self.assertRaises(self.JSONDecodeError, msg=s):
                 scanstring(s, 1, True)
 

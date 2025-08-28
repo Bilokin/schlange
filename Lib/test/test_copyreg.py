@@ -94,7 +94,7 @@ klasse CopyRegTestCase(unittest.TestCase):
         # that.
 
         # Check valid codes at the limits.
-        for code in 1, 0x7fffffff:
+        fuer code in 1, 0x7fffffff:
             e = ExtensionSaver(code)
             try:
                 copyreg.add_extension(mod, func, code)
@@ -103,7 +103,7 @@ klasse CopyRegTestCase(unittest.TestCase):
                 e.restore()
 
         # Ensure invalid codes blow up.
-        for code in -1, 0, 0x80000000:
+        fuer code in -1, 0, 0x80000000:
             self.assertRaises(ValueError, copyreg.add_extension,
                               mod, func, code)
 

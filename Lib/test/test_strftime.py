@@ -1,5 +1,5 @@
 """
-Unittest for time.strftime
+Unittest fuer time.strftime
 """
 
 import calendar
@@ -19,7 +19,7 @@ def fixasctime(s):
 def escapestr(text, ampm):
     """
     Escape text to deal with possible locale values that have regex
-    syntax while allowing regex syntax used for comparison.
+    syntax while allowing regex syntax used fuer comparison.
     """
     new_text = re.escape(text)
     new_text = new_text.replace(re.escape(ampm), ampm)
@@ -83,8 +83,8 @@ klasse StrftimeTest(unittest.TestCase):
             print("Strftime test, platform: %s, Python version: %s" % \
                   (sys.platform, sys.version.split()[0]))
 
-        for j in range(-5, 5):
-            for i in range(25):
+        fuer j in range(-5, 5):
+            fuer i in range(25):
                 arg = now + (i+j*100)*23*3603
                 self._update_variables(arg)
                 self.strftest1(arg)
@@ -123,7 +123,7 @@ klasse StrftimeTest(unittest.TestCase):
             ('%%', '%', 'single percent sign'),
         )
 
-        for e in expectations:
+        fuer e in expectations:
             # mustn't raise a value error
             try:
                 result = time.strftime(e[0], now)
@@ -135,7 +135,7 @@ klasse StrftimeTest(unittest.TestCase):
                 self.fail("strftime does not support standard '%s' format (%s)"
                           % (e[0], e[2]))
             else:
-                self.fail("Conflict for %s (%s): expected %s, but got %s"
+                self.fail("Conflict fuer %s (%s): expected %s, but got %s"
                           % (e[0], e[2], e[1], result))
 
     def strftest2(self, now):
@@ -166,11 +166,11 @@ klasse StrftimeTest(unittest.TestCase):
         )
 
 
-        for e in nonstandard_expectations:
+        fuer e in nonstandard_expectations:
             try:
                 result = time.strftime(e[0], now)
             except ValueError as result:
-                msg = "Error for nonstandard '%s' format (%s): %s" % \
+                msg = "Error fuer nonstandard '%s' format (%s): %s" % \
                       (e[0], e[2], str(result))
                 if support.verbose:
                     print(msg)
@@ -184,7 +184,7 @@ klasse StrftimeTest(unittest.TestCase):
                            (e[0], e[2]))
             else:
                 if support.verbose:
-                    print("Conflict for nonstandard '%s' format (%s):" % \
+                    print("Conflict fuer nonstandard '%s' format (%s):" % \
                            (e[0], e[2]))
                     print("  Expected %s, but got %s" % (e[1], result))
 

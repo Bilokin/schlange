@@ -635,7 +635,7 @@ klasse TestPegen(unittest.TestCase):
         # [Breathlessly]
         # The problem is that the toplevel target call
         # recurses into maybe, which recognizes 'x - +',
-        # and then the toplevel target looks for another '+',
+        # and then the toplevel target looks fuer another '+',
         # which fails, so it retreats to NAME,
         # which succeeds, so we end up just recognizing 'x',
         # and then start fails because there's no '=' after that.

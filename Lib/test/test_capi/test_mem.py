@@ -130,9 +130,9 @@ klasse PyMemDebugTests(unittest.TestCase):
             # can be called twice in a row. The second loop checks a call to
             # set_nomemory() after a call to remove_mem_hooks(). The third
             # loop checks the start and stop arguments of set_nomemory().
-            for outer_cnt in range(1, 4):
+            fuer outer_cnt in range(1, 4):
                 start = 10 * outer_cnt
-                for j in range(100):
+                fuer j in range(100):
                     if j == 0:
                         if outer_cnt != 3:
                             _testcapi.set_nomemory(start)
@@ -149,7 +149,7 @@ klasse PyMemDebugTests(unittest.TestCase):
         """
         rc, out, err = assert_python_ok('-c', code)
         lines = out.splitlines()
-        for i, line in enumerate(lines, 1):
+        fuer i, line in enumerate(lines, 1):
             self.assertIn(b'MemoryError', out)
             *_, count = line.split(b' ')
             count = int(count)

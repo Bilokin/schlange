@@ -1,4 +1,4 @@
-"""A parser for HTML and XHTML."""
+"""A parser fuer HTML and XHTML."""
 
 # This file is based on sgmllib.py, but the API is slightly different.
 
@@ -17,7 +17,7 @@ from html.entities import html5 as html5_entities
 
 __all__ = ['HTMLParser']
 
-# Regular expressions used for parsing
+# Regular expressions used fuer parsing
 
 interesting_normal = re.compile('[&<]')
 incomplete = re.compile('&[a-zA-Z#]')
@@ -193,7 +193,7 @@ klasse HTMLParser(_markupbase.ParserBase):
         in custom handle_starttag() and handle_endtag() methods, with
         value that depends on the adjusted current node.
         See https://html.spec.whatwg.org/multipage/parsing.html#markup-declaration-open-state
-        for details.
+        fuer details.
         """
         self._support_cdata = flag
 
@@ -212,7 +212,7 @@ klasse HTMLParser(_markupbase.ParserBase):
                     # or there's more text incoming.  If the latter is True,
                     # we can't pass the text to handle_data in case we have
                     # a charref cut in half at end.  Try to determine if
-                    # this is the case before proceeding by looking for an
+                    # this is the case before proceeding by looking fuer an
                     # & near the end and see if it's followed by a space or ;.
                     amppos = rawdata.rfind('&', max(i, n-34))
                     if (amppos >= 0 and
@@ -266,7 +266,7 @@ klasse HTMLParser(_markupbase.ParserBase):
                             self.handle_comment(rawdata[i+2:])
                     elif startswith("<!--", i):
                         j = n
-                        for suffix in ("--!", "--", "-"):
+                        fuer suffix in ("--!", "--", "-"):
                             if rawdata.endswith(suffix, i+4):
                                 j -= len(suffix)
                                 break

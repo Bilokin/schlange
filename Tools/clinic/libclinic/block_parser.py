@@ -85,7 +85,7 @@ klasse Block:
 
 klasse BlockParser:
     """
-    Block-oriented parser for Argument Clinic.
+    Block-oriented parser fuer Argument Clinic.
     Iterator, yields Block objects.
     """
 
@@ -211,7 +211,7 @@ klasse BlockParser:
             self.last_checksum_re = checksum_re
         assert checksum_re is not None
 
-        # scan forward for checksum line
+        # scan forward fuer checksum line
         out_lines = []
         arguments = None
         while self.input:
@@ -228,7 +228,7 @@ klasse BlockParser:
         output = "".join(out_lines)
         if arguments:
             d = {}
-            for field in shlex.split(arguments):
+            fuer field in shlex.split(arguments):
                 name, equals, value = field.partition('=')
                 if not equals:
                     fail(f"Mangled Argument Clinic marker line: {line!r}")

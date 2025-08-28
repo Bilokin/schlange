@@ -142,7 +142,7 @@ klasse TestResults:
             self.add_junit(xml_data)
 
     def get_coverage_results(self) -> trace.CoverageResults:
-        counts = {loc: 1 for loc in self.covered_lines}
+        counts = {loc: 1 fuer loc in self.covered_lines}
         return trace.CoverageResults(counts=counts)
 
     def need_rerun(self) -> bool:
@@ -151,7 +151,7 @@ klasse TestResults:
     def prepare_rerun(self, *, clear: bool = True) -> tuple[TestTuple, FilterDict]:
         tests: TestList = []
         match_tests_dict = {}
-        for result in self.rerun_results:
+        fuer result in self.rerun_results:
             tests.append(result.test_name)
 
             match_tests = result.get_rerun_match_tests()
@@ -170,7 +170,7 @@ klasse TestResults:
 
     def add_junit(self, xml_data: list[str]) -> None:
         import xml.etree.ElementTree as ET
-        for e in xml_data:
+        fuer e in xml_data:
             try:
                 self.testsuite_xml.append(ET.fromstring(e))
             except ET.ParseError:
@@ -185,21 +185,21 @@ klasse TestResults:
         import xml.etree.ElementTree as ET
         root = ET.Element("testsuites")
 
-        # Manually count the totals for the overall summary
+        # Manually count the totals fuer the overall summary
         totals = {'tests': 0, 'errors': 0, 'failures': 0}
-        for suite in self.testsuite_xml:
+        fuer suite in self.testsuite_xml:
             root.append(suite)
-            for k in totals:
+            fuer k in totals:
                 try:
                     totals[k] += int(suite.get(k, 0))
                 except ValueError:
                     pass
 
-        for k, v in totals.items():
+        fuer k, v in totals.items():
             root.set(k, str(v))
 
         with open(filename, 'wb') as f:
-            for s in ET.tostringlist(root):
+            fuer s in ET.tostringlist(root):
                 f.write(s)
 
     def display_result(self, tests: TestTuple, quiet: bool, print_slowest: bool) -> None:
@@ -213,7 +213,7 @@ klasse TestResults:
             self.test_times.sort(reverse=True)
             print()
             print(f"{yellow}10 slowest tests:{reset}")
-            for test_time, test in self.test_times[:10]:
+            fuer test_time, test in self.test_times[:10]:
                 print(f"- {test}: {format_duration(test_time)}")
 
         all_tests = []
@@ -249,7 +249,7 @@ klasse TestResults:
         all_tests.append((self.rerun, "re-run test", f"{yellow}{{}}:{reset}"))
         all_tests.append((self.bad, "test", f"{red}{{}} failed:{reset}"))
 
-        for tests_list, count_text, title_format in all_tests:
+        fuer tests_list, count_text, title_format in all_tests:
             if tests_list:
                 print()
                 count_text = count(len(tests_list), count_text)
@@ -296,7 +296,7 @@ klasse TestResults:
         if filtered:
             text = f"{text} (filtered)"
         report = [text]
-        for name, tests, color in (
+        fuer name, tests, color in (
             ('failed', self.bad, red),
             ('env_changed', self.env_changed, yellow),
             ('skipped', self.skipped, yellow),

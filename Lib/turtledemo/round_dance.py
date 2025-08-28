@@ -35,7 +35,7 @@ def main():
     c = 1
     # create compound shape
     sh = Shape("compound")
-    for i in range(10):
+    fuer i in range(10):
         shapesize(s)
         p =get_shapepoly()
         s *= f
@@ -49,7 +49,7 @@ def main():
     pu()
     setpos(0, -200)
     dancers = []
-    for i in range(180):
+    fuer i in range(180):
         fd(7)
         tilt(-4)
         lt(2)
@@ -64,7 +64,7 @@ def main():
     cs = 1
     while running:
         ta = -4
-        for dancer in dancers:
+        fuer dancer in dancers:
             dancer.fd(7)
             dancer.lt(2)
             dancer.tilt(ta)

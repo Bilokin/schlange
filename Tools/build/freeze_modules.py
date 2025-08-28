@@ -1,6 +1,6 @@
 """Freeze modules and regen related files (e.g. Python/frozen.c).
 
-See the notes at the top of Python/frozen.c for more info.
+See the notes at the top of Python/frozen.c fuer more info.
 """
 
 import hashlib
@@ -35,10 +35,10 @@ OS_PATH = 'ntpath' if os.name == 'nt' else 'posixpath'
 # This also speeds up building somewhat.
 TESTS_SECTION = 'Test module'
 FROZEN = [
-    # See parse_frozen_spec() for the format.
+    # See parse_frozen_spec() fuer the format.
     # In cases where the frozenid is duplicated, the first one is re-used.
     ('import system', [
-        # These frozen modules are necessary for bootstrapping
+        # These frozen modules are necessary fuer bootstrapping
         # the import system.
         'importlib._bootstrap : _frozen_importlib',
         'importlib._bootstrap_external : _frozen_importlib_external',
@@ -115,9 +115,9 @@ else:
 
 def parse_frozen_specs():
     seen = {}
-    for section, specs in FROZEN:
+    fuer section, specs in FROZEN:
         parsed = _parse_specs(specs, section, seen)
-        for item in parsed:
+        fuer item in parsed:
             frozenid, pyfile, modname, ispkg, section = item
             try:
                 source = seen[frozenid]
@@ -130,15 +130,15 @@ def parse_frozen_specs():
 
 
 def _parse_specs(specs, section, seen):
-    for spec in specs:
+    fuer spec in specs:
         info, subs = _parse_spec(spec, seen, section)
         yield info
-        for info in subs or ():
+        fuer info in subs or ():
             yield info
 
 
 def _parse_spec(spec, knownids=None, section=None):
-    """Yield an info tuple for each module corresponding to the given spec.
+    """Yield an info tuple fuer each module corresponding to the given spec.
 
     The info consists of: (frozenid, pyfile, modname, ispkg, section).
 
@@ -206,7 +206,7 @@ def _parse_spec(spec, knownids=None, section=None):
             pkgname = modname
             pkgfiles = {pyfile: pkgid}
             def iter_subs():
-                for frozenid, pyfile, ispkg in resolved:
+                fuer frozenid, pyfile, ispkg in resolved:
                     if pkgname:
                         modname = frozenid.replace(pkgid, pkgname, 1)
                     else:
@@ -278,7 +278,7 @@ def resolve_frozen_file(frozenid, destdir):
             frozenid = frozenid.frozenid
         except AttributeError:
             raise ValueError(f'unsupported frozenid {frozenid!r}')
-    # We use a consistent naming convention for all frozen modules.
+    # We use a consistent naming convention fuer all frozen modules.
     frozenfile = f'{frozenid}.h'
     if not destdir:
         return frozenfile
@@ -325,7 +325,7 @@ klasse FrozenModule(namedtuple('FrozenModule', 'name ispkg section source')):
 
 def _iter_sources(modules):
     seen = set()
-    for mod in modules:
+    fuer mod in modules:
         if mod.source not in seen:
             yield mod.source
             seen.add(mod.source)
@@ -380,7 +380,7 @@ def resolve_modules(modname, pyfile=None):
 
 
 def check_modname(modname):
-    return all(n.isidentifier() for n in modname.split('.'))
+    return all(n.isidentifier() fuer n in modname.split('.'))
 
 
 def iter_submodules(pkgname, pkgdir=None, match='*'):
@@ -391,7 +391,7 @@ def iter_submodules(pkgname, pkgdir=None, match='*'):
     match_modname = _resolve_modname_matcher(match, pkgdir)
 
     def _iter_submodules(pkgname, pkgdir):
-        for entry in sorted(os.scandir(pkgdir), key=lambda e: e.name):
+        fuer entry in sorted(os.scandir(pkgdir), key=lambda e: e.name):
             matched, recursive = match_modname(entry.name)
             if not matched:
                 continue
@@ -444,7 +444,7 @@ def _resolve_module(modname, pathentry=STDLIB_DIR, ispkg=False):
 # regenerating dependent files
 
 def find_marker(lines, marker, file):
-    for pos, line in enumerate(lines):
+    fuer pos, line in enumerate(lines):
         if marker in line:
             return pos
     raise Exception(f"Can't find {marker!r} in file {file}")
@@ -457,7 +457,7 @@ def replace_block(lines, start_marker, end_marker, replacements, file):
         raise Exception(f"End marker {end_marker!r} "
                         f"occurs before start marker {start_marker!r} "
                         f"in file {file}")
-    replacements = [line.rstrip() + '\n' for line in replacements]
+    replacements = [line.rstrip() + '\n' fuer line in replacements]
     return lines[:start_pos + 1] + replacements + lines[end_pos:]
 
 
@@ -475,7 +475,7 @@ klasse UniqueList(list):
 def regen_frozen(modules):
     headerlines = []
     parentdir = os.path.dirname(FROZEN_FILE)
-    for src in _iter_sources(modules):
+    fuer src in _iter_sources(modules):
         # Adding a comment to separate sections here doesn't add much,
         # so we don't.
         header = relpath_for_posix_display(src.frozenfile, parentdir)
@@ -487,7 +487,7 @@ def regen_frozen(modules):
     aliaslines = []
     indent = '    '
     lastsection = None
-    for mod in modules:
+    fuer mod in modules:
         if mod.isbootstrap:
             lines = bootstraplines
         elif mod.section == TESTS_SECTION:
@@ -514,11 +514,11 @@ def regen_frozen(modules):
                 entry = '{"%s", "%s"},' % (mod.name, mod.orig)
             aliaslines.append(indent + entry)
 
-    for lines in (bootstraplines, stdliblines, testlines):
+    fuer lines in (bootstraplines, stdliblines, testlines):
         # TODO: Is this necessary any more?
         if lines and not lines[0]:
             del lines[0]
-        for i, line in enumerate(lines):
+        fuer i, line in enumerate(lines):
             if line:
                 lines[i] = indent + line
 
@@ -529,7 +529,7 @@ def regen_frozen(modules):
         # $START GENERATED FOOBAR$ / $END GENERATED FOOBAR$
         lines = replace_block(
             lines,
-            "/* Includes for frozen modules: */",
+            "/* Includes fuer frozen modules: */",
             "/* End includes */",
             headerlines,
             FROZEN_FILE,
@@ -569,7 +569,7 @@ def regen_makefile(modules):
     pyfiles = []
     frozenfiles = []
     rules = ['']
-    for src in _iter_sources(modules):
+    fuer src in _iter_sources(modules):
         frozen_header = relpath_for_posix_display(src.frozenfile, ROOT_DIR)
         frozenfiles.append(f'\t\t{frozen_header} \\')
 
@@ -623,7 +623,7 @@ def regen_makefile(modules):
 def regen_pcbuild(modules):
     projlines = []
     filterlines = []
-    for src in _iter_sources(modules):
+    fuer src in _iter_sources(modules):
         pyfile = relpath_for_windows_display(src.pyfile, ROOT_DIR)
         header = relpath_for_windows_display(src.frozenfile, ROOT_DIR)
         intfile = ntpath.splitext(ntpath.basename(header))[0] + '.g.h'

@@ -4,7 +4,7 @@
 #
 #
 # Permission to use, copy, modify, and distribute this software and
-# its documentation for any purpose is hereby granted without fee,
+# its documentation fuer any purpose is hereby granted without fee,
 # provided that the above copyright notice appear in all copies and
 # that both that copyright notice and this permission notice appear in
 # supporting documentation.
@@ -23,7 +23,7 @@
 
 # hmm, at what level do we want [C-i] and [tab] to be equivalent?
 # [meta-a] and [esc a]?  obviously, these are going to be equivalent
-# for the UnixConsole, but should they be for PygameConsole?
+# fuer the UnixConsole, but should they be fuer PygameConsole?
 
 # it would in any situation seem to be a bad idea to bind, say, [tab]
 # and [C-i] to *different* things... but should binding one bind the
@@ -68,7 +68,7 @@ klasse KeymapTranslator(InputTranslator):
         self.invalid_cls = invalid_cls
         self.character_cls = character_cls
         d = {}
-        for keyspec, command in keymap:
+        fuer keyspec, command in keymap:
             keyseq = tuple(parse_keys(keyspec))
             d[keyseq] = command
         if self.verbose:

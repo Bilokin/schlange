@@ -14,7 +14,7 @@ It contains the following public symbols:
 
 SimpleDialog -- A simple but flexible modal dialog box
 
-Dialog -- a base klasse for dialogs
+Dialog -- a base klasse fuer dialogs
 
 askinteger -- get an integer from the user
 
@@ -51,7 +51,7 @@ klasse SimpleDialog:
         self.cancel = cancel
         self.default = default
         self.root.bind('<Return>', self.return_event)
-        for num in range(len(buttons)):
+        fuer num in range(len(buttons)):
             s = buttons[num]
             b = Button(self.frame, text=s,
                        command=(lambda self=self, num=num: self.done(num)))
@@ -90,7 +90,7 @@ klasse Dialog(Toplevel):
 
     '''Class to open dialogs.
 
-    This klasse is intended as a base klasse for custom dialogs
+    This klasse is intended as a base klasse fuer custom dialogs
     '''
 
     def __init__(self, parent, title = None):
@@ -108,7 +108,7 @@ klasse Dialog(Toplevel):
 
         Toplevel.__init__(self, master)
 
-        self.withdraw() # remain invisible for now
+        self.withdraw() # remain invisible fuer now
         # If the parent is not viewable, don't
         # make the child transient, or else it
         # would be opened withdrawn
@@ -139,7 +139,7 @@ klasse Dialog(Toplevel):
 
         self.initial_focus.focus_set()
 
-        # wait for window to appear on screen before calling grab_set
+        # wait fuer window to appear on screen before calling grab_set
         self.wait_visibility()
         self.grab_set()
         self.wait_window(self)

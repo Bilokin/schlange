@@ -20,7 +20,7 @@ klasse TestComplexity(unittest.TestCase):
         best, others = big_o.big_o(
             compose(consume, zipfile._path.CompleteDirs._implied_dirs),
             lambda size: [
-                '/'.join(string.ascii_lowercase + str(n)) for n in range(size)
+                '/'.join(string.ascii_lowercase + str(n)) fuer n in range(size)
             ],
             max_n=1000,
             min_n=1,
@@ -33,7 +33,7 @@ klasse TestComplexity(unittest.TestCase):
         """
         zf = zipfile.ZipFile(io.BytesIO(), mode='w')
         pairs = itertools.product(self.make_deep_paths(depth), self.make_names(width))
-        for path, name in pairs:
+        fuer path, name in pairs:
             zf.writestr(f"{path}{name}.txt", b'')
         zf.filename = "big un.zip"
         return zipfile.Path(zf)

@@ -41,9 +41,9 @@ klasse urlopenNetworkTests(unittest.TestCase):
     These tests are not exhaustive.  Assuming that testing using files does a
     good job overall of some of the basic interface features.  There are no
     tests exercising the optional 'data' and 'proxies' arguments.  No tests
-    for transparent redirection have been written.
+    fuer transparent redirection have been written.
 
-    setUp is not used for always constructing a connection to
+    setUp is not used fuer always constructing a connection to
     http://www.pythontest.net/ since there a few tests that don't use that address
     and making a connection is expensive enough to warrant minimizing unneeded
     connections.
@@ -69,7 +69,7 @@ klasse urlopenNetworkTests(unittest.TestCase):
     def test_basic(self):
         # Simple test expected to pass.
         with self.urlopen(self.url) as open_url:
-            for attr in ("read", "readline", "readlines", "fileno", "close",
+            fuer attr in ("read", "readline", "readlines", "fileno", "close",
                          "info", "geturl"):
                 self.assertHasAttr(open_url, attr)
             self.assertTrue(open_url.read(), "calling 'read' failed")
@@ -116,7 +116,7 @@ klasse urlopenNetworkTests(unittest.TestCase):
         # the past or are presently hijacking various invalid
         # domain name requests in an attempt to boost traffic
         # to their own sites, finding a domain name to use
-        # for this test is difficult.  RFC2606 leads one to
+        # fuer this test is difficult.  RFC2606 leads one to
         # believe that '.invalid' should work, but experience
         # seemed to indicate otherwise.  Single character
         # TLDs are likely to remain invalid, so this seems to
@@ -139,7 +139,7 @@ klasse urlopenNetworkTests(unittest.TestCase):
             pass
         else:
             # This happens with some overzealous DNS providers such as OpenDNS
-            self.skipTest("%r should not resolve for test to work" % bogus_domain)
+            self.skipTest("%r should not resolve fuer test to work" % bogus_domain)
         failure_explanation = ('opening an invalid URL did not raise OSError; '
                                'can be caused by a broken DNS server '
                                '(e.g. returns 404 or hijacks page)')
@@ -219,7 +219,7 @@ klasse urlretrieveNetworkTests(unittest.TestCase):
         self.assertEqual(records[0][2], expected_size)
         self.assertEqual(records[-1][2], expected_size)
 
-        block_sizes = {block_size for _, block_size, _ in records}
+        block_sizes = {block_size fuer _, block_size, _ in records}
         self.assertEqual({records[0][1]}, block_sizes,
                          msg="block sizes in %s must be equal" % records_repr)
         self.assertGreaterEqual(records[-1][0]*records[0][1], expected_size,

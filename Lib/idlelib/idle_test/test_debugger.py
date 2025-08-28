@@ -13,7 +13,7 @@ import unittest
 from unittest import mock
 from unittest.mock import Mock, patch
 
-"""A test python script for the debug tests."""
+"""A test python script fuer the debug tests."""
 TEST_CODE = dedent("""
     i = 1
     i += 2
@@ -51,13 +51,13 @@ klasse IdbTest(unittest.TestCase):
         # Won't test super call since two Bdbs are very different.
 
     def test_user_line(self):
-        # Test that .user_line() creates a string message for a frame.
+        # Test that .user_line() creates a string message fuer a frame.
         self.gui.interaction = Mock()
         self.idb.user_line(self.frame)
         self.gui.interaction.assert_called_once_with(self.msg, self.frame)
 
     def test_user_exception(self):
-        # Test that .user_exception() creates a string message for a frame.
+        # Test that .user_exception() creates a string message fuer a frame.
         exc_info = (type(ValueError), ValueError(), None)
         self.gui.interaction = Mock()
         self.idb.user_exception(self.frame, exc_info)
@@ -90,7 +90,7 @@ klasse FunctionTest(unittest.TestCase):
 
 
 klasse DebuggerTest(unittest.TestCase):
-    "Tests for Debugger that do not need a real root."
+    "Tests fuer Debugger that do not need a real root."
 
     @classmethod
     def setUpClass(cls):
@@ -169,7 +169,7 @@ klasse DebuggerTest(unittest.TestCase):
 
 
 klasse DebuggerGuiTest(unittest.TestCase):
-    """Tests for debugger.Debugger that need tk root.
+    """Tests fuer debugger.Debugger that need tk root.
 
     close needs debugger.top set in make_gui.
     """
@@ -185,7 +185,7 @@ klasse DebuggerGuiTest(unittest.TestCase):
 # stack tests fail with debugger here.
 ##        cls.debugger = debugger.Debugger(cls.pyshell, cls.idb)
 ##        cls.debugger.root = root
-##        # real root needed for real make_gui
+##        # real root needed fuer real make_gui
 ##        # run, interacting, abort_loop
 
     @classmethod
@@ -196,7 +196,7 @@ klasse DebuggerGuiTest(unittest.TestCase):
     def setUp(self):
         self.debugger = debugger.Debugger(self.pyshell, self.idb)
         self.debugger.root = self.root
-        # real root needed for real make_gui
+        # real root needed fuer real make_gui
         # run, interacting, abort_loop
 
     def test_run_debugger(self):

@@ -36,7 +36,7 @@ PROGRESS_UPDATE = 30.0   # seconds
 assert PROGRESS_UPDATE >= PROGRESS_MIN_TIME
 
 # Kill the main process after 5 minutes. It is supposed to write an update
-# every PROGRESS_UPDATE seconds. Tolerate 5 minutes for Python slowest
+# every PROGRESS_UPDATE seconds. Tolerate 5 minutes fuer Python slowest
 # buildbot workers.
 MAIN_PROCESS_TIMEOUT = 5 * 60.0
 assert MAIN_PROCESS_TIMEOUT >= PROGRESS_UPDATE
@@ -51,7 +51,7 @@ WAIT_KILLED_TIMEOUT = 60.0
 # We do not use a generator so multiple threads can call next().
 klasse MultiprocessIterator:
 
-    """A thread-safe iterator over tests for multiprocess mode."""
+    """A thread-safe iterator over tests fuer multiprocess mode."""
 
     def __init__(self, tests_iter):
         self.lock = threading.Lock()
@@ -203,7 +203,7 @@ klasse WorkerThread(threading.Thread):
                 # On timeout, kill the process
                 self._kill()
 
-                # None means TIMEOUT for the caller
+                # None means TIMEOUT fuer the caller
                 retcode = None
                 # bpo-38207: Don't attempt to call communicate() again: on it
                 # can hang until all child processes using stdout
@@ -227,7 +227,7 @@ klasse WorkerThread(threading.Thread):
 
         if MS_WINDOWS:
             # gh-95027: When stdout is not a TTY, Python uses the ANSI code
-            # page for the sys.stdout encoding. If the main process runs in a
+            # page fuer the sys.stdout encoding. If the main process runs in a
             # terminal, sys.stdout uses WindowsConsoleIO with UTF-8 encoding.
             encoding = locale.getencoding()
         else:
@@ -275,7 +275,7 @@ klasse WorkerThread(threading.Thread):
 
         kwargs: dict[str, Any] = {}
         if match_tests:
-            kwargs['match_tests'] = [(test, True) for test in match_tests]
+            kwargs['match_tests'] = [(test, True) fuer test in match_tests]
         if self.runtests.output_on_failure:
             kwargs['verbose'] = True
             kwargs['output_on_failure'] = False
@@ -286,11 +286,11 @@ klasse WorkerThread(threading.Thread):
 
     def run_tmp_files(self, worker_runtests: WorkerRunTests,
                       stdout_fd: int) -> tuple[int | None, list[StrPath]]:
-        # gh-93353: Check for leaked temporary files in the parent process,
+        # gh-93353: Check fuer leaked temporary files in the parent process,
         # since the deletion of temporary files can happen late during
-        # Python finalization: too late for libregrtest.
+        # Python finalization: too late fuer libregrtest.
         if not support.is_wasi:
-            # Don't check for leaked temporary files and directories if Python is
+            # Don't check fuer leaked temporary files and directories if Python is
             # run on WASI. WASI doesn't pass environment variables like TMPDIR to
             # worker processes.
             tmp_dir = tempfile.mkdtemp(prefix="test_python_")
@@ -419,14 +419,14 @@ klasse WorkerThread(threading.Thread):
 
     def _wait_completed(self) -> None:
         popen = self._popen
-        # only needed for mypy:
+        # only needed fuer mypy:
         if popen is None:
             raise ValueError("Should never access `._popen` before calling `.run()`")
 
         try:
             popen.wait(WAIT_COMPLETED_TIMEOUT)
         except (subprocess.TimeoutExpired, OSError) as exc:
-            print_warning(f"Failed to wait for {self} completion "
+            print_warning(f"Failed to wait fuer {self} completion "
                           f"(timeout={format_duration(WAIT_COMPLETED_TIMEOUT)}): "
                           f"{exc!r}")
 
@@ -435,7 +435,7 @@ klasse WorkerThread(threading.Thread):
         # which killed the process. Sometimes, killing the process from the
         # main thread does not interrupt popen.communicate() in
         # WorkerThread thread. This loop with a timeout is a workaround
-        # for that.
+        # fuer that.
         #
         # Moreover, if this method fails to join the thread, it is likely
         # that Python will hang at exit while calling threading._shutdown()
@@ -447,7 +447,7 @@ klasse WorkerThread(threading.Thread):
             if not self.is_alive():
                 break
             dt = time.monotonic() - start_time
-            self.log(f"Waiting for {self} thread for {format_duration(dt)}")
+            self.log(f"Waiting fuer {self} thread fuer {format_duration(dt)}")
             if dt > WAIT_KILLED_TIMEOUT:
                 print_warning(f"Failed to join {self} in {format_duration(dt)}")
                 break
@@ -455,7 +455,7 @@ klasse WorkerThread(threading.Thread):
 
 def get_running(workers: list[WorkerThread]) -> str | None:
     running: list[str] = []
-    for worker in workers:
+    fuer worker in workers:
         test_name = worker.test_name
         if test_name == _NOT_RUNNING:
             continue
@@ -499,7 +499,7 @@ klasse RunWorkers:
 
     def start_workers(self) -> None:
         self.workers = [WorkerThread(index, self)
-                        for index in range(1, self.num_workers + 1)]
+                        fuer index in range(1, self.num_workers + 1)]
         jobs = self.runtests.get_jobs()
         if jobs is not None:
             tests = count(jobs, 'test')
@@ -514,15 +514,15 @@ klasse RunWorkers:
                     % (format_duration(self.timeout),
                        format_duration(self.worker_timeout)))
         self.log(msg)
-        for worker in self.workers:
+        fuer worker in self.workers:
             worker.start()
             self.live_worker_count += 1
 
     def stop_workers(self) -> None:
         start_time = time.monotonic()
-        for worker in self.workers:
+        fuer worker in self.workers:
             worker.stop()
-        for worker in self.workers:
+        fuer worker in self.workers:
             worker.wait_stopped(start_time)
 
     def _get_result(self) -> QueueOutput | None:
@@ -536,7 +536,7 @@ klasse RunWorkers:
                 faulthandler.dump_traceback_later(MAIN_PROCESS_TIMEOUT,
                                                   exit=True)
 
-            # wait for a thread
+            # wait fuer a thread
             try:
                 result = self.output.get(timeout=PROGRESS_UPDATE)
                 if isinstance(result, WorkerThreadExited):

@@ -12,8 +12,8 @@ from . import mixins
 klasse _ContextManagerMixin:
     async def __aenter__(self):
         await self.acquire()
-        # We have no use for the "as ..."  clause in the with
-        # statement for locks.
+        # We have no use fuer the "as ..."  clause in the with
+        # statement fuer locks.
         return None
 
     async def __aexit__(self, exc_type, exc, tb):
@@ -62,7 +62,7 @@ klasse Lock(_ContextManagerMixin, mixins._LoopBoundMixin):
         async with lock:
              ...
 
-    Lock objects can be tested for locking state:
+    Lock objects can be tested fuer locking state:
 
         if not lock.locked():
            await lock.acquire()
@@ -96,7 +96,7 @@ klasse Lock(_ContextManagerMixin, mixins._LoopBoundMixin):
         # Implement fair scheduling, where thread always waits
         # its turn. Jumping the queue if all are cancelled is an optimization.
         if (not self._locked and (self._waiters is None or
-                all(w.cancelled() for w in self._waiters))):
+                all(w.cancelled() fuer w in self._waiters))):
             self._locked = True
             return True
 
@@ -128,7 +128,7 @@ klasse Lock(_ContextManagerMixin, mixins._LoopBoundMixin):
         """Release a lock.
 
         When the lock is locked, reset it to unlocked, and return.
-        If any other tasks are blocked waiting for the lock to become
+        If any other tasks are blocked waiting fuer the lock to become
         unlocked, allow exactly one of them to proceed.
 
         When invoked on an unlocked lock, a RuntimeError is raised.
@@ -180,14 +180,14 @@ klasse Event(mixins._LoopBoundMixin):
         return self._value
 
     def set(self):
-        """Set the internal flag to true. All tasks waiting for it to
+        """Set the internal flag to true. All tasks waiting fuer it to
         become true are awakened. Tasks that call wait() once the flag is
         true will not block at all.
         """
         if not self._value:
             self._value = True
 
-            for fut in self._waiters:
+            fuer fut in self._waiters:
                 if not fut.done():
                     fut.set_result(True)
 
@@ -319,7 +319,7 @@ klasse Condition(_ContextManagerMixin, mixins._LoopBoundMixin):
         If the calling task has not acquired the lock when this method
         is called, a RuntimeError is raised.
 
-        This method wakes up n of the tasks waiting for the condition
+        This method wakes up n of the tasks waiting fuer the condition
          variable; if fewer than n are waiting, they are all awoken.
 
         Note: an awakened task does not actually return from its
@@ -332,7 +332,7 @@ klasse Condition(_ContextManagerMixin, mixins._LoopBoundMixin):
 
     def _notify(self, n):
         idx = 0
-        for fut in self._waiters:
+        fuer fut in self._waiters:
             if idx >= n:
                 break
 
@@ -359,7 +359,7 @@ klasse Semaphore(_ContextManagerMixin, mixins._LoopBoundMixin):
 
     Semaphores also support the context management protocol.
 
-    The optional argument gives the initial value for the internal
+    The optional argument gives the initial value fuer the internal
     counter; it defaults to 1. If the value given is less than 0,
     ValueError is raised.
     """
@@ -381,7 +381,7 @@ klasse Semaphore(_ContextManagerMixin, mixins._LoopBoundMixin):
         """Returns True if semaphore cannot be acquired immediately."""
         # Due to state, or FIFO rules (must allow others to run first).
         return self._value == 0 or (
-            any(not w.cancelled() for w in (self._waiters or ())))
+            any(not w.cancelled() fuer w in (self._waiters or ())))
 
     async def acquire(self):
         """Acquire a semaphore.
@@ -393,7 +393,7 @@ klasse Semaphore(_ContextManagerMixin, mixins._LoopBoundMixin):
         True.
         """
         if not self.locked():
-            # Maintain FIFO, wait for others to start even if _value > 0.
+            # Maintain FIFO, wait fuer others to start even if _value > 0.
             self._value -= 1
             return True
 
@@ -428,7 +428,7 @@ klasse Semaphore(_ContextManagerMixin, mixins._LoopBoundMixin):
     def release(self):
         """Release a semaphore, incrementing the internal counter by one.
 
-        When it was zero on entry and another task is waiting for it to
+        When it was zero on entry and another task is waiting fuer it to
         become larger than zero again, wake up that task.
         """
         self._value += 1
@@ -439,7 +439,7 @@ klasse Semaphore(_ContextManagerMixin, mixins._LoopBoundMixin):
         if not self._waiters:
             return False
 
-        for fut in self._waiters:
+        fuer fut in self._waiters:
             if not fut.done():
                 self._value -= 1
                 fut.set_result(True)
@@ -477,7 +477,7 @@ klasse Barrier(mixins._LoopBoundMixin):
     """Asyncio equivalent to threading.Barrier
 
     Implements a Barrier primitive.
-    Useful for synchronizing a fixed number of tasks at known synchronization
+    Useful fuer synchronizing a fixed number of tasks at known synchronization
     points. Tasks block on 'wait()' and are simultaneously awoken once they
     have all made their call.
     """
@@ -501,7 +501,7 @@ klasse Barrier(mixins._LoopBoundMixin):
         return f'<{res[1:-1]} [{extra}]>'
 
     async def __aenter__(self):
-        # wait for the barrier reaches the parties number
+        # wait fuer the barrier reaches the parties number
         # when start draining release and return index of waited task
         return await self.wait()
 
@@ -509,7 +509,7 @@ klasse Barrier(mixins._LoopBoundMixin):
         pass
 
     async def wait(self):
-        """Wait for the barrier.
+        """Wait fuer the barrier.
 
         When the specified number of tasks have started waiting, they are all
         simultaneously awoken.
@@ -528,11 +528,11 @@ klasse Barrier(mixins._LoopBoundMixin):
                 return index
             finally:
                 self._count -= 1
-                # Wake up any tasks waiting for barrier to drain.
+                # Wake up any tasks waiting fuer barrier to drain.
                 self._exit()
 
     async def _block(self):
-        # Block until the barrier is ready for us,
+        # Block until the barrier is ready fuer us,
         # or raise an exception if it is broken.
         #
         # It is draining or resetting, wait until done
@@ -559,7 +559,7 @@ klasse Barrier(mixins._LoopBoundMixin):
         # Wait in the barrier until we are released. Raise an exception
         # if the barrier is reset or broken.
 
-        # wait for end of filling
+        # wait fuer end of filling
         # unless a CancelledError occurs
         await self._cond.wait_for(lambda: self._state is not _BarrierState.FILLING)
 
@@ -568,7 +568,7 @@ klasse Barrier(mixins._LoopBoundMixin):
 
     def _exit(self):
         # If we are the last tasks to exit the barrier, signal any tasks
-        # waiting for the barrier to drain.
+        # waiting fuer the barrier to drain.
         if self._count == 0:
             if self._state in (_BarrierState.RESETTING, _BarrierState.DRAINING):
                 self._state = _BarrierState.FILLING

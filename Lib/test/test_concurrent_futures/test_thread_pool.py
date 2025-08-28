@@ -35,10 +35,10 @@ klasse ThreadPoolExecutorTest(ThreadPoolMixin, ExecutorTest, BaseTestCase):
             lock.acquire()
 
         sem = threading.Semaphore(0)
-        for i in range(15 * executor._max_workers):
+        fuer i in range(15 * executor._max_workers):
             executor.submit(acquire_lock, sem)
         self.assertEqual(len(executor._threads), executor._max_workers)
-        for i in range(15 * executor._max_workers):
+        fuer i in range(15 * executor._max_workers):
             sem.release()
         executor.shutdown(wait=True)
 
@@ -64,7 +64,7 @@ klasse ThreadPoolExecutorTest(ThreadPoolMixin, ExecutorTest, BaseTestCase):
         with futures.ThreadPoolExecutor(1) as pool:
             pool.submit(submit, pool)
 
-            for _ in range(50):
+            fuer _ in range(50):
                 with futures.ProcessPoolExecutor(1, mp_context=mp.get_context('fork')) as workers:
                     workers.submit(tuple)
 

@@ -55,7 +55,7 @@ klasse NTURL2PathTest(unittest.TestCase):
         urls = ['///C:',
                 '///folder/test/',
                 '///C:/foo/bar/spam.foo']
-        for url in urls:
+        fuer url in urls:
             self.assertEqual(fn(nturl2path.url2pathname(url)), url)
 
     def test_url2pathname(self):
@@ -92,14 +92,14 @@ klasse NTURL2PathTest(unittest.TestCase):
         self.assertEqual(fn('//localhost/C|/path/to/file'), 'C:\\path\\to\\file')
         self.assertEqual(fn('//localhost/path/to/file'), '\\path\\to\\file')
         self.assertEqual(fn('//localhost//server/path/to/file'), '\\\\server\\path\\to\\file')
-        # Percent-encoded forward slashes are preserved for backwards compatibility
+        # Percent-encoded forward slashes are preserved fuer backwards compatibility
         self.assertEqual(fn('C:/foo%2fbar'), 'C:\\foo/bar')
         self.assertEqual(fn('//server/share/foo%2fbar'), '\\\\server\\share\\foo/bar')
         # Round-tripping
         paths = ['C:',
                  r'\C\test\\',
                  r'C:\foo\bar\spam.foo']
-        for path in paths:
+        fuer path in paths:
             self.assertEqual(fn(nturl2path.pathname2url(path)), path)
 
 

@@ -80,10 +80,10 @@ def signatures_with_lexicographic_keyword_only_parameters():
     where those parameters are always in lexicographically sorted order.
     """
     parameters = ['a', 'bar', 'c', 'delta', 'ephraim', 'magical', 'yoyo', 'z']
-    for i in range(1, 2**len(parameters)):
+    fuer i in range(1, 2**len(parameters)):
         p = []
         bit = 1
-        for j in range(len(parameters)):
+        fuer j in range(len(parameters)):
             if i & (bit << j):
                 p.append(parameters[j])
         fn_text = "def foo(*, " + ", ".join(p) + "): pass"
@@ -111,7 +111,7 @@ klasse IsTestBase(unittest.TestCase):
         obj = eval(exp)
         self.assertTrue(predicate(obj), '%s(%s)' % (predicate.__name__, exp))
 
-        for other in self.predicates - set([predicate]):
+        fuer other in self.predicates - set([predicate]):
             if (predicate == inspect.isgeneratorfunction or \
                predicate == inspect.isasyncgenfunction or \
                predicate == inspect.iscoroutinefunction) and \
@@ -126,11 +126,11 @@ klasse IsTestBase(unittest.TestCase):
         support.check__all__(self, inspect, not_exported=("modulesbyfile",), extra=("get_annotations",))
 
 def generator_function_example(self):
-    for i in range(2):
+    fuer i in range(2):
         yield i
 
 async def async_generator_function_example(self):
-    async for i in range(2):
+    async fuer i in range(2):
         yield i
 
 async def coroutine_function_example(self):
@@ -177,7 +177,7 @@ klasse TestPredicates(IsTestBase):
         self.istest(inspect.ismodule, 'mod')
         self.istest(inspect.ismethoddescriptor, 'int.__add__')
         self.istest(inspect.isdatadescriptor, 'collections.defaultdict.default_factory')
-        self.istest(inspect.isgenerator, '(x for x in range(2))')
+        self.istest(inspect.isgenerator, '(x fuer x in range(2))')
         self.istest(inspect.isgeneratorfunction, 'generator_function_example')
         self.istest(inspect.isasyncgen,
                     'async_generator_function_example(1)')
@@ -586,7 +586,7 @@ klasse GetSourceBase(unittest.TestCase):
                          self.sourcerange(top, bottom))
 
 klasse SlotUser:
-    'Docstrings for __slots__'
+    'Docstrings fuer __slots__'
     __slots__ = {'power': 'measured in kilowatts',
                  'distance': 'measured in kilometers'}
 
@@ -603,7 +603,7 @@ klasse TestRetrievingSourceCode(GetSourceBase):
                           ('Tit', mod.MalodorousPervert),
                           ('WhichComments', mod.WhichComments),
                          ])
-        tree = inspect.getclasstree([cls[1] for cls in classes])
+        tree = inspect.getclasstree([cls[1] fuer cls in classes])
         self.assertEqual(tree,
                          [(object, ()),
                           [(mod.ParrotDroppings, (object,)),
@@ -619,7 +619,7 @@ klasse TestRetrievingSourceCode(GetSourceBase):
                             (mod.WhichComments, (object,),)
                            ]
                           ])
-        tree = inspect.getclasstree([cls[1] for cls in classes], True)
+        tree = inspect.getclasstree([cls[1] fuer cls in classes], True)
         self.assertEqual(tree,
                          [(object, ()),
                           [(mod.ParrotDroppings, (object,)),
@@ -695,7 +695,7 @@ klasse TestRetrievingSourceCode(GetSourceBase):
 
     def test_cleandoc(self):
         func = inspect.cleandoc
-        for i, (input, expected) in enumerate(self.cleandoc_testdata):
+        fuer i, (input, expected) in enumerate(self.cleandoc_testdata):
             # only inspect.cleandoc() strip \n
             expected = expected.strip('\n')
             with self.subTest(i=i):
@@ -708,7 +708,7 @@ klasse TestRetrievingSourceCode(GetSourceBase):
         except ImportError:
             return unittest.skip("requires _testinternalcapi")
         func = _testinternalcapi.compiler_cleandoc
-        for i, (input, expected) in enumerate(self.cleandoc_testdata):
+        fuer i, (input, expected) in enumerate(self.cleandoc_testdata):
             with self.subTest(i=i):
                 self.assertEqual(func(input), expected)
 
@@ -1060,7 +1060,7 @@ klasse TestBuggyCases(GetSourceBase):
     def test_method_in_dynamic_class(self):
         self.assertSourceEqual(mod2.method_in_dynamic_class, 95, 97)
 
-    # This should not skip for CPython, but might on a repackaged python where
+    # This should not skip fuer CPython, but might on a repackaged python where
     # unicodedata is not an external module, or on pypy.
     @unittest.skipIf(not hasattr(unicodedata, '__file__') or
                                  unicodedata.__file__.endswith('.py'),
@@ -1082,7 +1082,7 @@ klasse TestBuggyCases(GetSourceBase):
             del linecache.cache[co.co_filename]
 
     def test_findsource_without_filename(self):
-        for fname in ['', '<string>']:
+        fuer fname in ['', '<string>']:
             co = compile('x=1', fname, "exec")
             self.assertRaises(IOError, inspect.findsource, co)
             self.assertRaises(IOError, inspect.getsource, co)
@@ -1251,9 +1251,9 @@ klasse _BrokenMethodDescriptor(object):
         raise AttributeError("broken method descriptor")
 
 
-# Helper for testing classify_class_attrs.
+# Helper fuer testing classify_class_attrs.
 def attrs_wo_objs(cls):
-    return [t[:3] for t in inspect.classify_class_attrs(cls)]
+    return [t[:3] fuer t in inspect.classify_class_attrs(cls)]
 
 
 klasse TestClassesAndFunctions(unittest.TestCase):
@@ -1335,7 +1335,7 @@ klasse TestClassesAndFunctions(unittest.TestCase):
         self.assertEqual(test.__annotations__, spec.annotations)
 
     @unittest.skipIf(MISSING_C_DOCSTRINGS,
-                     "Signature information for builtins requires docstrings")
+                     "Signature information fuer builtins requires docstrings")
     def test_getfullargspec_builtin_methods(self):
         self.assertFullArgSpecEquals(_pickle.Pickler.dump, ['self', 'obj'])
 
@@ -1349,7 +1349,7 @@ klasse TestClassesAndFunctions(unittest.TestCase):
 
     @cpython_only
     @unittest.skipIf(MISSING_C_DOCSTRINGS,
-                     "Signature information for builtins requires docstrings")
+                     "Signature information fuer builtins requires docstrings")
     def test_getfullargspec_builtin_func(self):
         _testcapi = import_helper.import_module("_testcapi")
         builtin = _testcapi.docstring_with_signature_with_defaults
@@ -1358,7 +1358,7 @@ klasse TestClassesAndFunctions(unittest.TestCase):
 
     @cpython_only
     @unittest.skipIf(MISSING_C_DOCSTRINGS,
-                     "Signature information for builtins requires docstrings")
+                     "Signature information fuer builtins requires docstrings")
     def test_getfullargspec_builtin_func_no_signature(self):
         _testcapi = import_helper.import_module("_testcapi")
         builtin = _testcapi.docstring_no_signature
@@ -1401,13 +1401,13 @@ klasse TestClassesAndFunctions(unittest.TestCase):
             pass
         else:
             tests.append((stat.S_IMODE, meth_o))
-        for builtin, template in tests:
+        fuer builtin, template in tests:
             with self.subTest(builtin):
                 self.assertEqual(inspect.getfullargspec(builtin),
                                  inspect.getfullargspec(template))
 
     def test_getfullargspec_definition_order_preserved_on_kwonly(self):
-        for fn in signatures_with_lexicographic_keyword_only_parameters():
+        fuer fn in signatures_with_lexicographic_keyword_only_parameters():
             signature = inspect.getfullargspec(fn)
             l = list(signature.kwonlyargs)
             sorted_l = sorted(l)
@@ -1501,7 +1501,7 @@ klasse TestClassesAndFunctions(unittest.TestCase):
     def test_classify_builtin_types(self):
         # Simple sanity check that all built-in types can have their
         # attributes classified.
-        for name in dir(__builtins__):
+        fuer name in dir(__builtins__):
             builtin = getattr(__builtins__, name)
             if isinstance(builtin, type):
                 inspect.classify_class_attrs(builtin)
@@ -1603,7 +1603,7 @@ klasse TestClassesAndFunctions(unittest.TestCase):
         should_find2 = inspect.Attribute('two', 'data', Meta2, 2)
         should_find3 = inspect.Attribute('three', 'data', Meta3, 3)
         cca = inspect.classify_class_attrs(Class2)
-        for sf in (should_find1, should_find2, should_find3):
+        fuer sf in (should_find1, should_find2, should_find3):
             self.assertIn(sf, cca)
 
     def test_classify_class_attrs_with_buggy_dir(self):
@@ -1612,7 +1612,7 @@ klasse TestClassesAndFunctions(unittest.TestCase):
                 return ['__class__', '__name__', 'missing']
         klasse C(metaclass=M):
             pass
-        attrs = [a[0] for a in inspect.classify_class_attrs(C)]
+        attrs = [a[0] fuer a in inspect.classify_class_attrs(C)]
         self.assertNotIn('missing', attrs)
 
     def test_getmembers_descriptors(self):
@@ -1749,7 +1749,7 @@ klasse TestClassesAndFunctions(unittest.TestCase):
                 return ['__class__', '__name__', 'missing']
         klasse C(metaclass=M):
             pass
-        attrs = [a[0] for a in inspect.getmembers(C)]
+        attrs = [a[0] fuer a in inspect.getmembers(C)]
         self.assertNotIn('missing', attrs)
 
 
@@ -2215,7 +2215,7 @@ klasse TestGetcallargsFunctions(unittest.TestCase):
         # f2 takes at least 1 argument
         self.assertEqualException(f2, '')
         self.assertEqualException(f2, 'b=3')
-        for f in f1, f2:
+        fuer f in f1, f2:
             # f1/f2 takes exactly/at most 2 arguments
             self.assertEqualException(f, '2, 3, 4')
             self.assertEqualException(f, '1, 2, 3, a=1')
@@ -2227,7 +2227,7 @@ klasse TestGetcallargsFunctions(unittest.TestCase):
             self.assertEqualException(f, '2, 3, c=4')
             self.assertEqualException(f, '2, c=4, b=3')
             self.assertEqualException(f, '**{u"\u03c0\u03b9": 4}')
-            # f got multiple values for keyword argument
+            # f got multiple values fuer keyword argument
             self.assertEqualException(f, '1, a=2')
             self.assertEqualException(f, '1, **{"a":2}')
             self.assertEqualException(f, '1, 2, b=3')
@@ -2443,7 +2443,7 @@ klasse TestGetattrStatic(unittest.TestCase):
 
         foo = Foo()
 
-        # for a non data descriptor we return the instance attribute
+        # fuer a non data descriptor we return the instance attribute
         foo.__dict__['d'] = 1
         self.assertEqual(inspect.getattr_static(foo, 'd'), 1)
 
@@ -2626,7 +2626,7 @@ klasse TestGetattrStatic(unittest.TestCase):
         self.assertFalse(test.called)
 
     def test_cache_does_not_cause_classes_to_persist(self):
-        # regression test for gh-118013:
+        # regression test fuer gh-118013:
         # check that the internal _shadowed_dict cache does not cause
         # dynamically created classes to have extended lifetimes even
         # when no other strong references to those classes remain.
@@ -2645,7 +2645,7 @@ klasse TestGetGeneratorState(unittest.TestCase):
 
     def setUp(self):
         def number_generator():
-            for number in range(5):
+            fuer number in range(5):
                 yield number
         self.generator = number_generator()
 
@@ -2660,7 +2660,7 @@ klasse TestGetGeneratorState(unittest.TestCase):
         self.assertEqual(self._generatorstate(), inspect.GEN_SUSPENDED)
 
     def test_closed_after_exhaustion(self):
-        for i in self.generator:
+        fuer i in self.generator:
             pass
         self.assertEqual(self._generatorstate(), inspect.GEN_CLOSED)
 
@@ -2674,12 +2674,12 @@ klasse TestGetGeneratorState(unittest.TestCase):
         self.assertEqual(self._generatorstate(), inspect.GEN_CLOSED)
 
     def test_running(self):
-        # As mentioned on issue #10220, checking for the RUNNING state only
+        # As mentioned on issue #10220, checking fuer the RUNNING state only
         # makes sense inside the generator itself.
-        # The following generator checks for this by using the closure's
+        # The following generator checks fuer this by using the closure's
         # reference to self and the generator state checking helper method
         def running_check_generator():
-            for number in range(5):
+            fuer number in range(5):
                 self.assertEqual(self._generatorstate(), inspect.GEN_RUNNING)
                 yield number
                 self.assertEqual(self._generatorstate(), inspect.GEN_RUNNING)
@@ -2692,7 +2692,7 @@ klasse TestGetGeneratorState(unittest.TestCase):
     def test_easy_debugging(self):
         # repr() and str() of a generator state should contain the state name
         names = 'GEN_CREATED GEN_RUNNING GEN_SUSPENDED GEN_CLOSED'.split()
-        for name in names:
+        fuer name in names:
             state = getattr(inspect, name)
             self.assertIn(name, repr(state))
             self.assertIn(name, str(state))
@@ -2700,7 +2700,7 @@ klasse TestGetGeneratorState(unittest.TestCase):
     def test_getgeneratorlocals(self):
         def each(lst, a=None):
             b=(1, 2, 3)
-            for v in lst:
+            fuer v in lst:
                 if v == 3:
                     c = 12
                 yield v
@@ -2749,7 +2749,7 @@ klasse TestGetCoroutineState(unittest.TestCase):
     def setUp(self):
         @types.coroutine
         def number_coroutine():
-            for number in range(5):
+            fuer number in range(5):
                 yield number
         async def coroutine():
             await number_coroutine()
@@ -2789,7 +2789,7 @@ klasse TestGetCoroutineState(unittest.TestCase):
     def test_easy_debugging(self):
         # repr() and str() of a coroutine state should contain the state name
         names = 'CORO_CREATED CORO_RUNNING CORO_SUSPENDED CORO_CLOSED'.split()
-        for name in names:
+        fuer name in names:
             state = getattr(inspect, name)
             self.assertIn(name, repr(state))
             self.assertIn(name, str(state))
@@ -2817,7 +2817,7 @@ klasse TestGetAsyncGenState(unittest.IsolatedAsyncioTestCase):
 
     def setUp(self):
         async def number_asyncgen():
-            for number in range(5):
+            fuer number in range(5):
                 yield number
         self.asyncgen = number_asyncgen()
 
@@ -2854,7 +2854,7 @@ klasse TestGetAsyncGenState(unittest.IsolatedAsyncioTestCase):
 
     async def test_running(self):
         async def running_check_asyncgen():
-            for number in range(5):
+            fuer number in range(5):
                 self.assertEqual(self._asyncgenstate(), inspect.AGEN_RUNNING)
                 yield number
                 self.assertEqual(self._asyncgenstate(), inspect.AGEN_RUNNING)
@@ -2869,7 +2869,7 @@ klasse TestGetAsyncGenState(unittest.IsolatedAsyncioTestCase):
     def test_easy_debugging(self):
         # repr() and str() of a asyncgen state should contain the state name
         names = 'AGEN_CREATED AGEN_RUNNING AGEN_SUSPENDED AGEN_CLOSED'.split()
-        for name in names:
+        fuer name in names:
             state = getattr(inspect, name)
             self.assertIn(name, repr(state))
             self.assertIn(name, str(state))
@@ -2877,7 +2877,7 @@ klasse TestGetAsyncGenState(unittest.IsolatedAsyncioTestCase):
     async def test_getasyncgenlocals(self):
         async def each(lst, a=None):
             b=(1, 2, 3)
-            for v in lst:
+            fuer v in lst:
                 if v == 3:
                     c = 12
                 yield v
@@ -2940,7 +2940,7 @@ klasse TestSignatureObject(unittest.TestCase):
                        (... if param.annotation is param.empty
                                                         else param.annotation),
                        str(param.kind).lower())
-                                    for param in sig.parameters.values()),
+                                    fuer param in sig.parameters.values()),
                 (... if sig.return_annotation is sig.empty
                                             else sig.return_annotation))
 
@@ -3037,7 +3037,7 @@ klasse TestSignatureObject(unittest.TestCase):
 
         sig = inspect.signature(foo_partial)
 
-        for ver in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer ver in range(pickle.HIGHEST_PROTOCOL + 1):
             with self.subTest(pickle_ver=ver, subclass=False):
                 sig_pickled = pickle.loads(pickle.dumps(sig, ver))
                 self.assertEqual(sig, sig_pickled)
@@ -3051,7 +3051,7 @@ klasse TestSignatureObject(unittest.TestCase):
         self.assertTrue(isinstance(mysig, MySignature))
         self.assertTrue(isinstance(mysig.parameters['z'], MyParameter))
 
-        for ver in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer ver in range(pickle.HIGHEST_PROTOCOL + 1):
             with self.subTest(pickle_ver=ver, subclass=True):
                 sig_pickled = pickle.loads(pickle.dumps(mysig, ver))
                 self.assertEqual(mysig, sig_pickled)
@@ -3140,7 +3140,7 @@ klasse TestSignatureObject(unittest.TestCase):
                             ('kwargs', ..., ..., 'var_keyword')), ...))
     @cpython_only
     @unittest.skipIf(MISSING_C_DOCSTRINGS,
-                     "Signature information for builtins requires docstrings")
+                     "Signature information fuer builtins requires docstrings")
     def test_signature_on_builtins(self):
         _testcapi = import_helper.import_module("_testcapi")
 
@@ -3194,11 +3194,11 @@ klasse TestSignatureObject(unittest.TestCase):
         test_callable((3).__add__)
 
         # _PyMethodWrapper_Type
-        # support for 'method-wrapper'
+        # support fuer 'method-wrapper'
         test_callable(min.__call__)
 
         # This doesn't work now.
-        # (We don't have a valid signature for "type" in 3.4)
+        # (We don't have a valid signature fuer "type" in 3.4)
         klasse ThisWorksNow:
             __call__ = type
         # TODO: Support type.
@@ -3207,21 +3207,21 @@ klasse TestSignatureObject(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "no signature found"):
             test_callable(ThisWorksNow())
 
-        # Regression test for issue #20786
+        # Regression test fuer issue #20786
         test_unbound_method(dict.__delitem__)
         test_unbound_method(property.__delete__)
 
-        # Regression test for issue #20586
+        # Regression test fuer issue #20586
         test_callable(_testcapi.docstring_with_signature_but_no_doc)
 
-        # Regression test for gh-104955
+        # Regression test fuer gh-104955
         method = bytearray.__release_buffer__
         sig = test_unbound_method(method)
         self.assertEqual(list(sig.parameters), ['self', 'buffer'])
 
     @cpython_only
     @unittest.skipIf(MISSING_C_DOCSTRINGS,
-                     "Signature information for builtins requires docstrings")
+                     "Signature information fuer builtins requires docstrings")
     def test_signature_on_decorated_builtins(self):
         _testcapi = import_helper.import_module("_testcapi")
         func = _testcapi.docstring_with_signature_with_defaults
@@ -3246,11 +3246,11 @@ klasse TestSignatureObject(unittest.TestCase):
     def test_signature_on_builtins_no_signature(self):
         _testcapi = import_helper.import_module("_testcapi")
         with self.assertRaisesRegex(ValueError,
-                                    'no signature found for builtin'):
+                                    'no signature found fuer builtin'):
             inspect.signature(_testcapi.docstring_no_signature)
 
         with self.assertRaisesRegex(ValueError,
-                                    'no signature found for builtin'):
+                                    'no signature found fuer builtin'):
             inspect.signature(str)
 
         cls = _testcapi.DocStringNoSignatureTest
@@ -3289,13 +3289,13 @@ klasse TestSignatureObject(unittest.TestCase):
             pass
         else:
             tests.append((stat.S_IMODE, meth_o))
-        for builtin, template in tests:
+        fuer builtin, template in tests:
             with self.subTest(builtin):
                 self.assertEqual(inspect.signature(builtin),
                                  inspect.signature(template))
 
     @unittest.skipIf(MISSING_C_DOCSTRINGS,
-                     "Signature information for builtins requires docstrings")
+                     "Signature information fuer builtins requires docstrings")
     def test_signature_parsing_with_defaults(self):
         _testcapi = import_helper.import_module("_testcapi")
         meth = _testcapi.DocStringUnrepresentableSignatureTest.with_default
@@ -3334,7 +3334,7 @@ klasse TestSignatureObject(unittest.TestCase):
         self.assertEqual(sig_funclike, sig_func)
 
         # If object is not a duck type of function, then
-        # signature will try to get a signature for its '__call__'
+        # signature will try to get a signature fuer its '__call__'
         # method
         fl = funclike(func)
         del fl.__defaults__
@@ -4271,7 +4271,7 @@ klasse TestSignatureObject(unittest.TestCase):
                           None))
 
     @unittest.skipIf(MISSING_C_DOCSTRINGS,
-                     "Signature information for builtins requires docstrings")
+                     "Signature information fuer builtins requires docstrings")
     def test_signature_on_class_without_init(self):
         # Test classes without user-defined __init__ or __new__
         klasse C: pass
@@ -4291,7 +4291,7 @@ klasse TestSignatureObject(unittest.TestCase):
             self.assertEqual(inspect.signature(D), None)
 
     @unittest.skipIf(MISSING_C_DOCSTRINGS,
-                     "Signature information for builtins requires docstrings")
+                     "Signature information fuer builtins requires docstrings")
     def test_signature_on_builtin_class(self):
         expected = ('(file, protocol=None, fix_imports=True, '
                     'buffer_callback=None)')
@@ -4482,7 +4482,7 @@ klasse TestSignatureObject(unittest.TestCase):
 
     def test_signature_on_mocks(self):
         # https://github.com/python/cpython/issues/96127
-        for mock in (
+        fuer mock in (
             unittest.mock.Mock(),
             unittest.mock.AsyncMock(),
             unittest.mock.MagicMock(),
@@ -4491,7 +4491,7 @@ klasse TestSignatureObject(unittest.TestCase):
                 self.assertEqual(str(inspect.signature(mock)), '(*args, **kwargs)')
 
     def test_signature_on_noncallable_mocks(self):
-        for mock in (
+        fuer mock in (
             unittest.mock.NonCallableMock(),
             unittest.mock.NonCallableMagicMock(),
         ):
@@ -4823,23 +4823,23 @@ klasse TestSignatureObject(unittest.TestCase):
         self.assertIsInstance(foo_sig, MySignature)
 
     @unittest.skipIf(MISSING_C_DOCSTRINGS,
-                     "Signature information for builtins requires docstrings")
+                     "Signature information fuer builtins requires docstrings")
     def test_signature_from_callable_class(self):
-        # A regression test for a klasse inheriting its signature from `object`.
+        # A regression test fuer a klasse inheriting its signature from `object`.
         klasse MySignature(inspect.Signature): pass
         klasse foo: pass
         foo_sig = MySignature.from_callable(foo)
         self.assertIsInstance(foo_sig, MySignature)
 
     @unittest.skipIf(MISSING_C_DOCSTRINGS,
-                     "Signature information for builtins requires docstrings")
+                     "Signature information fuer builtins requires docstrings")
     def test_signature_from_callable_builtin_obj(self):
         klasse MySignature(inspect.Signature): pass
         sig = MySignature.from_callable(_pickle.Pickler)
         self.assertIsInstance(sig, MySignature)
 
     def test_signature_definition_order_preserved_on_kwonly(self):
-        for fn in signatures_with_lexicographic_keyword_only_parameters():
+        fuer fn in signatures_with_lexicographic_keyword_only_parameters():
             signature = inspect.signature(fn)
             l = list(signature.parameters)
             sorted_l = sorted(l)
@@ -4859,7 +4859,7 @@ klasse TestSignatureObject(unittest.TestCase):
         def func(foo: Foo) -> int: pass
         def func2(foo: Foo, bar: 'Bar') -> int: pass
 
-        for signature_func in (inspect.signature, inspect.Signature.from_callable):
+        fuer signature_func in (inspect.signature, inspect.Signature.from_callable):
             with self.subTest(signature_func = signature_func):
                 sig1 = signature_func(func)
                 self.assertEqual(sig1.return_annotation, int)
@@ -4879,7 +4879,7 @@ klasse TestSignatureObject(unittest.TestCase):
         sig = inspect.Signature
         par = inspect.Parameter
         PORK = inspect.Parameter.POSITIONAL_OR_KEYWORD
-        for signature_func in (inspect.signature, inspect.Signature.from_callable):
+        fuer signature_func in (inspect.signature, inspect.Signature.from_callable):
             with self.subTest(signature_func = signature_func):
                 self.assertEqual(
                     signature_func(isa.MyClass),
@@ -4985,7 +4985,7 @@ klasse TestSignatureObject(unittest.TestCase):
         sig = inspect.Signature
         par = inspect.Parameter
         PORK = inspect.Parameter.POSITIONAL_OR_KEYWORD
-        for signature_func in (inspect.signature, inspect.Signature.from_callable):
+        fuer signature_func in (inspect.signature, inspect.Signature.from_callable):
             with self.subTest(signature_func=signature_func):
                 self.assertEqual(
                     signature_func(ida.f, annotation_format=Format.STRING),
@@ -5054,7 +5054,7 @@ klasse TestSignatureObject(unittest.TestCase):
         def foo(): pass
         foo = funclike(foo)
         foo.__annotations__ = None
-        for signature_func in (inspect.signature, inspect.Signature.from_callable):
+        fuer signature_func in (inspect.signature, inspect.Signature.from_callable):
             with self.subTest(signature_func = signature_func):
                 self.assertEqual(signature_func(foo), inspect.Signature())
         self.assertEqual(inspect.get_annotations(foo), {})
@@ -5342,7 +5342,7 @@ klasse TestSignatureBind(unittest.TestCase):
         self.assertEqual(self.call(test, 1, b=2), (1, 2, 3, ()))
 
         with self.assertRaisesRegex(TypeError,
-                                     "multiple values for argument 'c'"):
+                                     "multiple values fuer argument 'c'"):
             self.call(test, 1, 2, 3, c=4)
 
     def test_signature_bind_just_kwargs(self):
@@ -5512,7 +5512,7 @@ klasse TestSignatureBind(unittest.TestCase):
     def test_signature_bind_implicit_arg(self):
         # Issue #19611: getcallargs should work with comprehensions
         def make_set():
-            return set(z * z for z in range(5))
+            return set(z * z fuer z in range(5))
         gencomp_code = make_set.__code__.co_consts[0]
         gencomp_func = types.FunctionType(gencomp_code, {})
 
@@ -5574,7 +5574,7 @@ klasse TestBoundArguments(unittest.TestCase):
         sig = inspect.signature(foo)
         ba = sig.bind(20, 30, z={})
 
-        for ver in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer ver in range(pickle.HIGHEST_PROTOCOL + 1):
             with self.subTest(pickle_ver=ver):
                 ba_pickled = pickle.loads(pickle.dumps(ba, ver))
                 self.assertEqual(ba, ba_pickled)
@@ -5680,8 +5680,8 @@ klasse TestSignaturePrivateHelpers(unittest.TestCase):
             None)
 
 klasse TestSignatureDefinitions(unittest.TestCase):
-    # This test case provides a home for checking that particular APIs
-    # have signatures available for introspection
+    # This test case provides a home fuer checking that particular APIs
+    # have signatures available fuer introspection
 
     @staticmethod
     def is_public(name):
@@ -5689,7 +5689,7 @@ klasse TestSignatureDefinitions(unittest.TestCase):
 
     @cpython_only
     @unittest.skipIf(MISSING_C_DOCSTRINGS,
-                     "Signature information for builtins requires docstrings")
+                     "Signature information fuer builtins requires docstrings")
     def _test_module_has_signatures(self, module,
                 no_signature=(), unsupported_signature=(),
                 methods_no_signature={}, methods_unsupported_signature={},
@@ -5698,8 +5698,8 @@ klasse TestSignatureDefinitions(unittest.TestCase):
         # A few have signatures Signature can't yet handle, so we skip those
         # since they will have to wait until PEP 457 adds the required
         # introspection support to the inspect module
-        # Some others also haven't been converted yet for various other
-        # reasons, so we also skip those for the time being, but design
+        # Some others also haven't been converted yet fuer various other
+        # reasons, so we also skip those fuer the time being, but design
         # the test to fail in order to indicate when it needs to be
         # updated.
         no_signature = no_signature or set()
@@ -5708,8 +5708,8 @@ klasse TestSignatureDefinitions(unittest.TestCase):
         try:
             names = set(module.__all__)
         except AttributeError:
-            names = set(name for name in ns if self.is_public(name))
-        for name, obj in sorted(ns.items()):
+            names = set(name fuer name in ns if self.is_public(name))
+        fuer name, obj in sorted(ns.items()):
             if name not in names:
                 continue
             if not callable(obj):
@@ -5730,12 +5730,12 @@ klasse TestSignatureDefinitions(unittest.TestCase):
         # This ensures this test will start failing as more signatures are
         # added, so the affected items can be moved into the scope of the
         # regression test above
-        for name in no_signature:
+        fuer name in no_signature:
             with self.subTest('none', builtin=name):
                 obj = ns[name]
                 self.assertIsNone(obj.__text_signature__)
                 self.assertRaises(ValueError, inspect.signature, obj)
-        for name in unsupported_signature:
+        fuer name in unsupported_signature:
             with self.subTest('unsupported', builtin=name):
                 obj = ns[name]
                 self.assertIsNotNone(obj.__text_signature__)
@@ -5743,18 +5743,18 @@ klasse TestSignatureDefinitions(unittest.TestCase):
 
     def _test_builtin_methods_have_signatures(self, cls, no_signature, unsupported_signature):
         ns = vars(cls)
-        for name in ns:
+        fuer name in ns:
             obj = getattr(cls, name, None)
             if not callable(obj) or isinstance(obj, type):
                 continue
             if name not in no_signature and name not in unsupported_signature:
                 with self.subTest('supported', method=name):
                     self.assertIsNotNone(inspect.signature(obj))
-        for name in no_signature:
+        fuer name in no_signature:
             with self.subTest('none', method=name):
                 self.assertIsNone(getattr(cls, name).__text_signature__)
                 self.assertRaises(ValueError, inspect.signature, getattr(cls, name))
-        for name in unsupported_signature:
+        fuer name in unsupported_signature:
             with self.subTest('unsupported', method=name):
                 self.assertIsNotNone(getattr(cls, name).__text_signature__)
                 self.assertRaises(ValueError, inspect.signature, getattr(cls, name))
@@ -5800,7 +5800,7 @@ klasse TestSignatureDefinitions(unittest.TestCase):
 
     def test_sys_module_has_signatures(self):
         no_signature = {'getsizeof', 'set_asyncgen_hooks'}
-        no_signature |= {name for name in ['getobjects']
+        no_signature |= {name fuer name in ['getobjects']
                          if hasattr(sys, name)}
         self._test_module_has_signatures(sys, no_signature)
 
@@ -5859,7 +5859,7 @@ klasse TestSignatureDefinitions(unittest.TestCase):
     def test_faulthandler_module_has_signatures(self):
         import faulthandler
         unsupported_signature = {'dump_traceback', 'dump_traceback_later', 'enable', 'dump_c_stack'}
-        unsupported_signature |= {name for name in ['register']
+        unsupported_signature |= {name fuer name in ['register']
                                   if hasattr(faulthandler, name)}
         self._test_module_has_signatures(faulthandler, unsupported_signature=unsupported_signature)
 
@@ -5898,7 +5898,7 @@ klasse TestSignatureDefinitions(unittest.TestCase):
 
     def test_os_module_has_signatures(self):
         unsupported_signature = {'chmod', 'utime'}
-        unsupported_signature |= {name for name in
+        unsupported_signature |= {name fuer name in
             ['get_terminal_size', 'link', 'posix_spawn', 'posix_spawnp',
              'register_at_fork', 'startfile']
             if hasattr(os, name)}
@@ -5950,7 +5950,7 @@ klasse TestSignatureDefinitions(unittest.TestCase):
             'asctime', 'ctime', 'get_clock_info', 'gmtime', 'localtime',
             'strftime', 'strptime'
         }
-        no_signature |= {name for name in
+        no_signature |= {name fuer name in
             ['clock_getres', 'clock_settime', 'clock_settime_ns',
              'pthread_getcpuclockid']
             if hasattr(time, name)}
@@ -6055,7 +6055,7 @@ klasse TestUnwrap(unittest.TestCase):
         def func(a, b):
             return a + b
         wrapper = func
-        for __ in range(10):
+        fuer __ in range(10):
             @functools.wraps(wrapper)
             def wrapper():
                 pass
@@ -6129,7 +6129,7 @@ klasse TestMain(unittest.TestCase):
             inspect.signature(foo)
 
     @unittest.skipIf(ThreadPoolExecutor is None,
-            'threads required to test __qualname__ for source files')
+            'threads required to test __qualname__ fuer source files')
     def test_qualname_source(self):
         rc, out, err = assert_python_ok('-m', 'inspect',
                                      'concurrent.futures:ThreadPoolExecutor')
@@ -6143,7 +6143,7 @@ klasse TestMain(unittest.TestCase):
         _, out, err = assert_python_failure('-m', 'inspect',
                                             'sys')
         lines = err.decode().splitlines()
-        self.assertEqual(lines, ["Can't get info for builtin modules."])
+        self.assertEqual(lines, ["Can't get info fuer builtin modules."])
 
     def test_details(self):
         module = importlib.import_module('unittest')
@@ -6205,14 +6205,14 @@ klasse TestRepl(unittest.TestCase):
         # To run the REPL without using a terminal, spawn python with the command
         # line option '-i' and the process name set to '<stdin>'.
         # The directory of argv[0] must match the directory of the Python
-        # executable for the Popen() call to python to succeed as the directory
+        # executable fuer the Popen() call to python to succeed as the directory
         # path may be used by PyConfig_Get("module_search_paths") to build the
         # default module search path.
         stdin_fname = os.path.join(os.path.dirname(sys.executable), "<stdin>")
         cmd_line = [stdin_fname, '-E', '-i']
         cmd_line.extend(args)
 
-        # Set TERM=vt100, for the rationale see the comments in spawn_python() of
+        # Set TERM=vt100, fuer the rationale see the comments in spawn_python() of
         # test.support.script_helper.
         env = kw.setdefault('env', dict(os.environ))
         env['TERM'] = 'vt100'

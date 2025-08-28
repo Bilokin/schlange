@@ -1,7 +1,7 @@
 """Command-line tool to validate and pretty-print JSON
 
-See `json.__main__` for a usage example (invocation as
-`python -m json.tool` is supported for backwards compatibility).
+See `json.__main__` fuer a usage example (invocation as
+`python -m json.tool` is supported fuer backwards compatibility).
 """
 import argparse
 import json
@@ -33,7 +33,7 @@ _group_to_theme_color = {
 
 def _colorize_json(json_str, theme):
     def _replace_match_callback(match):
-        for group, color in _group_to_theme_color.items():
+        fuer group, color in _group_to_theme_color.items():
             if m := match.group(group):
                 return f"{theme[color]}{m}{theme.reset}"
         return match.group()
@@ -42,7 +42,7 @@ def _colorize_json(json_str, theme):
 
 
 def main():
-    description = ('A simple command line interface for json module '
+    description = ('A simple command line interface fuer json module '
                    'to validate and pretty-print JSON objects.')
     parser = argparse.ArgumentParser(description=description, color=True)
     parser.add_argument('infile', nargs='?',
@@ -62,10 +62,10 @@ def main():
     group = parser.add_mutually_exclusive_group()
     group.add_argument('--indent', default=4, type=int,
                        help='separate items with newlines and use this number '
-                       'of spaces for indentation')
+                       'of spaces fuer indentation')
     group.add_argument('--tab', action='store_const', dest='indent',
                        const='\t', help='separate items with newlines and use '
-                       'tabs for indentation')
+                       'tabs fuer indentation')
     group.add_argument('--no-indent', action='store_const', dest='indent',
                        const=None,
                        help='separate items with spaces rather than newlines')
@@ -89,7 +89,7 @@ def main():
             infile = open(options.infile, encoding='utf-8')
         try:
             if options.json_lines:
-                objs = (json.loads(line) for line in infile)
+                objs = (json.loads(line) fuer line in infile)
             else:
                 objs = (json.load(infile),)
         finally:
@@ -103,12 +103,12 @@ def main():
         with outfile:
             if can_colorize(file=outfile):
                 t = get_theme(tty_file=outfile).syntax
-                for obj in objs:
+                fuer obj in objs:
                     json_str = json.dumps(obj, **dump_args)
                     outfile.write(_colorize_json(json_str, t))
                     outfile.write('\n')
             else:
-                for obj in objs:
+                fuer obj in objs:
                     json.dump(obj, outfile, **dump_args)
                     outfile.write('\n')
     except ValueError as e:

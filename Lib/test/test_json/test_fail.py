@@ -79,7 +79,7 @@ SKIPS = {
 
 klasse TestFail:
     def test_failures(self):
-        for idx, doc in enumerate(JSONDOCS):
+        fuer idx, doc in enumerate(JSONDOCS):
             idx = idx + 1
             if idx in SKIPS:
                 self.loads(doc)
@@ -89,7 +89,7 @@ klasse TestFail:
             except self.JSONDecodeError:
                 pass
             else:
-                self.fail(f"Expected failure for fail{idx}.json: {doc!r}")
+                self.fail(f"Expected failure fuer fail{idx}.json: {doc!r}")
 
     def test_non_string_keys_dict(self):
         data = {'a' : 1, (1, 2) : 2}
@@ -144,7 +144,7 @@ klasse TestFail:
             ('"', 'Unterminated string starting at', 0),
             ('"spam', 'Unterminated string starting at', 0),
         ]
-        for data, msg, idx in test_cases:
+        fuer data, msg, idx in test_cases:
             with self.assertRaises(self.JSONDecodeError) as cm:
                 self.loads(data)
             err = cm.exception
@@ -182,7 +182,7 @@ klasse TestFail:
             ('{"spam":42 , }', "Illegal trailing comma before end of object", 11),
             ('[123  , ]', "Illegal trailing comma before end of array", 6),
         ]
-        for data, msg, idx in test_cases:
+        fuer data, msg, idx in test_cases:
             with self.assertRaises(self.JSONDecodeError) as cm:
                 self.loads(data)
             err = cm.exception
@@ -205,7 +205,7 @@ klasse TestFail:
             ('42,"spam"', 'Extra data', 2),
             ('"spam",42', 'Extra data', 6),
         ]
-        for data, msg, idx in test_cases:
+        fuer data, msg, idx in test_cases:
             with self.assertRaises(self.JSONDecodeError) as cm:
                 self.loads(data)
             err = cm.exception
@@ -224,7 +224,7 @@ klasse TestFail:
             ('\n!', 2, 1, 1),
             ('\n  \n\n     !', 4, 6, 10),
         ]
-        for data, line, col, idx in test_cases:
+        fuer data, line, col, idx in test_cases:
             with self.assertRaises(self.JSONDecodeError) as cm:
                 self.loads(data)
             err = cm.exception

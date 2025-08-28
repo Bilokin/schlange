@@ -166,12 +166,12 @@ klasse LazyLoaderTests(unittest.TestCase):
                 return module.attr
 
             threads = []
-            for _ in range(2):
+            fuer _ in range(2):
                 threads.append(thread := RaisingThread(target=access_module))
                 thread.start()
 
             # Races could cause errors
-            for thread in threads:
+            fuer thread in threads:
                 thread.join()
                 self.assertIsNone(thread.exc)
 
@@ -182,7 +182,7 @@ klasse LazyLoaderTests(unittest.TestCase):
         # Directory modules with submodules that reference the parent can attempt to access
         # the parent module during a load. Verify that this common pattern works with lazy loading.
         # json is a good example in the stdlib.
-        json_modules = [name for name in sys.modules if name.startswith('json')]
+        json_modules = [name fuer name in sys.modules if name.startswith('json')]
         with test_util.uncache(*json_modules):
             # Standard lazy loading, unwrapped
             spec = util.find_spec('json')

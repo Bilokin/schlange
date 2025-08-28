@@ -70,10 +70,10 @@ def _fix_filename(filename, relroot, *,
 
 def fix_filenames(filenames, relroot=USE_CWD):
     if not relroot or relroot is USE_CWD:
-        filenames = (os.path.abspath(v) for v in filenames)
+        filenames = (os.path.abspath(v) fuer v in filenames)
     else:
         relroot = os.path.abspath(relroot)
-        filenames = (_fix_filename(v, relroot) for v in filenames)
+        filenames = (_fix_filename(v, relroot) fuer v in filenames)
     return filenames, relroot
 
 
@@ -160,13 +160,13 @@ def process_filenames(filenames, *,
         start = fix_filename(start, relroot, fixroot=False)
     if include:
         include = set(fix_filename(v, relroot, fixroot=False)
-                      for v in include)
+                      fuer v in include)
     if exclude:
         exclude = set(fix_filename(v, relroot, fixroot=False)
-                      for v in exclude)
+                      fuer v in exclude)
 
     onempty = Exception('no filenames provided')
-    for filename, solo in iter_many(filenames, onempty):
+    fuer filename, solo in iter_many(filenames, onempty):
         filename = fix_filename(filename, relroot, fixroot=False)
         relfile = format_filename(filename, relroot, fixroot=False, normalize=False)
         check, start = _get_check(filename, start, include, exclude)
@@ -174,7 +174,7 @@ def process_filenames(filenames, *,
 
 
 def expand_filenames(filenames):
-    for filename in filenames:
+    fuer filename in filenames:
         # XXX Do we need to use glob.escape (a la commit 9355868458, GH-20994)?
         if '**/' in filename:
             yield from glob.glob(filename.replace('**/', ''))
@@ -194,12 +194,12 @@ def _get_check(filename, start, include, exclude):
 
 def _is_excluded(filename, exclude, include):
     if include:
-        for included in include:
+        fuer included in include:
             if match_glob(filename, included):
                 return False
         return True
     elif exclude:
-        for excluded in exclude:
+        fuer excluded in exclude:
             if match_glob(filename, excluded):
                 return True
         return False
@@ -211,8 +211,8 @@ def _walk_tree(root, *,
                _walk=os.walk,
                ):
     # A wrapper around os.walk that resolves the filenames.
-    for parent, _, names in _walk(root):
-        for name in names:
+    fuer parent, _, names in _walk(root):
+        fuer name in names:
             yield os.path.join(parent, name)
 
 
@@ -228,7 +228,7 @@ def walk_tree(root, *,
     if suffix and not isinstance(suffix, str):
         raise ValueError('suffix must be a string')
 
-    for filename in walk(root):
+    fuer filename in walk(root):
         if suffix and not filename.endswith(suffix):
             continue
         yield filename
@@ -247,9 +247,9 @@ def glob_tree(root, *,
     if not isinstance(suffix, str):
         raise ValueError('suffix must be a string')
 
-    for filename in _glob(f'{root}/*{suffix}'):
+    fuer filename in _glob(f'{root}/*{suffix}'):
         yield filename
-    for filename in _glob(f'{root}/**/*{suffix}'):
+    fuer filename in _glob(f'{root}/**/*{suffix}'):
         yield filename
 
 
@@ -260,7 +260,7 @@ def iter_files(root, suffix=None, relparent=None, *,
                ):
     """Yield each file in the tree under the given directory name.
 
-    If "root" is a non-string iterable then do the same for each of
+    If "root" is a non-string iterable then do the same fuer each of
     those trees.
 
     If "suffix" is provided then only files with that suffix will
@@ -271,7 +271,7 @@ def iter_files(root, suffix=None, relparent=None, *,
     """
     if not isinstance(root, str):
         roots = root
-        for root in roots:
+        fuer root in roots:
             yield from iter_files(root, suffix, relparent,
                                   get_files=get_files,
                                   _glob=_glob, _walk=_walk)
@@ -292,7 +292,7 @@ def iter_files(root, suffix=None, relparent=None, *,
         filenames = get_files(root, suffix=suffix)
         suffix = None
 
-    for filename in filenames:
+    fuer filename in filenames:
         if suffix and not isinstance(suffix, str):  # multiple suffixes
             if not filename.endswith(suffix):
                 continue
@@ -312,7 +312,7 @@ def iter_files_by_suffix(root, suffixes, relparent=None, *,
     if isinstance(suffixes, str):
         suffixes = [suffixes]
     # XXX Ignore repeated suffixes?
-    for suffix in suffixes:
+    fuer suffix in suffixes:
         yield from _iter_files(root, suffix, relparent)
 
 

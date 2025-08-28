@@ -1,5 +1,5 @@
 # This module is used to map the old Python 2 names to the new names used in
-# Python 3 for the pickle module.  This needed to make pickle streams
+# Python 3 fuer the pickle module.  This needed to make pickle streams
 # generated with Python 2 loadable by Python 3.
 
 # This is a copy of lib2to3.fixes.fix_imports.MAPPING.  We cannot import
@@ -147,7 +147,7 @@ except NameError:
 else:
     PYTHON2_EXCEPTIONS += ("WindowsError",)
 
-for excname in PYTHON2_EXCEPTIONS:
+fuer excname in PYTHON2_EXCEPTIONS:
     NAME_MAPPING[("exceptions", excname)] = ("builtins", excname)
 
 MULTIPROCESSING_EXCEPTIONS = (
@@ -157,13 +157,13 @@ MULTIPROCESSING_EXCEPTIONS = (
     'TimeoutError',
 )
 
-for excname in MULTIPROCESSING_EXCEPTIONS:
+fuer excname in MULTIPROCESSING_EXCEPTIONS:
     NAME_MAPPING[("multiprocessing", excname)] = ("multiprocessing.context", excname)
 
-# Same, but for 3.x to 2.x
-REVERSE_IMPORT_MAPPING = dict((v, k) for (k, v) in IMPORT_MAPPING.items())
+# Same, but fuer 3.x to 2.x
+REVERSE_IMPORT_MAPPING = dict((v, k) fuer (k, v) in IMPORT_MAPPING.items())
 assert len(REVERSE_IMPORT_MAPPING) == len(IMPORT_MAPPING)
-REVERSE_NAME_MAPPING = dict((v, k) for (k, v) in NAME_MAPPING.items())
+REVERSE_NAME_MAPPING = dict((v, k) fuer (k, v) in NAME_MAPPING.items())
 assert len(REVERSE_NAME_MAPPING) == len(NAME_MAPPING)
 
 # Non-mutual mappings.
@@ -236,13 +236,13 @@ PYTHON3_OSERROR_EXCEPTIONS = (
     'TimeoutError',
 )
 
-for excname in PYTHON3_OSERROR_EXCEPTIONS:
+fuer excname in PYTHON3_OSERROR_EXCEPTIONS:
     REVERSE_NAME_MAPPING[('builtins', excname)] = ('exceptions', 'OSError')
 
 PYTHON3_IMPORTERROR_EXCEPTIONS = (
     'ModuleNotFoundError',
 )
 
-for excname in PYTHON3_IMPORTERROR_EXCEPTIONS:
+fuer excname in PYTHON3_IMPORTERROR_EXCEPTIONS:
     REVERSE_NAME_MAPPING[('builtins', excname)] = ('exceptions', 'ImportError')
 del excname

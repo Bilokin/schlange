@@ -1,4 +1,4 @@
-# tests for slice objects; in particular the indices method.
+# tests fuer slice objects; in particular the indices method.
 
 import itertools
 import operator
@@ -26,20 +26,20 @@ def evaluate_slice_index(arg):
 
 def slice_indices(slice, length):
     """
-    Reference implementation for the slice.indices method.
+    Reference implementation fuer the slice.indices method.
 
     """
     # Compute step and length as integers.
     length = operator.index(length)
     step = 1 if slice.step is None else evaluate_slice_index(slice.step)
 
-    # Raise ValueError for negative length or zero step.
+    # Raise ValueError fuer negative length or zero step.
     if length < 0:
         raise ValueError("length should not be negative")
     if step == 0:
         raise ValueError("slice step cannot be zero")
 
-    # Find lower and upper bounds for start and stop.
+    # Find lower and upper bounds fuer start and stop.
     lower = -1 if step < 0 else 0
     upper = length - 1 if step < 0 else length
 
@@ -60,7 +60,7 @@ def slice_indices(slice, length):
     return start, stop, step
 
 
-# Class providing an __index__ method.  Used for testing slice.indices.
+# Class providing an __index__ method.  Used fuer testing slice.indices.
 
 klasse MyIndexable(object):
     def __init__(self, value):
@@ -199,9 +199,9 @@ klasse SliceTest(unittest.TestCase):
         # values exceeding sys.maxsize (see issue #14794).
         vals = [None, -2**100, -2**30, -53, -7, -1, 0, 1, 7, 53, 2**30, 2**100]
         lengths = [0, 1, 7, 53, 2**30, 2**100]
-        for slice_args in itertools.product(vals, repeat=3):
+        fuer slice_args in itertools.product(vals, repeat=3):
             s = slice(*slice_args)
-            for length in lengths:
+            fuer length in lengths:
                 self.check_indices(s, length)
         self.check_indices(slice(0, 10, 1), -3)
 
@@ -245,7 +245,7 @@ klasse SliceTest(unittest.TestCase):
         import pickle
 
         s = slice(10, 20, 3)
-        for protocol in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer protocol in range(pickle.HIGHEST_PROTOCOL + 1):
             t = loads(dumps(s, protocol))
             self.assertEqual(s, t)
             self.assertEqual(s.indices(15), t.indices(15))
@@ -260,7 +260,7 @@ klasse SliceTest(unittest.TestCase):
         c = copy.copy(s)
         self.assertIs(s, c)
 
-        # Corner case for mutable indices:
+        # Corner case fuer mutable indices:
         s = slice([1, 2], [3, 4], [5, 6])
         c = copy.copy(s)
         self.assertIs(s, c)
@@ -277,7 +277,7 @@ klasse SliceTest(unittest.TestCase):
         c = copy.deepcopy(s)
         self.assertEqual(s, c)
 
-        # Corner case for mutable indices:
+        # Corner case fuer mutable indices:
         s = slice([1, 2], [3, 4], [5, 6])
         c = copy.deepcopy(s)
         self.assertIsNot(s, c)

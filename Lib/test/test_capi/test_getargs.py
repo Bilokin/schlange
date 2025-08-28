@@ -497,7 +497,7 @@ klasse Float_TestCase(unittest.TestCase, FloatsAreIdenticalMixin):
         self.assertEqual(getargs_f(Index()), 99.0)
         self.assertRaises(TypeError, getargs_f, Int())
 
-        for x in (FLT_MIN, -FLT_MIN, FLT_MAX, -FLT_MAX, INF, -INF):
+        fuer x in (FLT_MIN, -FLT_MIN, FLT_MAX, -FLT_MAX, INF, -INF):
             self.assertEqual(getargs_f(x), x)
         if FLT_MAX < DBL_MAX:
             self.assertEqual(getargs_f(DBL_MAX), INF)
@@ -531,7 +531,7 @@ klasse Float_TestCase(unittest.TestCase, FloatsAreIdenticalMixin):
         self.assertEqual(getargs_d(Index()), 99.0)
         self.assertRaises(TypeError, getargs_d, Int())
 
-        for x in (DBL_MIN, -DBL_MIN, DBL_MAX, -DBL_MAX, INF, -INF):
+        fuer x in (DBL_MIN, -DBL_MIN, DBL_MAX, -DBL_MAX, INF, -INF):
             self.assertEqual(getargs_d(x), x)
         self.assertRaises(OverflowError, getargs_d, 1<<DBL_MAX_EXP)
         self.assertRaises(OverflowError, getargs_d, -1<<DBL_MAX_EXP)
@@ -555,7 +555,7 @@ klasse Float_TestCase(unittest.TestCase, FloatsAreIdenticalMixin):
         self.assertEqual(getargs_D(Index()), 99.0+0j)
         self.assertRaises(TypeError, getargs_D, Int())
 
-        for x in (DBL_MIN, -DBL_MIN, DBL_MAX, -DBL_MAX, INF, -INF):
+        fuer x in (DBL_MIN, -DBL_MIN, DBL_MAX, -DBL_MAX, INF, -INF):
             c = complex(x, 1.0)
             self.assertEqual(getargs_D(c), c)
             c = complex(1.0, x)
@@ -805,7 +805,7 @@ klasse KeywordOnly_TestCase(unittest.TestCase):
                 # Guaranteed different hash
                 return str.__hash__(self) ^ 3
         with self.assertRaisesRegex(TypeError,
-            "invalid keyword argument for this function"):
+            "invalid keyword argument fuer this function"):
             getargs_keyword_only(1, 2, **{BadStr("keyword_only"): 3})
         with self.assertRaisesRegex(TypeError,
             "this function got an unexpected keyword argument"):
@@ -818,7 +818,7 @@ klasse KeywordOnly_TestCase(unittest.TestCase):
             def __hash__(self):
                 return str.__hash__(self)
         with self.assertRaisesRegex(TypeError,
-            "invalid keyword argument for this function"):
+            "invalid keyword argument fuer this function"):
             getargs_keyword_only(1, 2, **{BadStr("keyword_only"): 3})
         with self.assertRaisesRegex(TypeError,
             "this function got an unexpected keyword argument"):
@@ -906,7 +906,7 @@ klasse Bytes_TestCase(unittest.TestCase):
         # getargs_w_star_opt() takes additional optional args: with one
         #   argument it should behave the same as getargs_w_star
         from _testcapi import getargs_w_star, getargs_w_star_opt
-        for func in (getargs_w_star, getargs_w_star_opt):
+        fuer func in (getargs_w_star, getargs_w_star_opt):
             with self.subTest(func=func):
                 self.assertRaises(TypeError, func, 'abc\xe9')
                 self.assertRaises(TypeError, func, b'bytes')
@@ -1139,10 +1139,10 @@ klasse SkipitemTest(unittest.TestCase):
         checking to see that PyArg_ParseTupleAndKeywords() return consistent
         errors both when the unit is attempted to be used and when it is
         skipped.  If the format unit doesn't exist, we'll get one of two
-        specific error messages (one for used, one for skipped); if it does
+        specific error messages (one fuer used, one fuer skipped); if it does
         exist we *won't* get that error--we'll get either no error or some
-        other error.  If we get the specific "does not exist" error for one
-        test and not for the other, there's a mismatch, and the test fails.
+        other error.  If we get the specific "does not exist" error fuer one
+        test and not fuer the other, there's a mismatch, and the test fails.
 
            ** Some format units have special funny semantics and it would
               be difficult to accommodate them here.  Since these are all
@@ -1159,7 +1159,7 @@ klasse SkipitemTest(unittest.TestCase):
         dict_b = {'b':1}
         keywords = ["a", "b"]
 
-        for i in range(32, 127):
+        fuer i in range(32, 127):
             c = chr(i)
 
             # skip parentheses, the error reporting is inconsistent about them
@@ -1204,8 +1204,8 @@ klasse SkipitemTest(unittest.TestCase):
         keywords = ["a", "b"]
 
         supported = ('s#', 's*', 'z#', 'z*', 'y#', 'y*', 'w*')
-        for c in string.ascii_letters:
-            for c2 in '#*':
+        fuer c in string.ascii_letters:
+            fuer c2 in '#*':
                 f = c + c2
                 with self.subTest(format=f):
                     optional_format = "|" + f + "i"
@@ -1216,7 +1216,7 @@ klasse SkipitemTest(unittest.TestCase):
                                     'impossible<bad format char>'):
                             parse(empty_tuple, dict_b, optional_format, keywords)
 
-        for c in map(chr, range(32, 128)):
+        fuer c in map(chr, range(32, 128)):
             f = 'e' + c
             optional_format = "|" + f + "i"
             with self.subTest(format=f):
@@ -1258,7 +1258,7 @@ klasse ParseTupleAndKeywords_Test(unittest.TestCase):
                 "this function got an unexpected keyword argument 'b'"):
             parse((), {'b': 1}, '|O', ['a'])
         with self.assertRaisesRegex(TypeError,
-                fr"argument for function given by name \('a'\) "
+                fr"argument fuer function given by name \('a'\) "
                 fr"and position \(1\)"):
             parse((1,), {'a': 2}, 'O|O', ['a', 'b'])
 
@@ -1317,7 +1317,7 @@ klasse ParseTupleAndKeywords_Test(unittest.TestCase):
     def test_nonascii_keywords(self):
         parse = _testcapi.parse_tuple_and_keywords
 
-        for name in ('a', 'ä', 'ŷ', '㷷', '𐀀'):
+        fuer name in ('a', 'ä', 'ŷ', '㷷', '𐀀'):
             with self.subTest(name=name):
                 self.assertEqual(parse((), {name: 1}, 'O', [name]), (1,))
                 self.assertEqual(parse((), {}, '|O', [name]), (NULL,))
@@ -1325,7 +1325,7 @@ klasse ParseTupleAndKeywords_Test(unittest.TestCase):
                         f"function missing required argument '{name}'"):
                     parse((), {}, 'O', [name])
                 with self.assertRaisesRegex(TypeError,
-                        fr"argument for function given by name \('{name}'\) "
+                        fr"argument fuer function given by name \('{name}'\) "
                         fr"and position \(1\)"):
                     parse((1,), {name: 2}, 'O|O', [name, 'b'])
                 with self.assertRaisesRegex(TypeError,
@@ -1349,7 +1349,7 @@ klasse ParseTupleAndKeywords_Test(unittest.TestCase):
                         f"'utf-8' codec can't decode bytes? "):
                     parse((), {'b': 1}, '|O', [invalid])
 
-                for name2 in ('b', 'ë', 'ĉ', 'Ɐ', '𐀁'):
+                fuer name2 in ('b', 'ë', 'ĉ', 'Ɐ', '𐀁'):
                     with self.subTest(name2=name2):
                         with self.assertRaisesRegex(TypeError,
                                 f"this function got an unexpected keyword argument '{name2}'"):
@@ -1419,7 +1419,7 @@ klasse ParseTupleAndKeywords_Test(unittest.TestCase):
                     "argument 1 must be tuple of length 2, not 1"):
                 parse(([1,],), {}, '(OO)', ['a'])
 
-        for f in 'es', 'et', 'es#', 'et#':
+        fuer f in 'es', 'et', 'es#', 'et#':
             with self.assertRaises(LookupError):  # empty encoding ""
                 parse((('a',),), {}, '(' + f + ')', ['a'])
             with self.assertRaisesRegex(TypeError,

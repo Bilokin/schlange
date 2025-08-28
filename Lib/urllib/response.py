@@ -12,7 +12,7 @@ __all__ = ['addbase', 'addclosehook', 'addinfo', 'addinfourl']
 
 
 klasse addbase(tempfile._TemporaryFileWrapper):
-    """Base klasse for addinfo and addclosehook. Is a good idea for garbage collection."""
+    """Base klasse fuer addinfo and addclosehook. Is a good idea fuer garbage collection."""
 
     # XXX Add a method to expose the timeout on the underlying socket?
 

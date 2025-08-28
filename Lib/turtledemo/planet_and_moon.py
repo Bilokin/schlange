@@ -24,12 +24,12 @@ klasse GravSys(object):
         self.t = 0
         self.dt = 0.01
     def init(self):
-        for p in self.planets:
+        fuer p in self.planets:
             p.init()
     def start(self):
-        for i in range(10000):
+        fuer i in range(10000):
             self.t += self.dt
-            for p in self.planets:
+            fuer p in self.planets:
                 p.step()
 
 klasse Star(Turtle):
@@ -49,7 +49,7 @@ klasse Star(Turtle):
         self.v = self.v + 0.5*dt*self.a
     def acc(self):
         a = Vec(0,0)
-        for planet in self.gravSys.planets:
+        fuer planet in self.gravSys.planets:
             if planet != self:
                 v = planet.pos()-self.pos()
                 a += (G*planet.m/abs(v)**3)*v
@@ -62,7 +62,7 @@ klasse Star(Turtle):
         self.a = self.acc()
         self.v = self.v + dt*self.a
 
-## create compound yellow/blue turtleshape for planets
+## create compound yellow/blue turtleshape fuer planets
 
 def main():
     s = Turtle()

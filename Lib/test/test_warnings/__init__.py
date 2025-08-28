@@ -36,7 +36,7 @@ c_warnings._set_module(c_warnings)
 def warnings_state(module):
     """Use a specific warnings implementation in warning_tests."""
     global __warningregistry__
-    for to_clear in (sys, warning_tests):
+    fuer to_clear in (sys, warning_tests):
         try:
             to_clear.__warningregistry__.clear()
         except AttributeError:
@@ -69,11 +69,11 @@ klasse TestWarning(Warning):
 
 klasse BaseTest:
 
-    """Basic bookkeeping required for testing."""
+    """Basic bookkeeping required fuer testing."""
 
     def setUp(self):
         self.old_unittest_module = unittest.case.warnings
-        # The __warningregistry__ needs to be in a pristine state for tests
+        # The __warningregistry__ needs to be in a pristine state fuer tests
         # to work properly.
         if '__warningregistry__' in globals():
             del globals()['__warningregistry__']
@@ -165,7 +165,7 @@ klasse FilterTests(BaseTest):
             self.assertEqual(len(w), 1)
 
     def test_always_and_all(self):
-        for mode in {"always", "all"}:
+        fuer mode in {"always", "all"}:
             with self.module.catch_warnings(record=True) as w:
                 self.module.resetwarnings()
                 self.module.filterwarnings(mode, category=UserWarning)
@@ -180,7 +180,7 @@ klasse FilterTests(BaseTest):
                 self.assertEqual(w[-1].message.args[0], message)
 
     def test_always_and_all_after_default(self):
-        for mode in {"always", "all"}:
+        fuer mode in {"always", "all"}:
             with self.module.catch_warnings(record=True) as w:
                 self.module.resetwarnings()
                 message = "FilterTests.test_always_and_all_after_ignore"
@@ -204,7 +204,7 @@ klasse FilterTests(BaseTest):
             self.module.resetwarnings()
             self.module.filterwarnings("default", category=UserWarning)
             message = UserWarning("FilterTests.test_default")
-            for x in range(2):
+            fuer x in range(2):
                 self.module.warn(message, UserWarning)
                 if x == 0:
                     self.assertEqual(w[-1].message, message)
@@ -278,7 +278,7 @@ klasse FilterTests(BaseTest):
             try:
                 self.module.warn("FilterTests.test_ordering", UserWarning)
             except UserWarning:
-                self.fail("order handling for actions failed")
+                self.fail("order handling fuer actions failed")
             self.assertEqual(len(w), 0)
 
     def test_filterwarnings(self):
@@ -323,7 +323,7 @@ klasse FilterTests(BaseTest):
             def match(self, a):
                 L[:] = []
 
-        L = [("default",X(),UserWarning,X(),0) for i in range(2)]
+        L = [("default",X(),UserWarning,X(),0) fuer i in range(2)]
         with self.module.catch_warnings(record=True) as w:
             self.module.filters = L
             self.module.warn_explicit(UserWarning("b"), None, "f.py", 42)
@@ -433,7 +433,7 @@ klasse WarnTests(BaseTest):
     def test_message(self):
         with self.module.catch_warnings(record=True) as w:
             self.module.simplefilter("once")
-            for i in range(4):
+            fuer i in range(4):
                 text = 'multi %d' %i  # Different text on each call.
                 self.module.warn(text)
                 self.assertEqual(str(w[-1].message), text)
@@ -442,7 +442,7 @@ klasse WarnTests(BaseTest):
     # Issue 3639
     def test_warn_nonstandard_types(self):
         # warn() should handle non-standard types without issue.
-        for ob in (Warning, None, 42):
+        fuer ob in (Warning, None, 42):
             with self.module.catch_warnings(record=True) as w:
                 self.module.simplefilter("once")
                 self.module.warn(ob)
@@ -556,7 +556,7 @@ klasse WarnTests(BaseTest):
             self.module.resetwarnings()
             self.module.filterwarnings("always", category=UserWarning)
             filenames = ["nonascii\xe9\u20ac", "surrogate\udc80"]
-            for filename in filenames:
+            fuer filename in filenames:
                 try:
                     os.fsencode(filename)
                 except UnicodeEncodeError:
@@ -581,10 +581,10 @@ klasse WarnTests(BaseTest):
 
     def test_bad_str(self):
         # issue 6415
-        # Warnings instance with a bad format string for __str__ should not
+        # Warnings instance with a bad format string fuer __str__ should not
         # trigger a bus error.
         klasse BadStrWarning(Warning):
-            """Warning with a bad format string for __str__."""
+            """Warning with a bad format string fuer __str__."""
             def __str__(self):
                 return ("A bad formatted string %(err)" %
                         {"err" : "there is no %(err)s"})
@@ -786,7 +786,7 @@ klasse PyWCmdLineTests(WCmdLineTests, unittest.TestCase):
 
     def test_warnings_bootstrap(self):
         # Check that the warnings module does get loaded when -W<some option>
-        # is used (see issue #10372 for an example of silent bootstrap failure).
+        # is used (see issue #10372 fuer an example of silent bootstrap failure).
         rc, out, err = assert_python_ok("-Wi", "-c",
             "import sys; sys.modules['warnings'].warn('foo', RuntimeWarning)")
         # '-Wi' was observed
@@ -1068,7 +1068,7 @@ klasse WarningsDisplayTests(BaseTest):
         self.assertEqual(expect, self.module.formatwarning(message,
                                                 category, file_name, line_num))
         # Test the 'line' argument.
-        file_line += " for the win!"
+        file_line += " fuer the win!"
         expect = format % (file_name, line_num, category.__name__, message,
                             file_line)
         self.assertEqual(expect, self.module.formatwarning(message,
@@ -1294,7 +1294,7 @@ klasse CatchWarningTests(BaseTest):
         self.assertEqual(log, [])
 
     def test_check_warnings(self):
-        # Explicit tests for the test.support convenience wrapper
+        # Explicit tests fuer the test.support convenience wrapper
         wmod = self.module
         if wmod is not sys.modules['warnings']:
             self.skipTest('module to test is not loaded warnings module')
@@ -1391,17 +1391,17 @@ klasse EnvironmentVariableTests(BaseTest):
                 ('ignore', None, ImportWarning, None, 0),
                 ('ignore', None, ResourceWarning, None, 0),
             ]
-        expected_output = [str(f).encode() for f in expected_default_filters]
+        expected_output = [str(f).encode() fuer f in expected_default_filters]
 
         if pure_python_api:
             # Disable the warnings acceleration module in the subprocess
             code = "import sys; sys.modules.pop('warnings', None); sys.modules['_warnings'] = None; "
         else:
             code = ""
-        code += "import warnings; [print(f) for f in warnings._get_filters()]"
+        code += "import warnings; [print(f) fuer f in warnings._get_filters()]"
 
         rc, stdout, stderr = assert_python_ok("-c", code, __isolated=True)
-        stdout_lines = [line.strip() for line in stdout.splitlines()]
+        stdout_lines = [line.strip() fuer line in stdout.splitlines()]
         self.maxDiff = None
         self.assertEqual(stdout_lines, expected_output)
 
@@ -1444,7 +1444,7 @@ klasse _DeprecatedTest(BaseTest, unittest.TestCase):
     def test_warning(self):
         version = (3, 11, 0, "final", 0)
         test = [(4, 12), (4, 11), (4, 0), (3, 12)]
-        for remove in test:
+        fuer remove in test:
             msg = rf".*test_warnings.*{remove[0]}\.{remove[1]}"
             filter = msg, DeprecationWarning
             with self.subTest(remove=remove):
@@ -1461,12 +1461,12 @@ klasse _DeprecatedTest(BaseTest, unittest.TestCase):
     def test_RuntimeError(self):
         version = (3, 11, 0, "final", 0)
         test = [(2, 0), (2, 12), (3, 10)]
-        for remove in test:
+        fuer remove in test:
             with self.subTest(remove=remove):
                 with self.assertRaises(RuntimeError):
                     self.module._deprecated("test_warnings", remove=remove,
                                             _version=version)
-        for level in ["beta", "candidate", "final"]:
+        fuer level in ["beta", "candidate", "final"]:
             version = (3, 11, 0, level, 0)
             with self.subTest(releaselevel=level):
                 with self.assertRaises(RuntimeError):
@@ -1668,9 +1668,9 @@ klasse ThreadTests(BaseTest):
                 threading.Thread(target=run_b),
                 ]
             with self.module.catch_warnings(record=True) as w:
-                for thread in threads:
+                fuer thread in threads:
                     thread.start()
-                for thread in threads:
+                fuer thread in threads:
                     thread.join()
                 self.assertEqual(len(w), 2)
                 self.assertEqual(w[0].message.args[0], 'main warning')
@@ -1963,14 +1963,14 @@ klasse DeprecatedTests(PyPublicAPITests):
     def test_only_strings_allowed(self):
         with self.assertRaisesRegex(
             TypeError,
-            "Expected an object of type str for 'message', not 'type'"
+            "Expected an object of type str fuer 'message', not 'type'"
         ):
             @deprecated
             klasse Foo: ...
 
         with self.assertRaisesRegex(
             TypeError,
-            "Expected an object of type str for 'message', not 'function'"
+            "Expected an object of type str fuer 'message', not 'function'"
         ):
             @deprecated
             def foo(): ...
@@ -1980,7 +1980,7 @@ klasse DeprecatedTests(PyPublicAPITests):
         def d(): pass
 
         self.assertFalse(any(
-            isinstance(cell.cell_contents, deprecated) for cell in d.__closure__
+            isinstance(cell.cell_contents, deprecated) fuer cell in d.__closure__
         ))
 
     def test_inspect(self):
@@ -2039,7 +2039,7 @@ klasse DeprecatedTests(PyPublicAPITests):
 
         # The `@deprecated` decorator will update the klasse in-place.
         # Test the child classes first.
-        for cls in reversed((Cls1, Cls2, Cls3, Cls4, Cls5, Cls6, Cls7, Cls8)):
+        fuer cls in reversed((Cls1, Cls2, Cls3, Cls4, Cls5, Cls6, Cls7, Cls8)):
             with self.subTest(f'class {cls.__name__} signature'):
                 try:
                     original_signature = inspect.signature(cls)

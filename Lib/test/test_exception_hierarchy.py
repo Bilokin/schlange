@@ -69,12 +69,12 @@ klasse HierarchyTest(unittest.TestCase):
     """
     def _make_map(s):
         _map = {}
-        for line in s.splitlines():
+        fuer line in s.splitlines():
             line = line.strip('+- ')
             if not line:
                 continue
             excname, _, errnames = line.partition(' ')
-            for errname in filter(None, errnames.strip().split(', ')):
+            fuer errname in filter(None, errnames.strip().split(', ')):
                 if errname == "ENOTCAPABLE" and not hasattr(errno, errname):
                     continue
                 _map[getattr(errno, errname)] = getattr(builtins, excname)
@@ -83,15 +83,15 @@ klasse HierarchyTest(unittest.TestCase):
 
     def test_errno_mapping(self):
         # The OSError constructor maps errnos to subclasses
-        # A sample test for the basic functionality
+        # A sample test fuer the basic functionality
         e = OSError(EEXIST, "Bad file descriptor")
         self.assertIs(type(e), FileExistsError)
         # Exhaustive testing
-        for errcode, exc in self._map.items():
+        fuer errcode, exc in self._map.items():
             e = OSError(errcode, "Some message")
             self.assertIs(type(e), exc)
         othercodes = set(errno.errorcode) - set(self._map)
-        for errcode in othercodes:
+        fuer errcode in othercodes:
             e = OSError(errcode, "Some message")
             self.assertIs(type(e), OSError, repr(e))
 
@@ -109,7 +109,7 @@ klasse HierarchyTest(unittest.TestCase):
         else:
             self.fail("should have raised a FileNotFoundError")
 
-        # Another test for PyErr_SetExcFromWindowsErrWithFilenameObject()
+        # Another test fuer PyErr_SetExcFromWindowsErrWithFilenameObject()
         self.assertFalse(os.path.exists(filename))
         try:
             os.unlink(filename)
@@ -148,7 +148,7 @@ klasse AttributesTest(unittest.TestCase):
 
     def test_blockingioerror(self):
         args = ("a", "b", "c", "d", "e")
-        for n in range(6):
+        fuer n in range(6):
             e = BlockingIOError(*args[:n])
             with self.assertRaises(AttributeError):
                 e.characters_written

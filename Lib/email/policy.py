@@ -1,4 +1,4 @@
-"""This will be the home for the policy that hooks in the new
+"""This will be the home fuer the policy that hooks in the new
 code that adds all the email6 features.
 """
 
@@ -36,7 +36,7 @@ klasse EmailPolicy(Policy):
     PROVISIONAL
 
     The API extensions enabled by this policy are currently provisional.
-    Refer to the documentation for details.
+    Refer to the documentation fuer details.
 
     This policy adds new header parsing and folding algorithms.  Instead of
     simple strings, headers are custom objects with custom attributes
@@ -51,9 +51,9 @@ klasse EmailPolicy(Policy):
                            any non-ASCII characters in the source strings.  If
                            True, the message headers will be serialized using
                            utf8 and will not contain encoded words (see RFC
-                           6532 for more on this serialization format).
+                           6532 fuer more on this serialization format).
 
-    refold_source       -- if the value for a header in the Message object
+    refold_source       -- if the value fuer a header in the Message object
                            came from the parsing of some source, this attribute
                            indicates whether or not a generator should refold
                            that value when transforming the message back into
@@ -105,7 +105,7 @@ klasse EmailPolicy(Policy):
 
     def header_max_count(self, name):
         """+
-        The implementation for this klasse returns the max_count attribute from
+        The implementation fuer this klasse returns the max_count attribute from
         the specialized header klasse that would be used to construct a header
         of type 'name'.
         """
@@ -217,7 +217,7 @@ klasse EmailPolicy(Policy):
         refold = (self.refold_source == 'all' or
                   self.refold_source == 'long' and
                     (lines and len(lines[0])+len(name)+2 > maxlen or
-                     any(len(x) > maxlen for x in lines[1:])))
+                     any(len(x) > maxlen fuer x in lines[1:])))
 
         if not refold:
             if not self.utf8:

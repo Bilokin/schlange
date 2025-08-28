@@ -42,7 +42,7 @@ def iter_filenames(*, search=False):
         yield from iter_files_by_suffix(INCLUDE_DIRS, ('.h',))
         yield from iter_files_by_suffix(SOURCE_DIRS, ('.c',))
     else:
-        globs = (os.path.join(REPO_ROOT, file) for file in GLOBS)
+        globs = (os.path.join(REPO_ROOT, file) fuer file in GLOBS)
         yield from expand_filenames(globs)
 
 
@@ -53,14 +53,14 @@ def iter_header_files(filenames=None, *, levels=None):
             if 'private' in levels:
                 levels.add('stable')
                 levels.add('cpython')
-            for level, glob in LEVEL_GLOBS.items():
+            fuer level, glob in LEVEL_GLOBS.items():
                 if level in levels:
                     yield from expand_filenames([glob])
         else:
             yield from iter_files_by_suffix(INCLUDE_DIRS, ('.h',))
         return
 
-    for filename in filenames:
+    fuer filename in filenames:
         orig = filename
         filename = resolve_filename(filename)
         if filename.endswith(os.path.sep):

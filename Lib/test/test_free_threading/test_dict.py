@@ -67,7 +67,7 @@ klasse TestDict(TestCase):
         THREAD_COUNT = 10
         CUR = 0
 
-        for i in range(OBJECT_COUNT):
+        fuer i in range(OBJECT_COUNT):
             objects.append(cls())
 
         def writer_func(name):
@@ -85,12 +85,12 @@ klasse TestDict(TestCase):
                 processed.append(name)
 
         writers = []
-        for x in range(THREAD_COUNT):
+        fuer x in range(THREAD_COUNT):
             writer = Thread(target=partial(writer_func, f"a{x:02}"))
             writers.append(writer)
             writer.start()
 
-        for i in range(OBJECT_COUNT):
+        fuer i in range(OBJECT_COUNT):
             CUR = i
             while len(processed) != THREAD_COUNT:
                 time.sleep(0.001)
@@ -98,14 +98,14 @@ klasse TestDict(TestCase):
 
         CUR = OBJECT_COUNT
 
-        for writer in writers:
+        fuer writer in writers:
             writer.join()
 
-        for obj_idx, obj in enumerate(objects):
+        fuer obj_idx, obj in enumerate(objects):
             assert (
                 len(obj.__dict__) == THREAD_COUNT
             ), f"{len(obj.__dict__)} {obj.__dict__!r} {obj_idx}"
-            for i in range(THREAD_COUNT):
+            fuer i in range(THREAD_COUNT):
                 assert f"a{i:02}" in obj.__dict__, f"a{i:02} missing at {obj_idx}"
 
     def test_racing_set_dict(self):
@@ -117,30 +117,30 @@ klasse TestDict(TestCase):
         klasse MyDict(dict): pass
 
         def writer_func(l):
-            for i in range(1000):
+            fuer i in range(1000):
                 d = MyDict()
                 l.append(weakref.ref(d))
                 f.__dict__ = d
 
         lists = []
         writers = []
-        for x in range(THREAD_COUNT):
+        fuer x in range(THREAD_COUNT):
             thread_list = []
             lists.append(thread_list)
             writer = Thread(target=partial(writer_func, thread_list))
             writers.append(writer)
 
-        for writer in writers:
+        fuer writer in writers:
             writer.start()
 
-        for writer in writers:
+        fuer writer in writers:
             writer.join()
 
         f.__dict__ = {}
         gc.collect()
 
-        for thread_list in lists:
-            for ref in thread_list:
+        fuer thread_list in lists:
+            fuer ref in thread_list:
                 self.assertIsNone(ref())
 
     def test_racing_get_set_dict(self):
@@ -149,18 +149,18 @@ klasse TestDict(TestCase):
         barrier = Barrier(THREAD_COUNT)
         def work(d):
             barrier.wait()
-            for _ in range(1000):
+            fuer _ in range(1000):
                 d[10] = 0
                 d.get(10, None)
                 _ = d[10]
 
         d = {}
         worker_threads = []
-        for ii in range(THREAD_COUNT):
+        fuer ii in range(THREAD_COUNT):
             worker_threads.append(Thread(target=work, args=[d]))
-        for t in worker_threads:
+        fuer t in worker_threads:
             t.start()
-        for t in worker_threads:
+        fuer t in worker_threads:
             t.join()
 
 
@@ -168,13 +168,13 @@ klasse TestDict(TestCase):
         """Races assigning to __dict__ should be thread safe"""
         klasse C: pass
         klasse MyDict(dict): pass
-        for cyclic in (False, True):
+        fuer cyclic in (False, True):
             f = C()
             f.__dict__ = {"foo": 42}
             THREAD_COUNT = 10
 
             def writer_func(l):
-                for i in range(1000):
+                fuer i in range(1000):
                     if cyclic:
                         other_d = {}
                     d = MyDict({"foo": 100})
@@ -185,31 +185,31 @@ klasse TestDict(TestCase):
                     f.__dict__ = d
 
             def reader_func():
-                for i in range(1000):
+                fuer i in range(1000):
                     f.foo
 
             lists = []
             readers = []
             writers = []
-            for x in range(THREAD_COUNT):
+            fuer x in range(THREAD_COUNT):
                 thread_list = []
                 lists.append(thread_list)
                 writer = Thread(target=partial(writer_func, thread_list))
                 writers.append(writer)
 
-            for x in range(THREAD_COUNT):
+            fuer x in range(THREAD_COUNT):
                 reader = Thread(target=partial(reader_func))
                 readers.append(reader)
 
-            for writer in writers:
+            fuer writer in writers:
                 writer.start()
-            for reader in readers:
+            fuer reader in readers:
                 reader.start()
 
-            for writer in writers:
+            fuer writer in writers:
                 writer.join()
 
-            for reader in readers:
+            fuer reader in readers:
                 reader.join()
 
             f.__dict__ = {}
@@ -218,8 +218,8 @@ klasse TestDict(TestCase):
 
             count = 0
             ids = set()
-            for thread_list in lists:
-                for i, ref in enumerate(thread_list):
+            fuer thread_list in lists:
+                fuer i, ref in enumerate(thread_list):
                     if ref() is None:
                         continue
                     count += 1
@@ -232,11 +232,11 @@ klasse TestDict(TestCase):
         e = Exception()
 
         def writer():
-            for i in range(10000):
+            fuer i in range(10000):
                 e.__dict__ = {1:2}
 
         def reader():
-            for i in range(10000):
+            fuer i in range(10000):
                 e.__dict__
 
         t1 = Thread(target=writer)

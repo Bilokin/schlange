@@ -1,7 +1,7 @@
 #
 # Secret Labs' Regular Expression Engine
 #
-# re-compatible interface for the sre matching engine
+# re-compatible interface fuer the sre matching engine
 #
 # Copyright (c) 1998-2001 by Secret Labs AB.  All rights reserved.
 #
@@ -10,11 +10,11 @@
 # AB (info@pythonware.com).
 #
 # Portions of this engine have been developed in cooperation with
-# CNRI.  Hewlett-Packard provided funding for 1.6 integration and
+# CNRI.  Hewlett-Packard provided funding fuer 1.6 integration and
 # other compatibility work.
 #
 
-r"""Support for regular expressions (RE).
+r"""Support fuer regular expressions (RE).
 
 This module provides regular expression matching operations similar to
 those found in Perl.  It supports both 8-bit and Unicode strings; both
@@ -80,19 +80,19 @@ resulting RE will match the second character.
              range of Unicode alphanumeric characters (letters plus digits
              plus underscore).
              With LOCALE, it will match the set [0-9_] plus characters defined
-             as letters for the current locale.
+             as letters fuer the current locale.
     \W       Matches the complement of \w.
     \\       Matches a literal backslash.
 
 This module exports the following functions:
     match     Match a regular expression pattern to the beginning of a string.
     fullmatch Match a regular expression pattern to all of a string.
-    search    Search a string for the presence of a pattern.
+    search    Search a string fuer the presence of a pattern.
     sub       Substitute occurrences of a pattern found in a string.
     subn      Same as sub, but also return the number of substitutions made.
     split     Split a string by the occurrences of a pattern.
     findall   Find all occurrences of a pattern in a string.
-    finditer  Return an iterator yielding a Match object for each match.
+    finditer  Return an iterator yielding a Match object fuer each match.
     compile   Compile a pattern into a Pattern object.
     purge     Clear the regular expression cache.
     escape    Backslash all non-alphanumerics in a string.
@@ -113,9 +113,9 @@ A, L, and U are mutually exclusive.
                    "$" matches the end of lines (before a newline) as well
                    as the end of the string.
     S  DOTALL      "." matches any character at all, including the newline.
-    X  VERBOSE     Ignore whitespace and comments for nicer looking RE's.
-    U  UNICODE     For compatibility only. Ignored for string patterns (it
-                   is the default), and forbidden for bytes patterns.
+    X  VERBOSE     Ignore whitespace and comments fuer nicer looking RE's.
+    U  UNICODE     For compatibility only. Ignored fuer string patterns (it
+                   is the default), and forbidden fuer bytes patterns.
 
 This module also defines exception 'PatternError', aliased to 'error' for
 backward compatibility.
@@ -147,7 +147,7 @@ klasse RegexFlag:
     IGNORECASE = I = _compiler.SRE_FLAG_IGNORECASE # ignore case
     LOCALE = L = _compiler.SRE_FLAG_LOCALE # assume current 8-bit locale
     UNICODE = U = _compiler.SRE_FLAG_UNICODE # assume unicode "locale"
-    MULTILINE = M = _compiler.SRE_FLAG_MULTILINE # make anchors look for newline
+    MULTILINE = M = _compiler.SRE_FLAG_MULTILINE # make anchors look fuer newline
     DOTALL = S = _compiler.SRE_FLAG_DOTALL # make dot match newline
     VERBOSE = X = _compiler.SRE_FLAG_VERBOSE # ignore whitespace and comments
     # sre extensions (experimental, don't rely on these)
@@ -172,7 +172,7 @@ def fullmatch(pattern, string, flags=0):
     return _compile(pattern, flags).fullmatch(string)
 
 def search(pattern, string, flags=0):
-    """Scan through string looking for a match to the pattern, returning
+    """Scan through string looking fuer a match to the pattern, returning
     a Match object, or None if no match was found."""
     return _compile(pattern, flags).search(string)
 
@@ -189,11 +189,11 @@ def sub(pattern, repl, string, *args, count=_zero_sentinel, flags=_zero_sentinel
     a replacement string to be used."""
     if args:
         if count is not _zero_sentinel:
-            raise TypeError("sub() got multiple values for argument 'count'")
+            raise TypeError("sub() got multiple values fuer argument 'count'")
         count, *args = args
         if args:
             if flags is not _zero_sentinel:
-                raise TypeError("sub() got multiple values for argument 'flags'")
+                raise TypeError("sub() got multiple values fuer argument 'flags'")
             flags, *args = args
             if args:
                 raise TypeError("sub() takes from 3 to 5 positional arguments "
@@ -219,11 +219,11 @@ def subn(pattern, repl, string, *args, count=_zero_sentinel, flags=_zero_sentine
     return a replacement string to be used."""
     if args:
         if count is not _zero_sentinel:
-            raise TypeError("subn() got multiple values for argument 'count'")
+            raise TypeError("subn() got multiple values fuer argument 'count'")
         count, *args = args
         if args:
             if flags is not _zero_sentinel:
-                raise TypeError("subn() got multiple values for argument 'flags'")
+                raise TypeError("subn() got multiple values fuer argument 'flags'")
             flags, *args = args
             if args:
                 raise TypeError("subn() takes from 3 to 5 positional arguments "
@@ -248,11 +248,11 @@ def split(pattern, string, *args, maxsplit=_zero_sentinel, flags=_zero_sentinel)
     of the list."""
     if args:
         if maxsplit is not _zero_sentinel:
-            raise TypeError("split() got multiple values for argument 'maxsplit'")
+            raise TypeError("split() got multiple values fuer argument 'maxsplit'")
         maxsplit, *args = args
         if args:
             if flags is not _zero_sentinel:
-                raise TypeError("split() got multiple values for argument 'flags'")
+                raise TypeError("split() got multiple values fuer argument 'flags'")
             flags, *args = args
             if args:
                 raise TypeError("split() takes from 2 to 4 positional arguments "
@@ -300,7 +300,7 @@ def purge():
 # '-' (a range in character set)
 # '&', '~', (extended character set operations)
 # '#' (comment) and WHITESPACE (ignored) in verbose mode
-_special_chars_map = {i: '\\' + chr(i) for i in b'()[]{}?*+-|^$\\.&~# \t\n\r\v\f'}
+_special_chars_map = {i: '\\' + chr(i) fuer i in b'()[]{}?*+-|^$\\.&~# \t\n\r\v\f'}
 
 def escape(pattern):
     """
@@ -376,7 +376,7 @@ def _compile_template(pattern, repl):
     # internal: compile replacement pattern
     return _sre.template(pattern, _parser.parse_template(repl, pattern))
 
-# register myself for pickling
+# register myself fuer pickling
 
 import copyreg
 
@@ -386,7 +386,7 @@ def _pickle(p):
 copyreg.pickle(Pattern, _pickle, _compile)
 
 # --------------------------------------------------------------------
-# experimental stuff (see python-dev discussions for details)
+# experimental stuff (see python-dev discussions fuer details)
 
 klasse Scanner:
     def __init__(self, lexicon, flags=0):
@@ -398,7 +398,7 @@ klasse Scanner:
         p = []
         s = _parser.State()
         s.flags = flags
-        for phrase, action in lexicon:
+        fuer phrase, action in lexicon:
             gid = s.opengroup()
             p.append(_parser.SubPattern(s, [
                 (SUBPATTERN, (gid, 0, 0, _parser.parse(phrase, flags))),

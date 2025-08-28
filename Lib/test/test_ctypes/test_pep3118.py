@@ -28,7 +28,7 @@ def normalize(format):
 
 klasse Test(unittest.TestCase):
     def test_native_types(self):
-        for tp, fmt, shape, itemtp in native_types:
+        fuer tp, fmt, shape, itemtp in native_types:
             ob = tp()
             v = memoryview(ob)
             self.assertEqual(normalize(v.format), normalize(fmt))
@@ -47,12 +47,12 @@ klasse Test(unittest.TestCase):
             self.assertFalse(v.readonly)
 
             n = 1
-            for dim in v.shape:
+            fuer dim in v.shape:
                 n = n * dim
             self.assertEqual(n * v.itemsize, len(v.tobytes()))
 
     def test_endian_types(self):
-        for tp, fmt, shape, itemtp in endian_types:
+        fuer tp, fmt, shape, itemtp in endian_types:
             ob = tp()
             v = memoryview(ob)
             self.assertEqual(v.format, fmt)
@@ -69,7 +69,7 @@ klasse Test(unittest.TestCase):
             self.assertFalse(v.readonly)
 
             n = 1
-            for dim in v.shape:
+            fuer dim in v.shape:
                 n = n * dim
             self.assertEqual(n * v.itemsize, len(v.tobytes()))
 

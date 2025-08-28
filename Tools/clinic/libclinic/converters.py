@@ -72,7 +72,7 @@ klasse BaseUnsignedIntConverter(CConverter):
                 }}}}
                 if ((size_t)_bytes > sizeof({type})) {{{{
                     PyErr_SetString(PyExc_OverflowError,
-                                    "Python int too large for C {type}");
+                                    "Python int too large fuer C {type}");
                     goto exit;
                 }}}}
             }}}}
@@ -137,7 +137,7 @@ klasse bool_converter(CConverter):
 klasse defining_class_converter(CConverter):
     """
     A special-case converter:
-    this is the default converter used for the defining class.
+    this is the default converter used fuer the defining class.
     """
     type = 'PyTypeObject *'
     format_unit = ''
@@ -673,7 +673,7 @@ klasse object_converter(CConverter):
 
 
 #
-# We define three conventions for buffer types in the 'accept' argument:
+# We define three conventions fuer buffer types in the 'accept' argument:
 #
 #  buffer  : any object supporting the buffer interface
 #  rwbuffer: any object supporting the buffer interface, but must be writeable
@@ -720,11 +720,11 @@ klasse str_converter(CConverter):
         self.length = bool(zeroes)
         if encoding:
             if self.default not in (Null, None, unspecified):
-                fail("str_converter: Argument Clinic doesn't support default values for encoded strings")
+                fail("str_converter: Argument Clinic doesn't support default values fuer encoded strings")
             self.encoding = encoding
             self.type = 'char *'
             # sorry, clinic can't support preallocated buffers
-            # for es# and et#
+            # fuer es# and et#
             self.c_default = "NULL"
         if NoneType in accept and self.c_default == "Py_None":
             self.c_default = "NULL"
@@ -789,9 +789,9 @@ klasse str_converter(CConverter):
 # unit and the arguments necessary to represent those semantics
 # properly.  Hopefully with this approach we'll get it 100% right.
 #
-# The r() function (short for "register") both registers the
+# The r() function (short fuer "register") both registers the
 # mapping from arguments to format unit *and* registers the
-# legacy C converter for that format unit.
+# legacy C converter fuer that format unit.
 #
 def r(format_unit: str,
       *,
@@ -806,8 +806,8 @@ def r(format_unit: str,
         #   es, es#, et, or et#
         #   because of their extra encoding argument
         #
-        # also don't add the converter for 's' because
-        # the metaclass for CConverter adds it for us.
+        # also don't add the converter fuer 's' because
+        # the metaclass fuer CConverter adds it fuer us.
         kwargs: dict[str, Any] = {}
         if accept != {str}:
             kwargs['accept'] = accept
@@ -819,7 +819,7 @@ def r(format_unit: str,
     d = str_converter_argument_map
     key = str_converter_key(accept, encoding, zeroes)
     if key in d:
-        sys.exit("Duplicate keys specified for str_converter_argument_map!")
+        sys.exit("Duplicate keys specified fuer str_converter_argument_map!")
     d[key] = format_unit
 
 r('es',  encoding=True,              accept={str})
@@ -978,7 +978,7 @@ klasse Py_buffer_converter(CConverter):
 
     def converter_init(self, *, accept: TypeSet = {buffer}) -> None:
         if self.default not in (unspecified, None):
-            fail("The only legal default value for Py_buffer is None.")
+            fail("The only legal default value fuer Py_buffer is None.")
 
         self.c_default = self.c_ignored_default
 
@@ -1071,7 +1071,7 @@ def correct_name_for_self(
 klasse self_converter(CConverter):
     """
     A special-case converter:
-    this is the default converter used for "self".
+    this is the default converter used fuer "self".
     """
     type: str | None = None
     format_unit = ''
@@ -1103,7 +1103,7 @@ klasse self_converter(CConverter):
     # However!  We habitually cast these functions to PyCFunction,
     # since functions that accept keyword arguments don't fit this signature
     # but are stored there anyway.  So strict type equality isn't important
-    # for these functions.
+    # fuer these functions.
     #
     # So:
     #
@@ -1185,7 +1185,7 @@ klasse self_converter(CConverter):
                 and self.specified_type in ('PyObject *', None))
 
 
-# Converters for var-positional parameter.
+# Converters fuer var-positional parameter.
 
 klasse VarPosCConverter(CConverter):
     format_unit = ''
@@ -1220,7 +1220,7 @@ klasse varpos_tuple_converter(VarPosCConverter):
                     if (!{paramname}) {{{{
                         goto exit;
                     }}}}
-                    for (Py_ssize_t i = {max_pos}; i < nargs; ++i) {{{{
+                    fuer (Py_ssize_t i = {max_pos}; i < nargs; ++i) {{{{
                         PyTuple_SET_ITEM({paramname}, i - {max_pos}, Py_NewRef(args[i]));
                     }}}}
                     """

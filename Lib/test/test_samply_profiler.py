@@ -101,7 +101,7 @@ klasse TestSamplyProfilerMixin:
             code = """if 1:
                 def foo(n):
                     x = 0
-                    for i in range(n):
+                    fuer i in range(n):
                         x += i
 
                 def bar(n):
@@ -124,7 +124,7 @@ klasse TestSamplyProfilerMixin:
             code = """if 1:
                 def foo(n):
                     x = 0
-                    for i in range(n):
+                    fuer i in range(n):
                         x += i
 
                 def bar(n):
@@ -161,7 +161,7 @@ klasse TestSamplyProfiler(unittest.TestCase, TestSamplyProfilerMixin):
         files_to_delete = (
             set(pathlib.Path("/tmp/").glob("perf-*.map")) - self.perf_files
         )
-        for file in files_to_delete:
+        fuer file in files_to_delete:
             file.unlink()
 
     def test_pre_fork_compile(self):
@@ -188,7 +188,7 @@ klasse TestSamplyProfiler(unittest.TestCase, TestSamplyProfilerMixin):
 
                 def compile_trampolines_for_all_functions():
                     perf_trampoline_set_persist_after_fork(1)
-                    for _, obj in globals().items():
+                    fuer _, obj in globals().items():
                         if callable(obj) and hasattr(obj, '__code__'):
                             compile_perf_trampoline_entry(obj.__code__)
 
@@ -235,7 +235,7 @@ klasse TestSamplyProfiler(unittest.TestCase, TestSamplyProfilerMixin):
         # Pre-compiled perf-map entries of a forked process must be
         # identical in both the parent and child perf-map files.
         perf_file_lines = perf_file_contents.split("\n")
-        for line in perf_file_lines:
+        fuer line in perf_file_lines:
             if f"py::foo_fork:{script}" in line or f"py::bar_fork:{script}" in line:
                 self.assertIn(line, child_perf_file_contents)
 

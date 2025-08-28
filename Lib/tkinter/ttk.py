@@ -47,7 +47,7 @@ def _format_optdict(optdict, script=False, ignore=None):
       ('-foreground', 'blue', '-padding', '1 2 3 4')"""
 
     opts = []
-    for opt, value in optdict.items():
+    fuer opt, value in optdict.items():
         if not ignore or opt not in ignore:
             opts.append("-%s" % opt)
             if value is not None:
@@ -63,7 +63,7 @@ def _mapdict_values(items):
     #   returns:
     #   ['active selected', 'grey', 'focus', [1, 2, 3, 4]]
     opt_val = []
-    for *state, val in items:
+    fuer *state, val in items:
         if len(state) == 1:
             # if it is empty (something that evaluates to False), then
             # format it to Tcl code to denote the "normal" state
@@ -87,7 +87,7 @@ def _format_mapdict(mapdict, script=False):
       ('-expand', '{active selected} grey focus {1, 2, 3, 4}')"""
 
     opts = []
-    for opt, value in mapdict.items():
+    fuer opt, value in mapdict.items():
         opts.extend(("-%s" % opt,
                      _format_optvalue(_mapdict_values(value), script)))
 
@@ -111,7 +111,7 @@ def _format_elemcreate(etype, script=False, *args, **kw):
 
     if etype == "vsapi":
         # define an element whose visual appearance is drawn using the
-        # Microsoft Visual Styles API which is responsible for the
+        # Microsoft Visual Styles API which is responsible fuer the
         # themed styles on Windows XP and Vista.
         # Availability: Tk 8.6, Windows XP and Vista.
         if len(args) < 3:
@@ -167,7 +167,7 @@ def _format_layoutlist(layout, indent=0, indent_size=2):
       Menubutton.indicator -side right"""
     script = []
 
-    for layout_elem in layout:
+    fuer layout_elem in layout:
         elem, opts = layout_elem
         opts = opts or {}
         fopts = ' '.join(_format_optdict(opts, True, ("children",)))
@@ -193,7 +193,7 @@ def _script_from_settings(settings):
     script = []
     # a script will be generated according to settings passed, which
     # will then be evaluated by Tcl
-    for name, opts in settings.items():
+    fuer name, opts in settings.items():
         # will format specific keys according to Tcl code
         if opts.get('configure'): # format 'configure'
             s = ' '.join(_format_optdict(opts['configure'], True))
@@ -235,7 +235,7 @@ def _list_from_statespec(stuple):
         return stuple
     result = []
     it = iter(stuple)
-    for state, val in zip(it, it):
+    fuer state, val in zip(it, it):
         if hasattr(state, 'typename'):  # this is a Tcl object
             state = str(state).split()
         elif isinstance(state, str):
@@ -281,7 +281,7 @@ def _val_or_dict(tk, options, *args):
     the appropriate result.
 
     If no option is specified, a dict is returned. If an option is
-    specified with the None value, the value for that option is returned.
+    specified with the None value, the value fuer that option is returned.
     Otherwise, the function just sets the passed options and the caller
     shouldn't be expecting a return value anyway."""
     options = _format_optdict(options)
@@ -328,7 +328,7 @@ def _tclobj_to_py(val):
 def tclobjs_to_py(adict):
     """Returns adict with its values converted from Tcl objects to Python
     objects."""
-    for opt, val in adict.items():
+    fuer opt, val in adict.items():
         adict[opt] = _tclobj_to_py(val)
 
     return adict
@@ -361,7 +361,7 @@ klasse Style(object):
         style.
 
         Each key in kw is an option and each value is either a string or
-        a sequence identifying the value for that option."""
+        a sequence identifying the value fuer that option."""
         if query_opt is not None:
             kw[query_opt] = None
         result = _val_or_dict(self.tk, kw, self._name, "configure", style)
@@ -383,15 +383,15 @@ klasse Style(object):
 
         result = self.tk.call(self._name, "map", style, *_format_mapdict(kw))
         return {k: _list_from_statespec(self.tk.splitlist(v))
-                for k, v in _splitdict(self.tk, result).items()}
+                fuer k, v in _splitdict(self.tk, result).items()}
 
 
     def lookup(self, style, option, state=None, default=None):
-        """Returns the value specified for option in style.
+        """Returns the value specified fuer option in style.
 
         If state is specified it is expected to be a sequence of one
         or more states. If the default argument is set, it is used as
-        a fallback value in case no specification for option is found."""
+        a fallback value in case no specification fuer option is found."""
         state = ' '.join(state) if state else ''
 
         return self.tk.call(self._name, "lookup", style, '-%s' % option,
@@ -399,8 +399,8 @@ klasse Style(object):
 
 
     def layout(self, style, layoutspec=None):
-        """Define the widget layout for given style. If layoutspec is
-        omitted, return the layout specification for given style.
+        """Define the widget layout fuer given style. If layoutspec is
+        omitted, return the layout specification fuer given style.
 
         layoutspec is expected to be a list or an object different than
         None that evaluates to False if you want to "turn off" that style.
@@ -450,13 +450,13 @@ klasse Style(object):
 
     def element_names(self):
         """Returns the list of elements defined in the current theme."""
-        return tuple(n.lstrip('-') for n in self.tk.splitlist(
+        return tuple(n.lstrip('-') fuer n in self.tk.splitlist(
             self.tk.call(self._name, "element", "names")))
 
 
     def element_options(self, elementname):
         """Return the list of elementname's options."""
-        return tuple(o.lstrip('-') for o in self.tk.splitlist(
+        return tuple(o.lstrip('-') fuer o in self.tk.splitlist(
             self.tk.call(self._name, "element", "options", elementname)))
 
 
@@ -466,7 +466,7 @@ klasse Style(object):
         It is an error if themename already exists. If parent is
         specified, the new theme will inherit styles, elements and
         layouts from the specified parent theme. If settings are present,
-        they are expected to have the same syntax used for theme_settings."""
+        they are expected to have the same syntax used fuer theme_settings."""
         script = _script_from_settings(settings) if settings else ''
 
         if parent:
@@ -510,7 +510,7 @@ klasse Style(object):
 
 
 klasse Widget(tkinter.Widget):
-    """Base klasse for Tk themed widgets."""
+    """Base klasse fuer Tk themed widgets."""
 
     def __init__(self, master, widgetname, kw=None):
         """Constructs a Ttk Widget with the parent master.
@@ -813,7 +813,7 @@ klasse Notebook(Widget):
                 * The string "current", which identifies the
                   currently-selected tab
                 * The string "end", which returns the number of tabs (only
-                  valid for method index)
+                  valid fuer method index)
         """
         Widget.__init__(self, master, "ttk::notebook", kw)
 
@@ -889,10 +889,10 @@ klasse Notebook(Widget):
 
 
     def enable_traversal(self):
-        """Enable keyboard traversal for a toplevel window containing
+        """Enable keyboard traversal fuer a toplevel window containing
         this notebook.
 
-        This will extend the bindings for the toplevel window containing
+        This will extend the bindings fuer the toplevel window containing
         this notebook as follows:
 
             Control-Tab: selects the tab following the currently selected
@@ -953,7 +953,7 @@ klasse Panedwindow(Widget, tkinter.PanedWindow):
 
         pane is either an integer index or the name of a managed subwindow.
         If kw is not given, returns a dict of the pane option values. If
-        option is specified then the value for that option is returned.
+        option is specified then the value fuer that option is returned.
         Otherwise, sets the options to the corresponding values."""
         if option is not None:
             kw[option] = None
@@ -1064,7 +1064,7 @@ klasse Scale(Widget, tkinter.Scale):
     def configure(self, cnf=None, **kw):
         """Modify or query scale options.
 
-        Setting a value for any of the "from", "from_" or "to" options
+        Setting a value fuer any of the "from", "from_" or "to" options
         generates a <<RangeChanged>> event."""
         retval = Widget.configure(self, cnf, **kw)
         if not isinstance(cnf, (type(None), str)):
@@ -1135,7 +1135,7 @@ klasse Sizegrip(Widget):
 klasse Spinbox(Entry):
     """Ttk Spinbox is an Entry with increment and decrement arrows
 
-    It is commonly used for number entry or to select from a list of
+    It is commonly used fuer number entry or to select from a list of
     string values.
     """
 
@@ -1217,10 +1217,10 @@ klasse Treeview(Widget, tkinter.XView, tkinter.YView):
 
 
     def column(self, column, option=None, **kw):
-        """Query or modify the options for the specified column.
+        """Query or modify the options fuer the specified column.
 
         If kw is not given, returns a dict of the column option values. If
-        option is specified then the value for that option is returned.
+        option is specified then the value fuer that option is returned.
         Otherwise, sets the options to the corresponding values."""
         if option is not None:
             kw[option] = None
@@ -1255,10 +1255,10 @@ klasse Treeview(Widget, tkinter.XView, tkinter.YView):
 
 
     def heading(self, column, option=None, **kw):
-        """Query or modify the heading options for the specified column.
+        """Query or modify the heading options fuer the specified column.
 
         If kw is not given, returns a dict of the heading option values. If
-        option is specified then the value for that option is returned.
+        option is specified then the value fuer that option is returned.
         Otherwise, sets the options to the corresponding values.
 
         Valid options/values are:
@@ -1354,10 +1354,10 @@ klasse Treeview(Widget, tkinter.XView, tkinter.YView):
 
 
     def item(self, item, option=None, **kw):
-        """Query or modify the options for the specified item.
+        """Query or modify the options fuer the specified item.
 
-        If no options are given, a dict with options/values for the item
-        is returned. If option is specified then the value for that option
+        If no options are given, a dict with options/values fuer the item
+        is returned. If option is specified then the value fuer that option
         is returned. Otherwise, sets the options to the corresponding
         values as given by kw."""
         if option is not None:
@@ -1374,7 +1374,7 @@ klasse Treeview(Widget, tkinter.XView, tkinter.YView):
         it is moved to the end. If item was detached it is reattached."""
         self.tk.call(self._w, "move", item, parent, index)
 
-    reattach = move # A sensible method name for reattaching detached items
+    reattach = move # A sensible method name fuer reattaching detached items
 
 
     def next(self, item):
@@ -1440,7 +1440,7 @@ klasse Treeview(Widget, tkinter.XView, tkinter.YView):
         """Query or set the value of given item.
 
         With one argument, return a dictionary of column/value pairs
-        for the specified item. With two arguments, return the current
+        fuer the specified item. With two arguments, return the current
         value of the specified column. With three arguments, set the
         value of given column in given item to the specified value."""
         res = self.tk.call(self._w, "set", item, column, value)
@@ -1452,19 +1452,19 @@ klasse Treeview(Widget, tkinter.XView, tkinter.YView):
 
 
     def tag_bind(self, tagname, sequence=None, callback=None):
-        """Bind a callback for the given event sequence to the tag tagname.
-        When an event is delivered to an item, the callbacks for each
+        """Bind a callback fuer the given event sequence to the tag tagname.
+        When an event is delivered to an item, the callbacks fuer each
         of the item's tags option are called."""
         self._bind((self._w, "tag", "bind", tagname), sequence, callback, add=0)
 
 
     def tag_configure(self, tagname, option=None, **kw):
-        """Query or modify the options for the specified tagname.
+        """Query or modify the options fuer the specified tagname.
 
-        If kw is not given, returns a dict of the option settings for tagname.
-        If option is specified, returns the value for that option for the
+        If kw is not given, returns a dict of the option settings fuer tagname.
+        If option is specified, returns the value fuer that option fuer the
         specified tagname. Otherwise, sets the options to the corresponding
-        values for the given tagname."""
+        values fuer the given tagname."""
         if option is not None:
             kw[option] = None
         return _val_or_dict(self.tk, kw, self._w, "tag", "configure",
@@ -1629,7 +1629,7 @@ klasse OptionMenu(Menubutton):
         a default value."""
         menu = self['menu']
         menu.delete(0, 'end')
-        for val in values:
+        fuer val in values:
             menu.add_radiobutton(label=val,
                 command=(
                     None if self._callback is None

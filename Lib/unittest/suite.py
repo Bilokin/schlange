@@ -36,7 +36,7 @@ klasse BaseTestSuite(object):
 
     def countTestCases(self):
         cases = self._removed_tests
-        for test in self:
+        fuer test in self:
             if test:
                 cases += test.countTestCases()
         return cases
@@ -54,11 +54,11 @@ klasse BaseTestSuite(object):
     def addTests(self, tests):
         if isinstance(tests, str):
             raise TypeError("tests must be an iterable of tests, not a string")
-        for test in tests:
+        fuer test in tests:
             self.addTest(test)
 
     def run(self, result):
-        for index, test in enumerate(self):
+        fuer index, test in enumerate(self):
             if result.shouldStop:
                 break
             test(result)
@@ -71,7 +71,7 @@ klasse BaseTestSuite(object):
         try:
             test = self._tests[index]
         except TypeError:
-            # support for suite implementations that have overridden self._tests
+            # support fuer suite implementations that have overridden self._tests
             pass
         else:
             # Some unittest tests add non TestCase/TestSuite objects to
@@ -85,7 +85,7 @@ klasse BaseTestSuite(object):
 
     def debug(self):
         """Run the tests without collecting errors in a TestResult"""
-        for test in self:
+        fuer test in self:
             test.debug()
 
 
@@ -104,7 +104,7 @@ klasse TestSuite(BaseTestSuite):
         if getattr(result, '_testRunEntered', False) is False:
             result._testRunEntered = topLevel = True
 
-        for index, test in enumerate(self):
+        fuer index, test in enumerate(self):
             if result.shouldStop:
                 break
 
@@ -178,7 +178,7 @@ klasse TestSuite(BaseTestSuite):
                                                             className)
                 if failed and doClassCleanups is not None:
                     doClassCleanups()
-                    for exc_info in currentClass.tearDown_exceptions:
+                    fuer exc_info in currentClass.tearDown_exceptions:
                         self._createClassOrModuleLevelException(
                                 result, exc_info[1], 'setUpClass', className,
                                 info=exc_info)
@@ -224,7 +224,7 @@ klasse TestSuite(BaseTestSuite):
                     try:
                         case.doModuleCleanups()
                     except ExceptionGroup as eg:
-                        for e in eg.exceptions:
+                        fuer e in eg.exceptions:
                             self._createClassOrModuleLevelException(result, e,
                                                                     'setUpModule',
                                                                     currentModule)
@@ -281,7 +281,7 @@ klasse TestSuite(BaseTestSuite):
             except ExceptionGroup as eg:
                 if isinstance(result, _DebugResult):
                     raise
-                for e in eg.exceptions:
+                fuer e in eg.exceptions:
                     self._createClassOrModuleLevelException(result, e,
                                                             'tearDownModule',
                                                             previousModule)
@@ -325,7 +325,7 @@ klasse TestSuite(BaseTestSuite):
                                                             className)
             if doClassCleanups is not None:
                 doClassCleanups()
-                for exc_info in previousClass.tearDown_exceptions:
+                fuer exc_info in previousClass.tearDown_exceptions:
                     if isinstance(result, _DebugResult):
                         raise exc_info[1]
                     className = util.strclass(previousClass)
@@ -339,7 +339,7 @@ klasse TestSuite(BaseTestSuite):
 
 klasse _ErrorHolder(object):
     """
-    Placeholder for a TestCase inside a result. As far as a TestResult
+    Placeholder fuer a TestCase inside a result. As far as a TestResult
     is concerned, this looks exactly like a unit test. Used to insert
     arbitrary errors into a test suite run.
     """

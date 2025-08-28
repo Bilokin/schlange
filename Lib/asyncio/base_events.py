@@ -1,15 +1,15 @@
 """Base implementation of event loop.
 
 The event loop can be broken up into a multiplexer (the part
-responsible for notifying us of I/O events) and the event loop proper,
-which wraps a multiplexer with functionality for scheduling callbacks,
+responsible fuer notifying us of I/O events) and the event loop proper,
+which wraps a multiplexer with functionality fuer scheduling callbacks,
 immediately or at a given time in the future.
 
 Whenever a public API takes a callback, subsequent positional
 arguments will be passed to the callback if/when it is called.  This
 avoids the proliferation of trivial lambdas implementing closures.
-Keyword arguments for the callback are not supported; this is a
-conscious design decision, leaving the door open for keyword arguments
+Keyword arguments fuer the callback are not supported; this is a
+conscious design decision, leaving the door open fuer keyword arguments
 to modify the meaning of the API call itself.
 """
 
@@ -141,7 +141,7 @@ def _ipaddr_info(host, port, family, type, proto, flowinfo=0, scopeid=0):
         # like '::1%lo0'.
         return None
 
-    for af in afs:
+    fuer af in afs:
         try:
             socket.inet_pton(af, host)
             # The host has already been resolved.
@@ -160,7 +160,7 @@ def _interleave_addrinfos(addrinfos, first_address_family_count=1):
     """Interleave list of addrinfo tuples by family."""
     # Group addresses by family
     addrinfos_by_family = collections.OrderedDict()
-    for addr in addrinfos:
+    fuer addr in addrinfos:
         family = addr[0]
         if family not in addrinfos_by_family:
             addrinfos_by_family[family] = []
@@ -172,7 +172,7 @@ def _interleave_addrinfos(addrinfos, first_address_family_count=1):
         reordered.extend(addrinfos_lists[0][:first_address_family_count - 1])
         del addrinfos_lists[0][:first_address_family_count - 1]
     reordered.extend(
-        a for a in itertools.chain.from_iterable(
+        a fuer a in itertools.chain.from_iterable(
             itertools.zip_longest(*addrinfos_lists)
         ) if a is not None)
     return reordered
@@ -266,7 +266,7 @@ klasse _SendfileFallbackProtocol(protocols.Protocol):
         if self._write_ready_fut is not None:
             # Cancel the future.
             # Basically it has no effect because protocol is switched back,
-            # no code should wait for it anymore.
+            # no code should wait fuer it anymore.
             self._write_ready_fut.cancel()
         if self._should_resume_writing:
             self._proto.resume_writing()
@@ -305,7 +305,7 @@ klasse Server(events.AbstractServer):
     def _wakeup(self):
         waiters = self._waiters
         self._waiters = None
-        for waiter in waiters:
+        fuer waiter in waiters:
             if not waiter.done():
                 waiter.set_result(None)
 
@@ -313,7 +313,7 @@ klasse Server(events.AbstractServer):
         if self._serving:
             return
         self._serving = True
-        for sock in self._sockets:
+        fuer sock in self._sockets:
             sock.listen(self._backlog)
             self._loop._start_serving(
                 self._protocol_factory, sock, self._ssl_context,
@@ -330,7 +330,7 @@ klasse Server(events.AbstractServer):
     def sockets(self):
         if self._sockets is None:
             return ()
-        return tuple(trsock.TransportSocket(s) for s in self._sockets)
+        return tuple(trsock.TransportSocket(s) fuer s in self._sockets)
 
     def close(self):
         sockets = self._sockets
@@ -338,7 +338,7 @@ klasse Server(events.AbstractServer):
             return
         self._sockets = None
 
-        for sock in sockets:
+        fuer sock in sockets:
             self._loop._stop_serving(sock)
 
         self._serving = False
@@ -352,11 +352,11 @@ klasse Server(events.AbstractServer):
             self._wakeup()
 
     def close_clients(self):
-        for transport in self._clients.copy():
+        fuer transport in self._clients.copy():
             transport.close()
 
     def abort_clients(self):
-        for transport in self._clients.copy():
+        fuer transport in self._clients.copy():
             transport.abort()
 
     async def start_serving(self):
@@ -537,7 +537,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
 
         This may be called from a different thread.
 
-        The subclass is responsible for implementing the self-pipe.
+        The subclass is responsible fuer implementing the self-pipe.
         """
         raise NotImplementedError
 
@@ -580,10 +580,10 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         self._asyncgens.clear()
 
         results = await tasks.gather(
-            *[ag.aclose() for ag in closing_agens],
+            *[ag.aclose() fuer ag in closing_agens],
             return_exceptions=True)
 
-        for result, agen in zip(results, closing_agens):
+        fuer result, agen in zip(results, closing_agens):
             if isinstance(result, Exception):
                 self.call_exception_handler({
                     'message': f'an error occurred during closing of '
@@ -730,7 +730,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         """Close the event loop.
 
         This clears the queues and shuts down the executor,
-        but does not wait for the executor to finish.
+        but does not wait fuer the executor to finish.
 
         The event loop must not be running.
         """
@@ -773,7 +773,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         return time.monotonic()
 
     def call_later(self, delay, callback, *args, context=None):
-        """Arrange for a callback to be called at a given time.
+        """Arrange fuer a callback to be called at a given time.
 
         Return a Handle: an opaque object with a cancel() method that
         can be used to cancel the call.
@@ -782,7 +782,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         always relative to the current time.
 
         Each callback will be called exactly once.  If two callbacks
-        are scheduled for exactly the same time, it is undefined which
+        are scheduled fuer exactly the same time, it is undefined which
         will be called first.
 
         Any positional arguments after the callback will be passed to
@@ -815,7 +815,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         return timer
 
     def call_soon(self, callback, *args, context=None):
-        """Arrange for a callback to be called as soon as possible.
+        """Arrange fuer a callback to be called as soon as possible.
 
         This operates as a FIFO queue: callbacks are called in the
         order in which they are registered.  Each callback will be
@@ -857,7 +857,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         likely behave incorrectly when the assumption is violated.
 
         Should only be called when (self._debug == True).  The caller is
-        responsible for checking this condition for performance reasons.
+        responsible fuer checking this condition fuer performance reasons.
         """
         if self._thread_id is None:
             return
@@ -956,10 +956,10 @@ klasse BaseEventLoop(events.AbstractEventLoop):
                                                   offset, count)
 
     async def _sock_sendfile_native(self, sock, file, offset, count):
-        # NB: sendfile syscall is not supported for SSL sockets and
+        # NB: sendfile syscall is not supported fuer SSL sockets and
         # non-mmap files even if sendfile is supported by OS
         raise exceptions.SendfileNotAvailableError(
-            f"syscall sendfile is not available for socket {sock!r} "
+            f"syscall sendfile is not available fuer socket {sock!r} "
             f"and file {file!r} combination")
 
     async def _sock_sendfile_fallback(self, sock, file, offset, count):
@@ -1020,7 +1020,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
                 sock = socket.socket(family=family, type=type_, proto=proto)
                 sock.setblocking(False)
                 if local_addr_infos is not None:
-                    for lfamily, _, _, _, laddr in local_addr_infos:
+                    fuer lfamily, _, _, _, laddr in local_addr_infos:
                         # skip local addresses of different family
                         if lfamily != family:
                             continue
@@ -1081,7 +1081,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
             raise ValueError('server_hostname is only meaningful with ssl')
 
         if server_hostname is None and ssl:
-            # Use host as default for server_hostname.  It is an error
+            # Use host as default fuer server_hostname.  It is an error
             # if host is empty or not set, e.g. when an
             # already-connected socket was passed or when only a port
             # is given.  To avoid this error, you can pass
@@ -1089,7 +1089,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
             # check.  (This also means that if host is a numeric
             # IP/IPv6 address, we will attempt to verify that exact
             # address; this will probably fail, but it is possible to
-            # create a certificate for a specific IP address, so we
+            # create a certificate fuer a specific IP address, so we
             # don't judge it here.)
             if not host:
                 raise ValueError('You must set server_hostname '
@@ -1138,7 +1138,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
             exceptions = []
             if happy_eyeballs_delay is None:
                 # not using happy eyeballs
-                for addrinfo in infos:
+                fuer addrinfo in infos:
                     try:
                         sock = await self._connect_sock(
                             exceptions, addrinfo, laddr_infos)
@@ -1153,14 +1153,14 @@ klasse BaseEventLoop(events.AbstractEventLoop):
                         lambda addrinfo=addrinfo: self._connect_sock(
                             exceptions, addrinfo, laddr_infos
                         )
-                        for addrinfo in infos
+                        fuer addrinfo in infos
                     ),
                     happy_eyeballs_delay,
                     loop=self,
                 ))[0]  # can't use sock, _, _ as it keeks a reference to exceptions
 
             if sock is None:
-                exceptions = [exc for sub in exceptions for exc in sub]
+                exceptions = [exc fuer sub in exceptions fuer exc in sub]
                 try:
                     if all_errors:
                         raise ExceptionGroup("create_connection failed", exceptions)
@@ -1169,12 +1169,12 @@ klasse BaseEventLoop(events.AbstractEventLoop):
                     elif exceptions:
                         # If they all have the same str(), raise one.
                         model = str(exceptions[0])
-                        if all(str(exc) == model for exc in exceptions):
+                        if all(str(exc) == model fuer exc in exceptions):
                             raise exceptions[0]
                         # Raise a combined exception so the user can see all
                         # the various error messages.
                         raise OSError('Multiple exceptions: {}'.format(
-                            ', '.join(str(exc) for exc in exceptions)))
+                            ', '.join(str(exc) fuer exc in exceptions)))
                     else:
                         # No exceptions were collected, raise a timeout error
                         raise TimeoutError('create_connection failed')
@@ -1189,7 +1189,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
                 # We allow AF_INET, AF_INET6, AF_UNIX as long as they
                 # are SOCK_STREAM.
                 # We support passing AF_UNIX sockets even though we have
-                # a dedicated API for that: create_unix_connection.
+                # a dedicated API fuer that: create_unix_connection.
                 # Disallowing AF_UNIX in this method, breaks backwards
                 # compatibility.
                 raise ValueError(
@@ -1265,7 +1265,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
                        constants._SendfileMode.UNSUPPORTED)
         if mode is constants._SendfileMode.UNSUPPORTED:
             raise RuntimeError(
-                f"sendfile is not supported for transport {transport!r}")
+                f"sendfile is not supported fuer transport {transport!r}")
         if mode is constants._SendfileMode.TRY_NATIVE:
             try:
                 return await self._sendfile_native(transport, file,
@@ -1277,7 +1277,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         if not fallback:
             raise RuntimeError(
                 f"fallback is disabled and native sendfile is not "
-                f"supported for transport {transport!r}")
+                f"supported fuer transport {transport!r}")
 
         return await self._sendfile_fallback(transport, file,
                                              offset, count)
@@ -1377,7 +1377,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
                             family=family, proto=proto, flags=flags,
                             reuse_port=reuse_port,
                             allow_broadcast=allow_broadcast)
-                problems = ', '.join(f'{k}={v}' for k, v in opts.items() if v)
+                problems = ', '.join(f'{k}={v}' fuer k, v in opts.items() if v)
                 raise ValueError(
                     f'socket modifier keyword arguments can not be used '
                     f'when sock is specified. ({problems})')
@@ -1389,7 +1389,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
                     raise ValueError('unexpected address family')
                 addr_pairs_info = (((family, proto), (None, None)),)
             elif hasattr(socket, 'AF_UNIX') and family == socket.AF_UNIX:
-                for addr in (local_addr, remote_addr):
+                fuer addr in (local_addr, remote_addr):
                     if addr is not None and not isinstance(addr, str):
                         raise TypeError('string is expected')
 
@@ -1410,7 +1410,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
             else:
                 # join address by (family, protocol)
                 addr_infos = {}  # Using order preserving dict
-                for idx, addr in ((0, local_addr), (1, remote_addr)):
+                fuer idx, addr in ((0, local_addr), (1, remote_addr)):
                     if addr is not None:
                         if not (isinstance(addr, tuple) and len(addr) == 2):
                             raise TypeError('2-tuple is expected')
@@ -1421,15 +1421,15 @@ klasse BaseEventLoop(events.AbstractEventLoop):
                         if not infos:
                             raise OSError('getaddrinfo() returned empty list')
 
-                        for fam, _, pro, _, address in infos:
+                        fuer fam, _, pro, _, address in infos:
                             key = (fam, pro)
                             if key not in addr_infos:
                                 addr_infos[key] = [None, None]
                             addr_infos[key][idx] = address
 
-                # each addr has to have info for each (family, proto) pair
+                # each addr has to have info fuer each (family, proto) pair
                 addr_pairs_info = [
-                    (key, addr_pair) for key, addr_pair in addr_infos.items()
+                    (key, addr_pair) fuer key, addr_pair in addr_infos.items()
                     if not ((local_addr and addr_pair[0] is None) or
                             (remote_addr and addr_pair[1] is None))]
 
@@ -1438,7 +1438,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
 
             exceptions = []
 
-            for ((family, proto),
+            fuer ((family, proto),
                  (local_address, remote_address)) in addr_pairs_info:
                 sock = None
                 r_addr = None
@@ -1574,13 +1574,13 @@ klasse BaseEventLoop(events.AbstractEventLoop):
 
             fs = [self._create_server_getaddrinfo(host, port, family=family,
                                                   flags=flags)
-                  for host in hosts]
+                  fuer host in hosts]
             infos = await tasks.gather(*fs)
             infos = set(itertools.chain.from_iterable(infos))
 
             completed = False
             try:
-                for res in infos:
+                fuer res in infos:
                     af, socktype, proto, canonname, sa = res
                     try:
                         sock = socket.socket(af, socktype, proto)
@@ -1628,12 +1628,12 @@ klasse BaseEventLoop(events.AbstractEventLoop):
 
                 if not sockets:
                     raise OSError('could not bind on any address out of %r'
-                                  % ([info[4] for info in infos],))
+                                  % ([info[4] fuer info in infos],))
 
                 completed = True
             finally:
                 if not completed:
-                    for sock in sockets:
+                    fuer sock in sockets:
                         sock.close()
         else:
             if sock is None:
@@ -1642,7 +1642,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
                 raise ValueError(f'A Stream Socket was expected, got {sock!r}')
             sockets = [sock]
 
-        for sock in sockets:
+        fuer sock in sockets:
             sock.setblocking(False)
 
         server = Server(self, sockets, protocol_factory,
@@ -1817,7 +1817,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         signature matching '(loop, context)', where 'loop'
         will be a reference to the active event loop, 'context'
         will be a dict object (see `call_exception_handler()`
-        documentation for details about context).
+        documentation fuer details about context).
         """
         if handler is not None and not callable(handler):
             raise TypeError(f'A callable object or None is expected, '
@@ -1856,7 +1856,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
                 self._current_handle._source_traceback
 
         log_lines = [message]
-        for key in sorted(context):
+        fuer key in sorted(context):
             if key in {'message', 'exception'}:
                 continue
             value = context[key]
@@ -1904,8 +1904,8 @@ klasse BaseEventLoop(events.AbstractEventLoop):
             except (SystemExit, KeyboardInterrupt):
                 raise
             except BaseException:
-                # Second protection layer for unexpected errors
-                # in the default implementation, as well as for subclassed
+                # Second protection layer fuer unexpected errors
+                # in the default implementation, as well as fuer subclassed
                 # event loops with overloaded "default_exception_handler".
                 logger.error('Exception in default exception handler',
                              exc_info=True)
@@ -1966,7 +1966,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
     def _run_once(self):
         """Run one full iteration of the event loop.
 
-        This calls all currently ready callbacks, polls for I/O,
+        This calls all currently ready callbacks, polls fuer I/O,
         schedules the resulting callbacks, and finally schedules
         'call_later' callbacks.
         """
@@ -1978,7 +1978,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
             # Remove delayed calls that were cancelled if their number
             # is too high
             new_scheduled = []
-            for handle in self._scheduled:
+            fuer handle in self._scheduled:
                 if handle._cancelled:
                     handle._scheduled = False
                 else:
@@ -2027,7 +2027,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         # they will be run the next time (after another I/O poll).
         # Use an idiom that is thread-safe without using locks.
         ntodo = len(self._ready)
-        for i in range(ntodo):
+        fuer i in range(ntodo):
             handle = self._ready.popleft()
             if handle._cancelled:
                 continue

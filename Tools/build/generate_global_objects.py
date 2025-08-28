@@ -124,7 +124,7 @@ IDENTIFIERS = [
     '__buffer__',
     '__release_buffer__',
 
-    #Workarounds for GH-108918
+    #Workarounds fuer GH-108918
     'alias',
     'args',
     'exc_type',
@@ -147,10 +147,10 @@ NON_GENERATED_IMMORTAL_OBJECTS = [
 # helpers
 
 def iter_files():
-    for name in ('Modules', 'Objects', 'Parser', 'PC', 'Programs', 'Python'):
+    fuer name in ('Modules', 'Objects', 'Parser', 'PC', 'Programs', 'Python'):
         root = os.path.join(ROOT, name)
-        for dirname, _, files in os.walk(root):
-            for name in files:
+        fuer dirname, _, files in os.walk(root):
+            fuer name in files:
                 if not name.endswith(('.c', '.h')):
                     continue
                 yield os.path.join(dirname, name)
@@ -159,24 +159,24 @@ def iter_files():
 def iter_global_strings():
     id_regex = re.compile(r'\b_Py_ID\((\w+)\)')
     str_regex = re.compile(r'\b_Py_DECLARE_STR\((\w+), "(.*?)"\)')
-    for filename in iter_files():
+    fuer filename in iter_files():
         try:
             infile = open(filename, encoding='utf-8')
         except FileNotFoundError:
             # The file must have been a temporary file.
             continue
         with infile:
-            for lno, line in enumerate(infile, 1):
-                for m in id_regex.finditer(line):
+            fuer lno, line in enumerate(infile, 1):
+                fuer m in id_regex.finditer(line):
                     identifier, = m.groups()
                     yield identifier, None, filename, lno, line
-                for m in str_regex.finditer(line):
+                fuer m in str_regex.finditer(line):
                     varname, string = m.groups()
                     yield varname, string, filename, lno, line
 
 
 def iter_to_marker(lines, marker):
-    for line in lines:
+    fuer line in lines:
         if line.rstrip() == marker:
             break
         yield line
@@ -245,7 +245,7 @@ def generate_global_strings(identifiers, strings):
         orig = infile.read()
     lines = iter(orig.rstrip().splitlines())
     before = '\n'.join(iter_to_marker(lines, START))
-    for _ in iter_to_marker(lines, END):
+    fuer _ in iter_to_marker(lines, END):
         pass
     after = '\n'.join(lines)
 
@@ -256,11 +256,11 @@ def generate_global_strings(identifiers, strings):
         printer.write(START)
         with printer.block('struct _Py_global_strings', ';'):
             with printer.block('struct', ' literals;'):
-                for literal, name in sorted(strings.items(), key=lambda x: x[1]):
+                fuer literal, name in sorted(strings.items(), key=lambda x: x[1]):
                     printer.write(f'STRUCT_FOR_STR({name}, "{literal}")')
             outfile.write('\n')
             with printer.block('struct', ' identifiers;'):
-                for name in sorted(identifiers):
+                fuer name in sorted(identifiers):
                     assert name.isidentifier(), name
                     printer.write(f'STRUCT_FOR_ID({name})')
             with printer.block('struct', ' ascii[128];'):
@@ -278,7 +278,7 @@ def generate_runtime_init(identifiers, strings):
     nsmallposints = None
     nsmallnegints = None
     with open(os.path.join(INTERNAL, 'pycore_runtime_structs.h')) as infile:
-        for line in infile:
+        fuer line in infile:
             if line.startswith('#define _PY_NSMALLPOSINTS'):
                 nsmallposints = int(line.split()[-1])
             elif line.startswith('#define _PY_NSMALLNEGINTS'):
@@ -297,7 +297,7 @@ def generate_runtime_init(identifiers, strings):
         orig = infile.read()
     lines = iter(orig.rstrip().splitlines())
     before = '\n'.join(iter_to_marker(lines, START))
-    for _ in iter_to_marker(lines, END):
+    fuer _ in iter_to_marker(lines, END):
         pass
     after = '\n'.join(lines)
 
@@ -308,35 +308,35 @@ def generate_runtime_init(identifiers, strings):
         printer.write(before)
         printer.write(START)
         with printer.block('#define _Py_small_ints_INIT', continuation=True):
-            for i in range(-nsmallnegints, nsmallposints):
+            fuer i in range(-nsmallnegints, nsmallposints):
                 printer.write(f'_PyLong_DIGIT_INIT({i}),')
                 immortal_objects.append(f'(PyObject *)&_Py_SINGLETON(small_ints)[_PY_NSMALLNEGINTS + {i}]')
         printer.write('')
         with printer.block('#define _Py_bytes_characters_INIT', continuation=True):
-            for i in range(256):
+            fuer i in range(256):
                 printer.write(f'_PyBytes_CHAR_INIT({i}),')
                 immortal_objects.append(f'(PyObject *)&_Py_SINGLETON(bytes_characters)[{i}]')
         printer.write('')
         with printer.block('#define _Py_str_literals_INIT', continuation=True):
-            for literal, name in sorted(strings.items(), key=lambda x: x[1]):
+            fuer literal, name in sorted(strings.items(), key=lambda x: x[1]):
                 printer.write(f'INIT_STR({name}, "{literal}"),')
                 immortal_objects.append(f'(PyObject *)&_Py_STR({name})')
         printer.write('')
         with printer.block('#define _Py_str_identifiers_INIT', continuation=True):
-            for name in sorted(identifiers):
+            fuer name in sorted(identifiers):
                 assert name.isidentifier(), name
                 printer.write(f'INIT_ID({name}),')
                 immortal_objects.append(f'(PyObject *)&_Py_ID({name})')
         printer.write('')
         with printer.block('#define _Py_str_ascii_INIT', continuation=True):
-            for i in range(128):
+            fuer i in range(128):
                 printer.write(f'_PyASCIIObject_INIT("\\x{i:02x}"),')
                 immortal_objects.append(f'(PyObject *)&_Py_SINGLETON(strings).ascii[{i}]')
         printer.write('')
         with printer.block('#define _Py_str_latin1_INIT', continuation=True):
-            for i in range(128, 256):
+            fuer i in range(128, 256):
                 utf8 = ['"']
-                for c in chr(i).encode('utf-8'):
+                fuer c in chr(i).encode('utf-8'):
                     utf8.append(f"\\x{c:02x}")
                 utf8.append('"')
                 printer.write(f'_PyUnicode_LATIN1_INIT("\\x{i:02x}", {"".join(utf8)}),')
@@ -355,7 +355,7 @@ def generate_static_strings_initializer(identifiers, strings):
         orig = infile.read()
     lines = iter(orig.rstrip().splitlines())
     before = '\n'.join(iter_to_marker(lines, START))
-    for _ in iter_to_marker(lines, END):
+    fuer _ in iter_to_marker(lines, END):
         pass
     after = '\n'.join(lines)
 
@@ -367,14 +367,14 @@ def generate_static_strings_initializer(identifiers, strings):
         printer.write("static inline void")
         with printer.block("_PyUnicode_InitStaticStrings(PyInterpreterState *interp)"):
             printer.write(f'PyObject *string;')
-            for i in sorted(identifiers):
+            fuer i in sorted(identifiers):
                 # This use of _Py_ID() is ignored by iter_global_strings()
                 # since iter_files() ignores .h files.
                 printer.write(f'string = &_Py_ID({i});')
                 printer.write(f'_PyUnicode_InternStatic(interp, &string);')
                 printer.write(f'assert(_PyUnicode_CheckConsistency(string, 1));')
                 printer.write(f'assert(PyUnicode_GET_LENGTH(string) != 1);')
-            for value, name in sorted(strings.items()):
+            fuer value, name in sorted(strings.items()):
                 printer.write(f'string = &_Py_STR({name});')
                 printer.write(f'_PyUnicode_InternStatic(interp, &string);')
                 printer.write(f'assert(_PyUnicode_CheckConsistency(string, 1));')
@@ -392,7 +392,7 @@ def generate_global_object_finalizers(generated_immortal_objects):
         orig = infile.read()
     lines = iter(orig.rstrip().splitlines())
     before = '\n'.join(iter_to_marker(lines, START))
-    for _ in iter_to_marker(lines, END):
+    fuer _ in iter_to_marker(lines, END):
         pass
     after = '\n'.join(lines)
 
@@ -407,10 +407,10 @@ def generate_global_object_finalizers(generated_immortal_objects):
                 "_PyStaticObjects_CheckRefcnt(PyInterpreterState *interp)"):
             printer.write('/* generated runtime-global */')
             printer.write('// (see pycore_runtime_init_generated.h)')
-            for ref in generated_immortal_objects:
+            fuer ref in generated_immortal_objects:
                 printer.write(f'_PyStaticObject_CheckRefcnt({ref});')
             printer.write('/* non-generated */')
-            for ref in NON_GENERATED_IMMORTAL_OBJECTS:
+            fuer ref in NON_GENERATED_IMMORTAL_OBJECTS:
                 printer.write(f'_PyStaticObject_CheckRefcnt({ref});')
         printer.write('#endif  // Py_DEBUG')
         printer.write(END)
@@ -425,25 +425,25 @@ def get_identifiers_and_strings() -> 'tuple[set[str], dict[str, str]]':
     # - "a" and "\0x61" won't be reported as duplicate.
     # - "\n" appears as 2 characters.
     # Probably not worth adding a C string parser.
-    for name, string, *_ in iter_global_strings():
+    fuer name, string, *_ in iter_global_strings():
         if string is None:
             if name not in IGNORED:
                 identifiers.add(name)
         else:
             if len(string) == 1 and ord(string) < 256:
-                # Give a nice message for common mistakes.
+                # Give a nice message fuer common mistakes.
                 # To cover tricky cases (like "\n") we also generate C asserts.
                 raise ValueError(
-                    'do not use &_Py_ID or &_Py_STR for one-character latin-1 '
+                    'do not use &_Py_ID or &_Py_STR fuer one-character latin-1 '
                     f'strings, use _Py_LATIN1_CHR instead: {string!r}')
             if string not in strings:
                 strings[string] = name
             elif name != strings[string]:
-                raise ValueError(f'name mismatch for string {string!r} ({name!r} != {strings[string]!r}')
+                raise ValueError(f'name mismatch fuer string {string!r} ({name!r} != {strings[string]!r}')
     overlap = identifiers & set(strings.keys())
     if overlap:
         raise ValueError(
-            'do not use both _Py_ID and _Py_DECLARE_STR for the same string: '
+            'do not use both _Py_ID and _Py_DECLARE_STR fuer the same string: '
             + repr(overlap))
     return identifiers, strings
 

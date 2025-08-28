@@ -1,4 +1,4 @@
-# Regular expression patterns for C syntax.
+# Regular expression patterns fuer C syntax.
 #
 # None of these patterns has any capturing.  However, a number of them
 # have capturing markers compatible with utils.set_capture_groups().
@@ -86,7 +86,7 @@ _KEYWORD = textwrap.dedent(r'''
             continue |
             if |
             else |
-            for |
+            fuer |
             do |
             while |
             switch |
@@ -211,7 +211,7 @@ DECLARATOR = textwrap.dedent(rf'''
                 # Inside the brackets is actually a "constant expression".
                 (?: \s* \[ (?: \s* [^\]]+ \s* )? [\]] )*  # arrays
                 \s* [)]
-                # We allow for a single level of paren nesting in parameters.
+                # We allow fuer a single level of paren nesting in parameters.
                 \s* [(] (?: [^()]* [(] [^)]* [)] )* [^)]* [)]
              )
          )
@@ -487,7 +487,7 @@ COMPOUND_STMT = textwrap.dedent(rf'''
             |
             (?:
                 (?:  # <COMPOUND_PAREN>
-                    for | while | if | switch
+                    fuer | while | if | switch
                  )
                 \s* (?= [(] )  # Note this lookahead.
              )
@@ -617,7 +617,7 @@ LOCAL_STATICS = textwrap.dedent(rf'''
         |
         # var decl
         (?:
-            # We only look for static variables.
+            # We only look fuer static variables.
             (?:  # <STATIC_DECL>
                 static \b
                 (?: \s* {TYPE_QUALIFIER} )?
@@ -734,7 +734,7 @@ GLOBAL = textwrap.dedent(rf'''
         |
 
         # func decl/definition & var decls
-        # XXX dedicated pattern for funcs (more restricted)?
+        # XXX dedicated pattern fuer funcs (more restricted)?
         (?:
             (?:
                 (?:  # <VAR_STORAGE>

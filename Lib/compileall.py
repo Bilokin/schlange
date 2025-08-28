@@ -6,9 +6,9 @@ recursing into directories.
 
 Without arguments, it compiles all modules on sys.path, without
 recursing into subdirectories.  (Even though it should do so for
-packages -- for now, you'll have to deal with packages separately.)
+packages -- fuer now, you'll have to deal with packages separately.)
 
-See module py_compile for details of the actual byte-compilation.
+See module py_compile fuer details of the actual byte-compilation.
 """
 import os
 import sys
@@ -34,7 +34,7 @@ def _walk_dir(dir, maxlevels, quiet=0):
             print("Can't list {!r}".format(dir))
         names = []
     names.sort()
-    for name in names:
+    fuer name in names:
         if name == '__pycache__':
             continue
         fullname = os.path.join(dir, name)
@@ -61,7 +61,7 @@ def compile_dir(dir, maxlevels=None, ddir=None, force=False,
     quiet:     full output with False or 0, errors only with 1,
                no output with 2
     legacy:    if True, produce legacy pyc paths instead of PEP 3147 paths
-    optimize:  int or list of optimization levels or -1 for level of
+    optimize:  int or list of optimization levels or -1 fuer level of
                the interpreter. Multiple levels leads to multiple compiled
                files each with one optimization level.
     workers:   maximum number of parallel workers
@@ -120,7 +120,7 @@ def compile_dir(dir, maxlevels=None, ddir=None, force=False,
                                    chunksize=4)
             success = min(results, default=True)
     else:
-        for file in files:
+        fuer file in files:
             if not compile_file(file, ddir, force, rx, quiet,
                                 legacy, optimize, invalidation_mode,
                                 stripdir=stripdir, prependdir=prependdir,
@@ -144,7 +144,7 @@ def compile_file(fullname, ddir=None, force=False, rx=None, quiet=0,
     quiet:     full output with False or 0, errors only with 1,
                no output with 2
     legacy:    if True, produce legacy pyc paths instead of PEP 3147 paths
-    optimize:  int or list of optimization levels or -1 for level of
+    optimize:  int or list of optimization levels or -1 fuer level of
                the interpreter. Multiple levels leads to multiple compiled
                files each with one optimization level.
     invalidation_mode: how the up-to-dateness of the pyc will be checked
@@ -176,7 +176,7 @@ def compile_file(fullname, ddir=None, force=False, rx=None, quiet=0,
 
         if stripdir_parts != fullname_parts[:len(stripdir_parts)]:
             if quiet < 2:
-                print("The stripdir path {!r} is not a valid prefix for "
+                print("The stripdir path {!r} is not a valid prefix fuer "
                       "source path {!r}; ignoring".format(stripdir, fullname))
         else:
             dfile = os.path.join(*fullname_parts[len(stripdir_parts):])
@@ -196,7 +196,7 @@ def compile_file(fullname, ddir=None, force=False, rx=None, quiet=0,
 
     if hardlink_dupes and len(optimize) < 2:
         raise ValueError("Hardlinking of duplicated bytecode makes sense "
-                          "only for more than one optimization level")
+                          "only fuer more than one optimization level")
 
     if rx is not None:
         mo = rx.search(fullname)
@@ -210,7 +210,7 @@ def compile_file(fullname, ddir=None, force=False, rx=None, quiet=0,
     opt_cfiles = {}
 
     if os.path.isfile(fullname):
-        for opt_level in optimize:
+        fuer opt_level in optimize:
             if legacy:
                 opt_cfiles[opt_level] = fullname + 'c'
             else:
@@ -230,7 +230,7 @@ def compile_file(fullname, ddir=None, force=False, rx=None, quiet=0,
                     mtime = int(os.stat(fullname).st_mtime)
                     expect = struct.pack('<4sLL', importlib.util.MAGIC_NUMBER,
                                          0, mtime & 0xFFFF_FFFF)
-                    for cfile in opt_cfiles.values():
+                    fuer cfile in opt_cfiles.values():
                         with open(cfile, 'rb') as chandle:
                             actual = chandle.read(12)
                         if expect != actual:
@@ -242,7 +242,7 @@ def compile_file(fullname, ddir=None, force=False, rx=None, quiet=0,
             if not quiet:
                 print('Compiling {!r}...'.format(fullname))
             try:
-                for index, opt_level in enumerate(optimize):
+                fuer index, opt_level in enumerate(optimize):
                     cfile = opt_cfiles[opt_level]
                     ok = py_compile.compile(fullname, cfile, dfile, True,
                                             optimize=opt_level,
@@ -287,14 +287,14 @@ def compile_path(skip_curdir=1, maxlevels=0, force=False, quiet=0,
 
     skip_curdir: if true, skip current directory (default True)
     maxlevels:   max recursion level (default 0)
-    force: as for compile_dir() (default False)
-    quiet: as for compile_dir() (default 0)
-    legacy: as for compile_dir() (default False)
-    optimize: as for compile_dir() (default -1)
-    invalidation_mode: as for compiler_dir()
+    force: as fuer compile_dir() (default False)
+    quiet: as fuer compile_dir() (default 0)
+    legacy: as fuer compile_dir() (default False)
+    optimize: as fuer compile_dir() (default -1)
+    invalidation_mode: as fuer compiler_dir()
     """
     success = True
-    for dir in sys.path:
+    fuer dir in sys.path:
         if (not dir or dir == os.curdir) and skip_curdir:
             if quiet < 2:
                 print('Skipping current directory')
@@ -335,31 +335,31 @@ def main():
     parser.add_argument('-b', action='store_true', dest='legacy',
                         help='use legacy (pre-PEP3147) compiled file locations')
     parser.add_argument('-d', metavar='DESTDIR',  dest='ddir', default=None,
-                        help=('directory to prepend to file paths for use in '
+                        help=('directory to prepend to file paths fuer use in '
                               'compile-time tracebacks and in runtime '
                               'tracebacks in cases where the source file is '
                               'unavailable'))
     parser.add_argument('-s', metavar='STRIPDIR',  dest='stripdir',
                         default=None,
                         help=('part of path to left-strip from path '
-                              'to source file - for example buildroot. '
+                              'to source file - fuer example buildroot. '
                               '`-d` and `-s` options cannot be '
                               'specified together.'))
     parser.add_argument('-p', metavar='PREPENDDIR',  dest='prependdir',
                         default=None,
                         help=('path to add as prefix to path '
-                              'to source file - for example / to make '
+                              'to source file - fuer example / to make '
                               'it absolute when some part is removed '
                               'by `-s` option. '
                               '`-d` and `-p` options cannot be '
                               'specified together.'))
     parser.add_argument('-x', metavar='REGEXP', dest='rx', default=None,
                         help=('skip files matching the regular expression; '
-                              'the regexp is searched for in the full path '
-                              'of each file considered for compilation'))
+                              'the regexp is searched fuer in the full path '
+                              'of each file considered fuer compilation'))
     parser.add_argument('-i', metavar='FILE', dest='flist',
                         help=('add all the files and directories listed in '
-                              'FILE to the list considered for compilation; '
+                              'FILE to the list considered fuer compilation; '
                               'if "-", names are read from stdin'))
     parser.add_argument('compile_dest', metavar='FILE|DIR', nargs='*',
                         help=('zero or more file and directory names '
@@ -368,7 +368,7 @@ def main():
     parser.add_argument('-j', '--workers', default=1,
                         type=int, help='Run compileall concurrently')
     invalidation_modes = [mode.name.lower().replace('_', '-')
-                          for mode in py_compile.PycInvalidationMode]
+                          fuer mode in py_compile.PycInvalidationMode]
     parser.add_argument('--invalidation-mode',
                         choices=sorted(invalidation_modes),
                         help=('set .pyc invalidation mode; defaults to '
@@ -405,7 +405,7 @@ def main():
 
     if len(args.opt_levels) == 1 and args.hardlink_dupes:
         parser.error(("Hardlinking of duplicated bytecode makes sense "
-                      "only for more than one optimization level."))
+                      "only fuer more than one optimization level."))
 
     if args.ddir is not None and (
         args.stripdir is not None or args.prependdir is not None
@@ -417,7 +417,7 @@ def main():
         try:
             with (sys.stdin if args.flist=='-' else
                     open(args.flist, encoding="utf-8")) as f:
-                for line in f:
+                fuer line in f:
                     compile_dests.append(line.strip())
         except OSError:
             if args.quiet < 2:
@@ -433,7 +433,7 @@ def main():
     success = True
     try:
         if compile_dests:
-            for dest in compile_dests:
+            fuer dest in compile_dests:
                 if os.path.isfile(dest):
                     if not compile_file(dest, args.ddir, args.force, args.rx,
                                         args.quiet, args.legacy,

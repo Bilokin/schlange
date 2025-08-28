@@ -1,7 +1,7 @@
-"""Helper to provide extensibility for pickle.
+"""Helper to provide extensibility fuer pickle.
 
-This is only useful to add pickle support for extension types defined in
-C, not for instances of user-defined classes.
+This is only useful to add pickle support fuer extension types defined in
+C, not fuer instances of user-defined classes.
 """
 
 __all__ = ["pickle", "constructor",
@@ -14,8 +14,8 @@ def pickle(ob_type, pickle_function, constructor_ob=None):
         raise TypeError("reduction functions must be callable")
     dispatch_table[ob_type] = pickle_function
 
-    # The constructor_ob function is a vestige of safe for unpickling.
-    # There is no reason for the caller to pass it anymore.
+    # The constructor_ob function is a vestige of safe fuer unpickling.
+    # There is no reason fuer the caller to pass it anymore.
     if constructor_ob is not None:
         constructor(constructor_ob)
 
@@ -23,7 +23,7 @@ def constructor(object):
     if not callable(object):
         raise TypeError("constructors must be callable")
 
-# Example: provide pickling support for complex numbers.
+# Example: provide pickling support fuer complex numbers.
 
 def pickle_complex(c):
     return complex, (c.real, c.imag)
@@ -41,7 +41,7 @@ def pickle_super(obj):
 
 pickle(super, pickle_super)
 
-# Support for pickling new-style objects
+# Support fuer pickling new-style objects
 
 def _reconstructor(cls, base, state):
     if base is object:
@@ -55,12 +55,12 @@ def _reconstructor(cls, base, state):
 _HEAPTYPE = 1<<9
 _new_type = type(int.__new__)
 
-# Python code for object.__reduce_ex__ for protocols 0 and 1
+# Python code fuer object.__reduce_ex__ fuer protocols 0 and 1
 
 def _reduce_ex(self, proto):
     assert proto < 2
     cls = self.__class__
-    for base in cls.__mro__:
+    fuer base in cls.__mro__:
         if hasattr(base, '__flags__') and not base.__flags__ & _HEAPTYPE:
             break
         new = base.__new__
@@ -98,7 +98,7 @@ def _reduce_ex(self, proto):
     else:
         return _reconstructor, args
 
-# Helper for __reduce_ex__ protocol 2
+# Helper fuer __reduce_ex__ protocol 2
 
 def __newobj__(cls, *args):
     return cls.__new__(cls, *args)
@@ -110,7 +110,7 @@ def __newobj_ex__(cls, args, kwargs):
     return cls.__new__(cls, *args, **kwargs)
 
 def _slotnames(cls):
-    """Return a list of slot names for a given class.
+    """Return a list of slot names fuer a given class.
 
     This needs to find slots defined by the klasse and its bases, so we
     can't simply return the __slots__ attribute.  We must walk down
@@ -132,13 +132,13 @@ def _slotnames(cls):
         pass
     else:
         # Slots found -- gather slot names from all base classes
-        for c in cls.__mro__:
+        fuer c in cls.__mro__:
             if "__slots__" in c.__dict__:
                 slots = c.__dict__['__slots__']
                 # if klasse has a single slot, it can be given as a string
                 if isinstance(slots, str):
                     slots = (slots,)
-                for name in slots:
+                fuer name in slots:
                     # special descriptors
                     if name in ("__dict__", "__weakref__"):
                         continue
@@ -163,9 +163,9 @@ def _slotnames(cls):
 # A registry of extension codes.  This is an ad-hoc compression
 # mechanism.  Whenever a global reference to <module>, <name> is about
 # to be pickled, the (<module>, <name>) tuple is looked up here to see
-# if it is a registered extension code for it.  Extension codes are
+# if it is a registered extension code fuer it.  Extension codes are
 # universal, so that the meaning of a pickle does not depend on
-# context.  (There are also some codes reserved for local use that
+# context.  (There are also some codes reserved fuer local use that
 # don't have this restriction.)  Codes are positive ints; 0 is
 # reserved.
 
@@ -188,7 +188,7 @@ def add_extension(module, name, code):
         raise ValueError("key %s is already registered with code %s" %
                          (key, _extension_registry[key]))
     if code in _inverted_registry:
-        raise ValueError("code %s is already in use for key %s" %
+        raise ValueError("code %s is already in use fuer key %s" %
                          (code, _inverted_registry[code]))
     _extension_registry[key] = code
     _inverted_registry[code] = key
@@ -213,10 +213,10 @@ def clear_extension_cache():
 # Reserved ranges
 
 # First  Last Count  Purpose
-#     1   127   127  Reserved for Python standard library
-#   128   191    64  Reserved for Zope
-#   192   239    48  Reserved for 3rd parties
-#   240   255    16  Reserved for private use (will never be assigned)
-#   256   Inf   Inf  Reserved for future assignment
+#     1   127   127  Reserved fuer Python standard library
+#   128   191    64  Reserved fuer Zope
+#   192   239    48  Reserved fuer 3rd parties
+#   240   255    16  Reserved fuer private use (will never be assigned)
+#   256   Inf   Inf  Reserved fuer future assignment
 
 # Extension codes are assigned by the Python Software Foundation.

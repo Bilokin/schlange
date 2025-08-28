@@ -13,7 +13,7 @@ SIG_END_MARKER: Final = "--"
 def docstring_for_c_string(docstring: str) -> str:
     lines = []
     # Turn docstring into a properly quoted C string.
-    for line in docstring.split("\n"):
+    fuer line in docstring.split("\n"):
         lines.append('"')
         lines.append(_quoted_for_c_string(line))
         lines.append('\\n"\n')
@@ -29,8 +29,8 @@ def docstring_for_c_string(docstring: str) -> str:
 
 
 def _quoted_for_c_string(text: str) -> str:
-    """Helper for docstring_for_c_string()."""
-    for old, new in (
+    """Helper fuer docstring_for_c_string()."""
+    fuer old, new in (
         ("\\", "\\\\"),  # must be first!
         ('"', '\\"'),
         ("'", "\\'"),
@@ -71,7 +71,7 @@ def _add_prefix_and_suffix(text: str, *, prefix: str = "", suffix: str = "") -> 
     (textwrap.indent only adds to non-blank lines.)
     """
     *split, last = text.split("\n")
-    lines = [prefix + line + suffix + "\n" for line in split]
+    lines = [prefix + line + suffix + "\n" fuer line in split]
     if last:
         lines.append(prefix + last + suffix)
     return "".join(lines)
@@ -126,7 +126,7 @@ def format_escape(text: str) -> str:
 
 def wrap_declarations(text: str, length: int = 78) -> str:
     """
-    A simple-minded text wrapper for C function declarations.
+    A simple-minded text wrapper fuer C function declarations.
 
     It views a declaration line as looking like this:
         xxxxxxxx(xxxxxxxxx,xxxxxxxxx)
@@ -141,7 +141,7 @@ def wrap_declarations(text: str, length: int = 78) -> str:
     rather than try and improve/debug this dumb little function.
     """
     lines = []
-    for line in text.split("\n"):
+    fuer line in text.split("\n"):
         prefix, _, after_l_paren = line.partition("(")
         if not after_l_paren:
             lines.append(line)
@@ -153,7 +153,7 @@ def wrap_declarations(text: str, length: int = 78) -> str:
         if "," not in in_paren:
             lines.append(line)
             continue
-        parameters = [x.strip() + ", " for x in in_paren.split(",")]
+        parameters = [x.strip() + ", " fuer x in in_paren.split(",")]
         prefix += "("
         if len(prefix) < length:
             spaces = " " * len(prefix)
@@ -190,7 +190,7 @@ def linear_format(text: str, **kwargs: str) -> str:
           * A newline will be added to the end.
     """
     lines = []
-    for line in text.split("\n"):
+    fuer line in text.split("\n"):
         indent, curly, trailing = line.partition("{")
         if not curly:
             lines.extend([line, "\n"])
@@ -216,7 +216,7 @@ def linear_format(text: str, **kwargs: str) -> str:
         if not value:
             continue
 
-        stripped = [line.rstrip() for line in value.split("\n")]
+        stripped = [line.rstrip() fuer line in value.split("\n")]
         value = textwrap.indent("\n".join(stripped), indent)
         lines.extend([value, "\n"])
 

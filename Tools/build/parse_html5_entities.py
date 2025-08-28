@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Utility for parsing HTML5 entity definitions available from:
+Utility fuer parsing HTML5 entity definitions available from:
 
     https://html.spec.whatwg.org/entities.json
     https://html.spec.whatwg.org/multipage/named-characters.html
@@ -32,7 +32,7 @@ def get_json(url):
 def create_dict(entities):
     """Create the html5 dict from the decoded json object."""
     new_html5 = {}
-    for name, value in entities.items():
+    fuer name, value in entities.items():
         new_html5[name.lstrip('&')] = value['characters']
     return new_html5
 
@@ -41,20 +41,20 @@ def compare_dicts(old, new):
     added = new.keys() - old.keys()
     if added:
         print(f'{len(added)} entitie(s) have been added:')
-        for name in sorted(added):
+        fuer name in sorted(added):
             print(f'  {name!r}: {new[name]!r}')
     removed = old.keys() - new.keys()
     if removed:
         print(f'{len(removed)} entitie(s) have been removed:')
-        for name in sorted(removed):
+        fuer name in sorted(removed):
             print(f'  {name!r}: {old[name]!r}')
     changed = set()
-    for name in (old.keys() & new.keys()):
+    fuer name in (old.keys() & new.keys()):
         if old[name] != new[name]:
             changed.add((name, old[name], new[name]))
     if changed:
         print(f'{len(changed)} entitie(s) have been modified:')
-        for item in sorted(changed):
+        fuer item in sorted(changed):
             print('  {!r}: {!r} -> {!r}'.format(*item))
 
 def write_items(entities, file=sys.stdout):
@@ -76,7 +76,7 @@ def write_items(entities, file=sys.stdout):
           f'# Map HTML5 named character references to the '
           f'equivalent Unicode character(s).', file=file)
     print('html5 = {', file=file)
-    for name in keys:
+    fuer name in keys:
         print(f'    {name!r}: {entities[name]!a},', file=file)
     print('}', file=file)
 
@@ -93,7 +93,7 @@ if __name__ == '__main__':
         temp_fname = fname + '.temp'
         with open(fname) as f1, open(temp_fname, 'w') as f2:
             skip = False
-            for line in f1:
+            fuer line in f1:
                 if line.startswith(HTML5_SECTION_START):
                     write_items(new_html5, file=f2)
                     skip = True

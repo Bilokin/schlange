@@ -103,7 +103,7 @@ world"""
 
     def test_pickle_template(self):
         user = 'test'
-        for template in (
+        fuer template in (
             t'',
             t"No values",
             t'With inter {user}',
@@ -114,7 +114,7 @@ world"""
             Template(Interpolation('Nikita', 'name', None, '')),
             Template('a', Interpolation('Nikita', 'name', 'r', '')),
         ):
-            for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+            fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
                 with self.subTest(proto=proto, template=template):
                     pickled = pickle.dumps(template, protocol=proto)
                     unpickled = pickle.loads(pickled)
@@ -123,12 +123,12 @@ world"""
                     self.assertEqual(fstring(unpickled), fstring(template))
 
     def test_pickle_interpolation(self):
-        for interpolation in (
+        fuer interpolation in (
             Interpolation('Nikita', 'name', None, ''),
             Interpolation('Nikita', 'name', 'r', ''),
             Interpolation(1/3, 'x', None, '.2f'),
         ):
-            for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+            fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
                 with self.subTest(proto=proto, interpolation=interpolation):
                     pickled = pickle.dumps(interpolation, protocol=proto)
                     unpickled = pickle.loads(pickled)
@@ -173,7 +173,7 @@ klasse TestFunctions(unittest.TestCase):
     def test_convert(self):
         from fractions import Fraction
 
-        for obj in ('Café', None, 3.14, Fraction(1, 2)):
+        fuer obj in ('Café', None, 3.14, Fraction(1, 2)):
             with self.subTest(f'{obj=}'):
                 self.assertEqual(convert(obj, None), obj)
                 self.assertEqual(convert(obj, 's'), str(obj))

@@ -1,6 +1,6 @@
 """runpy.py - locating and running Python code using the module namespace
 
-Provides support for locating and running Python scripts using the Python
+Provides support fuer locating and running Python scripts using the Python
 module namespace instead of the native filesystem.
 
 This allows Python code to play nicely with non-filesystem based PEP 302
@@ -20,7 +20,7 @@ __all__ = [
     "run_module", "run_path",
 ]
 
-# avoid 'import types' just for ModuleType
+# avoid 'import types' just fuer ModuleType
 ModuleType = type(sys)
 
 klasse _TempModule(object):
@@ -101,7 +101,7 @@ def _run_module_code(code, init_globals=None,
     # may be cleared when the temporary module goes away
     return mod_globals.copy()
 
-# Helper to get the full name, spec and code for a module
+# Helper to get the full name, spec and code fuer a module
 def _get_module_details(mod_name, error=ImportError):
     if mod_name.startswith("."):
         raise error("Relative module names not supported")
@@ -131,9 +131,9 @@ def _get_module_details(mod_name, error=ImportError):
         spec = importlib.util.find_spec(mod_name)
     except (ImportError, AttributeError, TypeError, ValueError) as ex:
         # This hack fixes an impedance mismatch between pkgutil and
-        # importlib, where the latter raises other errors for cases where
+        # importlib, where the latter raises other errors fuer cases where
         # pkgutil previously raised ImportError
-        msg = "Error while finding module specification for {!r} ({}: {})"
+        msg = "Error while finding module specification fuer {!r} ({}: {})"
         if mod_name.endswith(".py"):
             msg += (f". Try using '{mod_name[:-3]}' instead of "
                     f"'{mod_name}' as the module name.")
@@ -160,7 +160,7 @@ def _get_module_details(mod_name, error=ImportError):
     except ImportError as e:
         raise error(format(e)) from e
     if code is None:
-        raise error("No code object available for %s" % mod_name)
+        raise error("No code object available fuer %s" % mod_name)
     return mod_name, spec, code
 
 klasse _Error(Exception):
@@ -208,13 +208,13 @@ def run_module(mod_name, init_globals=None,
        init_globals -- dictionary used to pre-populate the module’s
        globals dictionary before the code is executed.
 
-       run_name -- if not None, this will be used for setting __name__;
+       run_name -- if not None, this will be used fuer setting __name__;
        otherwise, __name__ will be set to mod_name + '__main__' if the
        named module is a package and to just mod_name otherwise.
 
        alter_sys -- if True, sys.argv[0] is updated with the value of
        __file__ and sys.modules[__name__] is updated with a temporary
-       module object for the module being executed. Both are
+       module object fuer the module being executed. Both are
        restored to their original values before the function returns.
 
        Returns the resulting module globals dictionary.
@@ -248,7 +248,7 @@ def _get_main_module_details(error=ImportError):
 
 
 def _get_code_from_file(fname):
-    # Check for a compiled file first
+    # Check fuer a compiled file first
     from pkgutil import read_code
     code_path = os.path.abspath(fname)
     with io.open_code(code_path) as f:
@@ -270,7 +270,7 @@ def run_path(path_name, init_globals=None, run_name=None):
        globals dictionary before the code is executed.
 
        run_name -- if not None, this will be used to set __name__;
-       otherwise, '<run_path>' will be used for __name__.
+       otherwise, '<run_path>' will be used fuer __name__.
 
        Returns the resulting module globals dictionary.
     """
@@ -287,7 +287,7 @@ def run_path(path_name, init_globals=None, run_name=None):
         return _run_module_code(code, init_globals, run_name,
                                 pkg_name=pkg_name, script_name=path_name)
     else:
-        # Finder is defined for path, so add it to
+        # Finder is defined fuer path, so add it to
         # the start of sys.path
         sys.path.insert(0, path_name)
         try:
@@ -313,7 +313,7 @@ def run_path(path_name, init_globals=None, run_name=None):
 if __name__ == "__main__":
     # Run the module specified as the next command line argument
     if len(sys.argv) < 2:
-        print("No module specified for execution", file=sys.stderr)
+        print("No module specified fuer execution", file=sys.stderr)
     else:
         del sys.argv[0] # Make the requested module sys.argv[0]
         _run_module_as_main(sys.argv[0])

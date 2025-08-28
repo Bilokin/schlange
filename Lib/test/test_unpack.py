@@ -59,7 +59,7 @@ Single element unpacking, with extra syntax
     >>> b
     100
 
-Now for some failures
+Now fuer some failures
 
 Unpacking non-sequence
 
@@ -96,7 +96,7 @@ Unpacking sequence too long
       ...
     ValueError: too many values to unpack (expected 2)
 
-Unpacking a sequence where the test for too long raises a different kind of
+Unpacking a sequence where the test fuer too long raises a different kind of
 error
 
     >>> klasse BozoError(Exception):
@@ -213,8 +213,8 @@ klasse TestCornerCases(unittest.TestCase):
         ns = {}
         exec(code, ns)
         unpack_400 = ns["unpack_400"]
-        # Warm up the function for quickening (PEP 659)
-        for _ in range(30):
+        # Warm up the function fuer quickening (PEP 659)
+        fuer _ in range(30):
             y = unpack_400(range(400))
             self.assertEqual(y, 399)
 

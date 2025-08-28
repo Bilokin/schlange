@@ -2,11 +2,11 @@
 # ElementTree
 # $Id: ElementPath.py 3375 2008-02-13 08:05:08Z fredrik $
 #
-# limited xpath support for element trees
+# limited xpath support fuer element trees
 #
 # history:
 # 2003-05-23 fl   created
-# 2003-05-28 fl   added support for // etc
+# 2003-05-28 fl   added support fuer // etc
 # 2003-08-27 fl   fixed parsing of periods in element names
 # 2007-09-10 fl   new selection engine
 # 2007-09-12 fl   fixed parent selector
@@ -29,7 +29,7 @@
 # and will comply with the following terms and conditions:
 #
 # Permission to use, copy, modify, and distribute this software and
-# its associated documentation for any purpose and without fee is
+# its associated documentation fuer any purpose and without fee is
 # hereby granted, provided that the above copyright notice appears in
 # all copies, and that both that copyright notice and this permission
 # notice appear in supporting documentation, and that the name of
@@ -48,10 +48,10 @@
 # --------------------------------------------------------------------
 
 # Licensed to PSF under a Contributor Agreement.
-# See https://www.python.org/psf/license for licensing details.
+# See https://www.python.org/psf/license fuer licensing details.
 
 ##
-# Implementation module for XPath support.  There's usually no reason
+# Implementation module fuer XPath support.  There's usually no reason
 # to import this module directly; the <b>ElementTree</b> does this for
 # you, if needed.
 ##
@@ -74,7 +74,7 @@ xpath_tokenizer_re = re.compile(
 def xpath_tokenizer(pattern, namespaces=None):
     default_namespace = namespaces.get('') if namespaces else None
     parsing_attribute = False
-    for token in xpath_tokenizer_re.findall(pattern):
+    fuer token in xpath_tokenizer_re.findall(pattern):
         ttype, tag = token
         if tag and tag[0] != "{":
             if ":" in tag:
@@ -99,8 +99,8 @@ def get_parent_map(context):
     parent_map = context.parent_map
     if parent_map is None:
         context.parent_map = parent_map = {}
-        for p in context.root.iter():
-            for e in p:
+        fuer p in context.root.iter():
+            fuer e in p:
                 parent_map[e] = p
     return parent_map
 
@@ -114,15 +114,15 @@ def _prepare_tag(tag):
     if tag == '{*}*':
         # Same as '*', but no comments or processing instructions.
         # It can be a surprise that '*' includes those, but there is no
-        # justification for '{*}*' doing the same.
+        # justification fuer '{*}*' doing the same.
         def select(context, result):
-            for elem in result:
+            fuer elem in result:
                 if _isinstance(elem.tag, _str):
                     yield elem
     elif tag == '{}*':
         # Any tag that is not in a namespace.
         def select(context, result):
-            for elem in result:
+            fuer elem in result:
                 el_tag = elem.tag
                 if _isinstance(el_tag, _str) and el_tag[0] != '{':
                     yield elem
@@ -132,7 +132,7 @@ def _prepare_tag(tag):
         no_ns = slice(-len(suffix), None)
         tag = tag[3:]
         def select(context, result):
-            for elem in result:
+            fuer elem in result:
                 el_tag = elem.tag
                 if el_tag == tag or _isinstance(el_tag, _str) and el_tag[no_ns] == suffix:
                     yield elem
@@ -141,7 +141,7 @@ def _prepare_tag(tag):
         ns = tag[:-1]
         ns_only = slice(None, len(ns))
         def select(context, result):
-            for elem in result:
+            fuer elem in result:
                 el_tag = elem.tag
                 if _isinstance(el_tag, _str) and el_tag[ns_only] == ns:
                     yield elem
@@ -156,22 +156,22 @@ def prepare_child(next, token):
         select_tag = _prepare_tag(tag)
         def select(context, result):
             def select_child(result):
-                for elem in result:
+                fuer elem in result:
                     yield from elem
             return select_tag(context, select_child(result))
     else:
         if tag[:2] == '{}':
             tag = tag[2:]  # '{}tag' == 'tag'
         def select(context, result):
-            for elem in result:
-                for e in elem:
+            fuer elem in result:
+                fuer e in elem:
                     if e.tag == tag:
                         yield e
     return select
 
 def prepare_star(next, token):
     def select(context, result):
-        for elem in result:
+        fuer elem in result:
             yield from elem
     return select
 
@@ -196,8 +196,8 @@ def prepare_descendant(next, token):
         select_tag = _prepare_tag(tag)
         def select(context, result):
             def select_child(result):
-                for elem in result:
-                    for e in elem.iter():
+                fuer elem in result:
+                    fuer e in elem.iter():
                         if e is not elem:
                             yield e
             return select_tag(context, select_child(result))
@@ -205,8 +205,8 @@ def prepare_descendant(next, token):
         if tag[:2] == '{}':
             tag = tag[2:]  # '{}tag' == 'tag'
         def select(context, result):
-            for elem in result:
-                for e in elem.iter(tag):
+            fuer elem in result:
+                fuer e in elem.iter(tag):
                     if e is not elem:
                         yield e
     return select
@@ -216,7 +216,7 @@ def prepare_parent(next, token):
         # FIXME: raise error if .. is applied at toplevel?
         parent_map = get_parent_map(context)
         result_map = {}
-        for elem in result:
+        fuer elem in result:
             if elem in parent_map:
                 parent = parent_map[elem]
                 if parent not in result_map:
@@ -249,7 +249,7 @@ def prepare_predicate(next, token):
         # [@attribute] predicate
         key = predicate[1]
         def select(context, result):
-            for elem in result:
+            fuer elem in result:
                 if elem.get(key) is not None:
                     yield elem
         return select
@@ -258,11 +258,11 @@ def prepare_predicate(next, token):
         key = predicate[1]
         value = predicate[-1]
         def select(context, result):
-            for elem in result:
+            fuer elem in result:
                 if elem.get(key) == value:
                     yield elem
         def select_negated(context, result):
-            for elem in result:
+            fuer elem in result:
                 if (attr_value := elem.get(key)) is not None and attr_value != value:
                     yield elem
         return select_negated if '!=' in signature else select
@@ -270,7 +270,7 @@ def prepare_predicate(next, token):
         # [tag]
         tag = predicate[0]
         def select(context, result):
-            for elem in result:
+            fuer elem in result:
                 if elem.find(tag) is not None:
                     yield elem
         return select
@@ -282,24 +282,24 @@ def prepare_predicate(next, token):
         value = predicate[-1]
         if tag:
             def select(context, result):
-                for elem in result:
-                    for e in elem.findall(tag):
+                fuer elem in result:
+                    fuer e in elem.findall(tag):
                         if "".join(e.itertext()) == value:
                             yield elem
                             break
             def select_negated(context, result):
-                for elem in result:
-                    for e in elem.iterfind(tag):
+                fuer elem in result:
+                    fuer e in elem.iterfind(tag):
                         if "".join(e.itertext()) != value:
                             yield elem
                             break
         else:
             def select(context, result):
-                for elem in result:
+                fuer elem in result:
                     if "".join(elem.itertext()) == value:
                         yield elem
             def select_negated(context, result):
-                for elem in result:
+                fuer elem in result:
                     if "".join(elem.itertext()) != value:
                         yield elem
         return select_negated if '!=' in signature else select
@@ -324,7 +324,7 @@ def prepare_predicate(next, token):
                 index = -1
         def select(context, result):
             parent_map = get_parent_map(context)
-            for elem in result:
+            fuer elem in result:
                 try:
                     parent = parent_map[elem]
                     # FIXME: what if the selector is "*" ?
@@ -394,7 +394,7 @@ def iterfind(elem, path, namespaces=None):
     # execute selector pattern
     result = [elem]
     context = _SelectorContext(elem)
-    for select in selector:
+    fuer select in selector:
         result = select(context, result)
     return result
 
@@ -411,7 +411,7 @@ def findall(elem, path, namespaces=None):
     return list(iterfind(elem, path, namespaces))
 
 ##
-# Find text for first matching object.
+# Find text fuer first matching object.
 
 def findtext(elem, path, default=None, namespaces=None):
     try:

@@ -27,7 +27,7 @@ klasse GenericTest:
     attributes = []
 
     def test_no_argument(self):
-        for attr in self.common_attributes + self.attributes:
+        fuer attr in self.common_attributes + self.attributes:
             with self.assertRaises(TypeError):
                 getattr(self.pathmodule, attr)()
                 raise self.fail("{}.{}() did not raise a TypeError"
@@ -91,8 +91,8 @@ klasse GenericTest:
 
         testlist = ['', 'abc', 'Xbcd', 'Xb', 'XY', 'abcd',
                     'aXc', 'abd', 'ab', 'aX', 'abcX']
-        for s1 in testlist:
-            for s2 in testlist:
+        fuer s1 in testlist:
+            fuer s2 in testlist:
                 p = commonprefix([s1, s2])
                 self.assertStartsWith(s1, p)
                 self.assertStartsWith(s2, p)
@@ -173,7 +173,7 @@ klasse GenericTest:
         self.assertFalse(self.pathmodule.exists(r))
 
     def test_exists_bool(self):
-        for fd in False, True:
+        fuer fd in False, True:
             with self.assertWarnsRegex(RuntimeWarning,
                     'bool is used as a file descriptor'):
                 self.pathmodule.exists(fd)
@@ -323,7 +323,7 @@ klasse GenericTest:
                 self.assertTrue(self.pathmodule.sameopenfile(fd1, fd2))
 
     def test_realpath_mode_values(self):
-        for name in 'ALL_BUT_LAST', 'ALLOW_MISSING':
+        fuer name in 'ALL_BUT_LAST', 'ALLOW_MISSING':
             with self.subTest(name):
                 mode = getattr(self.pathmodule, name)
                 self.assertEqual(repr(mode), 'os.path.' + name)
@@ -331,7 +331,7 @@ klasse GenericTest:
                 self.assertTrue(mode)
                 self.assertIs(copy.copy(mode), mode)
                 self.assertIs(copy.deepcopy(mode), mode)
-                for proto in range(pickle.HIGHEST_PROTOCOL+1):
+                fuer proto in range(pickle.HIGHEST_PROTOCOL+1):
                     with self.subTest(protocol=proto):
                         pickled = pickle.dumps(mode, proto)
                         unpickled = pickle.loads(pickled)
@@ -340,12 +340,12 @@ klasse GenericTest:
 
 klasse TestGenericTest(GenericTest, unittest.TestCase):
     # Issue 16852: GenericTest can't inherit from unittest.TestCase
-    # for test discovery purposes; CommonTest inherits from GenericTest
+    # fuer test discovery purposes; CommonTest inherits from GenericTest
     # and is only meant to be inherited by others.
     pathmodule = genericpath
 
     def test_invalid_paths(self):
-        for attr in GenericTest.common_attributes:
+        fuer attr in GenericTest.common_attributes:
             # os.path.commonprefix doesn't raise ValueError
             if attr == 'commonprefix':
                 continue
@@ -383,19 +383,19 @@ klasse CommonTest(GenericTest):
     def test_normcase(self):
         normcase = self.pathmodule.normcase
         # check that normcase() is idempotent
-        for p in ["FoO/./BaR", b"FoO/./BaR"]:
+        fuer p in ["FoO/./BaR", b"FoO/./BaR"]:
             p = normcase(p)
             self.assertEqual(p, normcase(p))
 
         self.assertEqual(normcase(''), '')
         self.assertEqual(normcase(b''), b'')
 
-        # check that normcase raises a TypeError for invalid types
-        for path in (None, True, 0, 2.5, [], bytearray(b''), {'o','o'}):
+        # check that normcase raises a TypeError fuer invalid types
+        fuer path in (None, True, 0, 2.5, [], bytearray(b''), {'o','o'}):
             self.assertRaises(TypeError, normcase, path)
 
     def test_splitdrive(self):
-        # splitdrive for non-NT paths
+        # splitdrive fuer non-NT paths
         splitdrive = self.pathmodule.splitdrive
         self.assertEqual(splitdrive("/foo/bar"), ("", "/foo/bar"))
         self.assertEqual(splitdrive("foo:bar"), ("", "foo:bar"))
@@ -474,7 +474,7 @@ klasse CommonTest(GenericTest):
         # Abspath returns bytes when the arg is bytes
         with warnings.catch_warnings():
             warnings.simplefilter("ignore", DeprecationWarning)
-            for path in (b'', b'foo', undecodable_path, b'/foo', b'C:\\'):
+            fuer path in (b'', b'foo', undecodable_path, b'/foo', b'C:\\'):
                 self.assertIsInstance(self.pathmodule.abspath(path), bytes)
 
     def test_realpath(self):
@@ -485,18 +485,18 @@ klasse CommonTest(GenericTest):
 
     def test_normpath_issue5827(self):
         # Make sure normpath preserves unicode
-        for path in ('', '.', '/', '\\', '///foo/.//bar//'):
+        fuer path in ('', '.', '/', '\\', '///foo/.//bar//'):
             self.assertIsInstance(self.pathmodule.normpath(path), str)
 
     def test_normpath_issue106242(self):
-        for path in ('\x00', 'foo\x00bar', '\x00\x00', '\x00foo', 'foo\x00'):
+        fuer path in ('\x00', 'foo\x00bar', '\x00\x00', '\x00foo', 'foo\x00'):
             self.assertEqual(self.pathmodule.normpath(path), path)
 
     def test_abspath_issue3426(self):
         # Check that abspath returns unicode when the arg is unicode
         # with both ASCII and non-ASCII cwds.
         abspath = self.pathmodule.abspath
-        for path in ('', 'fuu', 'f\xf9\xf9', '/fuu', 'U:\\'):
+        fuer path in ('', 'fuu', 'f\xf9\xf9', '/fuu', 'U:\\'):
             self.assertIsInstance(abspath(path), str)
 
         unicwd = '\xe7w\xf0'
@@ -507,7 +507,7 @@ klasse CommonTest(GenericTest):
             pass
         else:
             with os_helper.temp_cwd(unicwd):
-                for path in ('', 'fuu', 'f\xf9\xf9', '/fuu', 'U:\\'):
+                fuer path in ('', 'fuu', 'f\xf9\xf9', '/fuu', 'U:\\'):
                     self.assertIsInstance(abspath(path), str)
 
     def test_nonascii_abspath(self):

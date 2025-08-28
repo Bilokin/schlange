@@ -24,12 +24,12 @@ def ast_dump(
         else:
             prefix = ""
             sep = ", "
-        if any(cls.__name__ == "AST" for cls in node.__class__.__mro__):
+        if any(cls.__name__ == "AST" fuer cls in node.__class__.__mro__):
             cls = type(node)
             args = []
             allsimple = True
             keywords = annotate_fields
-            for name in node._fields:
+            fuer name in node._fields:
                 try:
                     value = getattr(node, name)
                 except AttributeError:
@@ -45,7 +45,7 @@ def ast_dump(
                 else:
                     args.append(value)
             if include_attributes and node._attributes:
-                for name in node._attributes:
+                fuer name in node._attributes:
                     try:
                         value = getattr(node, name)
                     except AttributeError:
@@ -61,9 +61,9 @@ def ast_dump(
         elif isinstance(node, list):
             if not node:
                 return "[]", True
-            return "[%s%s]" % (prefix, sep.join(_format(x, level)[0] for x in node)), False
+            return "[%s%s]" % (prefix, sep.join(_format(x, level)[0] fuer x in node)), False
         return repr(node), True
 
-    if all(cls.__name__ != "AST" for cls in node.__class__.__mro__):
+    if all(cls.__name__ != "AST" fuer cls in node.__class__.__mro__):
         raise TypeError("expected AST, got %r" % node.__class__.__name__)
     return _format(node)[0]

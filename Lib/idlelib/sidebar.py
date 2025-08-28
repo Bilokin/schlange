@@ -1,5 +1,5 @@
-"""Line numbering implementation for IDLE as an extension.
-Includes BaseSideBar which can be extended for other sidebar based extensions
+"""Line numbering implementation fuer IDLE as an extension.
+Includes BaseSideBar which can be extended fuer other sidebar based extensions
 """
 import contextlib
 import functools
@@ -65,7 +65,7 @@ def temp_enable_text_widget(text):
 
 
 klasse BaseSideBar:
-    """A base klasse for sidebars using Text."""
+    """A base klasse fuer sidebars using Text."""
     def __init__(self, editwin):
         self.editwin = editwin
         self.parent = editwin.text_frame
@@ -107,7 +107,7 @@ klasse BaseSideBar:
             self.is_shown = False
 
     def yscroll_event(self, *args, **kwargs):
-        """Hook for vertical scrolling for sub-classes to override."""
+        """Hook fuer vertical scrolling fuer sub-classes to override."""
         raise NotImplementedError
 
     def redirect_yscroll_event(self, *args, **kwargs):
@@ -148,16 +148,16 @@ klasse BaseSideBar:
         self.main_widget.bind('<MouseWheel>', self.redirect_mousewheel_event)
 
         # Redirect mouse button events to the main editor text widget,
-        # except for the left mouse button (1).
+        # except fuer the left mouse button (1).
         #
-        # Note: X-11 sends Button-4 and Button-5 events for the scroll wheel.
+        # Note: X-11 sends Button-4 and Button-5 events fuer the scroll wheel.
         def bind_mouse_event(event_name, target_event_name):
             handler = functools.partial(self.redirect_mousebutton_event,
                                         event_name=target_event_name)
             self.main_widget.bind(event_name, handler)
 
-        for button in [2, 3, 4, 5]:
-            for event_name in (f'<Button-{button}>',
+        fuer button in [2, 3, 4, 5]:
+            fuer event_name in (f'<Button-{button}>',
                                f'<ButtonRelease-{button}>',
                                f'<B{button}-Motion>',
                                ):
@@ -165,7 +165,7 @@ klasse BaseSideBar:
 
             # Convert double- and triple-click events to normal click events,
             # since event_generate() doesn't allow generating such events.
-            for event_name in (f'<Double-Button-{button}>',
+            fuer event_name in (f'<Double-Button-{button}>',
                                f'<Triple-Button-{button}>',
                                ):
                 bind_mouse_event(event_name,
@@ -188,7 +188,7 @@ klasse BaseSideBar:
         auto_scrolling_after_id = None
 
         def drag_update_selection_and_insert_mark(y_coord):
-            """Helper function for drag and selection event handlers."""
+            """Helper function fuer drag and selection event handlers."""
             lineno = get_lineno(self.text, f"@0,{y_coord}")
             a, b = sorted([start_line, lineno])
             self.text.tag_remove("sel", "1.0", "end")
@@ -281,7 +281,7 @@ klasse EndLineDelegator(Delegator):
 
 
 klasse LineNumbers(BaseSideBar):
-    """Line numbers support for editor windows."""
+    """Line numbers support fuer editor windows."""
     def __init__(self, editwin):
         super().__init__(editwin)
 
@@ -331,7 +331,7 @@ klasse LineNumbers(BaseSideBar):
     def update_sidebar_text(self, end):
         """
         Perform the following action:
-        Each line sidebar_text contains the linenumber for that line
+        Each line sidebar_text contains the linenumber fuer that line
         Synchronize with editwin.text so that both sidebar_text and
         editwin.text contain the same number of lines"""
         if end == self.prev_end:
@@ -402,7 +402,7 @@ klasse WrappedLineHeightChangeDelegator(Delegator):
 
 
 klasse ShellSidebar(BaseSideBar):
-    """Sidebar for the PyShell window, for prompts etc."""
+    """Sidebar fuer the PyShell window, fuer prompts etc."""
     def __init__(self, editwin):
         self.canvas = None
         self.line_prompts = {}
@@ -497,7 +497,7 @@ klasse ShellSidebar(BaseSideBar):
         """Update the sidebar text font, usually after config changes."""
         font = idleConf.GetFont(self.text, 'main', 'EditorWindow')
         tk_font = Font(self.text, font=font)
-        char_width = max(tk_font.measure(char) for char in ['>', '.'])
+        char_width = max(tk_font.measure(char) fuer char in ['>', '.'])
         self.canvas.configure(width=char_width * 3 + 4)
         self.font = font
         self.change_callback()
@@ -532,7 +532,7 @@ def _sidebar_number_scrolling(parent):  # htest #
     linenumbers = LineNumbers(editwin)
     linenumbers.show_sidebar()
 
-    text.insert('1.0', '\n'.join('a'*i for i in range(1, 101)))
+    text.insert('1.0', '\n'.join('a'*i fuer i in range(1, 101)))
 
 
 if __name__ == '__main__':

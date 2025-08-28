@@ -35,7 +35,7 @@ klasse AsyncYield:
 
 async def asynciter(iterable):
     """Convert an iterable to an asynchronous iterator."""
-    for x in iterable:
+    fuer x in iterable:
         yield x
 
 
@@ -108,119 +108,119 @@ klasse AsyncBadSyntaxTest(unittest.TestCase):
 
             """async def foo():
                 def bar():
-                 [i async for i in els]
+                 [i async fuer i in els]
             """,
 
             """async def foo():
                 def bar():
-                 [await i for i in els]
+                 [await i fuer i in els]
             """,
 
             """async def foo():
                 def bar():
-                 [i for i in els
-                    async for b in els]
+                 [i fuer i in els
+                    async fuer b in els]
             """,
 
             """async def foo():
                 def bar():
-                 [i for i in els
-                    for c in b
-                    async for b in els]
+                 [i fuer i in els
+                    fuer c in b
+                    async fuer b in els]
             """,
 
             """async def foo():
                 def bar():
-                 [i for i in els
-                    async for b in els
-                    for c in b]
+                 [i fuer i in els
+                    async fuer b in els
+                    fuer c in b]
             """,
 
             """async def foo():
                 def bar():
-                 [[async for i in b] for b in els]
+                 [[async fuer i in b] fuer b in els]
             """,
 
             """async def foo():
                 def bar():
-                 [i for i in els
-                    for b in await els]
+                 [i fuer i in els
+                    fuer b in await els]
             """,
 
             """async def foo():
                 def bar():
-                 [i for i in els
-                    for b in els
+                 [i fuer i in els
+                    fuer b in els
                         if await b]
             """,
 
             """async def foo():
                 def bar():
-                 [i for i in await els]
+                 [i fuer i in await els]
             """,
 
             """async def foo():
                 def bar():
-                 [i for i in els if await i]
+                 [i fuer i in els if await i]
             """,
 
             """def bar():
-                 [i async for i in els]
+                 [i async fuer i in els]
             """,
 
             """def bar():
-                 {i: i async for i in els}
+                 {i: i async fuer i in els}
             """,
 
             """def bar():
-                 {i async for i in els}
+                 {i async fuer i in els}
             """,
 
             """def bar():
-                 [await i for i in els]
+                 [await i fuer i in els]
             """,
 
             """def bar():
-                 [i for i in els
-                    async for b in els]
+                 [i fuer i in els
+                    async fuer b in els]
             """,
 
             """def bar():
-                 [i for i in els
-                    for c in b
-                    async for b in els]
+                 [i fuer i in els
+                    fuer c in b
+                    async fuer b in els]
             """,
 
             """def bar():
-                 [i for i in els
-                    async for b in els
-                    for c in b]
+                 [i fuer i in els
+                    async fuer b in els
+                    fuer c in b]
             """,
 
             """def bar():
-                 [i for i in els
-                    for b in await els]
+                 [i fuer i in els
+                    fuer b in await els]
             """,
 
             """def bar():
-                 [i for i in els
-                    for b in els
+                 [i fuer i in els
+                    fuer b in els
                         if await b]
             """,
 
             """def bar():
-                 [i for i in await els]
+                 [i fuer i in await els]
             """,
 
             """def bar():
-                 [i for i in els if await i]
+                 [i fuer i in els if await i]
             """,
 
             """def bar():
-                 [[i async for i in a] for a in elts]
+                 [[i async fuer i in a] fuer a in elts]
             """,
 
-            """[[i async for i in a] for a in elts]
+            """[[i async fuer i in a] fuer a in elts]
             """,
 
             """async def foo():
@@ -388,7 +388,7 @@ klasse AsyncBadSyntaxTest(unittest.TestCase):
                         pass\nawait a
             """,
             """def foo():
-                   async for i in arange(2):
+                   async fuer i in arange(2):
                        pass
             """,
             """def foo():
@@ -398,12 +398,12 @@ klasse AsyncBadSyntaxTest(unittest.TestCase):
             """async with resource:
                    pass
             """,
-            """async for i in arange(2):
+            """async fuer i in arange(2):
                    pass
             """,
             ]
 
-        for code in samples:
+        fuer code in samples:
             with self.subTest(code=code), self.assertRaises(SyntaxError):
                 compile(code, "<test>", "exec")
 
@@ -442,7 +442,7 @@ klasse AsyncBadSyntaxTest(unittest.TestCase):
             """print(await=1)"""
         ]
 
-        for code in samples:
+        fuer code in samples:
             with self.subTest(code=code), self.assertRaises(SyntaxError):
                 compile(code, "<test>", "exec")
 
@@ -496,7 +496,7 @@ klasse AsyncBadSyntaxTest(unittest.TestCase):
             '''
         ]
 
-        for code in samples:
+        fuer code in samples:
             with self.subTest(code=code), self.assertRaises(SyntaxError):
                 compile(code, "<test>", "exec")
 
@@ -505,7 +505,7 @@ klasse TokenizerRegrTest(unittest.TestCase):
 
     def test_oneline_defs(self):
         buf = []
-        for i in range(500):
+        fuer i in range(500):
             buf.append('def i{i}(): return {i}'.format(i=i))
         buf = '\n'.join(buf)
 
@@ -584,11 +584,11 @@ klasse CoroutineTest(unittest.TestCase):
             iter(coro)
 
         with check():
-            for i in coro:
+            fuer i in coro:
                 pass
 
         with check():
-            [i for i in coro]
+            [i fuer i in coro]
 
         coro.close()
 
@@ -605,14 +605,14 @@ klasse CoroutineTest(unittest.TestCase):
 
         coro = foo()
         with check():
-            for el in coro:
+            fuer el in coro:
                 pass
         coro.close()
 
         # the following should pass without an error
-        for el in bar():
+        fuer el in bar():
             self.assertEqual(el, 1)
-        self.assertEqual([el for el in bar()], [1])
+        self.assertEqual([el fuer el in bar()], [1])
         self.assertEqual(tuple(bar()), (1,))
         self.assertEqual(next(iter(bar())), 1)
 
@@ -676,7 +676,7 @@ klasse CoroutineTest(unittest.TestCase):
 
             with self.assertRaises(TypeError):
                 # See bpo-32703.
-                for _ in foo():
+                fuer _ in foo():
                     pass
 
             support.gc_collect()
@@ -770,7 +770,7 @@ klasse CoroutineTest(unittest.TestCase):
             c.close()
 
     def test_func_15(self):
-        # See http://bugs.python.org/issue25887 for details
+        # See http://bugs.python.org/issue25887 fuer details
 
         async def spammer():
             return 'spam'
@@ -787,7 +787,7 @@ klasse CoroutineTest(unittest.TestCase):
             reader(spammer_coro).send(None)
 
     def test_func_16(self):
-        # See http://bugs.python.org/issue25887 for details
+        # See http://bugs.python.org/issue25887 fuer details
 
         @types.coroutine
         def nop():
@@ -818,7 +818,7 @@ klasse CoroutineTest(unittest.TestCase):
             reader.throw(Exception('wat'))
 
     def test_func_17(self):
-        # See http://bugs.python.org/issue25887 for details
+        # See http://bugs.python.org/issue25887 fuer details
 
         async def coroutine():
             return 'spam'
@@ -841,7 +841,7 @@ klasse CoroutineTest(unittest.TestCase):
         coro.close()
 
     def test_func_18(self):
-        # See http://bugs.python.org/issue25887 for details
+        # See http://bugs.python.org/issue25887 fuer details
 
         async def coroutine():
             return 'spam'
@@ -904,7 +904,7 @@ klasse CoroutineTest(unittest.TestCase):
         coro.close()
         self.assertEqual(CHK, 1)
 
-        for _ in range(3):
+        fuer _ in range(3):
             # Closing a coroutine shouldn't raise any exception even if it's
             # already closed/exhausted (similar to generators)
             coro.close()
@@ -1177,7 +1177,7 @@ klasse CoroutineTest(unittest.TestCase):
             waiter(coro).send(None)
 
     def test_await_16(self):
-        # See https://bugs.python.org/issue29600 for details.
+        # See https://bugs.python.org/issue29600 fuer details.
 
         async def f():
             return ValueError()
@@ -1192,7 +1192,7 @@ klasse CoroutineTest(unittest.TestCase):
         self.assertIsNone(result.__context__)
 
     def test_await_17(self):
-        # See https://github.com/python/cpython/issues/131666 for details.
+        # See https://github.com/python/cpython/issues/131666 fuer details.
         klasse A:
             async def __anext__(self):
                 raise StopAsyncIteration
@@ -1291,7 +1291,7 @@ klasse CoroutineTest(unittest.TestCase):
 
     def test_with_5(self):
         # While this test doesn't make a lot of sense,
-        # it's a regression test for an early bug with opcodes
+        # it's a regression test fuer an early bug with opcodes
         # generation
 
         klasse CM:
@@ -1378,7 +1378,7 @@ klasse CoroutineTest(unittest.TestCase):
         # Exit with 'break'
         async def foo():
             nonlocal CNT
-            for i in range(2):
+            fuer i in range(2):
                 async with CM():
                     CNT += 1
                     break
@@ -1392,7 +1392,7 @@ klasse CoroutineTest(unittest.TestCase):
         # Exit with 'continue'
         async def foo():
             nonlocal CNT
-            for i in range(2):
+            fuer i in range(2):
                 async with CM():
                     CNT += 1
                     continue
@@ -1550,20 +1550,20 @@ klasse CoroutineTest(unittest.TestCase):
 
         buffer = []
         async def test1():
-            async for i1, i2 in AsyncIter():
+            async fuer i1, i2 in AsyncIter():
                 buffer.append(i1 + i2)
 
         yielded, _ = run_async(test1())
         # Make sure that __aiter__ was called only once
         self.assertEqual(aiter_calls, 1)
-        self.assertEqual(yielded, [i * 100 for i in range(1, 11)])
-        self.assertEqual(buffer, [i*2 for i in range(1, 101)])
+        self.assertEqual(yielded, [i * 100 fuer i in range(1, 11)])
+        self.assertEqual(buffer, [i*2 fuer i in range(1, 101)])
 
 
         buffer = []
         async def test2():
             nonlocal buffer
-            async for i in AsyncIter():
+            async fuer i in AsyncIter():
                 buffer.append(i[0])
                 if i[0] == 20:
                     break
@@ -1575,13 +1575,13 @@ klasse CoroutineTest(unittest.TestCase):
         # Make sure that __aiter__ was called only once
         self.assertEqual(aiter_calls, 2)
         self.assertEqual(yielded, [100, 200])
-        self.assertEqual(buffer, [i for i in range(1, 21)] + ['end'])
+        self.assertEqual(buffer, [i fuer i in range(1, 21)] + ['end'])
 
 
         buffer = []
         async def test3():
             nonlocal buffer
-            async for i in AsyncIter():
+            async fuer i in AsyncIter():
                 if i[0] > 20:
                     continue
                 buffer.append(i[0])
@@ -1592,8 +1592,8 @@ klasse CoroutineTest(unittest.TestCase):
         yielded, _ = run_async(test3())
         # Make sure that __aiter__ was called only once
         self.assertEqual(aiter_calls, 3)
-        self.assertEqual(yielded, [i * 100 for i in range(1, 11)])
-        self.assertEqual(buffer, [i for i in range(1, 21)] +
+        self.assertEqual(yielded, [i * 100 fuer i in range(1, 11)])
+        self.assertEqual(buffer, [i fuer i in range(1, 21)] +
                                  ['what?', 'end'])
 
     def test_for_2(self):
@@ -1601,7 +1601,7 @@ klasse CoroutineTest(unittest.TestCase):
         refs_before = sys.getrefcount(tup)
 
         async def foo():
-            async for i in tup:
+            async fuer i in tup:
                 print('never going to happen')
 
         with self.assertRaisesRegex(
@@ -1620,7 +1620,7 @@ klasse CoroutineTest(unittest.TestCase):
         refs_before = sys.getrefcount(aiter)
 
         async def foo():
-            async for i in aiter:
+            async fuer i in aiter:
                 print('never going to happen')
 
         with self.assertRaisesRegex(
@@ -1643,7 +1643,7 @@ klasse CoroutineTest(unittest.TestCase):
         refs_before = sys.getrefcount(aiter)
 
         async def foo():
-            async for i in aiter:
+            async fuer i in aiter:
                 print('never going to happen')
 
         with self.assertRaisesRegex(
@@ -1690,7 +1690,7 @@ klasse CoroutineTest(unittest.TestCase):
             nonlocal I
 
             async with manager:
-                async for i in iterable:
+                async fuer i in iterable:
                     I += 1
             I += 1000
 
@@ -1710,12 +1710,12 @@ klasse CoroutineTest(unittest.TestCase):
             nonlocal I
 
             async with Manager():
-                async for i in Iterable():
+                async fuer i in Iterable():
                     I += 1
             I += 1000
 
             async with Manager():
-                async for i in Iterable():
+                async fuer i in Iterable():
                     I += 1
             I += 1000
 
@@ -1729,7 +1729,7 @@ klasse CoroutineTest(unittest.TestCase):
 
             async with Manager():
                 I += 100
-                async for i in Iterable():
+                async fuer i in Iterable():
                     I += 1
                 else:
                     I += 10000000
@@ -1737,7 +1737,7 @@ klasse CoroutineTest(unittest.TestCase):
 
             async with Manager():
                 I += 100
-                async for i in Iterable():
+                async fuer i in Iterable():
                     I += 1
                 else:
                     I += 10000000
@@ -1753,7 +1753,7 @@ klasse CoroutineTest(unittest.TestCase):
                 1/0
         async def foo():
             nonlocal CNT
-            async for i in AI():
+            async fuer i in AI():
                 CNT += 1
             CNT += 10
         with self.assertRaises(ZeroDivisionError):
@@ -1767,7 +1767,7 @@ klasse CoroutineTest(unittest.TestCase):
                 1/0
         async def foo():
             nonlocal CNT
-            async for i in AI():
+            async fuer i in AI():
                 CNT += 1
             CNT += 10
         with self.assertRaises(ZeroDivisionError):
@@ -1788,7 +1788,7 @@ klasse CoroutineTest(unittest.TestCase):
                 1 / 0
 
         async def main():
-            async for _ in F():
+            async fuer _ in F():
                 pass
 
         with self.assertRaisesRegex(TypeError,
@@ -1813,7 +1813,7 @@ klasse CoroutineTest(unittest.TestCase):
 
         result = []
         async def foo():
-            async for i in AIter([42]):
+            async fuer i in AIter([42]):
                 result.append(i)
             raise Done
 
@@ -1836,7 +1836,7 @@ klasse CoroutineTest(unittest.TestCase):
 
         result = []
         async def foo():
-            async for i in AIter(42):
+            async fuer i in AIter(42):
                 result.append(i)
             raise Done
 
@@ -1849,16 +1849,16 @@ klasse CoroutineTest(unittest.TestCase):
             return i
 
         async def run_list():
-            return [await c for c in [f(1), f(41)]]
+            return [await c fuer c in [f(1), f(41)]]
 
         async def run_set():
-            return {await c for c in [f(1), f(41)]}
+            return {await c fuer c in [f(1), f(41)]}
 
         async def run_dict1():
-            return {await c: 'a' for c in [f(1), f(41)]}
+            return {await c: 'a' fuer c in [f(1), f(41)]}
 
         async def run_dict2():
-            return {i: await c for i, c in enumerate([f(1), f(41)])}
+            return {i: await c fuer i, c in enumerate([f(1), f(41)])}
 
         self.assertEqual(run_async(run_list()), ([], [1, 41]))
         self.assertEqual(run_async(run_set()), ([], {1, 41}))
@@ -1870,8 +1870,8 @@ klasse CoroutineTest(unittest.TestCase):
             return i
 
         async def run_list():
-            return [s for c in [f(''), f('abc'), f(''), f(['de', 'fg'])]
-                    for s in await c]
+            return [s fuer c in [f(''), f('abc'), f(''), f(['de', 'fg'])]
+                    fuer s in await c]
 
         self.assertEqual(
             run_async(run_list()),
@@ -1879,10 +1879,10 @@ klasse CoroutineTest(unittest.TestCase):
 
         async def run_set():
             return {d
-                    for c in [f([f([10, 30]),
+                    fuer c in [f([f([10, 30]),
                                  f([20])])]
-                    for s in await c
-                    for d in await s}
+                    fuer s in await c
+                    fuer d in await s}
 
         self.assertEqual(
             run_async(run_set()),
@@ -1890,8 +1890,8 @@ klasse CoroutineTest(unittest.TestCase):
 
         async def run_set2():
             return {await s
-                    for c in [f([f(10), f(20)])]
-                    for s in await c}
+                    fuer c in [f([f(10), f(20)])]
+                    fuer s in await c}
 
         self.assertEqual(
             run_async(run_set2()),
@@ -1899,114 +1899,114 @@ klasse CoroutineTest(unittest.TestCase):
 
     def test_comp_3(self):
         async def f(it):
-            for i in it:
+            fuer i in it:
                 yield i
 
         async def run_list():
-            return [i + 1 async for i in f([10, 20])]
+            return [i + 1 async fuer i in f([10, 20])]
         self.assertEqual(
             run_async(run_list()),
             ([], [11, 21]))
 
         async def run_set():
-            return {i + 1 async for i in f([10, 20])}
+            return {i + 1 async fuer i in f([10, 20])}
         self.assertEqual(
             run_async(run_set()),
             ([], {11, 21}))
 
         async def run_dict():
-            return {i + 1: i + 2 async for i in f([10, 20])}
+            return {i + 1: i + 2 async fuer i in f([10, 20])}
         self.assertEqual(
             run_async(run_dict()),
             ([], {11: 12, 21: 22}))
 
         async def run_gen():
-            gen = (i + 1 async for i in f([10, 20]))
-            return [g + 100 async for g in gen]
+            gen = (i + 1 async fuer i in f([10, 20]))
+            return [g + 100 async fuer g in gen]
         self.assertEqual(
             run_async(run_gen()),
             ([], [111, 121]))
 
     def test_comp_4(self):
         async def f(it):
-            for i in it:
+            fuer i in it:
                 yield i
 
         async def run_list():
-            return [i + 1 async for i in f([10, 20]) if i > 10]
+            return [i + 1 async fuer i in f([10, 20]) if i > 10]
         self.assertEqual(
             run_async(run_list()),
             ([], [21]))
 
         async def run_set():
-            return {i + 1 async for i in f([10, 20]) if i > 10}
+            return {i + 1 async fuer i in f([10, 20]) if i > 10}
         self.assertEqual(
             run_async(run_set()),
             ([], {21}))
 
         async def run_dict():
-            return {i + 1: i + 2 async for i in f([10, 20]) if i > 10}
+            return {i + 1: i + 2 async fuer i in f([10, 20]) if i > 10}
         self.assertEqual(
             run_async(run_dict()),
             ([], {21: 22}))
 
         async def run_gen():
-            gen = (i + 1 async for i in f([10, 20]) if i > 10)
-            return [g + 100 async for g in gen]
+            gen = (i + 1 async fuer i in f([10, 20]) if i > 10)
+            return [g + 100 async fuer g in gen]
         self.assertEqual(
             run_async(run_gen()),
             ([], [121]))
 
     def test_comp_4_2(self):
         async def f(it):
-            for i in it:
+            fuer i in it:
                 yield i
 
         async def run_list():
-            return [i + 10 async for i in f(range(5)) if 0 < i < 4]
+            return [i + 10 async fuer i in f(range(5)) if 0 < i < 4]
         self.assertEqual(
             run_async(run_list()),
             ([], [11, 12, 13]))
 
         async def run_set():
-            return {i + 10 async for i in f(range(5)) if 0 < i < 4}
+            return {i + 10 async fuer i in f(range(5)) if 0 < i < 4}
         self.assertEqual(
             run_async(run_set()),
             ([], {11, 12, 13}))
 
         async def run_dict():
-            return {i + 10: i + 100 async for i in f(range(5)) if 0 < i < 4}
+            return {i + 10: i + 100 async fuer i in f(range(5)) if 0 < i < 4}
         self.assertEqual(
             run_async(run_dict()),
             ([], {11: 101, 12: 102, 13: 103}))
 
         async def run_gen():
-            gen = (i + 10 async for i in f(range(5)) if 0 < i < 4)
-            return [g + 100 async for g in gen]
+            gen = (i + 10 async fuer i in f(range(5)) if 0 < i < 4)
+            return [g + 100 async fuer g in gen]
         self.assertEqual(
             run_async(run_gen()),
             ([], [111, 112, 113]))
 
     def test_comp_5(self):
         async def f(it):
-            for i in it:
+            fuer i in it:
                 yield i
 
         async def run_list():
-            return [i + 1 for pair in ([10, 20], [30, 40]) if pair[0] > 10
-                    async for i in f(pair) if i > 30]
+            return [i + 1 fuer pair in ([10, 20], [30, 40]) if pair[0] > 10
+                    async fuer i in f(pair) if i > 30]
         self.assertEqual(
             run_async(run_list()),
             ([], [41]))
 
     def test_comp_6(self):
         async def f(it):
-            for i in it:
+            fuer i in it:
                 yield i
 
         async def run_list():
-            return [i + 1 async for seq in f([(10, 20), (30,)])
-                    for i in seq]
+            return [i + 1 async fuer seq in f([(10, 20), (30,)])
+                    fuer i in seq]
 
         self.assertEqual(
             run_async(run_list()),
@@ -2019,14 +2019,14 @@ klasse CoroutineTest(unittest.TestCase):
             raise Exception('aaa')
 
         async def run_list():
-            return [i async for i in f()]
+            return [i async fuer i in f()]
 
         with self.assertRaisesRegex(Exception, 'aaa'):
             run_async(run_list())
 
     def test_comp_8(self):
         async def f():
-            return [i for i in [1, 2, 3]]
+            return [i fuer i in [1, 2, 3]]
 
         self.assertEqual(
             run_async(f()),
@@ -2037,8 +2037,8 @@ klasse CoroutineTest(unittest.TestCase):
             yield 1
             yield 2
         async def f():
-            l = [i async for i in gen()]
-            return [i for i in l]
+            l = [i async fuer i in gen()]
+            return [i fuer i in l]
 
         self.assertEqual(
             run_async(f()),
@@ -2046,8 +2046,8 @@ klasse CoroutineTest(unittest.TestCase):
 
     def test_comp_10(self):
         async def f():
-            xx = {i for i in [1, 2, 3]}
-            return {x: x for x in xx}
+            xx = {i fuer i in [1, 2, 3]}
+            return {x: x fuer x in xx}
 
         self.assertEqual(
             run_async(f()),
@@ -2055,54 +2055,54 @@ klasse CoroutineTest(unittest.TestCase):
 
     def test_nested_comp(self):
         async def run_list_inside_list():
-            return [[i + j async for i in asynciter([1, 2])] for j in [10, 20]]
+            return [[i + j async fuer i in asynciter([1, 2])] fuer j in [10, 20]]
         self.assertEqual(
             run_async(run_list_inside_list()),
             ([], [[11, 12], [21, 22]]))
 
         async def run_set_inside_list():
-            return [{i + j async for i in asynciter([1, 2])} for j in [10, 20]]
+            return [{i + j async fuer i in asynciter([1, 2])} fuer j in [10, 20]]
         self.assertEqual(
             run_async(run_set_inside_list()),
             ([], [{11, 12}, {21, 22}]))
 
         async def run_list_inside_set():
-            return {sum([i async for i in asynciter(range(j))]) for j in [3, 5]}
+            return {sum([i async fuer i in asynciter(range(j))]) fuer j in [3, 5]}
         self.assertEqual(
             run_async(run_list_inside_set()),
             ([], {3, 10}))
 
         async def run_dict_inside_dict():
-            return {j: {i: i + j async for i in asynciter([1, 2])} for j in [10, 20]}
+            return {j: {i: i + j async fuer i in asynciter([1, 2])} fuer j in [10, 20]}
         self.assertEqual(
             run_async(run_dict_inside_dict()),
             ([], {10: {1: 11, 2: 12}, 20: {1: 21, 2: 22}}))
 
         async def run_list_inside_gen():
-            gen = ([i + j async for i in asynciter([1, 2])] for j in [10, 20])
-            return [x async for x in gen]
+            gen = ([i + j async fuer i in asynciter([1, 2])] fuer j in [10, 20])
+            return [x async fuer x in gen]
         self.assertEqual(
             run_async(run_list_inside_gen()),
             ([], [[11, 12], [21, 22]]))
 
         async def run_gen_inside_list():
-            gens = [(i async for i in asynciter(range(j))) for j in [3, 5]]
-            return [x for g in gens async for x in g]
+            gens = [(i async fuer i in asynciter(range(j))) fuer j in [3, 5]]
+            return [x fuer g in gens async fuer x in g]
         self.assertEqual(
             run_async(run_gen_inside_list()),
             ([], [0, 1, 2, 0, 1, 2, 3, 4]))
 
         async def run_gen_inside_gen():
-            gens = ((i async for i in asynciter(range(j))) for j in [3, 5])
-            return [x for g in gens async for x in g]
+            gens = ((i async fuer i in asynciter(range(j))) fuer j in [3, 5])
+            return [x fuer g in gens async fuer x in g]
         self.assertEqual(
             run_async(run_gen_inside_gen()),
             ([], [0, 1, 2, 0, 1, 2, 3, 4]))
 
         async def run_list_inside_list_inside_list():
-            return [[[i + j + k async for i in asynciter([1, 2])]
-                     for j in [10, 20]]
-                    for k in [100, 200]]
+            return [[[i + j + k async fuer i in asynciter([1, 2])]
+                     fuer j in [10, 20]]
+                    fuer k in [100, 200]]
         self.assertEqual(
             run_async(run_list_inside_list_inside_list()),
             ([], [[[111, 112], [121, 122]], [[211, 212], [221, 222]]]))
@@ -2123,13 +2123,13 @@ klasse CoroutineTest(unittest.TestCase):
     def test_pickle(self):
         async def func(): pass
         coro = func()
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             with self.assertRaises((TypeError, pickle.PicklingError)):
                 pickle.dumps(coro, proto)
 
         aw = coro.__await__()
         try:
-            for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+            fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
                 with self.assertRaises((TypeError, pickle.PicklingError)):
                     pickle.dumps(aw, proto)
         finally:
@@ -2162,7 +2162,7 @@ klasse CoroutineTest(unittest.TestCase):
 
         async def run_for():
             with self.assertRaises(StopAsyncIteration) as cm:
-                async for tgt[0] in source():
+                async fuer tgt[0] in source():
                     pass
             self.assertEqual(cm.exception.args, (42,))
             return 'end'
@@ -2170,13 +2170,13 @@ klasse CoroutineTest(unittest.TestCase):
 
         async def run_list():
             with self.assertRaises(StopAsyncIteration) as cm:
-                return [0 async for tgt[0] in source()]
+                return [0 async fuer tgt[0] in source()]
             self.assertEqual(cm.exception.args, (42,))
             return 'end'
         self.assertEqual(run_async(run_list()), ([], 'end'))
 
         async def run_gen():
-            gen = (0 async for tgt[0] in source())
+            gen = (0 async fuer tgt[0] in source())
             a = gen.asend(None)
             with self.assertRaises(RuntimeError) as cm:
                 await a
@@ -2194,7 +2194,7 @@ klasse CoroutineTest(unittest.TestCase):
 
         async def run_for():
             with self.assertRaises(StopAsyncIteration) as cm:
-                async for i, j in badpairs():
+                async fuer i, j in badpairs():
                     pass
             self.assertEqual(cm.exception.args, (42,))
             return 'end'
@@ -2202,13 +2202,13 @@ klasse CoroutineTest(unittest.TestCase):
 
         async def run_list():
             with self.assertRaises(StopAsyncIteration) as cm:
-                return [0 async for i, j in badpairs()]
+                return [0 async fuer i, j in badpairs()]
             self.assertEqual(cm.exception.args, (42,))
             return 'end'
         self.assertEqual(run_async(run_list()), ([], 'end'))
 
         async def run_gen():
-            gen = (0 async for i, j in badpairs())
+            gen = (0 async fuer i, j in badpairs())
             a = gen.asend(None)
             with self.assertRaises(RuntimeError) as cm:
                 await a
@@ -2243,7 +2243,7 @@ klasse CoroutineTest(unittest.TestCase):
         self.assertIsNone(gen.cr_frame)
 
     def test_stack_in_coroutine_throw(self):
-        # Regression test for https://github.com/python/cpython/issues/93592
+        # Regression test fuer https://github.com/python/cpython/issues/93592
         async def a():
             return await b()
 
@@ -2423,7 +2423,7 @@ klasse OriginTrackingTest(unittest.TestCase):
                 coro = corofn()
                 coro_repr = repr(coro)
 
-                # clear reference to the coroutine without awaiting for it
+                # clear reference to the coroutine without awaiting fuer it
                 del coro
                 support.gc_collect()
 

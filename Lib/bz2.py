@@ -1,7 +1,7 @@
 """Interface to the libbzip2 compression library.
 
-This module provides a file interface, classes for incremental
-(de)compression, and functions for one-shot (de)compression.
+This module provides a file interface, classes fuer incremental
+(de)compression, and functions fuer one-shot (de)compression.
 """
 
 __all__ = ["BZ2File", "BZ2Compressor", "BZ2Decompressor",
@@ -27,7 +27,7 @@ klasse BZ2File(_streams.BaseStream):
 
     """A file object providing transparent bzip2 (de)compression.
 
-    A BZ2File can act as a wrapper for an existing file object, or refer
+    A BZ2File can act as a wrapper fuer an existing file object, or refer
     directly to a named file on disk.
 
     Note that BZ2File provides a *binary* file interface - data read is
@@ -41,8 +41,8 @@ klasse BZ2File(_streams.BaseStream):
         name of the file to be opened. Otherwise, it should be a file
         object, which will be used to read or write the compressed data.
 
-        mode can be 'r' for reading (default), 'w' for (over)writing,
-        'x' for creating exclusively, or 'a' for appending. These can
+        mode can be 'r' fuer reading (default), 'w' fuer (over)writing,
+        'x' fuer creating exclusively, or 'a' fuer appending. These can
         equivalently be given as 'rb', 'wb', 'xb', and 'ab'.
 
         If mode is 'w', 'x' or 'a', compresslevel can be a number between 1
@@ -132,7 +132,7 @@ klasse BZ2File(_streams.BaseStream):
         return 'wb' if self._mode == _MODE_WRITE else 'rb'
 
     def fileno(self):
-        """Return the file descriptor for the underlying file."""
+        """Return the file descriptor fuer the underlying file."""
         self._check_not_closed()
         return self._fp.fileno()
 
@@ -141,12 +141,12 @@ klasse BZ2File(_streams.BaseStream):
         return self.readable() and self._buffer.seekable()
 
     def readable(self):
-        """Return whether the file was opened for reading."""
+        """Return whether the file was opened fuer reading."""
         self._check_not_closed()
         return self._mode == _MODE_READ
 
     def writable(self):
-        """Return whether the file was opened for writing."""
+        """Return whether the file was opened fuer writing."""
         self._check_not_closed()
         return self._mode == _MODE_WRITE
 
@@ -186,7 +186,7 @@ klasse BZ2File(_streams.BaseStream):
     def readinto(self, b):
         """Read bytes into b.
 
-        Returns the number of bytes read (0 for EOF).
+        Returns the number of bytes read (0 fuer EOF).
         """
         self._check_can_read()
         return self._buffer.readinto(b)
@@ -254,7 +254,7 @@ klasse BZ2File(_streams.BaseStream):
         """Change the file position.
 
         The new position is specified by offset, relative to the
-        position indicated by whence. Values for whence are:
+        position indicated by whence. Values fuer whence are:
 
             0: start of stream (default); offset must not be negative
             1: current stream position
@@ -285,7 +285,7 @@ def open(filename, mode="rb", compresslevel=9,
     to.
 
     The mode argument can be "r", "rb", "w", "wb", "x", "xb", "a" or
-    "ab" for binary mode, or "rt", "wt", "xt" or "at" for text mode.
+    "ab" fuer binary mode, or "rt", "wt", "xt" or "at" fuer text mode.
     The default mode is "rb", and the default compresslevel is 9.
 
     For binary mode, this function is equivalent to the BZ2File

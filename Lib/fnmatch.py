@@ -4,7 +4,7 @@ fnmatch(FILENAME, PATTERN) matches according to the local convention.
 fnmatchcase(FILENAME, PATTERN) always takes case in account.
 
 The functions operate by translating the pattern into a regular
-expression.  They cache the compiled regular expressions for speed.
+expression.  They cache the compiled regular expressions fuer speed.
 
 The function translate(PATTERN) returns a regular expression
 corresponding to PATTERN.  (It does not compile it.)
@@ -57,11 +57,11 @@ def filter(names, pat):
     match = _compile_pattern(pat)
     if os.path is posixpath:
         # normcase on posix is NOP. Optimize it away from the loop.
-        for name in names:
+        fuer name in names:
             if match(name):
                 result.append(name)
     else:
-        for name in names:
+        fuer name in names:
             if match(os.path.normcase(name)):
                 result.append(name)
     return result
@@ -76,7 +76,7 @@ def filterfalse(names, pat):
         return list(itertools.filterfalse(match, names))
 
     result = []
-    for name in names:
+    fuer name in names:
         if match(os.path.normcase(name)) is None:
             result.append(name)
     return result
@@ -154,14 +154,14 @@ def _translate(pat, star, question_mark):
                     else:
                         chunks[-1] += '-'
                     # Remove empty ranges -- invalid in RE.
-                    for k in range(len(chunks)-1, 0, -1):
+                    fuer k in range(len(chunks)-1, 0, -1):
                         if chunks[k-1][-1] > chunks[k][0]:
                             chunks[k-1] = chunks[k-1][:-1] + chunks[k][1:]
                             del chunks[k]
-                    # Escape backslashes and hyphens for set difference (--).
+                    # Escape backslashes and hyphens fuer set difference (--).
                     # Hyphens that create ranges shouldn't be escaped.
                     stuff = '-'.join(s.replace('\\', r'\\').replace('-', r'\-')
-                                     for s in chunks)
+                                     fuer s in chunks)
                 i = j+1
                 if not stuff:
                     # Empty range: never match.
@@ -191,7 +191,7 @@ def _join_translated_parts(parts, star_indices):
     buffer = parts[:j]  # fixed pieces at the start
     append, extend = buffer.append, buffer.extend
     i = j + 1
-    for j in iter_star_indices:
+    fuer j in iter_star_indices:
         # Now deal with STAR fixed STAR fixed ...
         # For an interior `STAR fixed` pairing, we want to do a minimal
         # .*? match followed by `fixed`, with no possibility of backtracking.

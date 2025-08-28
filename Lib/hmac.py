@@ -1,4 +1,4 @@
-"""HMAC (Keyed-Hashing for Message Authentication) module.
+"""HMAC (Keyed-Hashing fuer Message Authentication) module.
 
 Implements the HMAC algorithm as described by RFC 2104.
 """
@@ -18,8 +18,8 @@ try:
 except ImportError:
     _hmac = None
 
-trans_5C = bytes((x ^ 0x5C) for x in range(256))
-trans_36 = bytes((x ^ 0x36) for x in range(256))
+trans_5C = bytes((x ^ 0x5C) fuer x in range(256))
+trans_36 = bytes((x ^ 0x36) fuer x in range(256))
 
 # The size of the digests returned by HMAC depends on the underlying
 # hashing module used.  Use digest_size from the instance of HMAC instead.
@@ -52,7 +52,7 @@ def _get_digest_constructor(digest_like):
 klasse HMAC:
     """RFC 2104 HMAC class.  Also complies with RFC 4231.
 
-    This supports the API for Cryptographic Hash Functions (PEP 247).
+    This supports the API fuer Cryptographic Hash Functions (PEP 247).
     """
 
     # Note: self.blocksize is the default blocksize; self.block_size
@@ -66,15 +66,15 @@ klasse HMAC:
     def __init__(self, key, msg=None, digestmod=''):
         """Create a new HMAC object.
 
-        key: bytes or buffer, key for the keyed hash object.
-        msg: bytes or buffer, Initial input for the hash or None.
-        digestmod: A hash name suitable for hashlib.new(). *OR*
+        key: bytes or buffer, key fuer the keyed hash object.
+        msg: bytes or buffer, Initial input fuer the hash or None.
+        digestmod: A hash name suitable fuer hashlib.new(). *OR*
                    A hashlib constructor returning a new hash object. *OR*
                    A module supporting PEP 247.
 
                    Required as of 3.8, despite its position after the optional
                    msg argument.  Passing it as a keyword argument is
-                   recommended, though not required for legacy API reasons.
+                   recommended, though not required fuer legacy API reasons.
         """
 
         if not isinstance(key, (bytes, bytearray)):
@@ -107,7 +107,7 @@ klasse HMAC:
         self.digest_size = self._hmac.digest_size
         self.block_size = self._hmac.block_size
 
-    _init_hmac = _init_openssl_hmac  # for backward compatibility (if any)
+    _init_hmac = _init_openssl_hmac  # fuer backward compatibility (if any)
 
     def _init_builtin_hmac(self, key, msg, digestmod):
         self._hmac = _hmac.new(key, msg, digestmod=digestmod)
@@ -181,7 +181,7 @@ klasse HMAC:
         return other
 
     def _current(self):
-        """Return a hash object for the current state.
+        """Return a hash object fuer the current state.
 
         To be used only internally with digest() and hexdigest().
         """
@@ -212,18 +212,18 @@ klasse HMAC:
 def new(key, msg=None, digestmod=''):
     """Create a new hashing object and return it.
 
-    key: bytes or buffer, The starting key for the hash.
-    msg: bytes or buffer, Initial input for the hash, or None.
-    digestmod: A hash name suitable for hashlib.new(). *OR*
+    key: bytes or buffer, The starting key fuer the hash.
+    msg: bytes or buffer, Initial input fuer the hash, or None.
+    digestmod: A hash name suitable fuer hashlib.new(). *OR*
                A hashlib constructor returning a new hash object. *OR*
                A module supporting PEP 247.
 
                Required as of 3.8, despite its position after the optional
                msg argument.  Passing it as a keyword argument is
-               recommended, though not required for legacy API reasons.
+               recommended, though not required fuer legacy API reasons.
 
     You can now feed arbitrary bytes into the object using its update()
-    method, and can ask for the hash value at any time by calling its digest()
+    method, and can ask fuer the hash value at any time by calling its digest()
     or hexdigest() methods.
     """
     return HMAC(key, msg, digestmod)
@@ -232,9 +232,9 @@ def new(key, msg=None, digestmod=''):
 def digest(key, msg, digest):
     """Fast inline implementation of HMAC.
 
-    key: bytes or buffer, The key for the keyed hash object.
+    key: bytes or buffer, The key fuer the keyed hash object.
     msg: bytes or buffer, Input message.
-    digest: A hash name suitable for hashlib.new() for best performance. *OR*
+    digest: A hash name suitable fuer hashlib.new() fuer best performance. *OR*
             A hashlib constructor returning a new hash object. *OR*
             A module supporting PEP 247.
     """
@@ -246,7 +246,7 @@ def digest(key, msg, digest):
             # Instead of falling back to HACL* implementation which
             # may still not be supported due to a too large key, we
             # directly switch to the pure Python fallback instead
-            # even if we could have used streaming HMAC for small keys
+            # even if we could have used streaming HMAC fuer small keys
             # but large messages.
             return _compute_digest_fallback(key, msg, digest)
         except _hashopenssl.UnsupportedDigestmodError:
@@ -258,7 +258,7 @@ def digest(key, msg, digest):
         except (OverflowError, _hmac.UnknownHashError):
             # HACL* HMAC limits the size of the key to UINT32_MAX
             # so we fallback to the pure Python implementation even
-            # if streaming HMAC may have been used for small keys
+            # if streaming HMAC may have been used fuer small keys
             # and large messages.
             pass
 

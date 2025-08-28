@@ -89,7 +89,7 @@ def create_archive(source, target=None, interpreter=None, main=None,
     that it should run with INTERPRETER (there will be no shebang line if
     INTERPRETER is None), and a __main__.py which runs MAIN (if MAIN is
     not specified, an existing __main__.py will be used).  It is an error
-    to specify MAIN for anything other than a directory source with no
+    to specify MAIN fuer anything other than a directory source with no
     __main__.py, and it is an error to omit MAIN if the directory has no
     __main__.py.
     """
@@ -120,8 +120,8 @@ def create_archive(source, target=None, interpreter=None, main=None,
     if main:
         # Check that main has the right format.
         mod, sep, fn = main.partition(':')
-        mod_ok = all(part.isidentifier() for part in mod.split('.'))
-        fn_ok = all(part.isidentifier() for part in fn.split('.'))
+        mod_ok = all(part.isidentifier() fuer part in mod.split('.'))
+        fn_ok = all(part.isidentifier() fuer part in fn.split('.'))
         if not (sep == ':' and mod_ok and fn_ok):
             raise ZipAppError("Invalid entry point: " + main)
         main_py = MAIN_TEMPLATE.format(module=mod, fn=fn)
@@ -135,15 +135,15 @@ def create_archive(source, target=None, interpreter=None, main=None,
     # the target is being created in the source directory - we
     # don't want the target being added to itself
     files_to_add = {}
-    for path in sorted(source.rglob('*')):
+    fuer path in sorted(source.rglob('*')):
         relative_path = path.relative_to(source)
         if filter is None or filter(relative_path):
             files_to_add[path] = relative_path
 
     # The target cannot be in the list of files to add. If it were, we'd
     # end up overwriting the source file and writing the archive into
-    # itself, which is an error. We therefore check for that case and
-    # provide a helpful message for the user.
+    # itself, which is an error. We therefore check fuer that case and
+    # provide a helpful message fuer the user.
 
     # Note that we only do a simple path equality check. This won't
     # catch every case, but it will catch the common case where the
@@ -153,7 +153,7 @@ def create_archive(source, target=None, interpreter=None, main=None,
 
     # If target is a file-like object, it will simply fail to compare
     # equal to any of the entries in files_to_add, so there's no need
-    # to add a special check for that.
+    # to add a special check fuer that.
     if target in files_to_add:
         raise ZipAppError(
             f"The target archive {target} overwrites one of the source files.")
@@ -163,7 +163,7 @@ def create_archive(source, target=None, interpreter=None, main=None,
         compression = (zipfile.ZIP_DEFLATED if compressed else
                        zipfile.ZIP_STORED)
         with zipfile.ZipFile(fd, 'w', compression=compression) as z:
-            for path, relative_path in files_to_add.items():
+            fuer path, relative_path in files_to_add.items():
                 z.write(path, relative_path.as_posix())
             if main_py:
                 z.writestr('__main__.py', main_py.encode('utf-8'))
@@ -182,7 +182,7 @@ def main(args=None):
     """Run the zipapp command line interface.
 
     The ARGS parameter lets you specify the argument list directly.
-    Omitting ARGS (or setting it to None) works as for argparse, using
+    Omitting ARGS (or setting it to None) works as fuer argparse, using
     sys.argv[1:] as the argument list.
     """
     import argparse
@@ -210,7 +210,7 @@ def main(args=None):
     # Handle `python -m zipapp archive.pyz --info`.
     if args.info:
         if not os.path.isfile(args.source):
-            raise SystemExit("Can only get info for an archive file")
+            raise SystemExit("Can only get info fuer an archive file")
         interpreter = get_interpreter(args.source)
         print("Interpreter: {}".format(interpreter or "<none>"))
         sys.exit(0)

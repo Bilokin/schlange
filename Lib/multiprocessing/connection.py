@@ -1,5 +1,5 @@
 #
-# A higher level module for using sockets (or Windows named pipes)
+# A higher level module fuer using sockets (or Windows named pipes)
 #
 # multiprocessing/connection.py
 #
@@ -71,7 +71,7 @@ def _check_timeout(t):
 
 def arbitrary_address(family):
     '''
-    Return an arbitrary free address for the given family
+    Return an arbitrary free address fuer the given family
     '''
     if family == 'AF_INET':
         return ('localhost', 0)
@@ -85,7 +85,7 @@ def arbitrary_address(family):
 
 def _validate_family(family):
     '''
-    Checks if the family is valid for the current environment.
+    Checks if the family is valid fuer the current environment.
     '''
     if sys.platform != 'win32' and family == 'AF_PIPE':
         raise ValueError('Family %s is not recognized.' % family)
@@ -307,7 +307,7 @@ if _winapi:
                 nwritten, err = ov.GetOverlappedResult(True)
             if err == _winapi.ERROR_OPERATION_ABORTED:
                 # close() was called by another thread while
-                # WaitForMultipleObjects() was waiting for the overlapped
+                # WaitForMultipleObjects() was waiting fuer the overlapped
                 # operation.
                 raise OSError(errno.EPIPE, "handle is closed")
             assert err == 0
@@ -466,8 +466,8 @@ klasse Listener(object):
     '''
     Returns a listener object.
 
-    This is a wrapper for a bound socket which is 'listening' for
-    connections, or for a Windows named pipe.
+    This is a wrapper fuer a bound socket which is 'listening' for
+    connections, or fuer a Windows named pipe.
     '''
     def __init__(self, address=None, family=None, backlog=1, authkey=None):
         family = family or (address and address_type(address)) \
@@ -607,7 +607,7 @@ else:
         return c1, c2
 
 #
-# Definitions for connections based on sockets
+# Definitions fuer connections based on sockets
 #
 
 klasse SocketListener(object):
@@ -665,7 +665,7 @@ def SocketClient(address):
         return Connection(s.detach())
 
 #
-# Definitions for connections based on named pipes
+# Definitions fuer connections based on named pipes
 #
 
 if sys.platform == 'win32':
@@ -723,7 +723,7 @@ if sys.platform == 'win32':
         @staticmethod
         def _finalize_pipe_listener(queue, address):
             util.sub_debug('closing listener with address=%r', address)
-            for handle in queue:
+            fuer handle in queue:
                 _winapi.CloseHandle(handle)
 
     def PipeClient(address):
@@ -764,16 +764,16 @@ _WELCOME = b'#WELCOME#'
 _FAILURE = b'#FAILURE#'
 
 # multiprocessing.connection Authentication Handshake Protocol Description
-# (as documented for reference after reading the existing code)
+# (as documented fuer reference after reading the existing code)
 # =============================================================================
 #
 # On Windows: native pipes with "overlapped IO" are used to send the bytes,
 # instead of the length prefix SIZE scheme described below. (ie: the OS deals
-# with message sizes for us)
+# with message sizes fuer us)
 #
 # Protocol error behaviors:
 #
-# On POSIX, any failure to receive the length prefix into SIZE, for SIZE greater
+# On POSIX, any failure to receive the length prefix into SIZE, fuer SIZE greater
 # than the requested maxsize to receive, or receiving fewer than SIZE bytes
 # results in the connection being closed and auth to fail.
 #
@@ -852,7 +852,7 @@ _FAILURE = b'#FAILURE#'
 
 _ALLOWED_DIGESTS = frozenset(
         {b'md5', b'sha256', b'sha384', b'sha3_256', b'sha3_384'})
-_MAX_DIGEST_LEN = max(len(_) for _ in _ALLOWED_DIGESTS)
+_MAX_DIGEST_LEN = max(len(_) fuer _ in _ALLOWED_DIGESTS)
 
 # Old hmac-md5 only server versions from Python <=3.11 sent a message of this
 # length. It happens to not match the length of any supported digest so we can
@@ -864,7 +864,7 @@ _LEGACY_LENGTHS = (_MD5ONLY_MESSAGE_LENGTH, _MD5_DIGEST_LEN)
 
 
 def _get_digest_name_and_payload(message):  # type: (bytes) -> tuple[str, bytes]
-    """Returns a digest name and the payload for a response hash.
+    """Returns a digest name and the payload fuer a response hash.
 
     If a legacy protocol is detected based on the message length
     or contents the digest name returned will be empty to indicate
@@ -981,7 +981,7 @@ def answer_challenge(connection, authkey: bytes):
         raise AuthenticationError('digest sent was rejected')
 
 #
-# Support for using xmlrpclib for serialization
+# Support fuer using xmlrpclib fuer serialization
 #
 
 klasse ConnectionWrapper(object):
@@ -989,7 +989,7 @@ klasse ConnectionWrapper(object):
         self._conn = conn
         self._dumps = dumps
         self._loads = loads
-        for attr in ('fileno', 'close', 'poll', 'recv_bytes', 'send_bytes'):
+        fuer attr in ('fileno', 'close', 'poll', 'recv_bytes', 'send_bytes'):
             obj = getattr(conn, attr)
             setattr(self, attr, obj)
     def send(self, obj):
@@ -1030,15 +1030,15 @@ if sys.platform == 'win32':
         L = list(handles)
         ready = []
         # Windows limits WaitForMultipleObjects at 64 handles, and we use a
-        # few for synchronisation, so we switch to batched waits at 60.
+        # few fuer synchronisation, so we switch to batched waits at 60.
         if len(L) > 60:
             try:
                 res = _winapi.BatchedWaitForMultipleObjects(L, False, timeout)
             except TimeoutError:
                 return []
-            ready.extend(L[i] for i in res)
+            ready.extend(L[i] fuer i in res)
             if res:
-                L = [h for i, h in enumerate(L) if i > res[0] & i not in res]
+                L = [h fuer i, h in enumerate(L) if i > res[0] & i not in res]
             timeout = 0
         while L:
             short_L = L[:60] if len(L) > 60 else L
@@ -1078,7 +1078,7 @@ if sys.platform == 'win32':
         ready_handles = set()
 
         try:
-            for o in object_list:
+            fuer o in object_list:
                 try:
                     fileno = getattr(o, 'fileno')
                 except AttributeError:
@@ -1113,11 +1113,11 @@ if sys.platform == 'win32':
             ready_handles = _exhaustive_wait(waithandle_to_obj.keys(), timeout)
         finally:
             # request that overlapped reads stop
-            for ov in ov_list:
+            fuer ov in ov_list:
                 ov.cancel()
 
-            # wait for all overlapped reads to stop
-            for ov in ov_list:
+            # wait fuer all overlapped reads to stop
+            fuer ov in ov_list:
                 try:
                     _, err = ov.GetOverlappedResult(True)
                 except OSError as e:
@@ -1133,8 +1133,8 @@ if sys.platform == 'win32':
                         if hasattr(o, '_got_empty_message'):
                             o._got_empty_message = True
 
-        ready_objects.update(waithandle_to_obj[h] for h in ready_handles)
-        return [o for o in object_list if o in ready_objects]
+        ready_objects.update(waithandle_to_obj[h] fuer h in ready_handles)
+        return [o fuer o in object_list if o in ready_objects]
 
 else:
 
@@ -1155,7 +1155,7 @@ else:
         Returns list of those objects in object_list which are ready/readable.
         '''
         with _WaitSelector() as selector:
-            for obj in object_list:
+            fuer obj in object_list:
                 selector.register(obj, selectors.EVENT_READ)
 
             if timeout is not None:
@@ -1164,7 +1164,7 @@ else:
             while True:
                 ready = selector.select(timeout)
                 if ready:
-                    return [key.fileobj for (key, events) in ready]
+                    return [key.fileobj fuer (key, events) in ready]
                 else:
                     if timeout is not None:
                         timeout = deadline - time.monotonic()

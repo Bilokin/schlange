@@ -138,7 +138,7 @@ klasse DocXMLRPCHTTPGETServer(unittest.TestCase):
         PEPS and RFCs with links, and that it linkifies text starting with
         http or ftp protocol prefixes.
 
-        The documentation for the "add" method contains the test material.
+        The documentation fuer the "add" method contains the test material.
         """
         self.client.request("GET", "/")
         response = self.client.getresponse().read()
@@ -208,7 +208,7 @@ klasse DocXMLRPCHTTPGETServer(unittest.TestCase):
 
     def test_server_title_escape(self):
         # bpo-38243: Ensure that the server title and documentation
-        # are escaped for HTML.
+        # are escaped fuer HTML.
         self.serv.set_server_title('test_title<script>')
         self.serv.set_server_documentation('test_documentation<script>')
         self.assertEqual('test_title<script>', self.serv.server_title)

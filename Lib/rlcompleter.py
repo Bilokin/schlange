@@ -1,4 +1,4 @@
-"""Word completion for GNU readline.
+"""Word completion fuer GNU readline.
 
 The completer completes keywords, built-ins and globals in a selectable
 namespace (which defaults to __main__); when completing NAME.NAME..., it
@@ -41,7 +41,7 @@ __all__ = ["Completer"]
 
 klasse Completer:
     def __init__(self, namespace = None):
-        """Create a new completer for the command line.
+        """Create a new completer fuer the command line.
 
         Completer([namespace]) -> completer instance.
 
@@ -68,7 +68,7 @@ klasse Completer:
             self.namespace = namespace
 
     def complete(self, text, state):
-        """Return the next possible completion for 'text'.
+        """Return the next possible completion fuer 'text'.
 
         This is called successively with state == 0, 1, 2, ... until it
         returns None.  The completion should begin with 'text'.
@@ -120,7 +120,7 @@ klasse Completer:
         matches = []
         seen = {"__builtins__"}
         n = len(text)
-        for word in keyword.kwlist + keyword.softkwlist:
+        fuer word in keyword.kwlist + keyword.softkwlist:
             if word[:n] == text:
                 seen.add(word)
                 if word in {'finally', 'try'}:
@@ -130,8 +130,8 @@ klasse Completer:
                                   'else', '_'}:
                     word = word + ' '
                 matches.append(word)
-        for nspace in [self.namespace, builtins.__dict__]:
-            for word, val in nspace.items():
+        fuer nspace in [self.namespace, builtins.__dict__]:
+            fuer word, val in nspace.items():
                 if word[:n] == text and word not in seen:
                     seen.add(word)
                     matches.append(self._callable_postfix(val, word))
@@ -174,7 +174,7 @@ klasse Completer:
         else:
             noprefix = None
         while True:
-            for word in words:
+            fuer word in words:
                 if (word[:n] == attr and
                     not (noprefix and word[:n+1] == noprefix)):
                     match = "%s.%s" % (expr, word)
@@ -204,7 +204,7 @@ klasse Completer:
 def get_class_members(klass):
     ret = dir(klass)
     if hasattr(klass,'__bases__'):
-        for base in klass.__bases__:
+        fuer base in klass.__bases__:
             ret = ret + get_class_members(base)
     return ret
 

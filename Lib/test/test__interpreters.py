@@ -43,7 +43,7 @@ def _wait_for_interp_to_run(interp, timeout=None):
     # run subinterpreter earlier than the main thread in multiprocess.
     if timeout is None:
         timeout = support.SHORT_TIMEOUT
-    for _ in support.sleeping_retry(timeout, error=False):
+    fuer _ in support.sleeping_retry(timeout, error=False):
         if _interpreters.is_running(interp):
             break
     else:
@@ -55,7 +55,7 @@ def _running(interp):
     r, w = os.pipe()
     def run():
         _interpreters.run_string(interp, dedent(f"""
-            # wait for "signal"
+            # wait fuer "signal"
             with open({r}, encoding="utf-8") as rpipe:
                 rpipe.read()
             """))
@@ -72,7 +72,7 @@ def _running(interp):
 
 
 def clean_up_interpreters():
-    for id, *_ in _interpreters.list_all():
+    fuer id, *_ in _interpreters.list_all():
         if id == 0:  # main
             continue
         try:
@@ -106,7 +106,7 @@ klasse IsShareableTests(unittest.TestCase):
                 100.0,
                 (1, ('spam', 'eggs')),
                 ]
-        for obj in shareables:
+        fuer obj in shareables:
             with self.subTest(obj):
                 self.assertTrue(
                     _interpreters.is_shareable(obj))
@@ -135,7 +135,7 @@ klasse IsShareableTests(unittest.TestCase):
                 Cheese('Wensleydale'),
                 SubBytes(b'spam'),
                 ]
-        for obj in not_shareables:
+        fuer obj in not_shareables:
             with self.subTest(repr(obj)):
                 self.assertFalse(
                     _interpreters.is_shareable(obj))
@@ -157,14 +157,14 @@ klasse ListAllTests(TestBase):
 
     def test_initial(self):
         main, *_ = _interpreters.get_main()
-        ids = [id for id, *_ in _interpreters.list_all()]
+        ids = [id fuer id, *_ in _interpreters.list_all()]
         self.assertEqual(ids, [main])
 
     def test_after_creating(self):
         main, *_ = _interpreters.get_main()
         first = _interpreters.create()
         second = _interpreters.create()
-        ids = [id for id, *_ in _interpreters.list_all()]
+        ids = [id fuer id, *_ in _interpreters.list_all()]
         self.assertEqual(ids, [main, first, second])
 
     def test_after_destroying(self):
@@ -172,7 +172,7 @@ klasse ListAllTests(TestBase):
         first = _interpreters.create()
         second = _interpreters.create()
         _interpreters.destroy(first)
-        ids = [id for id, *_ in _interpreters.list_all()]
+        ids = [id fuer id, *_ in _interpreters.list_all()]
         self.assertEqual(ids, [main, second])
 
 
@@ -194,7 +194,7 @@ klasse GetCurrentTests(TestBase):
             assert isinstance(cur, int)
             """))
         cur = int(out.strip())
-        _, expected = [id for id, *_ in _interpreters.list_all()]
+        _, expected = [id fuer id, *_ in _interpreters.list_all()]
         self.assertEqual(cur, expected)
         self.assertNotEqual(cur, main)
 
@@ -202,13 +202,13 @@ klasse GetCurrentTests(TestBase):
 klasse GetMainTests(TestBase):
 
     def test_from_main(self):
-        [expected] = [id for id, *_ in _interpreters.list_all()]
+        [expected] = [id fuer id, *_ in _interpreters.list_all()]
         main, *_ = _interpreters.get_main()
         self.assertEqual(main, expected)
         self.assertIsInstance(main, int)
 
     def test_from_subinterpreter(self):
-        [expected] = [id for id, *_ in _interpreters.list_all()]
+        [expected] = [id fuer id, *_ in _interpreters.list_all()]
         interp = _interpreters.create()
         out = _run_output(interp, dedent("""
             import _interpreters
@@ -267,13 +267,13 @@ klasse CreateTests(TestBase):
         id = _interpreters.create()
         self.assertIsInstance(id, int)
 
-        after = [id for id, *_ in _interpreters.list_all()]
+        after = [id fuer id, *_ in _interpreters.list_all()]
         self.assertIn(id, after)
 
     @unittest.skip('enable this test when working on pystate.c')
     def test_unique_id(self):
         seen = set()
-        for _ in range(100):
+        fuer _ in range(100):
             id = _interpreters.create()
             _interpreters.destroy(id)
             seen.add(id)
@@ -294,11 +294,11 @@ klasse CreateTests(TestBase):
         with lock:
             t.start()
         t.join()
-        after = set(id for id, *_ in _interpreters.list_all())
+        after = set(id fuer id, *_ in _interpreters.list_all())
         self.assertIn(id, after)
 
     def test_in_subinterpreter(self):
-        main, = [id for id, *_ in _interpreters.list_all()]
+        main, = [id fuer id, *_ in _interpreters.list_all()]
         id1 = _interpreters.create()
         out = _run_output(id1, dedent("""
             import _interpreters
@@ -308,11 +308,11 @@ klasse CreateTests(TestBase):
             """))
         id2 = int(out.strip())
 
-        after = set(id for id, *_ in _interpreters.list_all())
+        after = set(id fuer id, *_ in _interpreters.list_all())
         self.assertEqual(after, {main, id1, id2})
 
     def test_in_threaded_subinterpreter(self):
-        main, = [id for id, *_ in _interpreters.list_all()]
+        main, = [id fuer id, *_ in _interpreters.list_all()]
         id1 = _interpreters.create()
         id2 = None
         def f():
@@ -328,26 +328,26 @@ klasse CreateTests(TestBase):
         t.start()
         t.join()
 
-        after = set(id for id, *_ in _interpreters.list_all())
+        after = set(id fuer id, *_ in _interpreters.list_all())
         self.assertEqual(after, {main, id1, id2})
 
     def test_after_destroy_all(self):
-        before = set(id for id, *_ in _interpreters.list_all())
+        before = set(id fuer id, *_ in _interpreters.list_all())
         # Create 3 subinterpreters.
         ids = []
-        for _ in range(3):
+        fuer _ in range(3):
             id = _interpreters.create()
             ids.append(id)
         # Now destroy them.
-        for id in ids:
+        fuer id in ids:
             _interpreters.destroy(id)
         # Finally, create another.
         id = _interpreters.create()
-        after = set(id for id, *_ in _interpreters.list_all())
+        after = set(id fuer id, *_ in _interpreters.list_all())
         self.assertEqual(after, before | {id})
 
     def test_after_destroy_some(self):
-        before = set(id for id, *_ in _interpreters.list_all())
+        before = set(id fuer id, *_ in _interpreters.list_all())
         # Create 3 subinterpreters.
         id1 = _interpreters.create()
         id2 = _interpreters.create()
@@ -357,7 +357,7 @@ klasse CreateTests(TestBase):
         _interpreters.destroy(id3)
         # Finally, create another.
         id = _interpreters.create()
-        after = set(id for id, *_ in _interpreters.list_all())
+        after = set(id fuer id, *_ in _interpreters.list_all())
         self.assertEqual(after, before | {id, id2})
 
 
@@ -367,31 +367,31 @@ klasse DestroyTests(TestBase):
         id1 = _interpreters.create()
         id2 = _interpreters.create()
         id3 = _interpreters.create()
-        before = set(id for id, *_ in _interpreters.list_all())
+        before = set(id fuer id, *_ in _interpreters.list_all())
         self.assertIn(id2, before)
 
         _interpreters.destroy(id2)
 
-        after = set(id for id, *_ in _interpreters.list_all())
+        after = set(id fuer id, *_ in _interpreters.list_all())
         self.assertNotIn(id2, after)
         self.assertIn(id1, after)
         self.assertIn(id3, after)
 
     def test_all(self):
-        initial = set(id for id, *_ in _interpreters.list_all())
+        initial = set(id fuer id, *_ in _interpreters.list_all())
         ids = set()
-        for _ in range(3):
+        fuer _ in range(3):
             id = _interpreters.create()
             ids.add(id)
-        before = set(id for id, *_ in _interpreters.list_all())
+        before = set(id fuer id, *_ in _interpreters.list_all())
         self.assertEqual(before, initial | ids)
-        for id in ids:
+        fuer id in ids:
             _interpreters.destroy(id)
-        after = set(id for id, *_ in _interpreters.list_all())
+        after = set(id fuer id, *_ in _interpreters.list_all())
         self.assertEqual(after, initial)
 
     def test_main(self):
-        main, = [id for id, *_ in _interpreters.list_all()]
+        main, = [id fuer id, *_ in _interpreters.list_all()]
         with self.assertRaises(_interpreters.InterpreterError):
             _interpreters.destroy(main)
 
@@ -418,7 +418,7 @@ klasse DestroyTests(TestBase):
             _interpreters.destroy(-1)
 
     def test_from_current(self):
-        main, = [id for id, *_ in _interpreters.list_all()]
+        main, = [id fuer id, *_ in _interpreters.list_all()]
         id = _interpreters.create()
         script = dedent(f"""
             import _interpreters
@@ -429,11 +429,11 @@ klasse DestroyTests(TestBase):
             """)
 
         _interpreters.run_string(id, script)
-        after = set(id for id, *_ in _interpreters.list_all())
+        after = set(id fuer id, *_ in _interpreters.list_all())
         self.assertEqual(after, {main, id})
 
     def test_from_sibling(self):
-        main, = [id for id, *_ in _interpreters.list_all()]
+        main, = [id fuer id, *_ in _interpreters.list_all()]
         id1 = _interpreters.create()
         id2 = _interpreters.create()
         script = dedent(f"""
@@ -442,7 +442,7 @@ klasse DestroyTests(TestBase):
             """)
         _interpreters.run_string(id1, script)
 
-        after = set(id for id, *_ in _interpreters.list_all())
+        after = set(id fuer id, *_ in _interpreters.list_all())
         self.assertEqual(after, {main, id1})
 
     def test_from_other_thread(self):
@@ -455,7 +455,7 @@ klasse DestroyTests(TestBase):
         t.join()
 
     def test_still_running(self):
-        main, = [id for id, *_ in _interpreters.list_all()]
+        main, = [id fuer id, *_ in _interpreters.list_all()]
         interp = _interpreters.create()
         with _running(interp):
             self.assertTrue(_interpreters.is_running(interp),
@@ -604,7 +604,7 @@ klasse RunStringTests(TestBase):
             b'spam',
             42,
         ]
-        for obj in objects:
+        fuer obj in objects:
             with self.subTest(obj):
                 _interpreters.set___main___attrs(interp, dict(obj=obj))
                 _interpreters.run_string(
@@ -657,7 +657,7 @@ klasse RunStringTests(TestBase):
 
     def test_does_not_exist(self):
         id = 0
-        while id in set(id for id, *_ in _interpreters.list_all()):
+        while id in set(id fuer id, *_ in _interpreters.list_all()):
             id += 1
         with self.assertRaises(InterpreterNotFoundError):
             _interpreters.run_string(id, 'print("spam")')
@@ -834,7 +834,7 @@ klasse RunStringTests(TestBase):
         def f():
             _interpreters.run_string(id, dedent('''
                 import time
-                # Give plenty of time for the main interpreter to finish.
+                # Give plenty of time fuer the main interpreter to finish.
                 time.sleep(1_000_000)
                 '''))
 

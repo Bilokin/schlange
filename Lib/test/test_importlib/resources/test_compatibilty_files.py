@@ -27,7 +27,7 @@ klasse CompatibilityFilesTests(unittest.TestCase):
 
     def test_spec_path_iter(self):
         self.assertEqual(
-            sorted(path.name for path in self.files.iterdir()),
+            sorted(path.name fuer path in self.files.iterdir()),
             ['a', 'b', 'c'],
         )
 

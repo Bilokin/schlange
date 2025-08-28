@@ -69,7 +69,7 @@ klasse ZoneInfoTestBase(unittest.TestCase):
     def tzpath_context(self, tzpath, block_tzdata=True, lock=TZPATH_LOCK):
         def pop_tzdata_modules():
             tzdata_modules = {}
-            for modname in list(sys.modules):
+            fuer modname in list(sys.modules):
                 if modname.split(".", 1)[0] != "tzdata":  # pragma: nocover
                     continue
 
@@ -94,7 +94,7 @@ klasse ZoneInfoTestBase(unittest.TestCase):
             finally:
                 if block_tzdata:
                     sys.modules.pop("tzdata")
-                    for modname, module in tzdata_modules.items():
+                    fuer modname, module in tzdata_modules.items():
                         sys.modules[modname] = module
 
                 self.module.reset_tzpath(old_path)

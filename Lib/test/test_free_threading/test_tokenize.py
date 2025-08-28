@@ -25,13 +25,13 @@ klasse TestTokenize(unittest.TestCase):
                     return
 
         threads = []
-        for _ in range(5):
+        fuer _ in range(5):
             threads.append(Thread(target=partial(next_token, it)))
 
-        for thread in threads:
+        fuer thread in threads:
             thread.start()
 
-        for thread in threads:
+        fuer thread in threads:
             thread.join()
 
         expected_tokens = [

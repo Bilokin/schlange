@@ -11,11 +11,11 @@ method is not  necessary.
 
 This returns an instance of a klasse with the following public methods:
       getnchannels()  -- returns number of audio channels (1 for
-                         mono, 2 for stereo)
+                         mono, 2 fuer stereo)
       getsampwidth()  -- returns sample width in bytes
       getframerate()  -- returns sampling frequency
       getnframes()    -- returns number of audio frames
-      getcomptype()   -- returns compression type ('NONE' for linear samples)
+      getcomptype()   -- returns compression type ('NONE' fuer linear samples)
       getcompname()   -- returns human-readable version of
                          compression type ('not compressed' linear samples)
       getparams()     -- returns a namedtuple consisting of all of the
@@ -92,8 +92,8 @@ _wave_params = namedtuple('_wave_params',
 def _byteswap(data, width):
     swapped_data = bytearray(len(data))
 
-    for i in range(0, len(data), width):
-        for j in range(width):
+    fuer i in range(0, len(data), width):
+        fuer j in range(width):
             swapped_data[i + width - 1 - j] = data[i + j]
 
     return bytes(swapped_data)
@@ -236,8 +236,8 @@ klasse Wave_read:
     These variables are used internally only:
     _fmt_chunk_read -- 1 iff the FMT chunk has been read
     _data_seek_needed -- 1 iff positioned correctly in audio
-              file for readframes()
-    _data_chunk -- instantiation of a chunk klasse for the DATA chunk
+              file fuer readframes()
+    _data_chunk -- instantiation of a chunk klasse fuer the DATA chunk
     _framesize -- size of one frame in the file
     """
 

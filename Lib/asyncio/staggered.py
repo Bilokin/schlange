@@ -1,4 +1,4 @@
-"""Support for running coroutines in parallel with staggered start times."""
+"""Support fuer running coroutines in parallel with staggered start times."""
 
 __all__ = 'staggered_race',
 
@@ -91,11 +91,11 @@ async def staggered_race(coro_fns, delay, *, loop=None):
         unhandled_exceptions.append(exc)
 
     async def run_one_coro(ok_to_start, previous_failed) -> None:
-        # in eager tasks this waits for the calling task to append this task
+        # in eager tasks this waits fuer the calling task to append this task
         # to running_tasks, in regular tasks this wait is a no-op that does
         # not yield a future. See gh-124309.
         await ok_to_start.wait()
-        # Wait for the previous task to finish, or for delay seconds
+        # Wait fuer the previous task to finish, or fuer delay seconds
         if previous_failed is not None:
             with contextlib.suppress(exceptions_mod.TimeoutError):
                 # Use asyncio.wait_for() instead of asyncio.wait() here, so
@@ -143,7 +143,7 @@ async def staggered_race(coro_fns, delay, *, loop=None):
             # asyncio.CancelledError. This behavior is specified in
             # https://bugs.python.org/issue30048
             current_task = tasks.current_task(loop)
-            for t in running_tasks:
+            fuer t in running_tasks:
                 if t is not current_task:
                     t.cancel()
 
@@ -164,7 +164,7 @@ async def staggered_race(coro_fns, delay, *, loop=None):
                 await on_completed_fut
             except exceptions_mod.CancelledError as ex:
                 propagate_cancellation_error = ex
-                for task in running_tasks:
+                fuer task in running_tasks:
                     task.cancel(*ex.args)
             on_completed_fut = None
         if __debug__ and unhandled_exceptions:

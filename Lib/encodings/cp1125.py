@@ -1,4 +1,4 @@
-""" Python Character Mapping Codec for CP1125
+""" Python Character Mapping Codec fuer CP1125
 
 """#"
 

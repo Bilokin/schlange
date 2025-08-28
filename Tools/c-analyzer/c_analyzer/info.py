@@ -80,7 +80,7 @@ klasse Analyzed:
         elif None in typedeps or UNKNOWN in typedeps:
             # It is still effectively unresolved.
             return typedeps, extra
-        elif any(not isinstance(td, TypeDeclaration) for td in typedeps):
+        elif any(not isinstance(td, TypeDeclaration) fuer td in typedeps):
             raise NotImplementedError((item, typedeps, extra))
         return typedeps, extra
 
@@ -95,7 +95,7 @@ klasse Analyzed:
             elif typedecl is None:
                 typedecl = UNKNOWN
             else:
-                typedecl = [UNKNOWN if d is None else d for d in typedecl]
+                typedecl = [UNKNOWN if d is None else d fuer d in typedecl]
         elif typedecl is None:
             typedecl = UNKNOWN
         elif typedecl and not isinstance(typedecl, TypeDeclaration):
@@ -116,17 +116,17 @@ klasse Analyzed:
         if not isinstance(item, HighlevelParsedItem):
             raise ValueError(f'"item" must be a high-level parsed item, got {item!r}')
         # Check extra.
-        for key, value in extra.items():
+        fuer key, value in extra.items():
             if key.startswith('_'):
                 raise ValueError(f'extra items starting with {"_"!r} not allowed, got {extra!r}')
             if hasattr(item, key) and not callable(getattr(item, key)):
-                raise ValueError(f'extra cannot override item, got {value!r} for key {key!r}')
+                raise ValueError(f'extra cannot override item, got {value!r} fuer key {key!r}')
 
     def __repr__(self):
         kwargs = [
             f'item={self.item!r}',
             f'typedecl={self.typedecl!r}',
-            *(f'{k}={v!r}' for k, v in self._extra.items())
+            *(f'{k}={v!r}' fuer k, v in self._extra.items())
         ]
         return f'{type(self).__name__}({", ".join(kwargs)})'
 
@@ -252,7 +252,7 @@ klasse Analyzed:
             raise NotImplementedError(fmt)
         elif fmt == 'full':
             yield from rendered
-            for line in extra:
+            fuer line in extra:
                 yield f'\t{line}'
         else:
             raise NotImplementedError(fmt)
@@ -278,13 +278,13 @@ klasse Analysis:
     @classmethod
     def from_results(cls, results):
         self = cls()
-        for info, resolved in results:
+        fuer info, resolved in results:
             self._add_result(info, resolved)
         return self
 
     def __init__(self, items=None):
         self._analyzed = {type(self).build_item(item): None
-                          for item in items or ()}
+                          fuer item in items or ()}
 
     def __repr__(self):
         return f'{type(self).__name__}({list(self._analyzed.keys())})'
@@ -300,7 +300,7 @@ klasse Analysis:
 
     def __getitem__(self, key):
         if type(key) is int:
-            for i, val in enumerate(self._analyzed):
+            fuer i, val in enumerate(self._analyzed):
                 if i == key:
                     return val
             else:
@@ -311,7 +311,7 @@ klasse Analysis:
     def fix_filenames(self, relroot=fsutil.USE_CWD, **kwargs):
         if relroot and relroot is not fsutil.USE_CWD:
             relroot = os.path.abspath(relroot)
-        for item in self._analyzed:
+        fuer item in self._analyzed:
             item.fix_filename(relroot, fixroot=False, **kwargs)
 
     def _add_result(self, info, resolved):

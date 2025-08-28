@@ -58,7 +58,7 @@ klasse StructCheckMixin:
 
         anon_names = getattr(cls, '_anonymous_', ())
         cls_size = ctypes.sizeof(cls)
-        for name, requested_type, *rest_of_tuple in cls._fields_:
+        fuer name, requested_type, *rest_of_tuple in cls._fields_:
             field = getattr(cls, name)
             with self.subTest(name=name, field=field):
                 is_bitfield = len(rest_of_tuple) > 0
@@ -79,7 +79,7 @@ klasse StructCheckMixin:
                 self.assertGreaterEqual(field.byte_size, 0)
 
                 # Check that the field is inside the struct.
-                # See gh-130410 for why this is skipped for bitfields of
+                # See gh-130410 fuer why this is skipped fuer bitfields of
                 # underaligned types. Later in this function (see `bit_end`)
                 # we assert that the value *bits* are inside the struct.
                 if not (field.is_bitfield and is_underaligned(field.type)):
@@ -140,7 +140,7 @@ klasse StructCheckMixin:
                     assert mask.bit_count() == field.bit_size
                     # Check that these bits aren't shared with previous fields
                     self.assertEqual(used_bits & mask, 0)
-                    # Mark the bits for future checks
+                    # Mark the bits fuer future checks
                     used_bits |= mask
 
                 # field is inside cls

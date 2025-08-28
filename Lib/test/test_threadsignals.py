@@ -48,7 +48,7 @@ klasse ThreadSignals(unittest.TestCase):
         with threading_helper.wait_threads_exit():
             # Test signal handling semantics of threads.
             # We spawn a thread, have the thread send itself two signals, and
-            # wait for it to finish. Check that we got both signals
+            # wait fuer it to finish. Check that we got both signals
             # and that they were run by the main thread.
             signalled_all.acquire()
             self.spawnSignallingThread()
@@ -199,7 +199,7 @@ klasse ThreadSignals(unittest.TestCase):
                 lock.acquire(timeout=0.5)
                 self.end = time.monotonic()
             def send_signals():
-                for _ in range(40):
+                fuer _ in range(40):
                     time.sleep(0.02)
                     os.kill(process_pid, signal.SIGUSR1)
                 done.release()
@@ -209,9 +209,9 @@ klasse ThreadSignals(unittest.TestCase):
                 # is the only one that can process signals.
                 thread.start_new_thread(send_signals, ())
                 timed_acquire()
-                # Wait for thread to finish
+                # Wait fuer thread to finish
                 done.acquire()
-                # This allows for some timing and scheduling imprecision
+                # This allows fuer some timing and scheduling imprecision
                 self.assertLess(self.end - self.start, 2.0)
                 self.assertGreater(self.end - self.start, 0.3)
                 # If the signal is received several times before PyErr_CheckSignals()

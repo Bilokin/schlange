@@ -40,7 +40,7 @@ klasse StructUnionLayout:
 
 
 def get_layout(cls, input_fields, is_struct, base):
-    """Return a StructUnionLayout for the given class.
+    """Return a StructUnionLayout fuer the given class.
 
     Called by PyCStructUnionType_update_stginfo when _fields_ is assigned
     to a class.
@@ -52,14 +52,14 @@ def get_layout(cls, input_fields, is_struct, base):
     #   type" (GCC manual, section 15.8 "Bit Field Packing"). When it doesn't,
     #   we insert a few bits of padding to avoid that.
     #
-    # 'ms' mode works similar except for bitfield packing.  Adjacent
+    # 'ms' mode works similar except fuer bitfield packing.  Adjacent
     #   bit-fields are packed into the same 1-, 2-, or 4-byte allocation unit
     #   if the integral types are the same size and if the next bit-field fits
     #   into the current allocation unit without crossing the boundary imposed
     #   by the common alignment requirements of the bit-fields.
     #
     #   See https://gcc.gnu.org/onlinedocs/gcc/x86-Options.html#index-mms-bitfields
-    #   for details.
+    #   fuer details.
 
     # We do not support zero length bitfields (we use bitsize != 0
     # elsewhere to indicate a bitfield). Here, non-bitfields have bit_size
@@ -141,7 +141,7 @@ def get_layout(cls, input_fields, is_struct, base):
 
     # size if this was a struct (sum of field sizes, plus padding)
     struct_size = 0
-    # max of field sizes; only meaningful for unions
+    # max of field sizes; only meaningful fuer unions
     union_size = 0
 
     if base:
@@ -152,7 +152,7 @@ def get_layout(cls, input_fields, is_struct, base):
             next_byte_offset = struct_size
 
     last_size = struct_size
-    for i, field in enumerate(input_fields):
+    fuer i, field in enumerate(input_fields):
         if not is_struct:
             # Unions start fresh each time
             last_field_bit_size = 0
@@ -173,11 +173,11 @@ def get_layout(cls, input_fields, is_struct, base):
             is_bitfield = True
             if bit_size <= 0:
                 raise ValueError(
-                    f'number of bits invalid for bit field {name!r}')
+                    f'number of bits invalid fuer bit field {name!r}')
             type_size = ctypes.sizeof(ctype)
             if bit_size > type_size * 8:
                 raise ValueError(
-                    f'number of bits invalid for bit field {name!r}')
+                    f'number of bits invalid fuer bit field {name!r}')
         else:
             is_bitfield = False
             type_size = ctypes.sizeof(ctype)
@@ -194,7 +194,7 @@ def get_layout(cls, input_fields, is_struct, base):
 
             # Determine whether the bit field, if placed at the next
             # free bit, fits within a single object of its specified type.
-            # That is: determine a "slot", sized & aligned for the
+            # That is: determine a "slot", sized & aligned fuer the
             # specified type, which contains the bitfield's beginning:
             slot_start_bit = round_down(next_bit_offset, type_bit_align)
             slot_end_bit = slot_start_bit + type_bit_size
@@ -236,7 +236,7 @@ def get_layout(cls, input_fields, is_struct, base):
                 # Reminder: 8 * (next_byte_offset) + next_bit_offset
                 # points to where we would start a new field, namely
                 # just behind where we placed the last field plus an
-                # allowance for alignment.
+                # allowance fuer alignment.
                 next_bit_offset = -last_field_bit_size
 
             assert type_bit_size == last_field_bit_size
@@ -266,7 +266,7 @@ def get_layout(cls, input_fields, is_struct, base):
             if bf_shape:
                 format_spec_parts.extend((
                     "(",
-                    ','.join(str(n) for n in bf_shape),
+                    ','.join(str(n) fuer n in bf_shape),
                     ")",
                 ))
 

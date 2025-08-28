@@ -11,7 +11,7 @@ klasse CancelledError(BaseException):
     """The Future or Task was cancelled."""
 
 
-TimeoutError = TimeoutError  # make local alias for the standard exception
+TimeoutError = TimeoutError  # make local alias fuer the standard exception
 
 
 klasse InvalidStateError(Exception):
@@ -21,7 +21,7 @@ klasse InvalidStateError(Exception):
 klasse SendfileNotAvailableError(RuntimeError):
     """Sendfile syscall is not available.
 
-    Raised if OS does not support sendfile syscall for given socket or
+    Raised if OS does not support sendfile syscall fuer given socket or
     file type.
     """
 
@@ -45,7 +45,7 @@ klasse IncompleteReadError(EOFError):
 
 
 klasse LimitOverrunError(Exception):
-    """Reached the buffer limit while looking for a separator.
+    """Reached the buffer limit while looking fuer a separator.
 
     Attributes:
     - consumed: total number of to be consumed bytes.

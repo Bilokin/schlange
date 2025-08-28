@@ -50,7 +50,7 @@ def consume(iterator, n=None):
     Efficiently exhausts an iterator without returning values. Defaults to
     consuming the whole iterator, but an optional second argument may be
     provided to limit consumption.
-        >>> i = (x for x in range(10))
+        >>> i = (x fuer x in range(10))
         >>> next(i)
         0
         >>> consume(i, 3)
@@ -63,7 +63,7 @@ def consume(iterator, n=None):
         StopIteration
     If the iterator has fewer items remaining than the provided limit, the
     whole iterator will be consumed.
-        >>> i = (x for x in range(3))
+        >>> i = (x fuer x in range(3))
         >>> consume(i, 5)
         >>> next(i)
         Traceback (most recent call last):

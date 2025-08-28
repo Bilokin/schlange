@@ -30,9 +30,9 @@ def _create_parser_base_namespace() -> dict[str, Any]:
         unspecified=unspecified,
         NoneType=NoneType,
     )
-    for name, converter in converters.items():
+    fuer name, converter in converters.items():
         ns[f'{name}_converter'] = converter
-    for name, return_converter in return_converters.items():
+    fuer name, return_converter in return_converters.items():
         ns[f'{name}_return_converter'] = return_converter
     return ns
 

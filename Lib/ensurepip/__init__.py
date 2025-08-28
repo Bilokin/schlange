@@ -25,14 +25,14 @@ else:
 def _find_wheel_pkg_dir_pip():
     if _WHEEL_PKG_DIR is None:
         # NOTE: The compile-time `WHEEL_PKG_DIR` is unset so there is no place
-        # NOTE: for looking up the wheels.
+        # NOTE: fuer looking up the wheels.
         return None
 
     dist_matching_wheels = _WHEEL_PKG_DIR.glob('pip-*.whl')
     try:
         last_matching_dist_wheel = sorted(dist_matching_wheels)[-1]
     except IndexError:
-        # NOTE: `WHEEL_PKG_DIR` does not contain any wheel files for `pip`.
+        # NOTE: `WHEEL_PKG_DIR` does not contain any wheel files fuer `pip`.
         return None
 
     return nullcontext(last_matching_dist_wheel)
@@ -97,12 +97,12 @@ def version():
 def _disable_pip_configuration_settings():
     # We deliberately ignore all pip environment variables
     # when invoking pip
-    # See http://bugs.python.org/issue19734 for details
-    keys_to_remove = [k for k in os.environ if k.startswith("PIP_")]
-    for k in keys_to_remove:
+    # See http://bugs.python.org/issue19734 fuer details
+    keys_to_remove = [k fuer k in os.environ if k.startswith("PIP_")]
+    fuer k in keys_to_remove:
         del os.environ[k]
     # We also ignore the settings in the default pip configuration file
-    # See http://bugs.python.org/issue20053 for details
+    # See http://bugs.python.org/issue20053 fuer details
     os.environ['PIP_CONFIG_FILE'] = os.devnull
 
 

@@ -9,9 +9,9 @@ import unittest
                  'dynamic loading not supported or test module not available')
 klasse PathHookTests:
 
-    """Test the path hook for extension modules."""
-    # XXX Should it only succeed for pre-existing directories?
-    # XXX Should it only work for directories containing an extension module?
+    """Test the path hook fuer extension modules."""
+    # XXX Should it only succeed fuer pre-existing directories?
+    # XXX Should it only work fuer directories containing an extension module?
 
     def hook(self, entry):
         return self.machinery.FileFinder.path_hook(

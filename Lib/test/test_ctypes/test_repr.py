@@ -5,7 +5,7 @@ from ctypes import (c_byte, c_short, c_int, c_long, c_longlong,
 
 
 subclasses = []
-for base in [c_byte, c_short, c_int, c_long, c_longlong,
+fuer base in [c_byte, c_short, c_int, c_long, c_longlong,
         c_ubyte, c_ushort, c_uint, c_ulong, c_ulonglong,
         c_float, c_double, c_longdouble, c_bool]:
     klasse X(base):
@@ -17,10 +17,10 @@ klasse X(c_char):
     pass
 
 
-# This test checks if the __repr__ is correct for subclasses of simple types
+# This test checks if the __repr__ is correct fuer subclasses of simple types
 klasse ReprTest(unittest.TestCase):
     def test_numbers(self):
-        for typ in subclasses:
+        fuer typ in subclasses:
             base = typ.__bases__[0]
             self.assertStartsWith(repr(base(42)), base.__name__)
             self.assertStartsWith(repr(typ(42)), "<X object at")

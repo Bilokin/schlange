@@ -22,10 +22,10 @@ klasse ItertoolsThreading(unittest.TestCase):
                     break
 
         data = tuple(range(1000))
-        for it in range(number_of_iterations):
+        fuer it in range(number_of_iterations):
             batch_iterator = batched(data, 2)
             worker_threads = []
-            for ii in range(number_of_threads):
+            fuer ii in range(number_of_threads):
                 worker_threads.append(
                     Thread(target=work, args=[batch_iterator]))
 
@@ -43,17 +43,17 @@ klasse ItertoolsThreading(unittest.TestCase):
         barrier = Barrier(number_of_threads)
         def work(it):
             barrier.wait()
-            for _ in range(number_of_cycles):
+            fuer _ in range(number_of_cycles):
                 try:
                     next(it)
                 except StopIteration:
                     pass
 
         data = (1, 2, 3, 4)
-        for it in range(number_of_iterations):
+        fuer it in range(number_of_iterations):
             cycle_iterator = cycle(data)
             worker_threads = []
-            for ii in range(number_of_threads):
+            fuer ii in range(number_of_threads):
                 worker_threads.append(
                     Thread(target=work, args=[cycle_iterator]))
 
@@ -77,10 +77,10 @@ klasse ItertoolsThreading(unittest.TestCase):
                     break
 
         data = [(1, )] * 200
-        for it in range(number_of_iterations):
+        fuer it in range(number_of_iterations):
             chain_iterator = chain(*data)
             worker_threads = []
-            for ii in range(number_of_threads):
+            fuer ii in range(number_of_threads):
                 worker_threads.append(
                     Thread(target=work, args=[chain_iterator]))
 

@@ -44,7 +44,7 @@ def _convert_name(name):
     return name
 
 def _convert_names(names):
-    return [_convert_name(name) for name in names]
+    return [_convert_name(name) fuer name in names]
 
 
 def _convert_select_pattern(pattern):
@@ -55,9 +55,9 @@ def _convert_select_pattern(pattern):
 
 klasse TestProgram(object):
     """A command-line program that runs a set of tests; this is primarily
-       for making test modules conveniently executable.
+       fuer making test modules conveniently executable.
     """
-    # defaults for testing
+    # defaults fuer testing
     module=None
     verbosity = 1
     failfast = catchbreak = buffer = progName = warnings = testNamePatterns = None
@@ -70,7 +70,7 @@ klasse TestProgram(object):
                     durations=None):
         if isinstance(module, str):
             self.module = __import__(module)
-            for part in module.split('.')[1:]:
+            fuer part in module.split('.')[1:]:
                 self.module = getattr(self.module, part)
         else:
             self.module = module
@@ -172,7 +172,7 @@ klasse TestProgram(object):
                             help='Show local variables in tracebacks')
         parser.add_argument('--durations', dest='durations', type=int,
                             default=None, metavar="N",
-                            help='Show the N slowest test cases (N=0 for all)')
+                            help='Show the N slowest test cases (N=0 fuer all)')
         if self.failfast is None:
             parser.add_argument('-f', '--failfast', dest='failfast',
                                 action='store_true',
@@ -221,7 +221,7 @@ klasse TestProgram(object):
         parser.add_argument('-t', '--top-level-directory', dest='top',
                             help='Top level directory of project (defaults to '
                                  'start directory)')
-        for arg in ('start', 'pattern', 'top'):
+        fuer arg in ('start', 'pattern', 'top'):
             parser.add_argument(arg, nargs='?',
                                 default=argparse.SUPPRESS,
                                 help=argparse.SUPPRESS)
@@ -233,9 +233,9 @@ klasse TestProgram(object):
         self.pattern = 'test*.py'
         self.top = None
         if argv is not None:
-            # handle command line args for test discovery
+            # handle command line args fuer test discovery
             if self._discovery_parser is None:
-                # for testing
+                # fuer testing
                 self._initArgParsers()
             self._discovery_parser.parse_args(argv, self)
 

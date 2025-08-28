@@ -52,7 +52,7 @@ SelectorKey.__doc__ = """SelectorKey(fileobj, fd, events, data)
 """
 SelectorKey.fileobj.__doc__ = 'File object registered.'
 SelectorKey.fd.__doc__ = 'Underlying file descriptor.'
-SelectorKey.events.__doc__ = 'Events that must be waited for on this file object.'
+SelectorKey.events.__doc__ = 'Events that must be waited fuer on this file object.'
 SelectorKey.data.__doc__ = ('''Optional opaque data associated to this file object.
 For example, this could be used to store a per-client session ID.''')
 
@@ -84,12 +84,12 @@ klasse _SelectorMapping(Mapping):
 klasse BaseSelector(metaclass=ABCMeta):
     """Selector abstract base class.
 
-    A selector supports registering file objects to be monitored for specific
+    A selector supports registering file objects to be monitored fuer specific
     I/O events.
 
     A file object is a file descriptor or any object with a `fileno()` method.
     An arbitrary object can be attached to the file object, which can be used
-    for example to store context information, a callback, etc.
+    fuer example to store context information, a callback, etc.
 
     A selector can use various implementations (select(), poll(), epoll()...)
     depending on the platform. The default `Selector` klasse uses the most
@@ -169,7 +169,7 @@ klasse BaseSelector(metaclass=ABCMeta):
                    file object becomes ready
 
         Returns:
-        list of (key, events) for ready file objects
+        list of (key, events) fuer ready file objects
         `events` is a bitwise mask of EVENT_READ|EVENT_WRITE
         """
         raise NotImplementedError
@@ -185,7 +185,7 @@ klasse BaseSelector(metaclass=ABCMeta):
         """Return the key associated to a registered file object.
 
         Returns:
-        SelectorKey for this file object
+        SelectorKey fuer this file object
         """
         mapping = self.get_map()
         if mapping is None:
@@ -229,7 +229,7 @@ klasse _BaseSelectorImpl(BaseSelector):
             return _fileobj_to_fd(fileobj)
         except ValueError:
             # Do an exhaustive search.
-            for key in self._fd_to_key.values():
+            fuer key in self._fd_to_key.values():
                 if key.fileobj is fileobj:
                     return key.fd
             # Raise ValueError after all.
@@ -318,7 +318,7 @@ klasse SelectSelector(_BaseSelectorImpl):
         w = frozenset(w)
         rw = r | w
         fd_to_key_get = self._fd_to_key.get
-        for fd in rw:
+        fuer fd in rw:
             key = fd_to_key_get(fd)
             if key:
                 events = ((fd in r and EVENT_READ)
@@ -400,7 +400,7 @@ klasse _PollLikeSelector(_BaseSelectorImpl):
             return ready
 
         fd_to_key_get = self._fd_to_key.get
-        for fd, event in fd_event_list:
+        fuer fd, event in fd_event_list:
             key = fd_to_key_get(fd)
             if key:
                 events = ((event & ~self._EVENT_READ and EVENT_WRITE)
@@ -454,7 +454,7 @@ if hasattr(select, 'epoll'):
                 return ready
 
             fd_to_key = self._fd_to_key
-            for fd, event in fd_event_list:
+            fuer fd, event in fd_event_list:
                 key = fd_to_key.get(fd)
                 if key:
                     events = ((event & _NOT_EPOLLIN and EVENT_WRITE)
@@ -550,7 +550,7 @@ if hasattr(select, 'kqueue'):
                 return ready
 
             fd_to_key_get = self._fd_to_key.get
-            for kev in kev_list:
+            fuer kev in kev_list:
                 fd = kev.ident
                 flag = kev.filter
                 key = fd_to_key_get(fd)

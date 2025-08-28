@@ -77,7 +77,7 @@ def setUpModule():
     # uncompressed size 130KB, more than a zstd block.
     # with a frame epilogue, 4 bytes checksum.
     global DAT_130K_D
-    DAT_130K_D = bytes([random.randint(0, 127) for _ in range(130*_1K)])
+    DAT_130K_D = bytes([random.randint(0, 127) fuer _ in range(130*_1K)])
 
     global DAT_130K_C
     DAT_130K_C = compress(DAT_130K_D, options={CompressionParameter.checksum_flag:1})
@@ -116,9 +116,9 @@ def setUpModule():
              b'lilac', b'purple', b'navy', b'glod', b'silver', b'olive',
              b'dog', b'cat', b'tiger', b'lion', b'fish', b'bird']
     lst = []
-    for i in range(300):
+    fuer i in range(300):
         sample = [b'%s = %d' % (random.choice(words), random.randrange(100))
-                  for j in range(20)]
+                  fuer j in range(20)]
         sample = b'\n'.join(sample)
 
         lst.append(sample)
@@ -134,7 +134,7 @@ def setUpModule():
 klasse FunctionsTestCase(unittest.TestCase):
 
     def test_version(self):
-        s = ".".join((str(i) for i in zstd_version_info))
+        s = ".".join((str(i) fuer i in zstd_version_info))
         self.assertEqual(s, zstd_version)
 
     def test_compressionLevel_values(self):
@@ -154,7 +154,7 @@ klasse FunctionsTestCase(unittest.TestCase):
         raw_dat = THIS_FILE_BYTES[: len(THIS_FILE_BYTES) // 6]
         level_min, level_max = CompressionParameter.compression_level.bounds()
 
-        for level in range(max(-20, level_min), level_max + 1):
+        fuer level in range(max(-20, level_min), level_max + 1):
             dat1 = compress(raw_dat, level)
             dat2 = decompress(dat1)
             self.assertEqual(dat2, raw_dat)
@@ -202,7 +202,7 @@ klasse CompressorTestCase(unittest.TestCase):
         self.assertRaises(TypeError, ZstdCompressor, zstd_dict=b"abcd1234")
         self.assertRaises(TypeError, ZstdCompressor, zstd_dict={1: 2, 3: 4})
 
-        # valid range for compression level is [-(1<<17), 22]
+        # valid range fuer compression level is [-(1<<17), 22]
         msg = r'illegal compression level {}; the valid range is \[-?\d+, -?\d+\]'
         with self.assertRaisesRegex(ValueError, msg.format(C_INT_MAX)):
             ZstdCompressor(C_INT_MAX)
@@ -479,7 +479,7 @@ klasse CompressorTestCase(unittest.TestCase):
         c = ZstdCompressor(level=1)
         c.set_pledged_input_size(len(DAT)+1)
 
-        for start in range(0, len(DAT), CHUNK_SIZE):
+        fuer start in range(0, len(DAT), CHUNK_SIZE):
             end = min(start+CHUNK_SIZE, len(DAT))
             _dat = c.compress(DAT[start:end])
 
@@ -490,7 +490,7 @@ klasse CompressorTestCase(unittest.TestCase):
         c = ZstdCompressor(level=1)
         c.set_pledged_input_size(len(DAT))
 
-        for start in range(0, len(DAT), CHUNK_SIZE):
+        fuer start in range(0, len(DAT), CHUNK_SIZE):
             end = min(start+CHUNK_SIZE, len(DAT))
             _dat = c.compress(DAT[start:end])
 
@@ -1295,7 +1295,7 @@ klasse ZstdDictTestCase(unittest.TestCase):
 
         # compress/decompress
         c = ZstdCompressor(zstd_dict=TRAINED_DICT)
-        for sample in SAMPLES:
+        fuer sample in SAMPLES:
             dat1 = compress(sample, zstd_dict=TRAINED_DICT)
             dat2 = decompress(dat1, TRAINED_DICT)
             self.assertEqual(sample, dat2)
@@ -1321,7 +1321,7 @@ klasse ZstdDictTestCase(unittest.TestCase):
 
         # compress/decompress
         c = ZstdCompressor(C_LEVEL, zstd_dict=dic2)
-        for sample in SAMPLES:
+        fuer sample in SAMPLES:
             dat1 = compress(sample, C_LEVEL, zstd_dict=dic2)
             dat2 = decompress(dat1, dic2)
             self.assertEqual(sample, dat2)
@@ -1460,8 +1460,8 @@ klasse ZstdDictTestCase(unittest.TestCase):
         chunk_lst = []
         wrong_size_lst = []
         correct_size_lst = []
-        for _ in range(300):
-            arr = array.array('Q', [random.randint(0, 20) for i in range(20)])
+        fuer _ in range(300):
+            arr = array.array('Q', [random.randint(0, 20) fuer i in range(20)])
             chunk_lst.append(arr)
             correct_size_lst.append(_nbytes(arr))
             wrong_size_lst.append(len(arr))
@@ -1626,7 +1626,7 @@ klasse FileTestCase(unittest.TestCase):
         with tempfile.NamedTemporaryFile() as tmp_f:
             filename = pathlib.Path(tmp_f.name)
 
-        for mode in ("x", "xb"):
+        fuer mode in ("x", "xb"):
             with ZstdFile(filename, mode):
                 pass
             with self.assertRaises(FileExistsError):
@@ -1705,7 +1705,7 @@ klasse FileTestCase(unittest.TestCase):
         with self.assertRaises(TypeError):
             ZstdFile(filename, options={'a':'b'})
 
-        # for PyPy
+        # fuer PyPy
         gc.collect()
 
         os.remove(filename)
@@ -1939,7 +1939,7 @@ klasse FileTestCase(unittest.TestCase):
                 f.read(1)
 
         # Incomplete header
-        for i in range(1, 20):
+        fuer i in range(1, 20):
             with ZstdFile(io.BytesIO(truncated[:i])) as f:
                 self.assertRaises(EOFError, f.read, 1)
 
@@ -2019,7 +2019,7 @@ klasse FileTestCase(unittest.TestCase):
             # 0 length output buffer
             self.assertEqual(f.readinto(ba[0:0]), 0)
 
-            # use correct length for buffer protocol object
+            # use correct length fuer buffer protocol object
             self.assertEqual(f.readinto(arr), 400)
             self.assertEqual(arr.tobytes(), DECOMPRESSED_100_PLUS_32KB[:400])
 
@@ -2054,7 +2054,7 @@ klasse FileTestCase(unittest.TestCase):
 
         # readline
         with ZstdFile(io.BytesIO(compressed)) as f:
-            for line in lines:
+            fuer line in lines:
                 self.assertEqual(f.readline(), line)
             self.assertEqual(f.readline(), b'')
             self.assertEqual(f.readline(), b'')
@@ -2176,7 +2176,7 @@ klasse FileTestCase(unittest.TestCase):
     def test_write_101(self):
         with io.BytesIO() as dst:
             with ZstdFile(dst, "w") as f:
-                for start in range(0, len(THIS_FILE_BYTES), 101):
+                fuer start in range(0, len(THIS_FILE_BYTES), 101):
                     f.write(THIS_FILE_BYTES[start:start+101])
 
             comp = ZstdCompressor()
@@ -2191,7 +2191,7 @@ klasse FileTestCase(unittest.TestCase):
         part1 = THIS_FILE_BYTES[:_1K]
         part2 = THIS_FILE_BYTES[_1K:1536]
         part3 = THIS_FILE_BYTES[1536:]
-        expected = b"".join(comp(x) for x in (part1, part2, part3))
+        expected = b"".join(comp(x) fuer x in (part1, part2, part3))
         with io.BytesIO() as dst:
             with ZstdFile(dst, "w") as f:
                 f.write(part1)
@@ -2314,7 +2314,7 @@ klasse FileTestCase(unittest.TestCase):
                 pos += len(result)
             self.assertEqual(f.tell(), len(DAT_130K_D))
         with ZstdFile(io.BytesIO(), "w") as f:
-            for pos in range(0, len(DAT_130K_D), 143):
+            fuer pos in range(0, len(DAT_130K_D), 143):
                 self.assertEqual(f.tell(), pos)
                 f.write(DAT_130K_D[pos:pos+143])
             self.assertEqual(f.tell(), len(DAT_130K_D))
@@ -2416,7 +2416,7 @@ klasse FileTestCase(unittest.TestCase):
 
         # read
         with ZstdFile(io.BytesIO(), 'r') as f:
-            # does nothing for read-only stream
+            # does nothing fuer read-only stream
             f.flush()
 
         # write
@@ -2425,7 +2425,7 @@ klasse FileTestCase(unittest.TestCase):
         with ZstdFile(bi, 'w') as f:
             self.assertEqual(f.write(DAT), len(DAT))
             self.assertEqual(f.tell(), len(DAT))
-            self.assertEqual(bi.tell(), 0) # not enough for a block
+            self.assertEqual(bi.tell(), 0) # not enough fuer a block
 
             self.assertEqual(f.flush(), None)
             self.assertEqual(f.tell(), len(DAT))
@@ -2493,7 +2493,7 @@ klasse FileTestCase(unittest.TestCase):
                 f.truncate(200)
 
     def test_zstdfile_iter_issue45475(self):
-        lines = [l for l in ZstdFile(io.BytesIO(COMPRESSED_THIS_FILE))]
+        lines = [l fuer l in ZstdFile(io.BytesIO(COMPRESSED_THIS_FILE))]
         self.assertGreater(len(lines), 0)
 
     def test_append_new_file(self):
@@ -2525,7 +2525,7 @@ klasse OpenTestCase(unittest.TestCase):
         # empty input
         with self.assertRaises(EOFError):
             with open(io.BytesIO(b''), "rt", encoding="utf-8", newline='\n') as reader:
-                for _ in reader:
+                fuer _ in reader:
                     pass
 
         # read
@@ -2605,7 +2605,7 @@ klasse OpenTestCase(unittest.TestCase):
         with tempfile.NamedTemporaryFile(delete=False) as tmp_f:
             TESTFN = pathlib.Path(tmp_f.name)
 
-        for mode in ("x", "xb", "xt"):
+        fuer mode in ("x", "xb", "xt"):
             os.remove(TESTFN)
 
             if mode == "xt":
@@ -2657,7 +2657,7 @@ klasse OpenTestCase(unittest.TestCase):
         self.assertEqual(dat, SAMPLES[0])
 
     def test_buffer_protocol(self):
-        # don't use len() for buffer protocol objects
+        # don't use len() fuer buffer protocol objects
         arr = array.array("i", range(1000))
         LENGTH = len(arr) * arr.itemsize
 
@@ -2679,7 +2679,7 @@ klasse FreeThreadingMethodTests(unittest.TestCase):
 
         comp = ZstdCompressor()
         parts = [comp.compress(input, ZstdCompressor.FLUSH_BLOCK)]
-        for _ in range(num_threads):
+        fuer _ in range(num_threads):
             res = comp.compress(input, ZstdCompressor.FLUSH_BLOCK)
             if res:
                 parts.append(res)
@@ -2694,7 +2694,7 @@ klasse FreeThreadingMethodTests(unittest.TestCase):
                 output_data.append(res)
         threads = []
 
-        for i in range(num_threads):
+        fuer i in range(num_threads):
             thread = threading.Thread(target=run_method, args=(comp.compress, input, output))
 
             threads.append(thread)
@@ -2717,7 +2717,7 @@ klasse FreeThreadingMethodTests(unittest.TestCase):
 
         decomp = ZstdDecompressor()
         parts = []
-        for _ in range(num_threads):
+        fuer _ in range(num_threads):
             res = decomp.decompress(input, window_size)
             if res:
                 parts.append(res)
@@ -2731,7 +2731,7 @@ klasse FreeThreadingMethodTests(unittest.TestCase):
                 output_data.append(res)
         threads = []
 
-        for i in range(num_threads):
+        fuer i in range(num_threads):
             thread = threading.Thread(target=run_method, args=(comp.decompress, input, output))
 
             threads.append(thread)
@@ -2763,7 +2763,7 @@ klasse FreeThreadingMethodTests(unittest.TestCase):
         threads = []
 
         b = threading.Barrier(num_threads)
-        for i in range(num_threads):
+        fuer i in range(num_threads):
             thread = threading.Thread(target=run_method, args=(b,))
 
             threads.append(thread)
@@ -2788,7 +2788,7 @@ klasse FreeThreadingMethodTests(unittest.TestCase):
         threads = []
 
         b = threading.Barrier(num_threads)
-        for i in range(num_threads):
+        fuer i in range(num_threads):
             thread = threading.Thread(target=run_method, args=(b,))
 
             threads.append(thread)

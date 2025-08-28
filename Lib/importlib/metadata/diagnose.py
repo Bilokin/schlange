@@ -9,11 +9,11 @@ def inspect(path):
     if not dists:
         return
     print("Found", len(dists), "packages:", end=' ')
-    print(', '.join(dist.name for dist in dists))
+    print(', '.join(dist.name fuer dist in dists))
 
 
 def run():
-    for path in sys.path:
+    fuer path in sys.path:
         inspect(path)
 
 

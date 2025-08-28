@@ -1,18 +1,18 @@
 """Common operations on Posix pathnames.
 
 Instead of importing this module directly, import os and refer to
-this module as os.path.  The "os.path" name is an alias for this
+this module as os.path.  The "os.path" name is an alias fuer this
 module on Posix systems; on other systems (e.g. Windows),
 os.path provides the same operations in a manner specific to that
 platform, and is an alias to another module (e.g. ntpath).
 
 Some of this can actually be useful on non-Posix systems too, e.g.
-for manipulation of the pathname component of URLs.
+fuer manipulation of the pathname component of URLs.
 """
 
 # Strings representing various path-related bits and pieces.
-# These are primarily for export; internally, they are hardcoded.
-# Should be set before imports for resolving cyclic dependency.
+# These are primarily fuer export; internally, they are hardcoded.
+# Should be set before imports fuer resolving cyclic dependency.
 curdir = '.'
 pardir = '..'
 extsep = '.'
@@ -79,7 +79,7 @@ def join(a, /, *p):
     sep = _get_sep(a)
     path = a
     try:
-        for b in p:
+        fuer b in p:
             b = os.fspath(b)
             if b.startswith(sep) or not path:
                 path = b
@@ -186,7 +186,7 @@ def dirname(p, /):
 
 
 # Is a path a mount point?
-# (Does this work for all UNIXes?  Is it even guaranteed to work by Posix?)
+# (Does this work fuer all UNIXes?  Is it even guaranteed to work by Posix?)
 
 def ismount(path):
     """Test whether a path is a mount point"""
@@ -223,7 +223,7 @@ def ismount(path):
 # If the path doesn't begin with '~', or if the user or $HOME is unknown,
 # the path is returned unchanged (leaving error reporting to whatever
 # function is called with the expanded path as argument).
-# See also module 'glob' for expansion of *, ? and [...] in pathnames.
+# See also module 'glob' fuer expansion of *, ? and [...] in pathnames.
 # (A function should also be defined to do full *sh-style environment
 # variable expansion.)
 
@@ -361,7 +361,7 @@ except ImportError:
         _, initial_slashes, path = splitroot(path)
         comps = path.split(sep)
         new_comps = []
-        for comp in comps:
+        fuer comp in comps:
             if not comp or comp == dot:
                 continue
             if (comp != dotdot or (not initial_slashes and not new_comps) or
@@ -423,7 +423,7 @@ symbolic links encountered in the path."""
     rest = filename.rstrip(sep).split(sep)[::-1]
 
     # Number of unprocessed parts in 'rest'. This can differ from len(rest)
-    # later, because 'rest' might contain markers for unresolved symlinks.
+    # later, because 'rest' might contain markers fuer unresolved symlinks.
     part_count = len(rest)
 
     # The resolved path, which is absolute throughout this function.
@@ -577,18 +577,18 @@ def commonpath(paths):
         curdir = '.'
 
     try:
-        split_paths = [path.split(sep) for path in paths]
+        split_paths = [path.split(sep) fuer path in paths]
 
         try:
-            isabs, = {p.startswith(sep) for p in paths}
+            isabs, = {p.startswith(sep) fuer p in paths}
         except ValueError:
             raise ValueError("Can't mix absolute and relative paths") from None
 
-        split_paths = [[c for c in s if c and c != curdir] for s in split_paths]
+        split_paths = [[c fuer c in s if c and c != curdir] fuer s in split_paths]
         s1 = min(split_paths)
         s2 = max(split_paths)
         common = s1
-        for i, c in enumerate(s1):
+        fuer i, c in enumerate(s1):
             if c != s2[i]:
                 common = s1[:i]
                 break

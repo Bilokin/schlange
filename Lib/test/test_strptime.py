@@ -27,7 +27,7 @@ klasse getlang_Tests(unittest.TestCase):
         self.assertEqual(_strptime._getlang(), locale.getlocale(locale.LC_TIME))
 
 klasse LocaleTime_Tests(unittest.TestCase):
-    """Tests for _strptime.LocaleTime.
+    """Tests fuer _strptime.LocaleTime.
 
     All values are lower-cased when stored in LocaleTime, so make sure to
     compare values after running ``lower`` on them.
@@ -93,7 +93,7 @@ klasse LocaleTime_Tests(unittest.TestCase):
         # the magic date is used so as to not have issues with %c when day of
         #  the month is a single digit and has a leading space.  This is not an
         #  issue since strptime still parses it correctly.  The problem is
-        #  testing these directives for correctness by comparing strftime
+        #  testing these directives fuer correctness by comparing strftime
         #  output.
         magic_date = (1999, 3, 17, 22, 44, 55, 2, 76, 0)
         strftime_output = time.strftime("%c", magic_date)
@@ -117,7 +117,7 @@ klasse LocaleTime_Tests(unittest.TestCase):
 
 
 klasse TimeRETests(unittest.TestCase):
-    """Tests for TimeRE."""
+    """Tests fuer TimeRE."""
 
     def setUp(self):
         """Construct generic TimeRE object."""
@@ -150,7 +150,7 @@ klasse TimeRETests(unittest.TestCase):
         # Check that compiled regex is correct
         found = self.time_re.compile(r"%A").match(self.locale_time.f_weekday[6])
         self.assertTrue(found and found.group('A') == self.locale_time.f_weekday[6],
-                        "re object for '%A' failed")
+                        "re object fuer '%A' failed")
         compiled = self.time_re.compile(r"%a %b")
         found = compiled.match("%s %s" % (self.locale_time.a_weekday[4],
                                self.locale_time.a_month[4]))
@@ -164,7 +164,7 @@ klasse TimeRETests(unittest.TestCase):
                          "'%s' using '%s'; group 'a' = '%s', group 'b' = %s'" %
                          (found.string, found.re.pattern, found.group('a'),
                           found.group('b')))
-        for directive in ('a','A','b','B','c','d','G','H','I','j','m','M','p',
+        fuer directive in ('a','A','b','B','c','d','G','H','I','j','m','M','p',
                           'S','u','U','V','w','W','x','X','y','Y','Z','%'):
             fmt = "%d %Y" if directive == 'd' else "%" + directive
             compiled = self.time_re.compile(fmt)
@@ -210,7 +210,7 @@ klasse TimeRETests(unittest.TestCase):
 
 
 klasse StrptimeTests(unittest.TestCase):
-    """Tests for _strptime.strptime."""
+    """Tests fuer _strptime.strptime."""
 
     def setUp(self):
         """Create testing time tuples."""
@@ -220,11 +220,11 @@ klasse StrptimeTests(unittest.TestCase):
         # Make sure ValueError is raised when match fails or format is bad
         self.assertRaises(ValueError, _strptime._strptime_time, data_string="%d",
                           format="%A")
-        for bad_format in ("%", "% ", "%\n"):
+        fuer bad_format in ("%", "% ", "%\n"):
             with (self.subTest(format=bad_format),
                   self.assertRaisesRegex(ValueError, "stray % in format ")):
                 _strptime._strptime_time("2005", bad_format)
-        for bad_format in ("%i", "%Oi", "%O", "%O ", "%Ee", "%E", "%E ",
+        fuer bad_format in ("%i", "%Oi", "%O", "%O ", "%Ee", "%E", "%E ",
                            "%.", "%+", "%~", "%\\",
                            "%O.", "%O+", "%O_", "%O~", "%O\\"):
             directive = bad_format[1:].rstrip()
@@ -278,7 +278,7 @@ klasse StrptimeTests(unittest.TestCase):
             ("2021-53-1", "%G-%V-%u", "Invalid week: 53"),
         ]
 
-        for (data_string, format, message) in subtests:
+        fuer (data_string, format, message) in subtests:
             with self.subTest(data_string=data_string, format=format):
                 with self.assertRaisesRegex(ValueError, message):
                     _strptime._strptime(data_string, format)
@@ -288,7 +288,7 @@ klasse StrptimeTests(unittest.TestCase):
         with self.assertRaises(ValueError) as e:
             _strptime._strptime_time('', '%D')
         self.assertTrue(e.exception.__suppress_context__)
-        # additional check for stray % branch
+        # additional check fuer stray % branch
         with self.assertRaises(ValueError) as e:
             _strptime._strptime_time('%', '%')
         self.assertTrue(e.exception.__suppress_context__)
@@ -317,7 +317,7 @@ klasse StrptimeTests(unittest.TestCase):
         self.roundtrip('%y', 0)
         self.roundtrip('%Y', 0, (1900, 1, 1, 0, 0, 0, 0, 1, 0))
 
-        # Must also make sure %y values are correct for bounds set by Open Group
+        # Must also make sure %y values are correct fuer bounds set by Open Group
         strptime = _strptime._strptime_time
         self.assertEqual(strptime('00', '%y')[0], 2000)
         self.assertEqual(strptime('68', '%y')[0], 2068)
@@ -325,21 +325,21 @@ klasse StrptimeTests(unittest.TestCase):
         self.assertEqual(strptime('99', '%y')[0], 1999)
 
     def test_month(self):
-        # Test for month directives
+        # Test fuer month directives
         self.roundtrip('%m', 1)
 
     @run_with_locales('LC_TIME', 'C', 'en_US', 'fr_FR', 'de_DE', 'ja_JP', 'he_IL', '')
     def test_month_locale(self):
-        # Test for month directives
+        # Test fuer month directives
         self.roundtrip('%B', 1)
         self.roundtrip('%b', 1)
-        for m in range(1, 13):
+        fuer m in range(1, 13):
             self.roundtrip('%B', 1, (1900, m, 1, 0, 0, 0, 0, 1, 0))
             self.roundtrip('%b', 1, (1900, m, 1, 0, 0, 0, 0, 1, 0))
 
     @run_with_locales('LC_TIME', 'az_AZ', 'ber_DZ', 'ber_MA', 'crh_UA')
     def test_month_locale2(self):
-        # Test for month directives
+        # Test fuer month directives
         # Month name contains 'İ' ('\u0130')
         self.roundtrip('%B', 1, (2025, 6, 1, 0, 0, 0, 6, 152, 0))
         self.roundtrip('%b', 1, (2025, 6, 1, 0, 0, 0, 6, 152, 0))
@@ -347,7 +347,7 @@ klasse StrptimeTests(unittest.TestCase):
         self.roundtrip('%b', 1, (2025, 7, 1, 0, 0, 0, 1, 182, 0))
 
     def test_day(self):
-        # Test for day directives
+        # Test fuer day directives
         self.roundtrip('%d %Y', 2)
 
     def test_hour(self):
@@ -442,7 +442,7 @@ klasse StrptimeTests(unittest.TestCase):
     def test_timezone(self):
         # Test timezone directives.
         # When gmtime() is used with %Z, entire result of strftime() is empty.
-        # Check for equal timezone names deals with bad locale info when this
+        # Check fuer equal timezone names deals with bad locale info when this
         # occurs; first found in FreeBSD 4.4.
         strp_output = _strptime._strptime_time("UTC", "%Z")
         self.assertEqual(strp_output.tm_isdst, 0)
@@ -508,10 +508,10 @@ klasse StrptimeTests(unittest.TestCase):
         # 12 hours ago
         self.roundtrip('%c', slice(0, 6), time.localtime(now - 12*3600))
         # different days of the week
-        for i in range(1, 7):
+        fuer i in range(1, 7):
             self.roundtrip('%c', slice(0, 6), time.localtime(now - i*24*3600))
         # different months
-        for i in range(1, 12):
+        fuer i in range(1, 12):
             self.roundtrip('%c', slice(0, 6), time.localtime(now - i*30*24*3600))
         # different year
         self.roundtrip('%c', slice(0, 6), time.localtime(now - 366*24*3600))
@@ -542,10 +542,10 @@ klasse StrptimeTests(unittest.TestCase):
         now = time.time()
         self.roundtrip('%x', slice(0, 3), time.localtime(now))
         # different days of the week
-        for i in range(1, 7):
+        fuer i in range(1, 7):
             self.roundtrip('%x', slice(0, 3), time.localtime(now - i*24*3600))
         # different months
-        for i in range(1, 12):
+        fuer i in range(1, 12):
             self.roundtrip('%x', slice(0, 3), time.localtime(now - i*30*24*3600))
         # different year
         self.roundtrip('%x', slice(0, 3), time.localtime(now - 366*24*3600))
@@ -614,7 +614,7 @@ klasse StrptimeTests(unittest.TestCase):
         defaults = (1900, 1, 1, 0, 0, 0, 0, 1, -1)
         strp_output = _strptime._strptime_time('1', '%m')
         self.assertTrue(strp_output == defaults,
-                        "Default values for strptime() are incorrect;"
+                        "Default values fuer strptime() are incorrect;"
                         " %s != %s" % (strp_output, defaults))
 
     def test_escaping(self):
@@ -652,7 +652,7 @@ klasse JulianTests(unittest.TestCase):
 
     def test_all_julian_days(self):
         eq = self.assertEqual
-        for i in range(1, 367):
+        fuer i in range(1, 367):
             # use 2004, since it is a leap year, we have 366 days
             eq(_strptime._strptime_time('%d 2004' % i, '%j %Y')[7], i)
 
@@ -713,11 +713,11 @@ klasse CalculationTests(unittest.TestCase):
         # Should be able to infer date if given year, week of year (%U or %W)
         # and day of the week
         def test_helper(ymd_tuple, test_reason):
-            for year_week_format in ('%Y %W', '%Y %U', '%G %V'):
+            fuer year_week_format in ('%Y %W', '%Y %U', '%G %V'):
                 if (year_week_format in self._formats_excluded and
                         ymd_tuple in self._ymd_excluded):
                     return
-                for weekday_format in ('%w', '%u', '%a', '%A'):
+                fuer weekday_format in ('%w', '%u', '%a', '%A'):
                     format_string = year_week_format + ' ' + weekday_format
                     with self.subTest(test_reason,
                                       date=ymd_tuple,

@@ -160,7 +160,7 @@ def create_executor_tests(remote_globals, mixin, bases=(BaseTestCase,),
             return name
 
     module = remote_globals['__name__']
-    for exe in executor_mixins:
+    fuer exe in executor_mixins:
         name = ("%s%sTest"
                 % (strip_mixin(exe.__name__), strip_mixin(mixin.__name__)))
         cls = type(name, (mixin,) + (exe,) + bases, {'__module__': module})

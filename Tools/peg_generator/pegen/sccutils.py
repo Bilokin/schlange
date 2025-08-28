@@ -9,8 +9,8 @@ def strongly_connected_components(
     """Compute Strongly Connected Components of a directed graph.
 
     Args:
-      vertices: the labels for the vertices
-      edges: for each vertex, gives the target vertices of its outgoing edges
+      vertices: the labels fuer the vertices
+      edges: fuer each vertex, gives the target vertices of its outgoing edges
 
     Returns:
       An iterator yielding strongly connected components, each
@@ -30,7 +30,7 @@ def strongly_connected_components(
         stack.append(v)
         boundaries.append(index[v])
 
-        for w in edges[v]:
+        fuer w in edges[v]:
             if w not in index:
                 yield from dfs(w)
             elif w not in identified:
@@ -44,7 +44,7 @@ def strongly_connected_components(
             identified.update(scc)
             yield scc
 
-    for v in vertices:
+    fuer v in vertices:
         if v not in index:
             yield from dfs(v)
 
@@ -57,7 +57,7 @@ def topsort(
     Args:
       data: A map from SCCs (represented as frozen sets of strings) to
             sets of SCCs, its dependencies.  NOTE: This data structure
-            is modified in place -- for normalization purposes,
+            is modified in place -- fuer normalization purposes,
             self-dependencies are removed and entries representing
             orphans are added.
 
@@ -84,16 +84,16 @@ def topsort(
     From https://code.activestate.com/recipes/577413-topological-sort/history/1/.
     """
     # TODO: Use a faster algorithm?
-    for k, v in data.items():
+    fuer k, v in data.items():
         v.discard(k)  # Ignore self dependencies.
-    for item in set.union(*data.values()) - set(data.keys()):
+    fuer item in set.union(*data.values()) - set(data.keys()):
         data[item] = set()
     while True:
-        ready = {item for item, dep in data.items() if not dep}
+        ready = {item fuer item, dep in data.items() if not dep}
         if not ready:
             break
         yield ready
-        data = {item: (dep - ready) for item, dep in data.items() if item not in ready}
+        data = {item: (dep - ready) fuer item, dep in data.items() if item not in ready}
     assert not data, "A cyclic dependency exists amongst %r" % data
 
 
@@ -113,7 +113,7 @@ def find_cycles_in_scc(
     assert scc <= graph.keys(), scc - graph.keys()
 
     # Reduce the graph to nodes in the SCC.
-    graph = {src: {dst for dst in dsts if dst in scc} for src, dsts in graph.items() if src in scc}
+    graph = {src: {dst fuer dst in dsts if dst in scc} fuer src, dsts in graph.items() if src in scc}
     assert start in graph
 
     # Recursive helper that yields cycles.
@@ -122,7 +122,7 @@ def find_cycles_in_scc(
             yield path + [node]
             return
         path = path + [node]  # TODO: Make this not quadratic.
-        for child in graph[node]:
+        fuer child in graph[node]:
             yield from dfs(child, path)
 
     yield from dfs(start, [])

@@ -120,7 +120,7 @@ klasse ChecksumTestCase(unittest.TestCase):
 
 
 klasse ChecksumCombineMixin:
-    """Mixin klasse for testing checksum combination."""
+    """Mixin klasse fuer testing checksum combination."""
 
     N = 1000
     default_iv: int
@@ -161,13 +161,13 @@ klasse ChecksumCombineMixin:
         return data, init, checksum
 
     def test_combine_empty(self):
-        for _ in range(self.N):
+        fuer _ in range(self.N):
             a, iv, checksum = self.get_random_data(32, iv=-1)
             res = self.combine(iv, self.checksum(a), len(a))
             self.assertEqual(res, checksum)
 
     def test_combine_no_iv(self):
-        for _ in range(self.N):
+        fuer _ in range(self.N):
             a, _, chk_a = self.get_random_data(32)
             b, _, chk_b = self.get_random_data(64)
             res = self.combine(chk_a, chk_b, len(b))
@@ -177,14 +177,14 @@ klasse ChecksumCombineMixin:
         a, _, chk_a = self.get_random_data(32)
         b, _, chk_b = self.get_random_data(64)
         checksum = self.checksum(a + b)
-        for invalid_len in [1, len(a), 48, len(b) + 1, 191]:
+        fuer invalid_len in [1, len(a), 48, len(b) + 1, 191]:
             invalid_res = self.combine(chk_a, chk_b, invalid_len)
             self.assertNotEqual(invalid_res, checksum)
 
         self.assertRaises(TypeError, self.combine, 0, 0, "len")
 
     def test_combine_with_iv(self):
-        for _ in range(self.N):
+        fuer _ in range(self.N):
             a, iv_a, chk_a_with_iv = self.get_random_data(32, iv=-1)
             chk_a_no_iv = self.checksum(a)
             b, iv_b, chk_b_with_iv = self.get_random_data(64, iv=-1)
@@ -250,7 +250,7 @@ klasse ExceptionTestCase(unittest.TestCase):
         self.assertRaises(TypeError, zlib.crc32)
         self.assertRaises(TypeError, zlib.compress)
         self.assertRaises(TypeError, zlib.decompress)
-        for arg in (42, None, '', 'abc', (), []):
+        fuer arg in (42, None, '', 'abc', (), []):
             self.assertRaises(TypeError, zlib.adler32, arg)
             self.assertRaises(TypeError, zlib.crc32, arg)
             self.assertRaises(TypeError, zlib.compress, arg)
@@ -342,7 +342,7 @@ klasse CompressTestCase(BaseCompressTestCase, unittest.TestCase):
         # might not be identical.
         if not HW_ACCELERATED:
             self.assertEqual(zlib.compress(bytearray(data)), x)
-        for ob in x, bytearray(x):
+        fuer ob in x, bytearray(x):
             self.assertEqual(zlib.decompress(ob), data)
 
     def test_incomplete_stream(self):
@@ -393,7 +393,7 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         datasrc = HAMLET_SCENE * 128
         datazip = zlib.compress(datasrc)
         # should compress both bytes and bytearray data
-        for data in (datasrc, bytearray(datasrc)):
+        fuer data in (datasrc, bytearray(datasrc)):
             co = zlib.compressobj()
             x1 = co.compress(data)
             x2 = co.flush()
@@ -402,7 +402,7 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
             # be identical.
             if not HW_ACCELERATED:
                 self.assertEqual(x1 + x2, datazip)
-        for v1, v2 in ((x1, x2), (bytearray(x1), bytearray(x2))):
+        fuer v1, v2 in ((x1, x2), (bytearray(x1), bytearray(x2))):
             dco = zlib.decompressobj()
             y1 = dco.decompress(v1 + v2)
             y2 = dco.flush()
@@ -451,7 +451,7 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         data = HAMLET_SCENE * 128
         co = zlib.compressobj()
         bufs = []
-        for i in range(0, len(data), 256):
+        fuer i in range(0, len(data), 256):
             bufs.append(co.compress(data[i:i+256]))
         bufs.append(co.flush())
         combuf = b''.join(bufs)
@@ -467,7 +467,7 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         data = source * 128
         co = zlib.compressobj()
         bufs = []
-        for i in range(0, len(data), cx):
+        fuer i in range(0, len(data), cx):
             bufs.append(co.compress(data[i:i+cx]))
         bufs.append(co.flush())
         combuf = b''.join(bufs)
@@ -480,7 +480,7 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
 
         dco = zlib.decompressobj()
         bufs = []
-        for i in range(0, len(combuf), dcx):
+        fuer i in range(0, len(combuf), dcx):
             bufs.append(dco.decompress(combuf[i:i+dcx]))
             self.assertEqual(b'', dco.unconsumed_tail, ########
                              "(A) uct should be b'': not %d long" %
@@ -512,7 +512,7 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         data = source * 128
         co = zlib.compressobj()
         bufs = []
-        for i in range(0, len(data), cx):
+        fuer i in range(0, len(data), cx):
             bufs.append(co.compress(data[i:i+cx]))
         bufs.append(co.flush())
         combuf = b''.join(bufs)
@@ -537,7 +537,7 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         data = HAMLET_SCENE * 128
         co = zlib.compressobj()
         bufs = []
-        for i in range(0, len(data), 256):
+        fuer i in range(0, len(data), 256):
             bufs.append(co.compress(data[i:i+256]))
         bufs.append(co.flush())
         combuf = b''.join(bufs)
@@ -607,12 +607,12 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         if ZLIB_RUNTIME_VERSION_TUPLE >= (1, 2, 5, 3):
             sync_opt.append('Z_BLOCK')
 
-        sync_opt = [getattr(zlib, opt) for opt in sync_opt
+        sync_opt = [getattr(zlib, opt) fuer opt in sync_opt
                     if hasattr(zlib, opt)]
         data = HAMLET_SCENE * 8
 
-        for sync in sync_opt:
-            for level in range(10):
+        fuer sync in sync_opt:
+            fuer level in range(10):
                 with self.subTest(sync=sync, level=level):
                     obj = zlib.compressobj( level )
                     a = obj.compress( data[:3000] )
@@ -627,7 +627,7 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
     @unittest.skipUnless(hasattr(zlib, 'Z_SYNC_FLUSH'),
                          'requires zlib.Z_SYNC_FLUSH')
     def test_odd_flush(self):
-        # Test for odd flushing bugs noted in 2.0, and hopefully fixed in 2.1
+        # Test fuer odd flushing bugs noted in 2.0, and hopefully fixed in 2.1
         import random
         # Testing on 17K of "random" data
 
@@ -674,7 +674,7 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         self.assertRaises(zlib.error, dco.decompress, cd)
 
     def test_dictionary_streaming(self):
-        # This simulates the reuse of a compressor object for compressing
+        # This simulates the reuse of a compressor object fuer compressing
         # several separate data streams.
         co = zlib.compressobj(zdict=HAMLET_SCENE)
         do = zlib.decompressobj(zdict=HAMLET_SCENE)
@@ -726,11 +726,11 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         remainder = b'0123456789'
         y = zlib.compress(source)
         x = y + remainder
-        for maxlen in 0, 1000:
-            for step in 1, 2, len(y), len(x):
+        fuer maxlen in 0, 1000:
+            fuer step in 1, 2, len(y), len(x):
                 dco = zlib.decompressobj()
                 data = b''
-                for i in range(0, len(x), step):
+                fuer i in range(0, len(x), step):
                     if i < len(y):
                         self.assertEqual(dco.unused_data, b'')
                     if maxlen == 0:
@@ -787,7 +787,7 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         # Test copying a compression object
         data0 = HAMLET_SCENE
         data1 = bytes(str(HAMLET_SCENE, "ascii").swapcase(), "ascii")
-        for func in lambda c: c.copy(), copy.copy, copy.deepcopy:
+        fuer func in lambda c: c.copy(), copy.copy, copy.deepcopy:
             c0 = zlib.compressobj(zlib.Z_BEST_COMPRESSION)
             bufs0 = []
             bufs0.append(c0.compress(data0))
@@ -824,7 +824,7 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         # Test type of return value
         self.assertIsInstance(comp, bytes)
 
-        for func in lambda c: c.copy(), copy.copy, copy.deepcopy:
+        fuer func in lambda c: c.copy(), copy.copy, copy.deepcopy:
             d0 = zlib.decompressobj()
             bufs0 = []
             bufs0.append(d0.decompress(comp[:32]))
@@ -853,12 +853,12 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         self.assertRaises(ValueError, copy.deepcopy, d)
 
     def test_compresspickle(self):
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             with self.assertRaises((TypeError, pickle.PicklingError)):
                 pickle.dumps(zlib.compressobj(zlib.Z_BEST_COMPRESSION), proto)
 
     def test_decompresspickle(self):
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             with self.assertRaises((TypeError, pickle.PicklingError)):
                 pickle.dumps(zlib.decompressobj(), proto)
 
@@ -964,7 +964,7 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         dco = zlib.decompressobj(32 + 15)
         self.assertEqual(dco.decompress(gzip), HAMLET_SCENE)
 
-        for wbits in (-15, 15, 31):
+        fuer wbits in (-15, 15, 31):
             with self.subTest(wbits=wbits):
                 expected = HAMLET_SCENE
                 actual = zlib.decompress(
@@ -977,7 +977,7 @@ def choose_lines(source, number, seed=None, generator=random):
     if seed is not None:
         generator.seed(seed)
     sources = source.split('\n')
-    return [generator.choice(sources) for n in range(number)]
+    return [generator.choice(sources) fuer n in range(number)]
 
 
 HAMLET_SCENE = b"""
@@ -993,7 +993,7 @@ LAERTES
 
 LORD POLONIUS
 
-       Yet here, Laertes! aboard, aboard, for shame!
+       Yet here, Laertes! aboard, aboard, fuer shame!
        The wind sits in the shoulder of your sail,
        And you are stay'd for. There; my blessing with thee!
        And these few precepts in thy memory
@@ -1107,7 +1107,7 @@ klasse ZlibDecompressorTest(unittest.TestCase):
             decompressed = None
 
     def testPickle(self):
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             with self.assertRaises(TypeError):
                 pickle.dumps(zlib._ZlibDecompressor(), proto)
 
@@ -1212,7 +1212,7 @@ klasse ZlibDecompressorTest(unittest.TestCase):
         gettotalrefcount = support.get_attribute(sys, 'gettotalrefcount')
         zlibd = zlib._ZlibDecompressor()
         refs_before = gettotalrefcount()
-        for i in range(100):
+        fuer i in range(100):
             zlibd.__init__()
         self.assertAlmostEqual(gettotalrefcount() - refs_before, 0, delta=10)
 

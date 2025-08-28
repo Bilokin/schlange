@@ -223,7 +223,7 @@ klasse BaseSockTestsMixin:
     # the socket needs time to "recover" to make the next connect call.
     # On Linux, a second retry will do. On Windows, the waiting time is
     # unpredictable; and on FreeBSD the socket may never come back
-    # because it's a loopback address. Here we'll just retry for a few
+    # because it's a loopback address. Here we'll just retry fuer a few
     # times, and have to skip the test if it's not working. See also:
     # https://stackoverflow.com/a/54437602/3316267
     # https://lists.freebsd.org/pipermail/freebsd-current/2005-May/049876.html
@@ -239,7 +239,7 @@ klasse BaseSockTestsMixin:
         listener.listen(1)
 
         skip_reason = "Max retries reached"
-        for i in range(128):
+        fuer i in range(128):
             try:
                 await self.loop.sock_connect(sock, addr)
             except ConnectionRefusedError as e:
@@ -247,7 +247,7 @@ klasse BaseSockTestsMixin:
             except OSError as e:
                 skip_reason = e
 
-                # Retry only for this error:
+                # Retry only fuer this error:
                 # [WinError 10022] An invalid argument was supplied
                 if getattr(e, 'winerror', 0) != 10022:
                     break
@@ -524,7 +524,7 @@ klasse BaseSockTestsMixin:
             infos = self.loop.run_until_complete(
                 self.loop.getaddrinfo(
                     *httpd.address, type=socket.SOCK_STREAM))
-            for family, type, proto, cname, address in infos:
+            fuer family, type, proto, cname, address in infos:
                 try:
                     sock = socket.socket(family=family, type=type, proto=proto)
                     sock.setblocking(False)

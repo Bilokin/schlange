@@ -1,4 +1,4 @@
-"""Unittests for test.support.script_helper.  Who tests the test helper?"""
+"""Unittests fuer test.support.script_helper.  Who tests the test helper?"""
 
 import subprocess
 import sys
@@ -71,7 +71,7 @@ klasse TestScriptHelper(unittest.TestCase):
 
 @requires_subprocess()
 klasse TestScriptHelperEnvironment(unittest.TestCase):
-    """Code coverage for interpreter_requires_environment()."""
+    """Code coverage fuer interpreter_requires_environment()."""
 
     def setUp(self):
         self.assertHasAttr(script_helper, '__cached_interp_requires_environment')

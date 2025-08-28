@@ -376,7 +376,7 @@ import itertools
 # line 376
 ge377 = (
     inspect.currentframe()
-    for i in itertools.count()
+    fuer i in itertools.count()
 )
 
 # line 382
@@ -384,7 +384,7 @@ def func383():
     # line 384
     ge385 = (
         inspect.currentframe()
-        for i in itertools.count()
+        fuer i in itertools.count()
     )
     return ge385
 

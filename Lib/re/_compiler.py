@@ -5,10 +5,10 @@
 #
 # Copyright (c) 1997-2001 by Secret Labs AB.  All rights reserved.
 #
-# See the __init__.py file for information on usage and redistribution.
+# See the __init__.py file fuer information on usage and redistribution.
 #
 
-"""Internal support module for sre"""
+"""Internal support module fuer sre"""
 
 import _sre
 from . import _parser
@@ -55,7 +55,7 @@ def _compile(code, pattern, flags):
         else:
             iscased = _sre.ascii_iscased
             tolower = _sre.ascii_tolower
-    for op, av in pattern:
+    fuer op, av in pattern:
         if op in LITERAL_CODES:
             if not flags & SRE_FLAG_IGNORECASE:
                 emit(op)
@@ -79,7 +79,7 @@ def _compile(code, pattern, flags):
                     skip = _len(code); emit(0)
                     if op is NOT_LITERAL:
                         emit(NEGATE)
-                    for k in (lo,) + fixes[lo]:
+                    fuer k in (lo,) + fixes[lo]:
                         emit(LITERAL)
                         emit(k)
                     emit(FAILURE)
@@ -175,7 +175,7 @@ def _compile(code, pattern, flags):
             emit(op)
             tail = []
             tailappend = tail.append
-            for av in av[1]:
+            fuer av in av[1]:
                 skip = _len(code); emit(0)
                 # _compile_info(code, av, flags)
                 _compile(code, av, flags)
@@ -183,7 +183,7 @@ def _compile(code, pattern, flags):
                 tailappend(_len(code)); emit(0)
                 code[skip] = _len(code) - skip
             emit(FAILURE) # end of branch
-            for tail in tail:
+            fuer tail in tail:
                 code[tail] = _len(code) - tail
         elif op is CATEGORY:
             emit(op)
@@ -221,7 +221,7 @@ def _compile(code, pattern, flags):
 def _compile_charset(charset, flags, code):
     # compile charset subprogram
     emit = code.append
-    for op, av in charset:
+    fuer op, av in charset:
         emit(op)
         if op is NEGATE:
             pass
@@ -251,7 +251,7 @@ def _optimize_charset(charset, iscased=None, fixup=None, fixes=None):
     tail = []
     charmap = bytearray(256)
     hascased = False
-    for op, av in charset:
+    fuer op, av in charset:
         while True:
             try:
                 if op is LITERAL:
@@ -259,7 +259,7 @@ def _optimize_charset(charset, iscased=None, fixup=None, fixes=None):
                         av = fixup(av)
                         charmap[av] = 1
                         if fixes and av in fixes:
-                            for k in fixes[av]:
+                            fuer k in fixes[av]:
                                 charmap[k] = 1
                         if not hascased and iscased(av):
                             hascased = True
@@ -269,18 +269,18 @@ def _optimize_charset(charset, iscased=None, fixup=None, fixes=None):
                     r = range(av[0], av[1]+1)
                     if fixup: # IGNORECASE and not LOCALE
                         if fixes:
-                            for i in map(fixup, r):
+                            fuer i in map(fixup, r):
                                 charmap[i] = 1
                                 if i in fixes:
-                                    for k in fixes[i]:
+                                    fuer k in fixes[i]:
                                         charmap[k] = 1
                         else:
-                            for i in map(fixup, r):
+                            fuer i in map(fixup, r):
                                 charmap[i] = 1
                         if not hascased:
                             hascased = any(map(iscased, r))
                     else:
-                        for i in r:
+                        fuer i in r:
                             charmap[i] = 1
                 elif op is NEGATE:
                     out.append((op, av))
@@ -300,14 +300,14 @@ def _optimize_charset(charset, iscased=None, fixup=None, fixes=None):
                 # proceeded.
                 if fixup: # IGNORECASE and not LOCALE
                     # For now, IN_UNI_IGNORE+LITERAL and
-                    # IN_UNI_IGNORE+RANGE_UNI_IGNORE work for all non-BMP
+                    # IN_UNI_IGNORE+RANGE_UNI_IGNORE work fuer all non-BMP
                     # characters, because two characters (at least one of
                     # which is not in the BMP) match case-insensitively
                     # if and only if:
                     # 1) c1.lower() == c2.lower()
                     # 2) c1.lower() == c2 or c1.lower().upper() == c2
                     # Also, both c.lower() and c.lower().upper() are single
-                    # characters for every non-BMP character.
+                    # characters fuer every non-BMP character.
                     if op is RANGE:
                         if fixes: # not ASCII
                             op = RANGE_UNI_IGNORE
@@ -336,7 +336,7 @@ def _optimize_charset(charset, iscased=None, fixup=None, fixes=None):
         runs.append((p, q))
     if runs is not None:
         # use literal/range
-        for p, q in runs:
+        fuer p, q in runs:
             if q - p == 1:
                 out.append((LITERAL, p))
             else:
@@ -380,7 +380,7 @@ def _optimize_charset(charset, iscased=None, fixup=None, fixes=None):
     mapping = bytearray(256)
     block = 0
     data = bytearray()
-    for i in range(0, 65536, 256):
+    fuer i in range(0, 65536, 256):
         chunk = charmap[i: i + 256]
         if chunk in comps:
             mapping[i // 256] = comps[chunk]
@@ -400,7 +400,7 @@ _BITS_TRANS = b'0' + b'1' * 255
 def _mk_bitmap(bits, _CODEBITS=_CODEBITS, _int=int):
     s = bits.translate(_BITS_TRANS)[::-1]
     return [_int(s[i - _CODEBITS: i], 2)
-            for i in range(len(s), 0, -_CODEBITS)]
+            fuer i in range(len(s), 0, -_CODEBITS)]
 
 def _bytes_to_codes(b):
     # Convert block indices to word array
@@ -420,15 +420,15 @@ def _simple(p):
 
 def _generate_overlap_table(prefix):
     """
-    Generate an overlap table for the following prefix.
+    Generate an overlap table fuer the following prefix.
     An overlap table is a table of the same size as the prefix which
-    informs about the potential self-overlap for each index in the prefix:
+    informs about the potential self-overlap fuer each index in the prefix:
     - if overlap[i] == 0, prefix[i:] can't overlap prefix[0:...]
     - if overlap[i] == k with 0 < k <= i, prefix[i-k+1:i+1] overlaps with
       prefix[0:k]
     """
     table = [0] * len(prefix)
-    for i in range(1, len(prefix)):
+    fuer i in range(1, len(prefix)):
         idx = table[i - 1]
         while prefix[i] != prefix[idx]:
             if idx == 0:
@@ -448,12 +448,12 @@ def _get_iscased(flags):
         return _sre.ascii_iscased
 
 def _get_literal_prefix(pattern, flags):
-    # look for literal prefix
+    # look fuer literal prefix
     prefix = []
     prefixappend = prefix.append
     prefix_skip = None
     iscased = _get_iscased(flags)
-    for op, av in pattern.data:
+    fuer op, av in pattern.data:
         if op is LITERAL:
             if iscased and iscased(av):
                 break
@@ -498,7 +498,7 @@ def _get_charset_prefix(pattern, flags):
     elif op is BRANCH:
         charset = []
         charsetappend = charset.append
-        for p in av[1]:
+        fuer p in av[1]:
             if not p:
                 return None
             op, av = p[0]
@@ -510,7 +510,7 @@ def _get_charset_prefix(pattern, flags):
     elif op is IN:
         charset = av
         if iscased:
-            for op, av in charset:
+            fuer op, av in charset:
                 if op is LITERAL:
                     if iscased(av):
                         return None
@@ -532,14 +532,14 @@ def _compile_info(code, pattern, flags):
     if lo == 0:
         code.extend([INFO, 4, 0, lo, hi])
         return
-    # look for a literal prefix
+    # look fuer a literal prefix
     prefix = []
     prefix_skip = 0
     charset = None # not used
     if not (flags & SRE_FLAG_IGNORECASE and flags & SRE_FLAG_LOCALE):
-        # look for literal prefix
+        # look fuer literal prefix
         prefix, prefix_skip, got_all = _get_literal_prefix(pattern, flags)
-        # if no prefix, look for charset prefix
+        # if no prefix, look fuer charset prefix
         if not prefix:
             charset = _get_charset_prefix(pattern, flags)
             if charset:
@@ -603,7 +603,7 @@ def _code(p, flags):
     return code
 
 def _hex_code(code):
-    return '[%s]' % ', '.join('%#0*x' % (_sre.CODESIZE*2+2, x) for x in code)
+    return '[%s]' % ', '.join('%#0*x' % (_sre.CODESIZE*2+2, x) fuer x in code)
 
 def dis(code):
     import sys
@@ -671,11 +671,11 @@ def dis(code):
                 arg = code[i]
                 i += 1
                 mapping = list(b''.join(x.to_bytes(_sre.CODESIZE, sys.byteorder)
-                                        for x in code[i: i + 256//_sre.CODESIZE]))
+                                        fuer x in code[i: i + 256//_sre.CODESIZE]))
                 print_(op, arg, mapping)
                 i += 256//_sre.CODESIZE
                 level += 1
-                for j in range(arg):
+                fuer j in range(arg):
                     print_2(_hex_code(code[i: i + 256//_CODEBITS]))
                     i += 256//_CODEBITS
                 level -= 1
@@ -735,7 +735,7 @@ def dis(code):
                     start = i + 6
                     prefix = code[start: start+prefix_len]
                     print_2('  prefix',
-                            '[%s]' % ', '.join('%#02x' % x for x in prefix),
+                            '[%s]' % ', '.join('%#02x' % x fuer x in prefix),
                             '(%r)' % ''.join(map(chr, prefix)))
                     start += prefix_len
                     print_2('  overlap', code[start: start+prefix_len])
@@ -772,7 +772,7 @@ def compile(p, flags=0):
     # map in either direction
     groupindex = p.state.groupdict
     indexgroup = [None] * p.state.groups
-    for k, i in groupindex.items():
+    fuer k, i in groupindex.items():
         indexgroup[i] = k
 
     return _sre.compile(

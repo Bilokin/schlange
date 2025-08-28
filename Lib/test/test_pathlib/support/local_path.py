@@ -1,5 +1,5 @@
 """
-Implementations of ReadablePath and WritablePath for local paths, for use in
+Implementations of ReadablePath and WritablePath fuer local paths, fuer use in
 pathlib tests.
 
 LocalPathGround is also defined here. It helps establish the "ground truth"
@@ -92,7 +92,7 @@ klasse LocalPathGround:
 
 klasse LocalPathInfo(PathInfo):
     """
-    Simple implementation of PathInfo for a local path
+    Simple implementation of PathInfo fuer a local path
     """
     __slots__ = ('_path', '_exists', '_is_dir', '_is_file', '_is_symlink')
 
@@ -136,7 +136,7 @@ klasse LocalPathInfo(PathInfo):
 
 klasse ReadableLocalPath(_ReadablePath, LexicalPath):
     """
-    Simple implementation of a ReadablePath klasse for local filesystem paths.
+    Simple implementation of a ReadablePath klasse fuer local filesystem paths.
     """
     __slots__ = ('info',)
     __fspath__ = LexicalPath.__vfspath__
@@ -149,7 +149,7 @@ klasse ReadableLocalPath(_ReadablePath, LexicalPath):
         return open(self, 'rb')
 
     def iterdir(self):
-        return (self / name for name in os.listdir(self))
+        return (self / name fuer name in os.listdir(self))
 
     def readlink(self):
         return self.with_segments(os.readlink(self))
@@ -157,7 +157,7 @@ klasse ReadableLocalPath(_ReadablePath, LexicalPath):
 
 klasse WritableLocalPath(_WritablePath, LexicalPath):
     """
-    Simple implementation of a WritablePath klasse for local filesystem paths.
+    Simple implementation of a WritablePath klasse fuer local filesystem paths.
     """
 
     __slots__ = ()

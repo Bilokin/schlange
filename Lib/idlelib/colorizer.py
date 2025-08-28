@@ -42,7 +42,7 @@ def make_pat():
         ]) +
         r"))"
     )
-    builtinlist = [str(name) for name in dir(builtins)
+    builtinlist = [str(name) fuer name in dir(builtins)
                    if not name.startswith('_') and
                    name not in keyword.kwlist]
     builtin = r"([^.'\"\\#]\b|^)" + any("BUILTIN", builtinlist) + r"\b"
@@ -75,7 +75,7 @@ prog_group_name_to_tag = {
 
 def matched_named_groups(re_match):
     "Get only the non-empty named groups from an re.Match object."
-    return ((k, v) for (k, v) in re_match.groupdict().items() if v)
+    return ((k, v) fuer (k, v) in re_match.groupdict().items() if v)
 
 
 def color_config(text):
@@ -100,16 +100,16 @@ def color_config(text):
 
 
 klasse ColorDelegator(Delegator):
-    """Delegator for syntax highlighting (text coloring).
+    """Delegator fuer syntax highlighting (text coloring).
 
     Instance variables:
         delegate: Delegator below this one in the stack, meaning the
                 one this one delegates to.
 
         Used to track state:
-        after_id: Identifier for scheduled after event, which is a
-                timer for colorizing the text.
-        allow_colorizing: Boolean toggle for applying colorizing.
+        after_id: Identifier fuer scheduled after event, which is a
+                timer fuer colorizing the text.
+        allow_colorizing: Boolean toggle fuer applying colorizing.
         colorizing: Boolean flag when colorizing is in process.
         stop_colorizing: Boolean flag to end an active colorizing
                 process.
@@ -130,12 +130,12 @@ klasse ColorDelegator(Delegator):
         self.colorizing = False
 
     def setdelegate(self, delegate):
-        """Set the delegate for this instance.
+        """Set the delegate fuer this instance.
 
         A delegate is an instance of a Delegator klasse and each
         delegate points to the next delegator in the stack.  This
-        allows multiple delegators to be chained together for a
-        widget.  The bottom delegate for a colorizer is a Text
+        allows multiple delegators to be chained together fuer a
+        widget.  The bottom delegate fuer a colorizer is a Text
         widget.
 
         If there is a delegate, also start the colorizing process.
@@ -154,7 +154,7 @@ klasse ColorDelegator(Delegator):
 
     def config_colors(self):
         "Configure text widget tags with colors from tagdefs."
-        for tag, cnf in self.tagdefs.items():
+        fuer tag, cnf in self.tagdefs.items():
             self.tag_configure(tag, **cnf)
         self.tag_raise('sel')
 
@@ -179,19 +179,19 @@ klasse ColorDelegator(Delegator):
         if DEBUG: print('tagdefs', self.tagdefs)
 
     def insert(self, index, chars, tags=None):
-        "Insert chars into widget at index and mark for colorizing."
+        "Insert chars into widget at index and mark fuer colorizing."
         index = self.index(index)
         self.delegate.insert(index, chars, tags)
         self.notify_range(index, index + "+%dc" % len(chars))
 
     def delete(self, index1, index2=None):
-        "Delete chars between indexes and mark for colorizing."
+        "Delete chars between indexes and mark fuer colorizing."
         index1 = self.index(index1)
         self.delegate.delete(index1, index2)
         self.notify_range(index1)
 
     def notify_range(self, index1, index2=None):
-        "Mark text changes for processing and restart colorizing, if active."
+        "Mark text changes fuer processing and restart colorizing, if active."
         self.tag_add("TODO", index1, index2)
         if self.after_id:
             if DEBUG: print("colorizing already scheduled")
@@ -293,7 +293,7 @@ klasse ColorDelegator(Delegator):
                 ##print head, "get", mark, next, "->", repr(line)
                 if not line:
                     return
-                for tag in self.tagdefs:
+                fuer tag in self.tagdefs:
                     self.tag_remove(tag, mark, next)
                 chars += line
                 self._add_tags_in_section(chars, head)
@@ -305,7 +305,7 @@ klasse ColorDelegator(Delegator):
                 if not ok:
                     # We're in an inconsistent state, and the call to
                     # update may tell us to stop.  It may also change
-                    # the correct value for "next" (since this is a
+                    # the correct value fuer "next" (since this is a
                     # line.col string, not a true mark).  So leave a
                     # crumb telling the next invocation to resume here
                     # in case update tells us to leave.
@@ -340,8 +340,8 @@ klasse ColorDelegator(Delegator):
 
             `head` is the index in the text widget where the text is found.
         """
-        for m in self.prog.finditer(chars):
-            for name, matched_text in matched_named_groups(m):
+        fuer m in self.prog.finditer(chars):
+            fuer name, matched_text in matched_named_groups(m):
                 a, b = m.span(name)
                 self._add_tag(a, b, head, name)
                 if matched_text in ("def", "class"):
@@ -351,7 +351,7 @@ klasse ColorDelegator(Delegator):
 
     def removecolors(self):
         "Remove all colorizing tags."
-        for tag in self.tagdefs:
+        fuer tag in self.tagdefs:
             self.tag_remove(tag, "1.0", "end")
 
 

@@ -32,7 +32,7 @@ def unix_console(events, **kwargs):
     console.wait = MagicMock()
 
     console.prepare()
-    for key, val in kwargs.items():
+    fuer key, val in kwargs.items():
         setattr(console, key, val)
     return console
 
@@ -57,7 +57,7 @@ handle_events_unix_console_height_3 = partial(
 @unittest.skipIf(sys.platform == "win32", "No Unix event queue on Windows")
 @patch(
     "_pyrepl.terminfo.tparm",
-    lambda s, *args: s + b":" + b",".join(str(i).encode() for i in args),
+    lambda s, *args: s + b":" + b",".join(str(i).encode() fuer i in args),
 )
 @patch(
     "termios.tcgetattr",

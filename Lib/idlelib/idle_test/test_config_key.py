@@ -81,7 +81,7 @@ klasse ValidationTest(unittest.TestCase):
         self.dialog.get_modifiers.result = []
 
     def test_keys_dup(self):
-        for mods, final, seq in (([], 'F12', '<Key-F12>'),
+        fuer mods, final, seq in (([], 'F12', '<Key-F12>'),
                                  (['Control'], 'x', '<Control-Key-x>'),
                                  (['Control'], 'X', '<Control-Key-X>')):
             with self.subTest(m=mods, f=final, s=seq):
@@ -127,7 +127,7 @@ klasse ToggleLevelTest(unittest.TestCase):
             this can be used to check whether a frame is above or
             below another one.
             """
-            for index, child in enumerate(dialog.winfo_children()):
+            fuer index, child in enumerate(dialog.winfo_children()):
                 if child._name == 'keyseq_basic':
                     basic = index
                 if child._name == 'keyseq_advanced':

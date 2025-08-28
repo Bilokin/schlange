@@ -55,7 +55,7 @@ visible = False
 
 
 def patch_screen():
-    """Patch turtle._Screen for testing without a display.
+    """Patch turtle._Screen fuer testing without a display.
 
     We must patch the _Screen klasse itself instead of the _Screen
     instance because instantiating it requires a display.
@@ -145,7 +145,7 @@ klasse VectorComparisonMixin:
     def assertVectorsAlmostEqual(self, vec1, vec2):
         if len(vec1) != len(vec2):
             self.fail("Tuples are not of equal size")
-        for idx, (i, j) in enumerate(zip(vec1, vec2)):
+        fuer idx, (i, j) in enumerate(zip(vec1, vec2)):
             self.assertAlmostEqual(
                 i, j, msg='values at index {} do not match'.format(idx))
 
@@ -189,7 +189,7 @@ klasse TestVec2D(VectorComparisonMixin, unittest.TestCase):
 
     def test_pickling(self):
         vec = Vec2D(0.5, 2)
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             with self.subTest(proto=proto):
                 pickled = pickle.dumps(vec, protocol=proto)
                 unpickled = pickle.loads(pickled)
@@ -197,7 +197,7 @@ klasse TestVec2D(VectorComparisonMixin, unittest.TestCase):
                 self.assertIsInstance(unpickled, Vec2D)
 
     def _assert_arithmetic_cases(self, test_cases, lambda_operator):
-        for test_case in test_cases:
+        fuer test_case in test_cases:
             with self.subTest(case=test_case):
 
                 ((first, second), expected) = test_case
@@ -269,7 +269,7 @@ klasse TestVec2D(VectorComparisonMixin, unittest.TestCase):
             (((1, 0), 360), (1, 0)),
         ]
 
-        for case in cases:
+        fuer case in cases:
             with self.subTest(case=case):
                 (vec, rot), expected = case
                 vec = Vec2D(*vec)
@@ -369,7 +369,7 @@ klasse TestTNavigator(VectorComparisonMixin, unittest.TestCase):
             ((100, -100), 315.0),
         ]
 
-        for (x, y), expected in coordinates:
+        fuer (x, y), expected in coordinates:
             self.assertEqual(self.nav.towards(x, y), expected)
             self.assertEqual(self.nav.towards((x, y)), expected)
             self.assertEqual(self.nav.towards(Vec2D(x, y)), expected)
@@ -387,20 +387,20 @@ klasse TestTNavigator(VectorComparisonMixin, unittest.TestCase):
 
         rotations = [10, 20, 170, 300]
         result = sum(rotations) % 360
-        for num in rotations:
+        fuer num in rotations:
             self.nav.left(num)
         self.assertEqual(self.nav.heading(), result)
         self.nav.reset()
 
         result = (360-sum(rotations)) % 360
-        for num in rotations:
+        fuer num in rotations:
             self.nav.right(num)
         self.assertEqual(self.nav.heading(), result)
         self.nav.reset()
 
         rotations = [10, 20, -170, 300, -210, 34.3, -50.2, -10, -29.98, 500]
         sum_so_far = 0
-        for num in rotations:
+        fuer num in rotations:
             if num < 0:
                 self.nav.right(abs(num))
             else:
@@ -472,7 +472,7 @@ klasse TestTPen(unittest.TestCase):
 
         tpen = turtle.TPen()
 
-        for fill_gap_value in [True, False]:
+        fuer fill_gap_value in [True, False]:
             tpen.penup()
             tpen.teleport(100, 100, fill_gap=fill_gap_value)
             self.assertFalse(tpen.isdown())
@@ -550,7 +550,7 @@ klasse TestTurtleScreen(unittest.TestCase):
     def test_no_animation_resets_tracer_to_old_value(self):
         s = turtle.TurtleScreen(cv=unittest.mock.MagicMock())
 
-        for tracer in [0, 1, 5]:
+        fuer tracer in [0, 1, 5]:
             s.tracer(tracer)
             with s.no_animation():
                 pass
@@ -649,7 +649,7 @@ klasse TestModuleLevel(unittest.TestCase):
             'pen': '(pen=None, **pendict)',
         }
 
-        for name in known_signatures:
+        fuer name in known_signatures:
             with self.subTest(name=name):
                 obj = getattr(turtle, name)
                 sig = inspect.signature(obj)

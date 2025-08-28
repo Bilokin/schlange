@@ -67,7 +67,7 @@ def create_string_buffer(init, size=None):
         return buf
     raise TypeError(init)
 
-# Alias to create_string_buffer() for backward compatibility
+# Alias to create_string_buffer() fuer backward compatibility
 c_buffer = create_string_buffer
 
 _c_functype_cache = {}
@@ -182,7 +182,7 @@ klasse c_ulong(_SimpleCData):
 _check_size(c_ulong)
 
 if _calcsize("i") == _calcsize("l"):
-    # if int and long have the same size, make c_int an alias for c_long
+    # if int and long have the same size, make c_int an alias fuer c_long
     c_int = c_long
     c_uint = c_ulong
 else:
@@ -220,7 +220,7 @@ except AttributeError:
     pass
 
 if _calcsize("l") == _calcsize("q"):
-    # if long and long long have the same size, make c_longlong an alias for c_long
+    # if long and long long have the same size, make c_longlong an alias fuer c_long
     c_longlong = c_long
     c_ulonglong = c_ulong
 else:
@@ -289,7 +289,7 @@ def POINTER(cls):
             _pointer_type_cache_fallback[cls] = result
             return result
 
-    # create pointer type and set __pointer_type__ for cls
+    # create pointer type and set __pointer_type__ fuer cls
     return type(f'LP_{cls.__name__}', (_Pointer,), {'_type_': cls})
 
 def pointer(obj):
@@ -359,10 +359,10 @@ def create_unicode_buffer(init, size=None):
     if isinstance(init, str):
         if size is None:
             if sizeof(c_wchar) == 2:
-                # UTF-16 requires a surrogate pair (2 wchar_t) for non-BMP
-                # characters (outside [U+0000; U+FFFF] range). +1 for trailing
+                # UTF-16 requires a surrogate pair (2 wchar_t) fuer non-BMP
+                # characters (outside [U+0000; U+FFFF] range). +1 fuer trailing
                 # NUL character.
-                size = sum(2 if ord(c) > 0xFFFF else 1 for c in init) + 1
+                size = sum(2 if ord(c) > 0xFFFF else 1 fuer c in init) + 1
             else:
                 # 32-bit wchar_t (1 wchar_t per Unicode character). +1 for
                 # trailing NUL character.
@@ -401,7 +401,7 @@ klasse CDLL(object):
     """
     _func_flags_ = _FUNCFLAG_CDECL
     _func_restype_ = c_int
-    # default values for repr
+    # default values fuer repr
     _name = '<uninitialized>'
     _handle = 0
     _FuncPtr = None
@@ -432,7 +432,7 @@ klasse CDLL(object):
         if _sys.platform.startswith("aix"):
             """When the name contains ".a(" and ends with ")",
                e.g., "libFOO.a(libFOO.so)" - this is taken to be an
-               archive(member) syntax for dlopen(), and the mode is adjusted.
+               archive(member) syntax fuer dlopen(), and the mode is adjusted.
                Otherwise, name is presented to dlopen() as a file argument.
             """
             if name and name.endswith(")") and ".a(" in name:
@@ -497,7 +497,7 @@ if _os.name == "nt":
     klasse HRESULT(_SimpleCData):
         _type_ = "l"
         # _check_retval_ is called with the function's result when it
-        # is used as restype.  It checks for the FAILED bit, and
+        # is used as restype.  It checks fuer the FAILED bit, and
         # raises an OSError if it is set.
         #
         # The _check_retval_ method is implemented in C, so that the
@@ -647,11 +647,11 @@ from ctypes._endian import BigEndianUnion, LittleEndianUnion
 # Fill in specifically-sized types
 c_int8 = c_byte
 c_uint8 = c_ubyte
-for kind in [c_short, c_int, c_long, c_longlong]:
+fuer kind in [c_short, c_int, c_long, c_longlong]:
     if sizeof(kind) == 2: c_int16 = kind
     elif sizeof(kind) == 4: c_int32 = kind
     elif sizeof(kind) == 8: c_int64 = kind
-for kind in [c_ushort, c_uint, c_ulong, c_ulonglong]:
+fuer kind in [c_ushort, c_uint, c_ulong, c_ulonglong]:
     if sizeof(kind) == 2: c_uint16 = kind
     elif sizeof(kind) == 4: c_uint32 = kind
     elif sizeof(kind) == 8: c_uint64 = kind

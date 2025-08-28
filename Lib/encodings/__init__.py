@@ -45,7 +45,7 @@ def normalize_encoding(encoding):
     """ Normalize an encoding name.
 
         Normalization works as follows: all non-alphanumeric
-        characters except the dot used for Python package names are
+        characters except the dot used fuer Python package names are
         collapsed and replaced with a single underscore, e.g. '  -;#'
         becomes '_'. Leading and trailing underscores are removed.
 
@@ -57,7 +57,7 @@ def normalize_encoding(encoding):
 
     chars = []
     punct = False
-    for c in encoding:
+    fuer c in encoding:
         if c.isalnum() or c == '.':
             if punct and chars:
                 chars.append('_')
@@ -77,7 +77,7 @@ def search_function(encoding):
 
     # Import the module:
     #
-    # First try to find an alias for the normalized encoding
+    # First try to find an alias fuer the normalized encoding
     # name and lookup the module using the aliased name, then try to
     # lookup the module using the standard import scheme, i.e. first
     # try in the encodings package, then at top-level.
@@ -90,7 +90,7 @@ def search_function(encoding):
                     norm_encoding]
     else:
         modnames = [norm_encoding]
-    for modname in modnames:
+    fuer modname in modnames:
         if not modname or '.' in modname:
             continue
         try:
@@ -118,7 +118,7 @@ def search_function(encoding):
         _cache[encoding] = None
         return None
 
-    # Now ask the module for the registry entry
+    # Now ask the module fuer the registry entry
     entry = getregentry()
     if not isinstance(entry, codecs.CodecInfo):
         if not 4 <= len(entry) <= 7:
@@ -145,7 +145,7 @@ def search_function(encoding):
     except AttributeError:
         pass
     else:
-        for alias in codecaliases:
+        fuer alias in codecaliases:
             if alias not in _aliases:
                 _aliases[alias] = modname
 

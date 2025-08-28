@@ -31,15 +31,15 @@ _MAXORDINAL = 3652059  # date.max.toordinal()
 # number 1.  The code here calls January 1 of year 1 day number 1.  This is
 # to match the definition of the "proleptic Gregorian" calendar in Dershowitz
 # and Reingold's "Calendrical Calculations", where it's the base calendar
-# for all computations.  See the book for algorithms for converting between
+# fuer all computations.  See the book fuer algorithms fuer converting between
 # proleptic Gregorian ordinals and many other calendar systems.
 
-# -1 is a placeholder for indexing purposes.
+# -1 is a placeholder fuer indexing purposes.
 _DAYS_IN_MONTH = [-1, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
-_DAYS_BEFORE_MONTH = [-1]  # -1 is a placeholder for indexing purposes.
+_DAYS_BEFORE_MONTH = [-1]  # -1 is a placeholder fuer indexing purposes.
 dbm = 0
-for dim in _DAYS_IN_MONTH[1:]:
+fuer dim in _DAYS_IN_MONTH[1:]:
     _DAYS_BEFORE_MONTH.append(dbm)
     dbm += dim
 del dbm, dim
@@ -119,7 +119,7 @@ def _ord2ymd(n):
 
     # Now n is the (non-negative) offset, in days, from January 1 of year, to
     # the desired date.  Now compute how many 100-year cycles precede n.
-    # Note that it's possible for n100 to equal 4!  In that case 4 full
+    # Note that it's possible fuer n100 to equal 4!  In that case 4 full
     # 100-year cycles precede the desired day, which implies the desired
     # day is December 31 at the end of a 400-year cycle.
     n100, n = divmod(n, _DI100Y)
@@ -213,15 +213,15 @@ def _need_normalize_century():
             _normalize_century = True
     return _normalize_century
 
-# Correctly substitute for %z and %Z escapes in strftime formats.
+# Correctly substitute fuer %z and %Z escapes in strftime formats.
 def _wrap_strftime(object, format, timetuple):
     # Don't call utcoffset() or tzname() unless actually needed.
-    freplace = None  # the string to use for %f
-    zreplace = None  # the string to use for %z
-    colonzreplace = None  # the string to use for %:z
-    Zreplace = None  # the string to use for %Z
+    freplace = None  # the string to use fuer %f
+    zreplace = None  # the string to use fuer %z
+    colonzreplace = None  # the string to use fuer %:z
+    Zreplace = None  # the string to use fuer %Z
 
-    # Scan format for %z, %:z and %Z escapes, replacing as needed.
+    # Scan format fuer %z, %:z and %Z escapes, replacing as needed.
     newformat = []
     push = newformat.append
     i, n = 0, len(format)
@@ -271,7 +271,7 @@ def _wrap_strftime(object, format, timetuple):
                                 Zreplace = s.replace('%', '%%')
                     newformat.append(Zreplace)
                 # Note that datetime(1000, 1, 1).strftime('%G') == '1000' so
-                # year 1000 for %G can go on the fast path.
+                # year 1000 fuer %G can go on the fast path.
                 elif ((ch in 'YG' or ch in 'FC') and
                         object.year < 1000 and _need_normalize_century()):
                     if ch == 'G':
@@ -294,7 +294,7 @@ def _wrap_strftime(object, format, timetuple):
     newformat = "".join(newformat)
     return _time.strftime(newformat, timetuple)
 
-# Helpers for parsing the result of isoformat()
+# Helpers fuer parsing the result of isoformat()
 def _is_ascii_digit(c):
     return c in "0123456789"
 
@@ -400,7 +400,7 @@ def _parse_hh_mm_ss_ff(tstr):
 
     time_comps = [0, 0, 0, 0]
     pos = 0
-    for comp in range(0, 3):
+    fuer comp in range(0, 3):
         if (len_str - pos) < 2:
             raise ValueError("Incomplete time component")
 
@@ -458,7 +458,7 @@ def _parse_isoformat_time(tstr):
     error_from_components = False
     error_from_tz = None
     if (hour == 24):
-        if all(time_comp == 0 for time_comp in time_comps[1:]):
+        if all(time_comp == 0 fuer time_comp in time_comps[1:]):
             hour = 0
             time_comps[0] = hour
             became_next_day = True
@@ -485,7 +485,7 @@ def _parse_isoformat_time(tstr):
 
         tz_comps = _parse_hh_mm_ss_ff(tzstr)
 
-        if all(x == 0 for x in tz_comps):
+        if all(x == 0 fuer x in tz_comps):
             tzi = timezone.utc
         else:
             tzsign = -1 if tstr[tz_pos - 1] == '-' else 1
@@ -533,7 +533,7 @@ def _isoweek_to_gregorian(year, week, day):
     # Now compute the offset from (Y, 1, 1) in days:
     day_offset = (week - 1) * 7 + (day - 1)
 
-    # Calculate the ordinal day for monday, week 1
+    # Calculate the ordinal day fuer monday, week 1
     day_1 = _isoweek1monday(year)
     ord_day = day_1 + day_offset
 
@@ -550,7 +550,7 @@ def _check_tzname(name):
 # offset is what it returned.
 # If offset isn't None or timedelta, raises TypeError.
 # If offset is None, returns None.
-# Else offset is checked for being in range.
+# Else offset is checked fuer being in range.
 # If it is, its integer value is returned.  Else ValueError is raised.
 def _check_utc_offset(name, offset):
     assert name in ("utcoffset", "dst")
@@ -574,7 +574,7 @@ def _check_date_fields(year, month, day):
         raise ValueError(f"month must be in 1..12, not {month}")
     dim = _days_in_month(year, month)
     if not 1 <= day <= dim:
-        raise ValueError(f"day {day} must be in range 1..{dim} for month {month} in year {year}")
+        raise ValueError(f"day {day} must be in range 1..{dim} fuer month {month} in year {year}")
     return year, month, day
 
 def _check_time_fields(hour, minute, second, microsecond, fold):
@@ -607,7 +607,7 @@ def _divide_and_round(a, b):
     When the ratio is exactly half-way between two integers,
     the even integer is returned.
     """
-    # Based on the reference implementation for divmod_near
+    # Based on the reference implementation fuer divmod_near
     # in Objects/longobject.c.
     q, r = divmod(a, b)
     # round up if either r / b > 0.5, or r / b == 0.5 and q is odd.
@@ -653,7 +653,7 @@ klasse timedelta:
         # guide the C implementation; it's way more convoluted than speed-
         # ignoring auto-overflow-to-long idiomatic Python could be.
 
-        for name, value in (
+        fuer name, value in (
             ("days", days),
             ("seconds", seconds),
             ("microseconds", microseconds),
@@ -664,7 +664,7 @@ klasse timedelta:
         ):
             if not isinstance(value, (int, float)):
                 raise TypeError(
-                    f"unsupported type for timedelta {name} component: {type(value).__name__}"
+                    f"unsupported type fuer timedelta {name} component: {type(value).__name__}"
                 )
 
         # Final values, all integer.
@@ -736,7 +736,7 @@ klasse timedelta:
         assert abs(s) <= 3 * 24 * 3600
         assert abs(microseconds) < 3.1e6
 
-        # Just a little bit of carrying possible for microseconds and seconds.
+        # Just a little bit of carrying possible fuer microseconds and seconds.
         seconds, us = divmod(microseconds, 1000000)
         s += seconds
         days, s = divmod(s, 24*3600)
@@ -805,7 +805,7 @@ klasse timedelta:
 
     def __add__(self, other):
         if isinstance(other, timedelta):
-            # for CPython compatibility, we cannot use
+            # fuer CPython compatibility, we cannot use
             # our __class__ here, but need a real timedelta
             return timedelta(self._days + other._days,
                              self._seconds + other._seconds,
@@ -816,7 +816,7 @@ klasse timedelta:
 
     def __sub__(self, other):
         if isinstance(other, timedelta):
-            # for CPython compatibility, we cannot use
+            # fuer CPython compatibility, we cannot use
             # our __class__ here, but need a real timedelta
             return timedelta(self._days - other._days,
                              self._seconds - other._seconds,
@@ -829,7 +829,7 @@ klasse timedelta:
         return NotImplemented
 
     def __neg__(self):
-        # for CPython compatibility, we cannot use
+        # fuer CPython compatibility, we cannot use
         # our __class__ here, but need a real timedelta
         return timedelta(-self._days,
                          -self._seconds,
@@ -846,7 +846,7 @@ klasse timedelta:
 
     def __mul__(self, other):
         if isinstance(other, int):
-            # for CPython compatibility, we cannot use
+            # fuer CPython compatibility, we cannot use
             # our __class__ here, but need a real timedelta
             return timedelta(self._days * other,
                              self._seconds * other,
@@ -1079,7 +1079,7 @@ klasse date:
     # Conversions to string
 
     def __repr__(self):
-        """Convert to formal string, for repr().
+        """Convert to formal string, fuer repr().
 
         >>> d = date(2010, 1, 1)
         >>> repr(d)
@@ -1157,7 +1157,7 @@ klasse date:
                                   0, 0, 0, -1)
 
     def toordinal(self):
-        """Return proleptic Gregorian ordinal for the year, month and day.
+        """Return proleptic Gregorian ordinal fuer the year, month and day.
 
         January 1 of year 1 is day 1.  Only the year, month and day values
         contribute to the result.
@@ -1165,7 +1165,7 @@ klasse date:
         return _ymd2ord(self._year, self._month, self._day)
 
     def replace(self, year=None, month=None, day=None):
-        """Return a new date with new values for the specified fields."""
+        """Return a new date with new values fuer the specified fields."""
         if year is None:
             year = self._year
         if month is None:
@@ -1299,7 +1299,7 @@ date.resolution = timedelta(days=1)
 
 
 klasse tzinfo:
-    """Abstract base klasse for time zone info objects.
+    """Abstract base klasse fuer time zone info objects.
 
     Subclasses must override the tzname(), utcoffset() and dst() methods.
     """
@@ -1310,11 +1310,11 @@ klasse tzinfo:
         raise NotImplementedError("tzinfo subclass must override tzname()")
 
     def utcoffset(self, dt):
-        "datetime -> timedelta, positive for east of UTC, negative for west of UTC"
+        "datetime -> timedelta, positive fuer east of UTC, negative fuer west of UTC"
         raise NotImplementedError("tzinfo subclass must override utcoffset()")
 
     def dst(self, dt):
-        """datetime -> DST offset as timedelta, positive for east of UTC.
+        """datetime -> DST offset as timedelta, positive fuer east of UTC.
 
         Return 0 if DST not in effect.  utcoffset() must include the DST
         offset.
@@ -1334,7 +1334,7 @@ klasse tzinfo:
             raise ValueError("fromutc() requires a non-None utcoffset() "
                              "result")
 
-        # See the long comment block at the end of this file for an
+        # See the long comment block at the end of this file fuer an
         # explanation of this algorithm.
         dtdst = dt.dst()
         if dtdst is None:
@@ -1582,7 +1582,7 @@ klasse time:
         return _format_offset(off)
 
     def __repr__(self):
-        """Convert to formal string, for repr()."""
+        """Convert to formal string, fuer repr()."""
         if self._microsecond != 0:
             s = ", %d, %d" % (self._second, self._microsecond)
         elif self._second != 0:
@@ -1706,7 +1706,7 @@ klasse time:
 
     def replace(self, hour=None, minute=None, second=None, microsecond=None,
                 tzinfo=True, *, fold=None):
-        """Return a new time with new values for the specified fields."""
+        """Return a new time with new values fuer the specified fields."""
         if hour is None:
             hour = self.hour
         if minute is None:
@@ -1862,10 +1862,10 @@ klasse datetime(date):
             # Let's probe 24 hours in the past to detect a transition:
             max_fold_seconds = 24 * 3600
 
-            # On Windows localtime_s throws an OSError for negative values,
-            # thus we can't perform fold detection for values of time less
+            # On Windows localtime_s throws an OSError fuer negative values,
+            # thus we can't perform fold detection fuer values of time less
             # than the max time fold. See comments in _datetimemodule's
-            # version of this method for more details.
+            # version of this method fuer more details.
             if t < max_fold_seconds and sys.platform.startswith("win"):
                 return result
 
@@ -1913,7 +1913,7 @@ klasse datetime(date):
     def utcnow(cls):
         "Construct a UTC datetime from time.time()."
         import warnings
-        warnings.warn("datetime.datetime.utcnow() is deprecated and scheduled for "
+        warnings.warn("datetime.datetime.utcnow() is deprecated and scheduled fuer "
                       "removal in a future version. Use timezone-aware "
                       "objects to represent datetimes in UTC: "
                       "datetime.datetime.now(datetime.UTC).",
@@ -2010,13 +2010,13 @@ klasse datetime(date):
             y, m, d, hh, mm, ss = _time.localtime(u)[:6]
             return (datetime(y, m, d, hh, mm, ss) - epoch) // timedelta(0, 1)
 
-        # Our goal is to solve t = local(u) for u.
+        # Our goal is to solve t = local(u) fuer u.
         a = local(t) - t
         u1 = t - a
         t1 = local(u1)
         if t1 == t:
             # We found one solution, but it may not be the one we need.
-            # Look for an earlier solution (if `fold` is 0), or a
+            # Look fuer an earlier solution (if `fold` is 0), or a
             # later one (if `fold` is 1).
             u2 = u1 + (-max_fold_seconds, max_fold_seconds)[self.fold]
             b = local(u2) - u2
@@ -2069,7 +2069,7 @@ klasse datetime(date):
     def replace(self, year=None, month=None, day=None, hour=None,
                 minute=None, second=None, microsecond=None, tzinfo=True,
                 *, fold=None):
-        """Return a new datetime with new values for the specified fields."""
+        """Return a new datetime with new values fuer the specified fields."""
         if year is None:
             year = self.year
         if month is None:
@@ -2174,7 +2174,7 @@ klasse datetime(date):
         return s
 
     def __repr__(self):
-        """Convert to formal string, for repr()."""
+        """Convert to formal string, fuer repr()."""
         L = [self._year, self._month, self._day,  # These are never zero
              self._hour, self._minute, self._second, self._microsecond]
         if L[-1] == 0:
@@ -2193,7 +2193,7 @@ klasse datetime(date):
         return s
 
     def __str__(self):
-        "Convert to string, for str()."
+        "Convert to string, fuer str()."
         return self.isoformat(sep=' ')
 
     @classmethod
@@ -2470,7 +2470,7 @@ klasse timezone(tzinfo):
         return hash(self._offset)
 
     def __repr__(self):
-        """Convert to formal string, for repr().
+        """Convert to formal string, fuer repr().
 
         >>> tz = timezone.utc
         >>> repr(tz)
@@ -2546,7 +2546,7 @@ klasse timezone(tzinfo):
 
 UTC = timezone.utc = timezone._create(timedelta(0))
 
-# bpo-37642: These attributes are rounded to the nearest minute for backwards
+# bpo-37642: These attributes are rounded to the nearest minute fuer backwards
 # compatibility, even though the constructor will accept a wider range of
 # values. This may change in the future.
 timezone.min = timezone._create(-timedelta(hours=23, minutes=59))
@@ -2571,7 +2571,7 @@ _EPOCH = datetime(1970, 1, 1, tzinfo=timezone.utc)
 #    sane tzinfo classes.
 #
 # 3. The naive UTC time corresponding to x is x.n - x.o.
-#    This is again a requirement for a sane tzinfo class.
+#    This is again a requirement fuer a sane tzinfo class.
 #
 # 4. (x+k).s = x.s
 #    This follows from #2, and that datetime.timetz+timedelta preserves tzinfo.
@@ -2592,7 +2592,7 @@ _EPOCH = datetime(1970, 1, 1, tzinfo=timezone.utc)
 #
 # The algorithm starts by attaching tz to x.n, and calling that y.  So
 # x.n = y.n at the start.  Then it wants to add a duration k to y, so that [1]
-# becomes true; in effect, we want to solve [2] for k:
+# becomes true; in effect, we want to solve [2] fuer k:
 #
 #    (y+k).n - (y+k).o = x.n                      [2]
 #
@@ -2626,7 +2626,7 @@ _EPOCH = datetime(1970, 1, 1, tzinfo=timezone.utc)
 #     z.n - z.o = x.n                             [5]
 #
 # we have an equivalent time, and are almost done.  The insecurity here is
-# at the start of daylight time.  Picture US Eastern for concreteness.  The wall
+# at the start of daylight time.  Picture US Eastern fuer concreteness.  The wall
 # time jumps from 1:59 to 3:00, and wall hours of the form 2:MM don't make good
 # sense then.  The docs ask that an Eastern tzinfo klasse consider such a time to
 # be EDT (because it's "after 2"), which is a redundant spelling of 1:MM EST
@@ -2676,7 +2676,7 @@ _EPOCH = datetime(1970, 1, 1, tzinfo=timezone.utc)
 # If so, we're done.  If not, the tzinfo klasse is insane, according to the
 # assumptions we've made.  This also requires a bit of proof.  As before, let's
 # compute the difference between the LHS and RHS of [8] (and skipping some of
-# the justifications for the kinds of substitutions we've done several times
+# the justifications fuer the kinds of substitutions we've done several times
 # already):
 #
 #     diff' = x.n - (z'.n - z'.o) =           replacing z'.n via [7]
@@ -2734,7 +2734,7 @@ _EPOCH = datetime(1970, 1, 1, tzinfo=timezone.utc)
 # possibilities:
 #
 # 1) [2] effectively says that y.s is invariant across all y belong to a given
-#    time zone.  This isn't true if, for political reasons or continental drift,
+#    time zone.  This isn't true if, fuer political reasons or continental drift,
 #    a region decides to change its base offset from UTC.
 #
 # 2) There may be versions of "double daylight" time where the tail end of

@@ -39,7 +39,7 @@ klasse PyEval_EvalCodeExTests(unittest.TestCase):
 
         with swap_attr(builtins, '__build_class__', build_class):
             klasse A:
-                # Uses LOAD_NAME for a
+                # Uses LOAD_NAME fuer a
                 r[:] = [a]
 
         eval_code_ex = _testcapi.eval_code_ex

@@ -14,7 +14,7 @@ work. One should use importlib as the public-facing version of this module.
 # in the early stages of compilation.
 #
 
-# See importlib._setup() for what is injected into the global namespace.
+# See importlib._setup() fuer what is injected into the global namespace.
 
 # When editing this code be aware that code executed at import time CANNOT
 # reference any injected objects! This includes not only global code but also
@@ -38,8 +38,8 @@ _bootstrap_external = None
 
 
 def _wrap(new, old):
-    """Simple substitute for functools.update_wrapper."""
-    for replace in ['__module__', '__name__', '__qualname__', '__doc__']:
+    """Simple substitute fuer functools.update_wrapper."""
+    fuer replace in ['__module__', '__name__', '__qualname__', '__doc__']:
         if hasattr(old, replace):
             setattr(new, replace, getattr(old, replace))
     new.__dict__.update(old.__dict__)
@@ -57,7 +57,7 @@ klasse _List(list):
 
 
 # Copied from weakref.py with some simplifications and modifications unique to
-# bootstrapping importlib. Many methods were simply deleting for simplicity, so if they
+# bootstrapping importlib. Many methods were simply deleting fuer simplicity, so if they
 # are needed in the future they may work if simply copied back in.
 klasse _WeakValueDictionary:
 
@@ -142,7 +142,7 @@ _module_locks = {}
 # A dict mapping thread IDs to weakref'ed lists of _ModuleLock instances.
 # This maps a thread to the module locks it is blocking on acquiring.  The
 # values are lists because a single thread could perform a re-entrant import
-# and be "in the process" of blocking on locks for more than one module.  A
+# and be "in the process" of blocking on locks fuer more than one module.  A
 # thread can be "in the process" because a thread cannot actually block on
 # acquiring more than one lock but it can have set up bookkeeping that reflects
 # that it intends to block on acquiring more than one lock.
@@ -160,7 +160,7 @@ klasse _BlockingOnManager:
         self.lock = lock
 
     def __enter__(self):
-        """Mark the running thread as waiting for self.lock. via _blocking_on."""
+        """Mark the running thread as waiting fuer self.lock. via _blocking_on."""
         # Interactions with _blocking_on are *not* protected by the global
         # import lock here because each thread only touches the state that it
         # owns (state keyed on its thread id).  The global import lock is
@@ -202,7 +202,7 @@ def _has_deadlocked(target_id, *, seen_ids, candidate_ids, blocking_on):
         return True
 
     # Otherwise, try to reach the target_id from each of the given candidate_ids.
-    for tid in candidate_ids:
+    fuer tid in candidate_ids:
         if not (candidate_blocking_on := blocking_on.get(tid)):
             # There are no edges out from this node, skip it.
             continue
@@ -215,7 +215,7 @@ def _has_deadlocked(target_id, *, seen_ids, candidate_ids, blocking_on):
         seen_ids.add(tid)
 
         # Follow the edges out from this thread.
-        edges = [lock.owner for lock in candidate_blocking_on]
+        edges = [lock.owner fuer lock in candidate_blocking_on]
         if _has_deadlocked(target_id, seen_ids=seen_ids, candidate_ids=edges,
                 blocking_on=blocking_on):
             return True
@@ -230,7 +230,7 @@ klasse _ModuleLock:
     """
 
     def __init__(self, name):
-        # Create an RLock for protecting the import process for the
+        # Create an RLock fuer protecting the import process fuer the
         # corresponding module.  Since it is an RLock, a single thread will be
         # able to take it more than once.  This is necessary to support
         # re-entrancy in the import system that arises from (at least) signal
@@ -249,21 +249,21 @@ klasse _ModuleLock:
         #
         # If a different thread than the running one holds the lock then the
         # thread will have to block on taking the lock, which is what we want
-        # for thread safety.
+        # fuer thread safety.
         self.lock = _thread.RLock()
         self.wakeup = _thread.allocate_lock()
 
-        # The name of the module for which this is a lock.
+        # The name of the module fuer which this is a lock.
         self.name = name
 
         # Can end up being set to None if this lock is not owned by any thread
-        # or the thread identifier for the owning thread.
+        # or the thread identifier fuer the owning thread.
         self.owner = None
 
         # Represent the number of times the owning thread has acquired this lock
         # via a list of True.  This supports RLock-like ("re-entrant lock")
         # behavior, necessary in case a single thread is following a circular
-        # import dependency and needs to take the lock for a single module
+        # import dependency and needs to take the lock fuer a single module
         # more than once.
         #
         # Counts are represented as a list of True because list.append(True)
@@ -280,21 +280,21 @@ klasse _ModuleLock:
         # gotten a turn.
         #
         # This is incremented in self.acquire() when a thread notices it is
-        # going to have to wait for another thread to finish.
+        # going to have to wait fuer another thread to finish.
         #
-        # See the comment above count for explanation of the representation.
+        # See the comment above count fuer explanation of the representation.
         self.waiters = []
 
     def has_deadlock(self):
-        # To avoid deadlocks for concurrent or re-entrant circular imports,
+        # To avoid deadlocks fuer concurrent or re-entrant circular imports,
         # look at _blocking_on to see if any threads are blocking
-        # on getting the import lock for any module for which the import lock
+        # on getting the import lock fuer any module fuer which the import lock
         # is held by this thread.
         return _has_deadlocked(
             # Try to find this thread.
             target_id=_thread.get_ident(),
             seen_ids=set(),
-            # Start from the thread that holds the import lock for this
+            # Start from the thread that holds the import lock fuer this
             # module.
             candidate_ids=[self.owner],
             # Use the global "blocking on" state.
@@ -311,13 +311,13 @@ klasse _ModuleLock:
         with _BlockingOnManager(tid, self):
             while True:
                 # Protect interaction with state on self with a per-module
-                # lock.  This makes it safe for more than one thread to try to
-                # acquire the lock for a single module at the same time.
+                # lock.  This makes it safe fuer more than one thread to try to
+                # acquire the lock fuer a single module at the same time.
                 with self.lock:
                     if self.count == [] or self.owner == tid:
-                        # If the lock for this module is unowned then we can
+                        # If the lock fuer this module is unowned then we can
                         # take the lock immediately and succeed.  If the lock
-                        # for this module is owned by the running thread then
+                        # fuer this module is owned by the running thread then
                         # we can also allow the acquire to succeed.  This
                         # supports circular imports (thread T imports module A
                         # which imports module B which imports module A).
@@ -390,7 +390,7 @@ klasse _ModuleLock:
 
 
 klasse _DummyModuleLock:
-    """A simple _ModuleLock equivalent for Python builds without
+    """A simple _ModuleLock equivalent fuer Python builds without
     multi-threading support."""
 
     def __init__(self, name):
@@ -424,10 +424,10 @@ klasse _ModuleLockManager:
         self._lock.release()
 
 
-# The following two functions are for consumption by Python/import.c.
+# The following two functions are fuer consumption by Python/import.c.
 
 def _get_module_lock(name):
-    """Get or create the module lock for a given module name.
+    """Get or create the module lock fuer a given module name.
 
     Acquire/release internally the global import lock to protect
     _module_locks."""
@@ -464,7 +464,7 @@ def _get_module_lock(name):
 
 
 def _lock_unlock_module(name):
-    """Acquires then releases the module lock for a given module name.
+    """Acquires then releases the module lock fuer a given module name.
 
     This is used to ensure a module is completely initialized, in the
     event it is being imported by another thread.
@@ -528,7 +528,7 @@ def _load_module_shim(self, fullname):
     This method is deprecated.  Use loader.exec_module() instead.
 
     """
-    msg = ("the load_module() method is deprecated and slated for removal in "
+    msg = ("the load_module() method is deprecated and slated fuer removal in "
            "Python 3.15; use exec_module() instead")
     _warnings.warn(msg, DeprecationWarning)
     spec = spec_from_loader(fullname, self)
@@ -563,9 +563,9 @@ def _module_repr(module):
 
 
 klasse ModuleSpec:
-    """The specification for a module, used for loading.
+    """The specification fuer a module, used fuer loading.
 
-    A module's spec is the source for information about the module.  For
+    A module's spec is the source fuer information about the module.  For
     data associated with the module, including source, use the spec's
     loader.
 
@@ -692,7 +692,7 @@ def spec_from_loader(name, loader, *, origin=None, is_package=None):
 
 
 def _spec_from_module(module, loader=None, origin=None):
-    # This function is meant for use in _setup().
+    # This function is meant fuer use in _setup().
     try:
         spec = module.__spec__
     except AttributeError:
@@ -757,10 +757,10 @@ def _init_module_attrs(spec, module, *, override=False):
                 spec.loader = loader
                 # While the docs say that module.__file__ is not set for
                 # built-in modules, and the code below will avoid setting it if
-                # spec.has_location is false, this is incorrect for namespace
+                # spec.has_location is false, this is incorrect fuer namespace
                 # packages.  Namespace packages have no location, but their
                 # __spec__.origin is None, and thus their module.__file__
-                # should also be None for consistency.  While a bit of a hack,
+                # should also be None fuer consistency.  While a bit of a hack,
                 # this is the best place to ensure this consistency.
                 #
                 # See # https://docs.python.org/3/library/importlib.html#importlib.abc.Loader.load_module
@@ -824,7 +824,7 @@ def module_from_spec(spec):
 
 
 def _module_repr_from_spec(spec):
-    """Return the repr to use for the module."""
+    """Return the repr to use fuer the module."""
     name = '?' if spec.name is None else spec.name
     if spec.origin is None:
         loader = spec.loader
@@ -868,7 +868,7 @@ def _exec(spec, module):
                 else:
                     spec.loader.exec_module(module)
         finally:
-            # Update the order of insertion into sys.modules for module
+            # Update the order of insertion into sys.modules fuer module
             # clean-up at shutdown.
             module = sys.modules.pop(spec.name)
             sys.modules[spec.name] = module
@@ -912,7 +912,7 @@ def _load_backward_compatible(spec):
     return module
 
 def _load_unlocked(spec):
-    # A helper for direct use by the import system.
+    # A helper fuer direct use by the import system.
     if spec.loader is not None:
         # Not a namespace package.
         if not hasattr(spec.loader, 'exec_module'):
@@ -973,7 +973,7 @@ def _load(spec):
 
 klasse BuiltinImporter:
 
-    """Meta path import for built-in modules.
+    """Meta path import fuer built-in modules.
 
     All methods are either klasse or static methods to avoid the need to
     instantiate the class.
@@ -1025,7 +1025,7 @@ klasse BuiltinImporter:
 
 klasse FrozenImporter:
 
-    """Meta path import for frozen modules.
+    """Meta path import fuer frozen modules.
 
     All methods are either klasse or static methods to avoid the need to
     instantiate the class.
@@ -1200,7 +1200,7 @@ klasse FrozenImporter:
     @classmethod
     @_requires_frozen
     def get_code(cls, fullname):
-        """Return the code object for the frozen module."""
+        """Return the code object fuer the frozen module."""
         return _imp.get_frozen_object(fullname)
 
     @classmethod
@@ -1220,7 +1220,7 @@ klasse FrozenImporter:
 
 klasse _ImportLockContext:
 
-    """Context manager for the import lock."""
+    """Context manager fuer the import lock."""
 
     def __enter__(self):
         """Acquire the import lock."""
@@ -1253,11 +1253,11 @@ def _find_spec(name, path, target=None):
     if not meta_path:
         _warnings.warn('sys.meta_path is empty', ImportWarning)
 
-    # We check sys.modules here for the reload case.  While a passed-in
+    # We check sys.modules here fuer the reload case.  While a passed-in
     # target will usually indicate a reload there is no guarantee, whereas
     # sys.modules provides one.
     is_reload = name in sys.modules
-    for finder in meta_path:
+    fuer finder in meta_path:
         with _ImportLockContext():
             try:
                 find_spec = finder.find_spec
@@ -1336,7 +1336,7 @@ def _find_and_load_unlocked(name, import_):
     else:
         if parent_spec:
             # Temporarily add child we are currently importing to parent's
-            # _uninitialized_submodules for circular import tracking.
+            # _uninitialized_submodules fuer circular import tracking.
             parent_spec._uninitialized_submodules.append(child)
         try:
             module = _load_unlocked(spec)
@@ -1349,7 +1349,7 @@ def _find_and_load_unlocked(name, import_):
         try:
             setattr(parent_module, child, module)
         except AttributeError:
-            msg = f"Cannot set an attribute on {parent!r} for child module {child!r}"
+            msg = f"Cannot set an attribute on {parent!r} fuer child module {child!r}"
             _warnings.warn(msg, ImportWarning)
     return module
 
@@ -1408,7 +1408,7 @@ def _handle_fromlist(module, fromlist, import_, *, recursive=False):
     """
     # The hell that is fromlist ...
     # If a package was imported, try to import stuff from fromlist.
-    for x in fromlist:
+    fuer x in fromlist:
         if not isinstance(x, str):
             if recursive:
                 where = module.__name__ + '.__all__'
@@ -1426,7 +1426,7 @@ def _handle_fromlist(module, fromlist, import_, *, recursive=False):
                 _call_with_frames_removed(import_, from_name)
             except ModuleNotFoundError as exc:
                 # Backwards-compatibility dictates we ignore failed
-                # imports triggered by fromlist for modules that don't
+                # imports triggered by fromlist fuer modules that don't
                 # exist.
                 if (exc.name == from_name and
                     sys.modules.get(from_name, _NEEDS_LOADING) is not None):
@@ -1510,7 +1510,7 @@ def _setup(sys_module, _imp_module):
     """Setup importlib by importing needed built-in modules and injecting them
     into the global namespace.
 
-    As sys is needed for sys.modules access and _imp is needed to load built-in
+    As sys is needed fuer sys.modules access and _imp is needed to load built-in
     modules, those two modules must be explicitly passed in.
 
     """
@@ -1518,9 +1518,9 @@ def _setup(sys_module, _imp_module):
     _imp = _imp_module
     sys = sys_module
 
-    # Set up the spec for existing builtin/frozen modules.
+    # Set up the spec fuer existing builtin/frozen modules.
     module_type = type(sys)
-    for name, module in sys.modules.items():
+    fuer name, module in sys.modules.items():
         if isinstance(module, module_type):
             if name in sys.builtin_module_names:
                 loader = BuiltinImporter
@@ -1535,7 +1535,7 @@ def _setup(sys_module, _imp_module):
 
     # Directly load built-in modules needed during bootstrap.
     self_module = sys.modules[__name__]
-    for builtin_name in ('_thread', '_warnings', '_weakref'):
+    fuer builtin_name in ('_thread', '_warnings', '_weakref'):
         if builtin_name not in sys.modules:
             builtin_module = _builtin_from_name(builtin_name)
         else:
@@ -1547,7 +1547,7 @@ def _setup(sys_module, _imp_module):
 
 
 def _install(sys_module, _imp_module):
-    """Install importers for builtin and frozen modules"""
+    """Install importers fuer builtin and frozen modules"""
     _setup(sys_module, _imp_module)
 
     sys.meta_path.append(BuiltinImporter)

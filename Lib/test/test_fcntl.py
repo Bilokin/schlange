@@ -1,4 +1,4 @@
-"""Test program for the fcntl C module.
+"""Test program fuer the fcntl C module.
 """
 import errno
 import multiprocessing
@@ -134,7 +134,7 @@ klasse TestFcntl(unittest.TestCase):
     @unittest.skipIf(
         (platform.machine().startswith("arm") and platform.system() == "Linux")
         or platform.system() == "Android",
-        "this platform returns EINVAL for F_NOTIFY DN_MULTISHOT")
+        "this platform returns EINVAL fuer F_NOTIFY DN_MULTISHOT")
     def test_fcntl_64_bit(self):
         # Issue GH-42434: fcntl shouldn't fail when the third arg fits in a
         # C 'long' but not in a C 'int'.
@@ -156,7 +156,7 @@ klasse TestFcntl(unittest.TestCase):
             os.close(fd)
 
     def test_flock(self):
-        # Solaris needs readable file for shared lock
+        # Solaris needs readable file fuer shared lock
         self.f = open(TESTFN, 'wb+')
         fileno = self.f.fileno()
         fcntl.flock(fileno, fcntl.LOCK_SH)

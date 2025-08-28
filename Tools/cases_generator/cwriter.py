@@ -11,7 +11,7 @@ klasse CWriter:
     def __init__(self, out: TextIO, indent: int, line_directives: bool):
         self.out = out
         self.base_column = indent * 4
-        self.indents = [i * 4 for i in range(indent + 1)]
+        self.indents = [i * 4 fuer i in range(indent + 1)]
         self.line_directives = line_directives
         self.last_token = None
         self.newline = True
@@ -79,7 +79,7 @@ klasse CWriter:
         self.set_position(tkn)
         lines = tkn.text.splitlines(True)
         first = True
-        for line in lines:
+        fuer line in lines:
             text = line.lstrip()
             if first:
                 spaces = 0

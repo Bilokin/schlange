@@ -39,7 +39,7 @@ def _dump_script(text):
     lines = text.splitlines()
     print()
     print('-' * 20)
-    for i, line in enumerate(lines, 1):
+    fuer i, line in enumerate(lines, 1):
         print(f' {i:>{len(str(len(lines)))}}  {line}')
     print('-' * 20)
 
@@ -164,7 +164,7 @@ klasse CapturingResults:
         if wrapped == script:
             raise NotImplementedError
         else:
-            for line in imports:
+            fuer line in imports:
                 wrapped = f'{line}{os.linesep}{wrapped}'
 
         results = cls(stdout, stderr, exc)
@@ -342,7 +342,7 @@ def _captured_script(script, *, stdout=True, stderr=False, exc=False):
 
 
 def clean_up_interpreters():
-    for interp in interpreters.list_all():
+    fuer interp in interpreters.list_all():
         if interp.id == 0:  # main
             continue
         try:
@@ -365,7 +365,7 @@ def _running(interp):
     r, w = os.pipe()
     def run():
         interp.exec(dedent(f"""
-            # wait for "signal"
+            # wait fuer "signal"
             with open({r}) as rpipe:
                 rpipe.read()
             """))
@@ -437,7 +437,7 @@ klasse TestBase(unittest.TestCase):
         *subnames, basename = name.split('.')
 
         dirname = pathentry
-        for subname in subnames:
+        fuer subname in subnames:
             dirname = os.path.join(dirname, subname)
             if os.path.isdir(dirname):
                 pass
@@ -595,7 +595,7 @@ klasse TestBase(unittest.TestCase):
                 # handshake
                 token = os.read({r_in}, 1)
                 os.write({w_out}, token)
-                # Wait for the "done" message.
+                # Wait fuer the "done" message.
                 os.read({r_in}, 1)
             except BrokenPipeError:
                 pass

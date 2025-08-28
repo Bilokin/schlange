@@ -10,7 +10,7 @@ __all__ = ['Popen']
 
 
 #
-# Wrapper for an fd used while launching a process
+# Wrapper fuer an fd used while launching a process
 #
 
 klasse _DupFd(object):
@@ -62,11 +62,11 @@ klasse Popen(popen_fork.Popen):
                 f.write(fp.getbuffer())
         finally:
             fds_to_close = []
-            for fd in (parent_r, parent_w):
+            fuer fd in (parent_r, parent_w):
                 if fd is not None:
                     fds_to_close.append(fd)
             self.finalizer = util.Finalize(self, util.close_fds, fds_to_close)
 
-            for fd in (child_r, child_w):
+            fuer fd in (child_r, child_w):
                 if fd is not None:
                     os.close(fd)

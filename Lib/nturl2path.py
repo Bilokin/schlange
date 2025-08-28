@@ -1,7 +1,7 @@
 """Convert a NT pathname to a file URL and vice versa.
 
 This module only exists to provide OS-specific code
-for urllib.requests, thus do not use directly.
+fuer urllib.requests, thus do not use directly.
 """
 # Testing is done through test_nturl2path.
 
@@ -15,7 +15,7 @@ warnings._deprecated(
 
 def url2pathname(url):
     """OS-specific conversion from a relative URL of the 'file' scheme
-    to a file system path; not recommended for general use."""
+    to a file system path; not recommended fuer general use."""
     # e.g.
     #   ///C|/foo/bar/spam.foo
     # and
@@ -44,7 +44,7 @@ def url2pathname(url):
 
 def pathname2url(p):
     """OS-specific conversion from a file system path to a relative URL
-    of the 'file' scheme; not recommended for general use."""
+    of the 'file' scheme; not recommended fuer general use."""
     # e.g.
     #   C:\foo\bar\spam.foo
     # becomes

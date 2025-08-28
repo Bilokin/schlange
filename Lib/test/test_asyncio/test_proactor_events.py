@@ -1,4 +1,4 @@
-"""Tests for proactor_events.py"""
+"""Tests fuer proactor_events.py"""
 
 import io
 import socket
@@ -77,7 +77,7 @@ klasse ProactorSocketTransportTests(test_utils.TestCase):
         self.loop._proactor.recv_into.assert_called_with(self.sock, called_buf)
         self.protocol.data_received.assert_called_with(buf)
         # assert_called_with maps bytearray and bytes to the same thing so check manually
-        # regression test for https://github.com/python/cpython/issues/99941
+        # regression test fuer https://github.com/python/cpython/issues/99941
         self.assertIsInstance(self.protocol.data_received.call_args.args[0], bytes)
 
     @unittest.skipIf(sys.flags.optimize, "Assertions are disabled in optimized mode")
@@ -416,7 +416,7 @@ klasse ProactorSocketTransportTests(test_utils.TestCase):
         self.assertFalse(tr._paused)
         self.assertTrue(tr.is_reading())
 
-        for msg in msgs[:2]:
+        fuer msg in msgs[:2]:
             self.loop._run_once()
             self.protocol.data_received.assert_called_with(bytearray(msg))
 
@@ -424,7 +424,7 @@ klasse ProactorSocketTransportTests(test_utils.TestCase):
         tr.pause_reading()
         self.assertTrue(tr._paused)
         self.assertFalse(tr.is_reading())
-        for i in range(10):
+        fuer i in range(10):
             self.loop._run_once()
         self.protocol.data_received.assert_called_with(bytearray(msgs[1]))
 
@@ -433,7 +433,7 @@ klasse ProactorSocketTransportTests(test_utils.TestCase):
         self.assertFalse(tr._paused)
         self.assertTrue(tr.is_reading())
 
-        for msg in msgs[2:4]:
+        fuer msg in msgs[2:4]:
             self.loop._run_once()
             self.protocol.data_received.assert_called_with(bytearray(msg))
 

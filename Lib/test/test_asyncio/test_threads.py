@@ -1,4 +1,4 @@
-"""Tests for asyncio/threads.py"""
+"""Tests fuer asyncio/threads.py"""
 
 import asyncio
 import unittest
@@ -35,7 +35,7 @@ klasse ToThreadTests(unittest.IsolatedAsyncioTestCase):
             calls.append(1)
 
         futs = []
-        for _ in range(10):
+        fuer _ in range(10):
             fut = asyncio.to_thread(func)
             futs.append(fut)
         await asyncio.gather(*futs)

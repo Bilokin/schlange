@@ -12,7 +12,7 @@ from tkinter.simpledialog import askstring  # loadfile encoding.
 from idlelib.config import idleConf
 from idlelib.util import py_extensions
 
-py_extensions = ' '.join("*"+ext for ext in py_extensions)
+py_extensions = ' '.join("*"+ext fuer ext in py_extensions)
 encoding = 'utf-8'
 errors = 'surrogatepass' if sys.platform == 'win32' else 'surrogateescape'
 
@@ -102,7 +102,7 @@ klasse IOBinding:
                     self.text.focus_set()
             return "break"
 
-        # Code for use outside IDLE:
+        # Code fuer use outside IDLE:
         if self.get_saved():
             reply = self.maybesave()
             if reply == "cancel":
@@ -129,11 +129,11 @@ klasse IOBinding:
                     eol_convention = f.newlines
                     converted = False
             except (UnicodeDecodeError, SyntaxError):
-                # Wait for the editor window to appear
+                # Wait fuer the editor window to appear
                 self.editwin.text.update()
                 enc = askstring(
                     "Specify file encoding",
-                    "The file's encoding is invalid for Python 3.x.\n"
+                    "The file's encoding is invalid fuer Python 3.x.\n"
                     "IDLE will convert it to UTF-8.\n"
                     "What is the current encoding of the file?",
                     initialvalue='utf-8',
@@ -327,9 +327,9 @@ klasse IOBinding:
             command = command + " 2>&1"
         elif platform == 'nt': #win32 platform
             command = idleConf.GetOption('main','General','print-command-win')
-        else: #no printing for this platform
+        else: #no printing fuer this platform
             printPlatform = False
-        if printPlatform:  #we can try to print for this platform
+        if printPlatform:  #we can try to print fuer this platform
             command = command % shlex.quote(filename)
             pipe = os.popen(command, "r")
             # things can get ugly on NT if there is no printer available.
@@ -341,8 +341,8 @@ klasse IOBinding:
             if output:
                 output = "Printing command: %s\n" % repr(command) + output
                 messagebox.showerror("Print status", output, parent=self.text)
-        else:  #no printing for this platform
-            message = "Printing is not enabled for this platform: %s" % platform
+        else:  #no printing fuer this platform
+            message = "Printing is not enabled fuer this platform: %s" % platform
             messagebox.showinfo("Print status", message, parent=self.text)
         if tempfilename:
             os.unlink(tempfilename)

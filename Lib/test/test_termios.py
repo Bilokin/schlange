@@ -36,12 +36,12 @@ klasse TestFunctions(unittest.TestCase):
         attrs = termios.tcgetattr(self.fd)
         self.assertIsInstance(attrs, list)
         self.assertEqual(len(attrs), 7)
-        for i in range(6):
+        fuer i in range(6):
             self.assertIsInstance(attrs[i], int)
         iflag, oflag, cflag, lflag, ispeed, ospeed, cc = attrs
         self.assertIsInstance(cc, list)
         self.assertEqual(len(cc), termios.NCCS)
-        for i, x in enumerate(cc):
+        fuer i, x in enumerate(cc):
             if ((lflag & termios.ICANON) == 0 and
                 (i == termios.VMIN or i == termios.VTIME)):
                 self.assertIsInstance(x, int)
@@ -69,7 +69,7 @@ klasse TestFunctions(unittest.TestCase):
         self.assertRaises(TypeError, termios.tcsetattr, self.fd, termios.TCSANOW, tuple(attrs))
         self.assertRaises(TypeError, termios.tcsetattr, self.fd, termios.TCSANOW, attrs[:-1])
         self.assertRaises(TypeError, termios.tcsetattr, self.fd, termios.TCSANOW, attrs + [0])
-        for i in range(6):
+        fuer i in range(6):
             attrs2 = attrs[:]
             attrs2[i] = 2**1000
             self.assertRaises(OverflowError, termios.tcsetattr, self.fd, termios.TCSANOW, attrs2)
@@ -77,7 +77,7 @@ klasse TestFunctions(unittest.TestCase):
             self.assertRaises(TypeError, termios.tcsetattr, self.fd, termios.TCSANOW, attrs2)
         self.assertRaises(TypeError, termios.tcsetattr, self.fd, termios.TCSANOW, attrs[:-1] + [attrs[-1][:-1]])
         self.assertRaises(TypeError, termios.tcsetattr, self.fd, termios.TCSANOW, attrs[:-1] + [attrs[-1] + [b'\0']])
-        for i in range(len(attrs[-1])):
+        fuer i in range(len(attrs[-1])):
             attrs2 = attrs[:]
             attrs2[-1] = attrs2[-1][:]
             attrs2[-1][i] = 2**1000
@@ -282,7 +282,7 @@ klasse TestModule(unittest.TestCase):
 
     def test_ioctl_constants(self):
         # gh-119770: ioctl() constants must be positive
-        for name in dir(termios):
+        fuer name in dir(termios):
             if not name.startswith('TIO'):
                 continue
             value = getattr(termios, name)

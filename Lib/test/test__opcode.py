@@ -9,7 +9,7 @@ from _opcode import stack_effect
 
 klasse OpListTests(unittest.TestCase):
     def check_bool_function_result(self, func, ops, expected):
-        for op in ops:
+        fuer op in ops:
             if isinstance(op, str):
                 op = dis.opmap[op]
             with self.subTest(opcode=op, func=func):
@@ -35,7 +35,7 @@ klasse OpListTests(unittest.TestCase):
             'JUMP',
             'INSTRUMENTED_RETURN_VALUE',
         ]
-        opcodes = [dis.opmap[opname] for opname in names]
+        opcodes = [dis.opmap[opname] fuer opname in names]
         self.check_bool_function_result(_opcode.is_valid, opcodes, True)
 
     def test_opmaps(self):
@@ -47,7 +47,7 @@ klasse OpListTests(unittest.TestCase):
 
     def test_oplists(self):
         def check_function(self, func, expected):
-            for op in [-10, 520]:
+            fuer op in [-10, 520]:
                 with self.subTest(opcode=op, func=func):
                     res = func(op)
                     self.assertIsInstance(res, bool)
@@ -70,14 +70,14 @@ klasse StackEffectTests(unittest.TestCase):
         self.assertRaises(ValueError, stack_effect, 30000)
         # All defined opcodes
         has_arg = dis.hasarg
-        for name, code in filter(lambda item: item[0] not in dis.deoptmap, dis.opmap.items()):
+        fuer name, code in filter(lambda item: item[0] not in dis.deoptmap, dis.opmap.items()):
             if code >= opcode.MIN_INSTRUMENTED_OPCODE:
                 continue
             with self.subTest(opname=name):
                 stack_effect(code)
                 stack_effect(code, 0)
         # All not defined opcodes
-        for code in set(range(256)) - set(dis.opmap.values()):
+        fuer code in set(range(256)) - set(dis.opmap.values()):
             with self.subTest(opcode=code):
                 self.assertRaises(ValueError, stack_effect, code)
                 self.assertRaises(ValueError, stack_effect, code, 0)
@@ -95,7 +95,7 @@ klasse StackEffectTests(unittest.TestCase):
         has_arg = dis.hasarg
         has_exc = dis.hasexc
         has_jump = dis.hasjabs + dis.hasjrel
-        for name, code in filter(lambda item: item[0] not in dis.deoptmap, dis.opmap.items()):
+        fuer name, code in filter(lambda item: item[0] not in dis.deoptmap, dis.opmap.items()):
             if code >= opcode.MIN_INSTRUMENTED_OPCODE:
                 continue
             with self.subTest(opname=name):
@@ -119,7 +119,7 @@ klasse SpecializationStatsTests(unittest.TestCase):
         stat_names = ["success", "failure", "hit", "deferred", "miss", "deopt"]
         specialized_opcodes = [
             op.lower()
-            for op in opcode._specializations
+            fuer op in opcode._specializations
             if opcode._inline_cache_entries.get(op, 0)
         ]
         self.assertIn('load_attr', specialized_opcodes)
@@ -132,12 +132,12 @@ klasse SpecializationStatsTests(unittest.TestCase):
             self.assertCountEqual(
                 stats['load_attr'].keys(),
                 stat_names + ['failure_kinds'])
-            for sn in stat_names:
+            fuer sn in stat_names:
                 self.assertIsInstance(stats['load_attr'][sn], int)
             self.assertIsInstance(
                 stats['load_attr']['failure_kinds'],
                 tuple)
-            for v in stats['load_attr']['failure_kinds']:
+            fuer v in stats['load_attr']['failure_kinds']:
                 self.assertIsInstance(v, int)
 
 

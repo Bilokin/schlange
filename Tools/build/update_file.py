@@ -27,10 +27,10 @@ def updating_file_with_tmpfile(
     filename: str,
     tmpfile: str | None = None,
 ) -> Iterator[tuple[TextIOWrapper, TextIOWrapper]]:
-    """A context manager for updating a file via a temp file.
+    """A context manager fuer updating a file via a temp file.
 
     The context manager provides two open files: the source file open
-    for reading, and the temp file, open for writing.
+    fuer reading, and the temp file, open fuer writing.
 
     Upon exiting: both files are closed, and the source file is replaced
     with the temp file.

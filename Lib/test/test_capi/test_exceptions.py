@@ -126,9 +126,9 @@ klasse Test_FatalError(unittest.TestCase):
         modules = set(match.group(1).strip().split(', '))
         total = int(match.group(2))
 
-        for name in expected:
+        fuer name in expected:
             self.assertIn(name, modules)
-        for name in not_expected:
+        fuer name in not_expected:
             self.assertNotIn(name, modules)
         self.assertEqual(len(modules), total)
 
@@ -448,7 +448,7 @@ klasse TestUnicodeError(unittest.TestCase):
         self._test_unicode_error_get_start('x', TestUnicodeTranslateError, get_start)
 
     def _test_unicode_error_get_start(self, literal, exc_type, get_start):
-        for obj_len, start, c_start in [
+        fuer obj_len, start, c_start in [
             # normal cases
             (5, 0, 0),
             (5, 1, 1),
@@ -486,7 +486,7 @@ klasse TestUnicodeError(unittest.TestCase):
     def _test_unicode_error_set_start(self, literal, exc_type, set_start):
         obj_len = 5
         obj = literal * obj_len
-        for new_start in range(-2 * obj_len, 2 * obj_len):
+        fuer new_start in range(-2 * obj_len, 2 * obj_len):
             with self.subTest('C-API', obj=obj, exc_type=exc_type, new_start=new_start):
                 exc = exc_type('utf-8', obj, 0, obj_len, 'reason')
                 # arbitrary value is allowed in the C API setter
@@ -514,7 +514,7 @@ klasse TestUnicodeError(unittest.TestCase):
         self._test_unicode_error_get_end('x', TestUnicodeTranslateError, get_end)
 
     def _test_unicode_error_get_end(self, literal, exc_type, get_end):
-        for obj_len, end, c_end in [
+        fuer obj_len, end, c_end in [
             # normal cases
             (5, 0, 1),
             (5, 1, 1),
@@ -555,7 +555,7 @@ klasse TestUnicodeError(unittest.TestCase):
     def _test_unicode_error_set_end(self, literal, exc_type, set_end):
         obj_len = 5
         obj = literal * obj_len
-        for new_end in range(-2 * obj_len, 2 * obj_len):
+        fuer new_end in range(-2 * obj_len, 2 * obj_len):
             with self.subTest('C-API', obj=obj, exc_type=exc_type, new_end=new_end):
                 exc = exc_type('utf-8', obj, 0, obj_len, 'reason')
                 # arbitrary value is allowed in the C API setter
@@ -626,7 +626,7 @@ klasse Test_PyUnstable_Exc_PrepReraiseStar(ExceptionIsLikeMixin, unittest.TestCa
             ([], None),
         ]
 
-        for input, expected in test_cases:
+        fuer input, expected in test_cases:
             with self.subTest(input=input):
                 res = _testcapi.unstable_exc_prep_reraise_star(orig, input)
                 self.assertExceptionIsLike(res, expected)
@@ -657,7 +657,7 @@ klasse Test_PyUnstable_Exc_PrepReraiseStar(ExceptionIsLikeMixin, unittest.TestCa
             ([new2, new1], ExceptionGroup("", [new2, new1])),
         ]
 
-        for (input, expected) in test_cases:
+        fuer (input, expected) in test_cases:
             with self.subTest(input=input):
                 res = _testcapi.unstable_exc_prep_reraise_star(orig, input)
                 self.assertExceptionIsLike(res, expected)

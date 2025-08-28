@@ -34,7 +34,7 @@ MAX_TABLE_SIZE = 8192
 # Standard undefined Unicode code point
 UNI_UNDEFINED = chr(0xFFFE)
 
-# Placeholder for a missing code point
+# Placeholder fuer a missing code point
 MISSING_CODE = -1
 
 mapRE = re.compile(r'((?:0x[0-9a-fA-F]+\+?)+)'
@@ -59,12 +59,12 @@ def parsecodes(codes, len=len, range=range):
     l = codes.split('+')
     if len(l) == 1:
         return int(l[0],16)
-    for i in range(len(l)):
+    fuer i in range(len(l)):
         try:
             l[i] = int(l[i],16)
         except ValueError:
             l[i] = MISSING_CODE
-    l = [x for x in l if x != MISSING_CODE]
+    l = [x fuer x in l if x != MISSING_CODE]
     if len(l) == 1:
         return l[0]
     else:
@@ -79,14 +79,14 @@ def readmap(filename):
     unmapped = list(range(256))
 
     # UTC mapping tables per convention don't include the identity
-    # mappings for code points 0x00 - 0x1F and 0x7F, unless these are
+    # mappings fuer code points 0x00 - 0x1F and 0x7F, unless these are
     # explicitly mapped to different characters or undefined
-    for i in list(range(32)) + [127]:
+    fuer i in list(range(32)) + [127]:
         identity.append(i)
         unmapped.remove(i)
         enc2uni[i] = (i, 'CONTROL CHARACTER')
 
-    for line in lines:
+    fuer line in lines:
         line = line.strip()
         if not line or line[0] == '#':
             continue
@@ -112,9 +112,9 @@ def readmap(filename):
 
     # If there are more identity-mapped entries than unmapped entries,
     # it pays to generate an identity dictionary first, and add explicit
-    # mappings to None for the rest
+    # mappings to None fuer the rest
     if len(identity) >= len(unmapped):
-        for enc in unmapped:
+        fuer enc in unmapped:
             enc2uni[enc] = (MISSING_CODE, "")
         enc2uni['IDENTITY'] = 256
 
@@ -130,7 +130,7 @@ def hexrepr(t, precision=4):
         return '0x%0*X' % (precision, t)
     try:
         return '(' + ', '.join(['0x%0*X' % (precision, item)
-                                for item in t]) + ')'
+                                fuer item in t]) + ')'
     except TypeError as why:
         print('* failed to convert %r: %s' % (t, why))
         raise
@@ -154,7 +154,7 @@ def python_mapdef_code(varname, map, comments=1, precisions=(2, 4)):
     mappings = sorted(map.items())
     i = 0
     key_precision, value_precision = precisions
-    for mapkey, mapvalue in mappings:
+    fuer mapkey, mapvalue in mappings:
         mapcomment = ''
         if isinstance(mapkey, tuple):
             (mapkey, mapcomment) = mapkey
@@ -166,7 +166,7 @@ def python_mapdef_code(varname, map, comments=1, precisions=(2, 4)):
             mapkey == mapvalue and
             mapkey < 256):
             # No need to include identity mappings, since these
-            # are already set for the first 256 code points.
+            # are already set fuer the first 256 code points.
             continue
         key = hexrepr(mapkey, key_precision)
         value = hexrepr(mapvalue, value_precision)
@@ -203,10 +203,10 @@ def python_tabledef_code(varname, map, comments=1, key_precision=2):
     table = {}
     maxkey = 255
     if 'IDENTITY' in map:
-        for key in range(256):
+        fuer key in range(256):
             table[key] = (key, '')
         del map['IDENTITY']
-    for mapkey, mapvalue in mappings:
+    fuer mapkey, mapvalue in mappings:
         mapcomment = ''
         if isinstance(mapkey, tuple):
             (mapkey, mapcomment) = mapkey
@@ -223,7 +223,7 @@ def python_tabledef_code(varname, map, comments=1, key_precision=2):
 
     # Create table code
     maxchar = 0
-    for key in range(maxkey + 1):
+    fuer key in range(maxkey + 1):
         if key not in table:
             mapvalue = MISSING_CODE
             mapcomment = 'UNDEFINED'
@@ -246,13 +246,13 @@ def python_tabledef_code(varname, map, comments=1, key_precision=2):
             append('    %a' % mapchar)
 
     if maxchar < 256:
-        append('    %a \t## Widen to UCS2 for optimization' % UNI_UNDEFINED)
+        append('    %a \t## Widen to UCS2 fuer optimization' % UNI_UNDEFINED)
     append(')')
     return l
 
 def codegen(name, map, encodingname, comments=1):
 
-    """ Returns Python source for the given map.
+    """ Returns Python source fuer the given map.
 
         Comments are included in the source, if comments is true (default).
 
@@ -364,7 +364,7 @@ def pymap(name,map,pyfile,encodingname,comments=1):
 def marshalmap(name,map,marshalfile):
 
     d = {}
-    for e,(u,c) in map.items():
+    fuer e,(u,c) in map.items():
         d[e] = (u,c)
     with open(marshalfile,'wb') as f:
         marshal.dump(d,f)
@@ -372,7 +372,7 @@ def marshalmap(name,map,marshalfile):
 def convertdir(dir, dirprefix='', nameprefix='', comments=1):
 
     mapnames = os.listdir(dir)
-    for mapname in mapnames:
+    fuer mapname in mapnames:
         mappathname = os.path.join(dir, mapname)
         if not os.path.isfile(mappathname):
             continue
@@ -400,7 +400,7 @@ def convertdir(dir, dirprefix='', nameprefix='', comments=1):
 def rewritepythondir(dir, dirprefix='', comments=1):
 
     mapnames = os.listdir(dir)
-    for mapname in mapnames:
+    fuer mapname in mapnames:
         if not mapname.endswith('.mapping'):
             continue
         name = mapname[:-len('.mapping')]

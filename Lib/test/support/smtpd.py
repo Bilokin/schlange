@@ -47,10 +47,10 @@ and if remoteport is not given, then 25 is used.
 # Overview:
 #
 # This file implements the minimal SMTP protocol as defined in RFC 5321.  It
-# has a hierarchy of classes which implement the backend functionality for the
+# has a hierarchy of classes which implement the backend functionality fuer the
 # smtpd.  A number of classes are provided:
 #
-#   SMTPServer - the base klasse for the backend.  Raises NotImplementedError
+#   SMTPServer - the base klasse fuer the backend.  Raises NotImplementedError
 #   if you try to use it.
 #
 #   DebuggingServer - simply prints each message it receives on stdout.
@@ -176,7 +176,7 @@ klasse SMTPChannel(asynchat.async_chat):
         self.received_lines = []
 
 
-    # properties for backwards-compatibility
+    # properties fuer backwards-compatibility
     @property
     def __server(self):
         warn("Access to __server attribute on SMTPChannel is deprecated, "
@@ -298,7 +298,7 @@ klasse SMTPChannel(asynchat.async_chat):
             "set 'addr' instead", DeprecationWarning, 2)
         self.addr = value
 
-    # Overrides base klasse for convenience.
+    # Overrides base klasse fuer convenience.
     def push(self, msg):
         asynchat.async_chat.push(self, bytes(
             msg + '\r\n', 'utf-8' if self.require_SMTPUTF8 else 'ascii'))
@@ -361,7 +361,7 @@ klasse SMTPChannel(asynchat.async_chat):
             # Remove extraneous carriage returns and de-transparency according
             # to RFC 5321, Section 4.5.2.
             data = []
-            for text in line.split(self._linesep):
+            fuer text in line.split(self._linesep):
                 if text and text[0] == self._dotsep:
                     data.append(text[1:])
                 else:
@@ -386,7 +386,7 @@ klasse SMTPChannel(asynchat.async_chat):
         if not arg:
             self.push('501 Syntax: HELO hostname')
             return
-        # See issue #21783 for a discussion of this behavior.
+        # See issue #21783 fuer a discussion of this behavior.
         if self.seen_greeting:
             self.push('503 Duplicate HELO/EHLO')
             return
@@ -398,7 +398,7 @@ klasse SMTPChannel(asynchat.async_chat):
         if not arg:
             self.push('501 Syntax: EHLO hostname')
             return
-        # See issue #21783 for a discussion of this behavior.
+        # See issue #21783 fuer a discussion of this behavior.
         if self.seen_greeting:
             self.push('503 Duplicate HELO/EHLO')
             return
@@ -448,7 +448,7 @@ klasse SMTPChannel(asynchat.async_chat):
         # Return params as dictionary. Return None if not all parameters
         # appear to be syntactically valid according to RFC 1869.
         result = {}
-        for param in params:
+        fuer param in params:
             param, eq, value = param.partition('=')
             if not param.isalnum() or eq and not value:
                 return None
@@ -617,7 +617,7 @@ klasse SMTPChannel(asynchat.async_chat):
 
 
 klasse SMTPServer(asyncore.dispatcher):
-    # SMTPChannel klasse to use for managing client connections
+    # SMTPChannel klasse to use fuer managing client connections
     channel_class = SMTPChannel
 
     def __init__(self, localaddr, remoteaddr,
@@ -659,7 +659,7 @@ klasse SMTPServer(asyncore.dispatcher):
                                      self.enable_SMTPUTF8,
                                      self._decode_data)
 
-    # API for "doing something useful with the message"
+    # API fuer "doing something useful with the message"
     def process_message(self, peer, mailfrom, rcpttos, data, **kwargs):
         """Override this abstract method to handle messages from the client.
 
@@ -684,9 +684,9 @@ klasse SMTPServer(asyncore.dispatcher):
             'mail_options': list of parameters to the mail command.  All
                             elements are uppercase strings.  Example:
                             ['BODY=8BITMIME', 'SMTPUTF8'].
-            'rcpt_options': same, for the rcpt command.
+            'rcpt_options': same, fuer the rcpt command.
 
-        This function should return None for a normal '250 Ok' response;
+        This function should return None fuer a normal '250 Ok' response;
         otherwise, it should return the desired response string in RFC 821
         format.
 
@@ -699,7 +699,7 @@ klasse DebuggingServer(SMTPServer):
     def _print_message_content(self, peer, data):
         inheaders = 1
         lines = data.splitlines()
-        for line in lines:
+        fuer line in lines:
             # headers first
             if inheaders and not line:
                 peerheader = 'X-Peer: ' + peer[0]
@@ -732,9 +732,9 @@ klasse PureProxy(SMTPServer):
 
     def process_message(self, peer, mailfrom, rcpttos, data):
         lines = data.split('\n')
-        # Look for the last header
+        # Look fuer the last header
         i = 0
-        for line in lines:
+        fuer line in lines:
             if not line:
                 break
             i += 1
@@ -764,7 +764,7 @@ klasse PureProxy(SMTPServer):
             # exception code.
             errcode = getattr(e, 'smtp_code', -1)
             errmsg = getattr(e, 'smtp_error', 'ignore')
-            for r in rcpttos:
+            fuer r in rcpttos:
                 refused[r] = (errcode, errmsg)
         return refused
 
@@ -787,7 +787,7 @@ def parseargs():
         usage(1, e)
 
     options = Options()
-    for opt, arg in opts:
+    fuer opt, arg in opts:
         if opt in ('-h', '--help'):
             usage(0)
         elif opt in ('-V', '--version'):

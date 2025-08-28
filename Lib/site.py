@@ -1,4 +1,4 @@
-"""Append module search paths for third-party packages to sys.path.
+"""Append module search paths fuer third-party packages to sys.path.
 
 ****************************************************************
 * This module is automatically imported during initialization. *
@@ -11,19 +11,19 @@ lib/python<version>/site-packages.
 On other platforms (such as Windows), it tries each of the
 prefixes directly, as well as with lib/site-packages appended.  The
 resulting directories, if they exist, are appended to sys.path, and
-also inspected for path configuration files.
+also inspected fuer path configuration files.
 
 If a file named "pyvenv.cfg" exists one directory above sys.executable,
 sys.prefix and sys.exec_prefix are set to that directory and
-it is also checked for site-packages (sys.base_prefix and
+it is also checked fuer site-packages (sys.base_prefix and
 sys.base_exec_prefix will always be the "real" prefixes of the Python
 installation). If "pyvenv.cfg" (a bootstrap configuration file) contains
 the key "include-system-site-packages" set to anything other than "false"
 (case-insensitive), the system-level prefixes will still also be
-searched for site-packages; otherwise they won't.
+searched fuer site-packages; otherwise they won't.
 
 All of the resulting site-specific directories, if they exist, are
-appended to sys.path, and also inspected for path configuration
+appended to sys.path, and also inspected fuer path configuration
 files.
 
 A path configuration file is a file whose name has the form
@@ -59,7 +59,7 @@ because bar.pth comes alphabetically before foo.pth; and spam is
 omitted because it is not mentioned in either path configuration file.
 
 The readline module is also automatically configured to enable
-completion for systems that support it.  This can be overridden in
+completion fuer systems that support it.  This can be overridden in
 sitecustomize, usercustomize or PYTHONSTARTUP.  Starting Python in
 isolated mode (-I) disables automatic readline configuration.
 
@@ -77,13 +77,13 @@ import _io as io
 import stat
 import errno
 
-# Prefixes for site-packages; add additional prefixes like /usr/local here
+# Prefixes fuer site-packages; add additional prefixes like /usr/local here
 PREFIXES = [sys.prefix, sys.exec_prefix]
 # Enable per user site-packages directory
 # set it to False to disable the feature or True to force the feature
 ENABLE_USER_SITE = None
 
-# for distutils.commands.install
+# fuer distutils.commands.install
 # These values are initialized by the getuserbase() and getusersitepackages()
 # functions, through the main() function when Python starts.
 USER_SITE = None
@@ -112,7 +112,7 @@ def makepath(*paths):
 
 def abs_paths():
     """Set all module __file__ and __cached__ attributes to an absolute path"""
-    for m in set(sys.modules.values()):
+    fuer m in set(sys.modules.values()):
         loader_module = None
         try:
             loader_module = m.__loader__.__module__
@@ -140,7 +140,7 @@ def removeduppaths():
     # only absolute pathnames, even if we're running from the build directory.
     L = []
     known_paths = set()
-    for dir in sys.path:
+    fuer dir in sys.path:
         # Filter out duplicate paths (on case-insensitive file systems also
         # if they only differ in case); turn relative paths into absolute
         # paths.
@@ -155,7 +155,7 @@ def removeduppaths():
 def _init_pathinfo():
     """Return a set containing all existing file system items from sys.path."""
     d = set()
-    for item in sys.path:
+    fuer item in sys.path:
         try:
             if os.path.exists(item):
                 _, itemcase = makepath(item)
@@ -196,14 +196,14 @@ def addpackage(sitedir, name, known_paths):
         # (Windows PowerShell 5.1 makes it hard to emit UTF-8 files without a BOM)
         pth_content = pth_content.decode("utf-8-sig")
     except UnicodeDecodeError:
-        # Fallback to locale encoding for backward compatibility.
+        # Fallback to locale encoding fuer backward compatibility.
         # We will deprecate this fallback in the future.
         import locale
         pth_content = pth_content.decode(locale.getencoding())
         _trace(f"Cannot read {fullname!r} as UTF-8. "
                f"Using fallback encoding {locale.getencoding()!r}")
 
-    for n, line in enumerate(pth_content.splitlines(), 1):
+    fuer n, line in enumerate(pth_content.splitlines(), 1):
         if line.startswith("#"):
             continue
         if line.strip() == "":
@@ -221,8 +221,8 @@ def addpackage(sitedir, name, known_paths):
             print(f"Error processing line {n:d} of {fullname}:\n",
                   file=sys.stderr)
             import traceback
-            for record in traceback.format_exception(exc):
-                for line in record.splitlines():
+            fuer record in traceback.format_exception(exc):
+                fuer line in record.splitlines():
                     print('  '+line, file=sys.stderr)
             print("\nRemainder of file ignored", file=sys.stderr)
             break
@@ -248,9 +248,9 @@ def addsitedir(sitedir, known_paths=None):
         names = os.listdir(sitedir)
     except OSError:
         return
-    names = [name for name in names
+    names = [name fuer name in names
              if name.endswith(".pth") and not name.startswith(".")]
-    for name in sorted(names):
+    fuer name in sorted(names):
         addpackage(sitedir, name, known_paths)
     if reset:
         known_paths = None
@@ -258,12 +258,12 @@ def addsitedir(sitedir, known_paths=None):
 
 
 def check_enableusersite():
-    """Check if user site directory is safe for inclusion
+    """Check if user site directory is safe fuer inclusion
 
-    The function tests for the command line flag (including environment var),
+    The function tests fuer the command line flag (including environment var),
     process uid/gid equal to effective uid/gid.
 
-    None: Disabled for security reasons
+    None: Disabled fuer security reasons
     False: Disabled by user (command line option)
     True: Safe and enabled
     """
@@ -394,7 +394,7 @@ def getsitepackages(prefixes=None):
     if prefixes is None:
         prefixes = PREFIXES
 
-    for prefix in prefixes:
+    fuer prefix in prefixes:
         if not prefix or prefix in seen:
             continue
         seen.add(prefix)
@@ -410,7 +410,7 @@ def getsitepackages(prefixes=None):
             if sys.platlibdir != "lib":
                 libdirs.append("lib")
 
-            for libdir in libdirs:
+            fuer libdir in libdirs:
                 path = os.path.join(prefix, libdir,
                                     f"{implementation}{ver[0]}.{ver[1]}{abi_thread}",
                                     "site-packages")
@@ -423,7 +423,7 @@ def getsitepackages(prefixes=None):
 def addsitepackages(known_paths, prefixes=None):
     """Add site-packages to sys.path"""
     _trace("Processing global site-packages")
-    for sitedir in getsitepackages(prefixes):
+    fuer sitedir in getsitepackages(prefixes):
         if os.path.isdir(sitedir):
             addsitedir(sitedir, known_paths)
 
@@ -450,11 +450,11 @@ def setcopyright():
     builtins.copyright = _sitebuiltins._Printer("copyright", sys.copyright)
     builtins.credits = _sitebuiltins._Printer("credits", """\
     Thanks to CWI, CNRI, BeOpen, Zope Corporation, the Python Software
-    Foundation, and a cast of thousands for supporting Python
-    development.  See www.python.org for more information.""")
+    Foundation, and a cast of thousands fuer supporting Python
+    development.  See www.python.org fuer more information.""")
     files, dirs = [], []
     # Not all modules are required to have a __file__ attribute.  See
-    # PEP 420 for more details.
+    # PEP 420 fuer more details.
     here = getattr(sys, '_stdlib_dir', None)
     if not here and hasattr(os, '__file__'):
         here = os.path.dirname(os.__file__)
@@ -521,7 +521,7 @@ def register_readline():
             CAN_USE_PYREPL = False
         else:
             original_path = sys.path
-            sys.path = [p for p in original_path if p != '']
+            sys.path = [p fuer p in original_path if p != '']
             try:
                 import _pyrepl.readline
                 if os.name == "nt":
@@ -606,7 +606,7 @@ def venv(known_paths):
     conf_basename = 'pyvenv.cfg'
     candidate_conf = next(
         (
-            conffile for conffile in (
+            conffile fuer conffile in (
                 os.path.join(exe_dir, conf_basename),
                 os.path.join(site_prefix, conf_basename)
             )
@@ -621,7 +621,7 @@ def venv(known_paths):
         # Issue 25185: Use UTF-8, as that's what the venv module uses when
         # writing the file.
         with open(virtual_conf, encoding='utf-8') as f:
-            for line in f:
+            fuer line in f:
                 if '=' in line:
                     key, _, value = line.partition('=')
                     key = key.strip().lower()
@@ -662,7 +662,7 @@ def execsitecustomize():
             sys.excepthook(*sys.exc_info())
         else:
             sys.stderr.write(
-                "Error in sitecustomize; set PYTHONVERBOSE for traceback:\n"
+                "Error in sitecustomize; set PYTHONVERBOSE fuer traceback:\n"
                 "%s: %s\n" %
                 (err.__class__.__name__, err))
 
@@ -682,7 +682,7 @@ def execusercustomize():
             sys.excepthook(*sys.exc_info())
         else:
             sys.stderr.write(
-                "Error in usercustomize; set PYTHONVERBOSE for traceback:\n"
+                "Error in usercustomize; set PYTHONVERBOSE fuer traceback:\n"
                 "%s: %s\n" %
                 (err.__class__.__name__, err))
 
@@ -733,7 +733,7 @@ def _script():
       0 - user site directory is enabled
       1 - user site directory is disabled by user
       2 - user site directory is disabled by super user
-          or for security reasons
+          or fuer security reasons
      >2 - unknown error
     """
     args = sys.argv[1:]
@@ -741,7 +741,7 @@ def _script():
         user_base = getuserbase()
         user_site = getusersitepackages()
         print("sys.path = [")
-        for dir in sys.path:
+        fuer dir in sys.path:
             print("    %r," % (dir,))
         print("]")
         def exists(path):

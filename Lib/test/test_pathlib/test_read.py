@@ -1,5 +1,5 @@
 """
-Tests for pathlib.types._ReadablePath
+Tests fuer pathlib.types._ReadablePath
 """
 
 import collections.abc
@@ -91,7 +91,7 @@ klasse ReadTestBase:
         expected = ['dirA', 'dirB', 'dirC', 'fileA']
         if self.ground.can_symlink:
             expected += ['linkA', 'linkB', 'brokenLink', 'brokenLinkLoop']
-        expected = {self.root.joinpath(name) for name in expected}
+        expected = {self.root.joinpath(name) fuer name in expected}
         actual = set(self.root.iterdir())
         self.assertEqual(actual, expected)
 
@@ -100,7 +100,7 @@ klasse ReadTestBase:
         self.assertRaises(OSError, p.iterdir)
 
     def test_iterdir_info(self):
-        for child in self.root.iterdir():
+        fuer child in self.root.iterdir():
             self.assertIsInstance(child.info, PathInfo)
             self.assertTrue(child.info.exists(follow_symlinks=False))
 
@@ -113,8 +113,8 @@ klasse ReadTestBase:
         altsep = self.root.parser.altsep
         def check(pattern, expected):
             if altsep:
-                expected = {name.replace(altsep, sep) for name in expected}
-            expected = {p.joinpath(name) for name in expected}
+                expected = {name.replace(altsep, sep) fuer name in expected}
+            expected = {p.joinpath(name) fuer name in expected}
             actual = set(p.glob(pattern, recurse_symlinks=True))
             self.assertEqual(actual, expected)
 
@@ -192,7 +192,7 @@ klasse ReadTestBase:
     def test_walk_prune(self):
         expected = {self.root, self.root / 'dirA', self.root / 'dirC', self.root / 'dirC' / 'dirD'}
         actual = set()
-        for path, dirnames, filenames in self.root.walk():
+        fuer path, dirnames, filenames in self.root.walk():
             actual.add(path)
             if path == self.root:
                 dirnames.remove('dirB')
@@ -200,7 +200,7 @@ klasse ReadTestBase:
 
     def test_walk_bottom_up(self):
         seen_root = seen_dira = seen_dirb = seen_dirc = seen_dird = False
-        for path, dirnames, filenames in self.root.walk(top_down=False):
+        fuer path, dirnames, filenames in self.root.walk(top_down=False):
             if path == self.root:
                 self.assertFalse(seen_root)
                 self.assertTrue(seen_dira)

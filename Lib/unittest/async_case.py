@@ -19,7 +19,7 @@ klasse IsolatedAsyncioTestCase(TestCase):
     # 2. await the awaitable object passing in and set the result
     #    into the future object
     # 3. Outer code puts the awaitable and the future object into a queue
-    #    with waiting for the future
+    #    with waiting fuer the future
     # The trick is necessary because every run_until_complete() call
     # creates a new task with embedded ContextVar context.
     # To share contextvars between setUp(), test and tearDown() we need to execute
@@ -29,7 +29,7 @@ klasse IsolatedAsyncioTestCase(TestCase):
     # yet, unless loop_factory=asyncio.EventLoop is set.
     # asyncio.get_event_loop_policy() creates a default policy on demand but never
     # returns None
-    # I believe this is not an issue in user level tests but python itself for testing
+    # I believe this is not an issue in user level tests but python itself fuer testing
     # should reset a policy in every test module
     # by calling asyncio.set_event_loop_policy(None) in tearDownModule()
     # or set loop_factory=asyncio.EventLoop
@@ -55,8 +55,8 @@ klasse IsolatedAsyncioTestCase(TestCase):
         # but addAsyncCleanup() accepts coroutines
         #
         # We intentionally don't add inspect.iscoroutinefunction() check
-        # for func argument because there is no way
-        # to check for async function reliably:
+        # fuer func argument because there is no way
+        # to check fuer async function reliably:
         # 1. It can be "async def func()" itself
         # 2. Class can implement "async def __call__()" method
         # 3. Regular "def func()" that returns awaitable object

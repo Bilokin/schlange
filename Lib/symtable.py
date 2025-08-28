@@ -18,7 +18,7 @@ from enum import StrEnum
 __all__ = ["symtable", "SymbolTableType", "SymbolTable", "Class", "Function", "Symbol"]
 
 def symtable(code, filename, compile_type):
-    """ Return the toplevel *SymbolTable* for the source code.
+    """ Return the toplevel *SymbolTable* fuer the source code.
 
     *filename* is the name of the file with the code
     and *compile_type* is the *compile()* mode argument.
@@ -71,9 +71,9 @@ klasse SymbolTable:
             kind = "%s " % self.__class__.__name__
 
         if self._table.name == "top":
-            return "<{0}SymbolTable for module {1}>".format(kind, self._filename)
+            return "<{0}SymbolTable fuer module {1}>".format(kind, self._filename)
         else:
-            return "<{0}SymbolTable for {1} in {2}>".format(kind,
+            return "<{0}SymbolTable fuer {1} in {2}>".format(kind,
                                                             self._table.name,
                                                             self._filename)
 
@@ -100,7 +100,7 @@ klasse SymbolTable:
         assert False, f"unexpected type: {self._table.type}"
 
     def get_id(self):
-        """Return an identifier for the table.
+        """Return an identifier fuer the table.
         """
         return self._table.id
 
@@ -108,14 +108,14 @@ klasse SymbolTable:
         """Return the table's name.
 
         This corresponds to the name of the class, function
-        or 'top' if the table is for a class, function or
+        or 'top' if the table is fuer a class, function or
         global respectively.
         """
         return self._table.name
 
     def get_lineno(self):
         """Return the number of the first line in the
-        block for the table.
+        block fuer the table.
         """
         return self._table.lineno
 
@@ -158,18 +158,18 @@ klasse SymbolTable:
         """Return a list of *Symbol* instances for
         names in the table.
         """
-        return [self.lookup(ident) for ident in self.get_identifiers()]
+        return [self.lookup(ident) fuer ident in self.get_identifiers()]
 
     def __check_children(self, name):
         return [_newSymbolTable(st, self._filename)
-                for st in self._table.children
+                fuer st in self._table.children
                 if st.name == name]
 
     def get_children(self):
         """Return a list of the nested symbol tables.
         """
         return [_newSymbolTable(st, self._filename)
-                for st in self._table.children]
+                fuer st in self._table.children]
 
 
 def _get_scope(flags):  # like _PyST_GetScope()
@@ -178,7 +178,7 @@ def _get_scope(flags):  # like _PyST_GetScope()
 
 klasse Function(SymbolTable):
 
-    # Default values for instance variables
+    # Default values fuer instance variables
     __params = None
     __locals = None
     __frees = None
@@ -186,7 +186,7 @@ klasse Function(SymbolTable):
     __nonlocals = None
 
     def __idents_matching(self, test_func):
-        return tuple(ident for ident in self.get_identifiers()
+        return tuple(ident fuer ident in self.get_identifiers()
                      if test_func(self._table.symbols[ident]))
 
     def get_parameters(self):
@@ -250,7 +250,7 @@ klasse Class(SymbolTable):
                 flags = self._table.symbols.get(ident, 0)
                 return ((flags >> SCOPE_OFF) & SCOPE_MASK) == LOCAL
 
-            for st in self._table.children:
+            fuer st in self._table.children:
                 # pick the function-like symbols that are local identifiers
                 if is_local_symbol(st.name):
                     match st.type:
@@ -260,7 +260,7 @@ klasse Class(SymbolTable):
                             # Get the function-def block in the annotation
                             # scope 'st' with the same identifier, if any.
                             scope_name = st.name
-                            for c in st.children:
+                            fuer c in st.children:
                                 if c.name == scope_name and c.type == _symtable.TYPE_FUNCTION:
                                     d[scope_name] = 1
                                     break
@@ -285,7 +285,7 @@ klasse Symbol:
         return _scopes_value_to_name.get(self.__scope) or str(self.__scope)
 
     def _flags_str(self):
-        for flagname, flagvalue in _flags:
+        fuer flagname, flagvalue in _flags:
             if self.__flags & flagvalue == flagvalue:
                 yield flagname
 
@@ -399,9 +399,9 @@ klasse Symbol:
 
 
 _flags = [('USE', USE)]
-_flags.extend(kv for kv in globals().items() if kv[0].startswith('DEF_'))
+_flags.extend(kv fuer kv in globals().items() if kv[0].startswith('DEF_'))
 _scopes_names = ('FREE', 'LOCAL', 'GLOBAL_IMPLICIT', 'GLOBAL_EXPLICIT', 'CELL')
-_scopes_value_to_name = {globals()[n]: n for n in _scopes_names}
+_scopes_value_to_name = {globals()[n]: n fuer n in _scopes_names}
 
 
 def main(args):
@@ -413,17 +413,17 @@ def main(args):
             what = f'from file {table._filename!r}'
         else:
             what = f'{table.get_name()!r}'
-        print(f'{indent}symbol table for {nested}{table.get_type()} {what}:')
-        for ident in table.get_identifiers():
+        print(f'{indent}symbol table fuer {nested}{table.get_type()} {what}:')
+        fuer ident in table.get_identifiers():
             symbol = table.lookup(ident)
             flags = ', '.join(symbol._flags_str()).lower()
             print(f'    {indent}{symbol._scope_str().lower()} symbol {symbol.get_name()!r}: {flags}')
         print()
 
-        for table2 in table.get_children():
+        fuer table2 in table.get_children():
             print_symbols(table2, level + 1)
 
-    for filename in args or ['-']:
+    fuer filename in args or ['-']:
         if filename == '-':
             src = sys.stdin.read()
             filename = '<stdin>'

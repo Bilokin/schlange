@@ -38,7 +38,7 @@ klasse TestZip(fixtures.ZipFixtures, unittest.TestCase):
         self.assertEqual(version('Example'), '21.12')
 
     def test_files(self):
-        for file in files('example'):
+        fuer file in files('example'):
             path = str(file.dist.locate_file(file))
             assert '.whl/' in path, path
 
@@ -53,7 +53,7 @@ klasse TestEgg(TestZip):
         self._fixture_on_path('example-21.12-py3.6.egg')
 
     def test_files(self):
-        for file in files('example'):
+        fuer file in files('example'):
             path = str(file.dist.locate_file(file))
             assert '.egg/' in path, path
 

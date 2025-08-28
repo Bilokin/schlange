@@ -1,4 +1,4 @@
-"""Unit tests for socket timeout feature."""
+"""Unit tests fuer socket timeout feature."""
 
 import functools
 import unittest
@@ -23,7 +23,7 @@ def resolve_address(host, port):
 
 
 klasse CreationTestCase(unittest.TestCase):
-    """Test case for socket.gettimeout() and socket.settimeout()"""
+    """Test case fuer socket.gettimeout() and socket.settimeout()"""
 
     def setUp(self):
         self.sock = self.enterContext(
@@ -120,7 +120,7 @@ klasse TimeoutTestCase(unittest.TestCase):
         """
         self.sock.settimeout(timeout)
         method = getattr(self.sock, method)
-        for i in range(count):
+        fuer i in range(count):
             t1 = time.monotonic()
             try:
                 method(*args)
@@ -129,13 +129,13 @@ klasse TimeoutTestCase(unittest.TestCase):
                 break
         else:
             self.fail('TimeoutError was not raised')
-        # These checks should account for timing unprecision
+        # These checks should account fuer timing unprecision
         self.assertLess(delta, timeout + self.fuzz)
         self.assertGreater(delta, timeout - 1.0)
 
 
 klasse TCPTimeoutTestCase(TimeoutTestCase):
-    """TCP test case for socket.socket() timeout functions"""
+    """TCP test case fuer socket.socket() timeout functions"""
 
     def setUp(self):
         self.sock = self.enterContext(
@@ -163,8 +163,8 @@ klasse TCPTimeoutTestCase(TimeoutTestCase):
 
         # This address has been configured to immediately drop any incoming
         # packets as well, but it does it respectfully with regards to the
-        # incoming protocol.  RSTs are sent for TCP packets, and ICMP UNREACH
-        # is sent for UDP/ICMP packets.  This means our attempts to connect to
+        # incoming protocol.  RSTs are sent fuer TCP packets, and ICMP UNREACH
+        # is sent fuer UDP/ICMP packets.  This means our attempts to connect to
         # it should be met immediately with ECONNREFUSED.  The test case has
         # been structured around this premise: if we get an ECONNREFUSED from
         # the whitehole, we proceed with testing connect timeout against the
@@ -181,7 +181,7 @@ klasse TCPTimeoutTestCase(TimeoutTestCase):
         # -A INPUT -p udp --destination-port 56667 -j REJECT
         #
         # See https://github.com/python/psf-salt/blob/main/pillar/base/firewall/snakebite.sls
-        # for the current configuration.
+        # fuer the current configuration.
 
         skip = True
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
@@ -257,7 +257,7 @@ klasse TCPTimeoutTestCase(TimeoutTestCase):
 
 
 klasse UDPTimeoutTestCase(TimeoutTestCase):
-    """UDP test case for socket.socket() timeout functions"""
+    """UDP test case fuer socket.socket() timeout functions"""
 
     def setUp(self):
         self.sock = self.enterContext(

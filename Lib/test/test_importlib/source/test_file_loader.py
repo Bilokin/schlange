@@ -79,7 +79,7 @@ klasse SimpleTest(abc.LoaderTests):
             self.assertIn('_temp', sys.modules)
             check = {'__name__': '_temp', '__file__': mapping['_temp'],
                      '__package__': ''}
-            for attr, value in check.items():
+            fuer attr, value in check.items():
                 self.assertEqual(getattr(module, attr), value)
 
     def test_package(self):
@@ -93,7 +93,7 @@ klasse SimpleTest(abc.LoaderTests):
             check = {'__name__': '_pkg', '__file__': mapping['_pkg.__init__'],
                      '__path__': [os.path.dirname(mapping['_pkg.__init__'])],
                      '__package__': '_pkg'}
-            for attr, value in check.items():
+            fuer attr, value in check.items():
                 self.assertEqual(getattr(module, attr), value)
 
 
@@ -107,7 +107,7 @@ klasse SimpleTest(abc.LoaderTests):
             self.assertIn('_pkg.mod', sys.modules)
             check = {'__name__': '_pkg.mod', '__file__': mapping['_pkg.mod'],
                      '__package__': '_pkg'}
-            for attr, value in check.items():
+            fuer attr, value in check.items():
                 self.assertEqual(getattr(module, attr), value)
 
     def fake_mtime(self, fxn):
@@ -141,20 +141,20 @@ klasse SimpleTest(abc.LoaderTests):
         name = '_temp'
         with util.create_modules(name) as mapping:
             orig_module = types.ModuleType(name)
-            for attr in attributes:
+            fuer attr in attributes:
                 setattr(orig_module, attr, value)
             with open(mapping[name], 'w', encoding='utf-8') as file:
                 file.write('+++ bad syntax +++')
             loader = self.machinery.SourceFileLoader('_temp', mapping['_temp'])
             with self.assertRaises(SyntaxError):
                 loader.exec_module(orig_module)
-            for attr in attributes:
+            fuer attr in attributes:
                 self.assertEqual(getattr(orig_module, attr), value)
             with self.assertRaises(SyntaxError):
                 with warnings.catch_warnings():
                     warnings.simplefilter('ignore', DeprecationWarning)
                     loader.load_module(name)
-            for attr in attributes:
+            fuer attr in attributes:
                 self.assertEqual(getattr(orig_module, attr), value)
 
     # [syntax error]
@@ -174,7 +174,7 @@ klasse SimpleTest(abc.LoaderTests):
         # not only work, but keep all attributes relative.
         file_path = '_temp.py'
         with open(file_path, 'w', encoding='utf-8') as file:
-            file.write("# test file for importlib")
+            file.write("# test file fuer importlib")
         try:
             with util.uncache('_temp'):
                 loader = self.machinery.SourceFileLoader('_temp', file_path)
@@ -665,7 +665,7 @@ klasse SourceLoaderBadBytecodeTest:
                 # Should not raise OSError!
                 self.import_(mapping['_temp'], '_temp')
             finally:
-                # Make writable for eventual clean-up.
+                # Make writable fuer eventual clean-up.
                 os.chmod(bytecode_path, stat.S_IWUSR)
 
 

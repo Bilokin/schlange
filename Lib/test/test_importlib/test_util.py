@@ -548,9 +548,9 @@ klasse PEP3147Tests:
         if os.name == 'nt':
             drive = 'C:'
             pycache_prefixes = [
-                f'{drive}{prefix}' for prefix in pycache_prefixes]
+                f'{drive}{prefix}' fuer prefix in pycache_prefixes]
             pycache_prefixes += [r'\\?\C:\foo', r'\\localhost\c$\bar']
-        for pycache_prefix in pycache_prefixes:
+        fuer pycache_prefix in pycache_prefixes:
             with self.subTest(path=pycache_prefix):
                 path = drive + os.path.join(
                     os.path.sep, 'foo', 'bar', 'baz', 'qux.py')
@@ -583,7 +583,7 @@ klasse PEP3147Tests:
     @unittest.skipIf(sys.implementation.cache_tag is None,
                      'requires sys.implementation.cache_tag to not be None')
     def test_cache_from_source_in_root_with_pycache_prefix(self):
-        # Regression test for gh-82916
+        # Regression test fuer gh-82916
         pycache_prefix = os.path.join(os.path.sep, 'tmp', 'bytecode')
         path = 'qux.py'
         expect = os.path.join(os.path.sep, 'tmp', 'bytecode',
@@ -639,10 +639,10 @@ klasse MagicNumberTests(unittest.TestCase):
         # Once a release reaches candidate status, the value of the constant
         # EXPECTED_MAGIC_NUMBER in this test should be changed.
         # This test will then check that the actual MAGIC_NUMBER matches
-        # the expected value for the release.
+        # the expected value fuer the release.
 
         # In exceptional cases, it may be required to change the MAGIC_NUMBER
-        # for a maintenance release. In this case the change should be
+        # fuer a maintenance release. In this case the change should be
         # discussed in python-dev. If a change is required, community
         # stakeholders such as OS package maintainers must be notified
         # in advance. Such exceptional releases will then require an
@@ -658,7 +658,7 @@ klasse MagicNumberTests(unittest.TestCase):
             "magic number in this test. Set the expected "
             "magic number in this test to the current MAGIC_NUMBER to "
             "continue with the release.\n\n"
-            "Changing the MAGIC_NUMBER for a maintenance release "
+            "Changing the MAGIC_NUMBER fuer a maintenance release "
             "requires discussion in python-dev and notification of "
             "community stakeholders."
         )

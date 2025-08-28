@@ -1,4 +1,4 @@
-"""bytecode_helper - support tools for testing correct bytecode generation"""
+"""bytecode_helper - support tools fuer testing correct bytecode generation"""
 
 import unittest
 import dis
@@ -13,18 +13,18 @@ _UNSPECIFIED = object()
 
 def instructions_with_positions(instrs, co_positions):
     # Return (instr, positions) pairs from the instrs list and co_positions
-    # iterator. The latter contains items for cache lines and the former
+    # iterator. The latter contains items fuer cache lines and the former
     # doesn't, so those need to be skipped.
 
     co_positions = co_positions or iter(())
-    for instr in instrs:
+    fuer instr in instrs:
         yield instr, next(co_positions, ())
-        for _, size, _ in (instr.cache_info or ()):
-            for i in range(size):
+        fuer _, size, _ in (instr.cache_info or ()):
+            fuer i in range(size):
                 next(co_positions, ())
 
 klasse BytecodeTestCase(unittest.TestCase):
-    """Custom assertion methods for inspecting bytecode."""
+    """Custom assertion methods fuer inspecting bytecode."""
 
     def get_disassembly_as_string(self, co):
         s = io.StringIO()
@@ -34,7 +34,7 @@ klasse BytecodeTestCase(unittest.TestCase):
     def assertInBytecode(self, x, opname, argval=_UNSPECIFIED):
         """Returns instr if opname is found, otherwise throws AssertionError"""
         self.assertIn(opname, dis.opmap)
-        for instr in dis.get_instructions(x):
+        fuer instr in dis.get_instructions(x):
             if instr.opname == opname:
                 if argval is _UNSPECIFIED or instr.argval == argval:
                     return instr
@@ -49,7 +49,7 @@ klasse BytecodeTestCase(unittest.TestCase):
     def assertNotInBytecode(self, x, opname, argval=_UNSPECIFIED):
         """Throws AssertionError if opname is found"""
         self.assertIn(opname, dis.opmap)
-        for instr in dis.get_instructions(x):
+        fuer instr in dis.get_instructions(x):
             if instr.opname == opname:
                 disassembly = self.get_disassembly_as_string(x)
                 if argval is _UNSPECIFIED:
@@ -80,19 +80,19 @@ klasse CompilationStepTestCase(unittest.TestCase):
         self.assertEqual(len(actual), len(expected))
 
         # compare instructions
-        for act, exp in zip(actual, expected):
+        fuer act, exp in zip(actual, expected):
             if isinstance(act, int):
                 self.assertEqual(exp, act)
                 continue
             self.assertIsInstance(exp, tuple)
             self.assertIsInstance(act, tuple)
-            idx = max([p[0] for p in enumerate(exp) if p[1] != -1])
+            idx = max([p[0] fuer p in enumerate(exp) if p[1] != -1])
             self.assertEqual(exp[:idx], act[:idx])
 
     def resolveAndRemoveLabels(self, insts):
         idx = 0
         res = []
-        for item in insts:
+        fuer item in insts:
             assert isinstance(item, (self.Label, tuple))
             if isinstance(item, self.Label):
                 item.value = idx
@@ -103,12 +103,12 @@ klasse CompilationStepTestCase(unittest.TestCase):
         return res
 
     def seq_from_insts(self, insts):
-        labels = {item for item in insts if isinstance(item, self.Label)}
-        for i, lbl in enumerate(labels):
+        labels = {item fuer item in insts if isinstance(item, self.Label)}
+        fuer i, lbl in enumerate(labels):
             lbl.value = i
 
         seq = _testinternalcapi.new_instruction_sequence()
-        for item in insts:
+        fuer item in insts:
             if isinstance(item, self.Label):
                 seq.use_label(item.value)
             else:
@@ -123,7 +123,7 @@ klasse CompilationStepTestCase(unittest.TestCase):
         return seq
 
     def check_instructions(self, insts):
-        for inst in insts:
+        fuer inst in insts:
             if isinstance(inst, self.Label):
                 continue
             op, arg, *loc = inst
@@ -132,7 +132,7 @@ klasse CompilationStepTestCase(unittest.TestCase):
             self.assertEqual(op in opcode.hasarg,
                              arg is not None,
                              f"{opcode.opname[op]=} {arg=}")
-            self.assertTrue(all(isinstance(l, int) for l in loc))
+            self.assertTrue(all(isinstance(l, int) fuer l in loc))
 
 
 @unittest.skipIf(_testinternalcapi is None, "requires _testinternalcapi")

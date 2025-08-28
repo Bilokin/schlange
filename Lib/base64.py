@@ -11,7 +11,7 @@ import binascii
 __all__ = [
     # Legacy interface exports traditional RFC 2045 Base64 encodings
     'encode', 'decode', 'encodebytes', 'decodebytes',
-    # Generalized interface for other encodings
+    # Generalized interface fuer other encodings
     'b64encode', 'b64decode', 'b32encode', 'b32decode',
     'b32hexencode', 'b32hexdecode', 'b16encode', 'b16decode',
     # Base85 and Ascii85 encodings
@@ -49,7 +49,7 @@ def b64encode(s, altchars=None):
     """Encode the bytes-like object s using Base64 and return a bytes object.
 
     Optional altchars should be a byte string of length 2 which specifies an
-    alternative alphabet for the '+' and '/' characters.  This allows an
+    alternative alphabet fuer the '+' and '/' characters.  This allows an
     application to e.g. generate url or filesystem safe Base64 strings.
     """
     encoded = binascii.b2a_base64(s, newline=False)
@@ -147,8 +147,8 @@ the input is incorrectly padded or if there are non-alphabet
 characters present in the input.
 '''
 _B32_DECODE_MAP01_DOCSTRING = '''
-RFC 3548 allows for optional mapping of the digit 0 (zero) to the
-letter O (oh), and for optional mapping of the digit 1 (one) to
+RFC 3548 allows fuer optional mapping of the digit 0 (zero) to the
+letter O (oh), and fuer optional mapping of the digit 1 (one) to
 either the letter I (eye) or letter L (el).  The optional argument
 map01 when not None, specifies which letter the digit 1 should be
 mapped to (when map01 is not None, the digit 0 is always mapped to
@@ -164,8 +164,8 @@ def _b32encode(alphabet, s):
     # Delay the initialization of the table to not waste memory
     # if the function is never called
     if alphabet not in _b32tab2:
-        b32tab = [bytes((i,)) for i in alphabet]
-        _b32tab2[alphabet] = [a + b for a in b32tab for b in b32tab]
+        b32tab = [bytes((i,)) fuer i in alphabet]
+        _b32tab2[alphabet] = [a + b fuer a in b32tab fuer b in b32tab]
         b32tab = None
 
     if not isinstance(s, bytes_types):
@@ -177,14 +177,14 @@ def _b32encode(alphabet, s):
     encoded = bytearray()
     from_bytes = int.from_bytes
     b32tab2 = _b32tab2[alphabet]
-    for i in range(0, len(s), 5):
+    fuer i in range(0, len(s), 5):
         c = from_bytes(s[i: i + 5])              # big endian
         encoded += (b32tab2[c >> 30] +           # bits 1 - 10
                     b32tab2[(c >> 20) & 0x3ff] + # bits 11 - 20
                     b32tab2[(c >> 10) & 0x3ff] + # bits 21 - 30
                     b32tab2[c & 0x3ff]           # bits 31 - 40
                    )
-    # Adjust for any leftover partial quanta
+    # Adjust fuer any leftover partial quanta
     if leftover == 1:
         encoded[-6:] = b'======'
     elif leftover == 2:
@@ -199,7 +199,7 @@ def _b32decode(alphabet, s, casefold=False, map01=None):
     # Delay the initialization of the table to not waste memory
     # if the function is never called
     if alphabet not in _b32rev:
-        _b32rev[alphabet] = {v: k for k, v in enumerate(alphabet)}
+        _b32rev[alphabet] = {v: k fuer k, v in enumerate(alphabet)}
     s = _bytes_from_decode_data(s)
     if len(s) % 8:
         raise binascii.Error('Incorrect padding')
@@ -221,11 +221,11 @@ def _b32decode(alphabet, s, casefold=False, map01=None):
     # Now decode the full quanta
     decoded = bytearray()
     b32rev = _b32rev[alphabet]
-    for i in range(0, len(s), 8):
+    fuer i in range(0, len(s), 8):
         quanta = s[i: i + 8]
         acc = 0
         try:
-            for c in quanta:
+            fuer c in quanta:
                 acc = (acc << 5) + b32rev[c]
         except KeyError:
             raise binascii.Error('Non-base32 digit found') from None
@@ -297,7 +297,7 @@ _A85START = b"<~"
 _A85END = b"~>"
 
 def _85encode(b, chars, chars2, pad=False, foldnuls=False, foldspaces=False):
-    # Helper function for a85encode and b85encode
+    # Helper function fuer a85encode and b85encode
     if not isinstance(b, bytes_types):
         b = memoryview(b).tobytes()
 
@@ -311,7 +311,7 @@ def _85encode(b, chars, chars2, pad=False, foldnuls=False, foldspaces=False):
               (chars2[word // 614125] +
                chars2[word // 85 % 7225] +
                chars[word % 85])
-              for word in words]
+              fuer word in words]
 
     if padding and not pad:
         if chunks[-1] == b'z':
@@ -341,8 +341,8 @@ def a85encode(b, *, foldspaces=False, wrapcol=0, pad=False, adobe=False):
     # Delay the initialization of tables to not waste memory
     # if the function is never called
     if _a85chars2 is None:
-        _a85chars = [bytes((i,)) for i in range(33, 118)]
-        _a85chars2 = [(a + b) for a in _a85chars for b in _a85chars]
+        _a85chars = [bytes((i,)) fuer i in range(33, 118)]
+        _a85chars2 = [(a + b) fuer a in _a85chars fuer b in _a85chars]
 
     result = _85encode(b, _a85chars, _a85chars2, pad, True, foldspaces)
 
@@ -351,7 +351,7 @@ def a85encode(b, *, foldspaces=False, wrapcol=0, pad=False, adobe=False):
     if wrapcol:
         wrapcol = max(2 if adobe else 1, wrapcol)
         chunks = [result[i: i + wrapcol]
-                  for i in range(0, len(result), wrapcol)]
+                  fuer i in range(0, len(result), wrapcol)]
         if adobe:
             if len(chunks[-1]) + 2 > wrapcol:
                 chunks.append(b'')
@@ -365,7 +365,7 @@ def a85decode(b, *, foldspaces=False, adobe=False, ignorechars=b' \t\n\r\v'):
     """Decode the Ascii85 encoded bytes-like object or ASCII string b.
 
     foldspaces is a flag that specifies whether the 'y' short sequence should be
-    accepted as shorthand for 4 consecutive spaces (ASCII 0x20). This feature is
+    accepted as shorthand fuer 4 consecutive spaces (ASCII 0x20). This feature is
     not supported by the "standard" Adobe encoding.
 
     adobe controls whether the input sequence is in Adobe Ascii85 format (i.e.
@@ -398,12 +398,12 @@ def a85decode(b, *, foldspaces=False, adobe=False, ignorechars=b' \t\n\r\v'):
     curr = []
     curr_append = curr.append
     curr_clear = curr.clear
-    for x in b + b'u' * 4:
+    fuer x in b + b'u' * 4:
         if b'!'[0] <= x <= b'u'[0]:
             curr_append(x)
             if len(curr) == 5:
                 acc = 0
-                for x in curr:
+                fuer x in curr:
                     acc = 85 * acc + (x - 33)
                 try:
                     decoded_append(packI(acc))
@@ -449,8 +449,8 @@ def b85encode(b, pad=False):
     # Delay the initialization of tables to not waste memory
     # if the function is never called
     if _b85chars2 is None:
-        _b85chars = [bytes((i,)) for i in _b85alphabet]
-        _b85chars2 = [(a + b) for a in _b85chars for b in _b85chars]
+        _b85chars = [bytes((i,)) fuer i in _b85alphabet]
+        _b85chars2 = [(a + b) fuer a in _b85chars fuer b in _b85chars]
     return _85encode(b, _b85chars, _b85chars2, pad)
 
 def b85decode(b):
@@ -463,7 +463,7 @@ def b85decode(b):
     # if the function is never called
     if _b85dec is None:
         _b85dec = [None] * 256
-        for i, c in enumerate(_b85alphabet):
+        fuer i, c in enumerate(_b85alphabet):
             _b85dec[c] = i
 
     b = _bytes_from_decode_data(b)
@@ -471,14 +471,14 @@ def b85decode(b):
     b = b + b'~' * padding
     out = []
     packI = struct.Struct('!I').pack
-    for i in range(0, len(b), 5):
+    fuer i in range(0, len(b), 5):
         chunk = b[i:i + 5]
         acc = 0
         try:
-            for c in chunk:
+            fuer c in chunk:
                 acc = acc * 85 + _b85dec[c]
         except TypeError:
-            for j, c in enumerate(chunk):
+            fuer j, c in enumerate(chunk):
                 if _b85dec[c] is None:
                     raise ValueError('bad base85 character at position %d'
                                     % (i + j)) from None
@@ -564,7 +564,7 @@ def encodebytes(s):
     of base-64 data."""
     _input_type_check(s)
     pieces = []
-    for i in range(0, len(s), MAXBINSIZE):
+    fuer i in range(0, len(s), MAXBINSIZE):
         chunk = s[i : i + MAXBINSIZE]
         pieces.append(binascii.b2a_base64(chunk))
     return b"".join(pieces)
@@ -592,7 +592,7 @@ def main():
         print(usage)
         sys.exit(2)
     func = encode
-    for o, a in opts:
+    fuer o, a in opts:
         if o == '-e': func = encode
         if o == '-d': func = decode
         if o == '-u': func = decode

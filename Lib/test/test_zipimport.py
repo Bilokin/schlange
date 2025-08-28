@@ -98,7 +98,7 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         # defined by files under the directory dirName.
         self.addCleanup(os_helper.rmtree, dirName)
 
-        for name, data in files.items():
+        fuer name, data in files.items():
             if isinstance(data, tuple):
                 mtime, data = data
             path = os.path.join(dirName, *name.split('/'))
@@ -133,7 +133,7 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
                 f.write(data)
 
     def writeZip(self, z, files, *, file_comment=None, prefix=''):
-        for name, data in files.items():
+        fuer name, data in files.items():
             if isinstance(data, tuple):
                 mtime, data = data
             else:
@@ -152,7 +152,7 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
 
     def getZip64Files(self):
         # This is the simplest way to make zipfile generate the zip64 EOCD block
-        return {f"f{n}.py": test_src for n in range(65537)}
+        return {f"f{n}.py": test_src fuer n in range(65537)}
 
     def doTest(self, expected_ext, files, *modules, **kw):
         if 'prefix' not in kw:
@@ -190,7 +190,7 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         # unittest.TestLoader.getTestCaseNames() does.)
         #
         # This test fails on platforms on which the zlib module is
-        # statically linked, but the problem it tests for can't
+        # statically linked, but the problem it tests fuer can't
         # occur in that case (builtin modules are always found first),
         # so we'll simply skip it then. Bug #765456.
         #
@@ -648,7 +648,7 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
 
         zi = zipimport.zipimporter(TEMP_ZIP)
         self.assertEqual(sorted(zi._get_files()), sorted([*files, *extra_files]))
-        # Zipimporter for the same path.
+        # Zipimporter fuer the same path.
         zi2 = zipimport.zipimporter(TEMP_ZIP)
         self.assertEqual(sorted(zi2._get_files()), sorted([*files, *extra_files]))
         # Add a new file to the ZIP archive to make the cache wrong.
@@ -900,10 +900,10 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         # N.B.: We do a lot of gymnastics below in the ZIP_STORED case to save
         # and reconstruct a sparse zip on systems that support sparse files.
         # Instead of creating a ~8GB zip file mainly consisting of null bytes
-        # for every run of the test, we create the zip once and save off the
+        # fuer every run of the test, we create the zip once and save off the
         # non-null portions of the resulting file as data blobs with offsets
         # that allow re-creating the zip file sparsely. This drops disk space
-        # usage to ~9KB for the ZIP_STORED case and drops that test time by ~2
+        # usage to ~9KB fuer the ZIP_STORED case and drops that test time by ~2
         # orders of magnitude. For the ZIP_DEFLATED case, however, we bite the
         # bullet. The resulting zip file is ~8MB of non-null data; so the sparse
         # trick doesn't work and would result in that full ~8MB zip data file
@@ -917,7 +917,7 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
             if self.compression != ZIP_STORED:
                 support.requires(
                     "cpu",
-                    "test requires a lot of CPU for compression."
+                    "test requires a lot of CPU fuer compression."
                 )
             self.addCleanup(os_helper.unlink, os_helper.TESTFN)
             with open(os_helper.TESTFN, "wb") as f:
@@ -982,9 +982,9 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
                 if m := re.search(r"-(0x[0-9a-f]{9})\.part$", name):
                     return int(m.group(1), base=16)
                 raise ValueError(f"{name=} does not fit expected pattern.")
-            offset_parts = [(extract_offset(n), n) for n in pre_built_zip_parts]
+            offset_parts = [(extract_offset(n), n) fuer n in pre_built_zip_parts]
             with open(TEMP_ZIP, "wb") as f:
-                for offset, part_fn in sorted(offset_parts):
+                fuer offset, part_fn in sorted(offset_parts):
                     with open(part_fn, "rb") as part:
                         f.seek(offset, os.SEEK_SET)
                         f.write(part.read())

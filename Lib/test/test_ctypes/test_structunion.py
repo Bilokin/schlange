@@ -1,4 +1,4 @@
-"""Common tests for ctypes.Structure and ctypes.Union"""
+"""Common tests fuer ctypes.Structure and ctypes.Union"""
 
 import unittest
 import sys
@@ -78,7 +78,7 @@ klasse StructUnionTestBase:
         self.assertEqual(type(self.metacls), type)
 
     def test_type_flags(self):
-        for cls in self.cls, self.metacls:
+        fuer cls in self.cls, self.metacls:
             with self.subTest(cls=cls):
                 self.assertTrue(cls.__flags__ & Py_TPFLAGS_IMMUTABLETYPE)
                 self.assertFalse(cls.__flags__ & Py_TPFLAGS_DISALLOW_INSTANTIATION)
@@ -88,7 +88,7 @@ klasse StructUnionTestBase:
         # instantiated directly
         NewClass = self.metacls.__new__(self.metacls, 'NewClass',
                                         (self.cls,), {})
-        for cls in self.cls, NewClass:
+        fuer cls in self.cls, NewClass:
             with self.subTest(cls=cls):
                 with self.assertRaisesRegex(TypeError, "abstract class"):
                     obj = cls()
@@ -199,7 +199,7 @@ klasse StructUnionTestBase:
 
         # name
 
-        for name in field_names:
+        fuer name in field_names:
             with self.subTest(name=name):
                 self.assertEqual(getattr(X, name).name, name)
 
@@ -214,7 +214,7 @@ klasse StructUnionTestBase:
             c=c_int8,
         )
         assert set(expected_types) == set(field_names)
-        for name, tp in expected_types.items():
+        fuer name, tp in expected_types.items():
             with self.subTest(name=name):
                 self.assertEqual(getattr(X, name).type, tp)
                 self.assertEqual(getattr(X, name).byte_size, sizeof(tp))
@@ -230,7 +230,7 @@ klasse StructUnionTestBase:
             c=(2, 8),
         )
         assert set(expected_offsets) == set(field_names)
-        for name, (union_offset, struct_offset) in expected_offsets.items():
+        fuer name, (union_offset, struct_offset) in expected_offsets.items():
             with self.subTest(name=name):
                 self.assertEqual(getattr(X, name).offset,
                                  getattr(X, name).byte_offset)
@@ -249,7 +249,7 @@ klasse StructUnionTestBase:
             c=(2, 1 if little_endian else 5),
             y=(1, 0 if little_endian else 15),
         )
-        for name in field_names:
+        fuer name in field_names:
             with self.subTest(name=name):
                 if info := expected_bitfield_info.get(name):
                     self.assertEqual(getattr(X, name).is_bitfield, True)
@@ -270,7 +270,7 @@ klasse StructUnionTestBase:
 
         # is_anonymous
 
-        for name in field_names:
+        fuer name in field_names:
             with self.subTest(name=name):
                 self.assertEqual(getattr(X, name).is_anonymous, (name == '_'))
 
@@ -282,7 +282,7 @@ klasse StructUnionTestBase:
 
     def test_invalid_name(self):
         # field name must be string
-        for name in b"x", 3, None:
+        fuer name in b"x", 3, None:
             with self.subTest(name=name):
                 with self.assertRaises(TypeError):
                     klasse S(self.cls):
@@ -319,7 +319,7 @@ klasse StructUnionTestBase:
             klasse S(self.cls):
                 _fields_ = [('x' * length, c_int)]
 
-        for length in [10 ** i for i in range(0, 8)]:
+        fuer length in [10 ** i fuer i in range(0, 8)]:
             try:
                 create_class(length)
             except MemoryError:
@@ -365,7 +365,7 @@ klasse StructureTestCase(unittest.TestCase, StructUnionTestBase):
         self.assertEqual(sizeof(cls), struct_size)
 
     def test_simple_structs(self):
-        for code, tp in self.formats.items():
+        fuer code, tp in self.formats.items():
             klasse X(Structure):
                 _fields_ = [("x", c_char),
                             ("y", tp)]
@@ -384,7 +384,7 @@ klasse UnionTestCase(unittest.TestCase, StructUnionTestBase):
         self.assertEqual(sizeof(cls), union_size)
 
     def test_simple_unions(self):
-        for code, tp in self.formats.items():
+        fuer code, tp in self.formats.items():
             klasse X(Union):
                 _fields_ = [("x", c_char),
                             ("y", tp)]
@@ -401,17 +401,17 @@ klasse PointerMemberTestBase:
         s = S()
         # We can assign arrays of the correct type
         s.array = (c_int * 3)(1, 2, 3)
-        items = [s.array[i] for i in range(3)]
+        items = [s.array[i] fuer i in range(3)]
         self.assertEqual(items, [1, 2, 3])
 
         s.array[0] = 42
 
-        items = [s.array[i] for i in range(3)]
+        items = [s.array[i] fuer i in range(3)]
         self.assertEqual(items, [42, 2, 3])
 
         s.array[0] = 1
 
-        items = [s.array[i] for i in range(3)]
+        items = [s.array[i] fuer i in range(3)]
         self.assertEqual(items, [1, 2, 3])
 
 klasse PointerMemberTestCase_Struct(unittest.TestCase, PointerMemberTestBase):

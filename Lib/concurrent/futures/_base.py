@@ -33,18 +33,18 @@ _STATE_TO_DESCRIPTION_MAP = {
     FINISHED: "finished"
 }
 
-# Logger for internal use by the futures package.
+# Logger fuer internal use by the futures package.
 LOGGER = logging.getLogger("concurrent.futures")
 
 klasse Error(Exception):
-    """Base klasse for all future-related exceptions."""
+    """Base klasse fuer all future-related exceptions."""
     pass
 
 klasse CancelledError(Error):
     """The Future was cancelled."""
     pass
 
-TimeoutError = TimeoutError  # make local alias for the standard exception
+TimeoutError = TimeoutError  # make local alias fuer the standard exception
 
 klasse InvalidStateError(Error):
     """The operation is not allowed in this state."""
@@ -139,11 +139,11 @@ klasse _AcquireFutures(object):
         self.futures = sorted(futures, key=id)
 
     def __enter__(self):
-        for future in self.futures:
+        fuer future in self.futures:
             future._condition.acquire()
 
     def __exit__(self, *args):
-        for future in self.futures:
+        fuer future in self.futures:
             future._condition.release()
 
 def _create_and_install_waiters(fs, return_when):
@@ -153,7 +153,7 @@ def _create_and_install_waiters(fs, return_when):
         waiter = _FirstCompletedWaiter()
     else:
         pending_count = sum(
-                f._state not in [CANCELLED_AND_NOTIFIED, FINISHED] for f in fs)
+                f._state not in [CANCELLED_AND_NOTIFIED, FINISHED] fuer f in fs)
 
         if return_when == FIRST_EXCEPTION:
             waiter = _AllCompletedWaiter(pending_count, stop_on_exception=True)
@@ -162,7 +162,7 @@ def _create_and_install_waiters(fs, return_when):
         else:
             raise ValueError("Invalid return condition: %r" % return_when)
 
-    for f in fs:
+    fuer f in fs:
         f._waiters.append(waiter)
 
     return waiter
@@ -181,7 +181,7 @@ def _yield_finished_futures(fs, waiter, ref_collect):
     """
     while fs:
         f = fs[-1]
-        for futures_set in ref_collect:
+        fuer futures_set in ref_collect:
             futures_set.remove(f)
         with f._condition:
             f._waiters.remove(waiter)
@@ -215,7 +215,7 @@ def as_completed(fs, timeout=None):
     total_futures = len(fs)
     with _AcquireFutures(fs):
         finished = set(
-                f for f in fs
+                f fuer f in fs
                 if f._state in [CANCELLED_AND_NOTIFIED, FINISHED])
         pending = fs - finished
         waiter = _create_and_install_waiters(fs, _AS_COMPLETED)
@@ -248,14 +248,14 @@ def as_completed(fs, timeout=None):
 
     finally:
         # Remove waiter from unfinished futures
-        for f in fs:
+        fuer f in fs:
             with f._condition:
                 f._waiters.remove(waiter)
 
 DoneAndNotDoneFutures = collections.namedtuple(
         'DoneAndNotDoneFutures', 'done not_done')
 def wait(fs, timeout=None, return_when=ALL_COMPLETED):
-    """Wait for the futures in the given sequence to complete.
+    """Wait fuer the futures in the given sequence to complete.
 
     Args:
         fs: The sequence of Futures (possibly created by different Executors) to
@@ -281,13 +281,13 @@ def wait(fs, timeout=None, return_when=ALL_COMPLETED):
     """
     fs = set(fs)
     with _AcquireFutures(fs):
-        done = {f for f in fs
+        done = {f fuer f in fs
                    if f._state in [CANCELLED_AND_NOTIFIED, FINISHED]}
         not_done = fs - done
         if (return_when == FIRST_COMPLETED) and done:
             return DoneAndNotDoneFutures(done, not_done)
         elif (return_when == FIRST_EXCEPTION) and done:
-            if any(f for f in done
+            if any(f fuer f in done
                    if not f.cancelled() and f.exception() is not None):
                 return DoneAndNotDoneFutures(done, not_done)
 
@@ -297,7 +297,7 @@ def wait(fs, timeout=None, return_when=ALL_COMPLETED):
         waiter = _create_and_install_waiters(fs, return_when)
 
     waiter.event.wait(timeout)
-    for f in fs:
+    fuer f in fs:
         with f._condition:
             f._waiters.remove(waiter)
 
@@ -329,11 +329,11 @@ klasse Future(object):
         self._done_callbacks = []
 
     def _invoke_callbacks(self):
-        for callback in self._done_callbacks:
+        fuer callback in self._done_callbacks:
             try:
                 callback(self)
             except Exception:
-                LOGGER.exception('exception calling callback for %r', self)
+                LOGGER.exception('exception calling callback fuer %r', self)
 
     def __repr__(self):
         with self._condition:
@@ -417,13 +417,13 @@ klasse Future(object):
         try:
             fn(self)
         except Exception:
-            LOGGER.exception('exception calling callback for %r', self)
+            LOGGER.exception('exception calling callback fuer %r', self)
 
     def result(self, timeout=None):
         """Return the result of the call that the future represents.
 
         Args:
-            timeout: The number of seconds to wait for the result if the future
+            timeout: The number of seconds to wait fuer the result if the future
                 isn't done. If None, then there is no limit on the wait time.
 
         Returns:
@@ -458,7 +458,7 @@ klasse Future(object):
         """Return the exception raised by the call that the future represents.
 
         Args:
-            timeout: The number of seconds to wait for the exception if the
+            timeout: The number of seconds to wait fuer the exception if the
                 future isn't done. If None, then there is no limit on the wait
                 time.
 
@@ -514,7 +514,7 @@ klasse Future(object):
         with self._condition:
             if self._state == CANCELLED:
                 self._state = CANCELLED_AND_NOTIFIED
-                for waiter in self._waiters:
+                fuer waiter in self._waiters:
                     waiter.add_cancelled(self)
                 # self._condition.notify_all() is not necessary because
                 # self.cancel() triggers a notification.
@@ -538,7 +538,7 @@ klasse Future(object):
                 raise InvalidStateError('{}: {!r}'.format(self._state, self))
             self._result = result
             self._state = FINISHED
-            for waiter in self._waiters:
+            fuer waiter in self._waiters:
                 waiter.add_result(self)
             self._condition.notify_all()
         self._invoke_callbacks()
@@ -553,7 +553,7 @@ klasse Future(object):
                 raise InvalidStateError('{}: {!r}'.format(self._state, self))
             self._exception = exception
             self._state = FINISHED
-            for waiter in self._waiters:
+            fuer waiter in self._waiters:
                 waiter.add_exception(self)
             self._condition.notify_all()
         self._invoke_callbacks()
@@ -575,7 +575,7 @@ klasse Future(object):
         if self._state == FINISHED:
             return True, False, self._result, self._exception
 
-        # Need lock for other states since they can change
+        # Need lock fuer other states since they can change
         with self._condition:
             # We have to check the state again after acquiring the lock
             # because it may have changed in the meantime.
@@ -588,7 +588,7 @@ klasse Future(object):
     __class_getitem__ = classmethod(types.GenericAlias)
 
 klasse Executor(object):
-    """This is an abstract base klasse for concrete asynchronous executors."""
+    """This is an abstract base klasse fuer concrete asynchronous executors."""
 
     def submit(self, fn, /, *args, **kwargs):
         """Submits a callable to be executed with the given arguments.
@@ -617,7 +617,7 @@ klasse Executor(object):
                 yet been yielded. If the buffer is full, iteration over the
                 iterables pauses until a result is yielded from the buffer.
                 If None, all input elements are eagerly collected, and a task is
-                submitted for each.
+                submitted fuer each.
 
         Returns:
             An iterator equivalent to: map(func, *iterables) but the calls may
@@ -626,7 +626,7 @@ klasse Executor(object):
         Raises:
             TimeoutError: If the entire result iterator could not be generated
                 before the given timeout.
-            Exception: If fn(*args) raises for any values.
+            Exception: If fn(*args) raises fuer any values.
         """
         if buffersize is not None and not isinstance(buffersize, int):
             raise TypeError("buffersize must be an integer or None")
@@ -639,10 +639,10 @@ klasse Executor(object):
         zipped_iterables = zip(*iterables)
         if buffersize:
             fs = collections.deque(
-                self.submit(fn, *args) for args in islice(zipped_iterables, buffersize)
+                self.submit(fn, *args) fuer args in islice(zipped_iterables, buffersize)
             )
         else:
-            fs = [self.submit(fn, *args) for args in zipped_iterables]
+            fs = [self.submit(fn, *args) fuer args in zipped_iterables]
 
         # Use a weak reference to ensure that the executor can be garbage
         # collected independently of the result_iterator closure.
@@ -667,7 +667,7 @@ klasse Executor(object):
                     else:
                         yield _result_or_cancel(fs.pop(), end_time - time.monotonic())
             finally:
-                for future in fs:
+                fuer future in fs:
                     future.cancel()
         return result_iterator()
 

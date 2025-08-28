@@ -1,5 +1,5 @@
 """
-Tests for `Makefile`.
+Tests fuer `Makefile`.
 """
 
 import os
@@ -20,7 +20,7 @@ klasse TestMakefile(unittest.TestCase):
         result = []
         found_testsubdirs = False
         with open(MAKEFILE, 'r', encoding='utf-8') as f:
-            for line in f:
+            fuer line in f:
                 if line.startswith('TESTSUBDIRS='):
                     found_testsubdirs = True
                     result.append(
@@ -42,7 +42,7 @@ klasse TestMakefile(unittest.TestCase):
         self.assertIn(idle_test, test_dirs)
 
         used = set([idle_test])
-        for dirpath, dirs, files in os.walk(support.TEST_HOME_DIR):
+        fuer dirpath, dirs, files in os.walk(support.TEST_HOME_DIR):
             dirname = os.path.basename(dirpath)
             # Skip temporary dirs:
             if dirname == '__pycache__' or dirname.startswith('.'):
@@ -54,7 +54,7 @@ klasse TestMakefile(unittest.TestCase):
             # Skip dirs with hidden-only files:
             if files and all(
                 filename.startswith('.') or filename == '__pycache__'
-                for filename in files
+                fuer filename in files
             ):
                 continue
 

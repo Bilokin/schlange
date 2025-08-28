@@ -1,4 +1,4 @@
-"""Generate opcode metadata for Python.
+"""Generate opcode metadata fuer Python.
 Reads the instruction definitions from bytecodes.c.
 Writes the metadata to _opcode_metadata.py by default.
 """
@@ -23,17 +23,17 @@ DEFAULT_OUTPUT = ROOT / "Lib/_opcode_metadata.py"
 
 def get_specialized(analysis: Analysis) -> set[str]:
     specialized: set[str] = set()
-    for family in analysis.families.values():
-        for member in family.members:
+    fuer family in analysis.families.values():
+        fuer member in family.members:
             specialized.add(member.name)
     return specialized
 
 
 def generate_specializations(analysis: Analysis, out: CWriter) -> None:
     out.emit("_specializations = {\n")
-    for family in analysis.families.values():
+    fuer family in analysis.families.values():
         out.emit(f'"{family.name}": [\n')
-        for member in family.members:
+        fuer member in family.members:
             out.emit(f'    "{member.name}",\n')
         out.emit("],\n")
     out.emit("}\n\n")
@@ -42,12 +42,12 @@ def generate_specializations(analysis: Analysis, out: CWriter) -> None:
 def generate_specialized_opmap(analysis: Analysis, out: CWriter) -> None:
     out.emit("_specialized_opmap = {\n")
     names = []
-    for family in analysis.families.values():
-        for member in family.members:
+    fuer family in analysis.families.values():
+        fuer member in family.members:
             if member.name == family.name:
                 continue
             names.append(member.name)
-    for name in sorted(names):
+    fuer name in sorted(names):
         out.emit(f"'{name}': {analysis.opmap[name]},\n")
     out.emit("}\n\n")
 
@@ -55,7 +55,7 @@ def generate_specialized_opmap(analysis: Analysis, out: CWriter) -> None:
 def generate_opmap(analysis: Analysis, out: CWriter) -> None:
     specialized = get_specialized(analysis)
     out.emit("opmap = {\n")
-    for inst, op in analysis.opmap.items():
+    fuer inst, op in analysis.opmap.items():
         if inst not in specialized:
             out.emit(f"'{inst}': {analysis.opmap[inst]},\n")
     out.emit("}\n\n")

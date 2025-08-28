@@ -117,7 +117,7 @@ klasse CAPITests(unittest.TestCase):
                 ("use_system_logger", bool, None),
             ))
 
-        for name, option_type, sys_attr in options:
+        fuer name, option_type, sys_attr in options:
             with self.subTest(name=name, option_type=option_type,
                               sys_attr=sys_attr):
                 value = config_get(name)
@@ -126,12 +126,12 @@ klasse CAPITests(unittest.TestCase):
                     if option_type.__origin__ == dict:
                         key_type = option_type.__args__[0]
                         value_type = option_type.__args__[1]
-                        for item in value.items():
+                        fuer item in value.items():
                             self.assertIsInstance(item[0], key_type)
                             self.assertIsInstance(item[1], value_type)
                     else:
                         item_type = option_type.__args__[0]
-                        for item in value:
+                        fuer item in value:
                             self.assertIsInstance(item, item_type)
                 else:
                     self.assertIsInstance(value, option_type)
@@ -145,7 +145,7 @@ klasse CAPITests(unittest.TestCase):
                         self.assertEqual(config_get(name), override)
 
         # check that the test checks all options
-        self.assertEqual(sorted(name for name, option_type, sys_attr in options),
+        self.assertEqual(sorted(name fuer name, option_type, sys_attr in options),
                          sorted(config_names()))
 
     def test_config_get_sys_flags(self):
@@ -153,7 +153,7 @@ klasse CAPITests(unittest.TestCase):
         config_get = _testcapi.config_get
 
         # compare config options with sys.flags
-        for flag, name, negate in (
+        fuer flag, name, negate in (
             ("debug", "parser_debug", False),
             ("inspect", "inspect", False),
             ("interactive", "interactive", False),
@@ -237,7 +237,7 @@ klasse CAPITests(unittest.TestCase):
     def test_get_config_names(self):
         names = _testcapi.config_names()
         self.assertIsInstance(names, frozenset)
-        for name in names:
+        fuer name in names:
             self.assertIsInstance(name, str)
 
     def test_config_set_sys_attr(self):
@@ -246,7 +246,7 @@ klasse CAPITests(unittest.TestCase):
         config_set = _testcapi.config_set
 
         # mutable configuration option mapped to sys attributes
-        for name, sys_attr, option_type in (
+        fuer name, sys_attr, option_type in (
             ('argv', 'argv', list[str]),
             ('base_exec_prefix', 'base_exec_prefix', str | None),
             ('base_executable', '_base_executable', str | None),
@@ -280,12 +280,12 @@ klasse CAPITests(unittest.TestCase):
                 old_opt_value = config_get(name)
                 old_sys_value = getattr(sys, sys_attr)
                 try:
-                    for value in test_values:
+                    fuer value in test_values:
                         config_set(name, value)
                         self.assertEqual(config_get(name), value)
                         self.assertEqual(getattr(sys, sys_attr), value)
 
-                    for value in invalid_types:
+                    fuer value in invalid_types:
                         with self.assertRaises(TypeError):
                             config_set(name, value)
                 finally:
@@ -313,7 +313,7 @@ klasse CAPITests(unittest.TestCase):
             value = bool(value)
             return (int(value), int(not value))
 
-        for name, sys_flag, option_type, expect_func in (
+        fuer name, sys_flag, option_type, expect_func in (
             # (some flags cannot be set, see comments below.)
             ('parser_debug', 'debug', bool, expect_bool),
             ('inspect', 'inspect', bool, expect_bool),
@@ -351,7 +351,7 @@ klasse CAPITests(unittest.TestCase):
             with self.subTest(name=name):
                 old_value = config_get(name)
                 try:
-                    for value in new_values:
+                    fuer value in new_values:
                         expected, expect_flag = expect_func(value)
 
                         config_set(name, value)
@@ -364,11 +364,11 @@ klasse CAPITests(unittest.TestCase):
                             self.assertEqual(sys.get_int_max_str_digits(),
                                              expect_flag)
 
-                    for value in invalid_values:
+                    fuer value in invalid_values:
                         with self.assertRaises(ValueError):
                             config_set(name, value)
 
-                    for value in invalid_types:
+                    fuer value in invalid_types:
                         with self.assertRaises(TypeError):
                             config_set(name, value)
                 finally:
@@ -388,7 +388,7 @@ klasse CAPITests(unittest.TestCase):
     def test_config_set_read_only(self):
         # Test PyConfig_Set() on read-only options
         config_set = _testcapi.config_set
-        for name, value in (
+        fuer name, value in (
             ("allocator", 0),  # PyPreConfig member
             ("perf_profiling", 8),
             ("dev_mode", True),

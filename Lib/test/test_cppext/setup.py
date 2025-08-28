@@ -13,7 +13,7 @@ from setuptools import setup, Extension
 SOURCE = 'extension.cpp'
 
 if not support.MS_WINDOWS:
-    # C++ compiler flags for GCC and clang
+    # C++ compiler flags fuer GCC and clang
     CPPFLAGS = [
         # gh-91321: The purpose of _testcppext extension is to check that building
         # a C++ extension using the Python C API does not emit C++ compiler
@@ -22,10 +22,10 @@ if not support.MS_WINDOWS:
     ]
 
     CPPFLAGS_PEDANTIC = [
-        # Ask for strict(er) compliance with the standard.
-        # We cannot do this for c++03 unlimited API, since several headers in
+        # Ask fuer strict(er) compliance with the standard.
+        # We cannot do this fuer c++03 unlimited API, since several headers in
         # Include/cpython/ use commas at end of `enum` declarations, a C++11
-        # feature for which GCC has no narrower option than -Wpedantic itself.
+        # feature fuer which GCC has no narrower option than -Wpedantic itself.
         '-pedantic-errors',
 
         # We also use `long long`, a C++11 feature we can enable individually.
@@ -73,7 +73,7 @@ def main():
         else:
             std_prefix = '-std'
         cmd = shlex.split(cmd)
-        cmd = [arg for arg in cmd if not arg.startswith(std_prefix)]
+        cmd = [arg fuer arg in cmd if not arg.startswith(std_prefix)]
         cmd = shlex.join(cmd)
         # CC env var overrides sysconfig CC variable in setuptools
         os.environ['CC'] = cmd
@@ -101,7 +101,7 @@ def main():
             print(f"Add PCbuild directory: {pcbuild}")
 
     # Display information to help debugging
-    for env_name in ('CC', 'CFLAGS', 'CPPFLAGS'):
+    fuer env_name in ('CC', 'CFLAGS', 'CPPFLAGS'):
         if env_name in os.environ:
             print(f"{env_name} env var: {os.environ[env_name]!r}")
         else:

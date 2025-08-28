@@ -223,11 +223,11 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertEqual(all([]), True)                     # Empty iterator
         self.assertEqual(all([0, TestFailingBool()]), False)# Short-circuit
         S = [50, 60]
-        self.assertEqual(all(x > 42 for x in S), True)
+        self.assertEqual(all(x > 42 fuer x in S), True)
         S = [50, 40, 60]
-        self.assertEqual(all(x > 42 for x in S), False)
+        self.assertEqual(all(x > 42 fuer x in S), False)
         S = [50, 40, 60, TestFailingBool()]
-        self.assertEqual(all(x > 42 for x in S), False)
+        self.assertEqual(all(x > 42 fuer x in S), False)
 
     def test_any(self):
         self.assertEqual(any([None, None, None]), False)
@@ -240,27 +240,27 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertEqual(any([]), False)                    # Empty iterator
         self.assertEqual(any([1, TestFailingBool()]), True) # Short-circuit
         S = [40, 60, 30]
-        self.assertEqual(any(x > 42 for x in S), True)
+        self.assertEqual(any(x > 42 fuer x in S), True)
         S = [40, 60, 30, TestFailingBool()]
-        self.assertEqual(any(x > 42 for x in S), True)
+        self.assertEqual(any(x > 42 fuer x in S), True)
         S = [10, 20, 30]
-        self.assertEqual(any(x > 42 for x in S), False)
+        self.assertEqual(any(x > 42 fuer x in S), False)
 
     def test_all_any_tuple_optimization(self):
         def f_all():
-            return all(x-2 for x in [1,2,3])
+            return all(x-2 fuer x in [1,2,3])
 
         def f_any():
-            return any(x-1 for x in [1,2,3])
+            return any(x-1 fuer x in [1,2,3])
 
         def f_tuple():
-            return tuple(2*x for x in [1,2,3])
+            return tuple(2*x fuer x in [1,2,3])
 
         funcs = [f_all, f_any, f_tuple]
 
-        for f in funcs:
+        fuer f in funcs:
             # check that generator code object is not duplicated
-            code_objs = [c for c in f.__code__.co_consts if isinstance(c, type(f.__code__))]
+            code_objs = [c fuer c in f.__code__.co_consts if isinstance(c, type(f.__code__))]
             self.assertEqual(len(code_objs), 1)
 
 
@@ -273,7 +273,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             any = lambda x : "any"
             tuple = lambda x : "tuple"
 
-            overridden_outputs = [f() for f in funcs]
+            overridden_outputs = [f() fuer f in funcs]
         finally:
             all, any, tuple = saved
 
@@ -286,7 +286,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             builtins.any = any = lambda x : "any"
             builtins.tuple = tuple = lambda x : "tuple"
 
-            overridden_outputs = [f() for f in funcs]
+            overridden_outputs = [f() fuer f in funcs]
         finally:
             all, any, tuple = saved
             builtins.all, builtins.any, builtins.tuple = saved
@@ -306,7 +306,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         a = {}
         a[0] = a
         self.assertEqual(ascii(a), '{0: {...}}')
-        # Advanced checks for unicode strings
+        # Advanced checks fuer unicode strings
         def _check_uni(s):
             self.assertEqual(ascii(s), repr(s))
         _check_uni("'")
@@ -321,7 +321,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         # Lone surrogates
         _check_uni('\ud800')
         _check_uni('\udfff')
-        # Issue #9804: surrogates should be joined even for printable
+        # Issue #9804: surrogates should be joined even fuer printable
         # wide characters (UCS-2 builds).
         self.assertEqual(ascii('\U0001d121'), "'\\U0001d121'")
         # All together
@@ -432,14 +432,14 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                   (0, True, 'doc', True, True),
                   (1, False, 'doc', False, False),
                   (2, False, None, False, False)]
-        for optval, *expected in values:
+        fuer optval, *expected in values:
             with self.subTest(optval=optval):
             # test both direct compilation and compilation via AST
                 codeobjs = []
                 codeobjs.append(compile(codestr, "<test>", "exec", optimize=optval))
                 tree = ast.parse(codestr, optimize=optval)
                 codeobjs.append(compile(tree, "<test>", "exec", optimize=optval))
-                for code in codeobjs:
+                fuer code in codeobjs:
                     ns = {}
                     exec(code, ns)
                     rv = ns['f']()
@@ -450,12 +450,12 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         modes = ('single', 'exec')
         code_samples = [
             '''def f():pass\n''',
-            '''[x for x in l]''',
-            '''{x for x in l}''',
-            '''(x for x in l)''',
-            '''{x:x for x in l}''',
+            '''[x fuer x in l]''',
+            '''{x fuer x in l}''',
+            '''(x fuer x in l)''',
+            '''{x:x fuer x in l}''',
         ]
-        for mode, code_sample in product(modes, code_samples):
+        fuer mode, code_sample in product(modes, code_samples):
             source = dedent(code_sample)
             co = compile(source,
                             '?',
@@ -477,7 +477,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
 
         # helper function just to check we can run top=level async-for
         async def arange(n):
-            for i in range(n):
+            fuer i in range(n):
                 yield i
 
         klasse Lock:
@@ -496,23 +496,23 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         optimizations = (-1, 0, 1, 2)
         code_samples = [
             '''a = await sleep(0, result=1)''',
-            '''async for i in arange(1):
+            '''async fuer i in arange(1):
                    a = 1''',
             '''async with Lock() as l:
                    a = 1''',
-            '''a = [x async for x in arange(2)][1]''',
-            '''a = 1 in {x async for x in arange(2)}''',
-            '''a = {x:1 async for x in arange(1)}[0]''',
-            '''a = [x async for x in arange(2) async for x in arange(2)][1]''',
-            '''a = [x async for x in (x async for x in arange(5))][1]''',
-            '''a, = [1 for x in {x async for x in arange(1)}]''',
-            '''a = [await sleep(0, x) async for x in arange(2)][1]''',
+            '''a = [x async fuer x in arange(2)][1]''',
+            '''a = 1 in {x async fuer x in arange(2)}''',
+            '''a = {x:1 async fuer x in arange(1)}[0]''',
+            '''a = [x async fuer x in arange(2) async fuer x in arange(2)][1]''',
+            '''a = [x async fuer x in (x async fuer x in arange(5))][1]''',
+            '''a, = [1 fuer x in {x async fuer x in arange(1)}]''',
+            '''a = [await sleep(0, x) async fuer x in arange(2)][1]''',
             # gh-121637: Make sure we correctly handle the case where the
             # async code is optimized away
             '''assert not await sleep(0); a = 1''',
-            '''assert [x async for x in arange(1)]; a = 1''',
-            '''assert {x async for x in arange(1)}; a = 1''',
-            '''assert {x: x async for x in arange(1)}; a = 1''',
+            '''assert [x async fuer x in arange(1)]; a = 1''',
+            '''assert {x async fuer x in arange(1)}; a = 1''',
+            '''assert {x: x async fuer x in arange(1)}; a = 1''',
             '''
             if (a := 1) and __debug__:
                 async with Lock() as l:
@@ -520,11 +520,11 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             ''',
             '''
             if (a := 1) and __debug__:
-                async for x in arange(2):
+                async fuer x in arange(2):
                     pass
             ''',
         ]
-        for mode, code_sample, optimize in product(modes, code_samples, optimizations):
+        fuer mode, code_sample, optimize in product(modes, code_samples, optimizations):
             with self.subTest(mode=mode, code_sample=code_sample, optimize=optimize):
                 source = dedent(code_sample)
                 with self.assertRaises(
@@ -553,7 +553,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
     def test_compile_top_level_await_invalid_cases(self):
          # helper function just to check we can run top=level async-for
         async def arange(n):
-            for i in range(n):
+            fuer i in range(n):
                 yield i
 
         klasse Lock:
@@ -566,10 +566,10 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         modes = ('single', 'exec')
         code_samples = [
             '''def f():  await arange(10)\n''',
-            '''def f():  [x async for x in arange(10)]\n''',
-            '''def f():  [await x async for x in arange(10)]\n''',
+            '''def f():  [x async fuer x in arange(10)]\n''',
+            '''def f():  [await x async fuer x in arange(10)]\n''',
             '''def f():
-                   async for i in arange(1):
+                   async fuer i in arange(1):
                        a = 1
             ''',
             '''def f():
@@ -577,7 +577,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                        a = 1
             '''
         ]
-        for mode, code_sample in product(modes, code_samples):
+        fuer mode, code_sample in product(modes, code_samples):
             source = dedent(code_sample)
             with self.assertRaises(
                     SyntaxError, msg=f"source={source} mode={mode}"):
@@ -597,7 +597,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         CO_COROUTINE flag.
         """
         code = dedent("""async def ticker():
-                for i in range(10):
+                fuer i in range(10):
                     yield i
                     await sleep(0)""")
 
@@ -612,7 +612,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         opt1 = compile(*args, flags = ast.PyCF_OPTIMIZED_AST).body[0]
         opt2 = compile(ast.parse(args[0]), *args[1:], flags = ast.PyCF_OPTIMIZED_AST).body[0]
 
-        for tree in (raw, opt1, opt2):
+        fuer tree in (raw, opt1, opt2):
             self.assertIsInstance(tree.value, ast.BinOp)
             self.assertIsInstance(tree.value.op, ast.Mult)
             self.assertIsInstance(tree.value.left, ast.Name)
@@ -622,7 +622,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertIsInstance(raw_right, ast.Name)
         self.assertEqual(raw_right.id, "__debug__")
 
-        for opt in [opt1, opt2]:
+        fuer opt in [opt1, opt2]:
             opt_right = opt.value.right
             self.assertIsInstance(opt_right, ast.Constant)
             self.assertEqual(opt_right.value, __debug__)
@@ -733,7 +733,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
 
         self.assertEqual(divmod(-sys.maxsize-1, -1), (sys.maxsize+1, 0))
 
-        for num, denom, exp_result in [ (3.25, 1.0, (3.0, 0.25)),
+        fuer num, denom, exp_result in [ (3.25, 1.0, (3.0, 0.25)),
                                         (-3.25, 1.0, (-4.0, 0.75)),
                                         (3.25, -1.0, (-4.0, -0.75)),
                                         (-3.25, -1.0, (3.0, -0.25))]:
@@ -782,7 +782,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertEqual(eval("globals()['A_GLOBAL_VALUE']", locals=data), 123)
 
     def test_general_eval(self):
-        # Tests that general mappings can be used for the locals argument
+        # Tests that general mappings can be used fuer the locals argument
 
         klasse M:
             "Test mapping interface versus possible calls from eval()."
@@ -824,8 +824,8 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertEqual(eval('locals()', g, d), d)
 
         # Verify locals stores (used by list comps)
-        eval('[locals() for i in (2,3)]', g, d)
-        eval('[locals() for i in (2,3)]', g, collections.UserDict())
+        eval('[locals() fuer i in (2,3)]', g, d)
+        eval('[locals() fuer i in (2,3)]', g, collections.UserDict())
 
         klasse SpreadSheet:
             "Sample application showing nested, calculated lookups."
@@ -1034,7 +1034,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertEqual(result, 2520)
 
         # should fail: closure isn't allowed
-        # for functions without free vars
+        # fuer functions without free vars
         self.assertRaises(TypeError,
             exec,
             function_without_closures.__code__,
@@ -1115,7 +1115,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertRaises(TypeError, list, filter(42, (1, 2)))
 
     def test_filter_pickle(self):
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             f1 = filter(filter_char, "abcdeabcde")
             f2 = filter(filter_char, "abcdeabcde")
             self.check_iter_pickle(f1, list(f2), proto)
@@ -1125,10 +1125,10 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
     @support.requires_resource('cpu')
     def test_filter_dealloc(self):
         # Tests recursive deallocation of nested filter objects using the
-        # thrashcan mechanism. See gh-102356 for more details.
+        # thrashcan mechanism. See gh-102356 fuer more details.
         max_iters = 1000000
         i = filter(bool, range(max_iters))
-        for _ in range(max_iters):
+        fuer _ in range(max_iters):
             i = filter(bool, i)
         del i
         gc.collect()
@@ -1204,7 +1204,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertRaises(TypeError, iter)
         self.assertRaises(TypeError, iter, 42, 42)
         lists = [("1", "2"), ["1", "2"], "12"]
-        for l in lists:
+        fuer l in lists:
             i = iter(l)
             self.assertEqual(next(i), '1')
             self.assertEqual(next(i), '2')
@@ -1300,7 +1300,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
 
         def plus(*v):
             accu = 0
-            for i in v: accu = accu + i
+            fuer i in v: accu = accu + i
             return accu
         self.assertEqual(
             list(map(plus, [1, 3, 7])),
@@ -1340,7 +1340,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertRaises(RuntimeError, list, map(badfunc, range(5)))
 
     def test_map_pickle(self):
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             m1 = map(map_char, "Is this the real life?")
             m2 = map(map_char, "Is this the real life?")
             self.check_iter_pickle(m1, list(m2), proto)
@@ -1351,7 +1351,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         a = (1, 2, 3)
         b = (4, 5, 6)
         t = [(1, 4), (2, 5), (3, 6)]
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             m1 = map(pack, a, b, strict=True)
             self.check_iter_pickle(m1, t, proto)
 
@@ -1359,7 +1359,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         a = (1, 2, 3)
         b = (4, 5, 6, 7)
         t = [(1, 4), (2, 5), (3, 6)]
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             m1 = map(pack, a, b, strict=True)
             m2 = pickle.loads(pickle.dumps(m1, proto))
             self.assertEqual(self.iter_error(m1, ValueError), t)
@@ -1474,10 +1474,10 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                 raise ValueError
         self.assertRaises(ValueError, max, BadSeq())
 
-        for stmt in (
+        fuer stmt in (
             "max(key=int)",                 # no args
             "max(default=None)",
-            "max(1, 2, default=None)",      # require container for default
+            "max(1, 2, default=None)",      # require container fuer default
             "max(default=None, key=int)",
             "max(1, key=int)",              # single arg not iterable
             "max(1, 2, keystone=int)",      # wrong keyword
@@ -1504,8 +1504,8 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
 
         self.assertEqual(max((1, 2), key=None), 2)
 
-        data = [random.randrange(200) for i in range(100)]
-        keys = dict((elem, random.randrange(50)) for elem in data)
+        data = [random.randrange(200) fuer i in range(100)]
+        keys = dict((elem, random.randrange(50)) fuer elem in data)
         f = keys.__getitem__
         self.assertEqual(max(data, key=f),
                          sorted(reversed(data), key=f)[-1])
@@ -1537,10 +1537,10 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                 raise ValueError
         self.assertRaises(ValueError, min, BadSeq())
 
-        for stmt in (
+        fuer stmt in (
             "min(key=int)",                 # no args
             "min(default=None)",
-            "min(1, 2, default=None)",      # require container for default
+            "min(1, 2, default=None)",      # require container fuer default
             "min(default=None, key=int)",
             "min(1, key=int)",              # single arg not iterable
             "min(1, 2, keystone=int)",      # wrong keyword
@@ -1567,8 +1567,8 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
 
         self.assertEqual(min((1, 2), key=None), 1)
 
-        data = [random.randrange(200) for i in range(100)]
-        keys = dict((elem, random.randrange(50)) for elem in data)
+        data = [random.randrange(200) fuer i in range(100)]
+        keys = dict((elem, random.randrange(50)) fuer elem in data)
         f = keys.__getitem__
         self.assertEqual(min(data, key=f),
                          sorted(data, key=f)[0])
@@ -1712,9 +1712,9 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertAlmostEqual(pow(-2.,2), 4.)
         self.assertAlmostEqual(pow(-2.,3), -8.)
 
-        for x in 2, 2.0:
-            for y in 10, 10.0:
-                for z in 1000, 1000.0:
+        fuer x in 2, 2.0:
+            fuer y in 10, 10.0:
+                fuer z in 1000, 1000.0:
                     if isinstance(x, float) or \
                        isinstance(y, float) or \
                        isinstance(z, float):
@@ -1725,7 +1725,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertAlmostEqual(pow(-1, 0.5), 1j)
         self.assertAlmostEqual(pow(-1, 1/3), 0.5 + 0.8660254037844386j)
 
-        # See test_pow for additional tests for three-argument pow.
+        # See test_pow fuer additional tests fuer three-argument pow.
         self.assertEqual(pow(-1, -2, 3), 1)
         self.assertRaises(ValueError, pow, 1, 2, 0)
 
@@ -1756,7 +1756,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             self.assertEqual(input('testing\n'), 'Dear John')
 
             # SF 1535165: don't segfault on closed stdin
-            # sys.stdout must be a regular file for triggering
+            # sys.stdout must be a regular file fuer triggering
             sys.stdout = savestdout
             sys.stdin.close()
             self.assertRaises(ValueError, input)
@@ -1801,7 +1801,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             patch = True
             input()  # should not crash
 
-    # test_int(): see test_int.py for tests of built-in function int().
+    # test_int(): see test_int.py fuer tests of built-in function int().
 
     def test_repr(self):
         self.assertEqual(repr(''), '\'\'')
@@ -1877,7 +1877,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
 
         self.assertRaises(TypeError, round)
 
-        # test generic rounding delegation for reals
+        # test generic rounding delegation fuer reals
         klasse TestRound:
             def __round__(self):
                 return 23
@@ -1895,7 +1895,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertRaises(TypeError, round, t)
         self.assertRaises(TypeError, round, t, 0)
 
-    # Some versions of glibc for alpha have a bug that affects
+    # Some versions of glibc fuer alpha have a bug that affects
     # float -> integer rounding (floor, ceil, rint, round) for
     # values in the range [2**52, 2**53).  See:
     #
@@ -1918,7 +1918,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
 
     def test_bug_27936(self):
         # Verify that ndigits=None means the same as passing in no argument
-        for x in [1234,
+        fuer x in [1234,
                   1234.56,
                   decimal.Decimal('1234.56'),
                   fractions.Fraction(123456, 100)]:
@@ -1937,7 +1937,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         msg = r"^attribute name must be string, not 'int'$"
         self.assertRaisesRegex(TypeError, msg, setattr, sys, 1, 'spam')
 
-    # test_str(): see test_str.py and test_bytes.py for str() tests.
+    # test_str(): see test_str.py and test_bytes.py fuer str() tests.
 
     def test_sum(self):
         self.assertEqual(sum([]), 0)
@@ -1952,16 +1952,16 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertEqual(sum(range(10), 2**31-5), 2**31+40)
         self.assertEqual(sum(range(10), 2**63-5), 2**63+40)
 
-        self.assertEqual(sum(i % 2 != 0 for i in range(10)), 5)
-        self.assertEqual(sum((i % 2 != 0 for i in range(10)), 2**31-3),
+        self.assertEqual(sum(i % 2 != 0 fuer i in range(10)), 5)
+        self.assertEqual(sum((i % 2 != 0 fuer i in range(10)), 2**31-3),
                          2**31+2)
-        self.assertEqual(sum((i % 2 != 0 for i in range(10)), 2**63-3),
+        self.assertEqual(sum((i % 2 != 0 fuer i in range(10)), 2**63-3),
                          2**63+2)
         self.assertIs(sum([], False), False)
 
-        self.assertEqual(sum(i / 2 for i in range(10)), 22.5)
-        self.assertEqual(sum((i / 2 for i in range(10)), 1000), 1022.5)
-        self.assertEqual(sum((i / 2 for i in range(10)), 1000.25), 1022.75)
+        self.assertEqual(sum(i / 2 fuer i in range(10)), 22.5)
+        self.assertEqual(sum((i / 2 fuer i in range(10)), 1000), 1022.5)
+        self.assertEqual(sum((i / 2 fuer i in range(10)), 1000.25), 1022.75)
         self.assertEqual(sum([0.5, 1]), 1.5)
         self.assertEqual(sum([1, 0.5]), 1.5)
         self.assertEqual(repr(sum([-0.0])), '0.0')
@@ -1992,13 +1992,13 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertRaises(ValueError, sum, BadSeq())
 
         empty = []
-        sum(([x] for x in range(10)), empty)
+        sum(([x] fuer x in range(10)), empty)
         self.assertEqual(empty, [])
 
         xs = [complex(random.random() - .5, random.random() - .5)
-              for _ in range(10000)]
-        self.assertEqual(sum(xs), complex(sum(z.real for z in xs),
-                                          sum(z.imag for z in xs)))
+              fuer _ in range(10000)]
+        self.assertEqual(sum(xs), complex(sum(z.real fuer z in xs),
+                                          sum(z.imag fuer z in xs)))
 
         # test that sum() of complex and real numbers doesn't
         # smash sign of imaginary 0
@@ -2061,7 +2061,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         """Collect `iterable` into a list, catching an expected `error`."""
         items = []
         with self.assertRaises(error):
-            for item in iterable:
+            fuer item in iterable:
                 items.append(item)
         return items
 
@@ -2087,7 +2087,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertRaises(TypeError, zip, a, G())
         self.assertRaises(RuntimeError, zip, a, TestFailingIter())
 
-        # Make sure zip doesn't try to allocate a billion elements for the
+        # Make sure zip doesn't try to allocate a billion elements fuer the
         # result list when one of its arguments doesn't say how long it is.
         # A MemoryError is the most likely failure mode.
         klasse SequenceWithoutALength:
@@ -2113,7 +2113,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         a = (1, 2, 3)
         b = (4, 5, 6)
         t = [(1, 4), (2, 5), (3, 6)]
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             z1 = zip(a, b)
             self.check_iter_pickle(z1, t, proto)
 
@@ -2121,7 +2121,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         a = (1, 2, 3)
         b = (4, 5, 6)
         t = [(1, 4), (2, 5), (3, 6)]
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             z1 = zip(a, b, strict=True)
             self.check_iter_pickle(z1, t, proto)
 
@@ -2129,7 +2129,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         a = (1, 2, 3)
         b = (4, 5, 6, 7)
         t = [(1, 4), (2, 5), (3, 6)]
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             z1 = zip(a, b, strict=True)
             z2 = pickle.loads(pickle.dumps(z1, proto))
             self.assertEqual(self.iter_error(z1, ValueError), t)
@@ -2246,7 +2246,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         #  the specifics of the various formatters
         self.assertEqual(format(3, ''), '3')
 
-        # Returns some classes to use for various tests.  There's
+        # Returns some classes to use fuer various tests.  There's
         #  an old-style version, and a new-style version
         def classes_new():
             klasse A(object):
@@ -2282,7 +2282,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             self.assertEqual(format(value, ""), str(value))
             self.assertEqual(format(value), str(value))
 
-        # for builtin types, format(x, "") == str(x)
+        # fuer builtin types, format(x, "") == str(x)
         empty_format_spec(17**13)
         empty_format_spec(1.0)
         empty_format_spec(3.1415e104)
@@ -2302,7 +2302,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertRaises(TypeError, format, object(), 4)
         self.assertRaises(TypeError, format, object(), object())
 
-        # tests for object.__format__ really belong elsewhere, but
+        # tests fuer object.__format__ really belong elsewhere, but
         #  there's no good place to put them
         x = object().__format__('')
         self.assertStartsWith(x, '<object object at')
@@ -2329,7 +2329,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         klasse C(object):
             pass
 
-        for cls in [object, B, C]:
+        fuer cls in [object, B, C]:
             obj = cls()
             self.assertEqual(format(obj), str(obj))
             self.assertEqual(format(obj, ''), str(obj))
@@ -2379,7 +2379,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertEqual(bytearray(b'A,B'), array.join(iterator()))
 
     def test_construct_singletons(self):
-        for const in None, Ellipsis, NotImplemented:
+        fuer const in None, Ellipsis, NotImplemented:
             tp = type(const)
             self.assertIs(tp(), const)
             self.assertRaises(TypeError, tp, 1, 2)
@@ -2399,7 +2399,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             not NotImplemented
 
     def test_singleton_attribute_access(self):
-        for singleton in (NotImplemented, Ellipsis):
+        fuer singleton in (NotImplemented, Ellipsis):
             with self.subTest(singleton):
                 self.assertIs(type(singleton), singleton.__class__)
                 self.assertIs(type(singleton).__class__, type)
@@ -2421,7 +2421,7 @@ klasse TestBreakpoint(unittest.TestCase):
     def setUp(self):
         # These tests require a clean slate environment.  For example, if the
         # test suite is run with $PYTHONBREAKPOINT set to something else, it
-        # will mess up these tests.  Similarly for sys.breakpointhook.
+        # will mess up these tests.  Similarly fuer sys.breakpointhook.
         # Cleaning the slate here means you can't use breakpoint() to debug
         # these tests, but I think that's okay.  Just use pdb.set_trace() if
         # you must.
@@ -2497,7 +2497,7 @@ klasse TestBreakpoint(unittest.TestCase):
 
     @unittest.skipIf(sys.flags.ignore_environment, '-E was given')
     def test_envar_unimportable(self):
-        for envar in (
+        fuer envar in (
                 '.', '..', '.foo', 'foo.', '.int', 'int.',
                 '.foo.bar', '..foo.bar', '/./',
                 'nosuchbuiltin',
@@ -2601,7 +2601,7 @@ klasse PtyTests(unittest.TestCase):
             self.fail("got %d lines in pipe but expected 2, child output was:\n%s"
                       % (len(lines), child_output))
 
-        # bpo-40155: Close the PTY before waiting for the child process
+        # bpo-40155: Close the PTY before waiting fuer the child process
         # completion, otherwise the child process hangs on AIX.
         os.close(fd)
 
@@ -2649,7 +2649,7 @@ klasse PtyTests(unittest.TestCase):
         # the readline implementation. In some cases, the Python readline
         # callback rlhandler() is called by readline with a string without
         # non-ASCII characters.
-        # Unlink readline temporarily from PyOS_Readline() for those tests,
+        # Unlink readline temporarily from PyOS_Readline() fuer those tests,
         # since test_builtin is not intended to test
         # the readline module, but the builtins module.
         if "readline" in sys.modules:
@@ -2738,12 +2738,12 @@ klasse TestSorted(unittest.TestCase):
     def test_inputtypes(self):
         s = 'abracadabra'
         types = [list, tuple, str]
-        for T in types:
+        fuer T in types:
             self.assertEqual(sorted(s), sorted(T(s)))
 
         s = ''.join(set(s))  # unique letters only
         types = [str, set, frozenset, list, tuple, dict.fromkeys]
-        for T in types:
+        fuer T in types:
             self.assertEqual(sorted(s), sorted(T(s)))
 
     def test_baddecorator(self):
@@ -2800,17 +2800,17 @@ klasse ImmortalTests(unittest.TestCase):
             self.assertGreater(sys.getrefcount(immortal), self.IMMORTAL_REFCOUNT_MINIMUM)
 
     def test_immortals(self):
-        for immortal in self.IMMORTALS:
+        fuer immortal in self.IMMORTALS:
             self.assert_immortal(immortal)
 
     def test_list_repeat_respect_immortality(self):
         refs = list(self.IMMORTALS) * 42
-        for immortal in self.IMMORTALS:
+        fuer immortal in self.IMMORTALS:
             self.assert_immortal(immortal)
 
     def test_tuple_repeat_respect_immortality(self):
         refs = tuple(self.IMMORTALS) * 42
-        for immortal in self.IMMORTALS:
+        fuer immortal in self.IMMORTALS:
             self.assert_immortal(immortal)
 
 
@@ -2853,7 +2853,7 @@ klasse TestType(unittest.TestCase):
             type('a', (), dict={})
 
     def test_type_name(self):
-        for name in 'A', '\xc4', '\U0001f40d', 'B.A', '42', '':
+        fuer name in 'A', '\xc4', '\U0001f40d', 'B.A', '42', '':
             with self.subTest(name=name):
                 A = type(name, (), {})
                 self.assertEqual(A.__name__, name)
@@ -2867,7 +2867,7 @@ klasse TestType(unittest.TestCase):
             type(b'A', (), {})
 
         C = type('C', (), {})
-        for name in 'A', '\xc4', '\U0001f40d', 'B.A', '42', '':
+        fuer name in 'A', '\xc4', '\U0001f40d', 'B.A', '42', '':
             with self.subTest(name=name):
                 C.__name__ = name
                 self.assertEqual(C.__name__, name)
@@ -2924,7 +2924,7 @@ klasse TestType(unittest.TestCase):
         self.assertEqual(A.__type_params__, "whatever")
 
     def test_type_doc(self):
-        for doc in 'x', '\xc4', '\U0001f40d', 'x\x00y', b'x', 42, None:
+        fuer doc in 'x', '\xc4', '\U0001f40d', 'x\x00y', b'x', 42, None:
             A = type('A', (), {'__doc__': doc})
             self.assertEqual(A.__doc__, doc)
         with self.assertRaises(UnicodeEncodeError):
@@ -2932,7 +2932,7 @@ klasse TestType(unittest.TestCase):
 
         A = type('A', (), {})
         self.assertEqual(A.__doc__, None)
-        for doc in 'x', '\xc4', '\U0001f40d', 'x\x00y', 'x\udcdcy', b'x', 42, None:
+        fuer doc in 'x', '\xc4', '\U0001f40d', 'x\x00y', 'x\udcdcy', b'x', 42, None:
             A.__doc__ = doc
             self.assertEqual(A.__doc__, doc)
 

@@ -20,7 +20,7 @@ from idlelib.window import ListedToplevel
 
 
 file_open = None  # Method...Item and Class...Item use this.
-# Normally pyshell.flist.open, but there is no pyshell.flist for htest.
+# Normally pyshell.flist.open, but there is no pyshell.flist fuer htest.
 
 # The browser depends on pyclbr and importlib which do not support .pyi files.
 browseable_extension_blocklist = ('.pyi',)
@@ -46,12 +46,12 @@ def transform_children(child_dict, modname=None):
     so a check prevents multiple in-place augmentations.
     """
     obs = []  # Use list since values should already be sorted.
-    for key, obj in child_dict.items():
+    fuer key, obj in child_dict.items():
         if modname is None or obj.module == modname:
             if hasattr(obj, 'super') and obj.super and obj.name == key:
                 # If obj.name != key, it has already been suffixed.
                 supers = []
-                for sup in obj.super:
+                fuer sup in obj.super:
                     if isinstance(sup, str):
                         sname = sup
                     else:
@@ -67,21 +67,21 @@ def transform_children(child_dict, modname=None):
 klasse ModuleBrowser:
     """Browse module classes and functions in IDLE.
     """
-    # This klasse is also the base klasse for pathbrowser.PathBrowser.
+    # This klasse is also the base klasse fuer pathbrowser.PathBrowser.
     # Init and close are inherited, other methods are overridden.
     # PathBrowser.__init__ does not call __init__ below.
 
     def __init__(self, master, path, *, _htest=False, _utest=False):
-        """Create a window for browsing a module's structure.
+        """Create a window fuer browsing a module's structure.
 
         Args:
-            master: parent for widgets.
+            master: parent fuer widgets.
             path: full path of file to browse.
             _htest - bool; change box location when running htest.
             -utest - bool; suppress contents when running unittest.
 
         Global variables:
-            file_open: Function used for opening a file.
+            file_open: Function used fuer opening a file.
 
         Instance variables:
             name: Module name.
@@ -142,14 +142,14 @@ klasse ModuleBrowser:
 
 
 klasse ModuleBrowserTreeItem(TreeItem):
-    """Browser tree for Python module.
+    """Browser tree fuer Python module.
 
-    Uses TreeItem as the basis for the structure of the tree.
+    Uses TreeItem as the basis fuer the structure of the tree.
     Used by both browsers.
     """
 
     def __init__(self, file):
-        """Create a TreeItem for the file.
+        """Create a TreeItem fuer the file.
 
         Args:
             file: Full path and module name.
@@ -165,8 +165,8 @@ klasse ModuleBrowserTreeItem(TreeItem):
         return "python"
 
     def GetSubList(self):
-        "Return ChildBrowserTreeItems for children."
-        return [ChildBrowserTreeItem(obj) for obj in self.listchildren()]
+        "Return ChildBrowserTreeItems fuer children."
+        return [ChildBrowserTreeItem(obj) fuer obj in self.listchildren()]
 
     def OnDoubleClick(self):
         "Open a module in an editor window when double clicked."
@@ -194,13 +194,13 @@ klasse ModuleBrowserTreeItem(TreeItem):
 
 
 klasse ChildBrowserTreeItem(TreeItem):
-    """Browser tree for child nodes within the module.
+    """Browser tree fuer child nodes within the module.
 
-    Uses TreeItem as the basis for the structure of the tree.
+    Uses TreeItem as the basis fuer the structure of the tree.
     """
 
     def __init__(self, obj):
-        "Create a TreeItem for a pyclbr class/function object."
+        "Create a TreeItem fuer a pyclbr class/function object."
         self.obj = obj
         self.name = obj.name
         self.isfunction = isinstance(obj, pyclbr.Function)
@@ -225,9 +225,9 @@ klasse ChildBrowserTreeItem(TreeItem):
         return self.obj.children != {}
 
     def GetSubList(self):
-        "Return ChildBrowserTreeItems for children."
+        "Return ChildBrowserTreeItems fuer children."
         return [ChildBrowserTreeItem(obj)
-                for obj in transform_children(self.obj.children)]
+                fuer obj in transform_children(self.obj.children)]
 
     def OnDoubleClick(self):
         "Open module with file_open and position to lineno."
@@ -243,7 +243,7 @@ def _module_browser(parent): # htest #
         file = sys.argv[1]
     else:
         file = __file__
-        # Add nested objects for htest.
+        # Add nested objects fuer htest.
         klasse Nested_in_func(TreeNode):
             def nested_in_class(): pass
         def closure():

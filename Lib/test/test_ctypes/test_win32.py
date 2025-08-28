@@ -37,14 +37,14 @@ klasse ReturnStructSizesTestCase(unittest.TestCase):
     def test_sizes(self):
         _ctypes_test = import_helper.import_module("_ctypes_test")
         dll = CDLL(_ctypes_test.__file__)
-        for i in range(1, 11):
-            fields = [ (f"f{f}", c_char) for f in range(1, i + 1)]
+        fuer i in range(1, 11):
+            fields = [ (f"f{f}", c_char) fuer f in range(1, i + 1)]
             klasse S(Structure):
                 _fields_ = fields
             f = getattr(dll, f"TestSize{i}")
             f.restype = S
             res = f()
-            for i, f in enumerate(fields):
+            fuer i, f in enumerate(fields):
                 value = getattr(res, f[0])
                 expected = bytes([ord('a') + i])
                 self.assertEqual(value, expected)
@@ -134,7 +134,7 @@ klasse Structures(unittest.TestCase):
         ReturnRect.argtypes = [c_int, RECT, POINTER(RECT), POINT, RECT,
                                POINTER(RECT), POINT, RECT]
         ReturnRect.restype = RECT
-        for i in range(4):
+        fuer i in range(4):
             ret = ReturnRect(i, rect, pointer(rect), pt, rect,
                          byref(rect), pt, rect)
             # the c function will check and modify ret if something is

@@ -137,7 +137,7 @@ klasse TestSetCAPI(BaseSetTests, unittest.TestCase):
 
     def test_set_contains(self):
         contains = _testlimitedcapi.set_contains
-        for cls in (set, frozenset, set_subclass, frozenset_subclass):
+        fuer cls in (set, frozenset, set_subclass, frozenset_subclass):
             with self.subTest(cls=cls):
                 instance = cls((1, 2))
                 self.assertTrue(contains(instance, 1))
@@ -150,7 +150,7 @@ klasse TestSetCAPI(BaseSetTests, unittest.TestCase):
 
     def test_add(self):
         add = _testlimitedcapi.set_add
-        for cls in (set, set_subclass):
+        fuer cls in (set, set_subclass):
             with self.subTest(cls=cls):
                 instance = cls((1, 2))
                 self.assertEqual(add(instance, 1), 0)
@@ -168,7 +168,7 @@ klasse TestSetCAPI(BaseSetTests, unittest.TestCase):
 
     def test_discard(self):
         discard = _testlimitedcapi.set_discard
-        for cls in (set, set_subclass):
+        fuer cls in (set, set_subclass):
             with self.subTest(cls=cls):
                 instance = cls((1, 2))
                 self.assertEqual(discard(instance, 3), 0)
@@ -191,7 +191,7 @@ klasse TestSetCAPI(BaseSetTests, unittest.TestCase):
     def test_pop(self):
         pop = _testlimitedcapi.set_pop
         orig = (1, 2)
-        for cls in (set, set_subclass):
+        fuer cls in (set, set_subclass):
             with self.subTest(cls=cls):
                 instance = cls(orig)
                 self.assertIn(pop(instance), orig)
@@ -207,7 +207,7 @@ klasse TestSetCAPI(BaseSetTests, unittest.TestCase):
 
     def test_clear(self):
         clear = _testlimitedcapi.set_clear
-        for cls in (set, set_subclass):
+        fuer cls in (set, set_subclass):
             with self.subTest(cls=cls):
                 instance = cls((1, 2))
                 self.assertEqual(clear(instance), 0)
@@ -223,8 +223,8 @@ klasse TestSetCAPI(BaseSetTests, unittest.TestCase):
 klasse TestInternalCAPI(BaseSetTests, unittest.TestCase):
     def test_set_update(self):
         update = _testinternalcapi.set_update
-        for cls in (set, set_subclass):
-            for it in ('ab', ('a', 'b'), ['a', 'b'],
+        fuer cls in (set, set_subclass):
+            fuer it in ('ab', ('a', 'b'), ['a', 'b'],
                        set('ab'), set_subclass('ab'),
                        frozenset('ab'), frozenset_subclass('ab')):
                 with self.subTest(cls=cls, it=it):
@@ -247,7 +247,7 @@ klasse TestInternalCAPI(BaseSetTests, unittest.TestCase):
 
     def test_set_next_entry(self):
         set_next = _testinternalcapi.set_next_entry
-        for cls in (set, set_subclass, frozenset, frozenset_subclass):
+        fuer cls in (set, set_subclass, frozenset, frozenset_subclass):
             with self.subTest(cls=cls):
                 instance = cls('abc')
                 pos = 0

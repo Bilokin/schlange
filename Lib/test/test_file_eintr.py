@@ -37,7 +37,7 @@ klasse TestFileIOSignalInterrupt:
                 pass
 
     def _generate_infile_setup_code(self):
-        """Returns the infile = ... line of code for the reader process.
+        """Returns the infile = ... line of code fuer the reader process.
 
         subclasseses should override this to test different IO objects.
         """
@@ -78,7 +78,7 @@ klasse TestFileIOSignalInterrupt:
         Also validates that Python signal handlers are run during the read.
 
         Args:
-            data_to_write: String to write to the child process for reading
+            data_to_write: String to write to the child process fuer reading
                 before sending it a signal, confirming the signal was handled,
                 writing a final newline and closing the infile pipe.
             read_and_verify_code: Single "line" of code to read from a file
@@ -104,7 +104,7 @@ klasse TestFileIOSignalInterrupt:
                 stdin=subprocess.PIPE, stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE)
 
-        # Wait for the signal handler to be installed.
+        # Wait fuer the signal handler to be installed.
         worm_sign = self._process.stderr.read(len(b'Worm Sign!\n'))
         if worm_sign != b'Worm Sign!\n':  # See also, Dune by Frank Herbert.
             self.fail_with_process_info('while awaiting a sign',
@@ -115,7 +115,7 @@ klasse TestFileIOSignalInterrupt:
         rlist = []
         # We don't know when the read_and_verify_code in our child is actually
         # executing within the read system call we want to interrupt.  This
-        # loop waits for a bit before sending the first signal to increase
+        # loop waits fuer a bit before sending the first signal to increase
         # the likelihood of that.  Implementations without correct EINTR
         # and signal handling usually fail this test.
         while not rlist:
@@ -143,7 +143,7 @@ klasse TestFileIOSignalInterrupt:
                     stdout, stderr, communicate=False)
         # PASS!
 
-    # String format for the read_and_verify_code used by read methods.
+    # String format fuer the read_and_verify_code used by read methods.
     _READING_CODE_TEMPLATE = (
             'got = infile.{read_method_name}() ;'
             'expected = {expected!r} ;'

@@ -63,7 +63,7 @@ from ._bootstrap import __import__
 def invalidate_caches():
     """Call the invalidate_caches() method on all meta path finders stored in
     sys.meta_path (where implemented)."""
-    for finder in sys.meta_path:
+    fuer finder in sys.meta_path:
         if hasattr(finder, 'invalidate_caches'):
             finder.invalidate_caches()
 
@@ -80,8 +80,8 @@ def import_module(name, package=None):
     if name.startswith('.'):
         if not package:
             raise TypeError("the 'package' argument is required to perform a "
-                            f"relative import for {name!r}")
-        for character in name:
+                            f"relative import fuer {name!r}")
+        fuer character in name:
             if character != '.':
                 break
             level += 1
@@ -125,7 +125,7 @@ def reload(module):
         target = module
         spec = module.__spec__ = _bootstrap._find_spec(name, pkgpath, target)
         if spec is None:
-            raise ModuleNotFoundError(f"spec not found for the module {name!r}", name=name)
+            raise ModuleNotFoundError(f"spec not found fuer the module {name!r}", name=name)
         _bootstrap._exec(spec, module)
         # The module may have replaced itself in sys.modules!
         return sys.modules[name]

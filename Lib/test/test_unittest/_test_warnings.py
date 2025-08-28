@@ -1,4 +1,4 @@
-# helper module for test_runner.Test_TextTestRunner.test_warnings
+# helper module fuer test_runner.Test_TextTestRunner.test_warnings
 
 """
 This module has a number of tests that raise different kinds of warnings.
@@ -58,5 +58,5 @@ if __name__ == '__main__':
             unittest.main(exit=False)
 
     # print all the warning messages collected
-    for w in ws:
+    fuer w in ws:
         print(w.message)

@@ -6,7 +6,7 @@
 #
 #
 # Permission to use, copy, modify, and distribute this software and
-# its documentation for any purpose is hereby granted without fee,
+# its documentation fuer any purpose is hereby granted without fee,
 # provided that the above copyright notice appear in all copies and
 # that both that copyright notice and this permission notice appear in
 # supporting documentation.
@@ -44,9 +44,9 @@ SYNTAX_WHITESPACE, SYNTAX_WORD, SYNTAX_SYMBOL = range(3)
 def make_default_syntax_table() -> dict[str, int]:
     # XXX perhaps should use some unicodedata here?
     st: dict[str, int] = {}
-    for c in map(chr, range(256)):
+    fuer c in map(chr, range(256)):
         st[c] = SYNTAX_SYMBOL
-    for c in [a for a in map(chr, range(256)) if a.isalnum()]:
+    fuer c in [a fuer a in map(chr, range(256)) if a.isalnum()]:
         st[c] = SYNTAX_WORD
     st["\n"] = st[" "] = SYNTAX_WHITESPACE
     return st
@@ -54,7 +54,7 @@ def make_default_syntax_table() -> dict[str, int]:
 
 def make_default_commands() -> dict[CommandName, type[Command]]:
     result: dict[CommandName, type[Command]] = {}
-    for v in vars(commands).values():
+    fuer v in vars(commands).values():
         if isinstance(v, type) and issubclass(v, Command) and v.__name__[0].islower():
             result[v.__name__] = v
             result[v.__name__.replace("_", "-")] = v
@@ -106,8 +106,8 @@ default_keymap: tuple[tuple[KeySpec, CommandName], ...] = tuple(
         (r"\x1b[200~", "perform-bracketed-paste"),
         (r"\x03", "ctrl-c"),
     ]
-    + [(c, "self-insert") for c in map(chr, range(32, 127)) if c != "\\"]
-    + [(c, "self-insert") for c in map(chr, range(128, 256)) if c.isalpha()]
+    + [(c, "self-insert") fuer c in map(chr, range(32, 127)) if c != "\\"]
+    + [(c, "self-insert") fuer c in map(chr, range(128, 256)) if c.isalpha()]
     + [
         (r"\<up>", "up"),
         (r"\<down>", "down"),
@@ -124,7 +124,7 @@ default_keymap: tuple[tuple[KeySpec, CommandName], ...] = tuple(
         (r"\<f1>", "help"),
         (r"\<f2>", "show-history"),
         (r"\<f3>", "paste-mode"),
-        (r"\EOF", "end"),  # the entries in the terminfo database for xterms
+        (r"\EOF", "end"),  # the entries in the terminfo database fuer xterms
         (r"\EOH", "home"),  # seem to be wrong.  this is a less than ideal
         # workaround
     ]
@@ -146,12 +146,12 @@ klasse Reader:
       * console:
         Hopefully encapsulates the OS dependent stuff.
       * pos:
-        A 0-based index into 'buffer' for where the insertion point
+        A 0-based index into 'buffer' fuer where the insertion point
         is.
       * screeninfo:
         A list of screen position tuples. Each list element is a tuple
-        representing information on visible line length for a given line.
-        Allows for efficient skipping of color escape sequences.
+        representing information on visible line length fuer a given line.
+        Allows fuer efficient skipping of color escape sequences.
       * cxy, lxy:
         the position of the insertion point in screen ...
       * syntax_table:
@@ -167,7 +167,7 @@ klasse Reader:
       * kill_ring:
         The emacs-style kill-ring; manipulated with yank & yank-pop
       * ps1, ps2, ps3, ps4:
-        prompts.  ps1 is the prompt for a one-line input; for a
+        prompts.  ps1 is the prompt fuer a one-line input; fuer a
         multiline input it looks like:
             ps2> first line of input goes here
             ps3> second and further
@@ -319,7 +319,7 @@ klasse Reader:
         lines = "".join(self.buffer[offset:]).split("\n")
         cursor_found = False
         lines_beyond_cursor = 0
-        for ln, line in enumerate(lines, num_common_lines):
+        fuer ln, line in enumerate(lines, num_common_lines):
             line_len = len(line)
             if 0 <= pos <= line_len:
                 self.lxy = pos, ln
@@ -353,10 +353,10 @@ klasse Reader:
             else:
                 pre = prompt
                 prelen = prompt_len
-                for wrap in range(wrapcount + 1):
+                fuer wrap in range(wrapcount + 1):
                     index_to_wrap_before = 0
                     column = 0
-                    for char_width in char_widths:
+                    fuer char_width in char_widths:
                         if column + char_width + prelen >= self.console.width:
                             break
                         index_to_wrap_before += 1
@@ -381,7 +381,7 @@ klasse Reader:
         self.screeninfo = screeninfo
         self.cxy = self.pos2xy()
         if self.msg:
-            for mline in self.msg.split("\n"):
+            fuer mline in self.msg.split("\n"):
                 screen.append(mline)
                 screeninfo.append((0, []))
 
@@ -459,7 +459,7 @@ klasse Reader:
         return p
 
     def max_column(self, y: int) -> int:
-        """Return the last x-offset for line y"""
+        """Return the last x-offset fuer line y"""
         return self.screeninfo[y][0] + sum(self.screeninfo[y][1])
 
     def max_row(self) -> int:
@@ -474,7 +474,7 @@ klasse Reader:
         return self.arg
 
     def get_prompt(self, lineno: int, cursor_on_line: bool) -> str:
-        """Return what should be in the left-hand margin for line
+        """Return what should be in the left-hand margin fuer line
         'lineno'."""
         if self.arg is not None and cursor_on_line:
             prompt = f"(arg: {self.arg}) "
@@ -536,13 +536,13 @@ klasse Reader:
         pos = self.pos
         assert 0 <= pos <= len(self.buffer)
 
-        # optimize for the common case: typing at the end of the buffer
+        # optimize fuer the common case: typing at the end of the buffer
         if pos == len(self.buffer) and len(self.screeninfo) > 0:
             y = len(self.screeninfo) - 1
             prompt_len, char_widths = self.screeninfo[y]
             return prompt_len + sum(char_widths), y
 
-        for prompt_len, char_widths in self.screeninfo:
+        fuer prompt_len, char_widths in self.screeninfo:
             offset = len(char_widths)
             in_wrapped_line = prompt_len + sum(char_widths) >= self.console.width
             if in_wrapped_line:
@@ -610,12 +610,12 @@ klasse Reader:
     @contextmanager
     def suspend(self) -> SimpleContextManager:
         """A context manager to delegate to another reader."""
-        prev_state = {f.name: getattr(self, f.name) for f in fields(self)}
+        prev_state = {f.name: getattr(self, f.name) fuer f in fields(self)}
         try:
             self.restore()
             yield
         finally:
-            for arg in ("msg", "ps1", "ps2", "ps3", "ps4", "paste_mode"):
+            fuer arg in ("msg", "ps1", "ps2", "ps3", "ps4", "paste_mode"):
                 setattr(self, arg, prev_state[arg])
             self.prepare()
 

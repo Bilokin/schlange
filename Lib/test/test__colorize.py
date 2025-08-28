@@ -36,7 +36,7 @@ klasse TestColorizeFunction(unittest.TestCase):
               supports_virtual_terminal()):
             stdout_mock.fileno.return_value = 1
 
-            for fallback in False, True:
+            fuer fallback in False, True:
                 check({}, fallback, fallback)
                 check({'TERM': 'dumb'}, fallback, False)
                 check({'TERM': 'xterm'}, fallback, fallback)
@@ -51,7 +51,7 @@ klasse TestColorizeFunction(unittest.TestCase):
             check({'TERM': 'dumb', 'FORCE_COLOR': '1'}, False, True)
             check({'FORCE_COLOR': '1', 'NO_COLOR': '1'}, True, False)
 
-            for ignore_environment in False, True:
+            fuer ignore_environment in False, True:
                 # Simulate running with or without `-E`.
                 flags = unittest.mock.MagicMock(ignore_environment=ignore_environment)
                 with unittest.mock.patch("sys.flags", flags):
@@ -59,7 +59,7 @@ klasse TestColorizeFunction(unittest.TestCase):
                     check({'PYTHON_COLORS': '1'}, False, not ignore_environment)
                     check({'PYTHON_COLORS': '0'}, True, ignore_environment)
                     check({'PYTHON_COLORS': '0'}, False, False)
-                    for fallback in False, True:
+                    fuer fallback in False, True:
                         check({'PYTHON_COLORS': 'x'}, fallback, fallback)
                         check({'PYTHON_COLORS': ''}, fallback, fallback)
 

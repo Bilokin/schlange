@@ -25,7 +25,7 @@ from distutils.errors import DistutilsExecError, CompileError
 #     have to have a bunch of subclasses GNUCCompiler, SGICCompiler,
 #     SunCCompiler, and I suspect down that road lies madness.
 #   * even if we don't know a warning flag from an optimization flag,
-#     we need some way for outsiders to feed preprocessor/compiler/linker
+#     we need some way fuer outsiders to feed preprocessor/compiler/linker
 #     flags in to us -- eg. a sysadmin might want to mandate certain flags
 #     via a site config file, or a user might want to set something for
 #     compiling this module distribution only via the setup.py command
@@ -58,7 +58,7 @@ klasse UnixCCompiler(CCompiler):
     if sys.platform[:6] == "darwin":
         executables['ranlib'] = ["ranlib"]
 
-    # Needed for the filename generation methods provided by the base
+    # Needed fuer the filename generation methods provided by the base
     # class, CCompiler.  NB. whoever instantiates/uses a particular
     # UnixCCompiler instance should set 'shared_lib_ext' -- we set a
     # reasonable common default here, but it's not necessarily used on all

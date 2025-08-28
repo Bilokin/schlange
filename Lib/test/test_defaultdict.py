@@ -1,4 +1,4 @@
-"""Unit tests for collections.defaultdict."""
+"""Unit tests fuer collections.defaultdict."""
 
 import copy
 import pickle
@@ -89,7 +89,7 @@ klasse TestDefaultDict(unittest.TestCase):
         d4[12]
         self.assertEqual(d4, {42: [], 12: []})
 
-        # Issue 6637: Copy fails for empty default dict
+        # Issue 6637: Copy fails fuer empty default dict
         d = defaultdict()
         d['a'] = 42
         e = d.copy()
@@ -143,7 +143,7 @@ klasse TestDefaultDict(unittest.TestCase):
     def test_pickling(self):
         d = defaultdict(int)
         d[1]
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             s = pickle.dumps(d, proto)
             o = pickle.loads(s)
             self.assertEqual(d, o)

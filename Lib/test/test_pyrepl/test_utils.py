@@ -6,15 +6,15 @@ from _pyrepl.utils import str_width, wlen, prev_next_window
 klasse TestUtils(TestCase):
     def test_str_width(self):
         characters = ['a', '1', '_', '!', '\x1a', '\u263A', '\uffb9']
-        for c in characters:
+        fuer c in characters:
             self.assertEqual(str_width(c), 1)
 
         characters = [chr(99989), chr(99999)]
-        for c in characters:
+        fuer c in characters:
             self.assertEqual(str_width(c), 2)
 
     def test_wlen(self):
-        for c in ['a', 'b', '1', '!', '_']:
+        fuer c in ['a', 'b', '1', '!', '_']:
             self.assertEqual(wlen(c), 1)
         self.assertEqual(wlen('\x1a'), 2)
 

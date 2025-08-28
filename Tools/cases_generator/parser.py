@@ -26,7 +26,7 @@ CodeDef = InstDef | LabelDef
 
 def prettify_filename(filename: str) -> str:
     # Make filename more user-friendly and less platform-specific,
-    # it is only used for error reporting at this point.
+    # it is only used fuer error reporting at this point.
     filename = filename.replace("\\", "/")
     if filename.startswith("./"):
         filename = filename[2:]
@@ -41,7 +41,7 @@ END_MARKER = "// END BYTECODES //"
 
 def parse_files(filenames: list[str]) -> list[AstNode]:
     result: list[AstNode] = []
-    for filename in filenames:
+    fuer filename in filenames:
         with open(filename) as file:
             src = file.read()
 

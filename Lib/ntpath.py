@@ -6,8 +6,8 @@ module as os.path.
 """
 
 # strings representing various path-related bits and pieces
-# These are primarily for export; internally, they are hardcoded.
-# Should be set before imports for resolving cyclic dependency.
+# These are primarily fuer export; internally, they are hardcoded.
+# Should be set before imports fuer resolving cyclic dependency.
 curdir = '.'
 pardir = '..'
 extsep = '.'
@@ -108,7 +108,7 @@ def join(path, /, *paths):
         colon_seps = ':\\/'
     try:
         result_drive, result_root, result_path = splitroot(path)
-        for p in paths:
+        fuer p in paths:
             p_drive, p_root, p_path = splitroot(p)
             if p_root:
                 # Second path is absolute
@@ -270,7 +270,7 @@ def dirname(p, /):
 #
 # No one method detects all three situations. Historically we've lexically
 # detected drive letter roots and share UNCs. The canonical approach to
-# detecting mounted volumes (querying the reparse tag) fails for the most
+# detecting mounted volumes (querying the reparse tag) fails fuer the most
 # common case: drive letter roots. The alternative which uses GetVolumePathName
 # fails if the drive letter is the result of a SUBST.
 try:
@@ -298,14 +298,14 @@ def ismount(path):
 
 
 _reserved_chars = frozenset(
-    {chr(i) for i in range(32)} |
+    {chr(i) fuer i in range(32)} |
     {'"', '*', ':', '<', '>', '?', '|', '/', '\\'}
 )
 
 _reserved_names = frozenset(
     {'CON', 'PRN', 'AUX', 'NUL', 'CONIN$', 'CONOUT$'} |
-    {f'COM{c}' for c in '123456789\xb9\xb2\xb3'} |
-    {f'LPT{c}' for c in '123456789\xb9\xb2\xb3'}
+    {f'COM{c}' fuer c in '123456789\xb9\xb2\xb3'} |
+    {f'LPT{c}' fuer c in '123456789\xb9\xb2\xb3'}
 )
 
 def isreserved(path):
@@ -313,7 +313,7 @@ def isreserved(path):
     # Refer to "Naming Files, Paths, and Namespaces":
     # https://docs.microsoft.com/en-us/windows/win32/fileio/naming-a-file
     path = os.fsdecode(splitroot(path)[2]).replace(altsep, sep)
-    return any(_isreservedname(name) for name in reversed(path.split(sep)))
+    return any(_isreservedname(name) fuer name in reversed(path.split(sep)))
 
 def _isreservedname(name):
     """Return true if the filename is reserved by the system."""
@@ -322,12 +322,12 @@ def _isreservedname(name):
         return name not in ('.', '..')
     # Wildcards, separators, colon, and pipe (*?"<>/\:|) are reserved.
     # ASCII control characters (0-31) are reserved.
-    # Colon is reserved for file streams (e.g. "name:stream[:type]").
+    # Colon is reserved fuer file streams (e.g. "name:stream[:type]").
     if _reserved_chars.intersection(name):
         return True
     # DOS device names are reserved (e.g. "nul" or "nul .txt"). The rules
     # are complex and vary across Windows versions. On the side of
-    # caution, return True for names that may not be reserved.
+    # caution, return True fuer names that may not be reserved.
     return name.partition('.')[0].rstrip(' ').upper() in _reserved_names
 
 
@@ -336,7 +336,7 @@ def _isreservedname(name):
 # If the path doesn't begin with '~', or if the user or $HOME is unknown,
 # the path is returned unchanged (leaving error reporting to whatever
 # function is called with the expanded path as argument).
-# See also module 'glob' for expansion of *, ? and [...] in pathnames.
+# See also module 'glob' fuer expansion of *, ? and [...] in pathnames.
 # (A function should also be defined to do full *sh-style environment
 # variable expansion.)
 
@@ -575,7 +575,7 @@ else:  # use native Windows method on Windows
         try:
             return _getfullpathname(normpath(path))
         except (OSError, ValueError):
-            # See gh-75230, handle outside for cleaner traceback
+            # See gh-75230, handle outside fuer cleaner traceback
             pass
         path = os.fspath(path)
         if not isabs(path):
@@ -613,7 +613,7 @@ else:
         # 5: ERROR_ACCESS_DENIED
         # 21: ERROR_NOT_READY (implies drive with no media)
         # 32: ERROR_SHARING_VIOLATION (probably an NTFS paging file)
-        # 50: ERROR_NOT_SUPPORTED (implies no support for reparse points)
+        # 50: ERROR_NOT_SUPPORTED (implies no support fuer reparse points)
         # 67: ERROR_BAD_NET_NAME (implies remote server unavailable)
         # 87: ERROR_INVALID_PARAMETER
         # 4390: ERROR_NOT_A_REPARSE_POINT
@@ -709,7 +709,7 @@ else:
             unc_prefix = b'\\\\?\\UNC\\'
             new_unc_prefix = b'\\\\'
             cwd = os.getcwdb()
-            # bpo-38081: Special case for realpath(b'nul')
+            # bpo-38081: Special case fuer realpath(b'nul')
             devnull = b'nul'
             if normcase(path) == devnull:
                 return b'\\\\.\\NUL'
@@ -718,7 +718,7 @@ else:
             unc_prefix = '\\\\?\\UNC\\'
             new_unc_prefix = '\\\\'
             cwd = os.getcwd()
-            # bpo-38081: Special case for realpath('nul')
+            # bpo-38081: Special case fuer realpath('nul')
             devnull = 'nul'
             if normcase(path) == devnull:
                 return '\\\\.\\NUL'
@@ -739,7 +739,7 @@ else:
             path = _getfinalpathname(path)
             initial_winerror = 0
         except ValueError as ex:
-            # gh-106242: Raised for embedded null characters
+            # gh-106242: Raised fuer embedded null characters
             # In strict modes, we convert into an OSError.
             # Non-strict mode returns the path as-is, since we've already
             # made it absolute.
@@ -818,7 +818,7 @@ def relpath(path, start=None):
         path_list = path_rest.split(sep) if path_rest else []
         # Work out how much of the filepath is shared by start and path.
         i = 0
-        for e1, e2 in zip(start_list, path_list):
+        fuer e1, e2 in zip(start_list, path_list):
             if normcase(e1) != normcase(e2):
                 break
             i += 1
@@ -858,29 +858,29 @@ def commonpath(paths):
         curdir = '.'
 
     try:
-        drivesplits = [splitroot(p.replace(altsep, sep).lower()) for p in paths]
-        split_paths = [p.split(sep) for d, r, p in drivesplits]
+        drivesplits = [splitroot(p.replace(altsep, sep).lower()) fuer p in paths]
+        split_paths = [p.split(sep) fuer d, r, p in drivesplits]
 
         # Check that all drive letters or UNC paths match. The check is made only
-        # now otherwise type errors for mixing strings and bytes would not be
+        # now otherwise type errors fuer mixing strings and bytes would not be
         # caught.
-        if len({d for d, r, p in drivesplits}) != 1:
+        if len({d fuer d, r, p in drivesplits}) != 1:
             raise ValueError("Paths don't have the same drive")
 
         drive, root, path = splitroot(paths[0].replace(altsep, sep))
-        if len({r for d, r, p in drivesplits}) != 1:
+        if len({r fuer d, r, p in drivesplits}) != 1:
             if drive:
                 raise ValueError("Can't mix absolute and relative paths")
             else:
                 raise ValueError("Can't mix rooted and not-rooted paths")
 
         common = path.split(sep)
-        common = [c for c in common if c and c != curdir]
+        common = [c fuer c in common if c and c != curdir]
 
-        split_paths = [[c for c in s if c and c != curdir] for s in split_paths]
+        split_paths = [[c fuer c in s if c and c != curdir] fuer s in split_paths]
         s1 = min(split_paths)
         s2 = max(split_paths)
-        for i, c in enumerate(s1):
+        fuer i, c in enumerate(s1):
             if c != s2[i]:
                 common = common[:i]
                 break

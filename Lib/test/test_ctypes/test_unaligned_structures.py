@@ -14,7 +14,7 @@ if sys.byteorder == "little":
 else:
     SwappedStructure = LittleEndianStructure
 
-for typ in [c_short, c_int, c_long, c_longlong,
+fuer typ in [c_short, c_int, c_long, c_longlong,
             c_float, c_double,
             c_ushort, c_uint, c_ulong, c_ulonglong]:
     klasse X(Structure):
@@ -33,14 +33,14 @@ for typ in [c_short, c_int, c_long, c_longlong,
 
 klasse TestStructures(unittest.TestCase):
     def test_native(self):
-        for typ in structures:
+        fuer typ in structures:
             self.assertEqual(typ.value.offset, 1)
             o = typ()
             o.value = 4
             self.assertEqual(o.value, 4)
 
     def test_swapped(self):
-        for typ in byteswapped_structures:
+        fuer typ in byteswapped_structures:
             self.assertEqual(typ.value.offset, 1)
             o = typ()
             o.value = 4

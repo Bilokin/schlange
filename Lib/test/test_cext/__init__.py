@@ -51,7 +51,7 @@ klasse BaseTests:
         pkg_dir = 'pkg'
         os.mkdir(pkg_dir)
         shutil.copy(SETUP, os.path.join(pkg_dir, os.path.basename(SETUP)))
-        for source in SOURCES:
+        fuer source in SOURCES:
             dest = os.path.join(pkg_dir, os.path.basename(source))
             shutil.copy(source, dest)
 
@@ -110,7 +110,7 @@ klasse TestPublicCAPI(BaseTests, unittest.TestCase):
     def test_build_limited(self):
         self.check_build('_test_limited_cext', limited=True)
 
-    @support.requires_gil_enabled('broken for now with Free Threading')
+    @support.requires_gil_enabled('broken fuer now with Free Threading')
     def test_build_limited_c11(self):
         self.check_build('_test_limited_c11_cext', limited=True, std='c11')
 

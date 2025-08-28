@@ -75,14 +75,14 @@ klasse TestGdbm(unittest.TestCase):
         all = set(gdbm.open_flags)
         # Test standard flags (presumably "crwn").
         modes = all - set('fsum')
-        for mode in sorted(modes):  # put "c" mode first
+        fuer mode in sorted(modes):  # put "c" mode first
             self.g = gdbm.open(filename, mode)
             self.g.close()
 
         # Test additional flags (presumably "fsum").
         flags = all - set('crwn')
-        for mode in modes:
-            for flag in flags:
+        fuer mode in modes:
+            fuer flag in flags:
                 self.g = gdbm.open(filename, mode + flag)
                 self.g.close()
 
@@ -196,13 +196,13 @@ klasse TestGdbm(unittest.TestCase):
     def test_clear(self):
         kvs = [('foo', 'bar'), ('1234', '5678')]
         with gdbm.open(filename, 'c') as db:
-            for k, v in kvs:
+            fuer k, v in kvs:
                 db[k] = v
                 self.assertIn(k, db)
             self.assertEqual(len(db), len(kvs))
 
             db.clear()
-            for k, v in kvs:
+            fuer k, v in kvs:
                 self.assertNotIn(k, db)
             self.assertEqual(len(db), 0)
 

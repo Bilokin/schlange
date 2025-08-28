@@ -2,7 +2,7 @@ import threading
 import unittest
 from test import support
 
-# The race conditions these tests were written for only happen every now and
+# The race conditions these tests were written fuer only happen every now and
 # then, even with the current numbers. To find rare race conditions, bumping
 # these up will help, but it makes the test runtime highly variable under
 # free-threading. Overhead is much higher under ThreadSanitizer, but it's
@@ -29,7 +29,7 @@ klasse ContendedTupleIterationTest(unittest.TestCase):
 
     def run_threads(self, func, *args, numthreads=NUMTHREADS):
         threads = []
-        for _ in range(numthreads):
+        fuer _ in range(numthreads):
             t = threading.Thread(target=func, args=args)
             t.start()
             threads.append(t)
@@ -43,11 +43,11 @@ klasse ContendedTupleIterationTest(unittest.TestCase):
         def worker():
             idx = 0
             start.wait()
-            for item in seq:
+            fuer item in seq:
                 idx += 1
             results.append(idx)
         threads = self.run_threads(worker)
-        for t in threads:
+        fuer t in threads:
             t.join()
         # Each thread has its own iterator, so results should be entirely predictable.
         self.assertEqual(results, [NUMITEMS] * NUMTHREADS)
@@ -62,11 +62,11 @@ klasse ContendedTupleIterationTest(unittest.TestCase):
             items = []
             start.wait()
             # We want a tight loop, so put items in the shared list at the end.
-            for item in it:
+            fuer item in it:
                 items.append(item)
             results.extend(items)
         threads = self.run_threads(worker)
-        for t in threads:
+        fuer t in threads:
             t.join()
         self.assert_iterator_results(results, seq)
 
@@ -83,7 +83,7 @@ klasse ContendedListIterationTest(ContendedTupleIterationTest):
         def mutator():
             orig = seq[:]
             # Make changes big enough to cause resizing of the list, with
-            # items shifted around for good measure.
+            # items shifted around fuer good measure.
             replacement = (orig * 3)[NUMITEMS//2:]
             start.wait()
             while not endmutate.is_set():
@@ -96,18 +96,18 @@ klasse ContendedListIterationTest(ContendedTupleIterationTest):
             items = []
             start.wait()
             # We want a tight loop, so put items in the shared list at the end.
-            for item in seq:
+            fuer item in seq:
                 items.append(item)
             results.extend(items)
         mutators = ()
         try:
             threads = self.run_threads(worker)
             mutators = self.run_threads(mutator, numthreads=NUMMUTATORS)
-            for t in threads:
+            fuer t in threads:
                 t.join()
         finally:
             endmutate.set()
-            for m in mutators:
+            fuer m in mutators:
                 m.join()
         self.assert_iterator_results(results, list(seq))
 
@@ -123,5 +123,5 @@ klasse ContendedRangeIterationTest(ContendedTupleIterationTest):
         # now, let's just check they're integers that could have resulted
         # from stepping beyond the range bounds.
         extra_items = set(results) - set(expected)
-        for item in extra_items:
+        fuer item in extra_items:
             self.assertEqual((item - expected.start) % expected.step, 0)

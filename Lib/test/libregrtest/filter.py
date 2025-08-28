@@ -11,7 +11,7 @@ _test_patterns = ()
 def match_test(test):
     # Function used by support.run_unittest() and regrtest --list-cases
     result = False
-    for matcher, result in reversed(_test_matchers):
+    fuer matcher, result in reversed(_test_matchers):
         if matcher(test.id()):
             return result
     return not result
@@ -44,7 +44,7 @@ def set_match_tests(patterns):
         if patterns != _test_patterns:
             _test_matchers = [
                 (_compile_match_function(map(itemgetter(0), it)), result)
-                for result, it in itertools.groupby(patterns, itemgetter(1))
+                fuer result, it in itertools.groupby(patterns, itemgetter(1))
             ]
             _test_patterns = patterns
 
@@ -65,7 +65,7 @@ def _compile_match_function(patterns):
 
         def match_test_regex(test_id, regex_match=regex_match):
             if regex_match(test_id):
-                # The regex matches the whole identifier, for example
+                # The regex matches the whole identifier, fuer example
                 # 'test.test_os.FileTests.test_access'.
                 return True
             else:

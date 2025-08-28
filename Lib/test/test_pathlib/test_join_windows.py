@@ -1,5 +1,5 @@
 """
-Tests for Windows-flavoured pathlib.types._JoinablePath
+Tests fuer Windows-flavoured pathlib.types._JoinablePath
 """
 
 import os

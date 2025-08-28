@@ -27,7 +27,7 @@ klasse FileWrapper:
         raise StopIteration
 
 def guess_scheme(environ):
-    """Return a guess for whether 'wsgi.url_scheme' should be 'http' or 'https'
+    """Return a guess fuer whether 'wsgi.url_scheme' should be 'http' or 'https'
     """
     if environ.get("HTTPS") in ('yes','on','1'):
         return 'https'
@@ -85,7 +85,7 @@ def shift_path_info(environ):
         return None
 
     path_parts = path_info.split('/')
-    path_parts[1:-1] = [p for p in path_parts[1:-1] if p and p != '.']
+    path_parts[1:-1] = [p fuer p in path_parts[1:-1] if p and p != '.']
     name = path_parts[1]
     del path_parts[1]
 
@@ -109,14 +109,14 @@ def shift_path_info(environ):
     return name
 
 def setup_testing_defaults(environ):
-    """Update 'environ' with trivial defaults for testing purposes
+    """Update 'environ' with trivial defaults fuer testing purposes
 
-    This adds various parameters required for WSGI, including HTTP_HOST,
+    This adds various parameters required fuer WSGI, including HTTP_HOST,
     SERVER_NAME, SERVER_PORT, REQUEST_METHOD, SCRIPT_NAME, PATH_INFO,
     and all of the wsgi.* variables.  It only supplies default values,
-    and does not replace any existing settings for these variables.
+    and does not replace any existing settings fuer these variables.
 
-    This routine is intended to make it easier for unit tests of WSGI
+    This routine is intended to make it easier fuer unit tests of WSGI
     servers and applications to set up dummy environments.  It should *not*
     be used by actual WSGI servers or applications, since the data is fake!
     """

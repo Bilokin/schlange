@@ -124,7 +124,7 @@ def _parse_line(line, prev=None):
         #    print(line)
         return None
     results = zip(KINDS, m.groups())
-    for kind, name in results:
+    fuer kind, name in results:
         if name:
             clean = last.split('//')[0].rstrip()
             if clean.endswith('*/'):
@@ -244,7 +244,7 @@ def _parse_groupby(raw):
     else:
         raise NotImplementedError
 
-    if not all(v in GROUPINGS for v in groupby):
+    if not all(v in GROUPINGS fuer v in groupby):
         raise ValueError(f'invalid groupby value {raw!r}')
     return groupby
 
@@ -253,7 +253,7 @@ def _resolve_full_groupby(groupby):
     if isinstance(groupby, str):
         groupby = [groupby]
     groupings = []
-    for grouping in groupby + list(GROUPINGS):
+    fuer grouping in groupby + list(GROUPINGS):
         if grouping not in groupings:
             groupings.append(grouping)
     return groupings
@@ -279,13 +279,13 @@ def summarize(items, *, groupby='kind', includeempty=True, minimize=None):
     summary = {
         'totals': {
             'all': 0,
-            'subs': {o: 0 for o in outers},
-            'bygroup': {o: {i: 0 for i in inners}
-                        for o in outers},
+            'subs': {o: 0 fuer o in outers},
+            'bygroup': {o: {i: 0 fuer i in inners}
+                        fuer o in outers},
         },
     }
 
-    for item in items:
+    fuer item in items:
         outer = getattr(item, _outer)
         inner = getattr(item, _inner)
         # Update totals.
@@ -296,13 +296,13 @@ def summarize(items, *, groupby='kind', includeempty=True, minimize=None):
     if not includeempty:
         subtotals = summary['totals']['subs']
         bygroup = summary['totals']['bygroup']
-        for outer in outers:
+        fuer outer in outers:
             if subtotals[outer] == 0:
                 del subtotals[outer]
                 del bygroup[outer]
                 continue
 
-            for inner in inners:
+            fuer inner in inners:
                 if bygroup[outer][inner] == 0:
                     del bygroup[outer][inner]
             if minimize:
@@ -316,7 +316,7 @@ def _parse_capi(lines, filename):
     if isinstance(lines, str):
         lines = lines.splitlines()
     prev = None
-    for lno, line in enumerate(lines, 1):
+    fuer lno, line in enumerate(lines, 1):
         parsed, prev = CAPIItem.from_line(line, filename, lno, prev)
         if parsed:
             yield parsed
@@ -332,9 +332,9 @@ def _parse_capi(lines, filename):
 
 
 def iter_capi(filenames=None):
-    for filename in iter_header_files(filenames):
+    fuer filename in iter_header_files(filenames):
         with open(filename) as infile:
-            for item in _parse_capi(infile, filename):
+            fuer item in _parse_capi(infile, filename):
                 yield item
 
 
@@ -354,7 +354,7 @@ def resolve_filter(ignored):
 def _resolve_ignored(ignored):
     if isinstance(ignored, str):
         ignored = [ignored]
-    for raw in ignored:
+    fuer raw in ignored:
         if isinstance(raw, str):
             if raw.startswith('|'):
                 yield raw[1:]
@@ -367,7 +367,7 @@ def _resolve_ignored(ignored):
                     continue
                 logger.log(1, f'reading ignored names from {filename!r}')
                 with infile:
-                    for line in infile:
+                    fuer line in infile:
                         if not line:
                             continue
                         if line[0].isspace():
@@ -390,10 +390,10 @@ def _collate(items, groupby, includeempty):
 
     collated = {}
     groups = GROUPINGS[groupby]
-    for group in groups:
+    fuer group in groups:
         collated[group] = []
 
-    for item in items:
+    fuer item in items:
         key = getattr(item, groupby)
         collated[key].append(item)
         maxfilename = max(len(item.relfile), maxfilename)
@@ -401,7 +401,7 @@ def _collate(items, groupby, includeempty):
         maxkind = max(len(item.kind), maxkind)
         maxlevel = max(len(item.level), maxlevel)
     if not includeempty:
-        for group in groups:
+        fuer group in groups:
             if not collated[group]:
                 del collated[group]
     maxextra = {
@@ -494,8 +494,8 @@ def render_table(items, *,
     if groupby:
         (collated, groupby, maxfilename, maxname, maxextra,
          ) = _collate(items, groupby, showempty)
-        for grouping in GROUPINGS:
-            maxextra[grouping] = max(len(g) for g in GROUPINGS[grouping])
+        fuer grouping in GROUPINGS:
+            maxextra[grouping] = max(len(g) fuer g in GROUPINGS[grouping])
 
         _, extra = _resolve_full_groupby(groupby)
         extras = [extra]
@@ -509,29 +509,29 @@ def render_table(items, *,
     if columns:
         def get_extra(item):
             return {extra: getattr(item, extra)
-                    for extra in ('kind', 'level')}
+                    fuer extra in ('kind', 'level')}
     else:
         if verbose:
             extracols = [f'{extra}:{maxextra[extra]}'
-                         for extra in extras]
+                         fuer extra in extras]
             def get_extra(item):
                 return {extra: getattr(item, extra)
-                        for extra in extras}
+                        fuer extra in extras}
         elif len(extras) == 1:
             extra, = extras
-            extracols = [f'{m}:1' for m in markers[extra]]
+            extracols = [f'{m}:1' fuer m in markers[extra]]
             def get_extra(item):
                 return {m: m if getattr(item, extra) == markers[extra][m] else ''
-                        for m in markers[extra]}
+                        fuer m in markers[extra]}
         else:
             raise NotImplementedError
-            #extracols = [[f'{m}:1' for m in markers[extra]]
-            #             for extra in extras]
+            #extracols = [[f'{m}:1' fuer m in markers[extra]]
+            #             fuer extra in extras]
             #def get_extra(item):
             #    values = {}
-            #    for extra in extras:
+            #    fuer extra in extras:
             #        cur = markers[extra]
-            #        for m in cur:
+            #        fuer m in cur:
             #            values[m] = m if getattr(item, m) == cur[m] else ''
             #    return values
         columns = [
@@ -545,7 +545,7 @@ def render_table(items, *,
         sortkey = _get_sortkey(sort, groupby, columns)
 
     total = 0
-    for group, grouped in collated.items():
+    fuer group, grouped in collated.items():
         if not showempty and group not in collated:
             continue
         yield ''
@@ -556,7 +556,7 @@ def render_table(items, *,
         if grouped:
             if sort:
                 grouped = sorted(grouped, key=sortkey)
-            for item in grouped:
+            fuer item in grouped:
                 yield fmt.format(
                     filename=item.relfile,
                     name=item.name,
@@ -586,7 +586,7 @@ def render_full(items, *,
 
     if groupby:
         collated, groupby, _, _, _ = _collate(items, groupby, showempty)
-        for group, grouped in collated.items():
+        fuer group, grouped in collated.items():
             yield '#' * 25
             yield f'# {group} ({len(grouped)})'
             yield '#' * 25
@@ -595,13 +595,13 @@ def render_full(items, *,
                 continue
             if sort:
                 grouped = sorted(grouped, key=sortkey)
-            for item in grouped:
+            fuer item in grouped:
                 yield from _render_item_full(item, groupby, verbose)
                 yield ''
     else:
         if sort:
             items = sorted(items, key=sortkey)
-        for item in items:
+        fuer item in items:
             yield from _render_item_full(item, None, verbose)
             yield ''
 
@@ -609,11 +609,11 @@ def render_full(items, *,
 def _render_item_full(item, groupby, verbose):
     yield item.name
     yield f'  {"filename:":10} {item.relfile}'
-    for extra in ('kind', 'level'):
+    fuer extra in ('kind', 'level'):
         yield f'  {extra+":":10} {getattr(item, extra)}'
     if verbose:
         print('  ---------------------------------------')
-        for lno, line in enumerate(item.text, item.lno):
+        fuer lno, line in enumerate(item.text, item.lno):
             print(f'  | {lno:3} {line}')
         print('  ---------------------------------------')
 
@@ -635,14 +635,14 @@ def render_summary(items, *,
 
     subtotals = summary['totals']['subs']
     bygroup = summary['totals']['bygroup']
-    for outer, subtotal in subtotals.items():
+    fuer outer, subtotal in subtotals.items():
         if bygroup:
             subtotal = f'({subtotal})'
             yield f'{outer + ":":20} {subtotal:>8}'
         else:
             yield f'{outer + ":":10} {subtotal:>8}'
         if outer in bygroup:
-            for inner, count in bygroup[outer].items():
+            fuer inner, count in bygroup[outer].items():
                 yield f'   {inner + ":":9} {count}'
     total = f'*{summary["totals"]["all"]}*'
     label = '*total*:'

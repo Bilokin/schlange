@@ -23,14 +23,14 @@ def tree(plist, l, a, f):
     from level to level."""
     if l > 3:
         lst = []
-        for p in plist:
+        fuer p in plist:
             p.forward(l)
             q = p.clone()
             p.left(a)
             q.right(a)
             lst.append(p)
             lst.append(q)
-        for x in tree(lst, l*f, a, f):
+        fuer x in tree(lst, l*f, a, f):
             yield None
 
 def maketree():
@@ -44,7 +44,7 @@ def maketree():
     p.forward(-210)
     p.pendown()
     t = tree([p], 200, 65, 0.6375)
-    for x in t:
+    fuer x in t:
         pass
 
 def main():

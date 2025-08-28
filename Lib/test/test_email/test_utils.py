@@ -73,7 +73,7 @@ klasse DateTimeTests(unittest.TestCase):
             'Friday, Nov--82 16:14:55 EST',
             'Friday, 19-Nov- 16:14:55 EST',
         ]
-        for dtstr in invalid_dates:
+        fuer dtstr in invalid_dates:
             with self.subTest(dtstr=dtstr):
                 self.assertRaises(ValueError, utils.parsedate_to_datetime, dtstr)
 

@@ -104,19 +104,19 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             self.assertClose(q, x)
 
     def test_truediv(self):
-        simple_real = [float(i) for i in range(-5, 6)]
-        simple_complex = [complex(x, y) for x in simple_real for y in simple_real]
-        for x in simple_complex:
-            for y in simple_complex:
+        simple_real = [float(i) fuer i in range(-5, 6)]
+        simple_complex = [complex(x, y) fuer x in simple_real fuer y in simple_real]
+        fuer x in simple_complex:
+            fuer y in simple_complex:
                 self.check_div(x, y)
 
         # A naive complex division algorithm (such as in 2.0) is very prone to
-        # nonsense errors for these (overflows and underflows).
+        # nonsense errors fuer these (overflows and underflows).
         self.check_div(complex(1e200, 1e200), 1+0j)
         self.check_div(complex(1e-200, 1e-200), 1+0j)
 
-        # Just for fun.
-        for i in range(100):
+        # Just fuer fun.
+        fuer i in range(100):
             self.check_div(complex(random(), random()),
                            complex(random(), random()))
 
@@ -124,7 +124,7 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertRaises(TypeError, operator.truediv, 1j, None)
         self.assertRaises(TypeError, operator.truediv, None, 1j)
 
-        for denom_real, denom_imag in [(0, NAN), (NAN, 0), (NAN, NAN)]:
+        fuer denom_real, denom_imag in [(0, NAN), (NAN, 0), (NAN, NAN)]:
             z = complex(0, 0) / complex(denom_real, denom_imag)
             self.assertTrue(isnan(z.real))
             self.assertTrue(isnan(z.imag))
@@ -196,7 +196,7 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                                          complex(NAN, NAN))
 
     def test_truediv_zero_division(self):
-        for a, b in ZERO_DIVISION:
+        fuer a, b in ZERO_DIVISION:
             with self.assertRaises(ZeroDivisionError):
                 a / b
 
@@ -213,7 +213,7 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             1 // (1+0j)
 
     def test_floordiv_zero_division(self):
-        for a, b in ZERO_DIVISION:
+        fuer a, b in ZERO_DIVISION:
             with self.assertRaises(TypeError):
                 a // b
 
@@ -225,7 +225,7 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertIs(complex.__eq__(1+1j, 2+2j), False)
         self.assertIs(complex.__ne__(1+1j, 1+1j), False)
         self.assertIs(complex.__ne__(1+1j, 2+2j), True)
-        for i in range(1, 100):
+        fuer i in range(1, 100):
             f = i / 100.0
             self.assertIs(complex.__eq__(f+0j, f), True)
             self.assertIs(complex.__ne__(f+0j, f), False)
@@ -247,7 +247,7 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
 
     def test_richcompare_boundaries(self):
         def check(n, deltas, is_equal, imag = 0.0):
-            for delta in deltas:
+            fuer delta in deltas:
                 i = n + delta
                 z = complex(i, imag)
                 self.assertIs(complex.__eq__(z, i), is_equal(delta))
@@ -255,7 +255,7 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         # For IEEE-754 doubles the following should hold:
         #    x in [2 ** (52 + i), 2 ** (53 + i + 1)] -> x mod 2 ** i == 0
         # where the interval is representable, of course.
-        for i in range(1, 10):
+        fuer i in range(1, 10):
             pow = 52 + i
             mult = 2 ** i
             check(2 ** pow, range(1, 101), lambda delta: delta % mult == 0)
@@ -291,7 +291,7 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
     def test_mul(self):
         self.assertEqual(1j * int(20), complex(0, 20))
         self.assertEqual(1j * int(-1), complex(0, -1))
-        for c, r in [(2, complex(INF, 2)), (INF, complex(INF, INF)),
+        fuer c, r in [(2, complex(INF, 2)), (INF, complex(INF, INF)),
                      (0, complex(NAN, 0)), (-0.0, complex(NAN, -0.0)),
                      (NAN, complex(NAN, NAN))]:
             with self.subTest(c=c, r=r):
@@ -301,7 +301,7 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertRaises(TypeError, operator.mul, 1j, None)
         self.assertRaises(TypeError, operator.mul, None, 1j)
 
-        for z, w, r in [(1e300+1j, complex(INF, INF), complex(NAN, INF)),
+        fuer z, w, r in [(1e300+1j, complex(INF, INF), complex(NAN, INF)),
                         (1e300+1j, complex(NAN, INF), complex(-INF, INF)),
                         (1e300+1j, complex(INF, NAN), complex(INF, INF)),
                         (complex(INF, 1), complex(NAN, INF), complex(NAN, INF)),
@@ -331,7 +331,7 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             1 % (1+0j)
 
     def test_mod_zero_division(self):
-        for a, b in ZERO_DIVISION:
+        fuer a, b in ZERO_DIVISION:
             with self.assertRaises(TypeError):
                 a % b
 
@@ -343,7 +343,7 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertRaises(TypeError, divmod, 1, 1+0j)
 
     def test_divmod_zero_division(self):
-        for a, b in ZERO_DIVISION:
+        fuer a, b in ZERO_DIVISION:
             self.assertRaises(TypeError, divmod, a, b)
 
     def test_pow(self):
@@ -401,8 +401,8 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         # UndefinedBehaviourSanitizer).
         values = (sys.maxsize, sys.maxsize+1, sys.maxsize-1,
                   -sys.maxsize, -sys.maxsize+1, -sys.maxsize+1)
-        for real in values:
-            for imag in values:
+        fuer real in values:
+            fuer imag in values:
                 with self.subTest(real=real, imag=imag):
                     c = complex(real, imag)
                     try:
@@ -429,8 +429,8 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             complex(INF, 0.0),
         ]
         exponents = [-19, -5, -3, -2, -1, 0, 1, 2, 3, 5, 19]
-        for value in values:
-            for exponent in exponents:
+        fuer value in values:
+            fuer exponent in exponents:
                 with self.subTest(value=value, exponent=exponent):
                     try:
                         int_pow = value**exponent
@@ -448,7 +448,7 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                     self.assertEqual(str(complex_pow), str(int_pow))
 
     def test_boolcontext(self):
-        for i in range(100):
+        fuer i in range(100):
             self.assertTrue(complex(random() + 1e-6, random() + 1e-6))
         self.assertTrue(not complex(0.0, 0.0))
         self.assertTrue(1j)
@@ -531,8 +531,8 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
 
         # check that the sign of a zero in the real or imaginary part
         # is preserved when constructing from two floats.
-        for x in 1.0, -1.0:
-            for y in 0.0, -0.0:
+        fuer x in 1.0, -1.0:
+            fuer y in 0.0, -0.0:
                 check(complex(x, y), x, y)
                 check(complex(y, x), y, x)
 
@@ -641,8 +641,8 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
 
     @support.requires_IEEE_754
     def test_constructor_special_numbers(self):
-        for x in 0.0, -0.0, INF, -INF, NAN:
-            for y in 0.0, -0.0, INF, -INF, NAN:
+        fuer x in 0.0, -0.0, INF, -INF, NAN:
+            fuer y in 0.0, -0.0, INF, -INF, NAN:
                 with self.subTest(x=x, y=y):
                     z = complex(x, y)
                     self.assertFloatsAreIdentical(z.real, x)
@@ -730,14 +730,14 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
 
     def test_underscores(self):
         # check underscores
-        for lit in VALID_UNDERSCORE_LITERALS:
-            if not any(ch in lit for ch in 'xXoObB'):
+        fuer lit in VALID_UNDERSCORE_LITERALS:
+            if not any(ch in lit fuer ch in 'xXoObB'):
                 self.assertEqual(complex(lit), eval(lit))
                 self.assertEqual(complex(lit), complex(lit.replace('_', '')))
-        for lit in INVALID_UNDERSCORE_LITERALS:
+        fuer lit in INVALID_UNDERSCORE_LITERALS:
             if lit in ('0_7', '09_99'):  # octals are not recognized here
                 continue
-            if not any(ch in lit for ch in 'xXoObB'):
+            if not any(ch in lit fuer ch in 'xXoObB'):
                 self.assertRaises(ValueError, complex, lit)
 
     def test_from_number(self, cls=complex):
@@ -770,7 +770,7 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.test_from_number(ComplexSubclass)
 
     def test_hash(self):
-        for x in range(-30, 30):
+        fuer x in range(-30, 30):
             self.assertEqual(hash(x), hash(complex(x, 0)))
             x /= 3.0    # now check against floating-point
             self.assertEqual(hash(x), hash(complex(x, 0.)))
@@ -778,8 +778,8 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertNotEqual(hash(2000005 - 1j), -1)
 
     def test_abs(self):
-        nums = [complex(x/3., y/7.) for x in range(-9,9) for y in range(-9,9)]
-        for num in nums:
+        nums = [complex(x/3., y/7.) fuer x in range(-9,9) fuer y in range(-9,9)]
+        fuer num in nums:
             self.assertAlmostEqual((num.real**2 + num.imag**2)  ** 0.5, abs(num))
 
         self.assertRaises(OverflowError, abs, complex(DBL_MAX, DBL_MAX))
@@ -876,12 +876,12 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
     @support.requires_IEEE_754
     def test_repr_roundtrip(self):
         vals = [0.0, 1e-500, 1e-315, 1e-200, 0.0123, 3.1415, 1e50, INF, NAN]
-        vals += [-v for v in vals]
+        vals += [-v fuer v in vals]
 
-        # complex(repr(z)) should recover z exactly, even for complex
+        # complex(repr(z)) should recover z exactly, even fuer complex
         # numbers involving an infinity, nan, or negative zero
-        for x in vals:
-            for y in vals:
+        fuer x in vals:
+            fuer y in vals:
                 z = complex(x, y)
                 roundtrip = complex(repr(z))
                 self.assertComplexesAreIdentical(z, roundtrip)
@@ -890,8 +890,8 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         # also work, except that it might change the sign of zeros
         inf, nan = float('inf'), float('nan')
         infj, nanj = complex(0.0, inf), complex(0.0, nan)
-        for x in vals:
-            for y in vals:
+        fuer x in vals:
+            fuer y in vals:
                 z = complex(x, y)
                 roundtrip = eval(repr(z))
                 # adding 0.0 has no effect beside changing -0.0 to 0.0
@@ -975,7 +975,7 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertEqual(format(1.1+1.1j, 'g'), '1.1+1.1j')
         self.assertEqual(format(1.1+1.1j, '#g'), '1.10000+1.10000j')
 
-        # Alternate doesn't make a difference for these, they format the same with or without it
+        # Alternate doesn't make a difference fuer these, they format the same with or without it
         self.assertEqual(format(1+1j, '.1e'),  '1.0e+00+1.0e+00j')
         self.assertEqual(format(1+1j, '#.1e'), '1.0e+00+1.0e+00j')
         self.assertEqual(format(1+1j, '.1f'),  '1.0+1.0j')
@@ -997,7 +997,7 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertRaises(ValueError, (1.5+3j).__format__, '=20')
 
         # integer presentation types are an error
-        for t in 'bcdoxX':
+        fuer t in 'bcdoxX':
             self.assertRaises(ValueError, (1.5+0.5j).__format__, t)
 
         # make sure everything works in ''.format()

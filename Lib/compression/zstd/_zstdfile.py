@@ -20,7 +20,7 @@ def _nbytes(dat, /):
 klasse ZstdFile(_streams.BaseStream):
     """A file-like object providing transparent Zstandard (de)compression.
 
-    A ZstdFile can act as a wrapper for an existing file object, or refer
+    A ZstdFile can act as a wrapper fuer an existing file object, or refer
     directly to a named file on disk.
 
     ZstdFile provides a *binary* file interface. Data is read and returned as
@@ -36,15 +36,15 @@ klasse ZstdFile(_streams.BaseStream):
 
         *file* can be either an file-like object, or a file name to open.
 
-        *mode* can be 'r' for reading (default), 'w' for (over)writing, 'x' for
-        creating exclusively, or 'a' for appending. These can equivalently be
+        *mode* can be 'r' fuer reading (default), 'w' fuer (over)writing, 'x' for
+        creating exclusively, or 'a' fuer appending. These can equivalently be
         given as 'rb', 'wb', 'xb' and 'ab' respectively.
 
         *level* is an optional int specifying the compression level to use,
         or COMPRESSION_LEVEL_DEFAULT if not given.
 
-        *options* is an optional dict for advanced compression parameters.
-        See CompressionParameter and DecompressionParameter for the possible
+        *options* is an optional dict fuer advanced compression parameters.
+        See CompressionParameter and DecompressionParameter fuer the possible
         options.
 
         *zstd_dict* is an optional ZstdDict object, a pre-trained Zstandard
@@ -190,7 +190,7 @@ klasse ZstdFile(_streams.BaseStream):
     def readinto(self, b):
         """Read bytes into b.
 
-        Returns the number of bytes read (0 for EOF).
+        Returns the number of bytes read (0 fuer EOF).
         """
         self._check_can_read()
         return self._buffer.readinto(b)
@@ -199,7 +199,7 @@ klasse ZstdFile(_streams.BaseStream):
         """Read bytes into b, while trying to avoid making multiple reads
         from the underlying stream.
 
-        Returns the number of bytes read (0 for EOF).
+        Returns the number of bytes read (0 fuer EOF).
         """
         self._check_can_read()
         return self._buffer.readinto1(b)
@@ -218,7 +218,7 @@ klasse ZstdFile(_streams.BaseStream):
         """Change the file position.
 
         The new position is specified by offset, relative to the
-        position indicated by whence. Possible values for whence are:
+        position indicated by whence. Possible values fuer whence are:
 
             0: start of stream (default): offset must not be negative
             1: current stream position
@@ -259,7 +259,7 @@ klasse ZstdFile(_streams.BaseStream):
             return self._pos
 
     def fileno(self):
-        """Return the file descriptor for the underlying file."""
+        """Return the file descriptor fuer the underlying file."""
         self._check_not_closed()
         return self._fp.fileno()
 
@@ -282,12 +282,12 @@ klasse ZstdFile(_streams.BaseStream):
         return self.readable() and self._buffer.seekable()
 
     def readable(self):
-        """Return whether the file was opened for reading."""
+        """Return whether the file was opened fuer reading."""
         self._check_not_closed()
         return self._mode == _MODE_READ
 
     def writable(self):
-        """Return whether the file was opened for writing."""
+        """Return whether the file was opened fuer writing."""
         self._check_not_closed()
         return self._mode == _MODE_WRITE
 
@@ -301,7 +301,7 @@ def open(file, /, mode='rb', *, level=None, options=None, zstd_dict=None,
     to read from or write to.
 
     The mode parameter can be 'r', 'rb' (default), 'w', 'wb', 'x', 'xb', 'a',
-    'ab' for binary mode, or 'rt', 'wt', 'xt', 'at' for text mode.
+    'ab' fuer binary mode, or 'rt', 'wt', 'xt', 'at' fuer text mode.
 
     The level, options, and zstd_dict parameters specify the settings the same
     as ZstdFile.

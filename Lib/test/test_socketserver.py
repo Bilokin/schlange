@@ -1,5 +1,5 @@
 """
-Test suite for socketserver.
+Test suite fuer socketserver.
 """
 
 import contextlib
@@ -71,7 +71,7 @@ klasse SocketServerTest(unittest.TestCase):
     def tearDown(self):
         reap_children()
 
-        for fn in self.test_files:
+        fuer fn in self.test_files:
             try:
                 os.remove(fn)
             except OSError:
@@ -130,10 +130,10 @@ klasse SocketServerTest(unittest.TestCase):
         t.daemon = True  # In case this function raises.
         t.start()
         if verbose: print("server running")
-        for i in range(3):
+        fuer i in range(3):
             if verbose: print("test client", i)
             testfunc(svrcls.address_family, addr)
-        if verbose: print("waiting for server")
+        if verbose: print("waiting fuer server")
         server.shutdown()
         t.join()
         server.server_close()
@@ -253,7 +253,7 @@ klasse SocketServerTest(unittest.TestCase):
             pass
 
         threads = []
-        for i in range(20):
+        fuer i in range(20):
             s = MyServer((HOST, 0), MyHandler)
             t = threading.Thread(
                 name='MyServer serving',
@@ -261,10 +261,10 @@ klasse SocketServerTest(unittest.TestCase):
                 kwargs={'poll_interval':0.01})
             t.daemon = True  # In case this function raises.
             threads.append((t, s))
-        for t, s in threads:
+        fuer t, s in threads:
             t.start()
             s.shutdown()
-        for t, s in threads:
+        fuer t, s in threads:
             t.join()
             s.server_close()
 
@@ -278,9 +278,9 @@ klasse SocketServerTest(unittest.TestCase):
     def test_tcpserver_bind_leak(self):
         # Issue #22435: the server socket wouldn't be closed if bind()/listen()
         # failed.
-        # Create many servers for which bind() will fail, to see if this result
+        # Create many servers fuer which bind() will fail, to see if this result
         # in FD exhaustion.
-        for i in range(1024):
+        fuer i in range(1024):
             with self.assertRaises(OverflowError):
                 socketserver.TCPServer((HOST, -1),
                                        socketserver.StreamRequestHandler)
@@ -466,7 +466,7 @@ klasse MiscTestCase(unittest.TestCase):
     def test_all(self):
         # objects defined in the module should be in __all__
         expected = []
-        for name in dir(socketserver):
+        fuer name in dir(socketserver):
             if not name.startswith('_'):
                 mod_object = getattr(socketserver, name)
                 if getattr(mod_object, '__module__', None) == 'socketserver':
@@ -504,7 +504,7 @@ klasse MiscTestCase(unittest.TestCase):
             pass
 
         server = MyServer((HOST, 0), socketserver.StreamRequestHandler)
-        for n in range(10):
+        fuer n in range(10):
             with socket.create_connection(server.server_address):
                 server.handle_request()
         self.assertLess(len(server._threads), 10)

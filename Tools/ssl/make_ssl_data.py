@@ -33,7 +33,7 @@ By convention, the latest OpenSSL mnemonics are gathered in the following file:
 
 If those mnemonics are renumbered or removed in a subsequent OpenSSL version,
 the file is renamed to "Modules/_ssl_data_<MAJOR><MINOR><PATCH>.h" and the
-latest mnemonics are stored in the patchless file (see below for an example).
+latest mnemonics are stored in the patchless file (see below fuer an example).
 
 A newly supported OpenSSL version should also be added to:
 
@@ -97,7 +97,7 @@ def error(format_string, *format_args, **kwargs):
 
 def _file_search(fname, pat):
     with open(fname, encoding="utf-8") as f:
-        for line in f:
+        fuer line in f:
             match = pat.search(line)
             if match is not None:
                 yield match
@@ -111,7 +111,7 @@ def parse_err_h(args):
     """
     pat = re.compile(r"#\s*define\W+(ERR_LIB_(\w+))\s+(\d+)")
     lib2errnum = {}
-    for match in _file_search(args.err_h, pat):
+    fuer match in _file_search(args.err_h, pat):
         macroname, libname, num = match.groups()
         if macroname in ['ERR_LIB_OFFSET', 'ERR_LIB_MASK']:
             # ignore: "# define ERR_LIB_OFFSET                 23L"
@@ -120,7 +120,7 @@ def parse_err_h(args):
         actual = int(num)
         expect = lib2errnum.setdefault(libname, actual)
         if actual != expect:
-            logger.warning("OpenSSL inconsistency for ERR_LIB_%s (%d != %d)",
+            logger.warning("OpenSSL inconsistency fuer ERR_LIB_%s (%d != %d)",
                            libname, actual, expect)
     return lib2errnum
 
@@ -135,7 +135,7 @@ def parse_openssl_error_text(args):
     # ignore backslash line continuation (placed before <MESSAGE> if present)
     pat = re.compile(r"^((\w+?)_R_(\w+)):(\d+):")
     seen = {}
-    for match in _file_search(args.errtxt, pat):
+    fuer match in _file_search(args.errtxt, pat):
         reason, libname, errname, num = match.groups()
         if "_F_" in reason:  # ignore function codes
             # FEAT(picnixz): in the future, we may want to also check
@@ -152,7 +152,7 @@ def parse_extra_reasons(args):
     e.g., "R SSL_R_SSLV3_ALERT_UNEXPECTED_MESSAGE 1010".
     """
     pat = re.compile(r"^R\s+((\w+)_R_(\w+))\s+(\d+)")
-    for match in _file_search(args.errcodes, pat):
+    fuer match in _file_search(args.errcodes, pat):
         reason, libname, errname, num = match.groups()
         yield reason, libname, errname, int(num)
 
@@ -161,7 +161,7 @@ def gen_library_codes(args):
     """Generate table short libname to numeric code."""
     yield "/* generated from args.lib2errnum */"
     yield "static struct py_ssl_library_code library_codes[] = {"
-    for libname in sorted(args.lib2errnum):
+    fuer libname in sorted(args.lib2errnum):
         yield f"#ifdef ERR_LIB_{libname}"
         yield f'    {{"{libname}", ERR_LIB_{libname}}},'
         yield "#endif"
@@ -170,10 +170,10 @@ def gen_library_codes(args):
 
 
 def gen_error_codes(args):
-    """Generate error code table for error reasons."""
+    """Generate error code table fuer error reasons."""
     yield "/* generated from args.reasons */"
     yield "static struct py_ssl_error_code error_codes[] = {"
-    for reason, libname, errname, num in args.reasons:
+    fuer reason, libname, errname, num in args.reasons:
         yield f"  #ifdef {reason}"
         yield f'    {{"{errname}", ERR_LIB_{libname}, {reason}}},'
         yield "  #else"
@@ -200,7 +200,7 @@ def main(args=None):
         error(f"OpenSSL directory not found: {args.srcdir}")
     args.err_h = os.path.join(args.srcdir, "include", "openssl", "err.h")
     if not os.path.isfile(args.err_h):
-        # Fall back to infile for OpenSSL 3.0.0 and later.
+        # Fall back to infile fuer OpenSSL 3.0.0 and later.
         args.err_h += ".in"
     args.errcodes = os.path.join(args.srcdir, "crypto", "err", "openssl.ec")
     if not os.path.isfile(args.errcodes):
@@ -231,11 +231,11 @@ def main(args=None):
     lines.extend(gen_error_codes(args))
 
     if args.output is None:
-        for line in lines:
+        fuer line in lines:
             print(line)
     else:
         with open(args.output, 'w') as output:
-            for line in lines:
+            fuer line in lines:
                 print(line, file=output)
 
 

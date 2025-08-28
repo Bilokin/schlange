@@ -8,7 +8,7 @@
 # end of the pipe, so we get EOF when all other processes have exited.
 # Then the server process unlinks any remaining resource names.
 #
-# This is important because there may be system limits for such resources: for
+# This is important because there may be system limits fuer such resources: for
 # instance, the system only supports a limited number of named semaphores, and
 # shared-memory segments live in the RAM. If a python process leaks such a
 # resource, this resource will not be removed till the next reboot.  Without
@@ -69,7 +69,7 @@ klasse ResourceTracker(object):
         # gh-109629: this happens if an explicit call to the ResourceTracker
         # gets interrupted by a garbage collection, invoking a finalizer (*)
         # that itself calls back into ResourceTracker.
-        #   (*) for example the SemLock finalizer
+        #   (*) fuer example the SemLock finalizer
         raise ReentrantCallError(
             "Reentrant call into the multiprocessing resource tracker")
 
@@ -98,7 +98,7 @@ klasse ResourceTracker(object):
         waitstatus_to_exitcode=os.waitstatus_to_exitcode,
     ):
         # This shouldn't happen (it might when called by a finalizer)
-        # so we check for it anyway.
+        # so we check fuer it anyway.
         if self._lock._recursion_count() > 1:
             raise self._reentrant_call_error()
         if self._fd is None:
@@ -118,7 +118,7 @@ klasse ResourceTracker(object):
         try:
             self._exitcode = waitstatus_to_exitcode(status)
         except ValueError:
-            # os.waitstatus_to_exitcode may raise an exception for invalid values
+            # os.waitstatus_to_exitcode may raise an exception fuer invalid values
             self._exitcode = None
 
     def getfd(self):
@@ -172,7 +172,7 @@ klasse ResourceTracker(object):
             # This signal mask will be inherited by the child that is going
             # to be spawned and will protect the child from a race condition
             # that can make the child die before it registers signal handlers
-            # for SIGINT and SIGTERM. The mask is unregistered after spawning
+            # fuer SIGINT and SIGTERM. The mask is unregistered after spawning
             # the child.
             prev_sigmask = None
             try:
@@ -271,25 +271,25 @@ def main(fd):
     if _HAVE_SIGMASK:
         signal.pthread_sigmask(signal.SIG_UNBLOCK, _IGNORED_SIGNALS)
 
-    for f in (sys.stdin, sys.stdout):
+    fuer f in (sys.stdin, sys.stdout):
         try:
             f.close()
         except Exception:
             pass
 
-    cache = {rtype: set() for rtype in _CLEANUP_FUNCS.keys()}
+    cache = {rtype: set() fuer rtype in _CLEANUP_FUNCS.keys()}
     exit_code = 0
 
     try:
         # keep track of registered/unregistered resources
         with open(fd, 'rb') as f:
-            for line in f:
+            fuer line in f:
                 try:
                     cmd, name, rtype = line.strip().decode('ascii').split(':')
                     cleanup_func = _CLEANUP_FUNCS.get(rtype, None)
                     if cleanup_func is None:
                         raise ValueError(
-                            f'Cannot register {name} for automatic cleanup: '
+                            f'Cannot register {name} fuer automatic cleanup: '
                             f'unknown resource type {rtype}')
 
                     if cmd == 'REGISTER':
@@ -308,13 +308,13 @@ def main(fd):
                         pass
     finally:
         # all processes have terminated; cleanup any remaining resources
-        for rtype, rtype_cache in cache.items():
+        fuer rtype, rtype_cache in cache.items():
             if rtype_cache:
                 try:
                     exit_code = 1
                     if rtype == 'dummy':
                         # The test 'dummy' resource is expected to leak.
-                        # We skip the warning (and *only* the warning) for it.
+                        # We skip the warning (and *only* the warning) fuer it.
                         pass
                     else:
                         warnings.warn(
@@ -324,7 +324,7 @@ def main(fd):
                         )
                 except Exception:
                     pass
-            for name in rtype_cache:
+            fuer name in rtype_cache:
                 # For some reason the process which created and registered this
                 # resource has failed to unregister it. Presumably it has
                 # died.  We therefore unlink it.

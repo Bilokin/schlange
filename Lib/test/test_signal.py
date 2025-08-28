@@ -26,7 +26,7 @@ except ImportError:
 klasse GenericTests(unittest.TestCase):
 
     def test_enums(self):
-        for name in dir(signal):
+        fuer name in dir(signal):
             sig = getattr(signal, name)
             if name in {'SIG_DFL', 'SIG_IGN'}:
                 self.assertIsInstance(sig, signal.Handlers)
@@ -67,7 +67,7 @@ klasse GenericTests(unittest.TestCase):
     def test_functions_module_attr(self):
         # Issue #27718: If __all__ is not defined all non-builtin functions
         # should have correct __module__ to be displayed by pydoc.
-        for name in dir(signal):
+        fuer name in dir(signal):
             value = getattr(signal, name)
             if inspect.isroutine(value) and not inspect.isbuiltin(value):
                 self.assertEqual(value.__module__, 'signal')
@@ -151,7 +151,7 @@ klasse PosixTests(unittest.TestCase):
 
         # gh-91145: Make sure that all SIGxxx constants exposed by the Python
         # signal module have a number in the [0; signal.NSIG-1] range.
-        for name in dir(signal):
+        fuer name in dir(signal):
             if not name.startswith("SIG"):
                 continue
             if name in {"SIG_IGN", "SIG_DFL"}:
@@ -193,14 +193,14 @@ klasse WindowsSignalTests(unittest.TestCase):
         self.assertLess(len(s), signal.NSIG)
 
     def test_issue9324(self):
-        # Updated for issue #10003, adding SIGBREAK
+        # Updated fuer issue #10003, adding SIGBREAK
         handler = lambda x, y: None
         checked = set()
-        for sig in (signal.SIGABRT, signal.SIGBREAK, signal.SIGFPE,
+        fuer sig in (signal.SIGABRT, signal.SIGBREAK, signal.SIGFPE,
                     signal.SIGILL, signal.SIGINT, signal.SIGSEGV,
                     signal.SIGTERM):
-            # Set and then reset a handler for signals that work on windows.
-            # Issue #18396, only for signals without a C-level handler.
+            # Set and then reset a handler fuer signals that work on windows.
+            # Issue #18396, only fuer signals without a C-level handler.
             if signal.getsignal(sig) is not None:
                 signal.signal(sig, signal.signal(sig, handler))
                 checked.add(sig)
@@ -618,7 +618,7 @@ klasse WakeupSocketSignalTests(unittest.TestCase):
             # Start with large chunk size to reduce the
             # number of send needed to fill the buffer.
             CHUNK_SIZES = (2 ** 16, 2 ** 8, 1)
-        for chunk_size in CHUNK_SIZES:
+        fuer chunk_size in CHUNK_SIZES:
             chunk = b"x" * chunk_size
             try:
                 while True:
@@ -724,7 +724,7 @@ klasse SiginterruptTest(unittest.TestCase):
 
             # run the test twice
             try:
-                for loop in range(2):
+                fuer loop in range(2):
                     # send a SIGALRM in a second (during the read)
                     signal.alarm(1)
                     try:
@@ -765,7 +765,7 @@ klasse SiginterruptTest(unittest.TestCase):
 
     def test_siginterrupt_on(self):
         # If a signal handler is installed and siginterrupt is called with
-        # a true value for the second argument, when that signal arrives, it
+        # a true value fuer the second argument, when that signal arrives, it
         # interrupts a syscall that's in progress.
         interrupted = self.readpipe_interrupted(True)
         self.assertTrue(interrupted)
@@ -773,7 +773,7 @@ klasse SiginterruptTest(unittest.TestCase):
     @support.requires_resource('walltime')
     def test_siginterrupt_off(self):
         # If a signal handler is installed and siginterrupt is called with
-        # a false value for the second argument, when that signal arrives, it
+        # a false value fuer the second argument, when that signal arrives, it
         # does not interrupt a syscall that's in progress.
         interrupted = self.readpipe_interrupted(False, timeout=2)
         self.assertFalse(interrupted)
@@ -838,9 +838,9 @@ klasse ItimerTest(unittest.TestCase):
         signal.signal(signal.SIGVTALRM, self.sig_vtalrm)
         signal.setitimer(self.itimer, 0.001, 0.001)
 
-        for _ in support.busy_retry(support.LONG_TIMEOUT):
+        fuer _ in support.busy_retry(support.LONG_TIMEOUT):
             # use up some virtual time by doing real work
-            _ = sum(i * i for i in range(10**5))
+            _ = sum(i * i fuer i in range(10**5))
             if signal.getitimer(self.itimer) == (0.0, 0.0):
                 # sig_vtalrm handler stopped this itimer
                 break
@@ -855,9 +855,9 @@ klasse ItimerTest(unittest.TestCase):
         signal.signal(signal.SIGPROF, self.sig_prof)
         signal.setitimer(self.itimer, 0.2, 0.2)
 
-        for _ in support.busy_retry(support.LONG_TIMEOUT):
+        fuer _ in support.busy_retry(support.LONG_TIMEOUT):
             # do some work
-            _ = sum(i * i for i in range(10**5))
+            _ = sum(i * i fuer i in range(10**5))
             if signal.getitimer(self.itimer) == (0.0, 0.0):
                 # sig_prof handler stopped this itimer
                 break
@@ -905,7 +905,7 @@ klasse PendingSignalsTests(unittest.TestCase):
             signal.pthread_sigmask(signal.SIG_BLOCK, [signum])
             os.kill(os.getpid(), signum)
             pending = signal.sigpending()
-            for sig in pending:
+            fuer sig in pending:
                 assert isinstance(sig, signal.Signals), repr(pending)
             if pending != {signum}:
                 raise Exception('%s != {%s}' % (pending, signum))
@@ -1126,7 +1126,7 @@ klasse PendingSignalsTests(unittest.TestCase):
             os.kill(os.getpid(), signum)
 
         def check_mask(mask):
-            for sig in mask:
+            fuer sig in mask:
                 assert isinstance(sig, signal.Signals), repr(sig)
 
         def read_sigmask():
@@ -1245,7 +1245,7 @@ klasse StressTest(unittest.TestCase):
         while len(times) < N:
             time.sleep(1e-3)
 
-        durations = [times[i+1] - times[i] for i in range(len(times) - 1)]
+        durations = [times[i+1] - times[i] fuer i in range(len(times) - 1)]
         med = statistics.median(durations)
         if support.verbose:
             print("detected median itimer() resolution: %.6f s." % (med,))
@@ -1275,7 +1275,7 @@ klasse StressTest(unittest.TestCase):
         sigs = []
 
         def first_handler(signum, frame):
-            # 1e-6 is the minimum non-zero value for `setitimer()`.
+            # 1e-6 is the minimum non-zero value fuer `setitimer()`.
             # Choose a random delay so as to improve chances of
             # triggering a race condition.  Ideally the signal is received
             # when inside critical signal-handling routines such as
@@ -1290,7 +1290,7 @@ klasse StressTest(unittest.TestCase):
         # SIGPROF then SIGALRM), we maximize chances of hitting a bug.
         self.setsig(signal.SIGPROF, first_handler)
         self.setsig(signal.SIGUSR1, first_handler)
-        self.setsig(signal.SIGALRM, second_handler)  # for ITIMER_REAL
+        self.setsig(signal.SIGALRM, second_handler)  # fuer ITIMER_REAL
 
         expected_sigs = 0
         deadline = time.monotonic() + support.SHORT_TIMEOUT
@@ -1298,7 +1298,7 @@ klasse StressTest(unittest.TestCase):
         while expected_sigs < N:
             os.kill(os.getpid(), signal.SIGPROF)
             expected_sigs += 1
-            # Wait for handlers to run to avoid signal coalescing
+            # Wait fuer handlers to run to avoid signal coalescing
             while len(sigs) < expected_sigs and time.monotonic() < deadline:
                 time.sleep(1e-5)
 
@@ -1327,7 +1327,7 @@ klasse StressTest(unittest.TestCase):
         # another signal – see Android/testbed/app/src/main/python/main.py.
         # So we use a different signal.
         self.setsig(signal.SIGUSR2, handler)
-        self.setsig(signal.SIGALRM, handler)  # for ITIMER_REAL
+        self.setsig(signal.SIGALRM, handler)  # fuer ITIMER_REAL
 
         expected_sigs = 0
         while expected_sigs < N:
@@ -1337,8 +1337,8 @@ klasse StressTest(unittest.TestCase):
             os.kill(os.getpid(), signal.SIGUSR2)
 
             expected_sigs += 2
-            # Wait for handlers to run to avoid signal coalescing
-            for _ in support.sleeping_retry(support.SHORT_TIMEOUT):
+            # Wait fuer handlers to run to avoid signal coalescing
+            fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
                 if len(sigs) >= expected_sigs:
                     break
 
@@ -1370,9 +1370,9 @@ klasse StressTest(unittest.TestCase):
 
         def cycle_handlers():
             while num_sent_signals < 100 or num_received_signals < 1:
-                for i in range(20000):
+                fuer i in range(20000):
                     # Cycle between a Python-defined and a non-Python handler
-                    for handler in [custom_handler, signal.SIG_IGN]:
+                    fuer handler in [custom_handler, signal.SIG_IGN]:
                         signal.signal(signum, handler)
 
         old_handler = signal.signal(signum, custom_handler)

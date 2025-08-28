@@ -20,13 +20,13 @@ def _abs(relfile):
 
 def clean_lines(text):
     """Clear out comments, blank lines, and leading/trailing whitespace."""
-    lines = (line.strip() for line in text.splitlines())
+    lines = (line.strip() fuer line in text.splitlines())
     lines = (line.partition('#')[0].rstrip()
-             for line in lines
+             fuer line in lines
              if line and not line.startswith('#'))
     glob_all = f'{GLOB_ALL} '
-    lines = (re.sub(r'^[*] ', glob_all, line) for line in lines)
-    lines = (_abs(line) for line in lines)
+    lines = (re.sub(r'^[*] ', glob_all, line) fuer line in lines)
+    lines = (_abs(line) fuer line in lines)
     return list(lines)
 
 
@@ -148,7 +148,7 @@ glob	include
 **/*.h	Python.h
 Include/**/*.h	object.h
 
-# for Py_HAVE_CONDVAR
+# fuer Py_HAVE_CONDVAR
 Include/internal/pycore_gil.h	pycore_condvar.h
 Python/thread_pthread.h	pycore_condvar.h
 

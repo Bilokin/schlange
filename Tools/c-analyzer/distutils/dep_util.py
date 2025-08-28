@@ -1,6 +1,6 @@
 """distutils.dep_util
 
-Utility functions for simple, timestamp-based dependency of files
+Utility functions fuer simple, timestamp-based dependency of files
 and groups of files; also, function based entirely on such
 timestamp dependency analysis."""
 

@@ -63,7 +63,7 @@ def generate():
     keys = sorted(MESSAGES.keys())
     offsets = []
     ids = strs = b''
-    for id in keys:
+    fuer id in keys:
         # For each string, we need size and file offset.  Each string is NUL
         # terminated; the NUL does not count into the size.
         offsets.append((len(ids), len(id), len(strs), len(MESSAGES[id])))
@@ -80,7 +80,7 @@ def generate():
     voffsets = []
     # The string table first has the list of keys, then the list of values.
     # Each entry has first the size of the string, then the file offset.
-    for o1, l1, o2, l2 in offsets:
+    fuer o1, l1, o2, l2 in offsets:
         koffsets += [l1, o1+keystart]
         voffsets += [l2, o2+valuestart]
     offsets = koffsets + voffsets
@@ -134,7 +134,7 @@ def make(filename, outfile):
 
     # Parse the catalog
     lno = 0
-    for l in lines:
+    fuer l in lines:
         l = l.decode(encoding)
         lno += 1
         # If we get a comment line after a msgstr, this is a new entry
@@ -160,7 +160,7 @@ def make(filename, outfile):
                 if not msgid:
                     # Filter out POT-Creation-Date
                     # See issue #131852
-                    msgstr = b''.join(line for line in msgstr.splitlines(True)
+                    msgstr = b''.join(line fuer line in msgstr.splitlines(True)
                                       if not line.startswith(b'POT-Creation-Date:'))
 
                     # See whether there is an encoding declaration
@@ -196,7 +196,7 @@ def make(filename, outfile):
                     msgstr += b'\0' # Separator of the various plural forms
             else:
                 if is_plural:
-                    print('indexed msgstr required for plural on  %s:%d' % (infile, lno),
+                    print('indexed msgstr required fuer plural on  %s:%d' % (infile, lno),
                           file=sys.stderr)
                     sys.exit(1)
                 l = l[6:]
@@ -239,7 +239,7 @@ def main():
 
     outfile = None
     # parse options
-    for opt, arg in opts:
+    fuer opt, arg in opts:
         if opt in ('-h', '--help'):
             usage(0)
         elif opt in ('-V', '--version'):
@@ -250,10 +250,10 @@ def main():
     # do it
     if not args:
         print('No input file given', file=sys.stderr)
-        print("Try `msgfmt --help' for more information.", file=sys.stderr)
+        print("Try `msgfmt --help' fuer more information.", file=sys.stderr)
         return
 
-    for filename in args:
+    fuer filename in args:
         make(filename, outfile)
 
 

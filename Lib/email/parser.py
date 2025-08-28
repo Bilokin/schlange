@@ -26,7 +26,7 @@ klasse Parser:
         header block is terminated either by the end of the string or by a
         blank line.
 
-        _class is the klasse to instantiate for new message objects when they
+        _class is the klasse to instantiate fuer new message objects when they
         must be created.  This klasse must have a constructor that can take
         zero arguments.  Default is Message.Message.
 
@@ -86,7 +86,7 @@ klasse BytesParser:
         header block is terminated either by the end of the input or by a
         blank line.
 
-        _class is the klasse to instantiate for new message objects when they
+        _class is the klasse to instantiate fuer new message objects when they
         must be created.  This klasse must have a constructor that can take
         zero arguments.  Default is Message.Message.
         """

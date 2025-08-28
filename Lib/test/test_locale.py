@@ -18,7 +18,7 @@ klasse LazyImportTest(unittest.TestCase):
 
 klasse BaseLocalizedTest(unittest.TestCase):
     #
-    # Base klasse for tests using a real locale
+    # Base klasse fuer tests using a real locale
     #
 
     @classmethod
@@ -38,7 +38,7 @@ klasse BaseLocalizedTest(unittest.TestCase):
                      "en_US.US-ASCII", "en_US")
         try:
             oldlocale = locale.setlocale(locale.LC_NUMERIC)
-            for tloc in tlocs:
+            fuer tloc in tlocs:
                 try:
                     locale.setlocale(locale.LC_NUMERIC, tloc)
                 except locale.Error:
@@ -61,7 +61,7 @@ klasse BaseLocalizedTest(unittest.TestCase):
 
 klasse BaseCookedTest(unittest.TestCase):
     #
-    # Base klasse for tests using cooked localeconv() values
+    # Base klasse fuer tests using cooked localeconv() values
     #
 
     def setUp(self):
@@ -147,7 +147,7 @@ klasse FrFRCookedTest(BaseCookedTest):
 
 klasse BaseFormattingTest(object):
     #
-    # Utility functions for formatting tests
+    # Utility functions fuer formatting tests
     #
 
     def _test_format_string(self, format, value, out, **format_opts):
@@ -360,7 +360,7 @@ klasse TestEnUSCollation(BaseLocalizedTest, TestCollation):
                      'bpo-29972: broken test on AIX')
     @unittest.skipIf(linked_to_musl(), "musl libc issue, bpo-46390")
     @unittest.skipIf(sys.platform.startswith("netbsd"),
-                     "gh-124108: NetBSD doesn't support UTF-8 for LC_COLLATE")
+                     "gh-124108: NetBSD doesn't support UTF-8 fuer LC_COLLATE")
     def test_strcoll_with_diacritic(self):
         self.assertLess(locale.strcoll('à', 'b'), 0)
 
@@ -368,7 +368,7 @@ klasse TestEnUSCollation(BaseLocalizedTest, TestCollation):
                      'bpo-29972: broken test on AIX')
     @unittest.skipIf(linked_to_musl(), "musl libc issue, bpo-46390")
     @unittest.skipIf(sys.platform.startswith("netbsd"),
-                     "gh-124108: NetBSD doesn't support UTF-8 for LC_COLLATE")
+                     "gh-124108: NetBSD doesn't support UTF-8 fuer LC_COLLATE")
     def test_strxfrm_with_diacritic(self):
         self.assertLess(locale.strxfrm('à'), locale.strxfrm('b'))
 
@@ -378,7 +378,7 @@ klasse NormalizeTest(unittest.TestCase):
         self.assertEqual(locale.normalize(localename), expected, msg=localename)
 
     def test_locale_alias(self):
-        for localename, alias in locale.locale_alias.items():
+        fuer localename, alias in locale.locale_alias.items():
             with self.subTest(locale=(localename, alias)):
                 self.check(localename, alias)
 
@@ -525,7 +525,7 @@ klasse TestRealLocales(unittest.TestCase):
         loc2 = loc.replace('.1252', '.%015d' % 1252, 1)
         locale.setlocale(locale.LC_ALL, loc2)
 
-        # gh-137273: Debug assertion failure on Windows for long encoding.
+        # gh-137273: Debug assertion failure on Windows fuer long encoding.
         with self.assertRaises(locale.Error):
             locale.setlocale(locale.LC_CTYPE, 'en_US.' + 'x'*16)
         locale.setlocale(locale.LC_CTYPE, 'en_US.UTF-8')

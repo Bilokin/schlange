@@ -47,7 +47,7 @@ def register_benchmark(func):
 def object_cfunction():
     accu = 0
     tab = [1] * 100
-    for i in range(1000 * WORK_SCALE):
+    fuer i in range(1000 * WORK_SCALE):
         tab.pop(0)
         tab.append(i)
         accu += tab[50]
@@ -56,14 +56,14 @@ def object_cfunction():
 @register_benchmark
 def cmodule_function():
     N = 1000 * WORK_SCALE
-    for i in range(N):
+    fuer i in range(N):
         math.cos(i / N)
 
 @register_benchmark
 def object_lookup_special():
     # round() uses `_PyObject_LookupSpecial()` internally.
     N = 1000 * WORK_SCALE
-    for i in range(N):
+    fuer i in range(N):
         round(i / N)
 
 klasse MyContextManager:
@@ -75,25 +75,25 @@ klasse MyContextManager:
 @register_benchmark
 def context_manager():
     N = 1000 * WORK_SCALE
-    for i in range(N):
+    fuer i in range(N):
         with MyContextManager():
             pass
 
 @register_benchmark
 def mult_constant():
     x = 1.0
-    for i in range(3000 * WORK_SCALE):
+    fuer i in range(3000 * WORK_SCALE):
         x *= 1.01
 
 def simple_gen():
-    for i in range(10):
+    fuer i in range(10):
         yield i
 
 @register_benchmark
 def generator():
     accu = 0
-    for i in range(100 * WORK_SCALE):
-        for v in simple_gen():
+    fuer i in range(100 * WORK_SCALE):
+        fuer v in simple_gen():
             accu += v
     return accu
 
@@ -108,7 +108,7 @@ klasse Counter:
 @register_benchmark
 def pymethod():
     c = Counter()
-    for i in range(1000 * WORK_SCALE):
+    fuer i in range(1000 * WORK_SCALE):
         c.next_number()
     return c.i
 
@@ -118,7 +118,7 @@ def next_number(i):
 @register_benchmark
 def pyfunction():
     accu = 0
-    for i in range(1000 * WORK_SCALE):
+    fuer i in range(1000 * WORK_SCALE):
         accu = next_number(i)
     return accu
 
@@ -130,7 +130,7 @@ module = sys.modules[__name__]
 @register_benchmark
 def module_function():
     total = 0
-    for i in range(1000 * WORK_SCALE):
+    fuer i in range(1000 * WORK_SCALE):
         total += module.double(i)
     return total
 
@@ -140,7 +140,7 @@ klasse MyObject:
 @register_benchmark
 def load_string_const():
     accu = 0
-    for i in range(1000 * WORK_SCALE):
+    fuer i in range(1000 * WORK_SCALE):
         if i == 'a string':
             accu += 7
         else:
@@ -150,7 +150,7 @@ def load_string_const():
 @register_benchmark
 def load_tuple_const():
     accu = 0
-    for i in range(1000 * WORK_SCALE):
+    fuer i in range(1000 * WORK_SCALE):
         if i == (1, 2):
             accu += 7
         else:
@@ -159,19 +159,19 @@ def load_tuple_const():
 
 @register_benchmark
 def create_pyobject():
-    for i in range(1000 * WORK_SCALE):
+    fuer i in range(1000 * WORK_SCALE):
         o = MyObject()
 
 @register_benchmark
 def create_closure():
-    for i in range(1000 * WORK_SCALE):
+    fuer i in range(1000 * WORK_SCALE):
         def foo(x):
             return x
         foo(i)
 
 @register_benchmark
 def create_dict():
-    for i in range(1000 * WORK_SCALE):
+    fuer i in range(1000 * WORK_SCALE):
         d = {
             "key": "value",
         }
@@ -182,7 +182,7 @@ thread_local = threading.local()
 def thread_local_read():
     tmp = thread_local
     tmp.x = 10
-    for i in range(500 * WORK_SCALE):
+    fuer i in range(500 * WORK_SCALE):
         _ = tmp.x
         _ = tmp.x
         _ = tmp.x
@@ -199,7 +199,7 @@ klasse MyClass:
 def method_caller():
     mc = methodcaller("func")
     obj = MyClass()
-    for i in range(1000 * WORK_SCALE):
+    fuer i in range(1000 * WORK_SCALE):
         mc(obj)
 
 def bench_one_thread(func):
@@ -211,9 +211,9 @@ def bench_one_thread(func):
 
 def bench_parallel(func):
     t0 = time.perf_counter_ns()
-    for inq in in_queues:
+    fuer inq in in_queues:
         inq.put(func)
-    for outq in out_queues:
+    fuer outq in out_queues:
         outq.get()
     t1 = time.perf_counter_ns()
     return t1 - t0
@@ -255,7 +255,7 @@ def determine_num_threads_and_affinity():
         return [None] * os.cpu_count()
 
     table = []
-    for line in output.splitlines():
+    fuer line in output.splitlines():
         if line.startswith("#"):
             continue
         cpu, node, core, maxhz = line.split(",")
@@ -265,8 +265,8 @@ def determine_num_threads_and_affinity():
 
     cpus = []
     cores = set()
-    max_mhz_all = max(row[3] for row in table)
-    for cpu, node, core, maxmhz in table:
+    max_mhz_all = max(row[3] fuer row in table)
+    fuer cpu, node, core, maxmhz in table:
         # Choose only CPUs on the same node, unique cores, and try to avoid
         # "efficiency" cores.
         if node == 0 and core not in cores and maxmhz == max_mhz_all:
@@ -277,7 +277,7 @@ def determine_num_threads_and_affinity():
 
 def thread_run(cpu, in_queue, out_queue):
     if cpu is not None and hasattr(os, "sched_setaffinity"):
-        # Set the affinity for the current thread
+        # Set the affinity fuer the current thread
         os.sched_setaffinity(0, (cpu,))
 
     while True:
@@ -295,7 +295,7 @@ def initialize_threads(opts):
         cpus = [None] * opts.threads  # don't set affinity
 
     print(f"Running benchmarks with {len(cpus)} threads")
-    for cpu in cpus:
+    fuer cpu in cpus:
         inq = queue.Queue()
         outq = queue.Queue()
         in_queues.append(inq)
@@ -312,7 +312,7 @@ def main(opts):
 
     benchmark_names = opts.benchmarks
     if benchmark_names:
-        for name in benchmark_names:
+        fuer name in benchmark_names:
             if name not in ALL_BENCHMARKS:
                 sys.stderr.write(f"Unknown benchmark: {name}\n")
                 sys.exit(1)
@@ -325,7 +325,7 @@ def main(opts):
         initialize_threads(opts)
 
     do_bench = not opts.baseline_only and not opts.parallel_only
-    for name in benchmark_names:
+    fuer name in benchmark_names:
         func = ALL_BENCHMARKS[name]
         if do_bench:
             benchmark(func)
@@ -347,7 +347,7 @@ if __name__ == "__main__":
     parser.add_argument("-t", "--threads", type=int, default=-1,
                         help="number of threads to use")
     parser.add_argument("--scale", type=int, default=100,
-                        help="work scale factor for the benchmark (default=100)")
+                        help="work scale factor fuer the benchmark (default=100)")
     parser.add_argument("--baseline-only", default=False, action="store_true",
                         help="only run the baseline benchmarks (single thread)")
     parser.add_argument("--parallel-only", default=False, action="store_true",

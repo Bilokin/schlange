@@ -84,7 +84,7 @@ klasse CAPITest(unittest.TestCase):
         # CRASHES size(NULL)
 
     def check_list_get_item(self, getitem, exctype):
-        # Common test cases for PyList_GetItem() and PyList_GetItemRef()
+        # Common test cases fuer PyList_GetItem() and PyList_GetItemRef()
         lst = [1, 2, 3]
         self.assertEqual(getitem(lst, 0), 1)
         self.assertEqual(getitem(lst, 2), 3)
@@ -112,9 +112,9 @@ klasse CAPITest(unittest.TestCase):
         self.assertEqual(get_item(lst, 0), 1)
         self.assertEqual(get_item(lst, 2), [1, 2, 3])
 
-        # CRASHES for out of index: get_item(lst, 3)
-        # CRASHES for get_item(lst, PY_SSIZE_T_MIN)
-        # CRASHES for get_item(lst, PY_SSIZE_T_MAX)
+        # CRASHES fuer out of index: get_item(lst, 3)
+        # CRASHES fuer get_item(lst, PY_SSIZE_T_MIN)
+        # CRASHES fuer get_item(lst, PY_SSIZE_T_MAX)
         # CRASHES get_item(21, 2)
         # CRASHES get_item(NULL, 1)
 
@@ -143,11 +143,11 @@ klasse CAPITest(unittest.TestCase):
         set_item(lst, 2, [1, 2, 3])
         self.assertEqual(lst, [1, 10, [1, 2, 3]])
 
-        # CRASHES for set_item([1], -1, 5)
-        # CRASHES for set_item([1], PY_SSIZE_T_MIN, 5)
-        # CRASHES for set_item([1], PY_SSIZE_T_MAX, 5)
-        # CRASHES for set_item([], 0, 1)
-        # CRASHES for set_item(NULL, 0, 1)
+        # CRASHES fuer set_item([1], -1, 5)
+        # CRASHES fuer set_item([1], PY_SSIZE_T_MIN, 5)
+        # CRASHES fuer set_item([1], PY_SSIZE_T_MAX, 5)
+        # CRASHES fuer set_item([], 0, 1)
+        # CRASHES fuer set_item(NULL, 0, 1)
 
 
     def test_list_insert(self):
@@ -333,7 +333,7 @@ klasse CAPITest(unittest.TestCase):
         # Test PyList_Extend()
         list_extend = _testcapi.list_extend
 
-        for other_type in (list, tuple, str, iter):
+        fuer other_type in (list, tuple, str, iter):
             lst = list("ab")
             arg = other_type("def")
             self.assertEqual(list_extend(lst, arg), 0)

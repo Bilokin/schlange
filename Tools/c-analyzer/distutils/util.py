@@ -39,7 +39,7 @@ def get_host_platform():
             return 'win-arm64'
         return sys.platform
 
-    # Set for cross builds explicitly
+    # Set fuer cross builds explicitly
     if "_PYTHON_HOST_PLATFORM" in os.environ:
         return os.environ["_PYTHON_HOST_PLATFORM"]
 
@@ -111,7 +111,7 @@ def _init_regex():
     _dquote_re = re.compile(r'"(?:[^"\\]|\\.)*"')
 
 def split_quoted (s):
-    """Split a string up according to Unix shell-like rules for quotes and
+    """Split a string up according to Unix shell-like rules fuer quotes and
     backslashes.  In short: words are delimited by spaces, as long as those
     spaces are not escaped by a backslash, or inside a quoted string.
     Single and double quotes are equivalent, and the quote characters can
@@ -121,7 +121,7 @@ def split_quoted (s):
     words.
     """
 
-    # This is a nice algorithm for splitting up a single string, since it
+    # This is a nice algorithm fuer splitting up a single string, since it
     # doesn't require character-by-character examination.  It was a little
     # bit of a brain-bender to get it working right, though...
     if _wordchars_re is None: _init_regex()

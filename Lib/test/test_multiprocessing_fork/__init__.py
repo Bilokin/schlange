@@ -4,7 +4,7 @@ import unittest
 from test import support
 
 if support.PGO:
-    raise unittest.SkipTest("test is not helpful for PGO")
+    raise unittest.SkipTest("test is not helpful fuer PGO")
 
 if sys.platform == "win32":
     raise unittest.SkipTest("fork is not available on Windows")

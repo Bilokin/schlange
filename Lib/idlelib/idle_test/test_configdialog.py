@@ -97,7 +97,7 @@ klasse ButtonTest(unittest.TestCase):
                                new_callable=Func) as view:
             dialog.buttons['Help'].invoke()
             title, contents = view.kwds['title'], view.kwds['contents']
-        self.assertEqual(title, 'Help for IDLE preferences')
+        self.assertEqual(title, 'Help fuer IDLE preferences')
         self.assertStartsWith(contents, 'When you click')
         self.assertEndsWith(contents,'a different name.\n')
 
@@ -244,7 +244,7 @@ klasse FontPageTest(unittest.TestCase):
 
     def test_set_samples(self):
         d = self.page
-        del d.set_samples  # Unmask method for test
+        del d.set_samples  # Unmask method fuer test
         orig_samples = d.font_sample, d.highlight_sample
         d.font_sample, d.highlight_sample = {}, {}
         d.font_name.set('test')
@@ -257,7 +257,7 @@ klasse FontPageTest(unittest.TestCase):
         self.assertTrue(d.font_sample == d.highlight_sample == expected)
 
         d.font_sample, d.highlight_sample = orig_samples
-        d.set_samples = Func()  # Re-mask for other tests.
+        d.set_samples = Func()  # Re-mask fuer other tests.
 
 
 klasse HighPageTest(unittest.TestCase):
@@ -285,9 +285,9 @@ klasse HighPageTest(unittest.TestCase):
 
     def setUp(self):
         d = self.page
-        # The following is needed for test_load_key_cfg, _delete_custom_keys.
+        # The following is needed fuer test_load_key_cfg, _delete_custom_keys.
         # This may indicate a defect in some test or function.
-        for section in idleConf.GetSectionList('user', 'highlight'):
+        fuer section in idleConf.GetSectionList('user', 'highlight'):
             idleConf.userCfg['highlight'].remove_section(section)
         changes.clear()
         d.set_theme_type.called = 0
@@ -436,12 +436,12 @@ klasse HighPageTest(unittest.TestCase):
             hs.event_generate('<ButtonRelease-1>', x=x, y=y)
 
         # Reverse theme_elements to make the tag the key.
-        elem = {tag: element for element, tag in d.theme_elements.items()}
+        elem = {tag: element fuer element, tag in d.theme_elements.items()}
 
         # If highlight_sample has a tag that isn't in theme_elements, there
         # will be a KeyError in the test run.
         count = 0
-        for tag in hs.tag_names():
+        fuer tag in hs.tag_names():
             try:
                 click_char(hs.tag_nextrange(tag, "1.0")[0])
                 eq(d.highlight_target.get(), elem[tag])
@@ -464,7 +464,7 @@ klasse HighPageTest(unittest.TestCase):
         hs.event_generate('<Enter>', x=0, y=0)
         hs.event_generate('<Motion>', x=0, y=0)
         # Double click is a sequence of two clicks in a row.
-        for _ in range(2):
+        fuer _ in range(2):
             hs.event_generate('<ButtonPress-1>', x=0, y=0)
             hs.event_generate('<ButtonRelease-1>', x=0, y=0)
 
@@ -694,15 +694,15 @@ klasse HighPageTest(unittest.TestCase):
         page.paint_theme_sample()
         new_console = {'foreground': 'blue',
                        'background': 'yellow',}
-        for key, value in new_console.items():
+        fuer key, value in new_console.items():
             self.assertNotEqual(hs_tag('console', key), value)
         eq(page.set_color_sample.called, 1)
 
         # Apply changes.
-        for key, value in new_console.items():
+        fuer key, value in new_console.items():
             changes.add_option('highlight', theme, 'console-'+key, value)
         page.paint_theme_sample()
-        for key, value in new_console.items():
+        fuer key, value in new_console.items():
             eq(hs_tag('console', key), value)
         eq(page.set_color_sample.called, 2)
 
@@ -789,9 +789,9 @@ klasse KeysPageTest(unittest.TestCase):
 
     def setUp(self):
         d = self.page
-        # The following is needed for test_load_key_cfg, _delete_custom_keys.
+        # The following is needed fuer test_load_key_cfg, _delete_custom_keys.
         # This may indicate a defect in some test or function.
-        for section in idleConf.GetSectionList('user', 'keys'):
+        fuer section in idleConf.GetSectionList('user', 'keys'):
             idleConf.userCfg['keys'].remove_section(section)
         changes.clear()
         d.set_keys_type.called = 0

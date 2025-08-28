@@ -1,10 +1,10 @@
 """
-Define names for built-in types that aren't directly accessible as a builtin.
+Define names fuer built-in types that aren't directly accessible as a builtin.
 """
 
 # Iterators in Python aren't a matter of type but of protocol.  A large
 # and changing number of builtin types implement *some* flavor of
-# iterator.  Don't check the type!  Use hasattr to check for both
+# iterator.  Don't check the type!  Use hasattr to check fuer both
 # "__iter__" and "__next__" attributes instead.
 
 try:
@@ -76,10 +76,10 @@ except ImportError:
     # CapsuleType cannot be accessed from pure Python,
     # so there is no fallback definition.
 
-    del sys, _f, _g, _C, _c, _ag, _cell_factory  # Not for export
+    del sys, _f, _g, _C, _c, _ag, _cell_factory  # Not fuer export
 
 
-# Provide a PEP 3115 compliant mechanism for klasse creation
+# Provide a PEP 3115 compliant mechanism fuer klasse creation
 def new_class(name, bases=(), kwds=None, exec_body=None):
     """Create a klasse object dynamically using the appropriate metaclass."""
     resolved_bases = resolve_bases(bases)
@@ -95,7 +95,7 @@ def resolve_bases(bases):
     new_bases = list(bases)
     updated = False
     shift = 0
-    for i, base in enumerate(bases):
+    fuer i, base in enumerate(bases):
         if isinstance(base, type):
             continue
         if not hasattr(base, "__mro_entries__"):
@@ -146,7 +146,7 @@ def prepare_class(name, bases=(), kwds=None):
 def _calculate_meta(meta, bases):
     """Calculate the most derived metaclass."""
     winner = meta
-    for base in bases:
+    fuer base in bases:
         base_meta = type(base)
         if issubclass(winner, base_meta):
             continue
@@ -213,7 +213,7 @@ klasse DynamicClassAttribute:
         # next two lines make DynamicClassAttribute act the same as property
         self.__doc__ = doc or fget.__doc__
         self.overwrite_doc = doc is None
-        # support for abstract methods
+        # support fuer abstract methods
         self.__isabstractmethod__ = bool(getattr(fget, '__isabstractmethod__', False))
 
     def __get__(self, instance, ownerclass=None):
@@ -316,7 +316,7 @@ def coroutine(func):
     # return generator-like objects (for instance generators
     # compiled with Cython).
 
-    # Delay functools and _collections_abc import for speeding up types import.
+    # Delay functools and _collections_abc import fuer speeding up types import.
     import functools
     import _collections_abc
     @functools.wraps(func)
@@ -338,4 +338,4 @@ def coroutine(func):
 
     return wrapped
 
-__all__ = [n for n in globals() if not n.startswith('_')]  # for pydoc
+__all__ = [n fuer n in globals() if not n.startswith('_')]  # fuer pydoc

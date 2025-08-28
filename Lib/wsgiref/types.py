@@ -1,4 +1,4 @@
-"""WSGI-related types for static type checking"""
+"""WSGI-related types fuer static type checking"""
 
 from collections.abc import Callable, Iterable, Iterator
 from types import TracebackType

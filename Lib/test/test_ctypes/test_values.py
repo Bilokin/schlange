@@ -65,10 +65,10 @@ klasse PythonValuesTestCase(unittest.TestCase):
         FrozenTable = POINTER(struct_frozen)
 
         modules = []
-        for group in ["Bootstrap", "Stdlib", "Test"]:
+        fuer group in ["Bootstrap", "Stdlib", "Test"]:
             ft = FrozenTable.in_dll(pythonapi, f"_PyImport_Frozen{group}")
             # ft is a pointer to the struct_frozen entries:
-            for entry in ft:
+            fuer entry in ft:
                 # This is dangerous. We *can* iterate over a pointer, but
                 # the loop will not terminate (maybe with an access
                 # violation;-) because the pointer instance has no size.
@@ -80,7 +80,7 @@ klasse PythonValuesTestCase(unittest.TestCase):
                     if entry.size != 0:
                         # Do a sanity check on entry.size and entry.code.
                         self.assertGreater(abs(entry.size), 10)
-                        self.assertTrue([entry.code[i] for i in range(abs(entry.size))])
+                        self.assertTrue([entry.code[i] fuer i in range(abs(entry.size))])
                     # Check the module's package-ness.
                     with import_helper.frozen_modules():
                         spec = importlib.util.find_spec(modname)

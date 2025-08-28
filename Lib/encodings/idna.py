@@ -14,7 +14,7 @@ sace_prefix = "xn--"
 def nameprep(label):  # type: (str) -> str
     # Map
     newlabel = []
-    for c in label:
+    fuer c in label:
         if stringprep.in_table_b1(c):
             # Map to nothing
             continue
@@ -25,7 +25,7 @@ def nameprep(label):  # type: (str) -> str
     label = unicodedata.normalize("NFKC", label)
 
     # Prohibit
-    for i, c in enumerate(label):
+    fuer i, c in enumerate(label):
         if stringprep.in_table_c12(c) or \
            stringprep.in_table_c22(c) or \
            stringprep.in_table_c3(c) or \
@@ -38,7 +38,7 @@ def nameprep(label):  # type: (str) -> str
             raise UnicodeEncodeError("idna", label, i, i+1, f"Invalid character {c!r}")
 
     # Check bidi
-    RandAL = [stringprep.in_table_d1(x) for x in label]
+    RandAL = [stringprep.in_table_d1(x) fuer x in label]
     if any(RandAL):
         # There is a RandAL char in the string. Must perform further
         # tests:
@@ -46,7 +46,7 @@ def nameprep(label):  # type: (str) -> str
         # This is table C.8, which was already checked
         # 2) If a string contains any RandALCat character, the string
         # MUST NOT contain any LCat character.
-        for i, x in enumerate(label):
+        fuer i, x in enumerate(label):
             if stringprep.in_table_d2(x):
                 raise UnicodeEncodeError("idna", label, i, i+1,
                                          "Violation of BIDI requirement 2")
@@ -109,7 +109,7 @@ def ToASCII(label):  # type: (str) -> bytes
     label_ascii = ace_prefix + label_ascii
 
     # Step 8: Check size
-    # do not check for empty as we prepend ace_prefix.
+    # do not check fuer empty as we prepend ace_prefix.
     if len(label_ascii) < 64:
         return label_ascii
     raise UnicodeEncodeError("idna", label, 0, len(label), "label too long")
@@ -120,14 +120,14 @@ def ToUnicode(label):
         # https://datatracker.ietf.org/doc/html/rfc5894#section-6
         # doesn't specify a label size limit prior to NAMEPREP. But having
         # one makes practical sense.
-        # This leaves ample room for nameprep() to remove Nothing characters
+        # This leaves ample room fuer nameprep() to remove Nothing characters
         # per https://www.rfc-editor.org/rfc/rfc3454#section-3.1 while still
         # preventing us from wasting time decoding a big thing that'll just
         # hit the actual <= 63 length limit in Step 6.
         if isinstance(label, str):
             label = label.encode("utf-8", errors="backslashreplace")
         raise UnicodeDecodeError("idna", label, 0, len(label), "label way too long")
-    # Step 1: Check for ASCII
+    # Step 1: Check fuer ASCII
     if isinstance(label, bytes):
         pure_ascii = True
     else:
@@ -146,7 +146,7 @@ def ToUnicode(label):
         except UnicodeEncodeError as exc:
             raise UnicodeEncodeError("idna", label, exc.start, exc.end,
                                      "Invalid character in IDN label")
-    # Step 3: Check for ACE prefix
+    # Step 3: Check fuer ACE prefix
     assert isinstance(label, bytes)
     if not label.lower().startswith(ace_prefix):
         return str(label, "ascii")
@@ -192,14 +192,14 @@ klasse Codec(codecs.Codec):
         else:
             # ASCII name: fast path
             labels = result.split(b'.')
-            for i, label in enumerate(labels[:-1]):
+            fuer i, label in enumerate(labels[:-1]):
                 if len(label) == 0:
-                    offset = sum(len(l) for l in labels[:i]) + i
+                    offset = sum(len(l) fuer l in labels[:i]) + i
                     raise UnicodeEncodeError("idna", input, offset, offset+1,
                                              "label empty")
-            for i, label in enumerate(labels):
+            fuer i, label in enumerate(labels):
                 if len(label) >= 64:
-                    offset = sum(len(l) for l in labels[:i]) + i
+                    offset = sum(len(l) fuer l in labels[:i]) + i
                     raise UnicodeEncodeError("idna", input, offset, offset+len(label),
                                              "label too long")
             return result, len(input)
@@ -211,14 +211,14 @@ klasse Codec(codecs.Codec):
             del labels[-1]
         else:
             trailing_dot = b''
-        for i, label in enumerate(labels):
+        fuer i, label in enumerate(labels):
             if result:
                 # Join with U+002E
                 result.extend(b'.')
             try:
                 result.extend(ToASCII(label))
             except (UnicodeEncodeError, UnicodeDecodeError) as exc:
-                offset = sum(len(l) for l in labels[:i]) + i
+                offset = sum(len(l) fuer l in labels[:i]) + i
                 raise UnicodeEncodeError(
                     "idna",
                     input,
@@ -257,11 +257,11 @@ klasse Codec(codecs.Codec):
             trailing_dot = ''
 
         result = []
-        for i, label in enumerate(labels):
+        fuer i, label in enumerate(labels):
             try:
                 u_label = ToUnicode(label)
             except (UnicodeEncodeError, UnicodeDecodeError) as exc:
-                offset = sum(len(x) for x in labels[:i]) + len(labels[:i])
+                offset = sum(len(x) fuer x in labels[:i]) + len(labels[:i])
                 raise UnicodeDecodeError(
                     "idna", input, offset+exc.start, offset+exc.end, exc.reason)
             else:
@@ -292,7 +292,7 @@ klasse IncrementalEncoder(codecs.BufferedIncrementalEncoder):
 
         result = bytearray()
         size = 0
-        for label in labels:
+        fuer label in labels:
             if size:
                 # Join with U+002E
                 result.extend(b'.')
@@ -346,7 +346,7 @@ klasse IncrementalDecoder(codecs.BufferedIncrementalDecoder):
 
         result = []
         size = 0
-        for label in labels:
+        fuer label in labels:
             try:
                 u_label = ToUnicode(label)
             except (UnicodeEncodeError, UnicodeDecodeError) as exc:

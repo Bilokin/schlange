@@ -126,7 +126,7 @@ klasse MimeTypesTestCase(unittest.TestCase):
         # compared to when interpreted as filename because of the semicolon.
         eq = self.assertEqual
         gzip_expected = ('application/x-tar', 'gzip')
-        for name in (
+        fuer name in (
                 ';1.tar.gz',
                 '?1.tar.gz',
                 '#1.tar.gz',
@@ -135,7 +135,7 @@ klasse MimeTypesTestCase(unittest.TestCase):
                 ';&1=123;?.tar.gz',
                 '?k1=v1&k2=v2.tar.gz',
             ):
-            for prefix in ('', '/', '\\',
+            fuer prefix in ('', '/', '\\',
                            'c:', 'c:/', 'c:\\', 'c:/d/', 'c:\\d\\',
                            '//share/server/', '\\\\share\\server\\'):
                 path = prefix + name
@@ -143,7 +143,7 @@ klasse MimeTypesTestCase(unittest.TestCase):
                     eq(self.db.guess_file_type(path), gzip_expected)
                     eq(self.db.guess_type(path), gzip_expected)
             expected = (None, None) if os.name == 'nt' else gzip_expected
-            for prefix in ('//', '\\\\', '//share/', '\\\\share\\'):
+            fuer prefix in ('//', '\\\\', '//share/', '\\\\share\\'):
                 path = prefix + name
                 with self.subTest(path=path):
                     eq(self.db.guess_file_type(path), expected)
@@ -172,7 +172,7 @@ klasse MimeTypesTestCase(unittest.TestCase):
         self.assertSequenceEqual(result, ('text/html', None))
 
     def test_guess_all_types(self):
-        # First try strict.  Use a set here for testing the results because if
+        # First try strict.  Use a set here fuer testing the results because if
         # test_urllib2 is run before test_mimetypes, global state is modified
         # such that the 'all' set will have more items in it.
         all = self.db.guess_all_extensions('text/plain', strict=True)
@@ -181,10 +181,10 @@ klasse MimeTypesTestCase(unittest.TestCase):
         # And now non-strict
         all = self.db.guess_all_extensions('image/jpg', strict=False)
         self.assertEqual(all, ['.jpg'])
-        # And now for no hits
+        # And now fuer no hits
         all = self.db.guess_all_extensions('image/jpg', strict=True)
         self.assertEqual(all, [])
-        # And now for type existing in both strict and non-strict mappings.
+        # And now fuer type existing in both strict and non-strict mappings.
         self.db.add_type('test-type', '.strict-ext')
         self.db.add_type('test-type', '.non-strict-ext', strict=False)
         all = self.db.guess_all_extensions('test-type', strict=False)
@@ -219,12 +219,12 @@ klasse MimeTypesTestCase(unittest.TestCase):
         # The test fails on Windows because Windows adds mime types from the Registry
         # and that creates some duplicates.
         from mimetypes import types_map
-        for v in types_map.values():
+        fuer v in types_map.values():
             self.assertIsNotNone(mimetypes.guess_extension(v))
 
     def test_preferred_extension(self):
         def check_extensions():
-            for mime_type, ext in (
+            fuer mime_type, ext in (
                 ("application/epub+zip", ".epub"),
                 ("application/octet-stream", ".bin"),
                 ("application/gzip", ".gz"),
@@ -299,7 +299,7 @@ klasse MimeTypesTestCase(unittest.TestCase):
 
     def test_guess_file_type(self):
         def check_file_type():
-            for mime_type, ext in (
+            fuer mime_type, ext in (
                 ("application/yaml", ".yaml"),
                 ("application/yaml", ".yml"),
                 ("audio/mpeg", ".mp2"),
@@ -428,7 +428,7 @@ klasse Win32MimeTypesTestCase(unittest.TestCase):
             lambda v, k: from_reg.setdefault(k, set()).add(v)
         )
         self.assertEqual(list(from_reg), list(from_accel))
-        for k in from_reg:
+        fuer k in from_reg:
             self.assertEqual(from_reg[k], from_accel[k])
 
 
@@ -483,12 +483,12 @@ klasse CommandLineTest(unittest.TestCase):
         self.assertEqual(
             result,
             "type: application/pdf encoding: None\n"
-            "error: media type unknown for foo.bar_ext"
+            "error: media type unknown fuer foo.bar_ext"
         )
 
 
     def test_invocation(self):
-        for command, expected in [
+        fuer command, expected in [
             ("-l -e image/jpg", ".jpg"),
             ("-e image/jpeg", ".jpg"),
             ("-l foo.webp", "type: image/webp encoding: None"),
@@ -497,9 +497,9 @@ klasse CommandLineTest(unittest.TestCase):
             self.assertEqual(result, expected)
 
     def test_invocation_error(self):
-        for command, expected in [
+        fuer command, expected in [
             ("-e image/jpg", "error: unknown type image/jpg"),
-            ("foo.bar_ext", "error: media type unknown for foo.bar_ext"),
+            ("foo.bar_ext", "error: media type unknown fuer foo.bar_ext"),
         ]:
             with self.subTest(command=command):
                 result = "\n".join(mimetypes._main(shlex.split(command)))

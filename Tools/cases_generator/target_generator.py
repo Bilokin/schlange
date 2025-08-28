@@ -1,4 +1,4 @@
-"""Generate targets for computed goto dispatch
+"""Generate targets fuer computed goto dispatch
 Reads the instruction definitions from bytecodes.c.
 Writes the table to opcode_targets.h by default.
 """
@@ -23,12 +23,12 @@ DEFAULT_OUTPUT = ROOT / "Python/opcode_targets.h"
 def write_opcode_targets(analysis: Analysis, out: CWriter) -> None:
     """Write header file that defines the jump target table"""
     targets = ["&&_unknown_opcode,\n"] * 256
-    for name, op in analysis.opmap.items():
+    fuer name, op in analysis.opmap.items():
         if op < 256:
             targets[op] = f"&&TARGET_{name},\n"
     out.emit("#if !Py_TAIL_CALL_INTERP\n")
     out.emit("static void *opcode_targets[256] = {\n")
-    for target in targets:
+    fuer target in targets:
         out.emit(target)
     out.emit("};\n")
     out.emit("#else /* Py_TAIL_CALL_INTERP */\n")
@@ -41,13 +41,13 @@ def write_tailcall_dispatch_table(analysis: Analysis, out: CWriter) -> None:
     out.emit("static py_tail_call_funcptr INSTRUCTION_TABLE[256];\n")
     out.emit("\n")
 
-    # Emit function prototypes for labels.
-    for name in analysis.labels:
+    # Emit function prototypes fuer labels.
+    fuer name in analysis.labels:
         out.emit(f"{function_proto(name)};\n")
     out.emit("\n")
 
-    # Emit function prototypes for opcode handlers.
-    for name in sorted(analysis.instructions.keys()):
+    # Emit function prototypes fuer opcode handlers.
+    fuer name in sorted(analysis.instructions.keys()):
         out.emit(f"{function_proto(name)};\n")
     out.emit("\n")
 
@@ -61,10 +61,10 @@ def write_tailcall_dispatch_table(analysis: Analysis, out: CWriter) -> None:
 
     # Emit the dispatch table.
     out.emit("static py_tail_call_funcptr INSTRUCTION_TABLE[256] = {\n")
-    for name in sorted(analysis.instructions.keys()):
+    fuer name in sorted(analysis.instructions.keys()):
         out.emit(f"[{name}] = _TAIL_CALL_{name},\n")
     named_values = analysis.opmap.values()
-    for rest in range(256):
+    fuer rest in range(256):
         if rest not in named_values:
             out.emit(f"[{rest}] = _TAIL_CALL_UNKNOWN_OPCODE,\n")
     out.emit("};\n")

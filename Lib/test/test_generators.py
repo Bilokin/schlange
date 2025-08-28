@@ -106,7 +106,7 @@ klasse FinalizationTest(unittest.TestCase):
         f3 = lambda: (yield from f())
         def g3(): return (yield from f())
 
-        for gen_fun in (f, g, f2, g2, f3, g3):
+        fuer gen_fun in (f, g, f2, g2, f3, g3):
             gen = gen_fun()
             self.assertEqual(next(gen), 1)
             with self.assertRaises(StopIteration) as cm:
@@ -167,7 +167,7 @@ klasse GeneratorTest(unittest.TestCase):
         self.assertEqual(gen.__qualname__, "func_qualname")
 
         # unnamed generator
-        gen = (x for x in range(10))
+        gen = (x fuer x in range(10))
         self.assertEqual(gen.__name__,
                          "<genexpr>")
         self.assertEqual(gen.__qualname__,
@@ -184,7 +184,7 @@ klasse GeneratorTest(unittest.TestCase):
         def f():
             yield 1
         g = f()
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             with self.assertRaises((TypeError, pickle.PicklingError)):
                 pickle.dumps(g, proto)
 
@@ -259,7 +259,7 @@ klasse GeneratorTest(unittest.TestCase):
 
         def loop():
             try:
-                for _ in gen_raises():
+                fuer _ in gen_raises():
                     if True is False:
                         return
             except ValueError:
@@ -288,7 +288,7 @@ klasse GeneratorTest(unittest.TestCase):
             def __iter__(self):
                 return Iterator()
 
-        self.assertEqual([1,2], list(i for i in C()))
+        self.assertEqual([1,2], list(i fuer i in C()))
 
 
 klasse ModifyUnderlyingIterableTest(unittest.TestCase):
@@ -310,16 +310,16 @@ klasse ModifyUnderlyingIterableTest(unittest.TestCase):
     ]
 
     def genexpr(self):
-        return (x for x in range(10))
+        return (x fuer x in range(10))
 
     def genfunc(self):
         def gen(it):
-            for x in it:
+            fuer x in it:
                 yield x
         return gen(range(10))
 
     def process_tests(self, get_generator):
-        for obj in self.iterables:
+        fuer obj in self.iterables:
             g_obj = get_generator(obj)
             with self.subTest(g_obj=g_obj, obj=obj):
                 self.assertListEqual(list(g_obj), list(obj))
@@ -329,7 +329,7 @@ klasse ModifyUnderlyingIterableTest(unittest.TestCase):
                 self.assertListEqual(list(g_iter), list(obj))
 
         err_regex = "'.*' object is not iterable"
-        for obj in self.non_iterables:
+        fuer obj in self.non_iterables:
             g_obj = get_generator(obj)
             with self.subTest(g_obj=g_obj):
                 self.assertRaisesRegex(TypeError, err_regex, list, g_obj)
@@ -364,7 +364,7 @@ klasse ModifyUnderlyingIterableTest(unittest.TestCase):
 
 
 klasse ExceptionTest(unittest.TestCase):
-    # Tests for the issue #23353: check that the currently handled exception
+    # Tests fuer the issue #23353: check that the currently handled exception
     # is correctly saved/restored in PyEval_EvalFrameEx().
 
     def test_except_throw(self):
@@ -444,7 +444,7 @@ klasse ExceptionTest(unittest.TestCase):
 
     def test_nested_gen_except_loop(self):
         def gen():
-            for i in range(100):
+            fuer i in range(100):
                 self.assertIsInstance(sys.exception(), TypeError)
                 yield "doing"
 
@@ -452,13 +452,13 @@ klasse ExceptionTest(unittest.TestCase):
             try:
                 raise TypeError
             except:
-                for x in gen():
+                fuer x in gen():
                     yield x
 
         try:
             raise ValueError
         except Exception:
-            for x in outer():
+            fuer x in outer():
                 self.assertEqual(x, "doing")
         self.assertEqual(sys.exception(), None)
 
@@ -708,7 +708,7 @@ klasse GeneratorDeallocTest(unittest.TestCase):
             else:
                 return None
 
-        for index in (1, 2, 3):
+        fuer index in (1, 2, 3):
             with self.subTest(index=index):
                 frame = get_frame(index)
                 frame_locals = frame.f_locals
@@ -738,7 +738,7 @@ klasse GeneratorDeallocTest(unittest.TestCase):
             else:
                 return None
 
-        for index in (1, 2):
+        fuer index in (1, 2):
             with self.subTest(index=index):
                 frame_locals = get_frame_locals(index)
                 self.assertIn('a', frame_locals)
@@ -750,9 +750,9 @@ klasse GeneratorDeallocTest(unittest.TestCase):
             yield locals(), sys._getframe().f_locals
 
         locals_ = {'g': g}
-        for i in range(10):
+        fuer i in range(10):
             exec("snapshot, live_locals = next(g())", locals=locals_)
-            for l in (locals_['snapshot'], locals_['live_locals']):
+            fuer l in (locals_['snapshot'], locals_['live_locals']):
                 self.assertIn('a', l)
                 self.assertEqual(l['a'], 42)
 
@@ -965,7 +965,7 @@ Let's try a simple generator:
     ...    yield 1
     ...    yield 2
 
-    >>> for i in f():
+    >>> fuer i in f():
     ...     print(i)
     1
     2
@@ -1036,7 +1036,7 @@ This may be surprising at first:
 Let's create an alternate range() function implemented as a generator:
 
     >>> def yrange(n):
-    ...     for i in range(n):
+    ...     fuer i in range(n):
     ...         yield i
     ...
     >>> list(yrange(5))
@@ -1051,7 +1051,7 @@ Generators always return to the most recent caller:
     ...
     >>> def caller():
     ...     r = creator()
-    ...     for i in r:
+    ...     fuer i in r:
     ...             print("caller", i)
     ...
     >>> caller()
@@ -1064,7 +1064,7 @@ Generators always return to the most recent caller:
 Generators can call other generators:
 
     >>> def zrange(n):
-    ...     for i in yrange(n):
+    ...     fuer i in yrange(n):
     ...         yield i
     ...
     >>> list(zrange(5))
@@ -1201,16 +1201,16 @@ Guido's binary tree example.
     >>> # A recursive generator that generates Tree labels in in-order.
     >>> def inorder(t):
     ...     if t:
-    ...         for x in inorder(t.left):
+    ...         fuer x in inorder(t.left):
     ...             yield x
     ...         yield t.label
-    ...         for x in inorder(t.right):
+    ...         fuer x in inorder(t.right):
     ...             yield x
 
     >>> # Show it off: create a tree.
     >>> t = tree("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
     >>> # Print the nodes of the tree in in-order.
-    >>> for x in t:
+    >>> fuer x in t:
     ...     print(' '+x, end='')
      A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
 
@@ -1231,7 +1231,7 @@ Guido's binary tree example.
     ...         node = node.right
 
     >>> # Exercise the non-recursive generator.
-    >>> for x in t:
+    >>> fuer x in t:
     ...     print(' '+x, end='')
      A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
 
@@ -1244,7 +1244,7 @@ email_tests = """
 The difference between yielding None and returning it.
 
 >>> def g():
-...     for i in range(3):
+...     fuer i in range(3):
 ...         yield None
 ...     yield None
 ...     return
@@ -1277,17 +1277,17 @@ Next one was posted to c.l.py.
 ...         first, rest = x[0], x[1:]
 ...         # A combination does or doesn't contain first.
 ...         # If it does, the remainder is a k-1 comb of rest.
-...         for c in gcomb(rest, k-1):
+...         fuer c in gcomb(rest, k-1):
 ...             c.insert(0, first)
 ...             yield c
 ...         # If it doesn't contain first, it's a k comb of rest.
-...         for c in gcomb(rest, k):
+...         fuer c in gcomb(rest, k):
 ...             yield c
 
 >>> seq = list(range(1, 5))
->>> for k in range(len(seq) + 2):
+>>> fuer k in range(len(seq) + 2):
 ...     print("%d-combs of %s:" % (k, seq))
-...     for c in gcomb(seq, k):
+...     fuer c in gcomb(seq, k):
 ...         print("   ", c)
 0-combs of [1, 2, 3, 4]:
     []
@@ -1322,7 +1322,7 @@ From the Iterators list, about the types of these things.
 >>> i = g()
 >>> type(i)
 <class 'generator'>
->>> [s for s in dir(i) if not s.startswith('_')]
+>>> [s fuer s in dir(i) if not s.startswith('_')]
 ['close', 'gi_code', 'gi_frame', 'gi_running', 'gi_suspended', 'gi_yieldfrom', 'send', 'throw']
 >>> from test.support import HAVE_DOCSTRINGS
 >>> print(i.__next__.__doc__ if HAVE_DOCSTRINGS else 'Implement next(self).')
@@ -1367,7 +1367,7 @@ Subject: Re: PEP 255: Simple Generators
 ...     def generate(self):
 ...         while not self.parent:
 ...             yield self
-...         for x in self.parent.generator:
+...         fuer x in self.parent.generator:
 ...             yield x
 ...
 ...     def find(self):
@@ -1382,13 +1382,13 @@ Subject: Re: PEP 255: Simple Generators
 ...         return self.name
 
 >>> names = "ABCDEFGHIJKLM"
->>> sets = [disjointSet(name) for name in names]
+>>> sets = [disjointSet(name) fuer name in names]
 >>> roots = sets[:]
 
 >>> import random
 >>> gen = random.Random(42)
 >>> while 1:
-...     for s in sets:
+...     fuer s in sets:
 ...         print(" %s->%s" % (s, s.find()), end='')
 ...     print()
 ...     if len(roots) > 1:
@@ -1435,7 +1435,7 @@ fun_tests = """
 Build up to a recursive Sieve of Eratosthenes generator.
 
 >>> def firstn(g, n):
-...     return [next(g) for i in range(n)]
+...     return [next(g) fuer i in range(n)]
 
 >>> def intsfrom(i):
 ...     while 1:
@@ -1446,7 +1446,7 @@ Build up to a recursive Sieve of Eratosthenes generator.
 [5, 6, 7, 8, 9, 10, 11]
 
 >>> def exclude_multiples(n, ints):
-...     for i in ints:
+...     fuer i in ints:
 ...         if i % n:
 ...             yield i
 
@@ -1457,7 +1457,7 @@ Build up to a recursive Sieve of Eratosthenes generator.
 ...     prime = next(ints)
 ...     yield prime
 ...     not_divisible_by_prime = exclude_multiples(prime, ints)
-...     for p in sieve(not_divisible_by_prime):
+...     fuer p in sieve(not_divisible_by_prime):
 ...         yield p
 
 >>> primes = sieve(intsfrom(2))
@@ -1469,10 +1469,10 @@ Another famous problem:  generate all integers of the form
     2**i * 3**j  * 5**k
 in increasing order, where i,j,k >= 0.  Trickier than it may look at first!
 Try writing it without generators, and correctly, and without generating
-3 internal results for each result output.
+3 internal results fuer each result output.
 
 >>> def times(n, g):
-...     for i in g:
+...     fuer i in g:
 ...         yield n * i
 >>> firstn(times(10, intsfrom(1)), 10)
 [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
@@ -1503,7 +1503,7 @@ result sequence.  So this is an example where lazy lists are more natural
 ...     me_times2 = times(2, m235())
 ...     me_times3 = times(3, m235())
 ...     me_times5 = times(5, m235())
-...     for i in merge(merge(me_times2,
+...     fuer i in merge(merge(me_times2,
 ...                          me_times3),
 ...                    me_times5):
 ...         yield i
@@ -1517,7 +1517,7 @@ usual" way, i.e. the heap grew over 4Mb so Win98 started fragmenting
 address space, and it *looked* like a very slow leak.
 
 >>> result = m235()
->>> for i in range(3):
+>>> fuer i in range(3):
 ...     print(firstn(result, 15))
 [1, 2, 3, 4, 5, 6, 8, 9, 10, 12, 15, 16, 18, 20, 24]
 [25, 27, 30, 32, 36, 40, 45, 48, 50, 54, 60, 64, 72, 75, 80]
@@ -1545,7 +1545,7 @@ arguments are iterable -- a LazyList is the same as a generator to times().
 ...     me_times2 = times(2, m235)
 ...     me_times3 = times(3, m235)
 ...     me_times5 = times(5, m235)
-...     for i in merge(merge(me_times2,
+...     fuer i in merge(merge(me_times2,
 ...                          me_times3),
 ...                    me_times5):
 ...         yield i
@@ -1554,8 +1554,8 @@ Print as many of these as you like -- *this* implementation is memory-
 efficient.
 
 >>> m235 = LazyList(m235())
->>> for i in range(5):
-...     print([m235[j] for j in range(15*i, 15*(i+1))])
+>>> fuer i in range(5):
+...     print([m235[j] fuer j in range(15*i, 15*(i+1))])
 [1, 2, 3, 4, 5, 6, 8, 9, 10, 12, 15, 16, 18, 20, 24]
 [25, 27, 30, 32, 36, 40, 45, 48, 50, 54, 60, 64, 72, 75, 80]
 [81, 90, 96, 100, 108, 120, 125, 128, 135, 144, 150, 160, 162, 180, 192]
@@ -1572,12 +1572,12 @@ Ye olde Fibonacci generator, LazyList style.
 ...
 ...     def tail(g):
 ...         next(g)    # throw first away
-...         for x in g:
+...         fuer x in g:
 ...             yield x
 ...
 ...     yield a
 ...     yield b
-...     for s in sum(iter(fib),
+...     fuer s in sum(iter(fib),
 ...                  tail(iter(fib))):
 ...         yield s
 
@@ -1616,7 +1616,7 @@ m235 to share a single generator".
 >>> def m235():
 ...     def _m235():
 ...         yield 1
-...         for n in merge(times(2, m2),
+...         fuer n in merge(times(2, m2),
 ...                        merge(times(3, m3),
 ...                              times(5, m5))):
 ...             yield n
@@ -1625,7 +1625,7 @@ m235 to share a single generator".
 ...     return mRes
 
 >>> it = m235()
->>> for i in range(5):
+>>> fuer i in range(5):
 ...     print(firstn(it, 15))
 [1, 2, 3, 4, 5, 6, 8, 9, 10, 12, 15, 16, 18, 20, 24]
 [25, 27, 30, 32, 36, 40, 45, 48, 50, 54, 60, 64, 72, 75, 80]
@@ -1634,7 +1634,7 @@ m235 to share a single generator".
 [400, 405, 432, 450, 480, 486, 500, 512, 540, 576, 600, 625, 640, 648, 675]
 
 The "tee" function does just what we want. It internally keeps a generated
-result for as long as it has not been "consumed" from all of the duplicated
+result fuer as long as it has not been "consumed" from all of the duplicated
 iterators, whereupon it is deleted. You can therefore print the hamming
 sequence during hours without increasing memory usage, or very little.
 
@@ -1653,7 +1653,7 @@ Ye olde Fibonacci generator, tee style.
 ...         yield 1
 ...         yield 2
 ...         next(fibTail) # throw first away
-...         for res in _isum(fibHead, fibTail):
+...         fuer res in _isum(fibHead, fibTail):
 ...             yield res
 ...
 ...     realfib = _fib()
@@ -1788,7 +1788,7 @@ These are fine:
 This one caused a crash (see SF bug 567538):
 
 >>> def f():
-...     for i in range(3):
+...     fuer i in range(3):
 ...         try:
 ...             continue
 ...         finally:
@@ -1852,9 +1852,9 @@ Lambdas shouldn't have their usual return behavior.
 #
 # def g():
 #     values = [None] * 3
-#     for values[0] in x():
-#         for values[1] in y():
-#             for values[2] in z():
+#     fuer values[0] in x():
+#         fuer values[1] in y():
+#             fuer values[2] in z():
 #                 yield values
 #
 # So some 3-lists of values *may* be generated, each time we successfully
@@ -1873,18 +1873,18 @@ def simple_conjoin(gs):
         if i >= len(gs):
             yield values
         else:
-            for values[i] in gs[i]():
-                for x in gen(i+1):
+            fuer values[i] in gs[i]():
+                fuer x in gen(i+1):
                     yield x
 
-    for x in gen(0):
+    fuer x in gen(0):
         yield x
 
 # That works fine, but recursing a level and checking i against len(gs) for
 # each item produced is inefficient.  By doing manual loop unrolling across
 # generator boundaries, it's possible to eliminate most of that overhead.
-# This isn't worth the bother *in general* for generators, but conjoin() is
-# a core building block for some CPU-intensive generator applications.
+# This isn't worth the bother *in general* fuer generators, but conjoin() is
+# a core building block fuer some CPU-intensive generator applications.
 
 def conjoin(gs):
 
@@ -1900,12 +1900,12 @@ def conjoin(gs):
 
         elif (n-i) % 3:
             ip1 = i+1
-            for values[i] in gs[i]():
-                for x in gen(ip1):
+            fuer values[i] in gs[i]():
+                fuer x in gen(ip1):
                     yield x
 
         else:
-            for x in _gen3(i):
+            fuer x in _gen3(i):
                 yield x
 
     # Do three loop nests at a time, recursing only if at least three more
@@ -1919,26 +1919,26 @@ def conjoin(gs):
 
         if ip3 >= n:
             # These are the last three, so we can yield values directly.
-            for values[i] in g():
-                for values[ip1] in g1():
-                    for values[ip2] in g2():
+            fuer values[i] in g():
+                fuer values[ip1] in g1():
+                    fuer values[ip2] in g2():
                         yield values
 
         else:
-            # At least 6 loop nests remain; peel off 3 and recurse for the
+            # At least 6 loop nests remain; peel off 3 and recurse fuer the
             # rest.
-            for values[i] in g():
-                for values[ip1] in g1():
-                    for values[ip2] in g2():
-                        for x in _gen3(ip3):
+            fuer values[i] in g():
+                fuer values[ip1] in g1():
+                    fuer values[ip2] in g2():
+                        fuer x in _gen3(ip3):
                             yield x
 
-    for x in gen(0):
+    fuer x in gen(0):
         yield x
 
 # And one more approach:  For backtracking apps like the Knight's Tour
 # solver below, the number of backtracking levels can be enormous (one
-# level per square, for the Knight's Tour, so that e.g. a 100x100 board
+# level per square, fuer the Knight's Tour, so that e.g. a 100x100 board
 # needs 10,000 levels).  In such cases Python is likely to run out of
 # stack space due to recursion.  So here's a recursion-free version of
 # conjoin too.
@@ -1997,17 +1997,17 @@ klasse Queens:
         # each, smallest i+j is 0, largest is 2n-2.
 
         # For each square, compute a bit vector of the columns and
-        # diagonals it covers, and for each row compute a function that
-        # generates the possibilities for the columns in that row.
+        # diagonals it covers, and fuer each row compute a function that
+        # generates the possibilities fuer the columns in that row.
         self.rowgenerators = []
-        for i in rangen:
+        fuer i in rangen:
             rowuses = [(1 << j) |                  # column ordinal
                        (1 << (n + i-j + n-1)) |    # NW-SE ordinal
                        (1 << (n + 2*n-1 + i+j))    # NE-SW ordinal
-                            for j in rangen]
+                            fuer j in rangen]
 
             def rowgen(rowuses=rowuses):
-                for j in rangen:
+                fuer j in rangen:
                     uses = rowuses[j]
                     if uses & self.used == 0:
                         self.used |= uses
@@ -2019,7 +2019,7 @@ klasse Queens:
     # Generate solutions.
     def solve(self):
         self.used = 0
-        for row2col in conjoin(self.rowgenerators):
+        fuer row2col in conjoin(self.rowgenerators):
             yield row2col
 
     def printsolution(self, row2col):
@@ -2027,8 +2027,8 @@ klasse Queens:
         assert n == len(row2col)
         sep = "+" + "-+" * n
         print(sep)
-        for i in range(n):
-            squares = [" " for j in range(n)]
+        fuer i in range(n):
+            squares = [" " fuer j in range(n)]
             squares[row2col[i]] = "Q"
             print("|" + "|".join(squares) + "|")
             print(sep)
@@ -2060,7 +2060,7 @@ klasse Knights:
             # single exit, we can only move to one of them next, leaving
             # the other one a dead end.
             ne0 = ne1 = 0
-            for i in succs[i0]:
+            fuer i in succs[i0]:
                 s = succs[i]
                 s.remove(i0)
                 e = len(s)
@@ -2073,7 +2073,7 @@ klasse Knights:
         # Put i0 back in each of its successor's successor lists.
 
         def add_to_successors(i0):
-            for i in succs[i0]:
+            fuer i in succs[i0]:
                 succs[i].append(i0)
 
         # Generate the first move.
@@ -2081,7 +2081,7 @@ klasse Knights:
             if m < 1 or n < 1:
                 return
 
-            # Since we're looking for a cycle, it doesn't matter where we
+            # Since we're looking fuer a cycle, it doesn't matter where we
             # start.  Starting in a corner makes the 2nd move easy.
             corner = self.coords2index(0, 0)
             remove_from_successors(corner)
@@ -2102,7 +2102,7 @@ klasse Knights:
             # square picked on move m*n, as it's the only way to get back
             # to (0, 0).  Save its index in self.final so that moves before
             # the last know it must be kept free.
-            for i, j in (1, 2), (2, 1):
+            fuer i, j in (1, 2), (2, 1):
                 this  = self.coords2index(i, j)
                 final = self.coords2index(3-i, 3-j)
                 self.final = final
@@ -2119,7 +2119,7 @@ klasse Knights:
             # If some successor has only one exit, must take it.
             # Else favor successors with fewer exits.
             candidates = []
-            for i in succs[self.lastij]:
+            fuer i in succs[self.lastij]:
                 e = len(succs[i])
                 assert e > 0, "else remove_from_successors() pruning flawed"
                 if e == 1:
@@ -2129,7 +2129,7 @@ klasse Knights:
             else:
                 candidates.sort()
 
-            for e, i in candidates:
+            fuer e, i in candidates:
                 if i != self.final:
                     if remove_from_successors(i):
                         self.lastij = i
@@ -2139,7 +2139,7 @@ klasse Knights:
         # Generate moves 3 through m*n-1.  Alternative version using a
         # stronger (but more expensive) heuristic to order successors.
         # Since the # of backtracking levels is m*n, a poor move early on
-        # can take eons to undo.  Smallest square board for which this
+        # can take eons to undo.  Smallest square board fuer which this
         # matters a lot is 52x52.
         def advance_hard(vmid=(m-1)/2.0, hmid=(n-1)/2.0, len=len):
             # If some successor has only one exit, must take it.
@@ -2147,7 +2147,7 @@ klasse Knights:
             # Break ties via max distance from board centerpoint (favor
             # corners and edges whenever possible).
             candidates = []
-            for i in succs[self.lastij]:
+            fuer i in succs[self.lastij]:
                 e = len(succs[i])
                 assert e > 0, "else remove_from_successors() pruning flawed"
                 if e == 1:
@@ -2159,7 +2159,7 @@ klasse Knights:
             else:
                 candidates.sort()
 
-            for e, d, i in candidates:
+            fuer e, d, i in candidates:
                 if i != self.final:
                     if remove_from_successors(i):
                         self.lastij = i
@@ -2196,9 +2196,9 @@ klasse Knights:
         offsets = [( 1,  2), ( 2,  1), ( 2, -1), ( 1, -2),
                    (-1, -2), (-2, -1), (-2,  1), (-1,  2)]
         rangen = range(n)
-        for i in range(m):
-            for j in rangen:
-                s = [c2i(i+io, j+jo) for io, jo in offsets
+        fuer i in range(m):
+            fuer j in rangen:
+                s = [c2i(i+io, j+jo) fuer io, jo in offsets
                                      if 0 <= i+io < m and
                                         0 <= j+jo < n]
                 succs.append(s)
@@ -2206,7 +2206,7 @@ klasse Knights:
     # Generate solutions.
     def solve(self):
         self._init_board()
-        for x in conjoin(self.squaregenerators):
+        fuer x in conjoin(self.squaregenerators):
             yield x
 
     def printsolution(self, x):
@@ -2215,16 +2215,16 @@ klasse Knights:
         w = len(str(m*n))
         format = "%" + str(w) + "d"
 
-        squares = [[None] * n for i in range(m)]
+        squares = [[None] * n fuer i in range(m)]
         k = 1
-        for i in x:
+        fuer i in x:
             i1, j1 = self.index2coords(i)
             squares[i1][j1] = format % k
             k += 1
 
         sep = "+" + ("-" * w + "+") * n
         print(sep)
-        for i in range(m):
+        fuer i in range(m):
             row = squares[i]
             print("|" + "|".join(row) + "|")
             print(sep)
@@ -2234,7 +2234,7 @@ conjoin_tests = """
 Generate the 3-bit binary numbers in order.  This illustrates dumbest-
 possible use of conjoin, just to generate the full cross-product.
 
->>> for c in conjoin([lambda: iter((0, 1))] * 3):
+>>> fuer c in conjoin([lambda: iter((0, 1))] * 3):
 ...     print(c)
 [0, 0, 0]
 [0, 0, 1]
@@ -2250,10 +2250,10 @@ object each time.  So if you want to save away a full account of its
 generated sequence, you need to copy its results.
 
 >>> def gencopy(iterator):
-...     for x in iterator:
+...     fuer x in iterator:
 ...         yield x[:]
 
->>> for n in range(10):
+>>> fuer n in range(10):
 ...     all = list(gencopy(conjoin([lambda: iter((0, 1))] * n)))
 ...     print(n, len(all), all[0] == [0] * n, all[-1] == [1] * n)
 0 1 True True
@@ -2272,7 +2272,7 @@ And run an 8-queens solver.
 >>> q = Queens(8)
 >>> LIMIT = 2
 >>> count = 0
->>> for row2col in q.solve():
+>>> fuer row2col in q.solve():
 ...     count += 1
 ...     if count <= LIMIT:
 ...         print("Solution", count)
@@ -2323,7 +2323,7 @@ And run a Knight's Tour on a 10x10 board.  Note that there are about
 >>> k = Knights(10, 10)
 >>> LIMIT = 2
 >>> count = 0
->>> for x in k.solve():
+>>> fuer x in k.solve():
 ...     count += 1
 ...     if count <= LIMIT:
 ...         print("Solution", count)
@@ -2432,7 +2432,7 @@ Yield by itself yields None:
 
 Yield is allowed only in the outermost iterable in generator expression:
 
->>> def f(): list(i for i in [(yield 26)])
+>>> def f(): list(i fuer i in [(yield 26)])
 >>> type(f())
 <class 'generator'>
 
@@ -2460,7 +2460,7 @@ A yield expression with augmented assignment.
 [10, 20, 30]
 
 
-Check some syntax errors for yield expressions:
+Check some syntax errors fuer yield expressions:
 
 >>> f=lambda: (yield 1),(yield 2)
 Traceback (most recent call last):
@@ -2490,7 +2490,7 @@ SyntaxError: cannot assign to yield expression here. Maybe you meant '==' instea
 >>> def f(): (yield bar) += y
 Traceback (most recent call last):
   ...
-SyntaxError: 'yield expression' is an illegal expression for augmented assignment
+SyntaxError: 'yield expression' is an illegal expression fuer augmented assignment
 
 
 Now check some throw() conditions:
@@ -2789,7 +2789,7 @@ was removed.
 
 This test isn't really generator related, but rather exception-in-cleanup
 related. The coroutine tests (above) just happen to cause an exception in
-the generator's __del__ (tp_del) method. We can also test for this
+the generator's __del__ (tp_del) method. We can also test fuer this
 explicitly, without generators. We do have to redirect stderr to avoid
 printing warnings and to doublecheck that we actually tested what we wanted
 to test.

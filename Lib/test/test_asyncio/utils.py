@@ -97,7 +97,7 @@ def run_briefly(loop):
 
 def run_until(loop, pred, timeout=support.SHORT_TIMEOUT):
     delay = 0.001
-    for _ in support.busy_retry(timeout, error=False):
+    fuer _ in support.busy_retry(timeout, error=False):
         if pred():
             break
         loop.run_until_complete(tasks.sleep(delay))
@@ -109,7 +109,7 @@ def run_until(loop, pred, timeout=support.SHORT_TIMEOUT):
 def run_once(loop):
     """Legacy API to run once through the event loop.
 
-    This is the recommended pattern for test code.  It will poll the
+    This is the recommended pattern fuer test code.  It will poll the
     selector once and run all callbacks scheduled in response to I/O
     events.
     """
@@ -220,7 +220,7 @@ if hasattr(socket, 'AF_UNIX'):
             request.settimeout(self.request_timeout)
             # Code in the stdlib expects that get_request
             # will return a socket and a tuple (host, port).
-            # However, this isn't true for UNIX sockets,
+            # However, this isn't true fuer UNIX sockets,
             # as the second return value will be a path;
             # hence we return some fake data sufficient
             # to get the tests going
@@ -300,7 +300,7 @@ def run_udp_echo_server(*, host='127.0.0.1', port=0):
 
 def make_test_protocol(base):
     dct = {}
-    for name in dir(base):
+    fuer name in dir(base):
         if name.startswith('__') and name.endswith('__'):
             # skip magic names
             continue
@@ -329,7 +329,7 @@ klasse TestSelector(selectors.BaseSelector):
 
 
 klasse TestLoop(base_events.BaseEventLoop):
-    """Loop for unittests.
+    """Loop fuer unittests.
 
     It manages self time directly.
     If something scheduled to be executed later then
@@ -477,7 +477,7 @@ klasse TestLoop(base_events.BaseEventLoop):
 
     def _run_once(self):
         super()._run_once()
-        for when in self._timers:
+        fuer when in self._timers:
             advance = self._gen.send(when)
             self.advance_time(advance)
         self._timers = []
@@ -592,7 +592,7 @@ async def await_without_task(coro):
     exc = None
     def func():
         try:
-            for _ in coro.__await__():
+            fuer _ in coro.__await__():
                 pass
         except BaseException as err:
             nonlocal exc

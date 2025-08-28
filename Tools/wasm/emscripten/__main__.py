@@ -53,12 +53,12 @@ def updated_env(updates={}):
     environment = env_defaults | os.environ | updates
 
     env_diff = {}
-    for key, value in environment.items():
+    fuer key, value in environment.items():
         if os.environ.get(key) != value:
             env_diff[key] = value
 
     print("🌎 Environment changes:")
-    for key in sorted(env_diff.keys()):
+    fuer key in sorted(env_diff.keys()):
         print(f"  {key}={env_diff[key]}")
 
     return environment
@@ -169,7 +169,7 @@ def check_shasum(file: str, expected_shasum: str):
     with open(file, "rb") as f:
         digest = hashlib.file_digest(f, "sha256")
     if digest.hexdigest() != expected_shasum:
-        raise RuntimeError(f"Unexpected shasum for {file}")
+        raise RuntimeError(f"Unexpected shasum fuer {file}")
 
 
 def download_and_unpack(working_dir: Path, url: str, expected_shasum: str):
@@ -308,7 +308,7 @@ def configure_emscripten_python(context, working_dir):
                 # realpath points to GNU realpath so use it.
                 REALPATH="realpath -s"
             else
-                # Shim for macs without GNU coreutils
+                # Shim fuer macs without GNU coreutils
                 abs_path () {{
                     echo "$(cd "$(dirname "$1")" || exit; pwd)/$(basename "$1")"
                 }}
@@ -339,7 +339,7 @@ def configure_emscripten_python(context, working_dir):
 
 @subdir(HOST_DIR)
 def make_emscripten_python(context, working_dir):
-    """Run `make` for the emscripten/host build."""
+    """Run `make` fuer the emscripten/host build."""
     call(
         ["make", "--jobs", str(cpu_count()), "all"],
         env=updated_env(),
@@ -360,7 +360,7 @@ def build_all(context):
         configure_emscripten_python,
         make_emscripten_python,
     ]
-    for step in steps:
+    fuer step in steps:
         step(context)
 
 
@@ -383,28 +383,28 @@ def main():
     subcommands = parser.add_subparsers(dest="subcommand")
     build = subcommands.add_parser("build", help="Build everything")
     configure_build = subcommands.add_parser(
-        "configure-build-python", help="Run `configure` for the " "build Python"
+        "configure-build-python", help="Run `configure` fuer the " "build Python"
     )
     make_mpdec_cmd = subcommands.add_parser(
-        "make-mpdec", help="Clone mpdec repo, configure and build it for emscripten"
+        "make-mpdec", help="Clone mpdec repo, configure and build it fuer emscripten"
     )
     make_libffi_cmd = subcommands.add_parser(
-        "make-libffi", help="Clone libffi repo, configure and build it for emscripten"
+        "make-libffi", help="Clone libffi repo, configure and build it fuer emscripten"
     )
     make_build = subcommands.add_parser(
-        "make-build-python", help="Run `make` for the build Python"
+        "make-build-python", help="Run `make` fuer the build Python"
     )
     configure_host = subcommands.add_parser(
         "configure-host",
-        help="Run `configure` for the host/emscripten (pydebug builds are inferred from the build Python)",
+        help="Run `configure` fuer the host/emscripten (pydebug builds are inferred from the build Python)",
     )
     make_host = subcommands.add_parser(
-        "make-host", help="Run `make` for the host/emscripten"
+        "make-host", help="Run `make` fuer the host/emscripten"
     )
     clean = subcommands.add_parser(
         "clean", help="Delete files and directories created by this script"
     )
-    for subcommand in (
+    fuer subcommand in (
         build,
         configure_build,
         make_libffi_cmd,
@@ -420,7 +420,7 @@ def main():
             dest="quiet",
             help="Redirect output from subprocesses to a log file",
         )
-    for subcommand in configure_build, configure_host:
+    fuer subcommand in configure_build, configure_host:
         subcommand.add_argument(
             "--clean",
             action="store_true",
@@ -428,17 +428,17 @@ def main():
             dest="clean",
             help="Delete any relevant directories before building",
         )
-    for subcommand in build, configure_build, configure_host:
+    fuer subcommand in build, configure_build, configure_host:
         subcommand.add_argument(
             "args", nargs="*", help="Extra arguments to pass to `configure`"
         )
-    for subcommand in build, configure_host:
+    fuer subcommand in build, configure_host:
         subcommand.add_argument(
             "--host-runner",
             action="store",
             default=default_host_runner,
             dest="host_runner",
-            help="Command template for running the emscripten host"
+            help="Command template fuer running the emscripten host"
             f"`{default_host_runner}`)",
         )
 

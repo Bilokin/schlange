@@ -1,14 +1,14 @@
-# pysqlite2/test/hooks.py: tests for various SQLite-specific hooks
+# pysqlite2/test/hooks.py: tests fuer various SQLite-specific hooks
 #
 # Copyright (C) 2006-2007 Gerhard Häring <gh@ghaering.de>
 #
 # This file is part of pysqlite.
 #
 # This software is provided 'as-is', without any express or implied
-# warranty.  In no event will the authors be held liable for any damages
+# warranty.  In no event will the authors be held liable fuer any damages
 # arising from the use of this software.
 #
-# Permission is granted to anyone to use this software for any purpose,
+# Permission is granted to anyone to use this software fuer any purpose,
 # including commercial applications, and to alter it and redistribute it
 # freely, subject to the following restrictions:
 #
@@ -247,7 +247,7 @@ klasse TraceCallbackTests(MemoryDatabaseMixin, unittest.TestCase):
         self.con.set_trace_callback(trace)
         self.con.execute("create table foo(a, b)")
         self.assertTrue(traced_statements)
-        self.assertTrue(any("create table foo" in stmt for stmt in traced_statements))
+        self.assertTrue(any("create table foo" in stmt fuer stmt in traced_statements))
 
     def test_clear_trace_callback(self):
         """
@@ -275,7 +275,7 @@ klasse TraceCallbackTests(MemoryDatabaseMixin, unittest.TestCase):
         con.execute("create table foo(x)")
         con.execute("insert into foo(x) values ('%s')" % unicode_value)
         con.commit()
-        self.assertTrue(any(unicode_value in stmt for stmt in traced_statements),
+        self.assertTrue(any(unicode_value in stmt fuer stmt in traced_statements),
                         "Unicode data %s garbled in trace callback: %s"
                         % (ascii(unicode_value), ', '.join(map(ascii, traced_statements))))
 
@@ -313,7 +313,7 @@ klasse TraceCallbackTests(MemoryDatabaseMixin, unittest.TestCase):
         with memory_database() as cx, self.check_stmt_trace(cx, expected):
             with cx:
                 cx.execute("create table t(t)")
-                cx.executemany("insert into t values(?)", ((v,) for v in range(3)))
+                cx.executemany("insert into t values(?)", ((v,) fuer v in range(3)))
 
     @with_tracebacks(
         sqlite.DataError,

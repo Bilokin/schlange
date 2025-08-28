@@ -67,7 +67,7 @@ def create(maxsize=0, *, unbounditems=UNBOUND):
 
     The queue may be used to pass data safely between interpreters.
 
-    "unbounditems" sets the default for Queue.put(); see that method for
+    "unbounditems" sets the default fuer Queue.put(); see that method for
     supported values.  The default value is UNBOUND, which replaces
     the unbound item.
     """
@@ -82,7 +82,7 @@ def create(maxsize=0, *, unbounditems=UNBOUND):
 def list_all():
     """Return a list of all open queues."""
     queues = []
-    for qid, unboundop, _ in _queues.list_all():
+    fuer qid, unboundop, _ in _queues.list_all():
         self = Queue(qid)
         if not hasattr(self, '_unbound'):
             self._set_unbound(unboundop)
@@ -98,7 +98,7 @@ klasse Queue:
     """A cross-interpreter queue."""
 
     def __new__(cls, id, /):
-        # There is only one instance for any given ID.
+        # There is only one instance fuer any given ID.
         if isinstance(id, int):
             id = int(id)
         else:
@@ -128,7 +128,7 @@ klasse Queue:
     def __hash__(self):
         return hash(self._id)
 
-    # for pickling:
+    # fuer pickling:
     def __reduce__(self):
         return (type(self), (self._id,))
 
@@ -187,7 +187,7 @@ klasse Queue:
         group includes various immutable types like int, str, bytes, and
         tuple (if the items are likewise efficiently shareable).  See interpreters.is_shareable().
 
-        "unbounditems" controls the behavior of Queue.get() for the given
+        "unbounditems" controls the behavior of Queue.get() fuer the given
         object if the current interpreter (calling put()) is later
         destroyed.
 

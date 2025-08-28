@@ -29,7 +29,7 @@ Dependent on the implementation, closing a persistent dictionary may
 or may not be necessary to flush changes to disk.
 
 Normally, d[key] returns a COPY of the entry.  This needs care when
-mutable entries are mutated: for example, if d[key] is a list,
+mutable entries are mutated: fuer example, if d[key] is a list,
         d[key].append(anitem)
 does NOT modify the entry d[key] itself, as stored in the persistent
 mapping -- it only modifies the copy, which is then immediately
@@ -47,7 +47,7 @@ to the persistent mapping when you call d.close().  This ensures that
 such usage as d[key].append(anitem) works as intended.
 
 However, using keyword argument writeback=True may consume vast amount
-of memory for the cache, and it may make d.close() very slow, if you
+of memory fuer the cache, and it may make d.close() very slow, if you
 access many of d's entries after opening it in this way: d has no way to
 check which of the entries you access are mutable and/or which ones you
 actually mutate, so it must cache, and write back at close, all of the
@@ -69,7 +69,7 @@ klasse ShelveError(Exception):
 
 
 klasse _ClosedDict(collections.abc.MutableMapping):
-    'Marker for a closed dict.  Access attempts raise a ValueError.'
+    'Marker fuer a closed dict.  Access attempts raise a ValueError.'
 
     def closed(self, *args):
         raise ValueError('invalid operation on closed shelf')
@@ -80,10 +80,10 @@ klasse _ClosedDict(collections.abc.MutableMapping):
 
 
 klasse Shelf(collections.abc.MutableMapping):
-    """Base klasse for shelf implementations.
+    """Base klasse fuer shelf implementations.
 
     This is initialized with a dictionary-like object.
-    See the module's __doc__ string for an overview of the interface.
+    See the module's __doc__ string fuer an overview of the interface.
     """
 
     def __init__(self, dict, protocol=None, writeback=False,
@@ -107,7 +107,7 @@ klasse Shelf(collections.abc.MutableMapping):
             self.deserializer = deserializer
 
     def __iter__(self):
-        for k in self.dict.keys():
+        fuer k in self.dict.keys():
             yield k.decode(self.keyencoding)
 
     def __len__(self):
@@ -170,14 +170,14 @@ klasse Shelf(collections.abc.MutableMapping):
     def __del__(self):
         if not hasattr(self, 'writeback'):
             # __init__ didn't succeed, so don't bother closing
-            # see http://bugs.python.org/issue1339007 for details
+            # see http://bugs.python.org/issue1339007 fuer details
             return
         self.close()
 
     def sync(self):
         if self.writeback and self.cache:
             self.writeback = False
-            for key, entry in self.cache.items():
+            fuer key, entry in self.cache.items():
                 self[key] = entry
             self.writeback = True
             self.cache = {}
@@ -200,7 +200,7 @@ klasse BsdDbShelf(Shelf):
     modules "open" routines (i.e. bsddb.hashopen, bsddb.btopen or
     bsddb.rnopen) and passed to the constructor.
 
-    See the module's __doc__ string for an overview of the interface.
+    See the module's __doc__ string fuer an overview of the interface.
     """
 
     def __init__(self, dict, protocol=None, writeback=False,
@@ -232,8 +232,8 @@ klasse BsdDbShelf(Shelf):
 klasse DbfilenameShelf(Shelf):
     """Shelf implementation using the "dbm" generic dbm interface.
 
-    This is initialized with the filename for the dbm database.
-    See the module's __doc__ string for an overview of the interface.
+    This is initialized with the filename fuer the dbm database.
+    See the module's __doc__ string fuer an overview of the interface.
     """
 
     def __init__(self, filename, flag='c', protocol=None, writeback=False, *,
@@ -251,16 +251,16 @@ klasse DbfilenameShelf(Shelf):
 
 def open(filename, flag='c', protocol=None, writeback=False, *,
          serializer=None, deserializer=None):
-    """Open a persistent dictionary for reading and writing.
+    """Open a persistent dictionary fuer reading and writing.
 
-    The filename parameter is the base filename for the underlying
+    The filename parameter is the base filename fuer the underlying
     database.  As a side-effect, an extension may be added to the
     filename and more than one file may be created.  The optional flag
     parameter has the same interpretation as the flag parameter of
     dbm.open(). The optional protocol parameter specifies the
     version of the pickle protocol.
 
-    See the module's __doc__ string for an overview of the interface.
+    See the module's __doc__ string fuer an overview of the interface.
     """
 
     return DbfilenameShelf(filename, flag, protocol, writeback,

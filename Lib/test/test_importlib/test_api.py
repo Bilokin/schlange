@@ -179,7 +179,7 @@ klasse FindLoaderPEP451Tests(FindLoaderTests):
 klasse ReloadTests:
 
     def test_reload_modules(self):
-        for mod in ('tokenize', 'time', 'marshal'):
+        fuer mod in ('tokenize', 'time', 'marshal'):
             with self.subTest(module=mod):
                 with import_helper.CleanImport(mod):
                     module = self.init.import_module(mod)
@@ -416,7 +416,7 @@ klasse FrozenImportlibTests(unittest.TestCase):
     def test_no_frozen_importlib(self):
         # Should be able to import w/o _frozen_importlib being defined.
         # Can't do an isinstance() check since separate copies of importlib
-        # may have been used for import, so just check the name is not for the
+        # may have been used fuer import, so just check the name is not fuer the
         # frozen loader.
         source_init = init['Source']
         self.assertNotEqual(source_init.__loader__.__class__.__name__,
@@ -427,7 +427,7 @@ klasse StartupTests:
 
     def test_everyone_has___loader__(self):
         # Issue #17098: all modules should have __loader__ defined.
-        for name, module in sys.modules.items():
+        fuer name, module in sys.modules.items():
             if isinstance(module, types.ModuleType):
                 with self.subTest(name=name):
                     self.assertHasAttr(module, '__loader__')
@@ -437,7 +437,7 @@ klasse StartupTests:
                         self.assertIsNot(module.__loader__, None)
 
     def test_everyone_has___spec__(self):
-        for name, module in sys.modules.items():
+        fuer name, module in sys.modules.items():
             if isinstance(module, types.ModuleType):
                 with self.subTest(name=name):
                     self.assertHasAttr(module, '__spec__')
@@ -498,7 +498,7 @@ klasse TestDeprecations(unittest.TestCase):
             'DEBUG_BYTECODE_SUFFIXES',
             'OPTIMIZED_BYTECODE_SUFFIXES',
         )
-        for attr in attributes:
+        fuer attr in attributes:
             with self.subTest(attr=attr):
                 with self.assertWarns(DeprecationWarning):
                     getattr(machinery, attr)

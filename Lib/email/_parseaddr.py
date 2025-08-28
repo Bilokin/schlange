@@ -45,7 +45,7 @@ _timezones = {'UT':0, 'UTC':0, 'GMT':0, 'Z':0,
 def parsedate_tz(data):
     """Convert a date string to a time tuple.
 
-    Accounts for military timezones.
+    Accounts fuer military timezones.
     """
     res = _parsedate_tz(data)
     if not res:
@@ -67,10 +67,10 @@ def _parsedate_tz(data):
     if not data:
         return None
     data = data.split()
-    if not data:  # This happens for whitespace-only input.
+    if not data:  # This happens fuer whitespace-only input.
         return None
     # The FWS after the comma after the day-of-week is optional, so search and
-    # adjust for this.
+    # adjust fuer this.
     if data[0].endswith(',') or data[0].lower() in _daynames:
         # There's a dayname here. Skip it
         del data[0]
@@ -144,9 +144,9 @@ def _parsedate_tz(data):
         tss = int(tss)
     except ValueError:
         return None
-    # Check for a yy specified in two-digit format, then convert it to the
+    # Check fuer a yy specified in two-digit format, then convert it to the
     # appropriate four-digit format, according to the POSIX standard. RFC 822
-    # calls for a two-digit yy, but RFC 2822 (which obsoletes RFC 822)
+    # calls fuer a two-digit yy, but RFC 2822 (which obsoletes RFC 822)
     # mandates a 4-digit yy. For more information, see the documentation for
     # the time module.
     if yy < 100:
@@ -423,7 +423,7 @@ klasse AddrlistClass:
     def getdelimited(self, beginchar, endchars, allowcomments=True):
         """Parse a header fragment delimited by special characters.
 
-        'beginchar' is the start character for the fragment.
+        'beginchar' is the start character fuer the fragment.
         If self is not looking at an instance of 'beginchar' then
         getdelimited returns the empty string.
 
@@ -528,14 +528,14 @@ klasse AddressList(AddrlistClass):
         # Set union
         newaddr = AddressList(None)
         newaddr.addresslist = self.addresslist[:]
-        for x in other.addresslist:
+        fuer x in other.addresslist:
             if not x in self.addresslist:
                 newaddr.addresslist.append(x)
         return newaddr
 
     def __iadd__(self, other):
         # Set union, in-place
-        for x in other.addresslist:
+        fuer x in other.addresslist:
             if not x in self.addresslist:
                 self.addresslist.append(x)
         return self
@@ -543,14 +543,14 @@ klasse AddressList(AddrlistClass):
     def __sub__(self, other):
         # Set difference
         newaddr = AddressList(None)
-        for x in self.addresslist:
+        fuer x in self.addresslist:
             if not x in other.addresslist:
                 newaddr.addresslist.append(x)
         return newaddr
 
     def __isub__(self, other):
         # Set difference, in-place
-        for x in other.addresslist:
+        fuer x in other.addresslist:
             if x in self.addresslist:
                 self.addresslist.remove(x)
         return self

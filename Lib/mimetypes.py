@@ -4,9 +4,9 @@ This module defines two useful functions:
 
 guess_type(url, strict=True) -- guess the MIME type and encoding of a URL.
 
-guess_extension(type, strict=True) -- guess the extension for a given MIME type.
+guess_extension(type, strict=True) -- guess the extension fuer a given MIME type.
 
-It also contains the following, for tuning the behavior:
+It also contains the following, fuer tuning the behavior:
 
 Data:
 
@@ -69,13 +69,13 @@ klasse MimeTypes:
             init()
         self.encodings_map = _encodings_map_default.copy()
         self.suffix_map = _suffix_map_default.copy()
-        self.types_map = ({}, {}) # dict for (non-strict, strict)
+        self.types_map = ({}, {}) # dict fuer (non-strict, strict)
         self.types_map_inv = ({}, {})
-        for (ext, type) in _types_map_default.items():
+        fuer (ext, type) in _types_map_default.items():
             self.add_type(type, ext, True)
-        for (ext, type) in _common_types_default.items():
+        fuer (ext, type) in _common_types_default.items():
             self.add_type(type, ext, False)
-        for name in filenames:
+        fuer name in filenames:
             self.read(name, strict)
 
     def add_type(self, type, ext, strict=True):
@@ -114,8 +114,8 @@ klasse MimeTypes:
 
         Return value is a tuple (type, encoding) where type is None if
         the type can't be guessed (no or unknown suffix) or a string
-        of the form type/subtype, usable for a MIME Content-type
-        header; and encoding is None for no encoding or the name of
+        of the form type/subtype, usable fuer a MIME Content-type
+        header; and encoding is None fuer no encoding or the name of
         the program used to encode (e.g. compress or gzip).  The
         mappings are table driven.  Encoding suffixes are case
         sensitive; type suffixes are first tried case sensitive, then
@@ -200,7 +200,7 @@ klasse MimeTypes:
             return None, encoding
 
     def guess_all_extensions(self, type, strict=True):
-        """Guess the extensions for a file based on its MIME type.
+        """Guess the extensions fuer a file based on its MIME type.
 
         Return value is a list of strings giving the possible filename
         extensions, including the leading dot ('.').  The extension is not
@@ -213,19 +213,19 @@ klasse MimeTypes:
         type = type.lower()
         extensions = list(self.types_map_inv[True].get(type, []))
         if not strict:
-            for ext in self.types_map_inv[False].get(type, []):
+            fuer ext in self.types_map_inv[False].get(type, []):
                 if ext not in extensions:
                     extensions.append(ext)
         return extensions
 
     def guess_extension(self, type, strict=True):
-        """Guess the extension for a file based on its MIME type.
+        """Guess the extension fuer a file based on its MIME type.
 
         Return value is a string giving a filename extension,
         including the leading dot ('.').  The extension is not
         guaranteed to have been associated with any particular data
         stream, but would be mapped to the MIME type 'type' by
-        guess_type().  If no extension can be guessed for 'type', None
+        guess_type().  If no extension can be guessed fuer 'type', None
         is returned.
 
         Optional 'strict' argument when false adds a bunch of commonly found,
@@ -257,14 +257,14 @@ klasse MimeTypes:
         """
         while line := fp.readline():
             words = line.split()
-            for i in range(len(words)):
+            fuer i in range(len(words)):
                 if words[i][0] == '#':
                     del words[i:]
                     break
             if not words:
                 continue
             type, suffixes = words[0], words[1:]
-            for suff in suffixes:
+            fuer suff in suffixes:
                 self.add_type(type, '.' + suff, strict)
 
     def read_windows_registry(self, strict=True):
@@ -304,7 +304,7 @@ klasse MimeTypes:
                 i += 1
 
         with _winreg.OpenKey(_winreg.HKEY_CLASSES_ROOT, '') as hkcr:
-            for subkeyname in enum_types(hkcr):
+            fuer subkeyname in enum_types(hkcr):
                 try:
                     with _winreg.OpenKey(hkcr, subkeyname) as subkey:
                         # Only check file extensions
@@ -324,8 +324,8 @@ def guess_type(url, strict=True):
 
     Return value is a tuple (type, encoding) where type is None if the
     type can't be guessed (no or unknown suffix) or a string of the
-    form type/subtype, usable for a MIME Content-type header; and
-    encoding is None for no encoding or the name of the program used
+    form type/subtype, usable fuer a MIME Content-type header; and
+    encoding is None fuer no encoding or the name of the program used
     to encode (e.g. compress or gzip).  The mappings are table
     driven.  Encoding suffixes are case sensitive; type suffixes are
     first tried case sensitive, then case insensitive.
@@ -353,13 +353,13 @@ def guess_file_type(path, *, strict=True):
 
 
 def guess_all_extensions(type, strict=True):
-    """Guess the extensions for a file based on its MIME type.
+    """Guess the extensions fuer a file based on its MIME type.
 
     Return value is a list of strings giving the possible filename
     extensions, including the leading dot ('.').  The extension is not
     guaranteed to have been associated with any particular data
     stream, but would be mapped to the MIME type 'type' by
-    guess_type().  If no extension can be guessed for 'type', None
+    guess_type().  If no extension can be guessed fuer 'type', None
     is returned.
 
     Optional 'strict' argument when false adds a bunch of commonly found,
@@ -370,7 +370,7 @@ def guess_all_extensions(type, strict=True):
     return _db.guess_all_extensions(type, strict)
 
 def guess_extension(type, strict=True):
-    """Guess the extension for a file based on its MIME type.
+    """Guess the extension fuer a file based on its MIME type.
 
     Return value is a string giving a filename extension, including the
     leading dot ('.').  The extension is not guaranteed to have been
@@ -422,7 +422,7 @@ def init(files=None):
     # Lazy import to improve module import time
     import os
 
-    for file in files:
+    fuer file in files:
         if os.path.isfile(file):
             db.read(file)
     encodings_map = db.encodings_map
@@ -472,7 +472,7 @@ def _default_mime_types():
     # or extensions, i.e. using the x- prefix
 
     # If you add to these, please keep them sorted by mime type.
-    # Make sure the entry with the preferred file extension for a particular mime type
+    # Make sure the entry with the preferred file extension fuer a particular mime type
     # appears before any others of the same mimetype.
     types_map = _types_map_default = {
         '.js'     : 'text/javascript',
@@ -709,7 +709,7 @@ def _parse_args(args):
     parser.add_argument(
         '-l', '--lenient',
         action='store_true',
-        help='additionally search for common but non-standard types'
+        help='additionally search fuer common but non-standard types'
     )
     parser.add_argument('type', nargs='+', help='a type to search')
     args = parser.parse_args(args)
@@ -722,7 +722,7 @@ def _main(args=None):
 
     results = []
     if args.extension:
-        for gtype in args.type:
+        fuer gtype in args.type:
             guess = guess_extension(gtype, not args.lenient)
             if guess:
                 results.append(str(guess))
@@ -730,12 +730,12 @@ def _main(args=None):
                 results.append(f"error: unknown type {gtype}")
         return results
     else:
-        for gtype in args.type:
+        fuer gtype in args.type:
             guess, encoding = guess_type(gtype, not args.lenient)
             if guess:
                 results.append(f"type: {guess} encoding: {encoding}")
             else:
-                results.append(f"error: media type unknown for {gtype}")
+                results.append(f"error: media type unknown fuer {gtype}")
         return results
 
 
@@ -744,4 +744,4 @@ if __name__ == '__main__':
 
     results = _main()
     print("\n".join(results))
-    sys.exit(any(result.startswith("error: ") for result in results))
+    sys.exit(any(result.startswith("error: ") fuer result in results))

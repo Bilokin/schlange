@@ -24,7 +24,7 @@ klasse ArrayTestCase(unittest.TestCase):
         self.assertEqual(type(PyCArrayType), type)
 
     def test_type_flags(self):
-        for cls in Array, PyCArrayType:
+        fuer cls in Array, PyCArrayType:
             with self.subTest(cls=cls):
                 self.assertTrue(cls.__flags__ & Py_TPFLAGS_IMMUTABLETYPE)
                 self.assertFalse(cls.__flags__ & Py_TPFLAGS_DISALLOW_INSTANTIATION)
@@ -33,7 +33,7 @@ klasse ArrayTestCase(unittest.TestCase):
         # Abstract classes (whose metaclass __init__ was not called) can't be
         # instantiated directly
         NewArray = PyCArrayType.__new__(PyCArrayType, 'NewArray', (Array,), {})
-        for cls in Array, NewArray:
+        fuer cls in Array, NewArray:
             with self.subTest(cls=cls):
                 with self.assertRaisesRegex(TypeError, "abstract class"):
                     obj = cls()
@@ -51,7 +51,7 @@ klasse ArrayTestCase(unittest.TestCase):
 
         init = list(range(15, 25))
 
-        for fmt in formats:
+        fuer fmt in formats:
             alen = len(init)
             int_array = ARRAY(fmt, alen)
 
@@ -60,7 +60,7 @@ klasse ArrayTestCase(unittest.TestCase):
             self.assertEqual(len(ia), alen)
 
             # slot values ok?
-            values = [ia[i] for i in range(alen)]
+            values = [ia[i] fuer i in range(alen)]
             self.assertEqual(values, init)
 
             # out-of-bounds accesses should be caught
@@ -69,14 +69,14 @@ klasse ArrayTestCase(unittest.TestCase):
 
             # change the items
             new_values = list(range(42, 42+alen))
-            for n in range(alen):
+            fuer n in range(alen):
                 ia[n] = new_values[n]
-            values = [ia[i] for i in range(alen)]
+            values = [ia[i] fuer i in range(alen)]
             self.assertEqual(values, new_values)
 
             # are the items initialized to 0?
             ia = int_array()
-            values = [ia[i] for i in range(alen)]
+            values = [ia[i] fuer i in range(alen)]
             self.assertEqual(values, [0] * alen)
 
             # Too many initializers should be caught
@@ -121,19 +121,19 @@ klasse ArrayTestCase(unittest.TestCase):
         numarray = ARRAY(c_int, alen)
 
         na = numarray()
-        values = [na[i] for i in range(alen)]
+        values = [na[i] fuer i in range(alen)]
         self.assertEqual(values, [0] * alen)
 
         na = numarray(*[c_int()] * alen)
-        values = [na[i] for i in range(alen)]
+        values = [na[i] fuer i in range(alen)]
         self.assertEqual(values, [0]*alen)
 
         na = numarray(1, 2, 3, 4, 5)
-        values = [i for i in na]
+        values = [i fuer i in na]
         self.assertEqual(values, [1, 2, 3, 4, 5])
 
         na = numarray(*map(c_int, (1, 2, 3, 4, 5)))
-        values = [i for i in na]
+        values = [i fuer i in na]
         self.assertEqual(values, [1, 2, 3, 4, 5])
 
     def test_classcache(self):
@@ -190,7 +190,7 @@ klasse ArrayTestCase(unittest.TestCase):
         klasse Y(T):
             _length_ = 187
 
-        for c in [T, U, V, W]:
+        fuer c in [T, U, V, W]:
             self.assertEqual(c._type_, c_int)
             self.assertEqual(c._length_, 13)
             self.assertEqual(c()._type_, c_int)
@@ -275,12 +275,12 @@ klasse ArrayTestCase(unittest.TestCase):
         buffer = (ctypes.c_char_p * 10)()
 
         def run():
-            for i in range(100):
+            fuer i in range(100):
                 buffer.value = b"hello"
                 buffer[0] = b"j"
 
         with threading_helper.catch_threading_exception() as cm:
-            threads = (Thread(target=run) for _ in range(25))
+            threads = (Thread(target=run) fuer _ in range(25))
             with threading_helper.start_threads(threads):
                 pass
 

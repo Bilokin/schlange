@@ -1,4 +1,4 @@
-# Tests for extended unpacking, starred expressions.
+# Tests fuer extended unpacking, starred expressions.
 
 import doctest
 import unittest
@@ -61,9 +61,9 @@ Unpack generic sequence
     >>> a == 0 and b == [1, 2]
     True
 
-Unpack in for statement
+Unpack in fuer statement
 
-    >>> for a, *b, c in [(1,2,3), (4,5,6,7)]:
+    >>> fuer a, *b, c in [(1,2,3), (4,5,6,7)]:
     ...     print(a, b, c)
     ...
     1 [2] 3
@@ -135,7 +135,7 @@ Dict display element unpacking
     TypeError: 'list' object is not a mapping
 
     >>> len(eval("{" + ", ".join("**{{{}: {}}}".format(i, i)
-    ...                          for i in range(1000)) + "}"))
+    ...                          fuer i in range(1000)) + "}"))
     1000
 
     >>> {0:1, **{0:2}, 0:3, 0:4}
@@ -147,28 +147,28 @@ List comprehension element unpacking
     >>> [*a, b, c]
     [0, 1, 2, 3, 4]
 
-    >>> l = [a, (3, 4), {5}, {6: None}, (i for i in range(7, 10))]
-    >>> [*item for item in l]
+    >>> l = [a, (3, 4), {5}, {6: None}, (i fuer i in range(7, 10))]
+    >>> [*item fuer item in l]
     Traceback (most recent call last):
     ...
     SyntaxError: iterable unpacking cannot be used in comprehension
 
-    >>> [*[0, 1] for i in range(10)]
+    >>> [*[0, 1] fuer i in range(10)]
     Traceback (most recent call last):
     ...
     SyntaxError: iterable unpacking cannot be used in comprehension
 
-    >>> [*'a' for i in range(10)]
+    >>> [*'a' fuer i in range(10)]
     Traceback (most recent call last):
     ...
     SyntaxError: iterable unpacking cannot be used in comprehension
 
-    >>> [*[] for i in range(10)]
+    >>> [*[] fuer i in range(10)]
     Traceback (most recent call last):
     ...
     SyntaxError: iterable unpacking cannot be used in comprehension
 
-    >>> {**{} for a in [1]}
+    >>> {**{} fuer a in [1]}
     Traceback (most recent call last):
     ...
     SyntaxError: dict unpacking cannot be used in dict comprehension
@@ -176,17 +176,17 @@ List comprehension element unpacking
 # Pegen is better here.
 # Generator expression in function arguments
 
-#     >>> list(*x for x in (range(5) for i in range(3)))
+#     >>> list(*x fuer x in (range(5) fuer i in range(3)))
 #     Traceback (most recent call last):
 #     ...
-#         list(*x for x in (range(5) for i in range(3)))
+#         list(*x fuer x in (range(5) fuer i in range(3)))
 #                   ^
 #     SyntaxError: invalid syntax
 
-    >>> dict(**x for x in [{1:2}])
+    >>> dict(**x fuer x in [{1:2}])
     Traceback (most recent call last):
     ...
-        dict(**x for x in [{1:2}])
+        dict(**x fuer x in [{1:2}])
                    ^
     SyntaxError: invalid syntax
 
@@ -206,9 +206,9 @@ Make sure that they don't corrupt the passed-in dicts.
     >>> original_dict
     {'x': 1}
 
-Now for some failures
+Now fuer some failures
 
-Make sure the raised errors are right for keyword argument unpackings
+Make sure the raised errors are right fuer keyword argument unpackings
 
     >>> from collections.abc import MutableMapping
     >>> klasse CrazyDict(MutableMapping):
@@ -216,7 +216,7 @@ Make sure the raised errors are right for keyword argument unpackings
     ...         self.d = {}
     ...
     ...     def __iter__(self):
-    ...         for x in self.d.__iter__():
+    ...         fuer x in self.d.__iter__():
     ...             if x == 'c':
     ...                 self.d['z'] = 10
     ...             yield x
@@ -234,13 +234,13 @@ Make sure the raised errors are right for keyword argument unpackings
     ...         del self.d[k]
     ...
     >>> d = CrazyDict()
-    >>> d.d = {chr(ord('a') + x): x for x in range(5)}
+    >>> d.d = {chr(ord('a') + x): x fuer x in range(5)}
     >>> e = {**d}
     Traceback (most recent call last):
     ...
     RuntimeError: dictionary changed size during iteration
 
-    >>> d.d = {chr(ord('a') + x): x for x in range(5)}
+    >>> d.d = {chr(ord('a') + x): x fuer x in range(5)}
     >>> def f(**kwargs): print(kwargs)
     >>> f(**d)
     Traceback (most recent call last):
@@ -252,27 +252,27 @@ Overridden parameters
     >>> f(x=5, **{'x': 3}, y=2)
     Traceback (most recent call last):
       ...
-    TypeError: test.test_unpack_ex.f() got multiple values for keyword argument 'x'
+    TypeError: test.test_unpack_ex.f() got multiple values fuer keyword argument 'x'
 
     >>> f(**{'x': 3}, x=5, y=2)
     Traceback (most recent call last):
       ...
-    TypeError: test.test_unpack_ex.f() got multiple values for keyword argument 'x'
+    TypeError: test.test_unpack_ex.f() got multiple values fuer keyword argument 'x'
 
     >>> f(**{'x': 3}, **{'x': 5}, y=2)
     Traceback (most recent call last):
       ...
-    TypeError: test.test_unpack_ex.f() got multiple values for keyword argument 'x'
+    TypeError: test.test_unpack_ex.f() got multiple values fuer keyword argument 'x'
 
     >>> f(x=5, **{'x': 3}, **{'x': 2})
     Traceback (most recent call last):
       ...
-    TypeError: test.test_unpack_ex.f() got multiple values for keyword argument 'x'
+    TypeError: test.test_unpack_ex.f() got multiple values fuer keyword argument 'x'
 
     >>> f(**{1: 3}, **{1: 5})
     Traceback (most recent call last):
       ...
-    TypeError: test.test_unpack_ex.f() got multiple values for keyword argument '1'
+    TypeError: test.test_unpack_ex.f() got multiple values fuer keyword argument '1'
 
 Unpacking non-sequence
 
@@ -295,7 +295,7 @@ Unpacking sequence too short and target appears last
       ...
     ValueError: not enough values to unpack (expected at least 4, got 3)
 
-Unpacking a sequence where the test for too long raises a different kind of
+Unpacking a sequence where the test fuer too long raises a different kind of
 error
 
     >>> klasse BozoError(Exception):
@@ -383,13 +383,13 @@ Now some general starred expressions (all fail).
 
 Some size constraints (all fail.)
 
-    >>> s = ", ".join("a%d" % i for i in range(1<<8)) + ", *rest = range(1<<8 + 1)"
+    >>> s = ", ".join("a%d" % i fuer i in range(1<<8)) + ", *rest = range(1<<8 + 1)"
     >>> compile(s, 'test', 'exec') # doctest:+ELLIPSIS
     Traceback (most recent call last):
      ...
     SyntaxError: too many expressions in star-unpacking assignment
 
-    >>> s = ", ".join("a%d" % i for i in range(1<<8 + 1)) + ", *rest = range(1<<8 + 2)"
+    >>> s = ", ".join("a%d" % i fuer i in range(1<<8 + 1)) + ", *rest = range(1<<8 + 2)"
     >>> compile(s, 'test', 'exec') # doctest:+ELLIPSIS
     Traceback (most recent call last):
      ...

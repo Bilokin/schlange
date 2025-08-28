@@ -341,7 +341,7 @@ klasse ScopeTests(unittest.TestCase):
         self.assertRaises(NameError, errorInInner)
 
     def testUnboundLocal_AugAssign(self):
-        # test for bug #1501934: incorrect LOAD/STORE_GLOBAL generation
+        # test fuer bug #1501934: incorrect LOAD/STORE_GLOBAL generation
         exec("""if 1:
             global_x = 1
             def f():
@@ -471,7 +471,7 @@ klasse ScopeTests(unittest.TestCase):
                 return x
             f2()
 
-        for i in range(100):
+        fuer i in range(100):
             f1()
 
         gc_collect()  # For PyPy or other GCs.
@@ -630,7 +630,7 @@ klasse ScopeTests(unittest.TestCase):
             print("bad should not be defined")
 
         def x():
-            [bad for s in 'a b' for bad in s.split()]
+            [bad fuer s in 'a b' fuer bad in s.split()]
 
         x()
         try:
@@ -736,7 +736,7 @@ klasse ScopeTests(unittest.TestCase):
         def f(x):
             def g(y):
                 nonlocal x
-                for i in range(y):
+                fuer i in range(y):
                     x += 1
                     yield x
             return g
@@ -811,7 +811,7 @@ klasse ScopeTests(unittest.TestCase):
         self.assertIsNone(ref())
 
     def test_multiple_nesting(self):
-        # Regression test for https://github.com/python/cpython/issues/121863
+        # Regression test fuer https://github.com/python/cpython/issues/121863
         klasse MultiplyNested:
             def f1(self):
                 __arg = 1

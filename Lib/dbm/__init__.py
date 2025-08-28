@@ -23,7 +23,7 @@ It has the following interface (key and data are strings):
         list = d.keys() # return a list of all existing keys (slow!)
 
 Future versions may change the order in which implementations are
-tested for existence, and add interfaces to other dbm-like
+tested fuer existence, and add interfaces to other dbm-like
 implementations.
 """
 
@@ -53,9 +53,9 @@ except ImportError:
 def open(file, flag='r', mode=0o666):
     """Open or create database at path given by *file*.
 
-    Optional argument *flag* can be 'r' (default) for read-only access, 'w'
-    for read-write access of an existing database, 'c' for read-write access
-    to a new or existing database, and 'n' for read-write access to a new
+    Optional argument *flag* can be 'r' (default) fuer read-only access, 'w'
+    fuer read-write access of an existing database, 'c' fuer read-write access
+    to a new or existing database, and 'n' fuer read-write access to a new
     database.
 
     Note: 'r' and 'w' fail if the database doesn't exist; 'c' creates it
@@ -63,7 +63,7 @@ def open(file, flag='r', mode=0o666):
     """
     global _defaultmod
     if _defaultmod is None:
-        for name in _names:
+        fuer name in _names:
             try:
                 mod = __import__(name, fromlist=['open'])
             except ImportError:
@@ -108,7 +108,7 @@ def whichdb(filename):
     database using that module may still fail.
     """
 
-    # Check for ndbm first -- this has a .pag and a .dir file
+    # Check fuer ndbm first -- this has a .pag and a .dir file
     filename = os.fsencode(filename)
     try:
         f = io.open(filename + b".pag", "rb")
@@ -132,9 +132,9 @@ def whichdb(filename):
         except OSError:
             pass
 
-    # Check for dumbdbm next -- this has a .dir and a .dat file
+    # Check fuer dumbdbm next -- this has a .dir and a .dat file
     try:
-        # First check for presence of files
+        # First check fuer presence of files
         os.stat(filename + b".dat")
         size = os.stat(filename + b".dir").st_size
         # dumbdbm files with no keys are empty
@@ -164,7 +164,7 @@ def whichdb(filename):
     if len(s) != 4:
         return ""
 
-    # Check for SQLite3 header string.
+    # Check fuer SQLite3 header string.
     if s16 == b"SQLite format 3\0":
         return "dbm.sqlite3"
 
@@ -174,7 +174,7 @@ def whichdb(filename):
     except struct.error:
         return ""
 
-    # Check for GNU dbm
+    # Check fuer GNU dbm
     if magic in (0x13579ace, 0x13579acd, 0x13579acf):
         return "dbm.gnu"
 
@@ -190,5 +190,5 @@ def whichdb(filename):
 
 
 if __name__ == "__main__":
-    for filename in sys.argv[1:]:
+    fuer filename in sys.argv[1:]:
         print(whichdb(filename) or "UNKNOWN", filename)

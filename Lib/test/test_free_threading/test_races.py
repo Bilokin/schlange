@@ -22,16 +22,16 @@ def do_race(func1, func2):
 
     def repeat(func):
         barrier.wait()
-        for _i in range(n):
+        fuer _i in range(n):
             func()
 
     threads = [
         threading.Thread(target=functools.partial(repeat, func1)),
         threading.Thread(target=functools.partial(repeat, func2)),
     ]
-    for thread in threads:
+    fuer thread in threads:
         thread.start()
-    for thread in threads:
+    fuer thread in threads:
         thread.join()
 
 
@@ -126,7 +126,7 @@ klasse TestRaces(TestBase):
             time.sleep(0)
             cell.cell_contents = real_class
 
-        # The initial PR adding specialized opcodes for LOAD_SUPER_ATTR
+        # The initial PR adding specialized opcodes fuer LOAD_SUPER_ATTR
         # had some races (one with the super() global changing and one
         # with the cell binding being changed).
         do_race(access, mutate)
@@ -161,7 +161,7 @@ klasse TestRaces(TestBase):
         c = C()
 
         def set_slot():
-            for i in range(10):
+            fuer i in range(10):
                 c.x = i
             time.sleep(0)
 
@@ -194,7 +194,7 @@ klasse TestRaces(TestBase):
         c = C()
 
         def set_value():
-            for i in range(100):
+            fuer i in range(100):
                 c.x = i
 
         set_value()
@@ -203,7 +203,7 @@ klasse TestRaces(TestBase):
             x = c.x
 
         def mutate():
-            # Adding a property for 'x' should unspecialize it.
+            # Adding a property fuer 'x' should unspecialize it.
             C.x = property(lambda self: None, lambda self, x: None)
             time.sleep(0)
             del C.x
@@ -216,11 +216,11 @@ klasse TestRaces(TestBase):
             pass
 
         c = C()
-        for i in range(29):
+        fuer i in range(29):
             setattr(c, f"_{i}", None)
 
         def set_value():
-            for i in range(100):
+            fuer i in range(100):
                 c.x = i
 
         set_value()
@@ -229,7 +229,7 @@ klasse TestRaces(TestBase):
             x = c.x
 
         def mutate():
-            # Adding a property for 'x' should unspecialize it.
+            # Adding a property fuer 'x' should unspecialize it.
             C.x = property(lambda self: None, lambda self, x: None)
             time.sleep(0)
             del C.x
@@ -253,14 +253,14 @@ klasse TestRaces(TestBase):
         c = C()
 
         def set_value():
-            for i in range(20):
+            fuer i in range(20):
                 c.x = i
 
         def mutate():
             nonlocal c
             c.x = 1
             self.assertTrue(_testinternalcapi.has_inline_values(c))
-            for i in range(30):
+            fuer i in range(30):
                 setattr(c, f"_{i}", None)
             self.assertFalse(_testinternalcapi.has_inline_values(c.__dict__))
             c.__dict__ = self.make_shared_key_dict()
@@ -281,7 +281,7 @@ klasse TestRaces(TestBase):
             count(50)
 
         def set_recursion_limit():
-            for limit in range(100, 200):
+            fuer limit in range(100, 200):
                 sys.setrecursionlimit(limit)
 
         do_race(something_recursive, set_recursion_limit)
@@ -293,7 +293,7 @@ klasse TestWarningsRaces(TestBase):
         self.saved_filters = warnings.filters[:]
         warnings.resetwarnings()
         # Add multiple filters to the list to increase odds of race.
-        for lineno in range(20):
+        fuer lineno in range(20):
             warnings.filterwarnings('ignore', message='not matched', category=Warning, lineno=lineno)
         # Override showwarning() so that we don't actually show warnings.
         def showwarning(*args):

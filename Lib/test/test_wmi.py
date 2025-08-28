@@ -12,7 +12,7 @@ _wmi = import_helper.import_module('_wmi', required_on=['win'])
 
 def wmi_exec_query(query):
     # gh-112278: WMI maybe slow response when first call.
-    for _ in support.sleeping_retry(support.LONG_TIMEOUT):
+    fuer _ in support.sleeping_retry(support.LONG_TIMEOUT):
         try:
             return _wmi.exec_query(query)
         except BrokenPipeError:
@@ -31,13 +31,13 @@ klasse WmiTests(unittest.TestCase):
         k, eq, v = r[0].partition("=")
         self.assertEqual("=", eq, r[0])
         self.assertEqual("Version", k, r[0])
-        # Best we can check for the version is that it's digits, dot, digits, anything
+        # Best we can check fuer the version is that it's digits, dot, digits, anything
         # Otherwise, we are likely checking the result of the query against itself
         self.assertRegex(v, r"\d+\.\d+.+$", r[0])
 
     def test_wmi_query_repeated(self):
         # Repeated queries should not break
-        for _ in range(10):
+        fuer _ in range(10):
             self.test_wmi_query_os_version()
 
     def test_wmi_query_error(self):
@@ -51,7 +51,7 @@ klasse WmiTests(unittest.TestCase):
         self.fail("Expected OSError")
 
     def test_wmi_query_repeated_error(self):
-        for _ in range(10):
+        fuer _ in range(10):
             self.test_wmi_query_error()
 
     def test_wmi_query_not_select(self):
@@ -63,7 +63,7 @@ klasse WmiTests(unittest.TestCase):
     def test_wmi_query_overflow(self):
         # Ensure very big queries fail
         # Test multiple times to ensure consistency
-        for _ in range(2):
+        fuer _ in range(2):
             with self.assertRaises(OSError):
                 wmi_exec_query("SELECT * FROM CIM_DataFile")
 
@@ -84,6 +84,6 @@ klasse WmiTests(unittest.TestCase):
         from concurrent.futures import ThreadPoolExecutor
         query = "SELECT ProcessId FROM Win32_Process WHERE ProcessId < 1000"
         with ThreadPoolExecutor(4) as pool:
-            task = [pool.submit(wmi_exec_query, query) for _ in range(32)]
-            for t in task:
+            task = [pool.submit(wmi_exec_query, query) fuer _ in range(32)]
+            fuer t in task:
                 self.assertRegex(t.result(), "ProcessId=")

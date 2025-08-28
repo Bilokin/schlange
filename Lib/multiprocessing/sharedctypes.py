@@ -74,7 +74,7 @@ def RawArray(typecode_or_type, size_or_initializer):
 
 def Value(typecode_or_type, *args, lock=True, ctx=None):
     '''
-    Return a synchronization wrapper for a Value
+    Return a synchronization wrapper fuer a Value
     '''
     obj = RawValue(typecode_or_type, *args)
     if lock is False:
@@ -88,7 +88,7 @@ def Value(typecode_or_type, *args, lock=True, ctx=None):
 
 def Array(typecode_or_type, size_or_initializer, *, lock=True, ctx=None):
     '''
-    Return a synchronization wrapper for a RawArray
+    Return a synchronization wrapper fuer a RawArray
     '''
     obj = RawArray(typecode_or_type, size_or_initializer)
     if lock is False:
@@ -120,14 +120,14 @@ def synchronized(obj, lock=None, ctx=None):
         try:
             scls = class_cache[cls]
         except KeyError:
-            names = [field[0] for field in cls._fields_]
-            d = {name: make_property(name) for name in names}
+            names = [field[0] fuer field in cls._fields_]
+            d = {name: make_property(name) fuer name in names}
             classname = 'Synchronized' + cls.__name__
             scls = class_cache[cls] = type(classname, (SynchronizedBase,), d)
         return scls(obj, lock, ctx)
 
 #
-# Functions for pickling/unpickling
+# Functions fuer pickling/unpickling
 #
 
 def reduce_ctype(obj):
@@ -211,7 +211,7 @@ klasse SynchronizedBase(object):
         return self._lock
 
     def __repr__(self):
-        return '<%s wrapper for %s>' % (type(self).__name__, self._obj)
+        return '<%s wrapper fuer %s>' % (type(self).__name__, self._obj)
 
 
 klasse Synchronized(SynchronizedBase):

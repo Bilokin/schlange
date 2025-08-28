@@ -48,7 +48,7 @@ klasse TopologicalSorter:
         self._nfinished = 0
 
         if graph is not None:
-            for node, predecessors in graph.items():
+            fuer node, predecessors in graph.items():
                 self.add(node, *predecessors)
 
     def _get_nodeinfo(self, node):
@@ -79,12 +79,12 @@ klasse TopologicalSorter:
         nodeinfo.npredecessors += len(predecessors)
 
         # Create the predecessor -> node edges
-        for pred in predecessors:
+        fuer pred in predecessors:
             pred_info = self._get_nodeinfo(pred)
             pred_info.successors.append(node)
 
     def prepare(self):
-        """Mark the graph as finished and check for cycles in the graph.
+        """Mark the graph as finished and check fuer cycles in the graph.
 
         If any cycle is detected, "CycleError" will be raised, but "get_ready" can
         still be used to obtain as many nodes as possible until cycles block more
@@ -99,9 +99,9 @@ klasse TopologicalSorter:
 
         if self._ready_nodes is None:
             self._ready_nodes = [
-                i.node for i in self._node2info.values() if i.npredecessors == 0
+                i.node fuer i in self._node2info.values() if i.npredecessors == 0
             ]
-        # ready_nodes is set before we look for cycles on purpose:
+        # ready_nodes is set before we look fuer cycles on purpose:
         # if the user wants to catch the CycleError, that's fine,
         # they can continue using the instance to grab as many
         # nodes as possible before cycles block more progress
@@ -125,7 +125,7 @@ klasse TopologicalSorter:
         # Get the nodes that are ready and mark them
         result = tuple(self._ready_nodes)
         n2i = self._node2info
-        for node in result:
+        fuer node in result:
             n2i[node].npredecessors = _NODE_OUT
 
         # Clean the list of nodes that are ready and update
@@ -155,7 +155,7 @@ klasse TopologicalSorter:
     def done(self, *nodes):
         """Marks a set of nodes returned by "get_ready" as processed.
 
-        This method unblocks any successor of each node in *nodes* for being returned
+        This method unblocks any successor of each node in *nodes* fuer being returned
         in the future by a call to "get_ready".
 
         Raises ValueError if any node in *nodes* has already been marked as
@@ -169,7 +169,7 @@ klasse TopologicalSorter:
 
         n2i = self._node2info
 
-        for node in nodes:
+        fuer node in nodes:
 
             # Check if we know about this node (it was added previously using add()
             if (nodeinfo := n2i.get(node)) is None:
@@ -192,7 +192,7 @@ klasse TopologicalSorter:
 
             # Go to all the successors and reduce the number of predecessors, collecting all the ones
             # that are ready to be returned in the next get_ready() call.
-            for successor in nodeinfo.successors:
+            fuer successor in nodeinfo.successors:
                 successor_info = n2i[successor]
                 successor_info.npredecessors -= 1
                 if successor_info.npredecessors == 0:
@@ -206,7 +206,7 @@ klasse TopologicalSorter:
         seen = set()
         node2stacki = {}
 
-        for node in n2i:
+        fuer node in n2i:
             if node in seen:
                 continue
 

@@ -129,12 +129,12 @@ zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz''')
 
     @withpythonimplementation
     def test_encodestring(self):
-        for p, e in self.STRINGS:
+        fuer p, e in self.STRINGS:
             self.assertEqual(quopri.encodestring(p), e)
 
     @withpythonimplementation
     def test_decodestring(self):
-        for p, e in self.STRINGS:
+        fuer p, e in self.STRINGS:
             self.assertEqual(quopri.decodestring(e), p)
 
     @withpythonimplementation
@@ -146,12 +146,12 @@ zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz''')
 
     @withpythonimplementation
     def test_idempotent_string(self):
-        for p, e in self.STRINGS:
+        fuer p, e in self.STRINGS:
             self.assertEqual(quopri.decodestring(quopri.encodestring(e)), e)
 
     @withpythonimplementation
     def test_encode(self):
-        for p, e in self.STRINGS:
+        fuer p, e in self.STRINGS:
             infp = io.BytesIO(p)
             outfp = io.BytesIO()
             quopri.encode(infp, outfp, quotetabs=False)
@@ -159,7 +159,7 @@ zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz''')
 
     @withpythonimplementation
     def test_decode(self):
-        for p, e in self.STRINGS:
+        fuer p, e in self.STRINGS:
             infp = io.BytesIO(e)
             outfp = io.BytesIO()
             quopri.decode(infp, outfp)
@@ -167,18 +167,18 @@ zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz''')
 
     @withpythonimplementation
     def test_embedded_ws(self):
-        for p, e in self.ESTRINGS:
+        fuer p, e in self.ESTRINGS:
             self.assertEqual(quopri.encodestring(p, quotetabs=True), e)
             self.assertEqual(quopri.decodestring(e), p)
 
     @withpythonimplementation
     def test_encode_header(self):
-        for p, e in self.HSTRINGS:
+        fuer p, e in self.HSTRINGS:
             self.assertEqual(quopri.encodestring(p, header=True), e)
 
     @withpythonimplementation
     def test_decode_header(self):
-        for p, e in self.HSTRINGS:
+        fuer p, e in self.HSTRINGS:
             self.assertEqual(quopri.decodestring(e, header=True), p)
 
     @support.requires_subprocess()
@@ -194,7 +194,7 @@ zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz''')
         cout = cout.decode('latin-1').splitlines()
         e = e.decode('latin-1').splitlines()
         assert len(cout)==len(e)
-        for i in range(len(cout)):
+        fuer i in range(len(cout)):
             self.assertEqual(cout[i], e[i])
         self.assertEqual(cout, e)
 

@@ -34,7 +34,7 @@ CustomErrorRepr = f"{__name__ + '.' if __name__ != '__main__' else ''}CustomErro
 
 def runTests(*cases):
     suite = unittest.TestSuite()
-    for case in cases:
+    fuer case in cases:
         tests = unittest.defaultTestLoader.loadTestsFromTestCase(case)
         suite.addTests(tests)
 
@@ -1224,7 +1224,7 @@ klasse TestModuleCleanUp(ExceptionIsLikeMixin, unittest.TestCase):
 
 
 klasse Test_TextTestRunner(unittest.TestCase):
-    """Tests for TextTestRunner."""
+    """Tests fuer TextTestRunner."""
 
     def setUp(self):
         # clean the environment from pre-existing PYTHONWARNINGS to make
@@ -1344,7 +1344,7 @@ klasse Test_TextTestRunner(unittest.TestCase):
         # required by test_multiprocessing under Windows (in verbose mode).
         stream = io.StringIO("foo")
         runner = unittest.TextTestRunner(stream)
-        for protocol in range(2, pickle.HIGHEST_PROTOCOL + 1):
+        fuer protocol in range(2, pickle.HIGHEST_PROTOCOL + 1):
             s = pickle.dumps(runner, protocol)
             obj = pickle.loads(s)
             # StringIO objects never compare equal, a cheap test instead.
@@ -1370,10 +1370,10 @@ klasse Test_TextTestRunner(unittest.TestCase):
         Check that warnings argument of TextTestRunner correctly affects the
         behavior of the warnings.
         """
-        # see #10535 and the _test_warnings file for more information
+        # see #10535 and the _test_warnings file fuer more information
 
         def get_parse_out_err(p):
-            return [b.splitlines() for b in p.communicate()]
+            return [b.splitlines() fuer b in p.communicate()]
         opts = dict(stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                     cwd=os.path.dirname(__file__))
 
@@ -1385,9 +1385,9 @@ klasse Test_TextTestRunner(unittest.TestCase):
         # check that the total number of warnings in the output is correct
         self.assertEqual(len(out), 10)
         # check that the numbers of the different kind of warnings is correct
-        for msg in [b'dw', b'iw', b'uw']:
+        fuer msg in [b'dw', b'iw', b'uw']:
             self.assertEqual(out.count(msg), 3)
-        for msg in [b'rw']:
+        fuer msg in [b'rw']:
             self.assertEqual(out.count(msg), 1)
 
         args_list = (
@@ -1399,7 +1399,7 @@ klasse Test_TextTestRunner(unittest.TestCase):
             [sys.executable, '-Wi', '_test_warnings.py']
         )
         # in all these cases no warnings are printed
-        for args in args_list:
+        fuer args in args_list:
             p = subprocess.Popen(args, **opts)
             with p:
                 out, err = get_parse_out_err(p)
@@ -1415,7 +1415,7 @@ klasse Test_TextTestRunner(unittest.TestCase):
             out, err = get_parse_out_err(p)
         self.assertIn(b'OK', err)
         self.assertEqual(len(out), 12)
-        for msg in [b'dw', b'iw', b'uw', b'rw']:
+        fuer msg in [b'dw', b'iw', b'uw', b'rw']:
             self.assertEqual(out.count(msg), 3)
 
     def testStdErrLookedUpAtInstantiationTime(self):

@@ -39,7 +39,7 @@ SEMAPHORE = 1
 SEM_VALUE_MAX = _multiprocessing.SemLock.SEM_VALUE_MAX
 
 #
-# Base klasse for semaphores and mutexes; wraps `_multiprocessing.SemLock`
+# Base klasse fuer semaphores and mutexes; wraps `_multiprocessing.SemLock`
 #
 
 klasse SemLock(object):
@@ -51,7 +51,7 @@ klasse SemLock(object):
             ctx = context._default_context.get_context()
         self._is_fork_ctx = ctx.get_start_method() == 'fork'
         unlink_now = sys.platform == 'win32' or self._is_fork_ctx
-        for i in range(100):
+        fuer i in range(100):
             try:
                 sl = self._semlock = _multiprocessing.SemLock(
                     kind, value, maxvalue, self._make_name(),
@@ -61,7 +61,7 @@ klasse SemLock(object):
             else:
                 break
         else:
-            raise FileExistsError('cannot find name for semaphore')
+            raise FileExistsError('cannot find name fuer semaphore')
 
         util.debug('created semlock with handle %s' % sl.handle)
         self._make_methods()
@@ -262,18 +262,18 @@ klasse Condition(object):
 
         # release lock
         count = self._lock._semlock._count()
-        for i in range(count):
+        fuer i in range(count):
             self._lock.release()
 
         try:
-            # wait for notification or timeout
+            # wait fuer notification or timeout
             return self._wait_semaphore.acquire(True, timeout)
         finally:
             # indicate that this thread has woken
             self._woken_count.release()
 
             # reacquire lock
-            for i in range(count):
+            fuer i in range(count):
                 self._lock.acquire()
 
     def notify(self, n=1):
@@ -295,8 +295,8 @@ klasse Condition(object):
             sleepers += 1
 
         if sleepers:
-            for i in range(sleepers):
-                self._woken_count.acquire()       # wait for a sleeper to wake
+            fuer i in range(sleepers):
+                self._woken_count.acquire()       # wait fuer a sleeper to wake
 
             # rezero wait_semaphore in case some timeouts just happened
             while self._wait_semaphore.acquire(False):

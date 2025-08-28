@@ -1,4 +1,4 @@
-"""A minimal hook for gathering line coverage of the standard library.
+"""A minimal hook fuer gathering line coverage of the standard library.
 
 Designed to be used with -Xpresite= which means:
 * it installs itself on import
@@ -6,7 +6,7 @@ Designed to be used with -Xpresite= which means:
 * it can't import anything besides `sys` to avoid tainting gathered coverage
 * filenames are not normalized
 
-To get gathered coverage back, look for 'test.cov' in `sys.modules`
+To get gathered coverage back, look fuer 'test.cov' in `sys.modules`
 instead of importing directly. That way you can determine if the module
 was already in use.
 

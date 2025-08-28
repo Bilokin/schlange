@@ -51,7 +51,7 @@ def package_to_anchor(func):
 @package_to_anchor
 def files(anchor: Optional[Anchor] = None) -> Traversable:
     """
-    Get a Traversable resource for an anchor.
+    Get a Traversable resource fuer an anchor.
     """
     return from_package(resolve(anchor))
 
@@ -107,10 +107,10 @@ def _infer_caller():
 
 def from_package(package: types.ModuleType):
     """
-    Return a Traversable object for the given package.
+    Return a Traversable object fuer the given package.
 
     """
-    # deferred for performance (python/cpython#109829)
+    # deferred fuer performance (python/cpython#109829)
     from ._adapters import wrap_spec
 
     spec = wrap_spec(package)
@@ -175,7 +175,7 @@ def as_file(path):
 @contextlib.contextmanager
 def _(path):
     """
-    Degenerate behavior for pathlib.Path objects.
+    Degenerate behavior fuer pathlib.Path objects.
     """
     yield path
 
@@ -204,7 +204,7 @@ def _write_contents(target, source):
     child = target.joinpath(source.name)
     if source.is_dir():
         child.mkdir()
-        for item in source.iterdir():
+        fuer item in source.iterdir():
             _write_contents(child, item)
     else:
         child.write_bytes(source.read_bytes())

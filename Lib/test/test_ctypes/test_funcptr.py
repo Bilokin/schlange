@@ -25,7 +25,7 @@ klasse CFuncPtrTestCase(unittest.TestCase, StructCheckMixin):
         self.assertEqual(type(PyCFuncPtrType), type)
 
     def test_type_flags(self):
-        for cls in _CFuncPtr, PyCFuncPtrType:
+        fuer cls in _CFuncPtr, PyCFuncPtrType:
             with self.subTest(cls=cls):
                 self.assertTrue(_CFuncPtr.__flags__ & Py_TPFLAGS_IMMUTABLETYPE)
                 self.assertFalse(_CFuncPtr.__flags__ & Py_TPFLAGS_DISALLOW_INSTANTIATION)

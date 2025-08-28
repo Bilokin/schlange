@@ -1,5 +1,5 @@
 """\
-A library of useful helper classes to the SAX classes, for the
+A library of useful helper classes to the SAX classes, fuer the
 convenience of application and driver writers.
 """
 
@@ -11,7 +11,7 @@ from . import xmlreader
 
 def __dict_replace(s, d):
     """Replace substrings of a string using a dictionary."""
-    for key, value in d.items():
+    fuer key, value in d.items():
         s = s.replace(key, value)
     return s
 
@@ -48,7 +48,7 @@ def unescape(data, entities={}):
 def quoteattr(data, entities={}):
     """Escape and quote an attribute value.
 
-    Escape &, <, and > in a string of data, then quote it for use as
+    Escape &, <, and > in a string of data, then quote it fuer use as
     an attribute value.  The \" character will be escaped as well, if
     necessary.
 
@@ -166,7 +166,7 @@ klasse XMLGenerator(handler.ContentHandler):
     def startElement(self, name, attrs):
         self._finish_pending_start_element()
         self._write('<' + name)
-        for (name, value) in attrs.items():
+        fuer (name, value) in attrs.items():
             self._write(' %s=%s' % (name, quoteattr(value)))
         if self._short_empty_elements:
             self._pending_start_element = True
@@ -184,14 +184,14 @@ klasse XMLGenerator(handler.ContentHandler):
         self._finish_pending_start_element()
         self._write('<' + self._qname(name))
 
-        for prefix, uri in self._undeclared_ns_maps:
+        fuer prefix, uri in self._undeclared_ns_maps:
             if prefix:
                 self._write(' xmlns:%s="%s"' % (prefix, uri))
             else:
                 self._write(' xmlns="%s"' % uri)
         self._undeclared_ns_maps = []
 
-        for (name, value) in attrs.items():
+        fuer (name, value) in attrs.items():
             self._write(' %s=%s' % (self._qname(name), quoteattr(value)))
         if self._short_empty_elements:
             self._pending_start_element = True
@@ -337,7 +337,7 @@ klasse XMLFilterBase(xmlreader.XMLReader):
 
 def prepare_input_source(source, base=""):
     """This function takes an InputSource and an optional base URL and
-    returns a fully resolved InputSource object ready for reading."""
+    returns a fully resolved InputSource object ready fuer reading."""
 
     if isinstance(source, os.PathLike):
         source = os.fspath(source)

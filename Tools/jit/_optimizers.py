@@ -37,7 +37,7 @@ _X86_BRANCHES = {
     "loopz": None,
 }
 # Update with all of the inverted branches, too:
-_X86_BRANCHES |= {v: k for k, v in _X86_BRANCHES.items() if v}
+_X86_BRANCHES |= {v: k fuer k, v in _X86_BRANCHES.items() if v}
 
 
 @dataclasses.dataclass
@@ -66,7 +66,7 @@ klasse _Block:
 
 @dataclasses.dataclass
 klasse Optimizer:
-    """Several passes of analysis and optimization for textual assembly."""
+    """Several passes of analysis and optimization fuer textual assembly."""
 
     path: pathlib.Path
     _: dataclasses.KW_ONLY
@@ -100,7 +100,7 @@ klasse Optimizer:
         # be a branch, jump, or return):
         text = self._preprocess(self.path.read_text())
         block = self._root
-        for line in text.splitlines():
+        fuer line in text.splitlines():
             # See if we need to start a new block:
             if match := self._re_label.match(line):
                 # Label. New block:
@@ -177,7 +177,7 @@ klasse Optimizer:
     def _body(self) -> str:
         lines = []
         hot = True
-        for block in self._blocks():
+        fuer block in self._blocks():
             if hot != block.hot:
                 hot = block.hot
                 # Make it easy to tell at a glance where cold code is:
@@ -188,13 +188,13 @@ klasse Optimizer:
 
     def _predecessors(self, block: _Block) -> typing.Generator[_Block, None, None]:
         # This is inefficient, but it's never wrong:
-        for pre in self._blocks():
+        fuer pre in self._blocks():
             if pre.target is block or pre.fallthrough and pre.link is block:
                 yield pre
 
     def _insert_continue_label(self) -> None:
         # Find the block with the last instruction:
-        for end in reversed(list(self._blocks())):
+        fuer end in reversed(list(self._blocks())):
             if end.instructions:
                 break
         # Before:
@@ -215,10 +215,10 @@ klasse Optimizer:
         while todo:
             block = todo.pop()
             block.hot = True
-            todo.extend(pre for pre in self._predecessors(block) if not pre.hot)
+            todo.extend(pre fuer pre in self._predecessors(block) if not pre.hot)
 
     def _invert_hot_branches(self) -> None:
-        for branch in self._blocks():
+        fuer branch in self._blocks():
             link = branch.link
             if link is None:
                 continue
@@ -259,7 +259,7 @@ klasse Optimizer:
     def _remove_redundant_jumps(self) -> None:
         # Zero-length jumps can be introduced by _insert_continue_label and
         # _invert_hot_branches:
-        for block in self._blocks():
+        fuer block in self._blocks():
             # Before:
             #    jmp FOO
             #    FOO:

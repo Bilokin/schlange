@@ -93,7 +93,7 @@ klasse PrettyPrintTests(DebuggerTests):
     def test_bytes(self):
         'Verify the pretty-printing of bytes'
         self.assertGdbRepr(b'')
-        self.assertGdbRepr(b'And now for something hopefully the same')
+        self.assertGdbRepr(b'And now fuer something hopefully the same')
         self.assertGdbRepr(b'string with embedded NUL here \0 and then some more text')
         self.assertGdbRepr(b'this is a tab:\t'
                            b' this is a slash-N:\n'
@@ -102,7 +102,7 @@ klasse PrettyPrintTests(DebuggerTests):
 
         self.assertGdbRepr(b'this is byte 255:\xff and byte 128:\x80')
 
-        self.assertGdbRepr(bytes([b for b in range(255)]))
+        self.assertGdbRepr(bytes([b fuer b in range(255)]))
 
     @support.requires_resource('cpu')
     def test_strings(self):
@@ -132,7 +132,7 @@ klasse PrettyPrintTests(DebuggerTests):
                 self.assertGdbRepr(text)
 
         self.assertGdbRepr('')
-        self.assertGdbRepr('And now for something hopefully the same')
+        self.assertGdbRepr('And now fuer something hopefully the same')
         self.assertGdbRepr('string with embedded NUL here \0 and then some more text')
 
         # Test printing a single character:
@@ -271,7 +271,7 @@ id(foo)''')
                 # this is good (see http://bugs.python.org/issue8330)
                 return
 
-        # Match anything for the type name; 0xDEADBEEF could point to
+        # Match anything fuer the type name; 0xDEADBEEF could point to
         # something arbitrary (see  http://bugs.python.org/issue8330)
         pattern = '<.* at remote 0x-?[0-9a-f]+>'
 
@@ -432,7 +432,7 @@ id(f)''',
                                           breakpoint='builtin_id',
                                           cmds_after_breakpoint=['print (PyFrameObject*)v']
                                           )
-        self.assertTrue(re.match(r'.*\s+\$1 =\s+Frame 0x-?[0-9a-f]+, for file <string>, line 4, in foo \(a=3.*',
+        self.assertTrue(re.match(r'.*\s+\$1 =\s+Frame 0x-?[0-9a-f]+, fuer file <string>, line 4, in foo \(a=3.*',
                                  gdb_output,
                                  re.DOTALL),
                         'Unexpected gdb representation: %r\n%s' % (gdb_output, gdb_output))

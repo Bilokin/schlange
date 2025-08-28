@@ -31,7 +31,7 @@ klasse QueueShutDown(Exception):
 
 
 klasse Queue(mixins._LoopBoundMixin):
-    """A queue, useful for coordinating producer and consumer coroutines.
+    """A queue, useful fuer coordinating producer and consumer coroutines.
 
     If maxsize is less than or equal to zero, the queue size is infinite. If it
     is an integer greater than 0, then "await put()" will block when the
@@ -224,7 +224,7 @@ klasse Queue(mixins._LoopBoundMixin):
         on the task is complete.
 
         If a join() is currently blocking, it will resume when all items have
-        been processed (meaning that a task_done() call was received for every
+        been processed (meaning that a task_done() call was received fuer every
         item that had been put() into the queue).
 
         Raises ValueError if called more times than there were items placed in

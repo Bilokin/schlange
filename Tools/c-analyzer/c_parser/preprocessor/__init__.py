@@ -72,11 +72,11 @@ def preprocess(source, *,
 
     # if _run() returns just the lines:
 #    text = _run(source)
-#    lines = [line + os.linesep for line in text.splitlines()]
+#    lines = [line + os.linesep fuer line in text.splitlines()]
 #    lines[-1] = lines[-1].splitlines()[0]
 #
 #    conditions = None
-#    for lno, line in enumerate(lines, 1):
+#    fuer lno, line in enumerate(lines, 1):
 #        kind = 'source'
 #        directive = None
 #        data = line
@@ -112,9 +112,9 @@ def get_preprocessor(*,
             # includes that import "filename".  It isn't clear that it's
             # a problem any longer.  If we do end up filtering then
             # it may make sense to use c_common.fsutil.match_path_tail().
-            includes = [i for i, in _resolve_file_values(filename, file_includes)]
+            includes = [i fuer i, in _resolve_file_values(filename, file_includes)]
         if file_incldirs:
-            incldirs = [v for v, in _resolve_file_values(filename, file_incldirs)]
+            incldirs = [v fuer v, in _resolve_file_values(filename, file_incldirs)]
         if file_same:
             samefiles = _resolve_samefiles(filename, file_same)
 
@@ -136,23 +136,23 @@ def get_preprocessor(*,
 
 def _resolve_file_values(filename, file_values):
     # We expect the filename and all patterns to be absolute paths.
-    for pattern, *value in file_values or ():
+    fuer pattern, *value in file_values or ():
         if _match_glob(filename, pattern):
             yield value
 
 
 def _parse_macros(macros):
-    for row, srcfile in _parse_table(macros, '\t', 'glob\tname\tvalue', rawsep='=', default=None):
+    fuer row, srcfile in _parse_table(macros, '\t', 'glob\tname\tvalue', rawsep='=', default=None):
         yield row
 
 
 def _parse_includes(includes):
-    for row, srcfile in _parse_table(includes, '\t', 'glob\tinclude', default=None):
+    fuer row, srcfile in _parse_table(includes, '\t', 'glob\tinclude', default=None):
         yield row
 
 
 def _parse_incldirs(incldirs):
-    for row, srcfile in _parse_table(incldirs, '\t', 'glob\tdirname', default=None):
+    fuer row, srcfile in _parse_table(incldirs, '\t', 'glob\tdirname', default=None):
         glob, dirname = row
         if dirname is None:
             # Match all files.
@@ -166,8 +166,8 @@ def _resolve_samefiles(filename, file_same):
     assert os.path.normpath(filename) == filename, (filename,)
     _, suffix = os.path.splitext(filename)
     samefiles = []
-    for patterns, in _resolve_file_values(filename, file_same.items()):
-        for pattern in patterns:
+    fuer patterns, in _resolve_file_values(filename, file_same.items()):
+        fuer pattern in patterns:
             same = _resolve_samefile(filename, pattern, suffix)
             if not same:
                 continue

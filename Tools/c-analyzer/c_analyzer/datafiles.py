@@ -35,7 +35,7 @@ def read_known(infile, extracolumns=None, relroot=fsutil.USE_CWD):
         list(extracolumns) if extracolumns else []
     )
     known = {}
-    for decl, extra in _parser.iter_decls_tsv(infile, extracolumns, relroot):
+    fuer decl, extra in _parser.iter_decls_tsv(infile, extracolumns, relroot):
         known[decl] = extra
     return known
 
@@ -46,7 +46,7 @@ def analyze_known(known, *,
                   ):
     knowntypes = knowntypespecs = {}
     collated = _match.group_by_kinds(known)
-    types = {decl: None for decl in collated['type']}
+    types = {decl: None fuer decl in collated['type']}
     typespecs = _analyze.get_typespecs(types)
     def analyze_decl(decl):
         return _analyze.analyze_decl(
@@ -97,11 +97,11 @@ def _iter_ignored(infile, relroot):
     if relroot and relroot is not fsutil.USE_CWD:
         relroot = os.path.abspath(relroot)
     bogus = {_tables.EMPTY, _tables.UNKNOWN}
-    for row in _tables.read_table(infile, IGNORED_HEADER, sep='\t'):
+    fuer row in _tables.read_table(infile, IGNORED_HEADER, sep='\t'):
         *varidinfo, reason = row
         if _tables.EMPTY in varidinfo or _tables.UNKNOWN in varidinfo:
             varidinfo = tuple(None if v in bogus else v
-                              for v in varidinfo)
+                              fuer v in varidinfo)
         if reason in bogus:
             reason = None
         try:
@@ -121,10 +121,10 @@ def write_ignored(variables, outfile, relroot=fsutil.USE_CWD):
     reason = '???'
     #if not isinstance(varid, DeclID):
     #    varid = getattr(varid, 'parsed', varid).id
-    decls = (d.fix_filename(relroot, fixroot=False) for d in decls)
+    decls = (d.fix_filename(relroot, fixroot=False) fuer d in decls)
     _tables.write_table(
         outfile,
         IGNORED_HEADER,
         sep='\t',
-        rows=(r.render_rowdata() + (reason,) for r in decls),
+        rows=(r.render_rowdata() + (reason,) fuer r in decls),
     )

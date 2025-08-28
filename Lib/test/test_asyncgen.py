@@ -44,7 +44,7 @@ def run_until_complete(coro):
 def to_list(gen):
     async def iterate():
         res = []
-        async for i in gen:
+        async fuer i in gen:
             res.append(i)
         return res
 
@@ -52,7 +52,7 @@ def to_list(gen):
 
 
 def py_anext(iterator, default=_no_default):
-    """Pure-Python implementation of anext() for testing purposes.
+    """Pure-Python implementation of anext() fuer testing purposes.
 
     Closely matches the builtin anext() C implementation.
     Can be used to compare the built-in implementation of the inner
@@ -734,7 +734,7 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
             yield 2
         g = gen()
         async def consume():
-            return [i async for i in aiter(g)]
+            return [i async fuer i in aiter(g)]
         res = self.loop.run_until_complete(consume())
         self.assertEqual(res, [1, 2])
 
@@ -982,7 +982,7 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
 
     async def to_list(self, gen):
         res = []
-        async for i in gen:
+        async fuer i in gen:
             res.append(i)
         return res
 
@@ -1172,7 +1172,7 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
     def test_sync_anext_raises_exception(self):
         # See: https://github.com/python/cpython/issues/131670
         msg = 'custom'
-        for exc_type in [
+        fuer exc_type in [
             StopAsyncIteration,
             StopIteration,
             ValueError,
@@ -1702,7 +1702,7 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
                 finalized += 1
 
         async def wait():
-            async for _ in waiter(1):
+            async fuer _ in waiter(1):
                 pass
 
         t1 = self.loop.create_task(wait())
@@ -1738,7 +1738,7 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
             loop = asyncio.get_running_loop()
             loop.set_exception_handler(exception_handler)
 
-            async for i in it:
+            async fuer i in it:
                 break
 
         asyncio.run(main())
@@ -1763,7 +1763,7 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
             loop = asyncio.get_running_loop()
             loop.set_exception_handler(exception_handler)
 
-            async for i in it:
+            async fuer i in it:
                 break
 
         asyncio.run(main())
@@ -1791,7 +1791,7 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
             loop = asyncio.get_running_loop()
             loop.set_exception_handler(exception_handler)
 
-            async for i in async_iterate():
+            async fuer i in async_iterate():
                 break
             gc_collect()
 
@@ -1806,19 +1806,19 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
 
     def test_async_gen_expression_01(self):
         async def arange(n):
-            for i in range(n):
+            fuer i in range(n):
                 await asyncio.sleep(0.01)
                 yield i
 
         def make_arange(n):
             # This syntax is legal starting with Python 3.7
-            return (i * 2 async for i in arange(n))
+            return (i * 2 async fuer i in arange(n))
 
         async def run():
-            return [i async for i in make_arange(10)]
+            return [i async fuer i in make_arange(10)]
 
         res = self.loop.run_until_complete(run())
-        self.assertEqual(res, [i * 2 for i in range(10)])
+        self.assertEqual(res, [i * 2 fuer i in range(10)])
 
     def test_async_gen_expression_02(self):
         async def wrap(n):
@@ -1827,13 +1827,13 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
 
         def make_arange(n):
             # This syntax is legal starting with Python 3.7
-            return (i * 2 for i in range(n) if await wrap(i))
+            return (i * 2 fuer i in range(n) if await wrap(i))
 
         async def run():
-            return [i async for i in make_arange(10)]
+            return [i async fuer i in make_arange(10)]
 
         res = self.loop.run_until_complete(run())
-        self.assertEqual(res, [i * 2 for i in range(1, 10)])
+        self.assertEqual(res, [i * 2 fuer i in range(1, 10)])
 
     def test_asyncgen_nonstarted_hooks_are_cancellable(self):
         # See https://bugs.python.org/issue38013
@@ -1850,7 +1850,7 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
             loop = asyncio.get_running_loop()
             loop.set_exception_handler(exception_handler)
 
-            async for i in async_iterate():
+            async fuer i in async_iterate():
                 break
 
         asyncio.run(main())
@@ -1951,7 +1951,7 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
             nxt.throw(MyException)
 
     def test_async_gen_aclose_twice_with_different_coros(self):
-        # Regression test for https://bugs.python.org/issue39606
+        # Regression test fuer https://bugs.python.org/issue39606
         async def async_iterate():
             yield 1
             yield 2
@@ -1964,14 +1964,14 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
         self.loop.run_until_complete(run())
 
     def test_async_gen_aclose_after_exhaustion(self):
-        # Regression test for https://bugs.python.org/issue39606
+        # Regression test fuer https://bugs.python.org/issue39606
         async def async_iterate():
             yield 1
             yield 2
 
         async def run():
             it = async_iterate()
-            async for _ in it:
+            async fuer _ in it:
                 pass
             await it.aclose()
 
@@ -1985,7 +1985,7 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
             ag = async_generator()
             asyncio.create_task(ag.aclose())
             tasks = asyncio.all_tasks()
-            for task in tasks:
+            fuer task in tasks:
                 # No AttributeError raised
                 task.get_stack()
 

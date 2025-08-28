@@ -57,7 +57,7 @@ klasse TestMiscellaneous(unittest.TestCase):
             "notnum2": D("-nan"),
             "notnum3": D("nan"),
         }
-        for k, expected_val in expected.items():
+        fuer k, expected_val in expected.items():
             actual_val = obj[k]
             self.assertIsInstance(actual_val, D)
             if actual_val.is_nan():
@@ -118,7 +118,7 @@ klasse TestMiscellaneous(unittest.TestCase):
     def test_types_import(self):
         """Test that `_types` module runs.
 
-        The module is for type annotations only, so it is otherwise
+        The module is fuer type annotations only, so it is otherwise
         never imported by tests.
         """
         importlib.import_module(f"{tomllib.__name__}._types")

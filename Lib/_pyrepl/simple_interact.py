@@ -5,7 +5,7 @@
 #
 #
 # Permission to use, copy, modify, and distribute this software and
-# its documentation for any purpose is hereby granted without fee,
+# its documentation fuer any purpose is hereby granted without fee,
 # provided that the above copyright notice appear in all copies and
 # that both that copyright notice and this permission notice appear in
 # supporting documentation.
@@ -153,7 +153,7 @@ def run_multiline_interactive_console(
             try:
                 append_history_file()
             except (FileNotFoundError, PermissionError, OSError) as e:
-                warnings.warn(f"failed to open the history file for writing: {e}")
+                warnings.warn(f"failed to open the history file fuer writing: {e}")
 
             input_n += 1
         except KeyboardInterrupt:

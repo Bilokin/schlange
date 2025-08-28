@@ -30,7 +30,7 @@ klasse Calltip:
         self._calltip_window = None
 
     def _make_tk_calltip_window(self):
-        # See __init__ for usage
+        # See __init__ fuer usage
         return calltip_w.CalltipWindow(self.text)
 
     def remove_calltip_window(self, event=None):
@@ -45,7 +45,7 @@ klasse Calltip:
 
     def try_open_calltip_event(self, event):
         """Happens when it would be nice to open a calltip, but not really
-        necessary, for example after an opening bracket, so function calls
+        necessary, fuer example after an opening bracket, so function calls
         won't be made.
         """
         self.open_calltip(False)
@@ -67,7 +67,7 @@ klasse Calltip:
             self.remove_calltip_window()
             return
 
-        # If a calltip is shown for the current parentheses, do
+        # If a calltip is shown fuer the current parentheses, do
         # nothing.
         if self.active_calltip:
             opener_line, opener_col = map(int, sur_paren[0].split('.'))
@@ -84,13 +84,13 @@ klasse Calltip:
             expression = None
         if not expression:
             # No expression before the opening parenthesis, e.g.
-            # because it's in a string or the opener for a tuple:
+            # because it's in a string or the opener fuer a tuple:
             # Do nothing.
             return
 
         # At this point, the current index is after an opening
         # parenthesis, in a section of code, preceded by a valid
-        # expression. If there is a calltip shown, it's not for the
+        # expression. If there is a calltip shown, it's not fuer the
         # same index and should be closed.
         self.remove_calltip_window()
 
@@ -145,8 +145,8 @@ def get_entity(expression):
 
 # The following are used in get_argspec and some in tests
 _MAX_COLS = 85
-_MAX_LINES = 5  # enough for bytes
-_INDENT = ' '*4  # for wrapped signatures
+_MAX_LINES = 5  # enough fuer bytes
+_INDENT = ' '*4  # fuer wrapped signatures
 _first_param = re.compile(r'(?<=\()\w*\,?\s*')
 _default_callable_argspec = "See source or doc"
 _invalid_method = "invalid method signature"
@@ -155,7 +155,7 @@ def get_argspec(ob):
     '''Return a string describing the signature of a callable object, or ''.
 
     For Python-coded functions and methods, the first line is introspected.
-    Delete 'self' parameter for classes (.__init__) and bound methods.
+    Delete 'self' parameter fuer classes (.__init__) and bound methods.
     The next lines are the first lines of the doc string up to the first
     empty line or _MAX_LINES.    For builtins, this typically includes
     the arguments in addition to the return value.
@@ -164,7 +164,7 @@ def get_argspec(ob):
     try:
         ob_call = ob.__call__
     except BaseException:  # Buggy user object could raise anything.
-        return ''  # No popup for non-callables.
+        return ''  # No popup fuer non-callables.
     # For Get_argspecTest.test_buggy_getattr_class, CallA() & CallB().
     fob = ob_call if isinstance(ob_call, types.MethodType) else ob
 
@@ -188,7 +188,7 @@ def get_argspec(ob):
     # Augment lines from docstring, if any, and join to get argspec.
     doc = inspect.getdoc(ob)
     if doc:
-        for line in doc.split('\n', _MAX_LINES)[:_MAX_LINES]:
+        fuer line in doc.split('\n', _MAX_LINES)[:_MAX_LINES]:
             line = line.strip()
             if not line:
                 break

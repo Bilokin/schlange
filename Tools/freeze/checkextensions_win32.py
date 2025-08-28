@@ -1,19 +1,19 @@
-"""Extension management for Windows.
+"""Extension management fuer Windows.
 
 Under Windows it is unlikely the .obj files are of use, as special compiler options
 are needed (primarily to toggle the behavior of "public" symbols.
 
-I don't consider it worth parsing the MSVC makefiles for compiler options.  Even if
+I don't consider it worth parsing the MSVC makefiles fuer compiler options.  Even if
 we get it just right, a specific freeze application may have specific compiler
 options anyway (eg, to enable or disable specific functionality)
 
 So my basic strategy is:
 
 * Have some Windows INI files which "describe" one or more extension modules.
-  (Freeze comes with a default one for all known modules - but you can specify
+  (Freeze comes with a default one fuer all known modules - but you can specify
   your own).
 * This description can include:
-  - The MSVC .dsp file for the extension.  The .c source file names
+  - The MSVC .dsp file fuer the extension.  The .c source file names
     are extracted from there.
   - Specific compiler/linker options
   - Flag to indicate if Unicode compilation is expected.
@@ -65,8 +65,8 @@ def checkextensions(unknown, extra_inis, prefix):
         extra_inis.append(defaultMapName)
 
     ret = []
-    for mod in unknown:
-        for ini in extra_inis:
+    fuer mod in unknown:
+        fuer ini in extra_inis:
 #                       print "Looking for", mod, "in", win32api.GetFullPathName(ini),"...",
             defn = get_extension_defn( mod, ini, prefix )
             if defn is not None:
@@ -113,10 +113,10 @@ def get_extension_defn(moduleName, mapFileName, prefix):
         module.AddCompilerOption('/D UNICODE /D _UNICODE')
 
     libs = win32api.GetProfileVal(moduleName, "libs", "", mapFileName).split()
-    for lib in libs:
+    fuer lib in libs:
         module.AddLinkerLib(win32api.ExpandEnvironmentStrings(lib))
 
-    for exc in exclude:
+    fuer exc in exclude:
         if exc in module.sourceFiles:
             module.sourceFiles.remove(exc)
 
@@ -135,7 +135,7 @@ def parse_dsp(dsp):
     except IOError as msg:
         sys.stderr.write("%s: %s\n" % (dsp, msg))
         return None
-    for line in lines:
+    fuer line in lines:
         fields = line.strip().split("=", 2)
         if fields[0]=="SOURCE":
             if os.path.splitext(fields[1])[1].lower() in ['.cpp', '.c']:
@@ -147,13 +147,13 @@ def write_extension_table(fname, modules):
     try:
         fp.write (ext_src_header)
         # Write fn protos
-        for module in modules:
-            # bit of a hack for .pyd's as part of packages.
+        fuer module in modules:
+            # bit of a hack fuer .pyd's as part of packages.
             name = module.name.split('.')[-1]
             fp.write('extern void init%s(void);\n' % (name) )
         # Write the table
         fp.write (ext_tab_header)
-        for module in modules:
+        fuer module in modules:
             name = module.name.split('.')[-1]
             fp.write('\t{"%s", init%s},\n' % (name, name) )
 

@@ -35,7 +35,7 @@ klasse _InterruptHandler(object):
         if self.called:
             self.default_handler(signum, frame)
         self.called = True
-        for result in _results.keys():
+        fuer result in _results.keys():
             result.stop()
 
 _results = weakref.WeakKeyDictionary()

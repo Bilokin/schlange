@@ -1,7 +1,7 @@
 # Used by test_doctest.py.
 
 klasse TwoNames:
-    '''f() and g() are two names for the same method'''
+    '''f() and g() are two names fuer the same method'''
 
     def f(self):
         '''
@@ -10,4 +10,4 @@ klasse TwoNames:
         '''
         return 'f'
 
-    g = f # define an alias for f
+    g = f # define an alias fuer f

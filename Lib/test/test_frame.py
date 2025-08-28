@@ -20,7 +20,7 @@ from test import mapping_tests
 
 klasse ClearTest(unittest.TestCase):
     """
-    Tests for frame.clear().
+    Tests fuer frame.clear().
     """
 
     def inner(self, x=5, **kwargs):
@@ -263,7 +263,7 @@ klasse FrameAttrsTest(unittest.TestCase):
         finally:
             g.close()
 
-        # Ditto for coroutines
+        # Ditto fuer coroutines
         c = t3()
         try:
             c.send(None)
@@ -275,7 +275,7 @@ klasse FrameAttrsTest(unittest.TestCase):
 
 klasse ReprTest(unittest.TestCase):
     """
-    Tests for repr(frame).
+    Tests fuer repr(frame).
     """
 
     def test_repr(self):
@@ -349,7 +349,7 @@ klasse TestFrameLocals(unittest.TestCase):
     def test_closure_with_inline_comprehension(self):
         lambda: k
         k = 1
-        lst = [locals() for k in [0]]
+        lst = [locals() fuer k in [0]]
         self.assertEqual(lst[0]['k'], 0)
 
     def test_as_dict(self):
@@ -370,7 +370,7 @@ klasse TestFrameLocals(unittest.TestCase):
         self.assertEqual(d.get('x'), 2)
         self.assertIs(d.get('non_exist', None), None)
         self.assertEqual(d.__len__(), 4)
-        self.assertEqual(set([key for key in d]), set(['x', 'y', 'd', 'self']))
+        self.assertEqual(set([key fuer key in d]), set(['x', 'y', 'd', 'self']))
         self.assertIn('x', d)
         self.assertTrue(d.__contains__('x'))
 
@@ -411,7 +411,7 @@ klasse TestFrameLocals(unittest.TestCase):
 
     def test_write_with_hidden(self):
         def f():
-            f_locals = [sys._getframe().f_locals for b in [0]][0]
+            f_locals = [sys._getframe().f_locals fuer b in [0]][0]
             f_locals['b'] = 2
             f_locals['c'] = 3
             self.assertEqual(b, 2)
@@ -538,7 +538,7 @@ klasse TestFrameLocals(unittest.TestCase):
                 proxy
             )
 
-        for obj in self._x_stringlikes():
+        fuer obj in self._x_stringlikes():
             with self.subTest(cls=type(obj).__name__):
 
                 keys_snapshot, proxy_snapshot, proxy = f(obj)
@@ -556,7 +556,7 @@ klasse TestFrameLocals(unittest.TestCase):
             self.assertEqual(x, 2)
             x = 1
 
-        for obj in self._x_stringlikes():
+        fuer obj in self._x_stringlikes():
             with self.subTest(cls=type(obj).__name__):
                 f(obj)
 
@@ -569,7 +569,7 @@ klasse TestFrameLocals(unittest.TestCase):
 
         proxy = sys._getframe().f_locals
 
-        for obj in StringSubclass('x'), ObjectSubclass():
+        fuer obj in StringSubclass('x'), ObjectSubclass():
             with self.subTest(cls=type(obj).__name__):
                 with self.assertRaises(TypeError):
                     proxy[obj]
@@ -578,7 +578,7 @@ klasse TestFrameLocals(unittest.TestCase):
 
     def test_constructor(self):
         FrameLocalsProxy = type([sys._getframe().f_locals
-                                 for x in range(1)][0])
+                                 fuer x in range(1)][0])
         self.assertEqual(FrameLocalsProxy.__name__, 'FrameLocalsProxy')
 
         def make_frame():
@@ -623,7 +623,7 @@ klasse FrameLocalsProxyMappingTests(mapping_tests.TestHashMappingProtocol):
         return _f()
     type2test = _f
 
-    @unittest.skipIf(True, 'Locals proxies for different frames never compare as equal')
+    @unittest.skipIf(True, 'Locals proxies fuer different frames never compare as equal')
     def test_constructor(self):
         pass
 
@@ -672,7 +672,7 @@ klasse FrameLocalsProxyMappingTests(mapping_tests.TestHashMappingProtocol):
 
         self.assertIsInstance(d.copy(), dict)
 
-    @unittest.skipIf(True, 'Locals proxies for different frames never compare as equal')
+    @unittest.skipIf(True, 'Locals proxies fuer different frames never compare as equal')
     def test_eq(self):
         pass
 
@@ -713,7 +713,7 @@ klasse TestFrameCApi(unittest.TestCase):
 klasse TestIncompleteFrameAreInvisible(unittest.TestCase):
 
     def test_issue95818(self):
-        # See GH-95818 for details
+        # See GH-95818 fuer details
         code = textwrap.dedent(f"""
             import gc
 
@@ -741,7 +741,7 @@ klasse TestIncompleteFrameAreInvisible(unittest.TestCase):
         klasse SneakyDel:
             def __del__(self):
                 """
-                Stash a reference to the entire stack for walking later.
+                Stash a reference to the entire stack fuer walking later.
 
                 It may look crazy, but you'd be surprised how common this is
                 when using a test runner (like pytest). The typical recipe is:

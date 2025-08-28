@@ -247,7 +247,7 @@ def _run_action(cid, action, end, state):
 
 
 def clean_up_channels():
-    for cid, _, _ in _channels.list_all():
+    fuer cid, _, _ in _channels.list_all():
         try:
             _channels.destroy(cid)
         except _channels.ChannelNotFoundError:
@@ -373,11 +373,11 @@ klasse ChannelTests(TestBase):
         self.assertIsInstance(cid, _channels.ChannelID)
 
     def test_sequential_ids(self):
-        before = [cid for cid, _, _ in _channels.list_all()]
+        before = [cid fuer cid, _, _ in _channels.list_all()]
         id1 = _channels.create(REPLACE)
         id2 = _channels.create(REPLACE)
         id3 = _channels.create(REPLACE)
-        after = [cid for cid, _, _ in _channels.list_all()]
+        after = [cid fuer cid, _, _ in _channels.list_all()]
 
         self.assertEqual(id2, int(id1) + 1)
         self.assertEqual(id3, int(id2) + 1)
@@ -403,8 +403,8 @@ klasse ChannelTests(TestBase):
         self.assertEqual(cid2, int(cid1) + 1)
 
     def test_channel_list_interpreters_none(self):
-        """Test listing interpreters for a channel with no associations."""
-        # Test for channel with no associated _interpreters.
+        """Test listing interpreters fuer a channel with no associations."""
+        # Test fuer channel with no associated _interpreters.
         cid = _channels.create(REPLACE)
         send_interps = _channels.list_interpreters(cid, send=True)
         recv_interps = _channels.list_interpreters(cid, send=False)
@@ -416,7 +416,7 @@ klasse ChannelTests(TestBase):
         interp0, *_ = _interpreters.get_main()
         cid = _channels.create(REPLACE)
         _channels.send(cid, "send", blocking=False)
-        # Test for a channel that has one end associated to an interpreter.
+        # Test fuer a channel that has one end associated to an interpreter.
         send_interps = _channels.list_interpreters(cid, send=True)
         recv_interps = _channels.list_interpreters(cid, send=False)
         self.assertEqual(send_interps, [interp0])
@@ -427,14 +427,14 @@ klasse ChannelTests(TestBase):
             import _interpchannels as _channels
             _channels.recv({cid})
             """))
-        # Test for channel that has both ends associated to an interpreter.
+        # Test fuer channel that has both ends associated to an interpreter.
         send_interps = _channels.list_interpreters(cid, send=True)
         recv_interps = _channels.list_interpreters(cid, send=False)
         self.assertEqual(send_interps, [interp0])
         self.assertEqual(recv_interps, [interp1])
 
     def test_channel_list_interpreters_multiple(self):
-        """Test listing interpreters for a channel with many associations."""
+        """Test listing interpreters fuer a channel with many associations."""
         interp0, *_ = _interpreters.get_main()
         interp1 = _interpreters.create()
         interp2 = _interpreters.create()
@@ -590,7 +590,7 @@ klasse ChannelTests(TestBase):
             b'spam',
             42,
         ]
-        for obj in objects:
+        fuer obj in objects:
             with self.subTest(obj):
                 _channels.send(cid, obj, blocking=False)
                 got = recv_nowait(cid)
@@ -1063,7 +1063,7 @@ klasse ChannelTests(TestBase):
             (False, True),
             (True, True),
             ]
-        for send, recv in tests:
+        fuer send, recv in tests:
             with self.subTest((send, recv)):
                 cid = _channels.create(REPLACE)
                 _channels.send(cid, b'spam', blocking=False)
@@ -1194,17 +1194,17 @@ klasse ChannelTests(TestBase):
 
     def test_channel_list_interpreters_invalid_channel(self):
         cid = _channels.create(REPLACE)
-        # Test for invalid channel ID.
+        # Test fuer invalid channel ID.
         with self.assertRaises(_channels.ChannelNotFoundError):
             _channels.list_interpreters(1000, send=True)
 
         _channels.close(cid)
-        # Test for a channel that has been closed.
+        # Test fuer a channel that has been closed.
         with self.assertRaises(_channels.ChannelClosedError):
             _channels.list_interpreters(cid, send=True)
 
     def test_channel_list_interpreters_invalid_args(self):
-        # Tests for invalid arguments passed to the API.
+        # Tests fuer invalid arguments passed to the API.
         cid = _channels.create(REPLACE)
         with self.assertRaises(TypeError):
             _channels.list_interpreters(cid)
@@ -1212,7 +1212,7 @@ klasse ChannelTests(TestBase):
 
 klasse ChannelReleaseTests(TestBase):
 
-    # XXX Add more test coverage a la the tests for close().
+    # XXX Add more test coverage a la the tests fuer close().
 
     """
     - main / interp / other
@@ -1249,8 +1249,8 @@ klasse ChannelReleaseTests(TestBase):
 
     use after:          None,send,recv,send/recv in None,same,other(incl. interp2),same+other(incl. interp2),all
     release after:      None,send,recv,send/recv in None,same,other(incl. interp2),same+other(incl. interp2),all
-    check released:     send/recv for same/other(incl. interp2)
-    check closed:       send/recv for same/other(incl. interp2)
+    check released:     send/recv fuer same/other(incl. interp2)
+    check closed:       send/recv fuer same/other(incl. interp2)
     """
 
     def test_single_user(self):
@@ -1528,7 +1528,7 @@ klasse ExhaustiveChannelTests(TestBase):
 
     use after:        None,send,recv,send/recv in None,same,other,extra,same+other,all
     close after:      None,send,recv,send/recv in None,same,other,extra,same+other,all
-    check closed:     send/recv for same/other(incl. interp2)
+    check closed:     send/recv fuer same/other(incl. interp2)
     """
 
     def iter_action_sets(self):
@@ -1541,39 +1541,39 @@ klasse ExhaustiveChannelTests(TestBase):
         yield []
 
         # only pre-closed (and possible used after)
-        for closeactions in self._iter_close_action_sets('same', 'other'):
+        fuer closeactions in self._iter_close_action_sets('same', 'other'):
             yield closeactions
-            for postactions in self._iter_post_close_action_sets():
+            fuer postactions in self._iter_post_close_action_sets():
                 yield closeactions + postactions
-        for closeactions in self._iter_close_action_sets('other', 'extra'):
+        fuer closeactions in self._iter_close_action_sets('other', 'extra'):
             yield closeactions
-            for postactions in self._iter_post_close_action_sets():
+            fuer postactions in self._iter_post_close_action_sets():
                 yield closeactions + postactions
 
         # used
-        for useactions in self._iter_use_action_sets('same', 'other'):
+        fuer useactions in self._iter_use_action_sets('same', 'other'):
             yield useactions
-            for closeactions in self._iter_close_action_sets('same', 'other'):
+            fuer closeactions in self._iter_close_action_sets('same', 'other'):
                 actions = useactions + closeactions
                 yield actions
-                for postactions in self._iter_post_close_action_sets():
+                fuer postactions in self._iter_post_close_action_sets():
                     yield actions + postactions
-            for closeactions in self._iter_close_action_sets('other', 'extra'):
+            fuer closeactions in self._iter_close_action_sets('other', 'extra'):
                 actions = useactions + closeactions
                 yield actions
-                for postactions in self._iter_post_close_action_sets():
+                fuer postactions in self._iter_post_close_action_sets():
                     yield actions + postactions
-        for useactions in self._iter_use_action_sets('other', 'extra'):
+        fuer useactions in self._iter_use_action_sets('other', 'extra'):
             yield useactions
-            for closeactions in self._iter_close_action_sets('same', 'other'):
+            fuer closeactions in self._iter_close_action_sets('same', 'other'):
                 actions = useactions + closeactions
                 yield actions
-                for postactions in self._iter_post_close_action_sets():
+                fuer postactions in self._iter_post_close_action_sets():
                     yield actions + postactions
-            for closeactions in self._iter_close_action_sets('other', 'extra'):
+            fuer closeactions in self._iter_close_action_sets('other', 'extra'):
                 actions = useactions + closeactions
                 yield actions
-                for postactions in self._iter_post_close_action_sets():
+                fuer postactions in self._iter_post_close_action_sets():
                     yield actions + postactions
 
     def _iter_use_action_sets(self, interp1, interp2):
@@ -1604,9 +1604,9 @@ klasse ExhaustiveChannelTests(TestBase):
             ]
 
         # partially emptied
-        for interp1 in interps:
-            for interp2 in interps:
-                for interp3 in interps:
+        fuer interp1 in interps:
+            fuer interp2 in interps:
+                fuer interp3 in interps:
                     yield [
                         ChannelAction('use', 'send', interp1),
                         ChannelAction('use', 'send', interp2),
@@ -1614,10 +1614,10 @@ klasse ExhaustiveChannelTests(TestBase):
                         ]
 
         # fully emptied
-        for interp1 in interps:
-            for interp2 in interps:
-                for interp3 in interps:
-                    for interp4 in interps:
+        fuer interp1 in interps:
+            fuer interp2 in interps:
+                fuer interp3 in interps:
+                    fuer interp4 in interps:
                         yield [
                             ChannelAction('use', 'send', interp1),
                             ChannelAction('use', 'send', interp2),
@@ -1628,24 +1628,24 @@ klasse ExhaustiveChannelTests(TestBase):
     def _iter_close_action_sets(self, interp1, interp2):
         ends = ('recv', 'send')
         interps = (interp1, interp2)
-        for force in (True, False):
+        fuer force in (True, False):
             op = 'force-close' if force else 'close'
-            for interp in interps:
-                for end in ends:
+            fuer interp in interps:
+                fuer end in ends:
                     yield [
                         ChannelAction(op, end, interp),
                         ]
-        for recvop in ('close', 'force-close'):
-            for sendop in ('close', 'force-close'):
-                for recv in interps:
-                    for send in interps:
+        fuer recvop in ('close', 'force-close'):
+            fuer sendop in ('close', 'force-close'):
+                fuer recv in interps:
+                    fuer send in interps:
                         yield [
                             ChannelAction(recvop, 'recv', recv),
                             ChannelAction(sendop, 'send', send),
                             ]
 
     def _iter_post_close_action_sets(self):
-        for interp in ('same', 'extra', 'other'):
+        fuer interp in ('same', 'extra', 'other'):
             yield [
                 ChannelAction('use', 'recv', interp),
                 ]
@@ -1654,7 +1654,7 @@ klasse ExhaustiveChannelTests(TestBase):
                 ]
 
     def run_actions(self, fix, actions):
-        for action in actions:
+        fuer action in actions:
             self.run_action(fix, action)
 
     def run_action(self, fix, action, *, hideclosed=True):
@@ -1697,9 +1697,9 @@ klasse ExhaustiveChannelTests(TestBase):
             ('interp1', 'interp2', 'extra'),
             ('interp1', 'interp2', 'main'),
         ]
-        for interp, other, extra in interpreters:
-            for creator in ('same', 'other', 'creator'):
-                for end in ('send', 'recv'):
+        fuer interp, other, extra in interpreters:
+            fuer creator in ('same', 'other', 'creator'):
+                fuer end in ('send', 'recv'):
                     yield ChannelCloseFixture(end, interp, other, extra, creator)
 
     def _close(self, fix, *, force):
@@ -1742,11 +1742,11 @@ klasse ExhaustiveChannelTests(TestBase):
     def _assert_closed(self, fix):
         self.assertTrue(fix.state.closed)
 
-        for _ in range(fix.state.pending):
+        fuer _ in range(fix.state.pending):
             recv_nowait(fix.cid)
         self._assert_closed_in_interp(fix)
 
-        for interp in ('same', 'other'):
+        fuer interp in ('same', 'other'):
             interp = fix.get_interpreter(interp)
             if interp.name == 'main':
                 continue
@@ -1757,9 +1757,9 @@ klasse ExhaustiveChannelTests(TestBase):
 
     def _iter_close_tests(self, verbose=False):
         i = 0
-        for actions in self.iter_action_sets():
+        fuer actions in self.iter_action_sets():
             print()
-            for fix in self.iter_fixtures():
+            fuer fix in self.iter_fixtures():
                 i += 1
                 if i > 1000:
                     return
@@ -1776,14 +1776,14 @@ klasse ExhaustiveChannelTests(TestBase):
                 print('---')
         print()
 
-    # This is useful for scanning through the possible tests.
+    # This is useful fuer scanning through the possible tests.
     def _skim_close_tests(self):
         ChannelCloseFixture.QUICK = True
-        for i, fix, actions in self._iter_close_tests():
+        fuer i, fix, actions in self._iter_close_tests():
             pass
 
     def test_close(self):
-        for i, fix, actions in self._iter_close_tests():
+        fuer i, fix, actions in self._iter_close_tests():
             with self.subTest('{} {}  {}'.format(i, fix, actions)):
                 fix.prep_interpreter(fix.interp)
                 self.run_actions(fix, actions)
@@ -1795,7 +1795,7 @@ klasse ExhaustiveChannelTests(TestBase):
             fix.clean_up()
 
     def test_force_close(self):
-        for i, fix, actions in self._iter_close_tests():
+        fuer i, fix, actions in self._iter_close_tests():
             with self.subTest('{} {}  {}'.format(i, fix, actions)):
                 fix.prep_interpreter(fix.interp)
                 self.run_actions(fix, actions)

@@ -27,7 +27,7 @@ klasse Quitter(object):
 
 
 klasse _Printer(object):
-    """interactive prompt objects for printing the license text, a list of
+    """interactive prompt objects fuer printing the license text, a list of
     contributors and the copyright notice."""
 
     MAXLINES = 23
@@ -38,14 +38,14 @@ klasse _Printer(object):
         self.__data = data
         self.__lines = None
         self.__filenames = [os.path.join(dir, filename)
-                            for dir in dirs
-                            for filename in files]
+                            fuer dir in dirs
+                            fuer filename in files]
 
     def __setup(self):
         if self.__lines:
             return
         data = None
-        for filename in self.__filenames:
+        fuer filename in self.__filenames:
             try:
                 with open(filename, encoding='utf-8') as fp:
                     data = fp.read()
@@ -66,11 +66,11 @@ klasse _Printer(object):
 
     def __call__(self):
         self.__setup()
-        prompt = 'Hit Return for more, or q (and Return) to quit: '
+        prompt = 'Hit Return fuer more, or q (and Return) to quit: '
         lineno = 0
         while 1:
             try:
-                for i in range(lineno, lineno + self.MAXLINES):
+                fuer i in range(lineno, lineno + self.MAXLINES):
                     print(self.__lines[i])
             except IndexError:
                 break
@@ -92,12 +92,12 @@ klasse _Helper(object):
     when 'help' is typed at the Python interactive prompt.
 
     Calling help() at the Python prompt starts an interactive help session.
-    Calling help(thing) prints help for the python object 'thing'.
+    Calling help(thing) prints help fuer the python object 'thing'.
     """
 
     def __repr__(self):
-        return "Type help() for interactive help, " \
-               "or help(object) for help about object."
+        return "Type help() fuer interactive help, " \
+               "or help(object) fuer help about object."
     def __call__(self, *args, **kwds):
         import pydoc
         return pydoc.help(*args, **kwds)

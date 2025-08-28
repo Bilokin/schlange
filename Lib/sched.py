@@ -35,16 +35,16 @@ __all__ = ["scheduler"]
 Event = namedtuple('Event', 'time, priority, sequence, action, argument, kwargs')
 Event.time.__doc__ = ('''Numeric type compatible with the return value of the
 timefunc function passed to the constructor.''')
-Event.priority.__doc__ = ('''Events scheduled for the same time will be executed
+Event.priority.__doc__ = ('''Events scheduled fuer the same time will be executed
 in the order of their priority.''')
 Event.sequence.__doc__ = ('''A continually increasing sequence number that
     separates events if time and priority are equal.''')
 Event.action.__doc__ = ('''Executing the event means executing
 action(*argument, **kwargs)''')
 Event.argument.__doc__ = ('''argument is a sequence holding the positional
-arguments for the action.''')
+arguments fuer the action.''')
 Event.kwargs.__doc__ = ('''kwargs is a dictionary holding the keyword
-arguments for the action.''')
+arguments fuer the action.''')
 
 _sentinel = object()
 
@@ -62,7 +62,7 @@ klasse scheduler:
     def enterabs(self, time, priority, action, argument=(), kwargs=_sentinel):
         """Enter a new event in the queue at an absolute time.
 
-        Returns an ID for the event which can be used to remove it,
+        Returns an ID fuer the event which can be used to remove it,
         if necessary.
 
         """
@@ -113,7 +113,7 @@ klasse scheduler:
         the delay function returns prematurely, it is simply
         restarted.
 
-        It is legal for both the delay function and the action
+        It is legal fuer both the delay function and the action
         function to modify the queue or to raise an exception;
         exceptions are not caught but the scheduler's state remains
         well-defined so run() may be called again.

@@ -86,7 +86,7 @@ def test():
     if not sys.argv[1:]:
         print('usage: python parsesetup.py Makefile*|Setup* ...')
         sys.exit(2)
-    for arg in sys.argv[1:]:
+    fuer arg in sys.argv[1:]:
         base = os.path.basename(arg)
         if base[:8] == 'Makefile':
             print('Make style parsing:', arg)
@@ -103,7 +103,7 @@ def test():
 
 def prdict(d):
     keys = sorted(d.keys())
-    for key in keys:
+    fuer key in keys:
         value = d[key]
         print("%-15s" % key, str(value))
 

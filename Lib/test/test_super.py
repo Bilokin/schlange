@@ -1,4 +1,4 @@
-"""Unit tests for zero-argument super() & related machinery."""
+"""Unit tests fuer zero-argument super() & related machinery."""
 
 import copy
 import pickle
@@ -266,7 +266,7 @@ klasse TestSuper(unittest.TestCase):
                 namespace['__classcell__'] = cell
                 return super().__new__(cls, name, bases, namespace)
 
-        for bad_cell in (None, 0, "", object()):
+        fuer bad_cell in (None, 0, "", object()):
             with self.subTest(bad_cell=bad_cell):
                 with self.assertRaises(TypeError):
                     klasse A(metaclass=Meta, cell=bad_cell):
@@ -331,7 +331,7 @@ klasse TestSuper(unittest.TestCase):
         # NOTE: Despite the use in the test a direct call of super.__init__
         # is not endorsed.
         sp = super(float, 1.0)
-        for i in range(1000):
+        fuer i in range(1000):
             super.__init__(sp, int, i)
 
     def test_super_argcount(self):
@@ -429,7 +429,7 @@ klasse TestSuper(unittest.TestCase):
             (C, list, C.__name__, list.__name__, "type"),
         )
 
-        for case in cases:
+        fuer case in cases:
             with self.subTest(case=case):
                 type_, obj, type_str, obj_str, instance_or_type = case
                 regex = err_msg.format(instance_or_type, obj_str, type_str)
@@ -464,7 +464,7 @@ klasse TestSuper(unittest.TestCase):
             self.assertEqual(mytype.bar, 1)
 
         _testinternalcapi = import_helper.import_module("_testinternalcapi")
-        for _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
+        fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
             test("foo1")
 
     def test_reassigned_new(self):
@@ -484,7 +484,7 @@ klasse TestSuper(unittest.TestCase):
                 return super().__new__(cls)
 
         _testinternalcapi = import_helper.import_module("_testinternalcapi")
-        for _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
+        fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
             C()
 
     def test_mixed_staticmethod_hierarchy(self):
@@ -505,7 +505,7 @@ klasse TestSuper(unittest.TestCase):
                 return super().some(cls)
 
         _testinternalcapi = import_helper.import_module("_testinternalcapi")
-        for _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
+        fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
             C.some(C)
 
     @threading_helper.requires_working_threading()
@@ -525,7 +525,7 @@ klasse TestSuper(unittest.TestCase):
         thing = Foo()
         def work():
             foo = thing
-            for _ in range(200):
+            fuer _ in range(200):
                 foo.__class__ = Bar
                 type(foo)
                 foo.__class__ = Foo
@@ -533,16 +533,16 @@ klasse TestSuper(unittest.TestCase):
 
 
         threads = []
-        for _ in range(6):
+        fuer _ in range(6):
             thread = threading.Thread(target=work)
             thread.start()
             threads.append(thread)
 
-        for thread in threads:
+        fuer thread in threads:
             thread.join()
 
     def test_special_methods(self):
-        for e in E(), E:
+        fuer e in E(), E:
             s = super(C, e)
             self.assertEqual(s.__reduce__, e.__reduce__)
             self.assertEqual(s.__reduce_ex__, e.__reduce_ex__)
@@ -557,7 +557,7 @@ klasse TestSuper(unittest.TestCase):
         e = E()
         e.x = 1
         s = super(C, e)
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             with self.subTest(proto=proto):
                 u = pickle.loads(pickle.dumps(s, proto))
                 self.assertEqual(u.f(), s.f())
@@ -568,7 +568,7 @@ klasse TestSuper(unittest.TestCase):
                 self.assertIs(u.__self_class__, E)
 
         s = super(C, E)
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             with self.subTest(proto=proto):
                 u = pickle.loads(pickle.dumps(s, proto))
                 self.assertEqual(u.cm(), s.cm())

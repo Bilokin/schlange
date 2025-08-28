@@ -1,4 +1,4 @@
-"""Parser for command line options.
+"""Parser fuer command line options.
 
 This module helps scripts to parse the command line arguments in
 sys.argv.  It supports the same conventions as the Unix getopt()
@@ -21,7 +21,7 @@ option involved with the exception.
 #
 # Peter Åstrand <astrand@lysator.liu.se> added gnu_getopt().
 #
-# TODO for gnu_getopt():
+# TODO fuer gnu_getopt():
 #
 # - GNU getopt_long_only mechanism
 # - an option string with a W followed by semicolon should
@@ -175,7 +175,7 @@ def do_longs(opts, opt, longopts, args):
 #   has_arg?
 #   full option name
 def long_has_args(opt, longopts):
-    possibilities = [o for o in longopts if o.startswith(opt)]
+    possibilities = [o fuer o in longopts if o.startswith(opt)]
     if not possibilities:
         raise GetoptError(_('option --%s not recognized') % opt, opt)
     # Is there an exact match?
@@ -218,7 +218,7 @@ def do_shorts(opts, optstring, shortopts, args):
     return opts, args
 
 def short_has_arg(opt, shortopts):
-    for i in range(len(shortopts)):
+    fuer i in range(len(shortopts)):
         if opt == shortopts[i] != ':':
             if not shortopts.startswith(':', i+1):
                 return False

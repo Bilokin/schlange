@@ -237,7 +237,7 @@ klasse TypeAliasConstructorTest(unittest.TestCase):
         HasNoDefaultTT = TypeVarTuple("HasNoDefaultTT")
         WithDefaultTT = TypeVarTuple("WithDefaultTT", default=HasNoDefaultTT)
 
-        for type_params in [
+        fuer type_params in [
             (HasNoDefaultT, WithDefaultT),
             (HasNoDefaultP, WithDefaultP),
             (HasNoDefaultTT, WithDefaultTT),
@@ -246,7 +246,7 @@ klasse TypeAliasConstructorTest(unittest.TestCase):
                 TypeAliasType("A", int, type_params=type_params)  # ok
 
         msg = "follows default type parameter"
-        for type_params in [
+        fuer type_params in [
             (WithDefaultT, HasNoDefaultT),
             (WithDefaultP, HasNoDefaultP),
             (WithDefaultTT, HasNoDefaultTT),
@@ -329,7 +329,7 @@ klasse TypeAliasTypeTest(unittest.TestCase):
         self.assertEqual(x.__args__, (str, Unpack[Alias]))
 
 
-# All these type aliases are used for pickling tests:
+# All these type aliases are used fuer pickling tests:
 T = TypeVar('T')
 type SimpleAlias = int
 type RecursiveAlias = dict[str, RecursiveAlias]
@@ -375,8 +375,8 @@ klasse TypeAliasPickleTest(unittest.TestCase):
             mod_generics_cache.Alias,
             mod_generics_cache.OldStyle,
         ]
-        for thing in things_to_test:
-            for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer thing in things_to_test:
+            fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
                 with self.subTest(thing=thing, proto=proto):
                     pickled = pickle.dumps(thing, protocol=proto)
                     self.assertEqual(pickle.loads(pickled), thing)
@@ -389,8 +389,8 @@ klasse TypeAliasPickleTest(unittest.TestCase):
             self.ClassLevel,
             A,
         ]
-        for thing in things_to_test:
-            for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer thing in things_to_test:
+            fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
                 with self.subTest(thing=thing, proto=proto):
                     with self.assertRaises(pickle.PickleError):
                         pickle.dumps(thing, protocol=proto)

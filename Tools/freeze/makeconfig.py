@@ -9,11 +9,11 @@ never = ['marshal', '_imp', '_ast', '__main__', 'builtins',
 def makeconfig(infp, outfp, modules, with_ifdef=0):
     m1 = re.compile('-- ADDMODULE MARKER 1 --')
     m2 = re.compile('-- ADDMODULE MARKER 2 --')
-    for line in infp:
+    fuer line in infp:
         outfp.write(line)
         if m1 and m1.search(line):
             m1 = None
-            for mod in modules:
+            fuer mod in modules:
                 if mod in never:
                     continue
                 if with_ifdef:
@@ -23,7 +23,7 @@ def makeconfig(infp, outfp, modules, with_ifdef=0):
                     outfp.write("#endif\n")
         elif m2 and m2.search(line):
             m2 = None
-            for mod in modules:
+            fuer mod in modules:
                 if mod in never:
                     continue
                 outfp.write('\t{"%s", PyInit_%s},\n' %

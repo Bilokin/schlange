@@ -1,4 +1,4 @@
-"""Tests for streams.py."""
+"""Tests fuer streams.py."""
 
 import gc
 import queue
@@ -221,7 +221,7 @@ klasse StreamTests(test_utils.TestCase):
         self.assertEqual(b'', stream._buffer)
 
     def test_readline(self):
-        # Read one line. 'readline' will need to wait for the data
+        # Read one line. 'readline' will need to wait fuer the data
         # to come from 'cb'
         stream = asyncio.StreamReader(loop=self.loop)
         stream.feed_data(b'chunk1 ')
@@ -258,7 +258,7 @@ klasse StreamTests(test_utils.TestCase):
         self.assertRaises(
             ValueError, self.loop.run_until_complete, stream.readline())
         # No b'\n' at the end. The 'limit' is set to 3. So before
-        # waiting for the new data in buffer, 'readline' will consume
+        # waiting fuer the new data in buffer, 'readline' will consume
         # the entire buffer, and since the length of the consumed data
         # is more than 3, it will raise a ValueError. The buffer is
         # expected to be empty now.
@@ -327,7 +327,7 @@ klasse StreamTests(test_utils.TestCase):
         self.assertEqual(b'', stream._buffer)
 
     def test_readline_nolimit_nowait(self):
-        # All needed data for the first 'readline' call will be
+        # All needed data fuer the first 'readline' call will be
         # in the buffer.
         stream = asyncio.StreamReader(loop=self.loop)
         stream.feed_data(self.DATA[:6])
@@ -495,8 +495,8 @@ klasse StreamTests(test_utils.TestCase):
         self.assertEqual(b'some dataA', stream._buffer)
 
     def test_readuntil_multi_separator_negative_offset(self):
-        # If the buffer is big enough for the smallest separator (but does
-        # not contain it) but too small for the largest, `offset` must not
+        # If the buffer is big enough fuer the smallest separator (but does
+        # not contain it) but too small fuer the largest, `offset` must not
         # become negative.
         stream = asyncio.StreamReader(loop=self.loop)
         stream.feed_data(b'data')
@@ -880,7 +880,7 @@ klasse StreamTests(test_utils.TestCase):
             stream = asyncio.streams.FlowControlMixin(loop)
             stream.pause_writing()
             loop.call_later(0.1, stream.resume_writing)
-            await asyncio.gather(*[drainer(stream) for _ in range(10)])
+            await asyncio.gather(*[drainer(stream) fuer _ in range(10)])
             self.assertEqual(drained, 10)
 
         self.loop.run_until_complete(main())
@@ -888,8 +888,8 @@ klasse StreamTests(test_utils.TestCase):
     def test_drain_raises(self):
         # See http://bugs.python.org/issue25441
 
-        # This test should not use asyncio for the mock server; the
-        # whole point of the test is to test for a bug in drain()
+        # This test should not use asyncio fuer the mock server; the
+        # whole point of the test is to test fuer a bug in drain()
         # where it never gives up the event loop but the socket is
         # closed on the  server side.
 
@@ -912,7 +912,7 @@ klasse StreamTests(test_utils.TestCase):
                 writer.write(b"foo\n")
                 await writer.drain()
 
-        # Start the server thread and wait for it to be listening.
+        # Start the server thread and wait fuer it to be listening.
         thread = threading.Thread(target=server)
         thread.daemon = True
         thread.start()
@@ -973,7 +973,7 @@ klasse StreamTests(test_utils.TestCase):
 
     def test_IncompleteReadError_pickleable(self):
         e = asyncio.IncompleteReadError(b'abc', 10)
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             with self.subTest(pickle_protocol=proto):
                 e2 = pickle.loads(pickle.dumps(e, protocol=proto))
                 self.assertEqual(str(e), str(e2))
@@ -982,7 +982,7 @@ klasse StreamTests(test_utils.TestCase):
 
     def test_LimitOverrunError_pickleable(self):
         e = asyncio.LimitOverrunError('message', 10)
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             with self.subTest(pickle_protocol=proto):
                 e2 = pickle.loads(pickle.dumps(e, protocol=proto))
                 self.assertEqual(str(e), str(e2))
@@ -1111,7 +1111,7 @@ klasse StreamTests(test_utils.TestCase):
             data = await rd.read()
             self.assertEndsWith(data, b'\r\n\r\nTest message')
 
-            # Make "loop is closed" occur first before "del wr" for this test.
+            # Make "loop is closed" occur first before "del wr" fuer this test.
             self.loop.stop()
             wr.close()
             while not self.loop.is_closed():

@@ -144,11 +144,11 @@ klasse CreateTests(TestBase):
         before = set(interpreters.list_all())
         # Create 3 subinterpreters.
         interp_lst = []
-        for _ in range(3):
+        fuer _ in range(3):
             interps = interpreters.create()
             interp_lst.append(interps)
         # Now destroy them.
-        for interp in interp_lst:
+        fuer interp in interp_lst:
             interp.close()
         # Finally, create another.
         interp = interpreters.create()
@@ -219,7 +219,7 @@ klasse GetCurrentTests(TestBase):
                 cur = interpreters.get_current()
                 print(id(cur))
                 """))
-            objid1, objid2 = (int(v) for v in out.splitlines())
+            objid1, objid2 = (int(v) fuer v in out.splitlines())
             self.assertEqual(objid1, objid2)
 
         with self.subTest('per-interpreter'):
@@ -258,7 +258,7 @@ klasse ListAllTests(TestBase):
         second = interpreters.create()
 
         ids = []
-        for interp in interpreters.list_all():
+        fuer interp in interpreters.list_all():
             ids.append(interp.id)
 
         self.assertEqual(ids, [main.id, first.id, second.id])
@@ -270,7 +270,7 @@ klasse ListAllTests(TestBase):
         first.close()
 
         ids = []
-        for interp in interpreters.list_all():
+        fuer interp in interpreters.list_all():
             ids.append(interp.id)
 
         self.assertEqual(ids, [main.id, second.id])
@@ -284,7 +284,7 @@ klasse ListAllTests(TestBase):
         actual = interpreters.list_all()
 
         self.assertEqual(actual, expected)
-        for interp1, interp2 in zip(actual, expected):
+        fuer interp1, interp2 in zip(actual, expected):
             self.assertIs(interp1, interp2)
 
     def test_created_with_capi(self):
@@ -307,10 +307,10 @@ klasse ListAllTests(TestBase):
             import {interpreters.__name__} as interpreters
             interp = interpreters.create()
             print(
-                [(i.id, i.whence) for i in interpreters.list_all()])
+                [(i.id, i.whence) fuer i in interpreters.list_all()])
             """)
         res = eval(text)
-        res2 = [(i.id, i.whence) for i in interpreters.list_all()]
+        res2 = [(i.id, i.whence) fuer i in interpreters.list_all()]
         self.assertEqual(res, expected)
         self.assertEqual(res2, expected2)
 
@@ -329,7 +329,7 @@ klasse InterpreterObjectTests(TestBase):
 
     def test_init_unsupported(self):
         actualid = interpreters.get_current().id
-        for interpid in [
+        fuer interpid in [
             str(actualid),
             float(actualid),
             object(),
@@ -386,7 +386,7 @@ klasse InterpreterObjectTests(TestBase):
             self.assertEqual(whence, WHENCE_STR_CAPI)
 
         with self.subTest('readonly'):
-            for value in [
+            fuer value in [
                 None,
                 WHENCE_STR_UNKNOWN,
                 WHENCE_STR_RUNTIME,
@@ -412,7 +412,7 @@ klasse InterpreterObjectTests(TestBase):
 
     def test_pickle(self):
         interp = interpreters.create()
-        for protocol in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer protocol in range(pickle.HIGHEST_PROTOCOL + 1):
             with self.subTest(protocol=protocol):
                 data = pickle.dumps(interp, protocol)
                 unpickled = pickle.loads(data)
@@ -553,11 +553,11 @@ klasse TestInterpreterClose(TestBase):
     def test_all(self):
         before = set(interpreters.list_all())
         interps = set()
-        for _ in range(3):
+        fuer _ in range(3):
             interp = interpreters.create()
             interps.add(interp)
         self.assertEqual(set(interpreters.list_all()), before | interps)
-        for interp in interps:
+        fuer interp in interps:
             interp.close()
         self.assertEqual(set(interpreters.list_all()), before)
 
@@ -820,7 +820,7 @@ klasse TestInterpreterExec(TestBase):
 
         stdout, stderr = self.assert_python_failure(scriptfile)
         self.maxDiff = None
-        interpmod_line, = (l for l in stderr.splitlines() if ' exec' in l)
+        interpmod_line, = (l fuer l in stderr.splitlines() if ' exec' in l)
         #      File "{interpreters.__file__}", line 179, in exec
         self.assertEqual(stderr, dedent(f"""\
             Traceback (most recent call last):
@@ -955,7 +955,7 @@ klasse TestInterpreterExec(TestBase):
         interp = interpreters.create()
         interp.exec(f"""if True:
             import os
-            comp = [str(i) for i in range(10)]
+            comp = [str(i) fuer i in range(10)]
             os.write({w_interp}, ''.join(comp).encode())
         """)
         self.assertEqual(os.read(r_interp, 10).decode(), string.digits)
@@ -1175,7 +1175,7 @@ klasse TestInterpreterCall(TestBase):
     def test_stateless_func_returns_arg(self):
         interp = interpreters.create()
 
-        for arg in [
+        fuer arg in [
             None,
             10,
             'spam!',
@@ -1188,12 +1188,12 @@ klasse TestInterpreterCall(TestBase):
                 res = interp.call(defs.spam_returns_arg, arg)
                 self.assertEqual(res, arg)
 
-        for arg in defs.STATELESS_FUNCTIONS:
+        fuer arg in defs.STATELESS_FUNCTIONS:
             with self.subTest(f'stateless func {arg!r}'):
                 res = interp.call(defs.spam_returns_arg, arg)
                 self.assert_funcs_equal(res, arg)
 
-        for arg in defs.TOP_FUNCTIONS:
+        fuer arg in defs.TOP_FUNCTIONS:
             if arg in defs.STATELESS_FUNCTIONS:
                 continue
             with self.subTest(f'stateful func {arg!r}'):
@@ -1201,7 +1201,7 @@ klasse TestInterpreterCall(TestBase):
                 self.assert_funcs_equal(res, arg)
                 assert is_pickleable(arg)
 
-        for arg in [
+        fuer arg in [
             Ellipsis,
             NotImplemented,
             object(),
@@ -1222,7 +1222,7 @@ klasse TestInterpreterCall(TestBase):
             sys.exit,
             # user classes
             *defs.TOP_CLASSES,
-            *(c(*a) for c, a in defs.TOP_CLASSES.items()
+            *(c(*a) fuer c, a in defs.TOP_CLASSES.items()
               if c not in defs.CLASSES_WITHOUT_EQUALITY),
         ]:
             with self.subTest(f'pickleable {arg!r}'):
@@ -1235,9 +1235,9 @@ klasse TestInterpreterCall(TestBase):
                     self.assertEqual(res, arg)
                 assert is_pickleable(arg)
 
-        for arg in [
+        fuer arg in [
             types.MappingProxyType({}),
-            *(f for f in defs.NESTED_FUNCTIONS
+            *(f fuer f in defs.NESTED_FUNCTIONS
               if f not in defs.STATELESS_FUNCTIONS),
         ]:
             with self.subTest(f'unpickleable {arg!r}'):
@@ -1383,7 +1383,7 @@ klasse TestInterpreterCall(TestBase):
         # so pickle.loads() would normally fail.
         #
         # We work around this by running the script in the other
-        # interpreter.  However, this is a one-off solution for the sake
+        # interpreter.  However, this is a one-off solution fuer the sake
         # of unpickling, so we avoid modifying that interpreter's
         # __main__ module by running the script in a hidden module.
         #
@@ -1399,7 +1399,7 @@ klasse TestInterpreterCall(TestBase):
                     ns = __main__.__dict__
                 else:
                     # For now we have to have a LOAD_GLOBAL in the
-                    # function in order for globals() to actually return
+                    # function in order fuer globals() to actually return
                     # spam.__globals__.  Maybe it doesn't go through pickle?
                     # XXX We will fix this later.
                     spam
@@ -1486,7 +1486,7 @@ klasse TestInterpreterCall(TestBase):
         # and the __main__ module.
         #
         # Additionally, the solution to that problem must provide
-        # for global variables on which a pickled function might rely.
+        # fuer global variables on which a pickled function might rely.
         #
         # To check that, we run a script that has two global functions
         # and a global variable in the __main__ module.  One of the
@@ -1536,7 +1536,7 @@ klasse TestInterpreterCall(TestBase):
                 results.append(count)
 
                 modified = {name: interp.call(eval, f'{name!r} in vars()')
-                            for name in ('count', 'inc', 'get_count')}
+                            fuer name in ('count', 'inc', 'get_count')}
                 results.append(modified)
 
                 print(results)
@@ -1566,7 +1566,7 @@ klasse TestInterpreterCall(TestBase):
     def test_call_valid(self):
         interp = interpreters.create()
 
-        for i, (callable, args, kwargs, expected) in enumerate([
+        fuer i, (callable, args, kwargs, expected) in enumerate([
             (call_func_noop, (), {}, None),
             (call_func_ident, ('spamspamspam',), {}, 'spamspamspam'),
             (call_func_return_shareable, (), {}, (1, None)),
@@ -1616,7 +1616,7 @@ klasse TestInterpreterCall(TestBase):
     def test_callable_requires_frame(self):
         # There are various functions that require a current frame.
         interp = interpreters.create()
-        for call, expected in [
+        fuer call, expected in [
             ((eval, '[1, 2, 3]'),
                 [1, 2, 3]),
             ((eval, 'sum([1, 2, 3])'),
@@ -1633,7 +1633,7 @@ klasse TestInterpreterCall(TestBase):
             locals,
             vars,
         ]
-        for func, expectedtype in {
+        fuer func, expectedtype in {
             globals: dict,
             locals: dict,
             vars: dict,
@@ -1668,7 +1668,7 @@ klasse TestInterpreterCall(TestBase):
         ])
 
         values = {name: interp.call(eval, name)
-                  for name in names if name != '__builtins__'}
+                  fuer name in names if name != '__builtins__'}
         self.assertEqual(values, {
             '__name__': '__main__',
             '__doc__': None,
@@ -1723,7 +1723,7 @@ klasse TestInterpreterCall(TestBase):
     def test_call_in_thread(self):
         interp = interpreters.create()
 
-        for i, (callable, args, kwargs) in enumerate([
+        fuer i, (callable, args, kwargs) in enumerate([
             (call_func_noop, (), {}),
             (call_func_return_shareable, (), {}),
             (call_func_return_pickleable, (), {}),
@@ -1745,7 +1745,7 @@ klasse TestInterpreterCall(TestBase):
                     t.join()
                 self.assertIsNone(ctx.caught)
 
-        for i, (callable, args, kwargs) in enumerate([
+        fuer i, (callable, args, kwargs) in enumerate([
             (get_call_func_closure, (42,), {}),
             (get_call_func_closure(42), (), {}),
         ]):
@@ -1778,7 +1778,7 @@ klasse TestIsShareable(TestBase):
                 (),
                 (1, ('spam', 'eggs'), True),
                 ]
-        for obj in shareables:
+        fuer obj in shareables:
             with self.subTest(obj):
                 shareable = interpreters.is_shareable(obj)
                 self.assertTrue(shareable)
@@ -1807,7 +1807,7 @@ klasse TestIsShareable(TestBase):
                 Cheese('Wensleydale'),
                 SubBytes(b'spam'),
                 ]
-        for obj in not_shareables:
+        fuer obj in not_shareables:
             with self.subTest(repr(obj)):
                 self.assertFalse(
                     interpreters.is_shareable(obj))
@@ -1841,7 +1841,7 @@ klasse LowLevelTests(TestBase):
             self.assert_ns_equal(config2, config1)
             self.assertIsNot(config2, config1)
 
-        for arg in ['', 'default']:
+        fuer arg in ['', 'default']:
             with self.subTest(f'default ({arg!r})'):
                 config = _interpreters.new_config(arg)
                 self.assert_ns_equal(config, default)
@@ -1878,7 +1878,7 @@ klasse LowLevelTests(TestBase):
         }
         gil_supported = ['default', 'shared', 'own']
 
-        for name, vanilla in supported.items():
+        fuer name, vanilla in supported.items():
             with self.subTest(f'supported ({name})'):
                 expected = vanilla
                 config1 = _interpreters.new_config(name)
@@ -1896,8 +1896,8 @@ klasse LowLevelTests(TestBase):
                 self.assert_ns_equal(config, expected)
 
             with self.subTest(f'override all ({name})'):
-                overrides = {k: not v for k, v in vars(vanilla).items()}
-                for gil in gil_supported:
+                overrides = {k: not v fuer k, v in vars(vanilla).items()}
+                fuer gil in gil_supported:
                     if vanilla.gil == gil:
                         continue
                     overrides['gil'] = gil
@@ -1906,12 +1906,12 @@ klasse LowLevelTests(TestBase):
                     self.assert_ns_equal(config, expected)
 
             # Override individual fields.
-            for field, old in vars(vanilla).items():
+            fuer field, old in vars(vanilla).items():
                 if field == 'gil':
-                    values = [v for v in gil_supported if v != old]
+                    values = [v fuer v in gil_supported if v != old]
                 else:
                     values = [not old]
-                for val in values:
+                fuer val in values:
                     with self.subTest(f'{name}.{field} ({old!r} -> {val!r})'):
                         overrides = {field: val}
                         expected = types.SimpleNamespace(
@@ -1924,22 +1924,22 @@ klasse LowLevelTests(TestBase):
             with self.assertRaises(ValueError):
                 _interpreters.new_config(spam=True)
 
-        # Bad values for bool fields.
-        for field, value in vars(supported['empty']).items():
+        # Bad values fuer bool fields.
+        fuer field, value in vars(supported['empty']).items():
             if field == 'gil':
                 continue
             assert isinstance(value, bool)
-            for value in [1, '', 'spam', 1.0, None, object()]:
+            fuer value in [1, '', 'spam', 1.0, None, object()]:
                 with self.subTest(f'bad override ({field}={value!r})'):
                     with self.assertRaises(TypeError):
                         _interpreters.new_config(**{field: value})
 
-        # Bad values for .gil.
-        for value in [True, 1, 1.0, None, object()]:
+        # Bad values fuer .gil.
+        fuer value in [True, 1, 1.0, None, object()]:
             with self.subTest(f'bad override (gil={value!r})'):
                 with self.assertRaises(TypeError):
                     _interpreters.new_config(gil=value)
-        for value in ['', 'spam']:
+        fuer value in ['', 'spam']:
             with self.subTest(f'bad override (gil={value!r})'):
                 with self.assertRaises(ValueError):
                     _interpreters.new_config(gil=value)
@@ -1977,7 +1977,7 @@ klasse LowLevelTests(TestBase):
 
         with self.subTest('from C-API'):
             last = 0
-            for id, *_ in _interpreters.list_all():
+            fuer id, *_ in _interpreters.list_all():
                 last = max(last, id)
             expected = last + 1
             text = self.run_temp_from_capi(script)
@@ -2052,7 +2052,7 @@ klasse LowLevelTests(TestBase):
                 # The "empty" config isn't viable on its own.
                 _interpreters.create('empty')
 
-        for arg, expected in {
+        fuer arg, expected in {
             '': default,
             'default': default,
             'isolated': isolated,
@@ -2094,9 +2094,9 @@ klasse LowLevelTests(TestBase):
     def test_destroy(self):
         with self.subTest('from _interpreters'):
             interpid = _interpreters.create()
-            before = [id for id, *_ in _interpreters.list_all()]
+            before = [id fuer id, *_ in _interpreters.list_all()]
             _interpreters.destroy(interpid)
-            after = [id for id, *_ in _interpreters.list_all()]
+            after = [id fuer id, *_ in _interpreters.list_all()]
 
             self.assertIn(interpid, before)
             self.assertNotIn(interpid, after)
@@ -2172,7 +2172,7 @@ klasse LowLevelTests(TestBase):
             whence = _interpreters.whence(interpid)
             self.assertEqual(whence, _interpreters.WHENCE_STDLIB)
 
-        for orig, name in {
+        fuer orig, name in {
             _interpreters.WHENCE_UNKNOWN: 'not ready',
             _interpreters.WHENCE_LEGACY_CAPI: 'legacy C-API',
             _interpreters.WHENCE_CAPI: 'C-API',
@@ -2282,7 +2282,7 @@ klasse LowLevelTests(TestBase):
         interpid = _interpreters.create()
 
         # Here we focus on basic args and return values.
-        # See TestInterpreterCall for full operational coverage,
+        # See TestInterpreterCall fuer full operational coverage,
         # including supported callables.
 
         with self.subTest('no args, return None'):

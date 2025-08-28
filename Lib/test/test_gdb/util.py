@@ -23,7 +23,7 @@ PYTHONHASHSEED = '123'
 
 def clean_environment():
     # Remove PYTHON* environment variables such as PYTHONHOME
-    return {name: value for name, value in os.environ.items()
+    return {name: value fuer name, value in os.environ.items()
             if not name.startswith('PYTHON')}
 
 
@@ -85,7 +85,7 @@ def get_gdb_version():
     # 'GNU gdb (GDB) Fedora 7.9.1-17.fc22\n' -> 7.9
     # 'GNU gdb 6.1.1 [FreeBSD]\n' -> 6.1
     # 'GNU gdb (GDB) Fedora (7.5.1-37.fc18)\n' -> 7.5
-    # 'HP gdb 6.7 for HP Itanium (32 or 64 bit) and target HP-UX 11iv2 and 11iv3.\n' -> 6.7
+    # 'HP gdb 6.7 fuer HP Itanium (32 or 64 bit) and target HP-UX 11iv2 and 11iv3.\n' -> 6.7
     match = re.search(r"^(?:GNU|HP) gdb.*?\b(\d+)\.(\d+)", stdout)
     if match is None:
         raise Exception("unable to parse gdb version: %r" % stdout)
@@ -139,14 +139,14 @@ def cet_protection():
     return (('-mcet' in flags)
             and any((flag.startswith('-fcf-protection')
                      and not flag.endswith(("=none", "=return")))
-                    for flag in flags))
+                    fuer flag in flags))
 CET_PROTECTION = cet_protection()
 
 
 def setup_module():
     if support.verbose:
         print(f"gdb version {GDB_VERSION[0]}.{GDB_VERSION[1]}:")
-        for line in GDB_VERSION_TEXT.splitlines():
+        fuer line in GDB_VERSION_TEXT.splitlines():
             print(" " * 4 + line)
         print(f"    path: {GDB_PROGRAM}")
         print()
@@ -224,7 +224,7 @@ klasse DebuggerTests(unittest.TestCase):
         # print commands
 
         # Use "commands" to generate the arguments with which to invoke "gdb":
-        args = ['--eval-command=%s' % cmd for cmd in commands]
+        args = ['--eval-command=%s' % cmd fuer cmd in commands]
         args += ["--args",
                  sys.executable]
         args.extend(subprocess._args_from_interpreter_flags())
@@ -242,7 +242,7 @@ klasse DebuggerTests(unittest.TestCase):
         out, err = run_gdb(*args, PYTHONHASHSEED=PYTHONHASHSEED)
 
         if not ignore_stderr:
-            for line in err.splitlines():
+            fuer line in err.splitlines():
                 print(line, file=sys.stderr)
 
         # bpo-34007: Sometimes some versions of the shared libraries that
@@ -257,12 +257,12 @@ klasse DebuggerTests(unittest.TestCase):
 
         # bpo-40019: Skip the test if gdb failed to read debug information
         # because the Python binary is optimized.
-        for pattern in (
+        fuer pattern in (
             '(frame information optimized out)',
             'Unable to read information on python frame',
 
             # gh-91960: On Python built with "clang -Og", gdb gets
-            # "frame=<optimized out>" for _PyEval_EvalFrameDefault() parameter
+            # "frame=<optimized out>" fuer _PyEval_EvalFrameDefault() parameter
             '(unable to read python frame information)',
 
             # gh-104736: On Python built with "clang -Og" on ppc64le,

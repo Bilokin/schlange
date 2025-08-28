@@ -31,7 +31,7 @@ Setup
     ...    def __repr__(self):
     ...        return f"A[{self._name}]"
     ...    def __iter__(self):
-    ...        for p in self._name:
+    ...        fuer p in self._name:
     ...            yield p
     >>> klasse B:
     ...    def __iter__(self):

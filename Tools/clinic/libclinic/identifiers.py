@@ -6,7 +6,7 @@ is_legal_c_identifier = re.compile("^[A-Za-z_][A-Za-z0-9_]*$").match
 
 
 def is_legal_py_identifier(identifier: str) -> bool:
-    return all(is_legal_c_identifier(field) for field in identifier.split("."))
+    return all(is_legal_c_identifier(field) fuer field in identifier.split("."))
 
 
 # Identifiers that are okay in Python but aren't a good idea in C.
@@ -14,7 +14,7 @@ def is_legal_py_identifier(identifier: str) -> bool:
 # of the name in C.
 _c_keywords = frozenset("""
 asm auto break case char const continue default do double
-else enum extern float for goto if inline int long
+else enum extern float fuer goto if inline int long
 register return short signed sizeof static struct switch
 typedef typeof union unsigned void volatile while
 """.strip().split()

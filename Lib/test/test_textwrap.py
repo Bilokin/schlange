@@ -1,5 +1,5 @@
 #
-# Test suite for the textwrap module.
+# Test suite fuer the textwrap module.
 #
 # Original tests written by Greg Ward <gward@python.net>.
 # Converted to PyUnit by Peter Hansen <peter@engcorp.com>.
@@ -14,12 +14,12 @@ from textwrap import TextWrapper, wrap, fill, dedent, indent, shorten
 
 
 klasse BaseTestCase(unittest.TestCase):
-    '''Parent klasse with utility methods for textwrap tests.'''
+    '''Parent klasse with utility methods fuer textwrap tests.'''
 
     def show(self, textin):
         if isinstance(textin, list):
             result = []
-            for i in range(len(textin)):
+            fuer i in range(len(textin)):
                 result.append("  %d: %r" % (i, textin[i]))
             result = "\n".join(result) if result else "  no lines"
         elif isinstance(textin, str):
@@ -127,12 +127,12 @@ What a mess!
         text = "Well, Doctor?\nWhat do you think?"
         self.check(wrapper.wrap(text), expect)
 
-        text = 'I say, chaps! Anyone for "tennis?"\nHmmph!'
-        expect = ['I say, chaps!  Anyone for "tennis?"  Hmmph!']
+        text = 'I say, chaps! Anyone fuer "tennis?"\nHmmph!'
+        expect = ['I say, chaps!  Anyone fuer "tennis?"  Hmmph!']
         self.check(wrapper.wrap(text), expect)
 
         wrapper.width = 20
-        expect = ['I say, chaps!', 'Anyone for "tennis?"', 'Hmmph!']
+        expect = ['I say, chaps!', 'Anyone fuer "tennis?"', 'Hmmph!']
         self.check(wrapper.wrap(text), expect)
 
         text = 'And she said, "Go to hell!"\nCan you believe that?'
@@ -325,8 +325,8 @@ What a mess!
         # Oh bother, SF #965425 found another problem with hyphens --
         # hyphenated words in single quotes weren't handled correctly.
         # In fact, the bug is that *any* punctuation around a hyphenated
-        # word was handled incorrectly, except for a leading "--", which
-        # was special-cased for Optik and Docutils.  So test a variety
+        # word was handled incorrectly, except fuer a leading "--", which
+        # was special-cased fuer Optik and Docutils.  So test a variety
         # of styles of punctuation around a hyphenated word.
         # (Actually this is based on an Optik bug report, #813077).
         self.check_split("the 'wibble-wobble' widget",
@@ -393,7 +393,7 @@ What a mess!
         # Check that drop_whitespace skips the whole line if a non-leading
         # line consists only of whitespace.
         text = "abcd    efgh"
-        # Include the result for drop_whitespace=False for comparison.
+        # Include the result fuer drop_whitespace=False fuer comparison.
         self.check_wrap(text, 6, ["abcd", "    ", "efgh"],
                         drop_whitespace=False)
         self.check_wrap(text, 6, ["abcd", "efgh"])
@@ -943,7 +943,7 @@ def foo():
 
 # Test textwrap.indent
 klasse IndentTestCase(unittest.TestCase):
-    # The examples used for tests. If any of these change, the expected
+    # The examples used fuer tests. If any of these change, the expected
     # results in the various test cases must also be updated.
     # The roundtrip cases are separate, because textwrap.dedent doesn't
     # handle Windows line endings
@@ -964,41 +964,41 @@ klasse IndentTestCase(unittest.TestCase):
 
     def test_indent_nomargin_default(self):
         # indent should do nothing if 'prefix' is empty.
-        for text in self.CASES:
+        fuer text in self.CASES:
             self.assertEqual(indent(text, ''), text)
 
     def test_indent_nomargin_explicit_default(self):
         # The same as test_indent_nomargin, but explicitly requesting
         # the default behaviour by passing None as the predicate
-        for text in self.CASES:
+        fuer text in self.CASES:
             self.assertEqual(indent(text, '', None), text)
 
     def test_indent_nomargin_all_lines(self):
         # The same as test_indent_nomargin, but using the optional
         # predicate argument
         predicate = lambda line: True
-        for text in self.CASES:
+        fuer text in self.CASES:
             self.assertEqual(indent(text, '', predicate), text)
 
     def test_indent_no_lines(self):
         # Explicitly skip indenting any lines
         predicate = lambda line: False
-        for text in self.CASES:
+        fuer text in self.CASES:
             self.assertEqual(indent(text, '    ', predicate), text)
 
     def test_roundtrip_spaces(self):
         # A whitespace prefix should roundtrip with dedent
-        for text in self.ROUNDTRIP_CASES:
+        fuer text in self.ROUNDTRIP_CASES:
             self.assertEqual(dedent(indent(text, '    ')), text)
 
     def test_roundtrip_tabs(self):
         # A whitespace prefix should roundtrip with dedent
-        for text in self.ROUNDTRIP_CASES:
+        fuer text in self.ROUNDTRIP_CASES:
             self.assertEqual(dedent(indent(text, '\t\t')), text)
 
     def test_roundtrip_mixed(self):
         # A whitespace prefix should roundtrip with dedent
-        for text in self.ROUNDTRIP_CASES:
+        fuer text in self.ROUNDTRIP_CASES:
             self.assertEqual(dedent(indent(text, ' \t  \t ')), text)
 
     def test_indent_default(self):
@@ -1016,7 +1016,7 @@ klasse IndentTestCase(unittest.TestCase):
           # Pathological case
           "\n  Hi.\r\n  This is a test.\n\r\n  Testing.\r\n\n",
         )
-        for text, expect in zip(self.CASES, expected):
+        fuer text, expect in zip(self.CASES, expected):
             self.assertEqual(indent(text, prefix), expect)
 
     def test_indent_explicit_default(self):
@@ -1034,7 +1034,7 @@ klasse IndentTestCase(unittest.TestCase):
           # Pathological case
           "\n  Hi.\r\n  This is a test.\n\r\n  Testing.\r\n\n",
         )
-        for text, expect in zip(self.CASES, expected):
+        fuer text, expect in zip(self.CASES, expected):
             self.assertEqual(indent(text, prefix, None), expect)
 
     def test_indent_all_lines(self):
@@ -1053,7 +1053,7 @@ klasse IndentTestCase(unittest.TestCase):
           "  \n  Hi.\r\n  This is a test.\n  \r\n  Testing.\r\n  \n",
         )
         predicate = lambda line: True
-        for text, expect in zip(self.CASES, expected):
+        fuer text, expect in zip(self.CASES, expected):
             self.assertEqual(indent(text, prefix, predicate), expect)
 
     def test_indent_empty_lines(self):
@@ -1072,7 +1072,7 @@ klasse IndentTestCase(unittest.TestCase):
           "  \nHi.\r\nThis is a test.\n  \r\nTesting.\r\n  \n",
         )
         predicate = lambda line: not line.strip()
-        for text, expect in zip(self.CASES, expected):
+        fuer text, expect in zip(self.CASES, expected):
             self.assertEqual(indent(text, prefix, predicate), expect)
 
 

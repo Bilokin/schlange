@@ -589,7 +589,7 @@ klasse SubprocessMixin:
                 )
             except asyncio.TimeoutError:
                 self.skipTest(
-                    "Timeout failure on waiting for subprocess stopping"
+                    "Timeout failure on waiting fuer subprocess stopping"
                 )
         self.assertIsNone(returncode)
 
@@ -776,7 +776,7 @@ klasse SubprocessMixin:
             stdout, _ = await proc.communicate(b'some data')
             self.assertEqual(stdout, b"some data")
             self.assertEqual(proc.returncode, 0)
-            self.assertEqual(await asyncio.gather(*[proc.wait() for _ in range(10)]),
+            self.assertEqual(await asyncio.gather(*[proc.wait() fuer _ in range(10)]),
                              [proc.returncode] * 10)
 
         self.loop.run_until_complete(main())
@@ -837,14 +837,14 @@ klasse SubprocessMixin:
         self.assertSetEqual(set(events), set(expected))
 
         # Second, check order of pipe events per file descriptor
-        per_fd_events = {fd: [] for fd in fds}
-        for event in events:
+        per_fd_events = {fd: [] fuer fd in fds}
+        fuer event in events:
             if event == 'process_exited':
                 continue
             name, fd = event[:2]
             per_fd_events[fd].append(name)
 
-        for fd in fds:
+        fuer fd in fds:
             self.assertEqual(per_fd_events[fd], per_fd_expected, (fd, events))
 
     def test_subprocess_communicate_stdout(self):
@@ -857,9 +857,9 @@ klasse SubprocessMixin:
             return stdout.decode().strip()
 
         async def main():
-            outputs = [f'foo{i}' for i in range(10)]
+            outputs = [f'foo{i}' fuer i in range(10)]
             res = await asyncio.gather(*[get_command_stdout(sys.executable, '-c',
-                                        f'print({out!r})') for out in outputs])
+                                        f'print({out!r})') fuer out in outputs])
             self.assertEqual(res, outputs)
 
         self.loop.run_until_complete(main())
@@ -868,7 +868,7 @@ klasse SubprocessMixin:
     def test_subprocess_send_signal_race(self):
         # See https://github.com/python/cpython/issues/87744
         async def main():
-            for _ in range(10):
+            fuer _ in range(10):
                 proc = await asyncio.create_subprocess_exec('sleep', '0.1')
                 await asyncio.sleep(0.1)
                 try:

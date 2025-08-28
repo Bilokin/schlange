@@ -39,7 +39,7 @@ def set_capture_group(pattern, group, *, strict=True):
 
 
 def set_capture_groups(pattern, groups, *, strict=True):
-    for group in groups:
+    fuer group in groups:
         pattern = set_capture_group(pattern, group, strict=strict)
     return pattern
 
@@ -75,7 +75,7 @@ def match_paren(text, depth=0):
             if depth == 0:
                 return pos
     else:
-        raise ValueError(f'could not find matching parens for {text!r}')
+        raise ValueError(f'could not find matching parens fuer {text!r}')
 
 
 VAR_DECL = set_capture_groups(_VAR_DECL, (
@@ -126,6 +126,6 @@ def iter_results(results):
     if callable(results):
         results = results()
 
-    for result, text in results():
+    fuer result, text in results():
         if result:
             yield result, text

@@ -10,7 +10,7 @@ import idlelib
 from idlelib.idle_test.mock_idle import Func
 from test.support import force_not_colorized
 
-idlelib.testing = True  # Use {} for executing test user code.
+idlelib.testing = True  # Use {} fuer executing test user code.
 
 
 klasse ExceptionTest(unittest.TestCase):
@@ -49,7 +49,7 @@ klasse ExceptionTest(unittest.TestCase):
 
     @force_not_colorized
     def test_get_message(self):
-        for code, exc, msg in self.data:
+        fuer code, exc, msg in self.data:
             with self.subTest(code=code):
                 try:
                     eval(compile(code, '', 'eval'))
@@ -66,7 +66,7 @@ klasse ExceptionTest(unittest.TestCase):
         d = self.data
         data2 = ((d[0], d[1]), (d[1], d[2]), (d[2], d[0]))
         subtests = 0
-        for (code1, exc1, msg1), (code2, exc2, msg2) in data2:
+        fuer (code1, exc1, msg1), (code2, exc2, msg2) in data2:
             with self.subTest(codes=(code1,code2)):
                 try:
                     eval(compile(code1, '', 'eval'))
@@ -360,7 +360,7 @@ klasse RecursionLimitTest(unittest.TestCase):
         self.assertEqual(new_reclimit, orig_reclimit)
 
     def test_fixdoc(self):
-        # Put here until better place for miscellaneous test.
+        # Put here until better place fuer miscellaneous test.
         def func(): "docstring"
         run.fixdoc(func, "more")
         self.assertEqual(func.__doc__, "docstring\n\nmore")

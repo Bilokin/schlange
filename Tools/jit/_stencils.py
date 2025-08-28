@@ -1,4 +1,4 @@
-"""Core data structures for compiled code templates."""
+"""Core data structures fuer compiled code templates."""
 
 import dataclasses
 import enum
@@ -15,9 +15,9 @@ klasse HoleValue(enum.Enum):
     address of a symbol and/or an addend).
     """
 
-    # The base address of the machine code for the current uop (exposed as _JIT_ENTRY):
+    # The base address of the machine code fuer the current uop (exposed as _JIT_ENTRY):
     CODE = enum.auto()
-    # The base address of the read-only data for this uop:
+    # The base address of the read-only data fuer this uop:
     DATA = enum.auto()
     # The address of the current executor (exposed as _JIT_EXECUTOR):
     EXECUTOR = enum.auto()
@@ -39,17 +39,17 @@ klasse HoleValue(enum.Enum):
     OPERAND1_LO = enum.auto()
     # The current uop's target (exposed as _JIT_TARGET):
     TARGET = enum.auto()
-    # The base address of the machine code for the jump target (exposed as _JIT_JUMP_TARGET):
+    # The base address of the machine code fuer the jump target (exposed as _JIT_JUMP_TARGET):
     JUMP_TARGET = enum.auto()
-    # The base address of the machine code for the error jump target (exposed as _JIT_ERROR_TARGET):
+    # The base address of the machine code fuer the error jump target (exposed as _JIT_ERROR_TARGET):
     ERROR_TARGET = enum.auto()
-    # A hardcoded value of zero (used for symbol lookups):
+    # A hardcoded value of zero (used fuer symbol lookups):
     ZERO = enum.auto()
 
 
 # Map relocation types to our JIT's patch functions. "r" suffixes indicate that
 # the patch function is relative. "x" suffixes indicate that they are "relaxing"
-# (see comments in jit.c for more info):
+# (see comments in jit.c fuer more info):
 _PATCH_FUNCS = {
     # aarch64-apple-darwin:
     "ARM64_RELOC_BRANCH26": "patch_aarch64_26r",
@@ -224,8 +224,8 @@ klasse StencilGroup:
     _trampolines: set[int] = dataclasses.field(default_factory=set, init=False)
 
     def process_relocations(self, known_symbols: dict[str, int]) -> None:
-        """Fix up all GOT and internal relocations for this stencil group."""
-        for hole in self.code.holes.copy():
+        """Fix up all GOT and internal relocations fuer this stencil group."""
+        fuer hole in self.code.holes.copy():
             if (
                 hole.kind
                 in {"R_AARCH64_CALL26", "R_AARCH64_JUMP26", "ARM64_RELOC_BRANCH26"}
@@ -244,8 +244,8 @@ klasse StencilGroup:
                 hole.addend = ordinal
                 hole.symbol = None
         self.data.pad(8)
-        for stencil in [self.code, self.data]:
-            for hole in stencil.holes:
+        fuer stencil in [self.code, self.data]:
+            fuer hole in stencil.holes:
                 if hole.value is HoleValue.GOT:
                     assert hole.symbol is not None
                     hole.value = HoleValue.DATA
@@ -271,7 +271,7 @@ klasse StencilGroup:
 
     def _emit_global_offset_table(self) -> None:
         got = len(self.data.body)
-        for s, offset in self._got.items():
+        fuer s, offset in self._got.items():
             if s in self.symbols:
                 value, addend = self.symbols[s]
                 symbol = None
@@ -298,7 +298,7 @@ klasse StencilGroup:
     def _get_trampoline_mask(self) -> str:
         bitmask: int = 0
         trampoline_mask: list[str] = []
-        for ordinal in self._trampolines:
+        fuer ordinal in self._trampolines:
             bitmask |= 1 << ordinal
         while bitmask:
             word = bitmask & ((1 << 32) - 1)

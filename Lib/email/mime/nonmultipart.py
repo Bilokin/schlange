@@ -2,7 +2,7 @@
 # Author: Barry Warsaw
 # Contact: email-sig@python.org
 
-"""Base klasse for MIME type messages that are not multipart."""
+"""Base klasse fuer MIME type messages that are not multipart."""
 
 __all__ = ['MIMENonMultipart']
 
@@ -11,7 +11,7 @@ from email.mime.base import MIMEBase
 
 
 klasse MIMENonMultipart(MIMEBase):
-    """Base klasse for MIME non-multipart type messages."""
+    """Base klasse fuer MIME non-multipart type messages."""
 
     def attach(self, payload):
         # The public API prohibits attaching multiple subparts to MIMEBase

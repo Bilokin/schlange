@@ -173,11 +173,11 @@ klasse TestSpecifics(unittest.TestCase):
         s256 = "".join(["\n"] * 256 + ["spam"])
         co = compile(s256, 'fn', 'exec')
         self.assertEqual(co.co_firstlineno, 1)
-        lines = [line for _, _, line in co.co_lines()]
+        lines = [line fuer _, _, line in co.co_lines()]
         self.assertEqual(lines, [0, 257])
 
     def test_literals_with_leading_zeroes(self):
-        for arg in ["077787", "0xj", "0x.", "0e",  "090000000000000",
+        fuer arg in ["077787", "0xj", "0x.", "0e",  "090000000000000",
                     "080000000000000", "000000000000009", "000000000000008",
                     "0b42", "0BADCAFE", "0o123456789", "0b1.1", "0o4.2",
                     "0b101j", "0o153j", "0b100e1", "0o777e1", "0777",
@@ -252,7 +252,7 @@ klasse TestSpecifics(unittest.TestCase):
             g = +9223372036854775807  # 1 << 63 - 1
             h = -9223372036854775807  # 1 << 63 - 1
 
-            for variable in self.test_32_63_bit_values.__code__.co_consts:
+            fuer variable in self.test_32_63_bit_values.__code__.co_consts:
                 if variable is not None:
                     self.assertIsInstance(variable, int)
 
@@ -277,7 +277,7 @@ klasse TestSpecifics(unittest.TestCase):
             'from x import None',
             'from x import y as None'
         ]
-        for stmt in stmts:
+        fuer stmt in stmts:
             stmt += "\n"
             self.assertRaises(SyntaxError, compile, stmt, 'tmp', 'single')
             self.assertRaises(SyntaxError, compile, stmt, 'tmp', 'exec')
@@ -324,9 +324,9 @@ klasse TestSpecifics(unittest.TestCase):
             'from sys import (stdin,, stdout, stderr)',
             'from sys import (stdin, stdout),',
             ]
-        for stmt in succeed:
+        fuer stmt in succeed:
             compile(stmt, 'tmp', 'exec')
-        for stmt in fail:
+        fuer stmt in fail:
             self.assertRaises(SyntaxError, compile, stmt, 'tmp', 'exec')
 
     def test_for_distinct_code_objects(self):
@@ -442,7 +442,7 @@ klasse TestSpecifics(unittest.TestCase):
     def test_annotation_limit(self):
         # more than 255 annotations, should compile ok
         s = "def f(%s): pass"
-        s %= ', '.join('a%d:%d' % (i,i) for i in range(300))
+        s %= ', '.join('a%d:%d' % (i,i) fuer i in range(300))
         compile(s, '?', 'exec')
 
     def test_mangling(self):
@@ -470,7 +470,7 @@ klasse TestSpecifics(unittest.TestCase):
             'if 9<9<9and 9or 9or 9or 9:9',
             'if 9<9<9and 9or 9or 9or 9or 9:9',
         ]
-        for expr in exprs:
+        fuer expr in exprs:
             with self.subTest(expr=expr):
                 with self.assertWarns(SyntaxWarning):
                     compile(expr, '<eval>', 'exec')
@@ -542,7 +542,7 @@ klasse TestSpecifics(unittest.TestCase):
         tree = ast.parse(code)
 
         # make all instruction locations the same to create redundancies
-        for node in ast.walk(tree):
+        fuer node in ast.walk(tree):
             if hasattr(node,"lineno"):
                  del node.lineno
                  del node.end_lineno
@@ -567,7 +567,7 @@ klasse TestSpecifics(unittest.TestCase):
         tree = ast.parse(code)
 
         # make all instruction locations the same to create redundancies
-        for node in ast.walk(tree):
+        fuer node in ast.walk(tree):
             if hasattr(node,"lineno"):
                  del node.lineno
                  del node.end_lineno
@@ -590,7 +590,7 @@ klasse TestSpecifics(unittest.TestCase):
             [fname, fcontents],
         ]
 
-        for fname, code in sample_code:
+        fuer fname, code in sample_code:
             co1 = compile(code, '%s1' % fname, 'exec')
             ast = compile(code, '%s2' % fname, 'exec', _ast.PyCF_ONLY_AST)
             self.assertTrue(type(ast) == _ast.Module)
@@ -643,10 +643,10 @@ klasse TestSpecifics(unittest.TestCase):
         self.assertEqual(d, {1: 2, 3: 4})
 
     def test_compile_filename(self):
-        for filename in 'file.py', b'file.py':
+        fuer filename in 'file.py', b'file.py':
             code = compile('pass', filename, 'exec')
             self.assertEqual(code.co_filename, 'file.py')
-        for filename in bytearray(b'file.py'), memoryview(b'file.py'):
+        fuer filename in bytearray(b'file.py'), memoryview(b'file.py'):
             with self.assertRaises(TypeError):
                 compile('pass', filename, 'exec')
         self.assertRaises(TypeError, compile, 'pass', list(b'file.py'), 'exec')
@@ -655,7 +655,7 @@ klasse TestSpecifics(unittest.TestCase):
     def test_same_filename_used(self):
         s = """def f(): pass\ndef g(): pass"""
         c = compile(s, "myfile", "exec")
-        for obj in c.co_consts:
+        fuer obj in c.co_consts:
             if isinstance(obj, types.CodeType):
                 self.assertIs(obj.co_filename, c.co_filename)
 
@@ -753,14 +753,14 @@ klasse TestSpecifics(unittest.TestCase):
         self.assertEqual(namespace['x'], 12)
 
     def check_constant(self, func, expected):
-        for const in func.__code__.co_consts:
+        fuer const in func.__code__.co_consts:
             if repr(const) == repr(expected):
                 break
         else:
             self.fail("unable to find constant %r in %r"
                       % (expected, func.__code__.co_consts))
 
-    # Merging equal constants is not a strict requirement for the Python
+    # Merging equal constants is not a strict requirement fuer the Python
     # semantics, it's a more an implementation detail.
     @support.cpython_only
     def test_merge_constants(self):
@@ -805,7 +805,7 @@ klasse TestSpecifics(unittest.TestCase):
         self.assertTrue(f1(0))
 
     # Merging equal co_linetable is not a strict requirement
-    # for the Python semantics, it's a more an implementation detail.
+    # fuer the Python semantics, it's a more an implementation detail.
     @support.cpython_only
     def test_merge_code_attrs(self):
         # See https://bugs.python.org/issue42217
@@ -828,7 +828,7 @@ klasse TestSpecifics(unittest.TestCase):
 
     @support.cpython_only
     def test_remove_unused_consts_no_docstring(self):
-        # the first item (None for no docstring in this case) is
+        # the first item (None fuer no docstring in this case) is
         # always retained.
         def f():
             if True:
@@ -845,7 +845,7 @@ klasse TestSpecifics(unittest.TestCase):
         code = ["def f():\n"]
         code.append("\ts = ''\n")
         code.append("\tfor i in range(1):\n")
-        for i in range(N):
+        fuer i in range(N):
             code.append(f"\t\tif True: s += 't{i}'\n")
             code.append(f"\t\tif False: s += 'f{i}'\n")
         code.append("\treturn s\n")
@@ -855,12 +855,12 @@ klasse TestSpecifics(unittest.TestCase):
         eval(compile(code, "file.py", "exec"), g)
         exec(code, g)
         f = g['f']
-        expected = tuple([''] + [f't{i}' for i in range(N)])
+        expected = tuple([''] + [f't{i}' fuer i in range(N)])
         self.assertEqual(f.__code__.co_consts, expected)
         expected = "".join(expected[1:])
         self.assertEqual(expected, f())
 
-    # Stripping unused constants is not a strict requirement for the
+    # Stripping unused constants is not a strict requirement fuer the
     # Python semantics, it's a more an implementation detail.
     @support.cpython_only
     def test_strip_unused_None(self):
@@ -871,13 +871,13 @@ klasse TestSpecifics(unittest.TestCase):
             return 42
         self.assertEqual(f1.__code__.co_consts, (f1.__doc__,))
 
-    # This is a regression test for a CPython specific peephole optimizer
+    # This is a regression test fuer a CPython specific peephole optimizer
     # implementation bug present in a few releases.  It's assertion verifies
     # that peephole optimization was actually done though that isn't an
     # indication of the bugs presence or not (crashing is).
     @support.cpython_only
     def test_peephole_opt_unreachable_code_array_access_in_bounds(self):
-        """Regression test for issue35193 when run under clang msan."""
+        """Regression test fuer issue35193 when run under clang msan."""
         def unused_code_at_end():
             return 3
             raise RuntimeError("unreachable")
@@ -909,7 +909,7 @@ klasse TestSpecifics(unittest.TestCase):
                 "not docstring " * 3
             """)
 
-        for opt in [0, 1, 2]:
+        fuer opt in [0, 1, 2]:
             with self.subTest(opt=opt):
                 code = compile(src, "<test>", "exec", optimize=opt)
                 ns = {}
@@ -936,8 +936,8 @@ klasse TestSpecifics(unittest.TestCase):
             """,
         ]
 
-        for opt in [0, 1, 2]:
-            for src in srcs:
+        fuer opt in [0, 1, 2]:
+            fuer src in srcs:
                 with self.subTest(opt=opt, src=src):
                     code = compile(textwrap.dedent(src), "<test>", "single", optimize=opt)
                     ns = {}
@@ -963,8 +963,8 @@ klasse TestSpecifics(unittest.TestCase):
 
                 return h
         """)
-        for opt in [-1, 0, 1, 2]:
-            for mode in ["exec", "single"]:
+        fuer opt in [-1, 0, 1, 2]:
+            fuer mode in ["exec", "single"]:
                 with self.subTest(opt=opt, mode=mode):
                     code = compile(src, "<test>", mode, optimize=opt)
                     output = io.StringIO()
@@ -1012,7 +1012,7 @@ klasse TestSpecifics(unittest.TestCase):
         self.assertTrue(f2(0.0))
 
     def test_path_like_objects(self):
-        # An implicit test for PyUnicode_FSDecoder().
+        # An implicit test fuer PyUnicode_FSDecoder().
         compile("42", FakePath("test_compile_pathlike"), "single")
 
     @support.requires_resource('cpu')
@@ -1022,7 +1022,7 @@ klasse TestSpecifics(unittest.TestCase):
         compile("if a: b\n" * 200000, "<dummy>", "exec")
 
     # Multiple users rely on the fact that CPython does not generate
-    # bytecode for dead code blocks. See bpo-37500 for more context.
+    # bytecode fuer dead code blocks. See bpo-37500 fuer more context.
     @support.cpython_only
     def test_dead_blocks_do_not_generate_bytecode(self):
         def unused_block_if():
@@ -1048,7 +1048,7 @@ klasse TestSpecifics(unittest.TestCase):
         funcs = [unused_block_if, unused_block_while,
                  unused_block_if_else, unused_block_while_else]
 
-        for func in funcs:
+        fuer func in funcs:
             opcodes = list(dis.get_instructions(func))
             self.assertLessEqual(len(opcodes), 4)
             self.assertEqual('RETURN_VALUE', opcodes[-1].opname)
@@ -1066,7 +1066,7 @@ klasse TestSpecifics(unittest.TestCase):
         funcs = [break_in_while, continue_in_while]
 
         # Check that we did not raise but we also don't generate bytecode
-        for func in funcs:
+        fuer func in funcs:
             opcodes = list(dis.get_instructions(func))
             self.assertEqual(3, len(opcodes))
             self.assertEqual('RETURN_VALUE', opcodes[-1].opname)
@@ -1088,7 +1088,7 @@ klasse TestSpecifics(unittest.TestCase):
         funcs = [and_true, and_false, or_true, or_false]
 
         # Check that condition is removed.
-        for func in funcs:
+        fuer func in funcs:
             with self.subTest(func=func):
                 opcodes = list(dis.get_instructions(func))
                 self.assertLessEqual(len(opcodes), 3)
@@ -1118,13 +1118,13 @@ klasse TestSpecifics(unittest.TestCase):
                 return os_path.join(x)
             """
         ]
-        for source in sources:
+        fuer source in sources:
             namespace = {}
             exec(textwrap.dedent(source), namespace)
             func = namespace['foo']
             with self.subTest(func=func.__name__):
                 opcodes = list(dis.get_instructions(func))
-                instructions = [opcode.opname for opcode in opcodes]
+                instructions = [opcode.opname fuer opcode in opcodes]
                 self.assertNotIn('LOAD_METHOD', instructions)
                 self.assertIn('LOAD_ATTR', instructions)
                 self.assertIn('CALL', instructions)
@@ -1143,12 +1143,12 @@ klasse TestSpecifics(unittest.TestCase):
             ("type foo[**P = 40 + 5] = 1", get_code_type_alias),
             ("type foo[*Ts = 40 + 5] = 1", get_code_type_alias),
         ]
-        for snippet, get_code in snippets:
+        fuer snippet, get_code in snippets:
             c = compile(snippet, "<dummy>", "exec")
             code = get_code(c)
             opcodes = list(dis.get_instructions(code))
-            instructions = [opcode.opname for opcode in opcodes]
-            args = [opcode.oparg for opcode in opcodes]
+            instructions = [opcode.opname fuer opcode in opcodes]
+            args = [opcode.oparg fuer opcode in opcodes]
             self.assertNotIn(40, args)
             self.assertNotIn(5, args)
             self.assertIn('LOAD_SMALL_INT', instructions)
@@ -1160,7 +1160,7 @@ klasse TestSpecifics(unittest.TestCase):
                 print()
             )
         line1 = call.__code__.co_firstlineno + 1
-        assert line1 not in [line for (_, _, line) in call.__code__.co_lines()]
+        assert line1 not in [line fuer (_, _, line) in call.__code__.co_lines()]
 
     def test_lineno_after_implicit_return(self):
         TRUE = True
@@ -1191,7 +1191,7 @@ klasse TestSpecifics(unittest.TestCase):
         def save_caller_frame():
             nonlocal frame
             frame = sys._getframe(1)
-        for func, lastline in zip(funcs, lastlines, strict=True):
+        fuer func, lastline in zip(funcs, lastlines, strict=True):
             with self.subTest(func=func):
                 func(save_caller_frame)
                 self.assertEqual(frame.f_lineno-frame.f_code.co_firstlineno, lastline)
@@ -1203,7 +1203,7 @@ klasse TestSpecifics(unittest.TestCase):
         def no_code2():
             a: int
 
-        for func in (no_code1, no_code2):
+        fuer func in (no_code1, no_code2):
             with self.subTest(func=func):
                 if func is no_code1 and no_code1.__doc__ is None:
                     continue
@@ -1216,7 +1216,7 @@ klasse TestSpecifics(unittest.TestCase):
     def get_code_lines(self, code):
         last_line = -2
         res = []
-        for _, _, line in code.co_lines():
+        fuer _, _, line in code.co_lines():
             if line is not None and line != last_line:
                 res.append(line - code.co_firstlineno)
                 last_line = line
@@ -1261,7 +1261,7 @@ klasse TestSpecifics(unittest.TestCase):
         func_lines = [ load_attr_lines, load_method_lines,
                  store_attr_lines, aug_store_attr_lines]
 
-        for func, lines in zip(funcs, func_lines, strict=True):
+        fuer func, lines in zip(funcs, func_lines, strict=True):
             with self.subTest(func=func):
                 code_lines = self.get_code_lines(func.__code__)
                 self.assertEqual(lines, code_lines)
@@ -1283,7 +1283,7 @@ klasse TestSpecifics(unittest.TestCase):
     def test_line_number_implicit_return_after_async_for(self):
 
         async def test(aseq):
-            async for i in aseq:
+            async fuer i in aseq:
                 body
 
         expected_lines = [0, 1, 2, 1]
@@ -1297,13 +1297,13 @@ klasse TestSpecifics(unittest.TestCase):
 
         if isinstance(opnames, str):
             opnames = (opnames, )
-        for inst in dis.Bytecode(code):
+        fuer inst in dis.Bytecode(code):
             if opnames and inst.opname in opnames:
                 self.assertIsNotNone(inst.positions.lineno)
 
     def test_line_number_synthetic_jump_multiple_predecessors(self):
         def f():
-            for x in it:
+            fuer x in it:
                 try:
                     if C1:
                         yield 2
@@ -1314,7 +1314,7 @@ klasse TestSpecifics(unittest.TestCase):
 
     def test_line_number_synthetic_jump_multiple_predecessors_nested(self):
         def f():
-            for x in it:
+            fuer x in it:
                 try:
                     X = 3
                 except OSError:
@@ -1329,7 +1329,7 @@ klasse TestSpecifics(unittest.TestCase):
 
     def test_line_number_synthetic_jump_multiple_predecessors_more_nested(self):
         def f():
-            for x in it:
+            fuer x in it:
                 try:
                     X = 3
                 except OSError:
@@ -1351,7 +1351,7 @@ klasse TestSpecifics(unittest.TestCase):
     def test_lineno_of_backward_jump_conditional_in_loop(self):
         # Issue gh-107901
         def f():
-            for i in x:
+            fuer i in x:
                 if y:
                     pass
 
@@ -1361,10 +1361,10 @@ klasse TestSpecifics(unittest.TestCase):
         # The compiler has a flushing point in "compiler_dict" that calls compiles
         # a portion of the dictionary literal when the loop that iterates over the items
         # reaches 0xFFFF elements but the code was not including the boundary element,
-        # dropping the key at position 0xFFFF. See bpo-41531 for more information
+        # dropping the key at position 0xFFFF. See bpo-41531 fuer more information
 
         dict_size = 0xFFFF + 1
-        the_dict = "{" + ",".join(f"{x}:{x}" for x in range(dict_size)) + "}"
+        the_dict = "{" + ",".join(f"{x}:{x}" fuer x in range(dict_size)) + "}"
         self.assertEqual(len(eval(the_dict)), dict_size)
 
     def test_redundant_jump_in_if_else_break(self):
@@ -1388,7 +1388,7 @@ klasse TestSpecifics(unittest.TestCase):
             'JUMP_FORWARD',
         )
 
-        for line, instr in enumerate(
+        fuer line, instr in enumerate(
             dis.Bytecode(if_else_break, show_caches=True)
         ):
             if instr.opname == 'JUMP_FORWARD':
@@ -1403,7 +1403,7 @@ klasse TestSpecifics(unittest.TestCase):
             while not (a < b < c):
                 pass
 
-        for instr in dis.Bytecode(while_not_chained):
+        fuer instr in dis.Bytecode(while_not_chained):
             self.assertNotEqual(instr.opname, "EXTENDED_ARG")
 
     @support.cpython_only
@@ -1411,16 +1411,16 @@ klasse TestSpecifics(unittest.TestCase):
 
         def check_op_count(func, op, expected):
             actual = 0
-            for instr in dis.Bytecode(func):
+            fuer instr in dis.Bytecode(func):
                 if instr.opname == op:
                     actual += 1
             self.assertEqual(actual, expected)
 
         def check_consts(func, typ, expected):
-            expected = set([repr(x) for x in expected])
+            expected = set([repr(x) fuer x in expected])
             all_consts = set()
             consts = func.__code__.co_consts
-            for instr in dis.Bytecode(func):
+            fuer instr in dis.Bytecode(func):
                 if instr.opname == "LOAD_CONST" and isinstance(consts[instr.oparg], typ):
                     all_consts.add(repr(consts[instr.oparg]))
             self.assertEqual(all_consts, expected)
@@ -1504,7 +1504,7 @@ klasse TestSpecifics(unittest.TestCase):
         )
 
     def test_compare_positions(self):
-        for opname_prefix, op in [
+        fuer opname_prefix, op in [
             ("COMPARE_", "<"),
             ("COMPARE_", "<="),
             ("COMPARE_", ">"),
@@ -1516,13 +1516,13 @@ klasse TestSpecifics(unittest.TestCase):
         ]:
             expr = f'a {op} b {op} c'
             expected_positions = 2 * [(2, 2, 0, len(expr))]
-            for source in [
+            fuer source in [
                 f"\\\n{expr}", f'if \\\n{expr}: x', f"x if \\\n{expr} else y"
             ]:
                 code = compile(source, "<test>", "exec")
                 actual_positions = [
                     instruction.positions
-                    for instruction in dis.get_instructions(code)
+                    fuer instruction in dis.get_instructions(code)
                     if instruction.opname.startswith(opname_prefix)
                 ]
                 with self.subTest(source):
@@ -1535,7 +1535,7 @@ klasse TestSpecifics(unittest.TestCase):
             "def f():\n\tif not (False if 1 else True): raise AssertionError",
             "def f():\n\tif not (False if 1 else True): return 12",
         ]
-        for expr in exprs:
+        fuer expr in exprs:
             with self.subTest(expr=expr):
                 compile(expr, "<single>", "exec")
 
@@ -1571,7 +1571,7 @@ klasse TestSpecifics(unittest.TestCase):
 
     def test_variable_dependent(self):
         # gh-104635: Since the value of b is dependent on the value of a
-        # the first STORE_FAST for a should not be skipped. (e.g POP_TOP).
+        # the first STORE_FAST fuer a should not be skipped. (e.g POP_TOP).
         # This test case is added to prevent potential regression from aggressive optimization.
         def f():
             a = 42; b = a + 54; a = 54
@@ -1622,7 +1622,7 @@ klasse TestSpecifics(unittest.TestCase):
         """)
 
         g, l = {'a': 5}, {}
-        for kw in ("except", "except*"):
+        fuer kw in ("except", "except*"):
             exec(code % kw, g, l);
 
     def test_regression_gh_120225(self):
@@ -1631,7 +1631,7 @@ klasse TestSpecifics(unittest.TestCase):
                 case True:
                     pass
                 case name_5 if f'e':
-                    {name_3: name_4 async for name_2 in name_5}
+                    {name_3: name_4 async fuer name_2 in name_5}
                 case []:
                     pass
             [[]]
@@ -1703,25 +1703,25 @@ klasse TestBooleanExpression(unittest.TestCase):
         v = [self.Yes(), self.No(), self.Yes()]
         res = v[0] and v[1] and v[0]
         self.assertIs(res, v[1])
-        self.assertEqual([e.called for e in v], [1, 1, 0])
+        self.assertEqual([e.called fuer e in v], [1, 1, 0])
 
     def test_short_circuit_or(self):
         v = [self.No(), self.Yes(), self.No()]
         res = v[0] or v[1] or v[0]
         self.assertIs(res, v[1])
-        self.assertEqual([e.called for e in v], [1, 1, 0])
+        self.assertEqual([e.called fuer e in v], [1, 1, 0])
 
     def test_compound(self):
         # See gh-124285
         v = [self.No(), self.Yes(), self.Yes(), self.Yes()]
         res = v[0] and v[1] or v[2] or v[3]
         self.assertIs(res, v[2])
-        self.assertEqual([e.called for e in v], [1, 0, 1, 0])
+        self.assertEqual([e.called fuer e in v], [1, 0, 1, 0])
 
         v = [self.No(), self.No(), self.Yes(), self.Yes(), self.No()]
         res = v[0] or v[1] and v[2] or v[3] or v[4]
         self.assertIs(res, v[3])
-        self.assertEqual([e.called for e in v], [1, 1, 0, 1, 0])
+        self.assertEqual([e.called fuer e in v], [1, 1, 0, 1, 0])
 
     def test_exception(self):
         # See gh-137288
@@ -1765,7 +1765,7 @@ klasse TestSourcePositions(unittest.TestCase):
         SourceOffsetVisitor().visit(ast_tree)
 
         # Check against the positions in the code object.
-        for (line, end_line, col, end_col) in code.co_positions():
+        fuer (line, end_line, col, end_col) in code.co_positions():
             if line == 0:
                 continue # This is an artificial module-start line
             # If the offset is not None (indicating missing data), ensure that
@@ -1784,7 +1784,7 @@ klasse TestSourcePositions(unittest.TestCase):
     def assertOpcodeSourcePositionIs(self, code, opcode,
             line, end_line, column, end_column, occurrence=1):
 
-        for instr, position in instructions_with_positions(
+        fuer instr, position in instructions_with_positions(
             dis.Bytecode(code), code.co_positions()
         ):
             if instr.opname == opcode:
@@ -1880,7 +1880,7 @@ klasse TestSourcePositions(unittest.TestCase):
         snippet = textwrap.dedent("""\
             ((x,
                 2*x)
-                for x
+                fuer x
                 in [1,2,3] if (x > 0
                                and x < 100
                                and x != 50))
@@ -1899,7 +1899,7 @@ klasse TestSourcePositions(unittest.TestCase):
         snippet = textwrap.dedent("""\
             ((x,
                 2*x)
-                async for x
+                async fuer x
                 in [1,2,3] if (x > 0
                                and x < 100
                                and x != 50))
@@ -1916,7 +1916,7 @@ klasse TestSourcePositions(unittest.TestCase):
         snippet = textwrap.dedent("""\
             [(x,
                 2*x)
-                for x
+                fuer x
                 in [1,2,3] if (x > 0
                                and x < 100
                                and x != 50)]
@@ -1933,7 +1933,7 @@ klasse TestSourcePositions(unittest.TestCase):
             async def f():
                 [(x,
                     2*x)
-                    async for x
+                    async fuer x
                     in [1,2,3] if (x > 0
                                    and x < 100
                                    and x != 50)]
@@ -1954,7 +1954,7 @@ klasse TestSourcePositions(unittest.TestCase):
         snippet = textwrap.dedent("""\
             {(x,
                 2*x)
-                for x
+                fuer x
                 in [1,2,3] if (x > 0
                                and x < 100
                                and x != 50)}
@@ -1971,7 +1971,7 @@ klasse TestSourcePositions(unittest.TestCase):
             async def f():
                 {(x,
                     2*x)
-                    async for x
+                    async fuer x
                     in [1,2,3] if (x > 0
                                    and x < 100
                                    and x != 50)}
@@ -1992,7 +1992,7 @@ klasse TestSourcePositions(unittest.TestCase):
         snippet = textwrap.dedent("""\
             {x:
                 2*x
-                for x
+                fuer x
                 in [1,2,3] if (x > 0
                                and x < 100
                                and x != 50)}
@@ -2009,7 +2009,7 @@ klasse TestSourcePositions(unittest.TestCase):
             async def f():
                 {x:
                     2*x
-                    async for x
+                    async fuer x
                     in [1,2,3] if (x > 0
                                    and x < 100
                                    and x != 50)}
@@ -2121,7 +2121,7 @@ klasse TestSourcePositions(unittest.TestCase):
             line=2, end_line=2, column=16, end_column=20, occurrence=2)
 
     def test_very_long_line_end_offset(self):
-        # Make sure we get the correct column offset for offsets
+        # Make sure we get the correct column offset fuer offsets
         # too large to store in a byte.
         long_string = "a" * 1000
         snippet = f"g('{long_string}')"
@@ -2178,7 +2178,7 @@ klasse TestSourcePositions(unittest.TestCase):
         def f():
         {}
         """
-        for body in [
+        fuer body in [
             "    abc.a()",
             "    art.a()",
             "    ast.a()",
@@ -2259,7 +2259,7 @@ klasse TestSourcePositions(unittest.TestCase):
             ).setdefault(
                 0
             )
-        for line, end_line, column, end_column in f.__code__.co_positions():
+        fuer line, end_line, column, end_column in f.__code__.co_positions():
             self.assertIsNotNone(line)
             self.assertIsNotNone(end_line)
             self.assertIsNotNone(column)
@@ -2269,9 +2269,9 @@ klasse TestSourcePositions(unittest.TestCase):
     @support.cpython_only
     def test_column_offset_deduplication(self):
         # GH-95150: Code with different column offsets shouldn't be merged!
-        for source in [
+        fuer source in [
             "lambda: a",
-            "(a for b in c)",
+            "(a fuer b in c)",
         ]:
             with self.subTest(source):
                 code = compile(f"{source}, {source}", "<test>", "eval")
@@ -2286,7 +2286,7 @@ klasse TestSourcePositions(unittest.TestCase):
 
     def test_load_super_attr(self):
         source = "class C:\n  def __init__(self):\n    super().__init__()"
-        for const in compile(source, "<test>", "exec").co_consts[0].co_consts:
+        fuer const in compile(source, "<test>", "exec").co_consts[0].co_consts:
             if isinstance(const, types.CodeType):
                 code = const
                 break
@@ -2301,12 +2301,12 @@ klasse TestSourcePositions(unittest.TestCase):
             "f = lambda: 1 + 2",
             "f = lambda: a + b",
         ]
-        for snippet in snippets:
+        fuer snippet in snippets:
             with self.subTest(snippet=snippet):
                 lamb = run_code(snippet)["f"]
                 positions = lamb.__code__.co_positions()
                 # assert that all positions are within the lambda
-                for i, pos in enumerate(positions):
+                fuer i, pos in enumerate(positions):
                     with self.subTest(i=i, pos=pos):
                         start_line, end_line, start_col, end_col = pos
                         if i == 0 and start_col == end_col == 0:
@@ -2332,22 +2332,22 @@ klasse TestSourcePositions(unittest.TestCase):
                 return R
 
         # All instructions should have locations on a single line
-        for instr in dis.get_instructions(f):
+        fuer instr in dis.get_instructions(f):
             start_line, end_line, _, _ = instr.positions
             self.assertEqual(start_line, end_line)
 
         # Expect four `LOAD_CONST None` instructions:
-        # three for the no-exception __exit__ call, and one for the return.
+        # three fuer the no-exception __exit__ call, and one fuer the return.
         # They should all have the locations of the context manager ('xyz').
 
-        load_none = [instr for instr in dis.get_instructions(f) if
+        load_none = [instr fuer instr in dis.get_instructions(f) if
                      instr.opname == 'LOAD_CONST' and instr.argval is None]
-        return_value = [instr for instr in dis.get_instructions(f) if
+        return_value = [instr fuer instr in dis.get_instructions(f) if
                         instr.opname == 'RETURN_VALUE']
 
         self.assertEqual(len(load_none), 4)
         self.assertEqual(len(return_value), 2)
-        for instr in load_none + return_value:
+        fuer instr in load_none + return_value:
             start_line, end_line, start_col, end_col = instr.positions
             self.assertEqual(start_line, f.__code__.co_firstlineno + 1)
             self.assertEqual(end_line, f.__code__.co_firstlineno + 1)
@@ -2417,8 +2417,8 @@ klasse TestStaticAttributes(unittest.TestCase):
 
 
 klasse TestExpressionStackSize(unittest.TestCase):
-    # These tests check that the computed stack size for a code object
-    # stays within reasonable bounds (see issue #21523 for an example
+    # These tests check that the computed stack size fuer a code object
+    # stays within reasonable bounds (see issue #21523 fuer an example
     # dysfunction).
     N = 100
 
@@ -2464,14 +2464,14 @@ klasse TestExpressionStackSize(unittest.TestCase):
         self.check_stack_size("f(" + "x, " * self.N + ")")
 
     def test_func_kwargs(self):
-        kwargs = (f'a{i}=x' for i in range(self.N))
+        kwargs = (f'a{i}=x' fuer i in range(self.N))
         self.check_stack_size("f(" +  ", ".join(kwargs) + ")")
 
     def test_meth_args(self):
         self.check_stack_size("o.m(" + "x, " * self.N + ")")
 
     def test_meth_kwargs(self):
-        kwargs = (f'a{i}=x' for i in range(self.N))
+        kwargs = (f'a{i}=x' fuer i in range(self.N))
         self.check_stack_size("o.m(" +  ", ".join(kwargs) + ")")
 
     def test_func_and(self):
@@ -2487,7 +2487,7 @@ klasse TestExpressionStackSize(unittest.TestCase):
 
     def test_stack_3050_2(self):
         M = 3050
-        args = ", ".join(f"arg{i}:type{i}" for i in range(M))
+        args = ", ".join(f"arg{i}:type{i}" fuer i in range(M))
         code = f"def f({args}):\n  pass"
         # This raised on 3.10.0 to 3.10.5
         compile(code, "<foo>", "single")
@@ -2509,7 +2509,7 @@ klasse TestStackSizeStability(unittest.TestCase):
             exec(code, ns, ns)
             return ns['func'].__code__
 
-        sizes = [compile_snippet(i).co_stacksize for i in range(2, 5)]
+        sizes = [compile_snippet(i).co_stacksize fuer i in range(2, 5)]
         if len(set(sizes)) != 1:
             import dis, io
             out = io.StringIO()
@@ -2630,14 +2630,14 @@ klasse TestStackSizeStability(unittest.TestCase):
 
     def test_for(self):
         snippet = """
-            for x in y:
+            fuer x in y:
                 a
             """
         self.check_stack_size(snippet)
 
     def test_for_else(self):
         snippet = """
-            for x in y:
+            fuer x in y:
                 a
             else:
                 b
@@ -2646,7 +2646,7 @@ klasse TestStackSizeStability(unittest.TestCase):
 
     def test_for_break_continue(self):
         snippet = """
-            for x in y:
+            fuer x in y:
                 if z:
                     break
                 elif u:
@@ -2660,7 +2660,7 @@ klasse TestStackSizeStability(unittest.TestCase):
 
     def test_for_break_continue_inside_try_finally_block(self):
         snippet = """
-            for x in y:
+            fuer x in y:
                 try:
                     if z:
                         break
@@ -2677,7 +2677,7 @@ klasse TestStackSizeStability(unittest.TestCase):
 
     def test_for_break_continue_inside_finally_block(self):
         snippet = """
-            for x in y:
+            fuer x in y:
                 try:
                     t
                 finally:
@@ -2694,7 +2694,7 @@ klasse TestStackSizeStability(unittest.TestCase):
 
     def test_for_break_continue_inside_except_block(self):
         snippet = """
-            for x in y:
+            fuer x in y:
                 try:
                     t
                 except:
@@ -2711,7 +2711,7 @@ klasse TestStackSizeStability(unittest.TestCase):
 
     def test_for_break_continue_inside_with_block(self):
         snippet = """
-            for x in y:
+            fuer x in y:
                 with c:
                     if z:
                         break
@@ -2779,14 +2779,14 @@ klasse TestStackSizeStability(unittest.TestCase):
 
     def test_async_for(self):
         snippet = """
-            async for x in y:
+            async fuer x in y:
                 a
             """
         self.check_stack_size(snippet, async_=True)
 
     def test_async_for_else(self):
         snippet = """
-            async for x in y:
+            async fuer x in y:
                 a
             else:
                 b
@@ -2795,7 +2795,7 @@ klasse TestStackSizeStability(unittest.TestCase):
 
     def test_for_break_continue_inside_async_with_block(self):
         snippet = """
-            for x in y:
+            fuer x in y:
                 async with c:
                     if z:
                         break
@@ -2822,7 +2822,7 @@ klasse TestStackSizeStability(unittest.TestCase):
 @unittest.skipIf(_testinternalcapi is None, 'need _testinternalcapi module')
 klasse TestInstructionSequence(unittest.TestCase):
     def compare_instructions(self, seq, expected):
-        self.assertEqual([(opcode.opname[i[0]],) + i[1:] for i in seq.get_instructions()],
+        self.assertEqual([(opcode.opname[i[0]],) + i[1:] fuer i in seq.get_instructions()],
                          expected)
 
     def test_basics(self):
@@ -2848,7 +2848,7 @@ klasse TestInstructionSequence(unittest.TestCase):
                     ('RETURN_VALUE', None, 3),
                    ]
 
-        self.compare_instructions(seq, [ex + (0,0,0) for ex in expected])
+        self.compare_instructions(seq, [ex + (0,0,0) fuer ex in expected])
 
     def test_nested(self):
         seq = _testinternalcapi.new_instruction_sequence()
@@ -2873,8 +2873,8 @@ klasse TestInstructionSequence(unittest.TestCase):
             '        self.{V3} = 10\n'
         )
         attributes = ("a", "b", "c")
-        for perm in itertools.permutations(attributes):
-            var_names = {f'V{i + 1}': name for i, name in enumerate(perm)}
+        fuer perm in itertools.permutations(attributes):
+            var_names = {f'V{i + 1}': name fuer i, name in enumerate(perm)}
             ns = run_code(code.format(**var_names))
             t = ns['T']
             self.assertEqual(t.__static_attributes__, attributes)

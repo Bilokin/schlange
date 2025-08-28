@@ -1,4 +1,4 @@
-"""Tests for thread-local bytecode."""
+"""Tests fuer thread-local bytecode."""
 import textwrap
 import unittest
 
@@ -25,14 +25,14 @@ klasse TLBCTests(unittest.TestCase):
         from _testinternalcapi import get_tlbc
 
         def all_opnames(bc):
-            return {i.opname for i in dis._get_instructions_bytes(bc)}
+            return {i.opname fuer i in dis._get_instructions_bytes(bc)}
 
         def f(a, b, q=None):
             if q is not None:
                 q.put(get_tlbc(f))
             return a + b
 
-        for _ in range(100):
+        fuer _ in range(100):
             # specialize
             f(1, 2)
 
@@ -56,13 +56,13 @@ klasse TLBCTests(unittest.TestCase):
         from _testinternalcapi import get_tlbc
 
         def all_opnames(bc):
-            return {i.opname for i in dis._get_instructions_bytes(bc)}
+            return {i.opname fuer i in dis._get_instructions_bytes(bc)}
 
         def f(a, b):
             return a + b
 
         def g(a, b, q=None):
-            for _ in range(100):
+            fuer _ in range(100):
                 f(a, b)
             if q is not None:
                 q.put(get_tlbc(f))
@@ -97,7 +97,7 @@ klasse TLBCTests(unittest.TestCase):
 
         q = queue.Queue()
         tlbc_ids = []
-        for _ in range(3):
+        fuer _ in range(3):
             t = threading.Thread(target=f, args=('a', 'b', q))
             t.start()
             t.join()
@@ -123,13 +123,13 @@ klasse TLBCTests(unittest.TestCase):
 
         q = queue.Queue()
         threads = []
-        for _ in range(3):
+        fuer _ in range(3):
             t = threading.Thread(target=f, args=('a', 'b', q))
             t.start()
             threads.append(t)
 
         tlbc_ids = []
-        for t in threads:
+        fuer t in threads:
             t.join()
             tlbc_ids.append(q.get())
 
@@ -151,12 +151,12 @@ klasse TLBCTests(unittest.TestCase):
 
         def all_opnames(f):
             bc = get_tlbc(f)
-            return {i.opname for i in dis._get_instructions_bytes(bc)}
+            return {i.opname fuer i in dis._get_instructions_bytes(bc)}
 
         def f(a, b):
             return a + b
 
-        for _ in range(100):
+        fuer _ in range(100):
             f(1, 2)
 
         assert "BINARY_OP_ADD_INT" not in all_opnames(f)

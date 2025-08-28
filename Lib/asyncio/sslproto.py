@@ -50,7 +50,7 @@ def _create_transport_context(server_side, server_hostname):
 
     # Client side may pass ssl=True to use a default
     # context; in that case the sslcontext passed is None.
-    # The default is secure for client connections.
+    # The default is secure fuer client connections.
     # Python 3.4+: use up-to-date strong settings.
     sslcontext = ssl.create_default_context()
     if not server_hostname:
@@ -144,7 +144,7 @@ klasse _SSLProtocolTransport(transports._FlowControlMixin,
         self._ssl_protocol._resume_reading()
 
     def set_write_buffer_limits(self, high=None, low=None):
-        """Set the high- and low-water limits for write flow control.
+        """Set the high- and low-water limits fuer write flow control.
 
         These two values control when to call the protocol's
         pause_writing() and resume_writing() methods.  If specified,
@@ -158,8 +158,8 @@ klasse _SSLProtocolTransport(transports._FlowControlMixin,
         well, and causes pause_writing() to be called whenever the
         buffer becomes non-empty.  Setting low to zero causes
         resume_writing() to be called only once the buffer is empty.
-        Use of zero for either limit is generally sub-optimal as it
-        reduces opportunities for doing I/O and computation
+        Use of zero fuer either limit is generally sub-optimal as it
+        reduces opportunities fuer doing I/O and computation
         concurrently.
         """
         self._ssl_protocol._set_write_buffer_limits(high, low)
@@ -174,7 +174,7 @@ klasse _SSLProtocolTransport(transports._FlowControlMixin,
         return self._ssl_protocol._get_write_buffer_size()
 
     def set_read_buffer_limits(self, high=None, low=None):
-        """Set the high- and low-water limits for read flow control.
+        """Set the high- and low-water limits fuer read flow control.
 
         These two values control when to call the upstream transport's
         pause_reading() and resume_reading() methods.  If specified,
@@ -188,8 +188,8 @@ klasse _SSLProtocolTransport(transports._FlowControlMixin,
         well, and causes pause_reading() to be called whenever the
         buffer becomes non-empty.  Setting low to zero causes
         resume_reading() to be called only once the buffer is empty.
-        Use of zero for either limit is generally sub-optimal as it
-        reduces opportunities for doing I/O and computation
+        Use of zero fuer either limit is generally sub-optimal as it
+        reduces opportunities fuer doing I/O and computation
         concurrently.
         """
         self._ssl_protocol._set_read_buffer_limits(high, low)
@@ -205,13 +205,13 @@ klasse _SSLProtocolTransport(transports._FlowControlMixin,
 
     @property
     def _protocol_paused(self):
-        # Required for sendfile fallback pause_writing/resume_writing logic
+        # Required fuer sendfile fallback pause_writing/resume_writing logic
         return self._ssl_protocol._app_writing_paused
 
     def write(self, data):
         """Write some data bytes to the transport.
 
-        This does not block; it buffers the data and arranges for it
+        This does not block; it buffers the data and arranges fuer it
         to be sent out asynchronously.
         """
         if not isinstance(data, (bytes, bytearray, memoryview)):
@@ -255,7 +255,7 @@ klasse _SSLProtocolTransport(transports._FlowControlMixin,
             self._ssl_protocol._abort(exc)
 
     def _test__append_write_backlog(self, data):
-        # for test only
+        # fuer test only
         self._ssl_protocol._write_backlog.append(data)
         self._ssl_protocol._write_buffer_size += len(data)
 
@@ -688,7 +688,7 @@ klasse SSLProtocol(protocols.BufferedProtocol):
             self._conn_lost += 1
             return
 
-        for data in list_of_data:
+        fuer data in list_of_data:
             self._write_backlog.append(data)
             self._write_buffer_size += len(data)
 
@@ -818,7 +818,7 @@ klasse SSLProtocol(protocols.BufferedProtocol):
         except BaseException as ex:
             self._fatal_error(ex, 'Error calling eof_received()')
 
-    # Flow control for writes from APP socket
+    # Flow control fuer writes from APP socket
 
     def _control_app_writing(self):
         size = self._get_write_buffer_size()
@@ -858,7 +858,7 @@ klasse SSLProtocol(protocols.BufferedProtocol):
         self._outgoing_high_water = high
         self._outgoing_low_water = low
 
-    # Flow control for reads to APP socket
+    # Flow control fuer reads to APP socket
 
     def _pause_reading(self):
         self._app_reading_paused = True
@@ -876,7 +876,7 @@ klasse SSLProtocol(protocols.BufferedProtocol):
                     self._do_shutdown()
             self._loop.call_soon(resume)
 
-    # Flow control for reads from SSL socket
+    # Flow control fuer reads from SSL socket
 
     def _control_ssl_reading(self):
         size = self._get_read_buffer_size()
@@ -896,7 +896,7 @@ klasse SSLProtocol(protocols.BufferedProtocol):
     def _get_read_buffer_size(self):
         return self._incoming.pending
 
-    # Flow control for writes to SSL socket
+    # Flow control fuer writes to SSL socket
 
     def pause_writing(self):
         """Called when the low-level transport's buffer goes over

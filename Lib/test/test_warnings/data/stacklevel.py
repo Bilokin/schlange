@@ -1,4 +1,4 @@
-# Helper module for testing stacklevel and skip_file_prefixes arguments
+# Helper module fuer testing stacklevel and skip_file_prefixes arguments
 # of warnings.warn()
 
 import warnings

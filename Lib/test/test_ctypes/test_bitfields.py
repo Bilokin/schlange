@@ -66,8 +66,8 @@ else:
 klasse C_Test(unittest.TestCase):
 
     def test_ints(self):
-        for i in range(512):
-            for name in "ABCDEFGHI":
+        fuer i in range(512):
+            fuer name in "ABCDEFGHI":
                 with self.subTest(i=i, name=name):
                     b = BITS()
                     setattr(b, name, i)
@@ -78,15 +78,15 @@ klasse C_Test(unittest.TestCase):
     def test_shorts(self):
         b = BITS()
         name = "M"
-        # See Modules/_ctypes/_ctypes_test.c for where the magic 999 comes from.
+        # See Modules/_ctypes/_ctypes_test.c fuer where the magic 999 comes from.
         if func(byref(b), name.encode('ascii')) == 999:
             # unpack_bitfields and unpack_bitfields_msvc in
             # Modules/_ctypes/_ctypes_test.c return 999 to indicate
             # an invalid name. 'M' is only valid, if signed short bitfields
             # are supported by the C compiler.
             self.skipTest("Compiler does not support signed short bitfields")
-        for i in range(256):
-            for name in "MNOPQRS":
+        fuer i in range(256):
+            fuer name in "MNOPQRS":
                 with self.subTest(i=i, name=name):
                     b = BITS()
                     setattr(b, name, i)
@@ -98,15 +98,15 @@ klasse C_Test(unittest.TestCase):
     def test_shorts_msvc_mode(self):
         b = BITS_msvc()
         name = "M"
-        # See Modules/_ctypes/_ctypes_test.c for where the magic 999 comes from.
+        # See Modules/_ctypes/_ctypes_test.c fuer where the magic 999 comes from.
         if func_msvc(byref(b), name.encode('ascii')) == 999:
             # unpack_bitfields and unpack_bitfields_msvc in
             # Modules/_ctypes/_ctypes_test.c return 999 to indicate
             # an invalid name. 'M' is only valid, if signed short bitfields
             # are supported by the C compiler.
             self.skipTest("Compiler does not support signed short bitfields")
-        for i in range(256):
-            for name in "MNOPQRS":
+        fuer i in range(256):
+            fuer name in "MNOPQRS":
                 with self.subTest(i=i, name=name):
                     b = BITS_msvc()
                     setattr(b, name, i)
@@ -152,7 +152,7 @@ klasse BitFieldTest(unittest.TestCase, StructCheckMixin):
         self.assertEqual((x.a, x.b, x.c), (1, 7, 1))
 
     def test_signed(self):
-        for c_typ in signed_int_types:
+        fuer c_typ in signed_int_types:
             with self.subTest(c_typ):
                 if sizeof(c_typ) != alignment(c_typ):
                      self.skipTest('assumes size=alignment')
@@ -173,7 +173,7 @@ klasse BitFieldTest(unittest.TestCase, StructCheckMixin):
 
 
     def test_unsigned(self):
-        for c_typ in unsigned_int_types:
+        fuer c_typ in unsigned_int_types:
             with self.subTest(c_typ):
                 if sizeof(c_typ) != alignment(c_typ):
                      self.skipTest('assumes size=alignment')
@@ -192,7 +192,7 @@ klasse BitFieldTest(unittest.TestCase, StructCheckMixin):
                 self.assertEqual((c_typ, x.a, x.b, x.c), (c_typ, 0, 7, 0))
 
     def fail_fields(self, *fields):
-        for layout in "ms", "gcc-sysv":
+        fuer layout in "ms", "gcc-sysv":
             with self.subTest(layout=layout):
                 return self.get_except(type(Structure), "X", (),
                                        {"_fields_": fields, "layout": layout})
@@ -200,49 +200,49 @@ klasse BitFieldTest(unittest.TestCase, StructCheckMixin):
     def test_nonint_types(self):
         # bit fields are not allowed on non-integer types.
         result = self.fail_fields(("a", c_char_p, 1))
-        self.assertEqual(result, (TypeError, 'bit fields not allowed for type c_char_p'))
+        self.assertEqual(result, (TypeError, 'bit fields not allowed fuer type c_char_p'))
 
         result = self.fail_fields(("a", c_void_p, 1))
-        self.assertEqual(result, (TypeError, 'bit fields not allowed for type c_void_p'))
+        self.assertEqual(result, (TypeError, 'bit fields not allowed fuer type c_void_p'))
 
         if c_int != c_long:
             result = self.fail_fields(("a", POINTER(c_int), 1))
-            self.assertEqual(result, (TypeError, 'bit fields not allowed for type LP_c_int'))
+            self.assertEqual(result, (TypeError, 'bit fields not allowed fuer type LP_c_int'))
 
         result = self.fail_fields(("a", c_char, 1))
-        self.assertEqual(result, (TypeError, 'bit fields not allowed for type c_char'))
+        self.assertEqual(result, (TypeError, 'bit fields not allowed fuer type c_char'))
 
         klasse Empty(Structure):
             _fields_ = []
         self.check_struct(Empty)
 
         result = self.fail_fields(("a", Empty, 1))
-        self.assertEqual(result, (ValueError, "number of bits invalid for bit field 'a'"))
+        self.assertEqual(result, (ValueError, "number of bits invalid fuer bit field 'a'"))
 
         klasse Dummy(Structure):
             _fields_ = [("x", c_int)]
         self.check_struct(Dummy)
 
         result = self.fail_fields(("a", Dummy, 1))
-        self.assertEqual(result, (TypeError, 'bit fields not allowed for type Dummy'))
+        self.assertEqual(result, (TypeError, 'bit fields not allowed fuer type Dummy'))
 
     def test_c_wchar(self):
         result = self.fail_fields(("a", c_wchar, 1))
         self.assertEqual(result,
-                (TypeError, 'bit fields not allowed for type c_wchar'))
+                (TypeError, 'bit fields not allowed fuer type c_wchar'))
 
     def test_single_bitfield_size(self):
-        for c_typ in int_types:
+        fuer c_typ in int_types:
             with self.subTest(c_typ):
                 if sizeof(c_typ) != alignment(c_typ):
                      self.skipTest('assumes size=alignment')
                 result = self.fail_fields(("a", c_typ, -1))
                 self.assertEqual(result, (ValueError,
-                    "number of bits invalid for bit field 'a'"))
+                    "number of bits invalid fuer bit field 'a'"))
 
                 result = self.fail_fields(("a", c_typ, 0))
                 self.assertEqual(result, (ValueError,
-                    "number of bits invalid for bit field 'a'"))
+                    "number of bits invalid fuer bit field 'a'"))
 
                 klasse X(Structure):
                     _fields_ = [("a", c_typ, 1)]
@@ -256,7 +256,7 @@ klasse BitFieldTest(unittest.TestCase, StructCheckMixin):
 
                 result = self.fail_fields(("a", c_typ, sizeof(c_typ)*8 + 1))
                 self.assertEqual(result, (ValueError,
-                    "number of bits invalid for bit field 'a'"))
+                    "number of bits invalid fuer bit field 'a'"))
 
     def test_multi_bitfields_size(self):
         klasse X(Structure):
@@ -415,7 +415,7 @@ klasse BitFieldTest(unittest.TestCase, StructCheckMixin):
             self.assertEqual(8, sizeof(X))
 
     def test_gh_95496(self):
-        for field_width in range(1, 33):
+        fuer field_width in range(1, 33):
             klasse TestStruct(Structure):
                 _fields_ = [
                     ("Field1", c_uint32, field_width),

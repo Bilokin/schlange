@@ -11,20 +11,20 @@ klasse TestMethodcaller(unittest.TestCase):
         mc = methodcaller("append", 2)
 
         def work(mc, l, ii):
-            for _ in range(ii):
+            fuer _ in range(ii):
                 mc(l)
 
         worker_threads = []
         lists = []
-        for ii in range(number_of_threads):
+        fuer ii in range(number_of_threads):
             l = []
             lists.append(l)
             worker_threads.append(Thread(target=work, args=[mc, l, size]))
-        for t in worker_threads:
+        fuer t in worker_threads:
             t.start()
-        for t in worker_threads:
+        fuer t in worker_threads:
             t.join()
-        for l in lists:
+        fuer l in lists:
             assert len(l) == size
 
 

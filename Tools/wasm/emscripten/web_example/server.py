@@ -6,10 +6,10 @@ parser = argparse.ArgumentParser(
     description="Start a local webserver with a Python terminal."
 )
 parser.add_argument(
-    "--port", type=int, default=8000, help="port for the http server to listen on"
+    "--port", type=int, default=8000, help="port fuer the http server to listen on"
 )
 parser.add_argument(
-    "--bind", type=str, default="127.0.0.1", help="Bind address (empty for all)"
+    "--bind", type=str, default="127.0.0.1", help="Bind address (empty fuer all)"
 )
 
 

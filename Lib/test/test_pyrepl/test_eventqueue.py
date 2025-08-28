@@ -158,7 +158,7 @@ klasse EventQueueTestBase:
             return e
 
         def _push(keys):
-            for k in keys:
+            fuer k in keys:
                 eq.push(k)
 
         self.assertIsInstance("ñ", str)

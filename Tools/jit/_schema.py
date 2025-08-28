@@ -1,4 +1,4 @@
-"""Schema for the JSON produced by llvm-readobj --elf-output-style=JSON."""
+"""Schema fuer the JSON produced by llvm-readobj --elf-output-style=JSON."""
 
 import typing
 

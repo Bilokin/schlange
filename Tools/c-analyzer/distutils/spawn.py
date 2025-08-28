@@ -1,8 +1,8 @@
 """distutils.spawn
 
 Provides the 'spawn()' function, a front-end to various platform-
-specific functions for launching another program in a sub-process.
-Also provides the 'find_executable()' to search the path for a given
+specific functions fuer launching another program in a sub-process.
+Also provides the 'find_executable()' to search the path fuer a given
 executable name.
 """
 
@@ -40,7 +40,7 @@ def find_executable(executable, path=None):
         return None
 
     paths = path.split(os.pathsep)
-    for p in paths:
+    fuer p in paths:
         f = os.path.join(p, executable)
         if os.path.isfile(f):
             # the file exists, we have a shot at spawn working

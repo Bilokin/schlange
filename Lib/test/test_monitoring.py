@@ -1,4 +1,4 @@
-"""Test suite for the sys.monitoring."""
+"""Test suite fuer the sys.monitoring."""
 
 import collections
 import dis
@@ -27,7 +27,7 @@ def f2():
     sys.getsizeof(0)
 
 def floop():
-    for item in PAIR:
+    fuer item in PAIR:
         pass
 
 def gen():
@@ -35,7 +35,7 @@ def gen():
     yield
 
 def g1():
-    for _ in gen():
+    fuer _ in gen():
         pass
 
 TEST_TOOL = 2
@@ -124,7 +124,7 @@ klasse MonitoringTestBase:
 
     def setUp(self):
         # Check that a previous test hasn't left monitoring on.
-        for tool in range(6):
+        fuer tool in range(6):
             self.assertEqual(sys.monitoring.get_events(tool), 0)
         self.assertIs(sys.monitoring.get_tool(TEST_TOOL), None)
         self.assertIs(sys.monitoring.get_tool(TEST_TOOL2), None)
@@ -135,7 +135,7 @@ klasse MonitoringTestBase:
 
     def tearDown(self):
         # Check that test hasn't left monitoring on.
-        for tool in range(6):
+        fuer tool in range(6):
             self.assertEqual(sys.monitoring.get_events(tool), 0)
         sys.monitoring.free_tool_id(TEST_TOOL)
         sys.monitoring.free_tool_id(TEST_TOOL2)
@@ -208,7 +208,7 @@ SIMPLE_EVENTS = INSTRUMENTED_EVENTS + EXCEPT_EVENTS + [
 ]
 
 
-SIMPLE_EVENT_SET = functools.reduce(operator.or_, [ev for (ev, _) in SIMPLE_EVENTS], 0) | E.CALL
+SIMPLE_EVENT_SET = functools.reduce(operator.or_, [ev fuer (ev, _) in SIMPLE_EVENTS], 0) | E.CALL
 
 
 def just_pass():
@@ -274,7 +274,7 @@ klasse MonitoringEventsBase(MonitoringTestBase):
 
     def gather_events(self, func):
         events = []
-        for event, event_name in SIMPLE_EVENTS:
+        fuer event, event_name in SIMPLE_EVENTS:
             def record(*args, event_name=event_name):
                 events.append(event_name)
             sys.monitoring.register_callback(TEST_TOOL, event, record)
@@ -356,9 +356,9 @@ klasse SimulateProfileTest(MonitoringEventsBase, unittest.TestCase):
         def call(code, offset, callable, arg):
             if not isinstance(callable, PY_CALLABLES):
                 stack.append(sys._getframe(1))
-        for event in UP_EVENTS:
+        fuer event in UP_EVENTS:
             sys.monitoring.register_callback(TEST_TOOL, event, up)
-        for event in DOWN_EVENTS:
+        fuer event in DOWN_EVENTS:
             sys.monitoring.register_callback(TEST_TOOL, event, down)
         sys.monitoring.register_callback(TEST_TOOL, E.CALL, call)
         sys.monitoring.set_events(TEST_TOOL, SIMPLE_EVENT_SET)
@@ -647,7 +647,7 @@ klasse LineMonitoringTest(MonitoringTestBase, unittest.TestCase):
             func()
             sys.monitoring.set_events(tool, 0)
             sys.monitoring.register_callback(tool, E.LINE, None)
-            lines = [ line - func.__code__.co_firstlineno for line in events[1:-1] ]
+            lines = [ line - func.__code__.co_firstlineno fuer line in events[1:-1] ]
             self.assertEqual(lines, expected)
         finally:
             sys.monitoring.set_events(tool, 0)
@@ -711,7 +711,7 @@ klasse LineMonitoringTest(MonitoringTestBase, unittest.TestCase):
 klasse TestDisable(MonitoringTestBase, unittest.TestCase):
 
     def gen(self, cond):
-        for i in range(10):
+        fuer i in range(10):
             if cond:
                 yield 1
             else:
@@ -724,13 +724,13 @@ klasse TestDisable(MonitoringTestBase, unittest.TestCase):
             raise
 
     def test_disable_legal_events(self):
-        for event, name in INSTRUMENTED_EVENTS:
+        fuer event, name in INSTRUMENTED_EVENTS:
             try:
                 counter = CounterWithDisable()
                 counter.disable = True
                 sys.monitoring.register_callback(TEST_TOOL, event, counter)
                 sys.monitoring.set_events(TEST_TOOL, event)
-                for _ in self.gen(1):
+                fuer _ in self.gen(1):
                     pass
                 self.assertLess(counter.count, 4)
             finally:
@@ -739,7 +739,7 @@ klasse TestDisable(MonitoringTestBase, unittest.TestCase):
 
 
     def test_disable_illegal_events(self):
-        for event, name in EXCEPT_EVENTS:
+        fuer event, name in EXCEPT_EVENTS:
             try:
                 counter = CounterWithDisable()
                 counter.disable = True
@@ -769,19 +769,19 @@ klasse CheckEvents(MonitoringTestBase, unittest.TestCase):
             self.assertEqual(sys.monitoring._all_events(), {})
             event_list = []
             all_events = 0
-            for recorder in recorders:
+            fuer recorder in recorders:
                 ev = recorder.event_type
                 sys.monitoring.register_callback(tool, ev, recorder(event_list))
                 all_events |= ev
             sys.monitoring.set_events(tool, all_events)
             func()
             sys.monitoring.set_events(tool, 0)
-            for recorder in recorders:
+            fuer recorder in recorders:
                 sys.monitoring.register_callback(tool, recorder.event_type, None)
             return event_list
         finally:
             sys.monitoring.set_events(tool, 0)
-            for recorder in recorders:
+            fuer recorder in recorders:
                 sys.monitoring.register_callback(tool, recorder.event_type, None)
 
     def check_events(self, func, expected, tool=TEST_TOOL, recorders=(ExceptionRecorder,)):
@@ -791,7 +791,7 @@ klasse CheckEvents(MonitoringTestBase, unittest.TestCase):
     def check_balanced(self, func, recorders):
         events = self.get_events(func, TEST_TOOL, recorders)
         self.assertEqual(len(events)%2, 0)
-        for r, h in zip(events[::2],events[1::2]):
+        fuer r, h in zip(events[::2],events[1::2]):
             r0 = r[0]
             self.assertIn(r0, ("raise", "reraise"))
             h0 = h[0]
@@ -876,7 +876,7 @@ klasse ExceptionMonitoringTest(CheckEvents):
     def test_implicit_stop_iteration(self):
         """Generators are documented as raising a StopIteration
            when they terminate.
-           However, we don't do that if we can avoid it, for speed.
+           However, we don't do that if we can avoid it, fuer speed.
            sys.monitoring handles that by injecting a STOP_ITERATION
            event when we would otherwise have skip the RAISE event.
            This test checks that both paths record an equivalent event.
@@ -889,7 +889,7 @@ klasse ExceptionMonitoringTest(CheckEvents):
         def implicit_stop_iteration(iterator=None):
             if iterator is None:
                 iterator = gen()
-            for _ in iterator:
+            fuer _ in iterator:
                 pass
 
         recorders=(ExceptionRecorder, StopiterationRecorder,)
@@ -901,14 +901,14 @@ klasse ExceptionMonitoringTest(CheckEvents):
         # Note: this assumes that we don't specialize loops over sets.
         implicit_stop_iteration(set(range(_testinternalcapi.SPECIALIZATION_THRESHOLD)))
 
-        # This will record a RAISE event for the StopIteration.
+        # This will record a RAISE event fuer the StopIteration.
         self.check_events(implicit_stop_iteration, expected, recorders=recorders)
 
         # Now specialize, so that we see a STOP_ITERATION event.
-        for _ in range(_testinternalcapi.SPECIALIZATION_COOLDOWN):
+        fuer _ in range(_testinternalcapi.SPECIALIZATION_COOLDOWN):
             implicit_stop_iteration()
 
-        # This will record a STOP_ITERATION event for the StopIteration.
+        # This will record a STOP_ITERATION event fuer the StopIteration.
         self.check_events(implicit_stop_iteration, expected, recorders=recorders)
 
     initial = [
@@ -1002,13 +1002,13 @@ klasse ExceptionMonitoringTest(CheckEvents):
         def func():
 
             async def async_generator():
-                for i in range(1):
+                fuer i in range(1):
                     raise ZeroDivisionError
                     yield i
 
             async def async_loop():
                 try:
-                    async for item in async_generator():
+                    async fuer item in async_generator():
                         pass
                 except Exception:
                     pass
@@ -1059,7 +1059,7 @@ klasse ExceptionMonitoringTest(CheckEvents):
             except ValueError:
                 pass
 
-        for _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
+        fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
             f()
         recorders = (
             ReturnRecorder,
@@ -1069,7 +1069,7 @@ klasse ExceptionMonitoringTest(CheckEvents):
         adaptive_insts = dis.get_instructions(f, adaptive=True)
         self.assertIn(
             "CALL_ALLOC_AND_ENTER_INIT",
-            [i.opname for i in adaptive_insts]
+            [i.opname fuer i in adaptive_insts]
         )
         #There should be only one unwind event
         expected = [
@@ -1330,20 +1330,20 @@ klasse TestInstallIncrementally(MonitoringTestBase, unittest.TestCase):
             self.assertEqual(sys.monitoring._all_events(), {})
             event_list = []
             all_events = 0
-            for recorder in recorders:
+            fuer recorder in recorders:
                 all_events |= recorder.event_type
                 sys.monitoring.set_events(tool, all_events)
-            for recorder in recorders:
+            fuer recorder in recorders:
                 sys.monitoring.register_callback(tool, recorder.event_type, recorder(event_list))
             func()
             sys.monitoring.set_events(tool, 0)
-            for recorder in recorders:
+            fuer recorder in recorders:
                 sys.monitoring.register_callback(tool, recorder.event_type, None)
-            for line in must_include:
+            fuer line in must_include:
                 self.assertIn(line, event_list)
         finally:
             sys.monitoring.set_events(tool, 0)
-            for recorder in recorders:
+            fuer recorder in recorders:
                 sys.monitoring.register_callback(tool, recorder.event_type, None)
 
     @staticmethod
@@ -1398,19 +1398,19 @@ klasse TestLocalEvents(MonitoringTestBase, unittest.TestCase):
             self.assertEqual(sys.monitoring._all_events(), {})
             event_list = []
             all_events = 0
-            for recorder in recorders:
+            fuer recorder in recorders:
                 ev = recorder.event_type
                 sys.monitoring.register_callback(tool, ev, recorder(event_list))
                 all_events |= ev
             sys.monitoring.set_local_events(tool, func.__code__, all_events)
             func()
             sys.monitoring.set_local_events(tool, func.__code__, 0)
-            for recorder in recorders:
+            fuer recorder in recorders:
                 sys.monitoring.register_callback(tool, recorder.event_type, None)
             self.assertEqual(event_list, expected)
         finally:
             sys.monitoring.set_local_events(tool, func.__code__, 0)
-            for recorder in recorders:
+            fuer recorder in recorders:
                 sys.monitoring.register_callback(tool, recorder.event_type, None)
 
 
@@ -1463,7 +1463,7 @@ klasse TestLocalEvents(MonitoringTestBase, unittest.TestCase):
             sys.monitoring.set_local_events(TEST_TOOL, just_call.__code__, E.RAISE)
 
 def line_from_offset(code, offset):
-    for start, end, line in code.co_lines():
+    fuer start, end, line in code.co_lines():
         if start <= offset < end:
             if line is None:
                 return f"[offset={offset}]"
@@ -1535,7 +1535,7 @@ klasse TestBranchAndJumpEvents(CheckEvents):
 
         def func():
             x = 1
-            for a in range(2):
+            fuer a in range(2):
                 if a:
                     x = 4
                 else:
@@ -1666,7 +1666,7 @@ klasse TestBranchAndJumpEvents(CheckEvents):
                 yield 3
 
             async def foo():
-                async for y in gen():
+                async fuer y in gen():
                     2
                 pass # line 3
 
@@ -1686,7 +1686,7 @@ klasse TestBranchAndJumpEvents(CheckEvents):
 
         def func(v=1):
             x = 0
-            for v in range(4):
+            fuer v in range(4):
                 match v:
                     case 1:
                         x += 1
@@ -1741,21 +1741,21 @@ klasse TestBranchConsistency(MonitoringTestBase, unittest.TestCase):
             self.assertEqual(sys.monitoring._all_events(), {})
             event_list = []
             all_events = 0
-            for recorder in recorders:
+            fuer recorder in recorders:
                 ev = recorder.event_type
                 sys.monitoring.register_callback(tool, ev, recorder(event_list))
                 all_events |= ev
             sys.monitoring.set_local_events(tool, test_func.__code__, all_events)
             run_func()
             sys.monitoring.set_local_events(tool, test_func.__code__, 0)
-            for recorder in recorders:
+            fuer recorder in recorders:
                 sys.monitoring.register_callback(tool, recorder.event_type, None)
             lefts = set()
             rights = set()
-            for (src, left, right) in test_func.__code__.co_branches():
+            fuer (src, left, right) in test_func.__code__.co_branches():
                 lefts.add((src, left))
                 rights.add((src, right))
-            for event in event_list:
+            fuer event in event_list:
                 way, _, src, dest = event
                 if "left" in way:
                     self.assertIn((src, dest), lefts)
@@ -1764,14 +1764,14 @@ klasse TestBranchConsistency(MonitoringTestBase, unittest.TestCase):
                     self.assertIn((src, dest), rights)
         finally:
             sys.monitoring.set_local_events(tool, test_func.__code__, 0)
-            for recorder in recorders:
+            fuer recorder in recorders:
                 sys.monitoring.register_callback(tool, recorder.event_type, None)
 
     def test_simple(self):
 
         def func():
             x = 1
-            for a in range(2):
+            fuer a in range(2):
                 if a:
                     x = 4
                 else:
@@ -1822,7 +1822,7 @@ klasse TestBranchConsistency(MonitoringTestBase, unittest.TestCase):
             yield 3
 
         async def foo():
-            async for y in gen():
+            async fuer y in gen():
                 2
             pass # line 3
 
@@ -1844,7 +1844,7 @@ klasse TestLoadSuperAttr(CheckEvents):
         return d
 
     def _exec_super(self, codestr, optimized=False):
-        # The compiler checks for statically visible shadowing of the name
+        # The compiler checks fuer statically visible shadowing of the name
         # `super`, and declines to emit `LOAD_SUPER_ATTR` if shadowing is found.
         # So inserting `super = super` prevents the compiler from emitting
         # `LOAD_SUPER_ATTR`, and allows us to test that monitoring events for
@@ -1858,11 +1858,11 @@ klasse TestLoadSuperAttr(CheckEvents):
         return self._exec(co)
 
     def _has_load_super_attr(self, co):
-        has = any(instr.opname == "LOAD_SUPER_ATTR" for instr in dis.get_instructions(co))
+        has = any(instr.opname == "LOAD_SUPER_ATTR" fuer instr in dis.get_instructions(co))
         if not has:
             has = any(
                 isinstance(c, types.CodeType) and self._has_load_super_attr(c)
-                for c in co.co_consts
+                fuer c in co.co_consts
             )
         return has
 
@@ -2028,7 +2028,7 @@ klasse TestLoadSuperAttr(CheckEvents):
                 ('call', 'set_events', 2),
             ]
 
-        for call_method in [True, False]:
+        fuer call_method in [True, False]:
             with self.subTest(call_method=call_method):
                 call_str = "()" if call_method else ""
                 code_super = code_template.format(cls="super", call=call_str)
@@ -2129,7 +2129,7 @@ klasse TestRegressions(MonitoringTestBase, unittest.TestCase):
                     sys.monitoring.set_events(TEST_TOOL, E.PY_RESUME)
 
         def make_foo_optimized_then_set_event():
-            for i in range(_testinternalcapi.SPECIALIZATION_THRESHOLD + 1):
+            fuer i in range(_testinternalcapi.SPECIALIZATION_THRESHOLD + 1):
                 Foo(i == _testinternalcapi.SPECIALIZATION_THRESHOLD)
 
         try:
@@ -2184,7 +2184,7 @@ klasse TestRegressions(MonitoringTestBase, unittest.TestCase):
         # Specialized FOR_ITER not incrementing index
         def foo():
             t = 0
-            for i in [1,2,3,4]:
+            fuer i in [1,2,3,4]:
                 t += i
             self.assertEqual(t, 10)
 
@@ -2217,7 +2217,7 @@ klasse TestTier2Optimizer(CheckEvents):
             set_events = sys.monitoring.set_events
             line = E.LINE
             i = 0
-            for i in range(_testinternalcapi.SPECIALIZATION_THRESHOLD + 51):
+            fuer i in range(_testinternalcapi.SPECIALIZATION_THRESHOLD + 51):
                 # Turn on events without branching once i reaches _testinternalcapi.SPECIALIZATION_THRESHOLD.
                 set_events(TEST_TOOL, line * int(i >= _testinternalcapi.SPECIALIZATION_THRESHOLD))
                 pass
@@ -2327,7 +2327,7 @@ klasse TestCApiEventGeneration(MonitoringTestBase, unittest.TestCase):
             sys.monitoring.set_events(TEST_TOOL, 0)
 
     def test_fire_event(self):
-        for expected, event, function, *args in self.cases:
+        fuer expected, event, function, *args in self.cases:
             offset = 0
             self.codelike = _testcapi.CodeLike(1)
             with self.subTest(function.__name__):
@@ -2335,7 +2335,7 @@ klasse TestCApiEventGeneration(MonitoringTestBase, unittest.TestCase):
                 self.check_event_count(event, function, args_, expected)
 
     def test_missing_exception(self):
-        for _, event, function, *args in self.cases:
+        fuer _, event, function, *args in self.cases:
             if event not in self.EXPECT_RAISED_EXCEPTION:
                 continue
             assert args and isinstance(args[-1], BaseException)
@@ -2348,7 +2348,7 @@ klasse TestCApiEventGeneration(MonitoringTestBase, unittest.TestCase):
                 self.check_event_count(event, function, args_, expected)
 
     def test_fire_event_failing_callback(self):
-        for expected, event, function, *args in self.cases:
+        fuer expected, event, function, *args in self.cases:
             offset = 0
             self.codelike = _testcapi.CodeLike(1)
             with self.subTest(function.__name__):
@@ -2398,7 +2398,7 @@ klasse TestCApiEventGeneration(MonitoringTestBase, unittest.TestCase):
             sys.monitoring.set_events(TEST_TOOL, 0)
 
     def test_disable_event(self):
-        for expected, event, function, *args in self.cases:
+        fuer expected, event, function, *args in self.cases:
             offset = 0
             self.codelike = _testcapi.CodeLike(2)
             with self.subTest(function.__name__):

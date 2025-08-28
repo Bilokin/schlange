@@ -385,7 +385,7 @@ klasse CmdLineTest(unittest.TestCase):
 
     def test_issue8202(self):
         # Make sure package __init__ modules see "-m" in sys.argv0 while
-        # searching for the module to execute
+        # searching fuer the module to execute
         with os_helper.temp_dir() as script_dir:
             with os_helper.change_cwd(path=script_dir):
                 pkg_dir = os.path.join(script_dir, 'test_pkg')
@@ -437,7 +437,7 @@ klasse CmdLineTest(unittest.TestCase):
             with open(script_name, "w", encoding="latin1", newline='\n') as f:
                 f.write("#coding: iso-8859-1\n")
                 f.write('"""\n')
-                for _ in range(30):
+                fuer _ in range(30):
                     f.write('x'*80 + '\n')
                 f.write('"""\n')
 
@@ -472,7 +472,7 @@ klasse CmdLineTest(unittest.TestCase):
             self.assertIn(b'ValueError', err)
 
     def test_dash_m_errors(self):
-        # Exercise error reporting for various invalid package executions
+        # Exercise error reporting fuer various invalid package executions
         tests = (
             ('builtins', br'No code object available'),
             ('builtins.x', br'Error while finding module specification.*'
@@ -484,7 +484,7 @@ klasse CmdLineTest(unittest.TestCase):
             ('importlib.nonexistent', br'No module named'),
             ('.unittest', br'Relative module names not supported'),
         )
-        for name, regex in tests:
+        fuer name, regex in tests:
             with self.subTest(name):
                 rc, _, err = assert_python_failure('-m', name)
                 self.assertEqual(rc, 1)
@@ -519,7 +519,7 @@ klasse CmdLineTest(unittest.TestCase):
         # These were wrapped in an ImportError and tracebacks were
         # suppressed; see Issue 14285
         exceptions = (ImportError, AttributeError, TypeError, ValueError)
-        for exception in exceptions:
+        fuer exception in exceptions:
             exception = exception.__name__
             init = "raise {0}('Exception in __init__.py')".format(exception)
             with self.subTest(exception), \
@@ -681,7 +681,7 @@ klasse CmdLineTest(unittest.TestCase):
     def test_syntaxerror_null_bytes_in_multiline_string(self):
         scripts = ["\n'''\nmultilinestring\0\n'''", "\nf'''\nmultilinestring\0\n'''"] # Both normal and f-strings
         with os_helper.temp_dir() as script_dir:
-            for script in scripts:
+            fuer script in scripts:
                 script_name = _make_test_script(script_dir, 'script', script)
                 _, _, stderr = assert_python_failure(script_name)
                 self.assertEqual(
@@ -720,7 +720,7 @@ klasse CmdLineTest(unittest.TestCase):
         #    ./python -I script_dir
         script = textwrap.dedent("""\
             import sys
-            for entry in sys.path:
+            fuer entry in sys.path:
                 print(entry)
             """)
         # Always show full path diffs on errors
@@ -752,7 +752,7 @@ klasse CmdLineTest(unittest.TestCase):
         #    ./python -Im script_pkg
         script = textwrap.dedent("""\
             import sys
-            for entry in sys.path:
+            fuer entry in sys.path:
                 print(entry)
             """)
         # Always show full path diffs on errors
@@ -782,7 +782,7 @@ klasse CmdLineTest(unittest.TestCase):
     def test_nonexisting_script(self):
         # bpo-34783: "./python script.py" must not crash
         # if the script file doesn't exist.
-        # (Skip test for macOS framework builds because sys.executable name
+        # (Skip test fuer macOS framework builds because sys.executable name
         #  is not the actual Python executable file name.
         script = 'nonexistingscript.py'
         self.assertFalse(os.path.exists(script))

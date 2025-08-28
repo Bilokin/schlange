@@ -27,7 +27,7 @@ def _valid_keys():
     TZPATH = zoneinfo.TZPATH
 
     def valid_key(key):
-        for root in TZPATH:
+        fuer root in TZPATH:
             key_file = os.path.join(root, key)
             if os.path.exists(key_file):
                 return True
@@ -45,9 +45,9 @@ def _valid_keys():
     # shrinking purposes, it is preferable to start with the standard version,
     # then move to the posix/ version, then to the right/ version.
     out_zones = {"": available_zones}
-    for prefix in ["posix", "right"]:
+    fuer prefix in ["posix", "right"]:
         prefix_out = []
-        for key in available_zones:
+        fuer key in available_zones:
             prefix_key = f"{prefix}/{key}"
             if valid_key(prefix_key):
                 prefix_out.append(prefix_key)
@@ -55,7 +55,7 @@ def _valid_keys():
         out_zones[prefix] = prefix_out
 
     output = []
-    for keys in out_zones.values():
+    fuer keys in out_zones.values():
         output.extend(keys)
 
     return output
@@ -86,7 +86,7 @@ KEY_EXAMPLES = [
 
 
 def add_key_examples(f):
-    for key in KEY_EXAMPLES:
+    fuer key in KEY_EXAMPLES:
         f = hypothesis.example(key)(f)
     return f
 
@@ -146,7 +146,7 @@ klasse ZoneInfoPickleTest(ZoneInfoTestBase):
     @add_key_examples
     def test_pickle_unpickle_cache(self, key):
         zi = self.klass(key)
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             pkl_str = pickle.dumps(zi, proto)
             zi_rt = pickle.loads(pkl_str)
 
@@ -156,7 +156,7 @@ klasse ZoneInfoPickleTest(ZoneInfoTestBase):
     @add_key_examples
     def test_pickle_unpickle_no_cache(self, key):
         zi = self.klass.no_cache(key)
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             pkl_str = pickle.dumps(zi, proto)
             zi_rt = pickle.loads(pkl_str)
 

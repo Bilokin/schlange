@@ -16,12 +16,12 @@ klasse PstatsCollector(Collector):
         )
 
     def collect(self, stack_frames):
-        for thread_id, frames in stack_frames:
+        fuer thread_id, frames in stack_frames:
             if not frames:
                 continue
 
             # Process each frame in the stack to track cumulative calls
-            for frame in frames:
+            fuer frame in frames:
                 location = (frame.filename, frame.lineno, frame.funcname)
                 self.result[location]["cumulative_calls"] += 1
 
@@ -35,8 +35,8 @@ klasse PstatsCollector(Collector):
 
             self.result[top_location]["direct_calls"] += 1
 
-            # Track caller-callee relationships for call graph
-            for i in range(1, len(frames)):
+            # Track caller-callee relationships fuer call graph
+            fuer i in range(1, len(frames)):
                 callee_frame = frames[i - 1]
                 caller_frame = frames[i]
 
@@ -63,18 +63,18 @@ klasse PstatsCollector(Collector):
         with open(file, "wb") as f:
             marshal.dump(stats_with_marker, f)
 
-    # Needed for compatibility with pstats.Stats
+    # Needed fuer compatibility with pstats.Stats
     def create_stats(self):
         sample_interval_sec = self.sample_interval_usec / 1_000_000
         callers = {}
-        for fname, call_counts in self.result.items():
+        fuer fname, call_counts in self.result.items():
             total = call_counts["direct_calls"] * sample_interval_sec
             cumulative_calls = call_counts["cumulative_calls"]
             cumulative = cumulative_calls * sample_interval_sec
             callers = dict(self.callers.get(fname, {}))
             self.stats[fname] = (
-                call_counts["direct_calls"],  # cc = direct calls for sample percentage
-                cumulative_calls,  # nc = cumulative calls for cumulative percentage
+                call_counts["direct_calls"],  # cc = direct calls fuer sample percentage
+                cumulative_calls,  # nc = cumulative calls fuer cumulative percentage
                 total,
                 cumulative,
                 callers,

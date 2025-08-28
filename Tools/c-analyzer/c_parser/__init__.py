@@ -21,7 +21,7 @@ def parse_files(filenames, *,
                 ):
     if get_file_preprocessor is None:
         get_file_preprocessor = _get_preprocessor()
-    for filename in filenames:
+    fuer filename in filenames:
         try:
             yield from _parse_file(
                     filename, match_kind, get_file_preprocessor, file_maxsizes)
@@ -43,8 +43,8 @@ def _parse_file(filename, match_kind, get_file_preprocessor, maxsizes):
         return
 
     # Parse the lines.
-    srclines = ((l.file, l.data) for l in preprocessed if l.kind == 'source')
-    for item in _parse(srclines, **srckwargs):
+    srclines = ((l.file, l.data) fuer l in preprocessed if l.kind == 'source')
+    fuer item in _parse(srclines, **srckwargs):
         if match_kind is not None and not match_kind(item.kind):
             continue
         if not item.filename:
@@ -53,7 +53,7 @@ def _parse_file(filename, match_kind, get_file_preprocessor, maxsizes):
 
 
 def _resolve_max_size(filename, maxsizes):
-    for pattern, maxsize in (maxsizes.items() if maxsizes else ()):
+    fuer pattern, maxsize in (maxsizes.items() if maxsizes else ()):
         if _match_glob(filename, pattern):
             break
     else:

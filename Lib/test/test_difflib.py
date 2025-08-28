@@ -44,9 +44,9 @@ klasse TestWithAscii(unittest.TestCase):
 
 
 klasse TestAutojunk(unittest.TestCase):
-    """Tests for the autojunk parameter added in 2.7"""
+    """Tests fuer the autojunk parameter added in 2.7"""
     def test_one_insert_homogenous_sequence(self):
-        # By default autojunk=True and the heuristic kicks in for a sequence
+        # By default autojunk=True and the heuristic kicks in fuer a sequence
         # of length 200+
         seq1 = 'b' * 200
         seq2 = 'a' + 'b' * 200
@@ -70,7 +70,7 @@ klasse TestSFbugs(unittest.TestCase):
         self.assertEqual(s.real_quick_ratio(), 1)
 
     def test_comparing_empty_lists(self):
-        # Check fix for bug #979794
+        # Check fix fuer bug #979794
         group_gen = difflib.SequenceMatcher(None, [], []).get_grouped_opcodes()
         self.assertRaises(StopIteration, next, group_gen)
         diff_gen = difflib.unified_diff([], [])
@@ -86,7 +86,7 @@ klasse TestSFbugs(unittest.TestCase):
         self.assertEqual(second[2].size, 0)
 
     def test_added_tab_hint(self):
-        # Check fix for bug #1488943
+        # Check fix fuer bug #1488943
         diff = list(difflib.Differ().compare(["\tI am a buggy"],["\t\tI am a bug"]))
         self.assertEqual("- \tI am a buggy", diff[0])
         self.assertEqual("? \t          --\n", diff[1])
@@ -188,7 +188,7 @@ the end"""
 klasse TestSFpatches(unittest.TestCase):
 
     def test_html_diff(self):
-        # Check SF patch 914575 for generating HTML differences
+        # Check SF patch 914575 fuer generating HTML differences
         f1a = ((patch914575_from1 + '123\n'*10)*3)
         t1a = (patch914575_to1 + '123\n'*10)*3
         f1b = '456\n'*10 + f1a
@@ -247,8 +247,8 @@ klasse TestSFpatches(unittest.TestCase):
     def test_recursion_limit(self):
         # Check if the problem described in patch #1413711 exists.
         limit = sys.getrecursionlimit()
-        old = [(i%2 and "K:%d" or "V:A:%d") % i for i in range(limit*2)]
-        new = [(i%2 and "K:%d" or "V:B:%d") % i for i in range(limit*2)]
+        old = [(i%2 and "K:%d" or "V:A:%d") % i fuer i in range(limit*2)]
+        new = [(i%2 and "K:%d" or "V:B:%d") % i fuer i in range(limit*2)]
         difflib.SequenceMatcher(None, old, new).get_opcodes()
 
     def test_make_file_default_charset(self):
@@ -377,7 +377,7 @@ klasse TestBytes(unittest.TestCase):
     # that it's bytes and we don't crash
     def check(self, diff):
         diff = list(diff)   # trigger exceptions first
-        for line in diff:
+        fuer line in diff:
             self.assertIsInstance(
                 line, bytes,
                 "all lines of diff should be bytes, but got: %r" % line)
@@ -430,7 +430,7 @@ klasse TestBytes(unittest.TestCase):
             # uses difflib to report difference between lists
             actual = list(actual)
             self.assertEqual(len(expect), len(actual))
-            for e, a in zip(expect, actual):
+            fuer e, a in zip(expect, actual):
                 self.assertEqual(e, a)
 
         expect = [
@@ -536,11 +536,11 @@ klasse TestInputTypes(unittest.TestCase):
 
 klasse TestJunkAPIs(unittest.TestCase):
     def test_is_line_junk_true(self):
-        for line in ['#', '  ', ' #', '# ', ' # ', '']:
+        fuer line in ['#', '  ', ' #', '# ', ' # ', '']:
             self.assertTrue(difflib.IS_LINE_JUNK(line), repr(line))
 
     def test_is_line_junk_false(self):
-        for line in ['##', ' ##', '## ', 'abc ', 'abc #', 'Mr. Moose is up!']:
+        fuer line in ['##', ' ##', '## ', 'abc ', 'abc #', 'Mr. Moose is up!']:
             self.assertFalse(difflib.IS_LINE_JUNK(line), repr(line))
 
     def test_is_line_junk_REDOS(self):
@@ -548,17 +548,17 @@ klasse TestJunkAPIs(unittest.TestCase):
         self.assertFalse(difflib.IS_LINE_JUNK(evil_input))
 
     def test_is_character_junk_true(self):
-        for char in [' ', '\t']:
+        fuer char in [' ', '\t']:
             self.assertTrue(difflib.IS_CHARACTER_JUNK(char), repr(char))
 
     def test_is_character_junk_false(self):
-        for char in ['a', '#', '\n', '\f', '\r', '\v']:
+        fuer char in ['a', '#', '\n', '\f', '\r', '\v']:
             self.assertFalse(difflib.IS_CHARACTER_JUNK(char), repr(char))
 
 klasse TestFindLongest(unittest.TestCase):
     def longer_match_exists(self, a, b, n):
-        return any(b_part in a for b_part in
-                   [b[i:i + n + 1] for i in range(0, len(b) - n - 1)])
+        return any(b_part in a fuer b_part in
+                   [b[i:i + n + 1] fuer i in range(0, len(b) - n - 1)])
 
     def test_default_args(self):
         a = 'foo bar'

@@ -1,6 +1,6 @@
-"""Unit tests for memory-based file-like objects.
-StringIO -- for unicode strings
-BytesIO -- for bytes
+"""Unit tests fuer memory-based file-like objects.
+StringIO -- fuer unicode strings
+BytesIO -- fuer bytes
 """
 
 import unittest
@@ -268,13 +268,13 @@ klasse MemoryTestMixin:
         self.assertHasAttr(memio, '__iter__')
         self.assertHasAttr(memio, '__next__')
         i = 0
-        for line in memio:
+        fuer line in memio:
             self.assertEqual(line, buf)
             i += 1
         self.assertEqual(i, 10)
         memio.seek(0)
         i = 0
-        for line in memio:
+        fuer line in memio:
             self.assertEqual(line, buf)
             i += 1
         self.assertEqual(i, 10)
@@ -385,9 +385,9 @@ klasse MemoryTestMixin:
         self.assertEqual(test2(), buf)
 
     def test_instance_dict_leak(self):
-        # Test case for issue #6242.
+        # Test case fuer issue #6242.
         # This will be caught by regrtest.py -R if this leak.
-        for _ in range(100):
+        fuer _ in range(100):
             memio = self.ioclass()
             memio.foo = 1
 
@@ -417,8 +417,8 @@ klasse MemoryTestMixin:
 
         # We only support pickle protocol 2 and onward since we use extended
         # __reduce__ API of PEP 307 to provide pickling support.
-        for proto in range(2, pickle.HIGHEST_PROTOCOL + 1):
-            for obj in (memio, submemio):
+        fuer proto in range(2, pickle.HIGHEST_PROTOCOL + 1):
+            fuer obj in (memio, submemio):
                 obj2 = pickle.loads(pickle.dumps(obj, protocol=proto))
                 self.assertEqual(obj.getvalue(), obj2.getvalue())
                 self.assertEqual(obj.__class__, obj2.__class__)
@@ -430,7 +430,7 @@ klasse MemoryTestMixin:
 
 
 klasse PyBytesIOTest(MemoryTestMixin, MemorySeekTestMixin, unittest.TestCase):
-    # Test _pyio.BytesIO; klasse also inherited for testing C implementation
+    # Test _pyio.BytesIO; klasse also inherited fuer testing C implementation
 
     UnsupportedOperation = pyio.UnsupportedOperation
 
@@ -580,7 +580,7 @@ klasse TextIOTestMixin:
         memio = self.ioclass(newline=None)
         # The C StringIO decodes newlines in write() calls, but the Python
         # implementation only does when reading.  This function forces them to
-        # be decoded for testing.
+        # be decoded fuer testing.
         def force_decode():
             memio.seek(0)
             memio.read()
@@ -608,7 +608,7 @@ klasse TextIOTestMixin:
     def test_textio_properties(self):
         memio = self.ioclass()
 
-        # These are just dummy values but we nevertheless check them for fear
+        # These are just dummy values but we nevertheless check them fuer fear
         # of unexpected breakage.
         self.assertIsNone(memio.encoding)
         self.assertIsNone(memio.errors)
@@ -720,7 +720,7 @@ klasse TextIOTestMixin:
         self.assertRaises(TypeError, self.ioclass, newline=b"\n")
         self.assertRaises(ValueError, self.ioclass, newline="error")
         # These should not raise an error
-        for newline in (None, "", "\n", "\r", "\r\n"):
+        fuer newline in (None, "", "\n", "\r", "\r\n"):
             self.ioclass(newline=newline)
 
 
@@ -797,10 +797,10 @@ klasse CBytesIOTest(PyBytesIOTest):
         n = 1000  # use a variable to prevent constant folding
         check(io.BytesIO(b'a' * n), basesize + sys.getsizeof(b'a' * n))
 
-    # Various tests of copy-on-write behaviour for BytesIO.
+    # Various tests of copy-on-write behaviour fuer BytesIO.
 
     def _test_cow_mutation(self, mutation):
-        # Common code for all BytesIO copy-on-write mutation tests.
+        # Common code fuer all BytesIO copy-on-write mutation tests.
         imm = (' ' * 1024).encode("ascii")
         old_rc = sys.getrefcount(imm)
         memio = self.ioclass(imm)
@@ -834,7 +834,7 @@ klasse CBytesIOTest(PyBytesIOTest):
 
     @support.cpython_only
     def test_cow_mutable(self):
-        # BytesIO should accept only Bytes for copy-on-write sharing, since
+        # BytesIO should accept only Bytes fuer copy-on-write sharing, since
         # arbitrary buffer-exporting objects like bytearray() aren't guaranteed
         # to be immutable.
         ba = bytearray(1024)
@@ -847,7 +847,7 @@ klasse CStringIOTest(PyStringIOTest):
     UnsupportedOperation = io.UnsupportedOperation
 
     # XXX: For the Python version of io.StringIO, this is highly
-    # dependent on the encoding used for the underlying buffer.
+    # dependent on the encoding used fuer the underlying buffer.
     def test_widechar(self):
         buf = self.buftype("\U0002030a\U00020347")
         memio = self.ioclass(buf)

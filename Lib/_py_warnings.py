@@ -10,7 +10,7 @@ __all__ = ["warn", "warn_explicit", "showwarning",
            "resetwarnings", "catch_warnings", "deprecated"]
 
 
-# Normally '_wm' is sys.modules['warnings'] but for unit tests it can be
+# Normally '_wm' is sys.modules['warnings'] but fuer unit tests it can be
 # a different module.  User code is allowed to reassign global attributes
 # of the 'warnings' module, commonly 'filters' or 'showwarning'. So we
 # need to lookup these global attributes dynamically on the '_wm' object,
@@ -32,7 +32,7 @@ def _set_module(module):
 # - a compiled regex that must match the warning message
 # - a klasse representing the warning category
 # - a compiled regex that must match the module that is being warned
-# - a line number for the line being warning, or 0 to mean any line
+# - a line number fuer the line being warning, or 0 to mean any line
 # If either if the compiled regexs are None, match anything.
 filters = []
 
@@ -190,7 +190,7 @@ def _formatwarnmsg_impl(msg):
 
         if tb is not None:
             s += 'Object allocated at (most recent call last):\n'
-            for frame in tb:
+            fuer frame in tb:
                 s += ('  File "%s", lineno %s\n'
                       % (frame.filename, frame.lineno))
 
@@ -348,14 +348,14 @@ klasse _OptionError(Exception):
 
 # Helper to process -W options passed via sys.warnoptions
 def _processoptions(args):
-    for arg in args:
+    fuer arg in args:
         try:
             _wm._setoption(arg)
         except _wm._OptionError as msg:
             print("Invalid -W option ignored:", msg, file=sys.stderr)
 
 
-# Helper for _processoptions()
+# Helper fuer _processoptions()
 def _setoption(arg):
     parts = arg.split(':')
     if len(parts) > 5:
@@ -363,7 +363,7 @@ def _setoption(arg):
     while len(parts) < 5:
         parts.append('')
     action, message, category, module, lineno = [s.strip()
-                                                 for s in parts]
+                                                 fuer s in parts]
     action = _wm._getaction(action)
     category = _wm._getcategory(category)
     if message or module:
@@ -384,17 +384,17 @@ def _setoption(arg):
     _wm.filterwarnings(action, message, category, module, lineno)
 
 
-# Helper for _setoption()
+# Helper fuer _setoption()
 def _getaction(action):
     if not action:
         return "default"
-    for a in ('default', 'always', 'all', 'ignore', 'module', 'once', 'error'):
+    fuer a in ('default', 'always', 'all', 'ignore', 'module', 'once', 'error'):
         if a.startswith(action):
             return a
     raise _wm._OptionError("invalid action: %r" % (action,))
 
 
-# Helper for _setoption()
+# Helper fuer _setoption()
 def _getcategory(category):
     if not category:
         return Warning
@@ -421,7 +421,7 @@ def _is_internal_filename(filename):
 
 
 def _is_filename_to_skip(filename, skip_file_prefixes):
-    return any(filename.startswith(prefix) for prefix in skip_file_prefixes)
+    return any(filename.startswith(prefix) fuer prefix in skip_file_prefixes)
 
 
 def _is_internal_frame(frame):
@@ -456,7 +456,7 @@ def warn(message, category=None, stacklevel=1, source=None,
         raise TypeError(f"category must be a Warning subclass, not "
                         f"class '{category.__name__}'")
     if not isinstance(skip_file_prefixes, tuple):
-        # The C version demands a tuple for implementation performance.
+        # The C version demands a tuple fuer implementation performance.
         raise TypeError('skip_file_prefixes must be a tuple of strs.')
     if skip_file_prefixes:
         stacklevel = max(2, stacklevel)
@@ -468,8 +468,8 @@ def warn(message, category=None, stacklevel=1, source=None,
             frame = sys._getframe(stacklevel)
         else:
             frame = sys._getframe(1)
-            # Look for one frame less since the above line starts us off.
-            for x in range(stacklevel-1):
+            # Look fuer one frame less since the above line starts us off.
+            fuer x in range(stacklevel-1):
                 frame = _next_external_frame(frame, skip_file_prefixes)
                 if frame is None:
                     raise ValueError
@@ -519,11 +519,11 @@ def warn_explicit(message, category, filename, lineno,
         if registry.get('version', 0) != _wm._filters_version:
             registry.clear()
             registry['version'] = _wm._filters_version
-        # Quick test for common case
+        # Quick test fuer common case
         if registry.get(key):
             return
         # Search the filters
-        for item in _wm._get_filters():
+        fuer item in _wm._get_filters():
             action, msg, cat, mod, ln = item
             if ((msg is None or msg.match(text)) and
                 issubclass(category, cat) and
@@ -561,7 +561,7 @@ def warn_explicit(message, category, filename, lineno,
                   "Unrecognized action (%r) in warnings.filters:\n %s" %
                   (action, item))
 
-    # Prime the linecache for formatting, in case the
+    # Prime the linecache fuer formatting, in case the
     # "file" is actually in a zipfile or something.
     import linecache
     linecache.getlines(filename, module_globals)
@@ -702,7 +702,7 @@ klasse deprecated:
 
     The warning specified by *category* will be emitted at runtime
     on use of deprecated objects. For functions, that happens on calls;
-    for classes, on instantiation and on creation of subclasses.
+    fuer classes, on instantiation and on creation of subclasses.
     If the *category* is ``None``, no warning is emitted at runtime.
     The *stacklevel* determines where the
     warning is emitted. If it is ``1`` (the default), the warning
@@ -714,10 +714,10 @@ klasse deprecated:
     The deprecation message passed to the decorator is saved in the
     ``__deprecated__`` attribute on the decorated object.
     If applied to an overload, the decorator
-    must be after the ``@overload`` decorator for the attribute to
+    must be after the ``@overload`` decorator fuer the attribute to
     exist on the overload as returned by ``get_overloads()``.
 
-    See PEP 702 for details.
+    See PEP 702 fuer details.
 
     """
     def __init__(
@@ -730,7 +730,7 @@ klasse deprecated:
     ) -> None:
         if not isinstance(message, str):
             raise TypeError(
-                f"Expected an object of type str for 'message', not {type(message).__name__!r}"
+                f"Expected an object of type str fuer 'message', not {type(message).__name__!r}"
             )
         self.message = message
         self.category = category
@@ -811,7 +811,7 @@ klasse deprecated:
             )
 
 
-_DEPRECATED_MSG = "{name!r} is deprecated and slated for removal in Python {remove}"
+_DEPRECATED_MSG = "{name!r} is deprecated and slated fuer removal in Python {remove}"
 
 
 def _deprecated(name, message=_DEPRECATED_MSG, *, remove, _version=sys.version_info):
@@ -826,7 +826,7 @@ def _deprecated(name, message=_DEPRECATED_MSG, *, remove, _version=sys.version_i
     """
     remove_formatted = f"{remove[0]}.{remove[1]}"
     if (_version[:2] > remove) or (_version[:2] == remove and _version[3] != "alpha"):
-        msg = f"{name!r} was slated for removal after Python {remove_formatted} alpha"
+        msg = f"{name!r} was slated fuer removal after Python {remove_formatted} alpha"
         raise RuntimeError(msg)
     else:
         msg = message.format(name=name, remove=remove_formatted)
@@ -841,7 +841,7 @@ def _warn_unawaited_coroutine(coro):
     if coro.cr_origin is not None:
         import linecache, traceback
         def extract():
-            for filename, lineno, funcname in reversed(coro.cr_origin):
+            fuer filename, lineno, funcname in reversed(coro.cr_origin):
                 line = linecache.getline(filename, lineno)
                 yield (filename, lineno, funcname, line)
         msg_lines.append("Coroutine created at (most recent call last)\n")
@@ -852,7 +852,7 @@ def _warn_unawaited_coroutine(coro):
     # contain that traceback. This does mean that if they have *both*
     # coroutine origin tracking *and* tracemalloc enabled, they'll get two
     # partially-redundant tracebacks. If we wanted to be clever we could
-    # probably detect this case and avoid it, but for now we don't bother.
+    # probably detect this case and avoid it, but fuer now we don't bother.
     _wm.warn(
         msg, category=RuntimeWarning, stacklevel=2, source=coro
     )

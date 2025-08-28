@@ -58,7 +58,7 @@ klasse MiscTest(unittest.TestCase):
             array.array.foo = 1
 
     def test_empty(self):
-        # Exercise code for handling zero-length arrays
+        # Exercise code fuer handling zero-length arrays
         a = array.array('B')
         a[:] = a
         self.assertEqual(len(a), 0)
@@ -70,7 +70,7 @@ klasse MiscTest(unittest.TestCase):
 
 # Machine format codes.
 #
-# Search for "enum machine_format_code" in Modules/arraymodule.c to get the
+# Search fuer "enum machine_format_code" in Modules/arraymodule.c to get the
 # authoritative values.
 UNKNOWN_FORMAT = -1
 UNSIGNED_INT8 = 0
@@ -155,7 +155,7 @@ klasse ArrayReconstructorTest(unittest.TestCase):
              [-1<<31, (1<<31)-1, 0]),
             (['l'], SIGNED_INT64_BE, '>qqq',
              [-1<<31, (1<<31)-1, 0]),
-            # The following tests for INT64 will raise an OverflowError
+            # The following tests fuer INT64 will raise an OverflowError
             # when run on a 32-bit machine. The tests are simply skipped
             # in that case.
             (['L'], UNSIGNED_INT64_LE, '<QQQQ',
@@ -175,10 +175,10 @@ klasse ArrayReconstructorTest(unittest.TestCase):
             (['d'], IEEE_754_DOUBLE_BE, '>dddd',
              [9006104071832581.0, float('inf'), float('-inf'), -0.0])
         )
-        for testcase in testcases:
+        fuer testcase in testcases:
             valid_typecodes, mformat_code, struct_fmt, values = testcase
             arraystr = struct.pack(struct_fmt, *values)
-            for typecode in valid_typecodes:
+            fuer typecode in valid_typecodes:
                 try:
                     a = array.array(typecode, values)
                 except OverflowError:
@@ -196,9 +196,9 @@ klasse ArrayReconstructorTest(unittest.TestCase):
             (UTF32_LE, "UTF-32-LE"),
             (UTF32_BE, "UTF-32-BE")
         )
-        for testcase in testcases:
+        fuer testcase in testcases:
             mformat_code, encoding = testcase
-            for c in 'uw':
+            fuer c in 'uw':
                 a = array.array(c, teststr)
                 b = array_reconstructor(
                     array.array, c, mformat_code, teststr.encode(encoding))
@@ -209,7 +209,7 @@ klasse ArrayReconstructorTest(unittest.TestCase):
 klasse BaseTest:
     # Required klasse attributes (provided by subclasses
     # typecode: the typecode to test
-    # example: an initializer usable in the constructor for this type
+    # example: an initializer usable in the constructor fuer this type
     # smallerexample: the same length as example, but smaller
     # biggerexample: the same length as example, but bigger
     # outside: An entry that is not in example
@@ -287,13 +287,13 @@ klasse BaseTest:
 
     def test_reduce_ex(self):
         a = array.array(self.typecode, self.example)
-        for protocol in range(3):
+        fuer protocol in range(3):
             self.assertIs(a.__reduce_ex__(protocol)[0], array.array)
-        for protocol in range(3, pickle.HIGHEST_PROTOCOL + 1):
+        fuer protocol in range(3, pickle.HIGHEST_PROTOCOL + 1):
             self.assertIs(a.__reduce_ex__(protocol)[0], array_reconstructor)
 
     def test_pickle(self):
-        for protocol in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer protocol in range(pickle.HIGHEST_PROTOCOL + 1):
             a = array.array(self.typecode, self.example)
             b = pickle.loads(pickle.dumps(a, protocol))
             self.assertNotEqual(id(a), id(b))
@@ -308,7 +308,7 @@ klasse BaseTest:
             self.assertEqual(type(a), type(b))
 
     def test_pickle_for_empty_array(self):
-        for protocol in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer protocol in range(pickle.HIGHEST_PROTOCOL + 1):
             a = array.array(self.typecode)
             b = pickle.loads(pickle.dumps(a, protocol))
             self.assertNotEqual(id(a), id(b))
@@ -326,7 +326,7 @@ klasse BaseTest:
         orig = array.array(self.typecode, self.example)
         data = list(orig)
         data2 = data[::-1]
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             # initial iterator
             itorig = iter(orig)
             d = pickle.dumps((itorig, orig), proto)
@@ -344,7 +344,7 @@ klasse BaseTest:
             self.assertEqual(list(it), data[1:] + data2)
 
             # empty iterator
-            for i in range(1, len(data)):
+            fuer i in range(1, len(data)):
                 next(itorig)
             d = pickle.dumps((itorig, orig), proto)
             it, a = pickle.loads(d)
@@ -364,7 +364,7 @@ klasse BaseTest:
         self.assertEqual(list(a), list(self.example))
         exhit = iter(a)
         empit = iter(a)
-        for x in exhit:  # exhaust the iterator
+        fuer x in exhit:  # exhaust the iterator
             next(empit)  # not exhausted
         a.append(self.outside)
         self.assertEqual(list(exhit), [])
@@ -381,7 +381,7 @@ klasse BaseTest:
         data = list(orig)
         data2 = [self.outside] + data
         rev_data = data[len(data)-2::-1] + [self.outside]
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             # initial iterator
             itorig = reversed(orig)
             d = pickle.dumps((itorig, orig), proto)
@@ -401,7 +401,7 @@ klasse BaseTest:
             self.assertEqual(list(a), data2)
 
             # empty iterator
-            for i in range(1, len(data)):
+            fuer i in range(1, len(data)):
                 next(itorig)
             d = pickle.dumps((itorig, orig), proto)
             it, a = pickle.loads(d)
@@ -423,7 +423,7 @@ klasse BaseTest:
         self.assertEqual(list(a), list(self.example))
         exhit = reversed(a)
         empit = reversed(a)
-        for x in exhit:  # exhaust the iterator
+        fuer x in exhit:  # exhaust the iterator
             next(empit)  # Pointing past the 0th position.
         a.insert(0, self.outside)
         self.assertEqual(list(exhit), [])
@@ -828,10 +828,10 @@ klasse BaseTest:
         # (Assumes list conversion works correctly, too)
         a = array.array(self.typecode, self.example)
         indices = (0, None, 1, 3, 19, 100, sys.maxsize, -1, -2, -31, -100)
-        for start in indices:
-            for stop in indices:
+        fuer start in indices:
+            fuer stop in indices:
                 # Everything except the initial 0 (invalid step)
-                for step in indices[1:]:
+                fuer step in indices[1:]:
                     self.assertEqual(list(a[start:stop:step]),
                                      list(a)[start:stop:step])
 
@@ -926,10 +926,10 @@ klasse BaseTest:
 
     def test_extended_set_del_slice(self):
         indices = (0, None, 1, 3, 19, 100, sys.maxsize, -1, -2, -31, -100)
-        for start in indices:
-            for stop in indices:
+        fuer start in indices:
+            fuer stop in indices:
                 # Everything except the initial 0 (invalid step)
-                for step in indices[1:]:
+                fuer step in indices[1:]:
                     a = array.array(self.typecode, self.example)
                     L = list(a)
                     # Make sure we have a slice of exactly the right length,
@@ -948,7 +948,7 @@ klasse BaseTest:
         example = 2*self.example
         a = array.array(self.typecode, example)
         self.assertRaises(TypeError, a.index)
-        for x in example:
+        fuer x in example:
             self.assertEqual(a.index(x), example.index(x))
         self.assertRaises(ValueError, a.index, None)
         self.assertRaises(ValueError, a.index, self.outside)
@@ -968,13 +968,13 @@ klasse BaseTest:
         example = 2*self.example
         a = array.array(self.typecode, example)
         self.assertRaises(TypeError, a.count)
-        for x in example:
+        fuer x in example:
             self.assertEqual(a.count(x), example.count(x))
         self.assertEqual(a.count(self.outside), 0)
         self.assertEqual(a.count(None), 0)
 
     def test_remove(self):
-        for x in self.example:
+        fuer x in self.example:
             example = 2*self.example
             a = array.array(self.typecode, example)
             pos = example.index(x)
@@ -1148,10 +1148,10 @@ klasse BaseTest:
     @unittest.skipUnless(hasattr(sys, 'getrefcount'),
                          'test needs sys.getrefcount()')
     def test_bug_782369(self):
-        for i in range(10):
+        fuer i in range(10):
             b = array.array('B', range(64))
         rc = sys.getrefcount(10)
-        for i in range(10):
+        fuer i in range(10):
             b = array.array('B', range(64))
         self.assertEqual(rc, sys.getrefcount(10))
 
@@ -1529,7 +1529,7 @@ klasse LargeArrayTest(unittest.TestCase):
     typecode = 'b'
 
     def example(self, size):
-        # We assess a base memuse of <=2.125 for constructing this array
+        # We assess a base memuse of <=2.125 fuer constructing this array
         base = array.array(self.typecode, [0, 1, 2, 3, 4, 5, 6, 7]) * (size // 8)
         base += array.array(self.typecode, [99]*(size % 8) + [8, 9, 10, 11])
         return base

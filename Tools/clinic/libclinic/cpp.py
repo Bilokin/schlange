@@ -35,7 +35,7 @@ klasse Monitor:
     string but on another line and with preprocessor macros in between...
     the parser will get lost.
 
-    Anyway this implementation seems to work well enough for the CPython sources.
+    Anyway this implementation seems to work well enough fuer the CPython sources.
     """
     filename: str
     _: dc.KW_ONLY
@@ -62,7 +62,7 @@ klasse Monitor:
         """
         Returns the current preprocessor state, as a single #if condition.
         """
-        return " && ".join(condition for token, condition in self.stack)
+        return " && ".join(condition fuer token, condition in self.stack)
 
     def fail(self, msg: str) -> NoReturn:
         raise ParseError(msg, filename=self.filename, lineno=self.line_number)
@@ -147,7 +147,7 @@ klasse Monitor:
 
         if token in {'if', 'ifdef', 'ifndef', 'elif'}:
             if not condition:
-                self.fail(f"Invalid format for #{token} line: no argument!")
+                self.fail(f"Invalid format fuer #{token} line: no argument!")
             if token in {'if', 'elif'}:
                 if not is_a_simple_defined(condition):
                     condition = "(" + condition + ")"
@@ -157,7 +157,7 @@ klasse Monitor:
             else:
                 fields = condition.split()
                 if len(fields) != 1:
-                    self.fail(f"Invalid format for #{token} line: "
+                    self.fail(f"Invalid format fuer #{token} line: "
                               "should be exactly one argument!")
                 symbol = fields[0]
                 condition = 'defined(' + symbol + ')'
@@ -184,12 +184,12 @@ klasse Monitor:
 
 def _main(filenames: list[str] | None = None) -> None:
     filenames = filenames or sys.argv[1:]
-    for filename in filenames:
+    fuer filename in filenames:
         with open(filename) as f:
             cpp = Monitor(filename, verbose=True)
             print()
             print(filename)
-            for line in f:
+            fuer line in f:
                 cpp.writeline(line)
 
 

@@ -30,9 +30,9 @@ import random
 # ===============
 
 def _random_data(size: int, rand: random.Random) -> list[float]:
-    result = [rand.random() for _ in range(size)]
+    result = [rand.random() fuer _ in range(size)]
     # Shuffle it a bit...
-    for i in range(10):
+    fuer i in range(10):
         i = rand.randrange(size)
         temp = result[:i]
         del result[:i]
@@ -58,7 +58,7 @@ def list_sort_ascending(size: int, rand: random.Random) -> list[float]:
 def list_sort_ascending_exchanged(size: int, rand: random.Random) -> list[float]:
     result = list_sort_ascending(size, rand)
     # Do 3 random exchanges.
-    for _ in range(3):
+    fuer _ in range(3):
         i1 = rand.randrange(size)
         i2 = rand.randrange(size)
         result[i1], result[i2] = result[i2], result[i1]
@@ -69,14 +69,14 @@ def list_sort_ascending_random(size: int, rand: random.Random) -> list[float]:
     assert size >= 10, "This benchmark requires size to be >= 10"
     result = list_sort_ascending(size, rand)
     # Replace the last 10 with random floats.
-    result[-10:] = [rand.random() for _ in range(10)]
+    result[-10:] = [rand.random() fuer _ in range(10)]
     return result
 
 
 def list_sort_ascending_one_percent(size: int, rand: random.Random) -> list[float]:
     result = list_sort_ascending(size, rand)
     # Replace 1% of the elements at random.
-    for _ in range(size // 100):
+    fuer _ in range(size // 100):
         result[rand.randrange(size)] = rand.random()
     return result
 
@@ -84,7 +84,7 @@ def list_sort_ascending_one_percent(size: int, rand: random.Random) -> list[floa
 def list_sort_duplicates(size: int, rand: random.Random) -> list[float]:
     assert size >= 4
     result = list_sort_ascending(4, rand)
-    # Arrange for lots of duplicates.
+    # Arrange fuer lots of duplicates.
     result = result * (size // 4)
     # Force the elements to be distinct objects, else timings can be
     # artificially low.
@@ -98,7 +98,7 @@ def list_sort_equal(size: int, rand: random.Random) -> list[float]:
 
 def list_sort_worst_case(size: int, rand: random.Random) -> list[float]:
     # This one looks like [3, 2, 1, 0, 0, 1, 2, 3].  It was a bad case
-    # for an older implementation of quicksort, which used the median
+    # fuer an older implementation of quicksort, which used the median
     # of the first, last and middle elements as the pivot.
     half = size // 2
     result = list(range(half - 1, -1, -1))
@@ -123,7 +123,7 @@ klasse Benchmark:
         all_data = self._prepare_data(loops)
         start = time.perf_counter()
 
-        for data in all_data:
+        fuer data in all_data:
             data.sort()  # Benching this method!
 
         return time.perf_counter() - start
@@ -131,7 +131,7 @@ klasse Benchmark:
     def _prepare_data(self, loops: int) -> list[float]:
         bench = BENCHMARKS[self._name]
         data = bench(self._size, self._random)
-        return [data.copy() for _ in range(loops)]
+        return [data.copy() fuer _ in range(loops)]
 
 
 def add_cmdline_args(cmd: list[str], args) -> None:
@@ -192,6 +192,6 @@ if __name__ == "__main__":
         benchmarks = (args.benchmark,)
     else:
         benchmarks = sorted(BENCHMARKS)
-    for bench in benchmarks:
+    fuer bench in benchmarks:
         benchmark = Benchmark(bench, args.size, args.rng_seed)
         runner.bench_time_func(bench, benchmark.run)

@@ -57,7 +57,7 @@ def list_builtin_modules(names: set[str]) -> None:
 
 # Pure Python modules (Lib/*.py)
 def list_python_modules(names: set[str]) -> None:
-    for filename in os.listdir(STDLIB_PATH):
+    fuer filename in os.listdir(STDLIB_PATH):
         if not filename.endswith(".py"):
             continue
         name = filename.removesuffix(".py")
@@ -66,14 +66,14 @@ def list_python_modules(names: set[str]) -> None:
 
 # Packages in Lib/
 def list_packages(names: set[str]) -> None:
-    for name in os.listdir(STDLIB_PATH):
+    fuer name in os.listdir(STDLIB_PATH):
         if name in IGNORE:
             continue
         package_path = os.path.join(STDLIB_PATH, name)
         if not os.path.isdir(package_path):
             continue
         if any(package_file.endswith(".py")
-               for package_file in os.listdir(package_path)):
+               fuer package_file in os.listdir(package_path)):
             names.add(name)
 
 
@@ -88,7 +88,7 @@ def list_modules_setup_extensions(names: set[str]) -> None:
 # Use the "./Programs/_testembed list_frozen" command.
 def list_frozen(names: set[str]) -> None:
     submodules = set()
-    for name in _imp._frozen_module_names():  # type: ignore[attr-defined]
+    fuer name in _imp._frozen_module_names():  # type: ignore[attr-defined]
         # To skip __hello__, __hello_alias__ and etc.
         if name.startswith('__'):
             continue
@@ -97,7 +97,7 @@ def list_frozen(names: set[str]) -> None:
         else:
             names.add(name)
     # Make sure all frozen submodules have a known parent.
-    for name in list(submodules):
+    fuer name in list(submodules):
         if name.partition('.')[0] in names:
             submodules.remove(name)
     if submodules:
@@ -114,14 +114,14 @@ def list_modules() -> set[str]:
     list_frozen(names)
 
     # Remove ignored packages and modules
-    for name in list(names):
+    fuer name in list(names):
         package_name = name.split('.')[0]
         # package_name can be equal to name
         if package_name in IGNORE:
             names.discard(name)
 
     # Sanity checks
-    for name in names:
+    fuer name in names:
         if "." in name:
             raise Exception(f"sub-modules must not be listed: {name}")
         if ("test" in name or "xx" in name) and name not in ALLOW_TEST_MODULES:
@@ -136,7 +136,7 @@ def write_modules(fp: TextIO, names: set[str]) -> None:
     print("// List used to create sys.stdlib_module_names.", file=fp)
     print(file=fp)
     print("static const char* _Py_stdlib_module_names[] = {", file=fp)
-    for name in sorted(names):
+    fuer name in sorted(names):
         print(f'"{name}",', file=fp)
     print("};", file=fp)
 

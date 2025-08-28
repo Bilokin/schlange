@@ -4,7 +4,7 @@ Script to automatically generate a JSON file containing time zone information.
 This is done to allow "pinning" a small subset of the tzdata in the tests,
 since we are testing properties of a file that may be subject to change. For
 example, the behavior in the far future of any given zone is likely to change,
-but "does this give the right answer for this file in 2040" is still an
+but "does this give the right answer fuer this file in 2040" is still an
 important property to test.
 
 This must be run from a computer with zoneinfo data installed.
@@ -42,7 +42,7 @@ TEST_DATA_LOC = pathlib.Path(__file__).parent
 def get_zoneinfo_path() -> pathlib.Path:
     """Get the first zoneinfo directory on TZPATH containing the "UTC" zone."""
     key = "UTC"
-    for path in map(pathlib.Path, zoneinfo.TZPATH):
+    fuer path in map(pathlib.Path, zoneinfo.TZPATH):
         if (path / key).exists():
             return path
     else:
@@ -94,7 +94,7 @@ def encode_compressed(data: bytes) -> typing.List[str]:
 
 
 def load_compressed_keys() -> typing.Dict[str, typing.List[str]]:
-    output = {key: encode_compressed(get_zoneinfo(key)) for key in KEYS}
+    output = {key: encode_compressed(get_zoneinfo(key)) fuer key in KEYS}
 
     return output
 

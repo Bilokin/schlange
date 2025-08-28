@@ -26,7 +26,7 @@
 #
 
 
-# Generate test cases for deccheck.py.
+# Generate test cases fuer deccheck.py.
 
 
 #
@@ -153,14 +153,14 @@ def un_close_to_pow10(prec, maxexp, itr=None):
         lst = range(prec+30)
     else:
         lst = sample(range(prec+30), itr)
-    nines = [10**n - 1 for n in lst]
-    pow10 = [10**n for n in lst]
-    for coeff in nines:
+    nines = [10**n - 1 fuer n in lst]
+    pow10 = [10**n fuer n in lst]
+    fuer coeff in nines:
         yield coeff
         yield -coeff
         yield from_triple(1, coeff, randrange(2*maxexp))
         yield from_triple(-1, coeff, randrange(2*maxexp))
-    for coeff in pow10:
+    fuer coeff in pow10:
         yield coeff
         yield -coeff
 
@@ -170,9 +170,9 @@ def bin_close_to_pow10(prec, maxexp, itr=None):
         lst = range(prec+30)
     else:
         lst = sample(range(prec+30), itr)
-    nines = [10**n - 1 for n in lst]
-    pow10 = [10**n for n in lst]
-    for coeff in nines:
+    nines = [10**n - 1 fuer n in lst]
+    pow10 = [10**n fuer n in lst]
+    fuer coeff in nines:
         yield coeff, 1
         yield -coeff, -1
         yield 1, coeff
@@ -181,7 +181,7 @@ def bin_close_to_pow10(prec, maxexp, itr=None):
         yield from_triple(-1, coeff, randrange(2*maxexp)), -1
         yield 1, from_triple(1, coeff, -randrange(2*maxexp))
         yield -1, from_triple(-1, coeff, -randrange(2*maxexp))
-    for coeff in pow10:
+    fuer coeff in pow10:
         yield coeff, -1
         yield -coeff, 1
         yield 1, -coeff
@@ -269,38 +269,38 @@ close_funcs = [
 def un_close_numbers(prec, emax, emin, itr=None):
     if itr is None:
         itr = 1000
-    for _ in range(itr):
-        for func in close_funcs:
+    fuer _ in range(itr):
+        fuer func in close_funcs:
             yield func(prec, emax, emin)
 
 def bin_close_numbers(prec, emax, emin, itr=None):
     if itr is None:
         itr = 1000
-    for _ in range(itr):
-        for func1 in close_funcs:
-            for func2 in close_funcs:
+    fuer _ in range(itr):
+        fuer func1 in close_funcs:
+            fuer func2 in close_funcs:
                 yield func1(prec, emax, emin), func2(prec, emax, emin)
-        for func in close_funcs:
+        fuer func in close_funcs:
             yield randdec(prec, emax), func(prec, emax, emin)
             yield func(prec, emax, emin), randdec(prec, emax)
 
 def tern_close_numbers(prec, emax, emin, itr):
     if itr is None:
         itr = 1000
-    for _ in range(itr):
-        for func1 in close_funcs:
-            for func2 in close_funcs:
-                for func3 in close_funcs:
+    fuer _ in range(itr):
+        fuer func1 in close_funcs:
+            fuer func2 in close_funcs:
+                fuer func3 in close_funcs:
                     yield (func1(prec, emax, emin), func2(prec, emax, emin),
                            func3(prec, emax, emin))
-        for func in close_funcs:
+        fuer func in close_funcs:
             yield (randdec(prec, emax), func(prec, emax, emin),
                    func(prec, emax, emin))
             yield (func(prec, emax, emin), randdec(prec, emax),
                    func(prec, emax, emin))
             yield (func(prec, emax, emin), func(prec, emax, emin),
                    randdec(prec, emax))
-        for func in close_funcs:
+        fuer func in close_funcs:
             yield (randdec(prec, emax), randdec(prec, emax),
                    func(prec, emax, emin))
             yield (randdec(prec, emax), func(prec, emax, emin),
@@ -315,7 +315,7 @@ def un_incr_digits(prec, maxexp, itr):
         lst = range(prec+30)
     else:
         lst = sample(range(prec+30), itr)
-    for m in lst:
+    fuer m in lst:
         yield from_triple(1, ndigits(m), 0)
         yield from_triple(-1, ndigits(m), 0)
         yield from_triple(1, ndigits(m), randrange(maxexp))
@@ -328,7 +328,7 @@ def un_incr_digits_tuple(prec, maxexp, itr):
         lst = range(prec+30)
     else:
         lst = sample(range(prec+30), itr)
-    for m in lst:
+    fuer m in lst:
         yield from_triple(1, ndigits(m), 0)
         yield from_triple(-1, ndigits(m), 0)
         yield from_triple(1, ndigits(m), randrange(maxexp))
@@ -347,7 +347,7 @@ def bin_incr_digits(prec, maxexp, itr):
     else:
         lst1 = sample(range(prec+30), itr)
         lst2 = sample(range(prec+30), itr)
-    for m in lst1:
+    fuer m in lst1:
         x = from_triple(1, ndigits(m), 0)
         yield x, x
         x = from_triple(-1, ndigits(m), 0)
@@ -356,8 +356,8 @@ def bin_incr_digits(prec, maxexp, itr):
         yield x, x
         x = from_triple(-1, ndigits(m), randrange(maxexp))
         yield x, x
-    for m in lst1:
-        for n in lst2:
+    fuer m in lst1:
+        fuer n in lst2:
             x = from_triple(1, ndigits(m), 0)
             y = from_triple(1, ndigits(n), 0)
             yield x, y
@@ -397,19 +397,19 @@ def tern_incr_digits(prec, maxexp, itr):
         lst1 = sample(range(prec+30), itr)
         lst2 = sample(range(prec+30), itr)
         lst3 = sample(range(prec+30), itr)
-    for m in lst1:
-        for n in lst2:
-            for p in lst3:
+    fuer m in lst1:
+        fuer n in lst2:
+            fuer p in lst3:
                 x = from_triple(randsign(), ndigits(m), 0)
                 y = from_triple(randsign(), ndigits(n), 0)
                 z = from_triple(randsign(), ndigits(p), 0)
                 yield x, y, z
 
 
-# Tests for the 'logical' functions
+# Tests fuer the 'logical' functions
 def bindigits(prec):
     z = 0
-    for i in range(prec):
+    fuer i in range(prec):
         z += randrange(2) * 10**i
     return z
 
@@ -418,7 +418,7 @@ def logical_un_incr_digits(prec, itr):
         lst = range(prec+30)
     else:
         lst = sample(range(prec+30), itr)
-    for m in lst:
+    fuer m in lst:
         yield from_triple(1, bindigits(m), 0)
 
 def logical_bin_incr_digits(prec, itr):
@@ -428,11 +428,11 @@ def logical_bin_incr_digits(prec, itr):
     else:
         lst1 = sample(range(prec+30), itr)
         lst2 = sample(range(prec+30), itr)
-    for m in lst1:
+    fuer m in lst1:
         x = from_triple(1, bindigits(m), 0)
         yield x, x
-    for m in lst1:
-        for n in lst2:
+    fuer m in lst1:
+        fuer n in lst2:
             x = from_triple(1, bindigits(m), 0)
             y = from_triple(1, bindigits(n), 0)
             yield x, y
@@ -471,103 +471,103 @@ number_funcs = [randint, randfloat, randcomplex, randfraction]
 def un_random_mixed_op(itr=None):
     if itr is None:
         itr = 1000
-    for _ in range(itr):
-        for func in number_funcs:
+    fuer _ in range(itr):
+        fuer func in number_funcs:
             yield func()
     # Test garbage input
-    for x in (['x'], ('y',), {'z'}, {1:'z'}):
+    fuer x in (['x'], ('y',), {'z'}, {1:'z'}):
         yield x
 
 def bin_random_mixed_op(prec, emax, emin, itr=None):
     if itr is None:
         itr = 1000
-    for _ in range(itr):
-        for func in number_funcs:
+    fuer _ in range(itr):
+        fuer func in number_funcs:
             yield randdec(prec, emax), func()
             yield func(), randdec(prec, emax)
-        for number in number_funcs:
-            for dec in close_funcs:
+        fuer number in number_funcs:
+            fuer dec in close_funcs:
                 yield dec(prec, emax, emin), number()
     # Test garbage input
-    for x in (['x'], ('y',), {'z'}, {1:'z'}):
-        for y in (['x'], ('y',), {'z'}, {1:'z'}):
+    fuer x in (['x'], ('y',), {'z'}, {1:'z'}):
+        fuer y in (['x'], ('y',), {'z'}, {1:'z'}):
             yield x, y
 
 def tern_random_mixed_op(prec, emax, emin, itr):
     if itr is None:
         itr = 1000
-    for _ in range(itr):
-        for func in number_funcs:
+    fuer _ in range(itr):
+        fuer func in number_funcs:
             yield randdec(prec, emax), randdec(prec, emax), func()
             yield randdec(prec, emax), func(), func()
             yield func(), func(), func()
     # Test garbage input
-    for x in (['x'], ('y',), {'z'}, {1:'z'}):
-        for y in (['x'], ('y',), {'z'}, {1:'z'}):
-            for z in (['x'], ('y',), {'z'}, {1:'z'}):
+    fuer x in (['x'], ('y',), {'z'}, {1:'z'}):
+        fuer y in (['x'], ('y',), {'z'}, {1:'z'}):
+            fuer z in (['x'], ('y',), {'z'}, {1:'z'}):
                 yield x, y, z
 
 def all_unary(prec, exp_range, itr):
-    for a in un_close_to_pow10(prec, exp_range, itr):
+    fuer a in un_close_to_pow10(prec, exp_range, itr):
         yield (a,)
-    for a in un_close_numbers(prec, exp_range, -exp_range, itr):
+    fuer a in un_close_numbers(prec, exp_range, -exp_range, itr):
         yield (a,)
-    for a in un_incr_digits_tuple(prec, exp_range, itr):
+    fuer a in un_incr_digits_tuple(prec, exp_range, itr):
         yield (a,)
-    for a in un_randfloat():
+    fuer a in un_randfloat():
         yield (a,)
-    for a in un_random_mixed_op(itr):
+    fuer a in un_random_mixed_op(itr):
         yield (a,)
-    for a in logical_un_incr_digits(prec, itr):
+    fuer a in logical_un_incr_digits(prec, itr):
         yield (a,)
-    for _ in range(100):
+    fuer _ in range(100):
         yield (randdec(prec, exp_range),)
-    for _ in range(100):
+    fuer _ in range(100):
         yield (randtuple(prec, exp_range),)
 
 def unary_optarg(prec, exp_range, itr):
-    for _ in range(100):
+    fuer _ in range(100):
         yield randdec(prec, exp_range), None
         yield randdec(prec, exp_range), None, None
 
 def all_binary(prec, exp_range, itr):
-    for a, b in bin_close_to_pow10(prec, exp_range, itr):
+    fuer a, b in bin_close_to_pow10(prec, exp_range, itr):
         yield a, b
-    for a, b in bin_close_numbers(prec, exp_range, -exp_range, itr):
+    fuer a, b in bin_close_numbers(prec, exp_range, -exp_range, itr):
         yield a, b
-    for a, b in bin_incr_digits(prec, exp_range, itr):
+    fuer a, b in bin_incr_digits(prec, exp_range, itr):
         yield a, b
-    for a, b in bin_randfloat():
+    fuer a, b in bin_randfloat():
         yield a, b
-    for a, b in bin_random_mixed_op(prec, exp_range, -exp_range, itr):
+    fuer a, b in bin_random_mixed_op(prec, exp_range, -exp_range, itr):
         yield a, b
-    for a, b in logical_bin_incr_digits(prec, itr):
+    fuer a, b in logical_bin_incr_digits(prec, itr):
         yield a, b
-    for _ in range(100):
+    fuer _ in range(100):
         yield randdec(prec, exp_range), randdec(prec, exp_range)
 
 def binary_optarg(prec, exp_range, itr):
-    for _ in range(100):
+    fuer _ in range(100):
         yield randdec(prec, exp_range), randdec(prec, exp_range), None
         yield randdec(prec, exp_range), randdec(prec, exp_range), None, None
 
 def all_ternary(prec, exp_range, itr):
-    for a, b, c in tern_close_numbers(prec, exp_range, -exp_range, itr):
+    fuer a, b, c in tern_close_numbers(prec, exp_range, -exp_range, itr):
         yield a, b, c
-    for a, b, c in tern_incr_digits(prec, exp_range, itr):
+    fuer a, b, c in tern_incr_digits(prec, exp_range, itr):
         yield a, b, c
-    for a, b, c in tern_randfloat():
+    fuer a, b, c in tern_randfloat():
         yield a, b, c
-    for a, b, c in tern_random_mixed_op(prec, exp_range, -exp_range, itr):
+    fuer a, b, c in tern_random_mixed_op(prec, exp_range, -exp_range, itr):
         yield a, b, c
-    for _ in range(100):
+    fuer _ in range(100):
         a = randdec(prec, 2*exp_range)
         b = randdec(prec, 2*exp_range)
         c = randdec(prec, 2*exp_range)
         yield a, b, c
 
 def ternary_optarg(prec, exp_range, itr):
-    for _ in range(100):
+    fuer _ in range(100):
         a = randdec(prec, 2*exp_range)
         b = randdec(prec, 2*exp_range)
         c = randdec(prec, 2*exp_range)

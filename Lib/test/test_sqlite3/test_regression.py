@@ -5,10 +5,10 @@
 # This file is part of pysqlite.
 #
 # This software is provided 'as-is', without any express or implied
-# warranty.  In no event will the authors be held liable for any damages
+# warranty.  In no event will the authors be held liable fuer any damages
 # arising from the use of this software.
 #
-# Permission is granted to anyone to use this software for any purpose,
+# Permission is granted to anyone to use this software fuer any purpose,
 # including commercial applications, and to alter it and redistribute it
 # freely, subject to the following restrictions:
 #
@@ -36,7 +36,7 @@ from .util import MemoryDatabaseMixin
 klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
 
     def test_pragma_user_version(self):
-        # This used to crash pysqlite because this pragma command returns NULL for the column name
+        # This used to crash pysqlite because this pragma command returns NULL fuer the column name
         cur = self.con.cursor()
         cur.execute("pragma user_version")
 
@@ -51,12 +51,12 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
         # reset before a rollback, but only those that are still in the
         # statement cache. The others are not accessible from the connection object.
         with memory_database(cached_statements=5) as con:
-            cursors = [con.cursor() for x in range(5)]
+            cursors = [con.cursor() fuer x in range(5)]
             cursors[0].execute("create table test(x)")
-            for i in range(10):
-                cursors[0].executemany("insert into test(x) values (?)", [(x,) for x in range(10)])
+            fuer i in range(10):
+                cursors[0].executemany("insert into test(x) values (?)", [(x,) fuer x in range(10)])
 
-            for i in range(5):
+            fuer i in range(5):
                 cursors[i].execute(" " * i + "select x from test")
 
             con.rollback()
@@ -76,7 +76,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
         # "OperationalError: Unable to close due to unfinalised statements".
         cursors = []
         # default statement cache size is 100
-        for i in range(105):
+        fuer i in range(105):
             cur = self.con.cursor()
             cursors.append(cur)
             cur.execute("select 1 x union select " + str(i))
@@ -107,7 +107,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
     def test_empty_statement(self):
         """
         pysqlite used to segfault with SQLite versions 3.5.x. These return NULL
-        for "no-operation" statements
+        fuer "no-operation" statements
         """
         self.con.execute("")
 
@@ -166,7 +166,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
 
         con = self.con
         con.isolation_level = None
-        for level in "", "DEFERRED", "IMMEDIATE", "EXCLUSIVE":
+        fuer level in "", "DEFERRED", "IMMEDIATE", "EXCLUSIVE":
             with self.subTest(level=level):
                 con.isolation_level = level
                 con.isolation_level = level.lower()
@@ -180,7 +180,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
             (1, TypeError), (b'', TypeError), ("abc", ValueError),
             ("IMMEDIATE\0EXCLUSIVE", ValueError), ("\xe9", ValueError),
         ]
-        for value, exc in pairs:
+        fuer value, exc in pairs:
             with self.subTest(level=value):
                 with self.assertRaises(exc):
                     con.isolation_level = value
@@ -275,7 +275,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
 
         with self.assertRaises(sqlite.ProgrammingError):
             cur.executemany("insert into b (baz) values (?)",
-                            ((i,) for i in foo()))
+                            ((i,) fuer i in foo()))
 
     def test_convert_timestamp_microsecond_padding(self):
         """
@@ -297,7 +297,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
 
             cur.execute("SELECT * FROM t")
             with self.assertWarnsRegex(DeprecationWarning, "converter"):
-                values = [x[0] for x in cur.fetchall()]
+                values = [x[0] fuer x in cur.fetchall()]
 
             self.assertEqual(values, [
                 datetime.datetime(2012, 4, 4, 15, 6, 0, 456000),
@@ -315,7 +315,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
         # Issue #21147
         cur = self.con.cursor()
         queries = ["\0select 1", "select 1\0"]
-        for query in queries:
+        fuer query in queries:
             with self.subTest(query=query):
                 self.assertRaisesRegex(sqlite.ProgrammingError, "null char",
                                        self.con.execute, query)
@@ -348,7 +348,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
         """
         Connection.commit() did reset cursors, which made sqlite3
         to return rows multiple times when fetched from cursors
-        after commit. See issues 10513 and 23129 for details.
+        after commit. See issues 10513 and 23129 fuer details.
         """
         con = self.con
         con.executescript("""
@@ -362,7 +362,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
         self.assertEqual(con.isolation_level, "")
 
         counter = 0
-        for i, row in enumerate(con.execute("select c from t")):
+        fuer i, row in enumerate(con.execute("select c from t")):
             with self.subTest(i=i, row=row):
                 con.execute("insert into t2(c) values (?)", (i,))
                 con.commit()
@@ -399,7 +399,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
             def log(self, *args):
                 return sqlite.SQLITE_OK
 
-        for method in [self.con.set_trace_callback,
+        fuer method in [self.con.set_trace_callback,
                        functools.partial(self.con.set_progress_handler, n=1),
                        self.con.set_authorizer]:
             printer_instance = Printer()
@@ -419,7 +419,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
             cur = con.cursor()
             cur.execute("create table t(t)")
             cur.executemany("insert into t values(?)",
-                            ((v,) for v in range(5)))
+                            ((v,) fuer v in range(5)))
             con.commit()
             cur.execute("select t from t")
             cur.execute("drop table t")
@@ -429,7 +429,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
         with memory_database() as con:
             con.execute("create table t(t)")
             con.executemany("insert into t values(?)",
-                            ((v,) for v in range(5)))
+                            ((v,) fuer v in range(5)))
             con.commit()
             cur = con.execute("select t from t")
             del cur
@@ -441,7 +441,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
         with memory_database() as con:
             con.execute("create table t(t)")
             con.executemany("insert into t values(?)",
-                            ((v,) for v in range(5)))
+                            ((v,) fuer v in range(5)))
             con.commit()
             def dup(v):
                 con.execute("insert into t values(?)", (v,))
@@ -455,7 +455,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
 
     def test_executescript_step_through_select(self):
         with memory_database() as con:
-            values = [(v,) for v in range(5)]
+            values = [(v,) fuer v in range(5)]
             with con:
                 con.execute("create table t(t)")
                 con.executemany("insert into t values(?)", values)
@@ -466,7 +466,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
 
 
 klasse RecursiveUseOfCursors(unittest.TestCase):
-    # GH-80254: sqlite3 should not segfault for recursive use of cursors.
+    # GH-80254: sqlite3 should not segfault fuer recursive use of cursors.
     msg = "Recursive use of cursors not allowed"
 
     def setUp(self):

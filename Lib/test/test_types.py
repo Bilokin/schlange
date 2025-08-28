@@ -34,7 +34,7 @@ klasse Example:
 klasse Forward: ...
 
 def clear_typing_caches():
-    for f in typing._cleanups:
+    fuer f in typing._cleanups:
         f()
 
 
@@ -45,7 +45,7 @@ klasse TypesTests(unittest.TestCase):
         ignored = {'new_class', 'resolve_bases', 'prepare_class',
                    'get_original_bases', 'DynamicClassAttribute', 'coroutine'}
 
-        for name in c_types.__all__:
+        fuer name in c_types.__all__:
             if name not in c_only_names | ignored:
                 self.assertIs(getattr(c_types, name), getattr(py_types, name))
 
@@ -144,7 +144,7 @@ klasse TypesTests(unittest.TestCase):
 
         # test all 2 digit exponents, both with __format__ and with
         #  '%' formatting
-        for i in range(-99, 100):
+        fuer i in range(-99, 100):
             test(float('1.5e'+str(i)), '1.500000e{0:+03d}'.format(i))
 
         # test some 3 digit exponents
@@ -174,13 +174,13 @@ klasse TypesTests(unittest.TestCase):
         if (-12) + (-24) != -36: self.fail('int op')
         if not 12 < 24: self.fail('int op')
         if not -24 < -12: self.fail('int op')
-        # Test for a particular bug in integer multiply
+        # Test fuer a particular bug in integer multiply
         xsize, ysize, zsize = 238, 356, 4
         if not (xsize*ysize*zsize == zsize*xsize*ysize == 338912):
             self.fail('int mul commutativity')
         # And another.
         m = -sys.maxsize - 1
-        for divisor in 1, 2, 4, 8, 16, 32:
+        fuer divisor in 1, 2, 4, 8, 16, 32:
             j = m // divisor
             prod = divisor * j
             if prod != m:
@@ -188,16 +188,16 @@ klasse TypesTests(unittest.TestCase):
             if type(prod) is not int:
                 self.fail("expected type(prod) to be int, not %r" %
                                    type(prod))
-        # Check for unified integral type
-        for divisor in 1, 2, 4, 8, 16, 32:
+        # Check fuer unified integral type
+        fuer divisor in 1, 2, 4, 8, 16, 32:
             j = m // divisor - 1
             prod = divisor * j
             if type(prod) is not int:
                 self.fail("expected type(%r) to be int, not %r" %
                                    (prod, type(prod)))
-        # Check for unified integral type
+        # Check fuer unified integral type
         m = sys.maxsize
-        for divisor in 1, 2, 4, 8, 16, 32:
+        fuer divisor in 1, 2, 4, 8, 16, 32:
             j = m // divisor + 1
             prod = divisor * j
             if type(prod) is not int:
@@ -241,7 +241,7 @@ klasse TypesTests(unittest.TestCase):
         x = 'x'*103
         if '%s!'%x != x+'!': self.fail('nasty string formatting bug')
 
-        #extended slices for strings
+        #extended slices fuer strings
         a = '0123456789'
         self.assertEqual(a[::], a)
         self.assertEqual(a[::2], '02468')
@@ -259,7 +259,7 @@ klasse TypesTests(unittest.TestCase):
 
     def test_int__format__(self):
         def test(i, format_spec, result):
-            # just make sure we have the unified type for integers
+            # just make sure we have the unified type fuer integers
             self.assertIs(type(i), int)
             self.assertIs(type(format_spec), str)
             self.assertEqual(i.__format__(format_spec), result)
@@ -380,7 +380,7 @@ klasse TypesTests(unittest.TestCase):
         # issue 5782, commas with no specifier type
         test(1234, '010,', '00,001,234')
 
-        # Unified type for integers
+        # Unified type fuer integers
         test(10**100, 'd', '1' + '0' * 100)
         test(10**100+100, 'd', '1' + '0' * 97 + '100')
 
@@ -401,8 +401,8 @@ klasse TypesTests(unittest.TestCase):
         self.assertRaises(ValueError, 3 .__format__, "#c")
 
         # ensure that only int and float type specifiers work
-        for format_spec in ([chr(x) for x in range(ord('a'), ord('z')+1)] +
-                            [chr(x) for x in range(ord('A'), ord('Z')+1)]):
+        fuer format_spec in ([chr(x) fuer x in range(ord('a'), ord('z')+1)] +
+                            [chr(x) fuer x in range(ord('A'), ord('Z')+1)]):
             if not format_spec in 'bcdoxXeEfFgGn%':
                 self.assertRaises(ValueError, 0 .__format__, format_spec)
                 self.assertRaises(ValueError, 1 .__format__, format_spec)
@@ -410,8 +410,8 @@ klasse TypesTests(unittest.TestCase):
 
         # ensure that float type specifiers work; format converts
         #  the int to a float
-        for format_spec in 'eEfFgG%':
-            for value in [0, 1, -1, 100, -100, 1234567890, -1234567890]:
+        fuer format_spec in 'eEfFgG%':
+            fuer value in [0, 1, -1, 100, -100, 1234567890, -1234567890]:
                 self.assertEqual(value.__format__(format_spec),
                                  float(value).__format__(format_spec))
 
@@ -428,19 +428,19 @@ klasse TypesTests(unittest.TestCase):
 
     @run_with_locale('LC_NUMERIC', 'en_US.UTF8', '')
     def test_float__format__locale(self):
-        # test locale support for __format__ code 'n'
+        # test locale support fuer __format__ code 'n'
 
-        for i in range(-10, 10):
+        fuer i in range(-10, 10):
             x = 1234567890.0 * (10.0 ** i)
             self.assertEqual(locale.format_string('%g', x, grouping=True), format(x, 'n'))
             self.assertEqual(locale.format_string('%.10g', x, grouping=True), format(x, '.10n'))
 
     @run_with_locale('LC_NUMERIC', 'en_US.UTF8', '')
     def test_int__format__locale(self):
-        # test locale support for __format__ code 'n' for integers
+        # test locale support fuer __format__ code 'n' fuer integers
 
         x = 123456789012345678901234567890
-        for i in range(0, 30):
+        fuer i in range(0, 30):
             self.assertEqual(locale.format_string('%d', x, grouping=True), format(x, 'n'))
 
             # move to the next integer to test
@@ -449,7 +449,7 @@ klasse TypesTests(unittest.TestCase):
         rfmt = ">20n"
         lfmt = "<20n"
         cfmt = "^20n"
-        for x in (1234, 12345, 123456, 1234567, 12345678, 123456789, 1234567890, 12345678900):
+        fuer x in (1234, 12345, 123456, 1234567, 12345678, 123456789, 1234567890, 12345678900):
             self.assertEqual(len(format(0, rfmt)), len(format(x, rfmt)))
             self.assertEqual(len(format(0, lfmt)), len(format(x, lfmt)))
             self.assertEqual(len(format(0, cfmt)), len(format(x, cfmt)))
@@ -461,12 +461,12 @@ klasse TypesTests(unittest.TestCase):
 
         test(0.0, 'f', '0.000000')
 
-        # the default is 'g', except for empty format spec
+        # the default is 'g', except fuer empty format spec
         test(0.0, '', '0.0')
         test(0.01, '', '0.01')
         test(0.01, 'g', '0.01')
 
-        # test for issue 3411
+        # test fuer issue 3411
         test(1.23, '1', '1.23')
         test(-1.23, '1', '-1.23')
         test(1.23, '1g', '1.23')
@@ -492,7 +492,7 @@ klasse TypesTests(unittest.TestCase):
         # Python versions <= 3.0 switched from 'f' to 'g' formatting for
         # values larger than 1e50.  No longer.
         f = 1.1234e90
-        for fmt in 'f', 'F':
+        fuer fmt in 'f', 'F':
             # don't do a direct equality check, since on some
             # platforms only the first few digits of dtoa
             # will be reliable
@@ -501,7 +501,7 @@ klasse TypesTests(unittest.TestCase):
             self.assertEqual(result[-7], '.')
             self.assertIn(result[:12], ('112340000000', '112339999999'))
         f = 1.1234e200
-        for fmt in 'f', 'F':
+        fuer fmt in 'f', 'F':
             result = f.__format__(fmt)
             self.assertEqual(len(result), 208)
             self.assertEqual(result[-7], '.')
@@ -560,7 +560,7 @@ klasse TypesTests(unittest.TestCase):
 
         # confirm format options expected to fail on floats, such as integer
         # presentation types
-        for format_spec in 'sbcdoxX':
+        fuer format_spec in 'sbcdoxX':
             self.assertRaises(ValueError, format, 0.0, format_spec)
             self.assertRaises(ValueError, format, 1.0, format_spec)
             self.assertRaises(ValueError, format, -1.0, format_spec)
@@ -606,7 +606,7 @@ klasse TypesTests(unittest.TestCase):
         # int, float, and string all share the same format spec
         # mini-language parser.
 
-        # Check that we can't ask for too many digits. This is
+        # Check that we can't ask fuer too many digits. This is
         # probably a CPython specific test. It tries to put the width
         # into a C long.
         self.assertRaises(ValueError, format, 0, '1'*10000 + 'd')
@@ -618,7 +618,7 @@ klasse TypesTests(unittest.TestCase):
         self.assertRaises(ValueError, format, 0, '1'*1000 + '.' + '1'*10000 + 'd')
 
         # Make sure commas aren't allowed with various type codes
-        for code in 'xXobns':
+        fuer code in 'xXobns':
             self.assertRaises(ValueError, format, 0, ',' + code)
 
     def test_internal_sizes(self):
@@ -632,7 +632,7 @@ klasse TypesTests(unittest.TestCase):
         self.assertIsInstance(int.__lt__, types.WrapperDescriptorType)
 
     @unittest.skipIf(MISSING_C_DOCSTRINGS,
-                     "Signature information for builtins requires docstrings")
+                     "Signature information fuer builtins requires docstrings")
     def test_dunder_get_signature(self):
         sig = inspect.signature(object.__init__.__get__)
         self.assertEqual(list(sig.parameters), ["instance", "owner"])
@@ -669,7 +669,7 @@ klasse TypesTests(unittest.TestCase):
             (str.capitalize, "nobody expects the spanish inquisition")
         ]
 
-        for method, instance in to_check:
+        fuer method, instance in to_check:
             with self.subTest(method=method, instance=instance):
                 bound = method.__get__(instance)
                 self.assertIsInstance(bound, types.BuiltinMethodType)
@@ -703,7 +703,7 @@ klasse TypesTests(unittest.TestCase):
             [] + ([] + [])
             part.pop()
 
-        for _ in range(3):
+        fuer _ in range(3):
             call(['a'])
         try:
             call(list)
@@ -833,7 +833,7 @@ klasse UnionTests(unittest.TestCase):
             hash(union)
 
     def test_instancecheck_and_subclasscheck(self):
-        for x in (int | str, typing.Union[int, str]):
+        fuer x in (int | str, typing.Union[int, str]):
             with self.subTest(x=x):
                 self.assertIsInstance(1, x)
                 self.assertIsInstance(True, x)
@@ -844,12 +844,12 @@ klasse UnionTests(unittest.TestCase):
                 self.assertIsSubclass(str, x)
                 self.assertNotIsSubclass(type(None), x)
 
-        for x in (int | None, typing.Union[int, None]):
+        fuer x in (int | None, typing.Union[int, None]):
             with self.subTest(x=x):
                 self.assertIsInstance(None, x)
                 self.assertIsSubclass(type(None), x)
 
-        for x in (
+        fuer x in (
             int | collections.abc.Mapping,
             typing.Union[int, collections.abc.Mapping],
         ):
@@ -866,7 +866,7 @@ klasse UnionTests(unittest.TestCase):
             int | T,
             typing.Union[int, T],
         )
-        for x in will_resolve:
+        fuer x in will_resolve:
             with self.subTest(x=x):
                 self.assertIsInstance(1, x)
                 self.assertIsSubclass(int, x)
@@ -875,14 +875,14 @@ klasse UnionTests(unittest.TestCase):
             T | int,
             typing.Union[T, int],
         )
-        for x in wont_resolve:
+        fuer x in wont_resolve:
             with self.subTest(x=x):
                 with self.assertRaises(TypeError):
                     issubclass(int, x)
                 with self.assertRaises(TypeError):
                     isinstance(1, x)
 
-        for x in (*will_resolve, *wont_resolve):
+        fuer x in (*will_resolve, *wont_resolve):
             with self.subTest(x=x):
                 with self.assertRaises(TypeError):
                     issubclass(object, x)
@@ -937,7 +937,7 @@ klasse UnionTests(unittest.TestCase):
         args = (int, list[int], typing.List[int],
                 typing.Tuple[int, int], typing.Callable[[int], int],
                 typing.Hashable, typing.TypeVar('T'))
-        for x in args:
+        fuer x in args:
             with self.subTest(x):
                 check(x | None, (x, type(None)))
                 check(None | x, (type(None), x))
@@ -986,7 +986,7 @@ klasse UnionTests(unittest.TestCase):
 
     def test_union_pickle(self):
         orig = list[T] | int
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             s = pickle.dumps(orig, proto)
             loaded = pickle.loads(s)
             self.assertEqual(loaded, orig)
@@ -995,7 +995,7 @@ klasse UnionTests(unittest.TestCase):
 
     def test_union_copy(self):
         orig = list[T] | int
-        for copied in (copy.copy(orig), copy.deepcopy(orig)):
+        fuer copied in (copy.copy(orig), copy.deepcopy(orig)):
             self.assertEqual(copied, orig)
             self.assertEqual(copied.__args__, orig.__args__)
             self.assertEqual(copied.__parameters__, orig.__parameters__)
@@ -1110,7 +1110,7 @@ klasse UnionTests(unittest.TestCase):
 
         bt = BadType('bt', (), {})
         bt2 = BadType('bt2', (), {})
-        # Comparison should fail and errors should propagate out for bad types.
+        # Comparison should fail and errors should propagate out fuer bad types.
         union1 = int | bt
         union2 = int | bt2
         with self.assertRaises(ZeroDivisionError):
@@ -1121,8 +1121,8 @@ klasse UnionTests(unittest.TestCase):
         union_ga = (list[str] | int, collections.abc.Callable[..., str] | int,
                     d | int)
         # Raise error when isinstance(type, genericalias | type)
-        for type_ in union_ga:
-            with self.subTest(f"check isinstance/issubclass is invalid for {type_}"):
+        fuer type_ in union_ga:
+            with self.subTest(f"check isinstance/issubclass is invalid fuer {type_}"):
                 with self.assertRaises(TypeError):
                     isinstance(1, type_)
                 with self.assertRaises(TypeError):
@@ -1148,7 +1148,7 @@ klasse UnionTests(unittest.TestCase):
             self.skipTest('Cannot get total reference count.')
         gc.collect()
         before = sys.gettotalrefcount()
-        for _ in range(30):
+        fuer _ in range(30):
             T = typing.TypeVar('T')
             U = int | list[T]
             T.blah = U
@@ -1157,7 +1157,7 @@ klasse UnionTests(unittest.TestCase):
         gc.collect()
         leeway = 15
         self.assertLessEqual(sys.gettotalrefcount() - before, leeway,
-                             msg='Check for union reference leak.')
+                             msg='Check fuer union reference leak.')
 
     def test_instantiation(self):
         check_disallow_instantiation(self, types.UnionType)
@@ -1165,7 +1165,7 @@ klasse UnionTests(unittest.TestCase):
         self.assertIs(int, types.UnionType[int, int])
         self.assertEqual(int | str, types.UnionType[int, str])
 
-        for obj in (
+        fuer obj in (
             int | typing.ForwardRef("str"),
             typing.Union[int, "str"],
         ):
@@ -1327,7 +1327,7 @@ klasse MappingProxyTests(unittest.TestCase):
         self.assertEqual(list(items), [('key', 'value')])
 
     def test_len(self):
-        for expected in range(6):
+        fuer expected in range(6):
             data = dict.fromkeys('abcde'[:expected])
             self.assertEqual(len(data), expected)
             view = self.mappingproxy(data)
@@ -1437,7 +1437,7 @@ klasse ClassCreationTests(unittest.TestCase):
         Meta = self.Meta
         settings = {"metaclass": Meta, "z": 2}
         # We do this twice to make sure the passed in dict isn't mutated
-        for i in range(2):
+        fuer i in range(2):
             C = types.new_class("C" + str(i), (), settings)
             self.assertIsInstance(C, Meta)
             self.assertEqual(C.y, 1)
@@ -1690,7 +1690,7 @@ klasse ClassCreationTests(unittest.TestCase):
         y = (C,)
         z = (A, C)
         t = (A, C, B)
-        for bases in [x, y, z, t]:
+        fuer bases in [x, y, z, t]:
             self.assertIs(types.resolve_bases(bases), bases)
 
     def test_resolve_bases_with_mro_entry(self):
@@ -1908,7 +1908,7 @@ klasse ClassCreationTests(unittest.TestCase):
 
     def test_tuple_subclass_as_bases(self):
         # gh-132176: it used to crash on using
-        # tuple subclass for as base classes.
+        # tuple subclass fuer as base classes.
         klasse TupleSubclass(tuple): pass
 
         typ = type("typ", TupleSubclass((int, object)), {})
@@ -1924,7 +1924,7 @@ klasse SimpleNamespaceTests(unittest.TestCase):
             self.assertEqual(vars(ns), expected)
             # check order
             self.assertEqual(list(vars(ns).items()), list(expected.items()))
-            for name in expected:
+            fuer name in expected:
                 self.assertEqual(getattr(ns, name), expected[name])
 
         check(types.SimpleNamespace(), {})
@@ -2127,7 +2127,7 @@ klasse SimpleNamespaceTests(unittest.TestCase):
     def test_pickle(self):
         ns = types.SimpleNamespace(breakfast="spam", lunch="spam")
 
-        for protocol in range(pickle.HIGHEST_PROTOCOL + 1):
+        fuer protocol in range(pickle.HIGHEST_PROTOCOL + 1):
             pname = "protocol {}".format(protocol)
             try:
                 ns_pickled = pickle.dumps(ns, protocol)
@@ -2184,7 +2184,7 @@ klasse SimpleNamespaceTests(unittest.TestCase):
 klasse CoroutineTests(unittest.TestCase):
     def test_wrong_args(self):
         samples = [None, 1, object()]
-        for sample in samples:
+        fuer sample in samples:
             with self.assertRaisesRegex(TypeError,
                                         'types.coroutine.*expects a callable'):
                 types.coroutine(sample)
@@ -2222,7 +2222,7 @@ klasse CoroutineTests(unittest.TestCase):
 
         foo_coro = foo()
         def bar(): return foo_coro
-        for _ in range(2):
+        fuer _ in range(2):
             bar = types.coroutine(bar)
             coro = bar()
             self.assertIs(foo_coro, coro)
@@ -2291,7 +2291,7 @@ klasse CoroutineTests(unittest.TestCase):
         self.assertIs(wrapper.__name__, gen.__name__)
 
         # Test AttributeErrors
-        for name in {'gi_running', 'gi_frame', 'gi_code', 'gi_yieldfrom',
+        fuer name in {'gi_running', 'gi_frame', 'gi_code', 'gi_yieldfrom',
                      'cr_running', 'cr_frame', 'cr_code', 'cr_await'}:
             with self.assertRaises(AttributeError):
                 getattr(wrapper, name)
@@ -2426,7 +2426,7 @@ klasse CoroutineTests(unittest.TestCase):
         self.assertIsInstance(wrapper, types._GeneratorWrapper)
         self.assertIs(wrapper.__await__(), gen)
 
-        for name in ('__name__', '__qualname__', 'gi_code',
+        fuer name in ('__name__', '__qualname__', 'gi_code',
                      'gi_running', 'gi_frame'):
             self.assertIs(getattr(foo(), name),
                           getattr(gen, name))
@@ -2577,17 +2577,17 @@ klasse SubinterpreterTests(unittest.TestCase):
         script = textwrap.dedent("""
             import test.support
             results = []
-            for cls in test.support.iter_builtin_types():
-                for attr, _ in test.support.iter_slot_wrappers(cls):
+            fuer cls in test.support.iter_builtin_types():
+                fuer attr, _ in test.support.iter_slot_wrappers(cls):
                     wrapper = getattr(cls, attr)
                     res = (cls, attr, wrapper)
                     results.append(res)
-            results = tuple((repr(c), a, repr(w)) for c, a, w in results)
+            results = tuple((repr(c), a, repr(w)) fuer c, a, w in results)
             sch.send_nowait(results)
             """)
         def collate_results(raw):
             results = {}
-            for cls, attr, wrapper in raw:
+            fuer cls, attr, wrapper in raw:
                 key = cls, attr
                 assert key not in results, (results, key, wrapper)
                 results[key] = wrapper
@@ -2604,7 +2604,7 @@ klasse SubinterpreterTests(unittest.TestCase):
         raw = rch.recv_nowait()
         interp_results = collate_results(raw)
 
-        for key, expected in main_results.items():
+        fuer key, expected in main_results.items():
             cls, attr = key
             with self.subTest(cls=cls, slotattr=attr):
                 actual = interp_results.pop(key)

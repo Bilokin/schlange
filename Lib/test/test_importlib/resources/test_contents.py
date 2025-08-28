@@ -14,7 +14,7 @@ klasse ContentsTests:
     }
 
     def test_contents(self):
-        contents = {path.name for path in resources.files(self.data).iterdir()}
+        contents = {path.name fuer path in resources.files(self.data).iterdir()}
         assert self.expected <= contents
 
 

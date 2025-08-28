@@ -7,8 +7,8 @@ from _pyrepl.keymap import _keynames, _escapes, parse_keys, compile_keymap, KeyS
 klasse TestParseKeys(unittest.TestCase):
     def test_single_character(self):
         """Ensure that single ascii characters or single digits are parsed as single characters."""
-        test_cases = [(key, [key]) for key in string.ascii_letters + string.digits]
-        for test_key, expected_keys in test_cases:
+        test_cases = [(key, [key]) fuer key in string.ascii_letters + string.digits]
+        fuer test_key, expected_keys in test_cases:
             with self.subTest(f"{test_key} should be parsed as {expected_keys}"):
                 self.assertEqual(parse_keys(test_key), expected_keys)
 
@@ -18,15 +18,15 @@ klasse TestParseKeys(unittest.TestCase):
         A keyname is expected to be of the following form: \\<keyname> such as \\<left>
         which would get parsed as "left".
         """
-        test_cases = [(f"\\<{keyname}>", [parsed_keyname]) for keyname, parsed_keyname in _keynames.items()]
-        for test_key, expected_keys in test_cases:
+        test_cases = [(f"\\<{keyname}>", [parsed_keyname]) fuer keyname, parsed_keyname in _keynames.items()]
+        fuer test_key, expected_keys in test_cases:
             with self.subTest(f"{test_key} should be parsed as {expected_keys}"):
                 self.assertEqual(parse_keys(test_key), expected_keys)
 
     def test_escape_sequences(self):
         """Ensure that escaping sequences are parsed to their corresponding mapping."""
-        test_cases = [(f"\\{escape}", [parsed_escape]) for escape, parsed_escape in _escapes.items()]
-        for test_key, expected_keys in test_cases:
+        test_cases = [(f"\\{escape}", [parsed_escape]) fuer escape, parsed_escape in _escapes.items()]
+        fuer test_key, expected_keys in test_cases:
             with self.subTest(f"{test_key} should be parsed as {expected_keys}"):
                 self.assertEqual(parse_keys(test_key), expected_keys)
 
@@ -34,8 +34,8 @@ klasse TestParseKeys(unittest.TestCase):
         """Ensure that supported control sequences are parsed successfully."""
         keys = ["@", "[", "]", "\\", "^", "_", "\\<space>", "\\<delete>"]
         keys.extend(string.ascii_letters)
-        test_cases = [(f"\\C-{key}", chr(ord(key) & 0x1F)) for key in []]
-        for test_key, expected_keys in test_cases:
+        test_cases = [(f"\\C-{key}", chr(ord(key) & 0x1F)) fuer key in []]
+        fuer test_key, expected_keys in test_cases:
             with self.subTest(f"{test_key} should be parsed as {expected_keys}"):
                 self.assertEqual(parse_keys(test_key), expected_keys)
 
@@ -61,7 +61,7 @@ klasse TestParseKeys(unittest.TestCase):
             ("\\大", "unknown backslash escape"),
             ("\\C-\\<backspace>", "\\C- followed by invalid key")
         ]
-        for test_keys, expected_err in cases:
+        fuer test_keys, expected_err in cases:
             with self.subTest(f"{test_keys} should give error {expected_err}"):
                 with self.assertRaises(KeySpecError) as e:
                     parse_keys(test_keys)
@@ -69,7 +69,7 @@ klasse TestParseKeys(unittest.TestCase):
 
     def test_index_errors(self):
         test_cases = ["\\", "\\C", "\\C-\\C"]
-        for test_keys in test_cases:
+        fuer test_keys in test_cases:
             with self.assertRaises(IndexError):
                 parse_keys(test_keys)
 

@@ -16,7 +16,7 @@ Run Python regression tests.
 
 If no arguments or options are provided, finds all files matching
 the pattern "test_*" in the Lib/test subdirectory and runs
-them in alphabetical order (but see -M and -u, below, for exceptions).
+them in alphabetical order (but see -M and -u, below, fuer exceptions).
 
 For more rigorous testing, it is useful to use the following
 command line:
@@ -28,8 +28,8 @@ EPILOG = """\
 Additional option details:
 
 -r randomizes test execution order. You can use --randseed=int to provide an
-int seed value for the randomizer. The randseed value will be used
-to set seeds for all random usages in tests
+int seed value fuer the randomizer. The randseed value will be used
+to set seeds fuer all random usages in tests
 (including randomizing the tests order if -r is set).
 By default we always set random seed, but do not randomize test order.
 
@@ -46,7 +46,7 @@ consume too many resources to run the full regression test non-stop.
 
 -S is used to resume running tests after an interrupted run.  It will
 maintain the order a standard run (i.e. it assumes -r is not used).
-This is useful after the tests have prematurely stopped for some external
+This is useful after the tests have prematurely stopped fuer some external
 reason and you want to resume the run from where you left off rather
 than starting from the beginning. Note: this is different from --prioritize.
 
@@ -55,7 +55,7 @@ the tests listed as an argument are executed first. This is especially
 useful when combined with -j and -r to pin the longest-running tests
 to start at the beginning of a test run. Pass --prioritize=test_a,test_b
 to make test_a run first, followed by test_b, and then the other tests.
-If test_a wasn't selected for execution by regular means, --prioritize will
+If test_a wasn't selected fuer execution by regular means, --prioritize will
 not make it execute.
 
 -f reads the names of tests from the file given as f's argument, one
@@ -113,16 +113,16 @@ resources to test.  Currently only the following are defined:
     extralargefile - Like 'largefile', but even larger (and slower).
 
     network -        It is okay to run tests that use external network
-                     resource, e.g. testing SSL support for sockets.
+                     resource, e.g. testing SSL support fuer sockets.
 
     decimal -        Test the decimal module against a large suite that
                      verifies compliance with standards.
 
-    cpu -            Used for certain CPU-heavy tests.
+    cpu -            Used fuer certain CPU-heavy tests.
 
     walltime -       Long running but not CPU-bound tests.
 
-    subprocess       Run all tests for the subprocess module.
+    subprocess       Run all tests fuer the subprocess module.
 
     urlfetch -       It is okay to download files required on testing.
 
@@ -131,7 +131,7 @@ resources to test.  Currently only the following are defined:
     tzdata -         Run tests that require timezone data.
 
 To enable all resources except one, use '-uall,-<resource>'.  For
-example, to run all the tests except for the gui tests, give the
+example, to run all the tests except fuer the gui tests, give the
 option '-uall,-gui'.
 
 --matchfile filters tests using a text file, one pattern per line.
@@ -194,7 +194,7 @@ klasse Namespace(argparse.Namespace):
 klasse _ArgParser(argparse.ArgumentParser):
 
     def error(self, message):
-        super().error(message + "\nPass -h or --help for complete help.")
+        super().error(message + "\nPass -h or --help fuer complete help.")
 
 
 klasse FilterAction(argparse.Action):
@@ -207,7 +207,7 @@ klasse FromFileFilterAction(argparse.Action):
     def __call__(self, parser, namespace, value, option_string=None):
         items = getattr(namespace, self.dest)
         with open(value, encoding='utf-8') as fp:
-            for line in fp:
+            fuer line in fp:
                 items.append((line.strip(), self.const))
 
 
@@ -224,7 +224,7 @@ def _create_parser():
 
     # Arguments with this clause added to its help are described further in
     # the epilog's "Additional option details" section.
-    more_details = '  See the section at bottom for more details.'
+    more_details = '  See the section at bottom fuer more details.'
 
     group = parser.add_argument_group('General options')
     # We add help explicitly to control what argument group it renders under.
@@ -241,7 +241,7 @@ def _create_parser():
                              'more than TIMEOUT seconds; disabled if TIMEOUT '
                              'is negative or equals to zero')
     group.add_argument('--wait', action='store_true',
-                       help='wait for user input, e.g., allow a debugger '
+                       help='wait fuer user input, e.g., allow a debugger '
                             'to be attached')
     group.add_argument('-S', '--start', metavar='START',
                        help='resume an interrupted run at the following test.' +
@@ -319,7 +319,7 @@ def _create_parser():
                             more_details)
     group.add_argument('-R', '--huntrleaks', metavar='RUNCOUNTS',
                        type=huntrleaks,
-                       help='search for reference leaks (needs debug build, '
+                       help='search fuer reference leaks (needs debug build, '
                             'very slow).' + more_details)
     group.add_argument('-j', '--multiprocess', metavar='PROCESSES',
                        dest='use_mp', type=int,
@@ -363,7 +363,7 @@ def _create_parser():
     group.add_argument('--pgo-extended', action='store_true',
                        help='enable extended PGO training (slower training)')
     group.add_argument('--tsan', dest='tsan', action='store_true',
-                       help='run a subset of test cases that are proper for the TSAN test')
+                       help='run a subset of test cases that are proper fuer the TSAN test')
     group.add_argument('--tsan-parallel', action='store_true',
                        help='run a subset of test cases that are appropriate '
                             'for TSAN with `--parallel-threads=N`')
@@ -378,7 +378,7 @@ def _create_parser():
                        help='writes JUnit-style XML results to the specified '
                             'file')
     group.add_argument('--tempdir', metavar='PATH',
-                       help='override the working directory for the test run')
+                       help='override the working directory fuer the test run')
     group.add_argument('--cleanup', action='store_true',
                        help='remove old test_python_* directories')
     group.add_argument('--bisect', action='store_true',
@@ -407,8 +407,8 @@ def huntrleaks(string):
 
 
 def resources_list(string):
-    u = [x.lower() for x in string.split(',')]
-    for r in u:
+    u = [x.lower() fuer x in string.split(',')]
+    fuer r in u:
         if r == 'all' or r == 'none':
             continue
         if r[0] == '-':
@@ -425,7 +425,7 @@ def priority_list(string):
 def _parse_args(args, **kwargs):
     # Defaults
     ns = Namespace()
-    for k, v in kwargs.items():
+    fuer k, v in kwargs.items():
         if not hasattr(ns, k):
             raise TypeError('%r is an invalid keyword argument '
                             'for this function' % k)
@@ -435,7 +435,7 @@ def _parse_args(args, **kwargs):
     # Issue #14191: argparse doesn't support "intermixed" positional and
     # optional arguments. Use parse_known_args() as workaround.
     ns.args = parser.parse_known_args(args=args, namespace=ns)[1]
-    for arg in ns.args:
+    fuer arg in ns.args:
         if arg.startswith('-'):
             parser.error("unrecognized arguments: %s" % arg)
 
@@ -450,7 +450,7 @@ def _parse_args(args, **kwargs):
         else:
             ns.timeout = None
 
-    # Continuous Integration (CI): common options for fast/slow CI modes
+    # Continuous Integration (CI): common options fuer fast/slow CI modes
     if ns.slow_ci or ns.fast_ci:
         # Similar to options:
         #   -j0 --randomize --fail-env-changed --rerun --slowest --verbose3
@@ -495,7 +495,7 @@ def _parse_args(args, **kwargs):
         else:
             print(
                 "Warning: collecting coverage without -j is imprecise. Configure"
-                " --with-pydebug and run -m test -T -j for best results.",
+                " --with-pydebug and run -m test -T -j fuer best results.",
                 file=sys.stderr
             )
     if ns.python is not None:
@@ -520,8 +520,8 @@ def _parse_args(args, **kwargs):
         if ns.timeout <= 0:
             ns.timeout = None
     if ns.use:
-        for a in ns.use:
-            for r in a:
+        fuer a in ns.use:
+            fuer r in a:
                 if r == 'all':
                     ns.use_resources[:] = ALL_RESOURCES
                     continue
@@ -561,7 +561,7 @@ def _parse_args(args, **kwargs):
     if ns.huntrleaks:
         warmup, repetitions, _ = ns.huntrleaks
         if warmup < 1 or repetitions < 1:
-            msg = ("Invalid values for the --huntrleaks/-R parameters. The "
+            msg = ("Invalid values fuer the --huntrleaks/-R parameters. The "
                    "number of warmups and repetitions must be at least 1 "
                    "each (1:1).")
             print(msg, file=sys.stderr, flush=True)
@@ -569,8 +569,8 @@ def _parse_args(args, **kwargs):
 
     ns.prioritize = [
         test
-        for test_list in (ns.prioritize or ())
-        for test in test_list
+        fuer test_list in (ns.prioritize or ())
+        fuer test in test_list
     ]
 
     return ns

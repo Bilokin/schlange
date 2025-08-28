@@ -23,7 +23,7 @@ def bench(name, cleanup=lambda: None, *, seconds=1, repeat=3):
     executions take one second."""
     stmt = "__import__({!r})".format(name)
     timer = timeit.Timer(stmt)
-    for x in range(repeat):
+    fuer x in range(repeat):
         total_time = 0
         count = 0
         while total_time < seconds:
@@ -110,7 +110,7 @@ def source_writing_bytecode(seconds, repeat):
         def cleanup():
             sys.modules.pop(name)
             os.unlink(cache_from_source(mapping[name]))
-        for result in bench(name, cleanup, repeat=repeat, seconds=seconds):
+        fuer result in bench(name, cleanup, repeat=repeat, seconds=seconds):
             assert not os.path.exists(cache_from_source(mapping[name]))
             yield result
 
@@ -179,7 +179,7 @@ def main(import_, options):
                   decimal_wo_bytecode, decimal_using_bytecode,
                 )
     if options.benchmark:
-        for b in benchmarks:
+        fuer b in benchmarks:
             if b.__doc__ == options.benchmark:
                 benchmarks = [b]
                 break
@@ -196,11 +196,11 @@ def main(import_, options):
     print(header.format(seconds, seconds_plural, repeat,
                         len(benchmarks) * seconds * repeat, __import__))
     new_results = {}
-    for benchmark in benchmarks:
+    fuer benchmark in benchmarks:
         print(benchmark.__doc__, "[", end=' ')
         sys.stdout.flush()
         results = []
-        for result in benchmark(seconds=seconds, repeat=repeat):
+        fuer result in benchmark(seconds=seconds, repeat=repeat):
             results.append(result)
             print(result, end=' ')
             sys.stdout.flush()
@@ -209,7 +209,7 @@ def main(import_, options):
         new_results[benchmark.__doc__] = results
     if prev_results:
         print('\n\nComparing new vs. old\n')
-        for benchmark in benchmarks:
+        fuer benchmark in benchmarks:
             benchmark_name = benchmark.__doc__
             old_result = max(prev_results[benchmark_name])
             new_result = max(new_results[benchmark_name])

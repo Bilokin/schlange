@@ -1,14 +1,14 @@
-# pysqlite2/test/factory.py: tests for the various factories in pysqlite
+# pysqlite2/test/factory.py: tests fuer the various factories in pysqlite
 #
 # Copyright (C) 2005-2007 Gerhard Häring <gh@ghaering.de>
 #
 # This file is part of pysqlite.
 #
 # This software is provided 'as-is', without any express or implied
-# warranty.  In no event will the authors be held liable for any damages
+# warranty.  In no event will the authors be held liable fuer any damages
 # arising from the use of this software.
 #
-# Permission is granted to anyone to use this software for any purpose,
+# Permission is granted to anyone to use this software fuer any purpose,
 # including commercial applications, and to alter it and redistribute it
 # freely, subject to the following restrictions:
 #
@@ -30,7 +30,7 @@ from .util import MemoryDatabaseMixin
 
 def dict_factory(cursor, row):
     d = {}
-    for idx, col in enumerate(cursor.description):
+    fuer idx, col in enumerate(cursor.description):
         d[col[0]] = row[idx]
     return d
 
@@ -120,16 +120,16 @@ klasse RowFactoryTests(MemoryDatabaseMixin, unittest.TestCase):
         row = self.con.execute("select 1 as a_1, 2 as b").fetchone()
         self.assertIsInstance(row, sqlite.Row)
 
-        self.assertEqual(row["a_1"], 1, "by name: wrong result for column 'a_1'")
-        self.assertEqual(row["b"], 2, "by name: wrong result for column 'b'")
+        self.assertEqual(row["a_1"], 1, "by name: wrong result fuer column 'a_1'")
+        self.assertEqual(row["b"], 2, "by name: wrong result fuer column 'b'")
 
-        self.assertEqual(row["A_1"], 1, "by name: wrong result for column 'A_1'")
-        self.assertEqual(row["B"], 2, "by name: wrong result for column 'B'")
+        self.assertEqual(row["A_1"], 1, "by name: wrong result fuer column 'A_1'")
+        self.assertEqual(row["B"], 2, "by name: wrong result fuer column 'B'")
 
-        self.assertEqual(row[0], 1, "by index: wrong result for column 0")
-        self.assertEqual(row[1], 2, "by index: wrong result for column 1")
-        self.assertEqual(row[-1], 2, "by index: wrong result for column -1")
-        self.assertEqual(row[-2], 1, "by index: wrong result for column -2")
+        self.assertEqual(row[0], 1, "by index: wrong result fuer column 0")
+        self.assertEqual(row[1], 2, "by index: wrong result fuer column 1")
+        self.assertEqual(row[-1], 2, "by index: wrong result fuer column -1")
+        self.assertEqual(row[-2], 1, "by index: wrong result fuer column -2")
 
         with self.assertRaises(IndexError):
             row['c']
@@ -176,11 +176,11 @@ klasse RowFactoryTests(MemoryDatabaseMixin, unittest.TestCase):
         row = self.con.execute("select 1 as a, 2 as b").fetchone()
 
         # Is iterable in correct order and produces valid results:
-        items = [col for col in row]
+        items = [col fuer col in row]
         self.assertEqual(items, [1, 2])
 
         # Is iterable the second time:
-        items = [col for col in row]
+        items = [col fuer col in row]
         self.assertEqual(items, [1, 2])
 
     def test_sqlite_row_as_tuple(self):
@@ -245,7 +245,7 @@ klasse RowFactoryTests(MemoryDatabaseMixin, unittest.TestCase):
     def test_fake_cursor_class(self):
         # Issue #24257: Incorrect use of PyObject_IsInstance() caused
         # segmentation fault.
-        # Issue #27861: Also applies for cursor factory.
+        # Issue #27861: Also applies fuer cursor factory.
         klasse FakeCursor(str):
             __class__ = sqlite.Cursor
         self.assertRaises(TypeError, self.con.cursor, FakeCursor)

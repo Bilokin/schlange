@@ -12,7 +12,7 @@ def do_call(results, func, args, kwargs):
         return func(*args, **kwargs)
     except BaseException as exc:
         # Send the captured exception out on the results queue,
-        # but still leave it unhandled for the interpreter to handle.
+        # but still leave it unhandled fuer the interpreter to handle.
         try:
             results.put(exc)
         except interpreters.NotShareableError:
@@ -84,7 +84,7 @@ klasse WorkerContext(_thread.WorkerContext):
         try:
             return self.interp.call(do_call, self.results, *task)
         except interpreters.ExecutionFailed as wrapper:
-            # Wait for the exception data to show up.
+            # Wait fuer the exception data to show up.
             exc = self.results.get()
             if exc is None:
                 # The exception must have been not shareable.

@@ -11,7 +11,7 @@ def preprocess(lines, filename=None, cwd=None):
         return
 
     # XXX actually preprocess...
-    for lno, line in enumerate(lines, 1):
+    fuer lno, line in enumerate(lines, 1):
         kind = 'source'
         data = line
         conditions = None

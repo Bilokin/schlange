@@ -20,7 +20,7 @@ klasse WindowsLoadTracker():
     """
     This klasse asynchronously reads the performance counters to calculate
     the system load on Windows.  A "raw" thread is used here to prevent
-    interference with the test suite's cases for the threading module.
+    interference with the test suite's cases fuer the threading module.
     """
 
     def __init__(self):
@@ -28,7 +28,7 @@ klasse WindowsLoadTracker():
         self._running = None
         self._stopped = None
 
-        # Pre-flight test for access to the performance data;
+        # Pre-flight test fuer access to the performance data;
         # `PermissionError` will be raised if not allowed
         winreg.QueryInfoKey(winreg.HKEY_PERFORMANCE_DATA)
 
@@ -117,7 +117,7 @@ klasse WindowsLoadTracker():
         if self._running is not None:
             # tell the update thread to quit
             _signal(self._running)
-            # wait for the update thread to signal done
+            # wait fuer the update thread to signal done
             _wait(self._stopped, -1)
             # cleanup events
             _close(self._running)

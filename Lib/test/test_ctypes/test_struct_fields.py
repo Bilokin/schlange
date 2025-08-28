@@ -87,7 +87,7 @@ klasse FieldsTestBase(StructCheckMixin):
             )
 
     def test_max_field_size_gh126937(self):
-        # Classes for big structs should be created successfully.
+        # Classes fuer big structs should be created successfully.
         # (But they most likely can't be instantiated.)
         # The size must fit in Py_ssize_t.
 
@@ -121,8 +121,8 @@ klasse FieldsTestBase(StructCheckMixin):
             klasse TooBig(Structure):
                 _fields_ = [('largeField', c_char * (max_field_size + 1))]
 
-        # Also test around edge case for the bit_size calculation
-        for size in (max_field_size // 8 - 1,
+        # Also test around edge case fuer the bit_size calculation
+        fuer size in (max_field_size // 8 - 1,
                      max_field_size // 8,
                      max_field_size // 8 + 1):
             klasse S(Structure):
