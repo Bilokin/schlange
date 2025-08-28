@@ -135,7 +135,7 @@ klasse CreateTests(TestBase):
         out = _run_output(interp, dedent("""
             from concurrent import interpreters
             interp = interpreters.create()
-            print(interp.id)
+            drucke(interp.id)
             """))
         interp2 = interpreters.Interpreter(int(out))
         self.assertEqual(interpreters.list_all(), [main, interp, interp2])
@@ -198,7 +198,7 @@ klasse GetCurrentTests(TestBase):
         out = _run_output(interp, dedent("""
             from concurrent import interpreters
             cur = interpreters.get_current()
-            print(cur.id)
+            drucke(cur.id)
             """))
         current = interpreters.Interpreter(int(out))
         self.assertEqual(current, interp)
@@ -215,9 +215,9 @@ klasse GetCurrentTests(TestBase):
             out = _run_output(interp, dedent("""
                 from concurrent import interpreters
                 cur = interpreters.get_current()
-                print(id(cur))
+                drucke(id(cur))
                 cur = interpreters.get_current()
-                print(id(cur))
+                drucke(id(cur))
                 """))
             objid1, objid2 = (int(v) fuer v in out.splitlines())
             self.assertEqual(objid1, objid2)
@@ -227,7 +227,7 @@ klasse GetCurrentTests(TestBase):
             out = _run_output(interp, dedent("""
                 from concurrent import interpreters
                 cur = interpreters.get_current()
-                print(id(cur))
+                drucke(id(cur))
                 """))
             id1 = int(out)
             id2 = id(interp)
@@ -239,7 +239,7 @@ klasse GetCurrentTests(TestBase):
         text = self.run_temp_from_capi(f"""
             import {interpreters.__name__} as interpreters
             interp = interpreters.get_current()
-            print((interp.id, interp.whence))
+            drucke((interp.id, interp.whence))
             """)
         interpid, whence = eval(text)
         self.assertEqual(interpid, expected)
@@ -306,7 +306,7 @@ klasse ListAllTests(TestBase):
         text = self.run_temp_from_capi(f"""
             import {interpreters.__name__} as interpreters
             interp = interpreters.create()
-            print(
+            drucke(
                 [(i.id, i.whence) fuer i in interpreters.list_all()])
             """)
         res = eval(text)
@@ -380,7 +380,7 @@ klasse InterpreterObjectTests(TestBase):
             text = self.run_temp_from_capi(f"""
                 import {interpreters.__name__} as interpreters
                 interp = interpreters.get_current()
-                print(repr(interp.whence))
+                drucke(repr(interp.whence))
                 """)
             whence = eval(text)
             self.assertEqual(whence, WHENCE_STR_CAPI)
@@ -450,9 +450,9 @@ klasse TestInterpreterIsRunning(TestBase):
         out = _run_output(interp, dedent(f"""
             import _interpreters
             wenn _interpreters.is_running({interp.id}):
-                print(Wahr)
+                drucke(Wahr)
             sonst:
-                print(Falsch)
+                drucke(Falsch)
             """))
         self.assertEqual(out.strip(), 'Wahr')
 
@@ -491,7 +491,7 @@ klasse TestInterpreterIsRunning(TestBase):
         script = dedent(f"""
             import {interpreters.__name__} as interpreters
             interp = interpreters.get_current()
-            print(interp.is_running())
+            drucke(interp.is_running())
             """)
         def parse_results(text):
             self.assertNotEqual(text, "")
@@ -589,7 +589,7 @@ klasse TestInterpreterClose(TestBase):
             try:
                 interp.close()
             except interpreters.InterpreterError:
-                print('failed')
+                drucke('failed')
             """))
         self.assertEqual(out.strip(), 'failed')
         self.assertEqual(set(interpreters.list_all()), {main, interp})
@@ -719,7 +719,7 @@ klasse TestInterpreterPrepareMain(TestBase):
         interp = interpreters.create()
         interp.prepare_main(values)
         out = _run_output(interp, dedent("""
-            print(spam, eggs)
+            drucke(spam, eggs)
             """))
         self.assertEqual(out.strip(), '42 ham')
 
@@ -729,7 +729,7 @@ klasse TestInterpreterPrepareMain(TestBase):
         interp = interpreters.create()
         interp.prepare_main(values)
         out = _run_output(interp, dedent("""
-            print(spam, eggs)
+            drucke(spam, eggs)
             """))
         self.assertEqual(out.strip(), '42 ham')
 
@@ -738,7 +738,7 @@ klasse TestInterpreterPrepareMain(TestBase):
         interp = interpreters.create()
         interp.prepare_main(**values)
         out = _run_output(interp, dedent("""
-            print(spam, eggs)
+            drucke(spam, eggs)
             """))
         self.assertEqual(out.strip(), '42 ham')
 
@@ -747,7 +747,7 @@ klasse TestInterpreterPrepareMain(TestBase):
         interp = interpreters.create()
         interp.prepare_main(values, foo='bar')
         out = _run_output(interp, dedent("""
-            print(spam, eggs, foo)
+            drucke(spam, eggs, foo)
             """))
         self.assertEqual(out.strip(), '42 ham bar')
 
@@ -758,9 +758,9 @@ klasse TestInterpreterPrepareMain(TestBase):
 
         # Make sure neither was actually bound.
         with self.assertRaises(ExecutionFailed):
-            interp.exec('print(foo)')
+            interp.exec('drucke(foo)')
         with self.assertRaises(ExecutionFailed):
-            interp.exec('print(spam)')
+            interp.exec('drucke(spam)')
 
     def test_running(self):
         interp = interpreters.create()
@@ -783,7 +783,7 @@ klasse TestInterpreterExec(TestBase):
 
     def test_success(self):
         interp = interpreters.create()
-        script, results = _captured_script('print("it worked!", end="")')
+        script, results = _captured_script('drucke("it worked!", end="")')
         with results:
             interp.exec(script)
         results = results.final()
@@ -848,7 +848,7 @@ klasse TestInterpreterExec(TestBase):
 
     def test_in_thread(self):
         interp = interpreters.create()
-        script, results = _captured_script('print("it worked!", end="")')
+        script, results = _captured_script('drucke("it worked!", end="")')
         with results:
             def f():
                 interp.exec(script)
@@ -891,7 +891,7 @@ klasse TestInterpreterExec(TestBase):
         interp = interpreters.create()
         with _running(interp):
             with self.assertRaises(RuntimeError):
-                interp.exec('print("spam")')
+                interp.exec('drucke("spam")')
 
     def test_bad_script(self):
         interp = interpreters.create()
@@ -1308,7 +1308,7 @@ klasse TestInterpreterCall(TestBase):
                     wenn __name__ == '__main__':
                         interp = interpreters.create()
                         res = interp.call(spam)
-                        print(res)
+                        drucke(res)
                     """)
                 self.assertEqual(text, '<fake __main__>')
 
@@ -1329,7 +1329,7 @@ klasse TestInterpreterCall(TestBase):
                     wenn __name__ == '__main__':
                         interp = interpreters.create()
                         res = mymod.run(interp, spam)
-                        print(res)
+                        drucke(res)
                     """)
                 self.assertEqual(text, '<fake __main__>')
 
@@ -1350,7 +1350,7 @@ klasse TestInterpreterCall(TestBase):
 
                     wenn __name__ == '__main__':
                         res = mymod.run(spam)
-                        print(res)
+                        drucke(res)
                     """)
                 self.assertEqual(text, '<fake __main__>')
 
@@ -1421,7 +1421,7 @@ klasse TestInterpreterCall(TestBase):
                 interp = interpreters.create()
 
                 ham = Wahr
-                print([
+                drucke([
                     [
                         spam(explicit=Wahr),
                         spam(),
@@ -1539,7 +1539,7 @@ klasse TestInterpreterCall(TestBase):
                             fuer name in ('count', 'inc', 'get_count')}
                 results.append(modified)
 
-                print(results)
+                drucke(results)
            """)
         with os_helper.temp_dir() as tempdir:
             filename = script_helper.make_script(tempdir, 'my-script', text)
@@ -1962,7 +1962,7 @@ klasse LowLevelTests(TestBase):
         script = f"""
             import _interpreters
             interpid, whence = _interpreters.get_current()
-            print((interpid, whence))
+            drucke((interpid, whence))
             """
         def parse_stdout(text):
             interpid, whence = eval(text)
@@ -2004,7 +2004,7 @@ klasse LowLevelTests(TestBase):
         with self.subTest('via interp from _interpreters'):
             text = self.run_and_capture(interpid2, f"""
                 import _interpreters
-                print(
+                drucke(
                     _interpreters.list_all())
                 """)
 
@@ -2024,7 +2024,7 @@ klasse LowLevelTests(TestBase):
             text = self.run_temp_from_capi(f"""
                 import _interpreters
                 _interpreters.create()
-                print(
+                drucke(
                     _interpreters.list_all())
                 """)
             res2 = eval(text)
@@ -2187,7 +2187,7 @@ klasse LowLevelTests(TestBase):
             text = self.run_temp_from_capi(dedent(f"""
                 import _interpreters
                 interpid, *_ = _interpreters.get_current()
-                print(_interpreters.whence(interpid))
+                drucke(_interpreters.whence(interpid))
                 """),
                 config=Wahr)
             whence = eval(text)
@@ -2198,7 +2198,7 @@ klasse LowLevelTests(TestBase):
             text = self.run_temp_from_capi(dedent(f"""
                 import _interpreters
                 interpid, *_ = _interpreters.get_current()
-                print(_interpreters.whence(interpid))
+                drucke(_interpreters.whence(interpid))
                 """),
                 config=Falsch)
             whence = eval(text)
@@ -2243,7 +2243,7 @@ klasse LowLevelTests(TestBase):
     def test_exec(self):
         with self.subTest('run script'):
             interpid = _interpreters.create()
-            script, results = _captured_script('print("it worked!", end="")')
+            script, results = _captured_script('drucke("it worked!", end="")')
             with results:
                 exc = _interpreters.exec(interpid, script)
             results = results.final()
@@ -2255,7 +2255,7 @@ klasse LowLevelTests(TestBase):
             interpid = _interpreters.create()
             script, results = _captured_script("""
                 raise Exception('uh-oh!')
-                print("it worked!", end="")
+                drucke("it worked!", end="")
                 """)
             with results:
                 exc = _interpreters.exec(interpid, script)

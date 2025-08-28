@@ -2568,7 +2568,7 @@ klasse TestSpecial(unittest.TestCase):
     def test_extending2(self):
         klasse Shade(Enum):
             def shade(self):
-                print(self.name)
+                drucke(self.name)
         klasse Color(Shade):
             red = 1
             green = 2
@@ -3030,7 +3030,7 @@ klasse TestSpecial(unittest.TestCase):
         #
         klasse EnumMixin(Enum):
             def hello(self):
-                print('hello from %s' % (self, ))
+                drucke('hello from %s' % (self, ))
         klasse HelloEnum(EnumMixin, StrEnum):
             eight = '8'
         self.assertEqual(HelloEnum.eight, '8')
@@ -3038,7 +3038,7 @@ klasse TestSpecial(unittest.TestCase):
         #
         klasse GoodbyeMixin:
             def goodbye(self):
-                print('%s wishes you a fond farewell')
+                drucke('%s wishes you a fond farewell')
         klasse GoodbyeEnum(GoodbyeMixin, EnumMixin, StrEnum):
             nine = '9'
         self.assertEqual(GoodbyeEnum.nine, '9')
@@ -3092,7 +3092,7 @@ klasse TestSpecial(unittest.TestCase):
         #
         klasse EnumMixin(Enum):
             def hello(self):
-                print('hello from %s' % (self, ))
+                drucke('hello from %s' % (self, ))
         klasse HelloEnum(EnumMixin, CustomStrEnum):
             eight = '8'
         self.assertEqual(HelloEnum.eight, '8')
@@ -3100,7 +3100,7 @@ klasse TestSpecial(unittest.TestCase):
         #
         klasse GoodbyeMixin:
             def goodbye(self):
-                print('%s wishes you a fond farewell')
+                drucke('%s wishes you a fond farewell')
         klasse GoodbyeEnum(GoodbyeMixin, EnumMixin, CustomStrEnum):
             nine = '9'
         self.assertEqual(GoodbyeEnum.nine, '9')
@@ -5114,8 +5114,8 @@ klasse TestStdLib(unittest.TestCase):
                 # __doc__ is huge, not comparing
                 continue
             wenn result[k] != values[k]:
-                print()
-                print('\n%s\n     key: %s\n  result: %s\nexpected: %s\n%s\n' %
+                drucke()
+                drucke('\n%s\n     key: %s\n  result: %s\nexpected: %s\n%s\n' %
                         ('=' * 75, k, result[k], values[k], '=' * 75), sep='')
                 failed = Wahr
         wenn failed:
@@ -5162,7 +5162,7 @@ klasse TestStdLib(unittest.TestCase):
             try:
                 v.name
             except AttributeError:
-                print(v)
+                drucke(v)
         values.sort(key=lambda item: item.name)
         result = list(inspect.classify_class_attrs(self.Color))
         result.sort(key=lambda item: item.name)
@@ -5178,10 +5178,10 @@ klasse TestStdLib(unittest.TestCase):
                 # __doc__ is too big to check exactly, so treat the same as __init_subclass__
                 fuer name in ('name','kind','defining_class'):
                     wenn getattr(v, name) != getattr(r, name):
-                        print('\n%s\n%s\n%s\n%s\n' % ('=' * 75, r, v, '=' * 75), sep='')
+                        drucke('\n%s\n%s\n%s\n%s\n' % ('=' * 75, r, v, '=' * 75), sep='')
                         failed = Wahr
             sowenn r != v:
-                print('\n%s\n%s\n%s\n%s\n' % ('=' * 75, r, v, '=' * 75), sep='')
+                drucke('\n%s\n%s\n%s\n%s\n' % ('=' * 75, r, v, '=' * 75), sep='')
                 failed = Wahr
         wenn failed:
             self.fail("result does not equal expected, see print above")

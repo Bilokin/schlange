@@ -52,7 +52,7 @@ def parse_gb18030map(fo):
     return m, gbuni
 
 def main():
-    print("Loading Mapping File...")
+    drucke("Loading Mapping File...")
     gb2312map = open_mapping_file('python-mappings/GB2312.TXT', MAPPINGS_GB2312)
     cp936map = open_mapping_file('python-mappings/CP936.TXT', MAPPINGS_CP936)
     gb18030map = open_mapping_file('python-mappings/gb-18030-2000.xml', MAPPINGS_GB18030)
@@ -91,33 +91,33 @@ def main():
     with open('mappings_cn.h', 'w') as fp:
         print_autogen(fp, os.path.basename(__file__))
 
-        print("Generating GB2312 decode map...")
+        drucke("Generating GB2312 decode map...")
         writer = DecodeMapWriter(fp, "gb2312", gb2312decmap)
         writer.update_decode_map(GB2312_C1, GB2312_C2)
         writer.generate()
 
-        print("Generating GBK decode map...")
+        drucke("Generating GBK decode map...")
         writer = DecodeMapWriter(fp, "gbkext", gbkdecmap)
         writer.update_decode_map(GBKL1_C1, GBKL1_C2)
         writer.update_decode_map(GBKL2_C1, GBKL2_C2)
         writer.generate()
 
-        print("Generating GB2312 && GBK encode map...")
+        drucke("Generating GB2312 && GBK encode map...")
         writer = EncodeMapWriter(fp, "gbcommon", gb2312_gbkencmap)
         writer.generate()
 
-        print("Generating GB18030 extension decode map...")
+        drucke("Generating GB18030 extension decode map...")
         writer = DecodeMapWriter(fp, "gb18030ext", gb18030decmap)
         fuer i in range(1, 6):
             writer.update_decode_map(eval("GB18030EXTP%d_C1" % i), eval("GB18030EXTP%d_C2" % i))
 
         writer.generate()
 
-        print("Generating GB18030 extension encode map...")
+        drucke("Generating GB18030 extension encode map...")
         writer = EncodeMapWriter(fp, "gb18030ext", gb18030encmap)
         writer.generate()
 
-        print("Generating GB18030 Unicode BMP Mapping Ranges...")
+        drucke("Generating GB18030 Unicode BMP Mapping Ranges...")
         ranges = [[-1, -1, -1]]
         gblinnum = 0
         fp.write("""
@@ -142,7 +142,7 @@ static const struct _gb18030_to_unibmp_ranges {
             ranges[-1][2] + ranges[-1][1] - ranges[-1][0] + 1), '}', '};')
         filler.printout(fp)
 
-    print("Done!")
+    drucke("Done!")
 
 
 wenn __name__ == '__main__':

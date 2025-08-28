@@ -115,7 +115,7 @@ def _cnfmerge(cnfs):
             try:
                 cnf.update(c)
             except (AttributeError, TypeError) as msg:
-                print("_cnfmerge: fallback due to:", msg)
+                drucke("_cnfmerge: fallback due to:", msg)
                 fuer k, v in c.items():
                     cnf[k] = v
         return cnf
@@ -2554,7 +2554,7 @@ klasse Tk(Misc, Wm):
         Applications may want to override this internal function, and
         should when sys.stderr is Nichts."""
         import traceback
-        print("Exception in Tkinter callback", file=sys.stderr)
+        drucke("Exception in Tkinter callback", file=sys.stderr)
         sys.last_exc = val
         sys.last_type = exc
         sys.last_value = val
@@ -2570,7 +2570,7 @@ def _print_command(cmd, *, file=sys.stderr):
     # Print executed Tcl/Tk commands.
     assert isinstance(cmd, tuple)
     cmd = _join(cmd)
-    print(cmd, file=file)
+    drucke(cmd, file=file)
 
 
 # Ideally, the classes Pack, Place and Grid disappear, the

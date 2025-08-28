@@ -116,7 +116,7 @@ klasse TestPerfTrampoline(unittest.TestCase):
                 def foo():
                     pid = os.fork()
                     wenn pid == 0:
-                        print(os.getpid())
+                        drucke(os.getpid())
                         baz_fork()
                     sonst:
                         _, status = os.waitpid(-1, 0)
@@ -274,7 +274,7 @@ def perf_command_works():
                 "--",
                 sys.executable,
                 "-c",
-                'print("hello")',
+                'drucke("hello")',
             )
             env = {**os.environ, "PYTHON_JIT": "0"}
             stdout = subprocess.check_output(
@@ -328,7 +328,7 @@ def run_perf(cwd, *args, use_jit=Falsch, **env_vars):
         text=Wahr,
     )
     wenn proc.returncode:
-        print(proc.stderr, file=sys.stderr)
+        drucke(proc.stderr, file=sys.stderr)
         raise ValueError(f"Perf failed with return code {proc.returncode}")
 
     wenn use_jit:
@@ -338,7 +338,7 @@ def run_perf(cwd, *args, use_jit=Falsch, **env_vars):
             command, stderr=subprocess.PIPE, stdout=subprocess.PIPE, env=env, text=Wahr
         )
         wenn proc.returncode:
-            print(proc.stderr, file=sys.stderr)
+            drucke(proc.stderr, file=sys.stderr)
             raise ValueError(f"Perf failed with return code {proc.returncode}")
         # Copy the jit_output_file to the output_file
         os.rename(jit_output_file, output_file)
@@ -465,7 +465,7 @@ klasse TestPerfProfiler(unittest.TestCase, TestPerfProfilerMixin):
                     compile_trampolines_for_all_functions()
                     pid = os.fork()
                     wenn pid == 0:
-                        print(os.getpid())
+                        drucke(os.getpid())
                         bar_fork()
                     sonst:
                         bar()

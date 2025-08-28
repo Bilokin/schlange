@@ -169,11 +169,11 @@ def cmd_check(filenames=Nichts, **kwargs):
         wenn isinstance(num_failed, int):
             wenn num_failed > 0:
                 sys.stderr.flush()
-                print(CHECK_EXPLANATION, flush=Wahr)
+                drucke(CHECK_EXPLANATION, flush=Wahr)
         raise  # re-raise
     except Exception:
         sys.stderr.flush()
-        print(CHECK_EXPLANATION, flush=Wahr)
+        drucke(CHECK_EXPLANATION, flush=Wahr)
         raise  # re-raise
 
 
@@ -364,9 +364,9 @@ def cmd_capi(filenames=Nichts, *,
         showempty=showempty,
         verbose=verbosity > VERBOSITY,
     )
-    print()
+    drucke()
     fuer line in lines:
-        print(line)
+        drucke(line)
 
 
 def _cli_builtin_types(parser):
@@ -405,9 +405,9 @@ def cmd_builtin_types(fmt, *,
         types,
 #        verbose=verbosity > VERBOSITY,
     )
-    print()
+    drucke()
     fuer line in lines:
-        print(line)
+        drucke(line)
 
 
 # We do not define any other cmd_*() handlers here,

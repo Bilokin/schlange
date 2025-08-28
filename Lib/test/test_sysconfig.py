@@ -396,7 +396,7 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
     @requires_subprocess()
     def test_symlink(self): # Issue 7880
         with PythonSymlink() as py:
-            cmd = "-c", "import sysconfig; print(sysconfig.get_platform())"
+            cmd = "-c", "import sysconfig; drucke(sysconfig.get_platform())"
             self.assertEqual(py.call_real(*cmd), py.call_link(*cmd))
 
     def test_user_similar(self):
@@ -483,7 +483,7 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
 
         p = subprocess.Popen([
                 sys.executable, '-c',
-                'import sysconfig; print(sysconfig.get_platform())',
+                'import sysconfig; drucke(sysconfig.get_platform())',
             ],
             stdout=subprocess.PIPE,
             stderr=subprocess.DEVNULL,
@@ -502,7 +502,7 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
 
         p = subprocess.Popen([
                 sys.executable, '-c',
-                'import sysconfig; print(sysconfig.get_platform())',
+                'import sysconfig; drucke(sysconfig.get_platform())',
             ],
             stdout=subprocess.PIPE,
             stderr=subprocess.DEVNULL,
@@ -658,7 +658,7 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
             }
 
             import json
-            print(json.dumps(data, indent=2))
+            drucke(json.dumps(data, indent=2))
         """)
 
         # We need to run the test inside a virtual environment so that
@@ -752,12 +752,12 @@ klasse MakefileTests(unittest.TestCase):
     def test_parse_makefile(self):
         self.addCleanup(unlink, TESTFN)
         with open(TESTFN, "w") as makefile:
-            print("var1=a$(VAR2)", file=makefile)
-            print("VAR2=b$(var3)", file=makefile)
-            print("var3=42", file=makefile)
-            print("var4=$/invalid", file=makefile)
-            print("var5=dollar$$5", file=makefile)
-            print("var6=${var3}/lib/python3.5/config-$(VAR2)$(var5)"
+            drucke("var1=a$(VAR2)", file=makefile)
+            drucke("VAR2=b$(var3)", file=makefile)
+            drucke("var3=42", file=makefile)
+            drucke("var4=$/invalid", file=makefile)
+            drucke("var5=dollar$$5", file=makefile)
+            drucke("var6=${var3}/lib/python3.5/config-$(VAR2)$(var5)"
                   "-x86_64-linux-gnu", file=makefile)
         vars = _parse_makefile(TESTFN)
         self.assertEqual(vars, {

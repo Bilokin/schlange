@@ -39,12 +39,12 @@ klasse UndoDelegator(Delegator):
 
     def dump_event(self, event):
         from pprint import pprint
-        pprint(self.undolist[:self.pointer])
-        print("pointer:", self.pointer, end=' ')
-        print("saved:", self.saved, end=' ')
-        print("can_merge:", self.can_merge, end=' ')
-        print("get_saved():", self.get_saved())
-        pprint(self.undolist[self.pointer:])
+        pdrucke(self.undolist[:self.pointer])
+        drucke("pointer:", self.pointer, end=' ')
+        drucke("saved:", self.saved, end=' ')
+        drucke("can_merge:", self.can_merge, end=' ')
+        drucke("get_saved():", self.get_saved())
+        pdrucke(self.undolist[self.pointer:])
         return "break"
 
     def reset_undo(self):

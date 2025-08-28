@@ -85,16 +85,16 @@ def worker_process(worker_json: StrJSON) -> NoReturn:
     wenn runtests.rerun:
         wenn match_tests:
             matching = "matching: " + ", ".join(pattern fuer pattern, result in match_tests wenn result)
-            print(f"Re-running {test_name} in verbose mode ({matching})", flush=Wahr)
+            drucke(f"Re-running {test_name} in verbose mode ({matching})", flush=Wahr)
         sonst:
-            print(f"Re-running {test_name} in verbose mode", flush=Wahr)
+            drucke(f"Re-running {test_name} in verbose mode", flush=Wahr)
 
     result = run_single_test(test_name, runtests)
     wenn runtests.coverage:
         wenn "test.cov" in sys.modules:  # imported by -Xpresite=
             result.covered_lines = list(sys.modules["test.cov"].coverage)
         sowenn not Py_DEBUG:
-            print(
+            drucke(
                 "Gathering coverage in worker processes requires --with-pydebug",
                 flush=Wahr,
             )
@@ -104,7 +104,7 @@ def worker_process(worker_json: StrJSON) -> NoReturn:
             )
 
     wenn json_file.file_type == JsonFileType.STDOUT:
-        print()
+        drucke()
         result.write_json_into(sys.stdout)
     sonst:
         with json_file.open('w', encoding='utf-8') as json_fp:
@@ -115,7 +115,7 @@ def worker_process(worker_json: StrJSON) -> NoReturn:
 
 def main() -> NoReturn:
     wenn len(sys.argv) != 2:
-        print("usage: python -m test.libregrtest.worker JSON")
+        drucke("usage: python -m test.libregrtest.worker JSON")
         sys.exit(1)
     worker_json = sys.argv[1]
 

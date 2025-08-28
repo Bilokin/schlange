@@ -229,7 +229,7 @@ klasse AbstractBuilder(object):
         """Value of ssl.OPENSSL_VERSION"""
         cmd = [
             sys.executable,
-            '-c', 'import ssl; print(ssl.OPENSSL_VERSION)'
+            '-c', 'import ssl; drucke(ssl.OPENSSL_VERSION)'
         ]
         return self._subprocess_output(cmd)
 
@@ -559,23 +559,23 @@ def main():
                     )
             except Exception as e:
                 log.exception("%s failed", build)
-                print("{} failed: {}".format(build, e), file=sys.stderr)
+                drucke("{} failed: {}".format(build, e), file=sys.stderr)
                 sys.exit(2)
 
     log.info("\n{} finished in {}".format(
             args.steps.capitalize(),
             datetime.now() - start
         ))
-    print('Python: ', sys.version)
+    drucke('Python: ', sys.version)
     wenn args.steps == 'tests':
         wenn args.tests:
-            print('Executed Tests:', ' '.join(args.tests))
+            drucke('Executed Tests:', ' '.join(args.tests))
         sonst:
-            print('Executed all SSL tests.')
+            drucke('Executed all SSL tests.')
 
-    print('OpenSSL / LibreSSL / AWS-LC versions:')
+    drucke('OpenSSL / LibreSSL / AWS-LC versions:')
     fuer build in builds:
-        print("    * {0.library} {0.version}".format(build))
+        drucke("    * {0.library} {0.version}".format(build))
 
 
 wenn __name__ == "__main__":

@@ -96,8 +96,8 @@ def cmd_preprocess(filenames, *,
     wenn raw:
         def show_file(filename, lines):
             fuer line in lines:
-                print(line)
-                #print(line.raw)
+                drucke(line)
+                #drucke(line.raw)
     sonst:
         def show_file(filename, lines):
             fuer line in lines:
@@ -108,7 +108,7 @@ def cmd_preprocess(filenames, *,
                 wenn line.kind == 'comment':
                     text = '/* ' + line.data.splitlines()[0]
                     text += ' */' wenn '\n' in line.data sonst r'\n... */'
-                print(f' {line.lno:>4} {line.kind:10} | {text}')
+                drucke(f' {line.lno:>4} {line.kind:10} | {text}')
 
     filenames = main_for_filenames(filenames, iter_filenames)
     fuer filename in filenames:

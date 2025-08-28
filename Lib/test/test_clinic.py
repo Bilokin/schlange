@@ -228,7 +228,7 @@ klasse ClinicWholeFileTest(TestCase):
         err = "Can't 'output pop', stack is empty"
         self.expect_failure(raw, err)
 
-    def test_directive_output_print(self):
+    def test_directive_output_drucke(self):
         raw = dedent("""
             /*[clinic input]
             output print 'I told you once.'

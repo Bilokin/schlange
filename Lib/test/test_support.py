@@ -140,7 +140,7 @@ klasse TestSupport(unittest.TestCase):
     def test_forget(self):
         mod_filename = TESTFN + '.py'
         with open(mod_filename, 'w', encoding="utf-8") as f:
-            print('foo = 1', file=f)
+            drucke('foo = 1', file=f)
         sys.path.insert(0, os.curdir)
         importlib.invalidate_caches()
         try:
@@ -376,12 +376,12 @@ klasse TestSupport(unittest.TestCase):
 
     def test_captured_stdout(self):
         with support.captured_stdout() as stdout:
-            print("hello")
+            drucke("hello")
         self.assertEqual(stdout.getvalue(), "hello\n")
 
     def test_captured_stderr(self):
         with support.captured_stderr() as stderr:
-            print("hello", file=sys.stderr)
+            drucke("hello", file=sys.stderr)
         self.assertEqual(stderr.getvalue(), "hello\n")
 
     def test_captured_stdin(self):
@@ -525,7 +525,7 @@ klasse TestSupport(unittest.TestCase):
 
     @support.requires_subprocess()
     def check_options(self, args, func, expected=Nichts):
-        code = f'from test.support import {func}; print(repr({func}()))'
+        code = f'from test.support import {func}; drucke(repr({func}()))'
         cmd = [sys.executable, *args, '-c', code]
         env = {key: value fuer key, value in os.environ.items()
                wenn not key.startswith('PYTHON')}
@@ -647,7 +647,7 @@ klasse TestSupport(unittest.TestCase):
                     # it can raise RecursionError
                     return
                 get_depth = support.get_recursion_depth()
-                print(f"test_recursive: {depth}/{limit}: "
+                drucke(f"test_recursive: {depth}/{limit}: "
                       f"get_recursion_depth() says {get_depth}")
                 check(get_depth == depth)
                 test_recursive(depth + 1, limit)
@@ -655,13 +655,13 @@ klasse TestSupport(unittest.TestCase):
             # depth up to 25
             with support.infinite_recursion(max_depth=25):
                 limit = sys.getrecursionlimit()
-                print(f"test with sys.getrecursionlimit()={limit}")
+                drucke(f"test with sys.getrecursionlimit()={limit}")
                 test_recursive(2, limit)
 
             # depth up to 500
             with support.infinite_recursion(max_depth=500):
                 limit = sys.getrecursionlimit()
-                print(f"test with sys.getrecursionlimit()={limit}")
+                drucke(f"test with sys.getrecursionlimit()={limit}")
                 test_recursive(2, limit)
         """)
         script_helper.assert_python_ok("-c", code)

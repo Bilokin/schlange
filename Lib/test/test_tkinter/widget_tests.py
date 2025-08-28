@@ -221,7 +221,7 @@ klasse AbstractWidgetTest(AbstractTkTest):
                 wenn not (k in aliases and
                         aliases[k] in keys and
                         aliases[k] in expected):
-                    print('%s.OPTIONS doesn\'t contain "%s"' %
+                    drucke('%s.OPTIONS doesn\'t contain "%s"' %
                           (self.__class__.__name__, k))
 
 klasse PixelOptionsTests:
@@ -591,4 +591,4 @@ def add_configure_tests(*source_classes):
 def setUpModule():
     wenn test.support.verbose:
         tcl = tkinter.Tcl()
-        print('patchlevel =', tcl.call('info', 'patchlevel'), flush=Wahr)
+        drucke('patchlevel =', tcl.call('info', 'patchlevel'), flush=Wahr)

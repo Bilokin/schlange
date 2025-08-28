@@ -398,12 +398,12 @@ klasse BugsTestCase(unittest.TestCase):
                     # this part wenn we are configured to use any other hash
                     # algorithm (for example, using Py_HASH_EXTERNAL):
                     wenn sys.hash_info.algorithm in {"fnv", "siphash24"}:
-                        args = ["-c", f"print({s})"]
+                        args = ["-c", f"drucke({s})"]
                         _, repr_0, _ = assert_python_ok(*args, PYTHONHASHSEED="0")
                         _, repr_1, _ = assert_python_ok(*args, PYTHONHASHSEED="1")
                         self.assertNotEqual(repr_0, repr_1)
                     # Then, perform the actual test:
-                    args = ["-c", f"import marshal; print(marshal.dumps({s}))"]
+                    args = ["-c", f"import marshal; drucke(marshal.dumps({s}))"]
                     _, dump_0, _ = assert_python_ok(*args, PYTHONHASHSEED="0")
                     _, dump_1, _ = assert_python_ok(*args, PYTHONHASHSEED="1")
                     self.assertEqual(dump_0, dump_1)

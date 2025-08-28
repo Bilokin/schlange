@@ -32,11 +32,11 @@ def setUpModule():
         # Python implementations other than CPython may not have
         # these private attributes
         wenn hasattr(readline, "_READLINE_VERSION"):
-            print(f"readline version: {readline._READLINE_VERSION:#x}")
-            print(f"readline runtime version: {readline._READLINE_RUNTIME_VERSION:#x}")
+            drucke(f"readline version: {readline._READLINE_VERSION:#x}")
+            drucke(f"readline runtime version: {readline._READLINE_RUNTIME_VERSION:#x}")
         wenn hasattr(readline, "_READLINE_LIBRARY_VERSION"):
-            print(f"readline library version: {readline._READLINE_LIBRARY_VERSION!r}")
-        print(f"use libedit emulation? {is_editline}")
+            drucke(f"readline library version: {readline._READLINE_LIBRARY_VERSION!r}")
+        drucke(f"use libedit emulation? {is_editline}")
 
 
 @unittest.skipUnless(hasattr(readline, "clear_history"),
@@ -191,7 +191,7 @@ klasse TestReadline(unittest.TestCase):
 import readline
 readline.set_auto_history({})
 input()
-print("History length:", readline.get_current_history_length())
+drucke("History length:", readline.get_current_history_length())
 """
 
     def test_auto_history_enabled(self):
@@ -219,7 +219,7 @@ print("History length:", readline.get_current_history_length())
                 readline.parse_and_bind(r'"\\t": complete')
             readline.set_completer_delims(" \\t\\n")
             readline.set_completer(complete)
-            print(input())
+            drucke(input())
         """)
 
         output = run_pty(script, input=b"$\t\n")
@@ -277,9 +277,9 @@ wenn set_pre_input_hook:
 def completer(text, state):
     wenn text == "t\xEB":
         wenn state == 0:
-            print("text", ascii(text))
-            print("line", ascii(readline.get_line_buffer()))
-            print("indexes", readline.get_begidx(), readline.get_endidx())
+            drucke("text", ascii(text))
+            drucke("line", ascii(readline.get_line_buffer()))
+            drucke("indexes", readline.get_begidx(), readline.get_endidx())
             return "t\xEBnt"
         wenn state == 1:
             return "t\xEBxt"
@@ -289,12 +289,12 @@ def completer(text, state):
 readline.set_completer(completer)
 
 def display(substitution, matches, longest_match_length):
-    print("substitution", ascii(substitution))
-    print("matches", ascii(matches))
+    drucke("substitution", ascii(substitution))
+    drucke("matches", ascii(matches))
 readline.set_completion_display_matches_hook(display)
 
-print("result", ascii(input()))
-print("history", ascii(readline.get_history_item(1)))
+drucke("result", ascii(input()))
+drucke("history", ascii(readline.get_history_item(1)))
 """
 
         input = b"\x01"  # Ctrl-A, expands to "|t\xEB[after]"
@@ -385,7 +385,7 @@ readline.write_history_file(history_file)
             thread2.start()
             join_thread(thread1)
             join_thread(thread2)
-            print("done")
+            drucke("done")
         """)
 
         output = run_pty(script, input=b"input1\rinput2\r")

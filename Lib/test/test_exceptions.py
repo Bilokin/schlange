@@ -179,13 +179,13 @@ klasse ExceptionTests(unittest.TestCase):
                 self.fail("failed to get expected SyntaxError")
 
         s = '''print "old style"'''
-        ckmsg(s, "Missing parentheses in call to 'print'. Did you mean print(...)?")
+        ckmsg(s, "Missing parentheses in call to 'print'. Did you mean drucke(...)?")
 
         s = '''print "old style",'''
-        ckmsg(s, "Missing parentheses in call to 'print'. Did you mean print(...)?")
+        ckmsg(s, "Missing parentheses in call to 'print'. Did you mean drucke(...)?")
 
         s = 'print f(a+b,c)'
-        ckmsg(s, "Missing parentheses in call to 'print'. Did you mean print(...)?")
+        ckmsg(s, "Missing parentheses in call to 'print'. Did you mean drucke(...)?")
 
         s = '''exec "old style"'''
         ckmsg(s, "Missing parentheses in call to 'exec'. Did you mean exec(...)?")
@@ -196,7 +196,7 @@ klasse ExceptionTests(unittest.TestCase):
         # Check that we don't incorrectly identify '(...)' as an expression to the right
         # of 'print'
 
-        s = 'print (a+b,c) $ 42'
+        s = 'drucke (a+b,c) $ 42'
         ckmsg(s, "invalid syntax")
 
         s = 'exec (a+b,c) $ 42'
@@ -206,7 +206,7 @@ klasse ExceptionTests(unittest.TestCase):
         s = '''if Wahr:\nprint "No indent"'''
         ckmsg(s, "expected an indented block after 'if' statement on line 1", IndentationError)
 
-        s = '''if Wahr:\n        print()\n\texec "mixed tabs and spaces"'''
+        s = '''if Wahr:\n        drucke()\n\texec "mixed tabs and spaces"'''
         ckmsg(s, "inconsistent use of tabs and spaces in indentation", TabError)
 
     def check(self, src, lineno, offset, end_lineno=Nichts, end_offset=Nichts, encoding='utf-8'):
@@ -234,7 +234,7 @@ klasse ExceptionTests(unittest.TestCase):
         check = self.check
         check('def fact(x):\n\treturn x!\n', 2, 10)
         check('1 +\n', 1, 4)
-        check('def spam():\n  print(1)\n print(2)', 3, 10)
+        check('def spam():\n  drucke(1)\n drucke(2)', 3, 10)
         check('Python = "Python" +', 1, 20)
         check('Python = "\u1e54\xfd\u0163\u0125\xf2\xf1" +', 1, 20)
         check(b'# -*- coding: cp1251 -*-\nPython = "\xcf\xb3\xf2\xee\xed" +',
@@ -287,7 +287,7 @@ klasse ExceptionTests(unittest.TestCase):
         check("pass\npass\npass\n(1+)\npass\npass\npass", 4, 4)
         check("(1+)", 1, 4)
         check("[interesting\nfoo()\n", 1, 1)
-        check(b"\xef\xbb\xbf#coding: utf8\nprint('\xe6\x88\x91')\n", 0, -1)
+        check(b"\xef\xbb\xbf#coding: utf8\ndrucke('\xe6\x88\x91')\n", 0, -1)
         check("""f'''
             {
             (123_a)
@@ -539,7 +539,7 @@ klasse ExceptionTests(unittest.TestCase):
             try:
                 e = exc(*args, **kwargs)
             except:
-                print(f"\nexc={exc!r}, args={args!r}", file=sys.stderr)
+                drucke(f"\nexc={exc!r}, args={args!r}", file=sys.stderr)
                 # raise
             sonst:
                 # Verify module name
@@ -1493,7 +1493,7 @@ klasse ExceptionTests(unittest.TestCase):
                 recurse(support.exceeds_recursion_limit())
             finally:
                 sys.setrecursionlimit(recursionlimit)
-                print('Done.')
+                drucke('Done.')
         """ % __file__
         rc, out, err = script_helper.assert_python_failure("-Wd", "-c", code)
         # Check that the program does not fail with SIGABRT.
@@ -1514,7 +1514,7 @@ klasse ExceptionTests(unittest.TestCase):
             try:
                 raise _testcapi.RecursingInfinitelyError
             finally:
-                print('Done.')
+                drucke('Done.')
         """
         rc, out, err = script_helper.assert_python_failure("-c", code)
         self.assertEqual(rc, 1)

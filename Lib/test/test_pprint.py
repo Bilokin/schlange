@@ -179,8 +179,8 @@ klasse QueryTestCase(unittest.TestCase):
         with contextlib.redirect_stdout(Nichts):
             # smoke test - there is no output to check
             value = 'this should not fail'
-            pprint.pprint(value)
-            pprint.PrettyPrinter().pprint(value)
+            pprint.pdrucke(value)
+            pprint.PrettyPrinter().pdrucke(value)
 
     def test_knotted(self):
         # Verify .isrecursive() and .isreadable() w/ recursion

@@ -234,8 +234,8 @@ klasse ParseArgsTestCase(unittest.TestCase):
 
         self.addCleanup(os_helper.unlink, os_helper.TESTFN)
         with open(os_helper.TESTFN, "w") as fp:
-            print('matchfile1', file=fp)
-            print('matchfile2', file=fp)
+            drucke('matchfile1', file=fp)
+            drucke('matchfile2', file=fp)
 
         filename = os.path.abspath(os_helper.TESTFN)
         ns = self.parse_args(['-m', 'match', '--matchfile', filename])
@@ -1018,7 +1018,7 @@ klasse ArgsTestCase(BaseTestCase):
         # test -r and --randseed command line option
         code = textwrap.dedent("""
             import random
-            print("TESTRANDOM: %s" % random.randint(1, 1000))
+            drucke("TESTRANDOM: %s" % random.randint(1, 1000))
         """)
         test = self.create_test('random', code)
 
@@ -1085,7 +1085,7 @@ klasse ArgsTestCase(BaseTestCase):
                         % (index, index, len(tests), name))
                 wenn previous:
                     line += " -- %s took 0 sec" % previous
-                print(line, file=fp)
+                drucke(line, file=fp)
                 previous = name
 
         output = self.run_tests('--fromfile', filename)
@@ -1095,7 +1095,7 @@ klasse ArgsTestCase(BaseTestCase):
         # test format '[2/7] test_opcodes'
         with open(filename, "w") as fp:
             fuer index, name in enumerate(tests, 1):
-                print("[%s/%s] %s" % (index, len(tests), name), file=fp)
+                drucke("[%s/%s] %s" % (index, len(tests), name), file=fp)
 
         output = self.run_tests('--fromfile', filename)
         self.check_executed_tests(output, tests, stats=stats)
@@ -1103,7 +1103,7 @@ klasse ArgsTestCase(BaseTestCase):
         # test format 'test_opcodes'
         with open(filename, "w") as fp:
             fuer name in tests:
-                print(name, file=fp)
+                drucke(name, file=fp)
 
         output = self.run_tests('--fromfile', filename)
         self.check_executed_tests(output, tests, stats=stats)
@@ -1111,7 +1111,7 @@ klasse ArgsTestCase(BaseTestCase):
         # test format 'Lib/test/test_opcodes.py'
         with open(filename, "w") as fp:
             fuer name in tests:
-                print('Lib/test/%s.py' % name, file=fp)
+                drucke('Lib/test/%s.py' % name, file=fp)
 
         output = self.run_tests('--fromfile', filename)
         self.check_executed_tests(output, tests, stats=stats)
@@ -1376,7 +1376,7 @@ klasse ArgsTestCase(BaseTestCase):
             '%s.Tests.test_method3' % testname]
         with open(filename, "w") as fp:
             fuer name in subset:
-                print(name, file=fp)
+                drucke(name, file=fp)
 
         output = self.run_tests("-v", "--ignorefile", filename, testname)
         methods = self.parse_methods(output)
@@ -1417,7 +1417,7 @@ klasse ArgsTestCase(BaseTestCase):
             '%s.Tests.test_method3' % testname]
         with open(filename, "w") as fp:
             fuer name in subset:
-                print(name, file=fp)
+                drucke(name, file=fp)
 
         output = self.run_tests("-v", "--matchfile", filename, testname)
         methods = self.parse_methods(output)
@@ -1910,7 +1910,7 @@ klasse ArgsTestCase(BaseTestCase):
 
             klasse Tests(unittest.TestCase):
                 def test_print_warning(self):
-                    print("msg1: stdout")
+                    drucke("msg1: stdout")
                     support.print_warning("msg2: print_warning")
                     # Fail with ENV CHANGED to see print_warning() log
                     support.environment_altered = Wahr
@@ -2082,7 +2082,7 @@ klasse ArgsTestCase(BaseTestCase):
             klasse RandomSeedTest(unittest.TestCase):
                 def test_randint(self):
                     numbers = [random.randint(0, 1000) fuer _ in range(10)]
-                    print(f"Random numbers: {numbers}")
+                    drucke(f"Random numbers: {numbers}")
         ''')
         tests = [self.create_test(name=f'test_random{i}', code=code)
                  fuer i in range(1, 3+1)]
@@ -2230,7 +2230,7 @@ klasse ArgsTestCase(BaseTestCase):
 
             klasse CrashTests(unittest.TestCase):
                 def test_crash(self):
-                    print("just before crash!", flush=Wahr)
+                    drucke("just before crash!", flush=Wahr)
 
                     with support.SuppressCrashReport():
                         faulthandler._sigsegv(Wahr)
@@ -2260,7 +2260,7 @@ klasse ArgsTestCase(BaseTestCase):
 
             klasse VerboseTests(unittest.TestCase):
                 def test_pass(self):
-                    print("SPAM SPAM SPAM")
+                    drucke("SPAM SPAM SPAM")
         """)
         testname = self.create_test(code=code)
 
@@ -2282,7 +2282,7 @@ klasse ArgsTestCase(BaseTestCase):
 
             klasse VerboseTests(unittest.TestCase):
                 def test_failed(self):
-                    print("abc \x1b def")
+                    drucke("abc \x1b def")
                     self.fail()
         """)
         testname = self.create_test(code=code)

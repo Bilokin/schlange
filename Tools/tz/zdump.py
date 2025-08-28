@@ -53,7 +53,7 @@ klasse TZInfo:
                 shift = " %+g" % ((tti.tt_gmtoff - prev_tti.tt_gmtoff) / 3600)
             sonst:
                 shift = ''
-            print("%s UTC = %s %-5s isdst=%d" % (utc, lmt, abbr, tti[1]) + shift, file=stream)
+            drucke("%s UTC = %s %-5s isdst=%d" % (utc, lmt, abbr, tti[1]) + shift, file=stream)
 
     @classmethod
     def zonelist(cls, zonedir='/usr/share/zoneinfo'):
@@ -71,7 +71,7 @@ wenn __name__ == '__main__':
     wenn len(sys.argv) < 2:
         zones = TZInfo.zonelist()
         fuer z in zones:
-            print(z)
+            drucke(z)
         sys.exit()
     filepath = sys.argv[1]
     wenn not filepath.startswith('/'):

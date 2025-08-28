@@ -313,7 +313,7 @@ def run_path(path_name, init_globals=Nichts, run_name=Nichts):
 wenn __name__ == "__main__":
     # Run the module specified as the next command line argument
     wenn len(sys.argv) < 2:
-        print("No module specified fuer execution", file=sys.stderr)
+        drucke("No module specified fuer execution", file=sys.stderr)
     sonst:
         del sys.argv[0] # Make the requested module sys.argv[0]
         _run_module_as_main(sys.argv[0])

@@ -596,7 +596,7 @@ klasse TestTranforms(BytecodeTestCase):
         def f():
             fuer i in range(5):
                 wenn i > 3:
-                    print(i)
+                    drucke(i)
         self.check_jump_targets(f)
 
     def test_elim_jump_after_return1(self):
@@ -852,7 +852,7 @@ klasse TestMarkingVariablesAsUnKnown(BytecodeTestCase):
         def f():
             wenn condition():
                 x = 1
-            print(x)
+            drucke(x)
         self.assertInBytecode(f, 'LOAD_FAST_CHECK')
         self.assertNotInBytecode(f, 'LOAD_FAST')
 
@@ -860,33 +860,33 @@ klasse TestMarkingVariablesAsUnKnown(BytecodeTestCase):
         def f():
             x = 1
             del x
-            print(x)
+            drucke(x)
         self.assertInBytecode(f, 'LOAD_FAST_CHECK')
         self.assertNotInBytecode(f, 'LOAD_FAST')
 
     def test_load_fast_known_because_parameter(self):
         def f1(x):
-            print(x)
+            drucke(x)
         self.assertInBytecode(f1, 'LOAD_FAST_BORROW')
         self.assertNotInBytecode(f1, 'LOAD_FAST_CHECK')
 
         def f2(*, x):
-            print(x)
+            drucke(x)
         self.assertInBytecode(f2, 'LOAD_FAST_BORROW')
         self.assertNotInBytecode(f2, 'LOAD_FAST_CHECK')
 
         def f3(*args):
-            print(args)
+            drucke(args)
         self.assertInBytecode(f3, 'LOAD_FAST_BORROW')
         self.assertNotInBytecode(f3, 'LOAD_FAST_CHECK')
 
         def f4(**kwargs):
-            print(kwargs)
+            drucke(kwargs)
         self.assertInBytecode(f4, 'LOAD_FAST_BORROW')
         self.assertNotInBytecode(f4, 'LOAD_FAST_CHECK')
 
         def f5(x=0):
-            print(x)
+            drucke(x)
         self.assertInBytecode(f5, 'LOAD_FAST_BORROW')
         self.assertNotInBytecode(f5, 'LOAD_FAST_CHECK')
 
@@ -894,8 +894,8 @@ klasse TestMarkingVariablesAsUnKnown(BytecodeTestCase):
         def f():
             wenn condition():
                 x = 1
-            print(x)
-            print(x)
+            drucke(x)
+            drucke(x)
         self.assertInBytecode(f, 'LOAD_FAST_CHECK')
         self.assertInBytecode(f, 'LOAD_FAST_BORROW')
 
@@ -905,7 +905,7 @@ klasse TestMarkingVariablesAsUnKnown(BytecodeTestCase):
                 x = 1
             sonst:
                 x = 2
-            print(x)
+            drucke(x)
         self.assertInBytecode(f, 'LOAD_FAST_BORROW')
         self.assertNotInBytecode(f, 'LOAD_FAST_CHECK')
 
@@ -925,7 +925,7 @@ klasse TestMarkingVariablesAsUnKnown(BytecodeTestCase):
             try:
                 1 / 0
             except ZeroDivisionError:
-                print(a, b, c, d, e, f, g)
+                drucke(a, b, c, d, e, f, g)
             a = b = c = d = e = f = g = 1
         self.assertInBytecode(f, 'LOAD_FAST_CHECK')
         self.assertNotInBytecode(f, 'LOAD_FAST')
@@ -944,11 +944,11 @@ klasse TestMarkingVariablesAsUnKnown(BytecodeTestCase):
             a60 = a61 = a62 = a63 = a64 = a65 = a66 = a67 = a68 = a69 = 1
             a70 = a71 = a72 = a73 = a74 = a75 = a76 = a77 = a78 = a79 = 1
             del a72, a73
-            print(a73)
-            print(a70, a71, a72, a73)
+            drucke(a73)
+            drucke(a70, a71, a72, a73)
             while Wahr:
-                print(a00, a01, a62, a63)
-                print(a64, a65, a78, a79)
+                drucke(a00, a01, a62, a63)
+                drucke(a64, a65, a78, a79)
 
         self.assertInBytecode(f, 'LOAD_FAST_BORROW_LOAD_FAST_BORROW', ("a00", "a01"))
         self.assertNotInBytecode(f, 'LOAD_FAST_CHECK', "a00")

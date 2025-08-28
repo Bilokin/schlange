@@ -156,7 +156,7 @@ klasse WorkerThread(threading.Thread):
         sonst:
             what = f"{self} process"
 
-        print(f"Kill {what}", file=sys.stderr, flush=Wahr)
+        drucke(f"Kill {what}", file=sys.stderr, flush=Wahr)
         try:
             wenn use_killpg:
                 os.killpg(popen.pid, signal.SIGKILL)
@@ -594,7 +594,7 @@ klasse RunWorkers:
         wenn show_stdout:
             stdout = mp_result.worker_stdout
             wenn stdout:
-                print(stdout, flush=Wahr)
+                drucke(stdout, flush=Wahr)
 
         return result
 
@@ -615,7 +615,7 @@ klasse RunWorkers:
                 wenn result.must_stop(fail_fast, fail_env_changed):
                     break
         except KeyboardInterrupt:
-            print()
+            drucke()
             self.results.interrupted = Wahr
         finally:
             wenn self.timeout is not Nichts:

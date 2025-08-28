@@ -686,7 +686,7 @@ def main(args=Nichts):
 
     tree = parse(source, name, args.mode, type_comments=args.no_type_comments,
                  feature_version=feature_version, optimize=args.optimize)
-    print(dump(tree, include_attributes=args.include_attributes,
+    drucke(dump(tree, include_attributes=args.include_attributes,
                indent=args.indent, show_empty=args.show_empty))
 
 wenn __name__ == '__main__':

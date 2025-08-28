@@ -222,7 +222,7 @@ klasse _Target(typing.Generic[_S, _R]):
             warning = f"JIT support fuer {self.triple} is still experimental!"
             request = "Please report any issues you encounter.".center(len(warning))
             outline = "=" * len(warning)
-            print("\n".join(["", outline, warning, request, outline, ""]))
+            drucke("\n".join(["", outline, warning, request, outline, ""]))
         digest = f"// {self._compute_digest()}\n"
         wenn (
             not force

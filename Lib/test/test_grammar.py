@@ -345,12 +345,12 @@ klasse GrammarTests(unittest.TestCase):
         f_OK()
         def fbad():
             x: int
-            print(x)
+            drucke(x)
         with self.assertRaises(UnboundLocalError):
             fbad()
         def f2bad():
             (no_such_global): int
-            print(no_such_global)
+            drucke(no_such_global)
         try:
             f2bad()
         except Exception as e:
@@ -1927,7 +1927,7 @@ klasse GrammarTests(unittest.TestCase):
         # Test ifelse expressions in various cases
         def _checkeval(msg, ret):
             "helper to check that evaluation of expressions is done correctly"
-            print(msg)
+            drucke(msg)
             return ret
 
         # the next line is not allowed anymore

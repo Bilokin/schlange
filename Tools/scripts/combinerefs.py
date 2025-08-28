@@ -101,7 +101,7 @@ def combinefile(f):
             addr, addr2rc[addr], addr2guts[addr] = m.groups()
             before += 1
         sonst:
-            print('??? skipped:', line)
+            drucke('??? skipped:', line)
 
     after = 0
     fuer line in read(fi, crack, Wahr):
@@ -110,16 +110,16 @@ def combinefile(f):
         assert m
         addr, rc, guts = m.groups() # guts is type name here
         wenn addr not in addr2rc:
-            print('??? new object created while tearing down:', line.rstrip())
+            drucke('??? new object created while tearing down:', line.rstrip())
             continue
-        print(addr, end=' ')
+        drucke(addr, end=' ')
         wenn rc == addr2rc[addr]:
-            print('[%s]' % rc, end=' ')
+            drucke('[%s]' % rc, end=' ')
         sonst:
-            print('[%s->%s]' % (addr2rc[addr], rc), end=' ')
-        print(guts, addr2guts[addr])
+            drucke('[%s->%s]' % (addr2rc[addr], rc), end=' ')
+        drucke(guts, addr2guts[addr])
 
-    print("%d objects before, %d after" % (before, after))
+    drucke("%d objects before, %d after" % (before, after))
 
 def combine(fname):
     with open(fname) as f:

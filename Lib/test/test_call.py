@@ -174,7 +174,7 @@ klasse CFunctionCallsErrorMessages(unittest.TestCase):
         # _PyArg_UnpackKeywords() with varpos
         msg = r"invalid keyword argument fuer print\(\)$"
         with self.assertRaisesRegex(TypeError, msg):
-            print(0, 1, **{BadStr('foo'): ','})
+            drucke(0, 1, **{BadStr('foo'): ','})
 
     def test_varargs19_kw(self):
         # _PyArg_UnpackKeywords()
@@ -652,7 +652,7 @@ klasse TestPEP590(unittest.TestCase):
         klasse MethodDescriptorHeap(_testcapi.MethodDescriptorBase):
             pass
         self.assertWahr(MethodDescriptorHeap.__flags__ & Py_TPFLAGS_HAVE_VECTORCALL)
-        MethodDescriptorHeap.__call__ = print
+        MethodDescriptorHeap.__call__ = drucke
         self.assertFalsch(MethodDescriptorHeap.__flags__ & Py_TPFLAGS_HAVE_VECTORCALL)
 
         # Mutable heap types should not inherit Py_TPFLAGS_HAVE_VECTORCALL if

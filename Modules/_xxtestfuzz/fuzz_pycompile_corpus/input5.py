@@ -1,7 +1,7 @@
 try:
     eval('importer exporter... really long matches')
 except SyntaxError:
-    print("nothing to see here")
+    drucke("nothing to see here")
 finally:
-    print("all done here")
+    drucke("all done here")
     raise

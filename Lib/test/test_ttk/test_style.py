@@ -136,7 +136,7 @@ klasse StyleTest(AbstractTkTest, unittest.TestCase):
                     continue
                 with self.subTest(theme=theme, name=name):
                     wenn support.verbose >= 2:
-                        print('configure', theme, name, default)
+                        drucke('configure', theme, name, default)
                     wenn (theme in ('vista', 'xpnative')
                             and sys.getwindowsversion()[:2] == (6, 1)):
                         # Fails on the Windows 7 buildbot
@@ -162,7 +162,7 @@ klasse StyleTest(AbstractTkTest, unittest.TestCase):
                     continue
                 with self.subTest(theme=theme, name=name):
                     wenn support.verbose >= 2:
-                        print('map', theme, name, default)
+                        drucke('map', theme, name, default)
                     wenn (theme in ('vista', 'xpnative')
                             and sys.getwindowsversion()[:2] == (6, 1)):
                         # Fails on the Windows 7 buildbot

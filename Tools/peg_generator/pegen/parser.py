@@ -25,11 +25,11 @@ def logger(method: F) -> F:
             return method(self, *args)
         argsr = ",".join(repr(arg) fuer arg in args)
         fill = "  " * self._level
-        print(f"{fill}{method_name}({argsr}) .... (looking at {self.showpeek()})")
+        drucke(f"{fill}{method_name}({argsr}) .... (looking at {self.showpeek()})")
         self._level += 1
         tree = method(self, *args)
         self._level -= 1
-        print(f"{fill}... {method_name}({argsr}) --> {tree!s:.200}")
+        drucke(f"{fill}... {method_name}({argsr}) --> {tree!s:.200}")
         return tree
 
     logger_wrapper.__wrapped__ = method  # type: ignore[attr-defined]
@@ -54,18 +54,18 @@ def memoize(method: F) -> F:
         fill = "  " * self._level
         wenn key not in self._cache:
             wenn verbose:
-                print(f"{fill}{method_name}({argsr}) ... (looking at {self.showpeek()})")
+                drucke(f"{fill}{method_name}({argsr}) ... (looking at {self.showpeek()})")
             self._level += 1
             tree = method(self, *args)
             self._level -= 1
             wenn verbose:
-                print(f"{fill}... {method_name}({argsr}) -> {tree!s:.200}")
+                drucke(f"{fill}... {method_name}({argsr}) -> {tree!s:.200}")
             endmark = self._mark()
             self._cache[key] = tree, endmark
         sonst:
             tree, endmark = self._cache[key]
             wenn verbose:
-                print(f"{fill}{method_name}({argsr}) -> {tree!s:.200}")
+                drucke(f"{fill}{method_name}({argsr}) -> {tree!s:.200}")
             self._reset(endmark)
         return tree
 
@@ -92,7 +92,7 @@ def memoize_left_rec(
         fill = "  " * self._level
         wenn key not in self._cache:
             wenn verbose:
-                print(f"{fill}{method_name} ... (looking at {self.showpeek()})")
+                drucke(f"{fill}{method_name} ... (looking at {self.showpeek()})")
             self._level += 1
 
             # For left-recursive rules we manipulate the cache and
@@ -108,7 +108,7 @@ def memoize_left_rec(
             lastresult, lastmark = Nichts, mark
             depth = 0
             wenn verbose:
-                print(f"{fill}Recursive {method_name} at {mark} depth {depth}")
+                drucke(f"{fill}Recursive {method_name} at {mark} depth {depth}")
 
             while Wahr:
                 self._reset(mark)
@@ -120,16 +120,16 @@ def memoize_left_rec(
                 endmark = self._mark()
                 depth += 1
                 wenn verbose:
-                    print(
+                    drucke(
                         f"{fill}Recursive {method_name} at {mark} depth {depth}: {result!s:.200} to {endmark}"
                     )
                 wenn not result:
                     wenn verbose:
-                        print(f"{fill}Fail with {lastresult!s:.200} to {lastmark}")
+                        drucke(f"{fill}Fail with {lastresult!s:.200} to {lastmark}")
                     break
                 wenn endmark <= lastmark:
                     wenn verbose:
-                        print(f"{fill}Bailing with {lastresult!s:.200} to {lastmark}")
+                        drucke(f"{fill}Bailing with {lastresult!s:.200} to {lastmark}")
                     break
                 self._cache[key] = lastresult, lastmark = result, endmark
 
@@ -138,7 +138,7 @@ def memoize_left_rec(
 
             self._level -= 1
             wenn verbose:
-                print(f"{fill}{method_name}() -> {tree!s:.200} [cached]")
+                drucke(f"{fill}{method_name}() -> {tree!s:.200} [cached]")
             wenn tree:
                 endmark = self._mark()
             sonst:
@@ -148,7 +148,7 @@ def memoize_left_rec(
         sonst:
             tree, endmark = self._cache[key]
             wenn verbose:
-                print(f"{fill}{method_name}() -> {tree!s:.200} [fresh]")
+                drucke(f"{fill}{method_name}() -> {tree!s:.200} [fresh]")
             wenn tree:
                 self._reset(endmark)
         return tree
@@ -344,7 +344,7 @@ def simple_parser_main(parser_class: Type[Parser]) -> Nichts:
         sys.exit(1)
 
     wenn not args.quiet:
-        print(tree)
+        drucke(tree)
 
     wenn verbose:
         dt = t1 - t0
@@ -352,14 +352,14 @@ def simple_parser_main(parser_class: Type[Parser]) -> Nichts:
         nlines = diag.end[0]
         wenn diag.type == token.ENDMARKER:
             nlines -= 1
-        print(f"Total time: {dt:.3f} sec; {nlines} lines", end="")
+        drucke(f"Total time: {dt:.3f} sec; {nlines} lines", end="")
         wenn endpos:
-            print(f" ({endpos} bytes)", end="")
+            drucke(f" ({endpos} bytes)", end="")
         wenn dt:
-            print(f"; {nlines / dt:.0f} lines/sec")
+            drucke(f"; {nlines / dt:.0f} lines/sec")
         sonst:
-            print()
-        print("Caches sizes:")
-        print(f"  token array : {len(tokenizer._tokens):10}")
-        print(f"        cache : {len(parser._cache):10}")
+            drucke()
+        drucke("Caches sizes:")
+        drucke(f"  token array : {len(tokenizer._tokens):10}")
+        drucke(f"        cache : {len(parser._cache):10}")
         ## print_memstats()

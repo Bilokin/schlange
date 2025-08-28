@@ -26,7 +26,7 @@ def parse_files(filenames, *,
             yield from _parse_file(
                     filename, match_kind, get_file_preprocessor, file_maxsizes)
         except Exception:
-            print(f'# requested file: <{filename}>')
+            drucke(f'# requested file: <{filename}>')
             raise  # re-raise
 
 

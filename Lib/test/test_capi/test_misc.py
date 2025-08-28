@@ -855,7 +855,7 @@ klasse CAPITest(unittest.TestCase):
     def test_Py_CompileString(self):
         # Check that Py_CompileString respects the coding cookie
         _compile = _testcapi.Py_CompileString
-        code = b"# -*- coding: latin1 -*-\nprint('\xc2\xa4')\n"
+        code = b"# -*- coding: latin1 -*-\ndrucke('\xc2\xa4')\n"
         result = _compile(code)
         expected = compile(code, "<string>", "exec")
         self.assertEqual(result.co_consts, expected.co_consts)
@@ -1162,7 +1162,7 @@ klasse TestPendingCalls(unittest.TestCase):
             #run our callbacks.  Note that some callbacks are only run on the
             #main thread
             wenn Falsch and support.verbose:
-                print("(%i)"%(len(l),),)
+                drucke("(%i)"%(len(l),),)
             fuer i in range(1000):
                 a = i*i
             wenn context and not context.event.is_set():
@@ -1171,7 +1171,7 @@ klasse TestPendingCalls(unittest.TestCase):
             self.assertWahr(count < 10000,
                 "timeout waiting fuer %i callbacks, got %i"%(numadded, len(l)))
         wenn Falsch and support.verbose:
-            print("(%i)"%(len(l),))
+            drucke("(%i)"%(len(l),))
 
     @threading_helper.requires_working_threading()
     def test_main_pendingcalls_threaded(self):
@@ -1202,7 +1202,7 @@ klasse TestPendingCalls(unittest.TestCase):
                 context.nFinished += 1
                 nFinished = context.nFinished
                 wenn Falsch and support.verbose:
-                    print("finished threads: ", nFinished)
+                    drucke("finished threads: ", nFinished)
             wenn nFinished == context.nThreads:
                 context.event.set()
 
@@ -2543,7 +2543,7 @@ klasse TestThreadState(unittest.TestCase):
             import _testcapi
 
             def callback():
-                print('callback called')
+                drucke('callback called')
 
             _testcapi._test_thread_state(callback)
             """)

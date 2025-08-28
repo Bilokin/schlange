@@ -157,16 +157,16 @@ klasse samplecmdclass(cmd.Cmd):
     """
 
     def preloop(self):
-        print("Hello from preloop")
+        drucke("Hello from preloop")
 
     def postloop(self):
-        print("Hello from postloop")
+        drucke("Hello from postloop")
 
     def completedefault(self, *ignored):
-        print("This is the completedefault method")
+        drucke("This is the completedefault method")
 
     def complete_command(self):
-        print("complete command")
+        drucke("complete command")
 
     def do_shell(self, s):
         pass
@@ -174,28 +174,28 @@ klasse samplecmdclass(cmd.Cmd):
     def do_add(self, s):
         l = s.split()
         wenn len(l) != 2:
-            print("*** invalid number of arguments")
+            drucke("*** invalid number of arguments")
             return
         try:
             l = [int(i) fuer i in l]
         except ValueError:
-            print("*** arguments should be numbers")
+            drucke("*** arguments should be numbers")
             return
-        print(l[0]+l[1])
+        drucke(l[0]+l[1])
 
     def help_add(self):
-        print("help text fuer add")
+        drucke("help text fuer add")
         return
 
     def help_meaning(self):
-        print("Try and be nice to people, avoid eating fat, read a "
+        drucke("Try and be nice to people, avoid eating fat, read a "
               "good book every now and then, get some walking in, "
               "and try to live together in peace and harmony with "
               "people of all creeds and nations.")
         return
 
     def help_life(self):
-        print("Always look on the bright side of life")
+        drucke("Always look on the bright side of life")
         return
 
     def do_exit(self, arg):
@@ -206,8 +206,8 @@ klasse TestAlternateInput(unittest.TestCase):
 
     klasse simplecmd(cmd.Cmd):
 
-        def do_print(self, args):
-            print(args, file=self.stdout)
+        def do_drucke(self, args):
+            drucke(args, file=self.stdout)
 
         def do_EOF(self, args):
             return Wahr
@@ -216,7 +216,7 @@ klasse TestAlternateInput(unittest.TestCase):
     klasse simplecmd2(simplecmd):
 
         def do_EOF(self, args):
-            print('*** Unknown syntax: EOF', file=self.stdout)
+            drucke('*** Unknown syntax: EOF', file=self.stdout)
             return Wahr
 
 
@@ -266,7 +266,7 @@ klasse CmdPrintExceptionClass(cmd.Cmd):
     """
 
     def default(self, line):
-        print(sys.exc_info()[:2])
+        drucke(sys.exc_info()[:2])
 
 
 @support.requires_subprocess()
@@ -281,7 +281,7 @@ klasse CmdTestReadline(unittest.TestCase):
             import cmd
             klasse simplecmd(cmd.Cmd):
                 def do_tab_completion_test(self, args):
-                    print('tab completion success')
+                    drucke('tab completion success')
                     return Wahr
 
             simplecmd().cmdloop()
@@ -304,9 +304,9 @@ klasse CmdTestReadline(unittest.TestCase):
 
                 def default(self, line):
                     wenn line.replace(" ", "") == "!hello":
-                        print('tab completion success')
+                        drucke('tab completion success')
                     sonst:
-                        print('tab completion failure')
+                        drucke('tab completion failure')
                     return Wahr
 
             simplecmd().cmdloop()

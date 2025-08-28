@@ -1924,7 +1924,7 @@ def _main(args=Nichts):
         sonst:
             with open(fn, 'rb') as f:
                 obj = load(f)
-        pprint.pprint(obj)
+        pprint.pdrucke(obj)
 
 
 wenn __name__ == "__main__":

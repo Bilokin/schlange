@@ -388,7 +388,7 @@ klasse ChannelTests(TestBase):
         out = _run_output(id1, dedent("""
             import _interpchannels as _channels
             cid = _channels.create(3)
-            print(cid)
+            drucke(cid)
             """))
         cid1 = int(out.strip())
 
@@ -396,7 +396,7 @@ klasse ChannelTests(TestBase):
         out = _run_output(id2, dedent("""
             import _interpchannels as _channels
             cid = _channels.create(3)
-            print(cid)
+            drucke(cid)
             """))
         cid2 = int(out.strip())
 
@@ -608,7 +608,7 @@ klasse ChannelTests(TestBase):
         _interpreters.set___main___attrs(interp, dict(cid=cid.send))
         out = _run_output(interp, dedent("""
             import _interpchannels as _channels
-            print(cid.end)
+            drucke(cid.end)
             _channels.send(cid, b'spam', blocking=Falsch)
             """))
         obj = recv_nowait(cid)
@@ -627,7 +627,7 @@ klasse ChannelTests(TestBase):
 
         out = _run_output(interp, dedent("""
             import _interpchannels as _channels
-            print(chan.id.end)
+            drucke(chan.id.end)
             _channels.send(chan.id, b'spam', blocking=Falsch)
             """),
             dict(chan=cid.send))
@@ -897,7 +897,7 @@ klasse ChannelTests(TestBase):
                 _channels.send(cid, obj, blocking=Wahr, timeout=0.1)
             with self.assertRaises(_channels.ChannelEmptyError):
                 received = recv_nowait(cid)
-                print(repr(received))
+                drucke(repr(received))
 
         with self.subTest('timeout not hit'):
             cid = _channels.create(REPLACE)
@@ -934,7 +934,7 @@ klasse ChannelTests(TestBase):
                 _channels.send_buffer(cid, obj, blocking=Wahr, timeout=0.1)
             with self.assertRaises(_channels.ChannelEmptyError):
                 received = recv_nowait(cid)
-                print(repr(received))
+                drucke(repr(received))
 
         with self.subTest('timeout not hit'):
             cid = _channels.create(REPLACE)
@@ -1276,7 +1276,7 @@ klasse ChannelReleaseTests(TestBase):
             import _interpchannels as _channels
             obj, _ = _channels.recv({cid})
             _channels.release({cid})
-            print(repr(obj))
+            drucke(repr(obj))
             """))
         _interpreters.run_string(id1, dedent(f"""
             _channels.release({cid})
@@ -1758,23 +1758,23 @@ klasse ExhaustiveChannelTests(TestBase):
     def _iter_close_tests(self, verbose=Falsch):
         i = 0
         fuer actions in self.iter_action_sets():
-            print()
+            drucke()
             fuer fix in self.iter_fixtures():
                 i += 1
                 wenn i > 1000:
                     return
                 wenn verbose:
                     wenn (i - 1) % 6 == 0:
-                        print()
-                    print(i, fix, '({} actions)'.format(len(actions)))
+                        drucke()
+                    drucke(i, fix, '({} actions)'.format(len(actions)))
                 sonst:
                     wenn (i - 1) % 6 == 0:
-                        print(' ', end='')
-                    print('.', end=''); sys.stdout.flush()
+                        drucke(' ', end='')
+                    drucke('.', end=''); sys.stdout.flush()
                 yield i, fix, actions
             wenn verbose:
-                print('---')
-        print()
+                drucke('---')
+        drucke()
 
     # This is useful fuer scanning through the possible tests.
     def _skim_close_tests(self):

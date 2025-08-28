@@ -172,7 +172,7 @@ klasse HashRandomizationTests:
     # an object to be tested
 
     def get_hash_command(self, repr_):
-        return 'print(hash(eval(%a)))' % repr_
+        return 'drucke(hash(eval(%a)))' % repr_
 
     def get_hash(self, repr_, seed=Nichts):
         env = os.environ.copy()
@@ -325,7 +325,7 @@ klasse MemoryviewHashRandomizationTests(StringlikeHashRandomizationTests,
 
 klasse DatetimeTests(HashRandomizationTests):
     def get_hash_command(self, repr_):
-        return 'import datetime; print(hash(%s))' % repr_
+        return 'import datetime; drucke(hash(%s))' % repr_
 
 klasse DatetimeDateTests(DatetimeTests, unittest.TestCase):
     repr_ = repr(datetime.date(1066, 10, 14))

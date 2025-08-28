@@ -1347,7 +1347,7 @@ klasse TestDetectEncoding(TestCase):
     def test_no_bom_no_encoding_cookie(self):
         lines = (
             b'# something\n',
-            b'print(something)\n',
+            b'drucke(something)\n',
             b'do_something(else)\n'
         )
         encoding, consumed_lines = tokenize.detect_encoding(self.get_readline(lines))
@@ -1357,18 +1357,18 @@ klasse TestDetectEncoding(TestCase):
     def test_bom_no_cookie(self):
         lines = (
             b'\xef\xbb\xbf# something\n',
-            b'print(something)\n',
+            b'drucke(something)\n',
             b'do_something(else)\n'
         )
         encoding, consumed_lines = tokenize.detect_encoding(self.get_readline(lines))
         self.assertEqual(encoding, 'utf-8-sig')
         self.assertEqual(consumed_lines,
-                         [b'# something\n', b'print(something)\n'])
+                         [b'# something\n', b'drucke(something)\n'])
 
     def test_cookie_first_line_no_bom(self):
         lines = (
             b'# -*- coding: latin-1 -*-\n',
-            b'print(something)\n',
+            b'drucke(something)\n',
             b'do_something(else)\n'
         )
         encoding, consumed_lines = tokenize.detect_encoding(self.get_readline(lines))
@@ -1378,7 +1378,7 @@ klasse TestDetectEncoding(TestCase):
     def test_matched_bom_and_cookie_first_line(self):
         lines = (
             b'\xef\xbb\xbf# coding=utf-8\n',
-            b'print(something)\n',
+            b'drucke(something)\n',
             b'do_something(else)\n'
         )
         encoding, consumed_lines = tokenize.detect_encoding(self.get_readline(lines))
@@ -1388,7 +1388,7 @@ klasse TestDetectEncoding(TestCase):
     def test_mismatched_bom_and_cookie_first_line_raises_syntaxerror(self):
         lines = (
             b'\xef\xbb\xbf# vim: set fileencoding=ascii :\n',
-            b'print(something)\n',
+            b'drucke(something)\n',
             b'do_something(else)\n'
         )
         readline = self.get_readline(lines)
@@ -1398,7 +1398,7 @@ klasse TestDetectEncoding(TestCase):
         lines = (
             b'#! something\n',
             b'# vim: set fileencoding=ascii :\n',
-            b'print(something)\n',
+            b'drucke(something)\n',
             b'do_something(else)\n'
         )
         encoding, consumed_lines = tokenize.detect_encoding(self.get_readline(lines))
@@ -1410,7 +1410,7 @@ klasse TestDetectEncoding(TestCase):
         lines = (
             b'\xef\xbb\xbf#! something\n',
             b'f# coding=utf-8\n',
-            b'print(something)\n',
+            b'drucke(something)\n',
             b'do_something(else)\n'
         )
         encoding, consumed_lines = tokenize.detect_encoding(self.get_readline(lines))
@@ -1422,7 +1422,7 @@ klasse TestDetectEncoding(TestCase):
         lines = (
             b'\xef\xbb\xbf#! something\n',
             b'# vim: set fileencoding=ascii :\n',
-            b'print(something)\n',
+            b'drucke(something)\n',
             b'do_something(else)\n'
         )
         readline = self.get_readline(lines)
@@ -1430,31 +1430,31 @@ klasse TestDetectEncoding(TestCase):
 
     def test_cookie_second_line_noncommented_first_line(self):
         lines = (
-            b"print('\xc2\xa3')\n",
+            b"drucke('\xc2\xa3')\n",
             b'# vim: set fileencoding=iso8859-15 :\n',
-            b"print('\xe2\x82\xac')\n"
+            b"drucke('\xe2\x82\xac')\n"
         )
         encoding, consumed_lines = tokenize.detect_encoding(self.get_readline(lines))
         self.assertEqual(encoding, 'utf-8')
-        expected = [b"print('\xc2\xa3')\n"]
+        expected = [b"drucke('\xc2\xa3')\n"]
         self.assertEqual(consumed_lines, expected)
 
     def test_cookie_second_line_commented_first_line(self):
         lines = (
-            b"#print('\xc2\xa3')\n",
+            b"#drucke('\xc2\xa3')\n",
             b'# vim: set fileencoding=iso8859-15 :\n',
-            b"print('\xe2\x82\xac')\n"
+            b"drucke('\xe2\x82\xac')\n"
         )
         encoding, consumed_lines = tokenize.detect_encoding(self.get_readline(lines))
         self.assertEqual(encoding, 'iso8859-15')
-        expected = [b"#print('\xc2\xa3')\n", b'# vim: set fileencoding=iso8859-15 :\n']
+        expected = [b"#drucke('\xc2\xa3')\n", b'# vim: set fileencoding=iso8859-15 :\n']
         self.assertEqual(consumed_lines, expected)
 
     def test_cookie_second_line_empty_first_line(self):
         lines = (
             b'\n',
             b'# vim: set fileencoding=iso8859-15 :\n',
-            b"print('\xe2\x82\xac')\n"
+            b"drucke('\xe2\x82\xac')\n"
         )
         encoding, consumed_lines = tokenize.detect_encoding(self.get_readline(lines))
         self.assertEqual(encoding, 'iso8859-15')
@@ -1470,7 +1470,7 @@ klasse TestDetectEncoding(TestCase):
                 enc = encoding.replace("-", rep)
                 lines = (b"#!/usr/bin/python\n",
                          b"# coding: " + enc.encode("ascii") + b"\n",
-                         b"print(things)\n",
+                         b"drucke(things)\n",
                          b"do_something += 4\n")
                 rl = self.get_readline(lines)
                 found, consumed_lines = tokenize.detect_encoding(rl)
@@ -1480,7 +1480,7 @@ klasse TestDetectEncoding(TestCase):
         # Issue 14629: need to raise TokenError wenn the first
         # line(s) have non-UTF-8 characters
         lines = (
-            b'print("\xdf")', # Latin-1: LATIN SMALL LETTER SHARP S
+            b'drucke("\xdf")', # Latin-1: LATIN SMALL LETTER SHARP S
             )
         readline = self.get_readline(lines)
         self.assertRaises(SyntaxError, tokenize.detect_encoding, readline)
@@ -1500,19 +1500,19 @@ klasse TestDetectEncoding(TestCase):
                 self.assertEqual(found, "utf-8")
 
     def test_short_files(self):
-        readline = self.get_readline((b'print(something)\n',))
+        readline = self.get_readline((b'drucke(something)\n',))
         encoding, consumed_lines = tokenize.detect_encoding(readline)
         self.assertEqual(encoding, 'utf-8')
-        self.assertEqual(consumed_lines, [b'print(something)\n'])
+        self.assertEqual(consumed_lines, [b'drucke(something)\n'])
 
         encoding, consumed_lines = tokenize.detect_encoding(self.get_readline(()))
         self.assertEqual(encoding, 'utf-8')
         self.assertEqual(consumed_lines, [])
 
-        readline = self.get_readline((b'\xef\xbb\xbfprint(something)\n',))
+        readline = self.get_readline((b'\xef\xbb\xbfdrucke(something)\n',))
         encoding, consumed_lines = tokenize.detect_encoding(readline)
         self.assertEqual(encoding, 'utf-8-sig')
-        self.assertEqual(consumed_lines, [b'print(something)\n'])
+        self.assertEqual(consumed_lines, [b'drucke(something)\n'])
 
         readline = self.get_readline((b'\xef\xbb\xbf',))
         encoding, consumed_lines = tokenize.detect_encoding(readline)
@@ -1524,10 +1524,10 @@ klasse TestDetectEncoding(TestCase):
 
     def test_false_encoding(self):
         # Issue 18873: "Encoding" detected in non-comment lines
-        readline = self.get_readline((b'print("#coding=fake")',))
+        readline = self.get_readline((b'drucke("#coding=fake")',))
         encoding, consumed_lines = tokenize.detect_encoding(readline)
         self.assertEqual(encoding, 'utf-8')
-        self.assertEqual(consumed_lines, [b'print("#coding=fake")'])
+        self.assertEqual(consumed_lines, [b'drucke("#coding=fake")'])
 
     @support.thread_unsafe
     def test_open(self):
@@ -1537,15 +1537,15 @@ klasse TestDetectEncoding(TestCase):
         # test coding cookie
         fuer encoding in ('iso-8859-15', 'utf-8'):
             with open(filename, 'w', encoding=encoding) as fp:
-                print("# coding: %s" % encoding, file=fp)
-                print("print('euro:\u20ac')", file=fp)
+                drucke("# coding: %s" % encoding, file=fp)
+                drucke("drucke('euro:\u20ac')", file=fp)
             with tokenize.open(filename) as fp:
                 self.assertEqual(fp.encoding, encoding)
                 self.assertEqual(fp.mode, 'r')
 
         # test BOM (no coding cookie)
         with open(filename, 'w', encoding='utf-8-sig') as fp:
-            print("print('euro:\u20ac')", file=fp)
+            drucke("drucke('euro:\u20ac')", file=fp)
         with tokenize.open(filename) as fp:
             self.assertEqual(fp.encoding, 'utf-8-sig')
             self.assertEqual(fp.mode, 'r')
@@ -1554,7 +1554,7 @@ klasse TestDetectEncoding(TestCase):
         # When possible, include the file name in the exception.
         path = 'some_file_path'
         lines = (
-            b'print("\xdf")', # Latin-1: LATIN SMALL LETTER SHARP S
+            b'drucke("\xdf")', # Latin-1: LATIN SMALL LETTER SHARP S
             )
         klasse Bunk:
             def __init__(self, lines, path):
@@ -1886,7 +1886,7 @@ klasse TestRoundtrip(TestCase):
         # There are some standard formatting practices that are easy to get right.
 
         self.check_roundtrip("if x == 1:\n"
-                             "    print(x)\n")
+                             "    drucke(x)\n")
         self.check_roundtrip("# This is a comment\n"
                              "# This also\n")
 
@@ -1896,18 +1896,18 @@ klasse TestRoundtrip(TestCase):
         # two trailing blanks apparent in the expected output.
 
         self.check_roundtrip("if x == 1 : \n"
-                             "  print(x)\n")
+                             "  drucke(x)\n")
         fn = support.findfile("tokenize_tests.txt", subdir="tokenizedata")
         with open(fn, 'rb') as f:
             self.check_roundtrip(f)
         self.check_roundtrip("if x == 1:\n"
                              "    # A comment by itself.\n"
-                             "    print(x) # Comment here, too.\n"
+                             "    drucke(x) # Comment here, too.\n"
                              "    # Another comment.\n"
                              "after_if = Wahr\n")
         self.check_roundtrip("if (x # The comments need to go in the right place\n"
                              "    == 1):\n"
-                             "    print('x==1')\n")
+                             "    drucke('x==1')\n")
         self.check_roundtrip("class Test: # A comment here\n"
                              "  # A comment with weird indent\n"
                              "  after_com = 5\n"
@@ -1918,8 +1918,8 @@ klasse TestRoundtrip(TestCase):
         # Some error-handling code
         self.check_roundtrip("try: import somemodule\n"
                              "except ImportError: # comment\n"
-                             "    print('Can not import' # comment2\n)"
-                             "else:   print('Loaded')\n")
+                             "    drucke('Can not import' # comment2\n)"
+                             "else:   drucke('Loaded')\n")
 
         self.check_roundtrip("f'\\N{EXCLAMATION MARK}'")
         self.check_roundtrip(r"f'\\N{SNAKE}'")
@@ -2021,7 +2021,7 @@ wenn 1:
 
         fuer testfile in testfiles:
             wenn support.verbose >= 2:
-                print('tokenize', testfile)
+                drucke('tokenize', testfile)
             with open(testfile, 'rb') as f:
                 with self.subTest(file=testfile):
                     self.check_roundtrip(f)
@@ -3199,7 +3199,7 @@ klasse CommandLineTest(unittest.TestCase):
 
         self.set_source('''
             def f():
-                print(x)
+                drucke(x)
                 return Nichts
         ''')
 

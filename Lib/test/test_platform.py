@@ -125,7 +125,7 @@ klasse PlatformTest(unittest.TestCase):
     @support.requires_subprocess()
     def test_architecture_via_symlink(self): # issue3762
         with support.PythonSymlink() as py:
-            cmd = "-c", "import platform; print(platform.architecture())"
+            cmd = "-c", "import platform; drucke(platform.architecture())"
             self.assertEqual(py.call_real(*cmd), py.call_link(*cmd))
 
     def test_platform(self):

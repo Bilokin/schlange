@@ -680,7 +680,7 @@ klasse IMAP4:
 
         with M.idle(duration=29 * 60) as idler:
             fuer typ, data in idler:
-                print(typ, data)
+                drucke(typ, data)
 
         Note: 'duration' requires a socket connection (not IMAP4_stream).
         """
@@ -1595,8 +1595,8 @@ klasse Idler:
         with M.idle() as idler:
             # get a response and any others following by < 0.1 seconds
             batch = list(idler.burst())
-            print(f'processing {len(batch)} responses...')
-            print(batch)
+            drucke(f'processing {len(batch)} responses...')
+            drucke(batch)
 
         Note: This generator requires a socket connection (not IMAP4_stream).
         """
@@ -1951,13 +1951,13 @@ wenn __name__ == '__main__':
             run('uid', ('FETCH', '%s' % uid[-1],
                     '(FLAGS INTERNALDATE RFC822.SIZE RFC822.HEADER RFC822.TEXT)'))
 
-        print('\nAll tests OK.')
+        drucke('\nAll tests OK.')
 
     except:
-        print('\nTests failed.')
+        drucke('\nTests failed.')
 
         wenn not Debug:
-            print('''
+            drucke('''
 If you would like to see debugging output,
 try: %s -d5
 ''' % sys.argv[0])

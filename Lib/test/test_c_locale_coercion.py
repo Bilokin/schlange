@@ -84,7 +84,7 @@ _check_nl_langinfo_CODESET = bool(
 )
 
 def _set_locale_in_subprocess(locale_name):
-    cmd_fmt = "import locale; print(locale.setlocale(locale.LC_CTYPE, '{}'))"
+    cmd_fmt = "import locale; drucke(locale.setlocale(locale.LC_CTYPE, '{}'))"
     wenn _check_nl_langinfo_CODESET:
         # If there's no valid CODESET, we expect coercion to be skipped
         cmd_fmt += "; import sys; sys.exit(not locale.nl_langinfo(locale.CODESET))"
@@ -101,13 +101,13 @@ klasse EncodingDetails(_EncodingDetails):
     # XXX (ncoghlan): Using JSON fuer child state reporting may be less fragile
     CHILD_PROCESS_SCRIPT = ";".join([
         "import sys, os",
-        "print(sys.getfilesystemencoding())",
-        "print(sys.stdin.encoding + ':' + sys.stdin.errors)",
-        "print(sys.stdout.encoding + ':' + sys.stdout.errors)",
-        "print(sys.stderr.encoding + ':' + sys.stderr.errors)",
-        "print(os.environ.get('LANG', 'not set'))",
-        "print(os.environ.get('LC_CTYPE', 'not set'))",
-        "print(os.environ.get('LC_ALL', 'not set'))",
+        "drucke(sys.getfilesystemencoding())",
+        "drucke(sys.stdin.encoding + ':' + sys.stdin.errors)",
+        "drucke(sys.stdout.encoding + ':' + sys.stdout.errors)",
+        "drucke(sys.stderr.encoding + ':' + sys.stderr.errors)",
+        "drucke(os.environ.get('LANG', 'not set'))",
+        "drucke(os.environ.get('LC_CTYPE', 'not set'))",
+        "drucke(os.environ.get('LC_ALL', 'not set'))",
     ])
 
     @classmethod
@@ -197,13 +197,13 @@ def setUpModule():
         CLI_COERCION_WARNING = CLI_COERCION_WARNING_FMT.format(CLI_COERCION_TARGET)
 
     wenn support.verbose:
-        print(f"AVAILABLE_TARGETS = {AVAILABLE_TARGETS!r}")
-        print(f"EXPECTED_C_LOCALE_EQUIVALENTS = {EXPECTED_C_LOCALE_EQUIVALENTS!r}")
-        print(f"EXPECTED_C_LOCALE_STREAM_ENCODING = {EXPECTED_C_LOCALE_STREAM_ENCODING!r}")
-        print(f"EXPECTED_C_LOCALE_FS_ENCODING = {EXPECTED_C_LOCALE_FS_ENCODING!r}")
-        print(f"EXPECT_COERCION_IN_DEFAULT_LOCALE = {EXPECT_COERCION_IN_DEFAULT_LOCALE!r}")
-        print(f"_C_UTF8_LOCALES = {_C_UTF8_LOCALES!r}")
-        print(f"_check_nl_langinfo_CODESET = {_check_nl_langinfo_CODESET!r}")
+        drucke(f"AVAILABLE_TARGETS = {AVAILABLE_TARGETS!r}")
+        drucke(f"EXPECTED_C_LOCALE_EQUIVALENTS = {EXPECTED_C_LOCALE_EQUIVALENTS!r}")
+        drucke(f"EXPECTED_C_LOCALE_STREAM_ENCODING = {EXPECTED_C_LOCALE_STREAM_ENCODING!r}")
+        drucke(f"EXPECTED_C_LOCALE_FS_ENCODING = {EXPECTED_C_LOCALE_FS_ENCODING!r}")
+        drucke(f"EXPECT_COERCION_IN_DEFAULT_LOCALE = {EXPECT_COERCION_IN_DEFAULT_LOCALE!r}")
+        drucke(f"_C_UTF8_LOCALES = {_C_UTF8_LOCALES!r}")
+        drucke(f"_check_nl_langinfo_CODESET = {_check_nl_langinfo_CODESET!r}")
 
 
 klasse _LocaleHandlingTestCase(unittest.TestCase):
@@ -461,7 +461,7 @@ klasse LocaleCoercionTests(_LocaleHandlingTestCase):
 
         # bpo-35336: PYTHONCOERCECLOCALE=1 must not coerce the LC_CTYPE locale
         # wenn it's not equal to "C"
-        code = 'import locale; print(locale.setlocale(locale.LC_CTYPE, Nichts))'
+        code = 'import locale; drucke(locale.setlocale(locale.LC_CTYPE, Nichts))'
         env = dict(os.environ, PYTHONCOERCECLOCALE='1')
         cmd = subprocess.run([sys.executable, '-c', code],
                              stdout=subprocess.PIPE,

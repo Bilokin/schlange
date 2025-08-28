@@ -411,7 +411,7 @@ klasse dispatcher:
 
     def log_info(self, message, type='info'):
         wenn type not in self.ignore_log_types:
-            print('%s: %s' % (type, message))
+            drucke('%s: %s' % (type, message))
 
     def handle_read_event(self):
         wenn self.accepting:

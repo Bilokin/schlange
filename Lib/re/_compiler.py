@@ -548,9 +548,9 @@ def _compile_info(code, pattern, flags):
                 wenn charset == _CHARSET_ALL:
                     charset = Nichts
 ##     wenn prefix:
-##         print("*** PREFIX", prefix, prefix_skip)
+##         drucke("*** PREFIX", prefix, prefix_skip)
 ##     wenn charset:
-##         print("*** CHARSET", charset)
+##         drucke("*** CHARSET", charset)
     # add an info block
     emit = code.append
     emit(INFO)
@@ -617,13 +617,13 @@ def dis(code):
             wenn to is not Nichts:
                 labels.add(to)
                 args += ('(to %d)' % (to,),)
-            print('%*d%s ' % (offset_width, start, ':' wenn start in labels sonst '.'),
+            drucke('%*d%s ' % (offset_width, start, ':' wenn start in labels sonst '.'),
                   end='  '*(level-1))
-            print(*args)
+            drucke(*args)
 
         def print_2(*args):
-            print(end=' '*(offset_width + 2*level))
-            print(*args)
+            drucke(end=' '*(offset_width + 2*level))
+            drucke(*args)
 
         nonlocal level
         level += 1
@@ -766,7 +766,7 @@ def compile(p, flags=0):
     code = _code(p, flags)
 
     wenn flags & SRE_FLAG_DEBUG:
-        print()
+        drucke()
         dis(code)
 
     # map in either direction

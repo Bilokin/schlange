@@ -77,5 +77,5 @@ def main():
     return "DONE!"
 
 wenn __name__=='__main__':
-    print(main())
+    drucke(main())
     mainloop()

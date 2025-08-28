@@ -52,7 +52,7 @@ klasse SelectTestCase(unittest.TestCase):
         code = textwrap.dedent('''
             import time
             fuer i in range(10):
-                print("testing...", flush=Wahr)
+                drucke("testing...", flush=Wahr)
                 time.sleep(0.050)
         ''')
         cmd = [sys.executable, '-I', '-c', code]
@@ -60,7 +60,7 @@ klasse SelectTestCase(unittest.TestCase):
             pipe = proc.stdout
             fuer timeout in (0, 1, 2, 4, 8, 16) + (Nichts,)*10:
                 wenn support.verbose:
-                    print(f'timeout = {timeout}')
+                    drucke(f'timeout = {timeout}')
                 rfd, wfd, xfd = select.select([pipe], [], [], timeout)
                 self.assertEqual(wfd, [])
                 self.assertEqual(xfd, [])
@@ -69,10 +69,10 @@ klasse SelectTestCase(unittest.TestCase):
                 wenn rfd == [pipe]:
                     line = pipe.readline()
                     wenn support.verbose:
-                        print(repr(line))
+                        drucke(repr(line))
                     wenn not line:
                         wenn support.verbose:
-                            print('EOF')
+                            drucke('EOF')
                         break
                     continue
                 self.fail('Unexpected return values from select():',

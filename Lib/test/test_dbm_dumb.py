@@ -234,7 +234,7 @@ klasse DumbDBMTestCase(unittest.TestCase):
 
     def test_eval(self):
         with open(_fname + '.dir', 'w', encoding="utf-8") as stream:
-            stream.write("str(print('Hacked!')), 0\n")
+            stream.write("str(drucke('Hacked!')), 0\n")
         with support.captured_stdout() as stdout:
             with self.assertRaises(ValueError):
                 with dumbdbm.open(_fname) as f:

@@ -235,7 +235,7 @@ klasse Regrtest:
             try:
                 del selected[:selected.index(self.starting_test)]
             except ValueError:
-                print(f"Cannot find starting test: {self.starting_test}")
+                drucke(f"Cannot find starting test: {self.starting_test}")
                 sys.exit(1)
 
         random.seed(self.random_seed)
@@ -246,7 +246,7 @@ klasse Regrtest:
             try:
                 selected.remove(priority_test)
             except ValueError:
-                print(f"warning: --prioritize={priority_test} used"
+                drucke(f"warning: --prioritize={priority_test} used"
                         f" but test not actually selected")
                 continue
             sonst:
@@ -257,7 +257,7 @@ klasse Regrtest:
     @staticmethod
     def list_tests(tests: TestTuple) -> Nichts:
         fuer name in tests:
-            print(name)
+            drucke(name)
 
     def _rerun_failed_tests(self, runtests: RunTests) -> RunTests:
         # Configure the runner to re-run tests
@@ -305,11 +305,11 @@ klasse Regrtest:
 
         self.first_state = self.get_state()
 
-        print()
+        drucke()
         rerun_runtests = self._rerun_failed_tests(runtests)
 
         wenn self.results.bad:
-            print(
+            drucke(
                 f"{red}{count(len(self.results.bad), 'test')} "
                 f"failed again:{reset}"
             )
@@ -318,13 +318,13 @@ klasse Regrtest:
         self.display_result(rerun_runtests)
 
     def _run_bisect(self, runtests: RunTests, test: str, progress: str) -> bool:
-        print()
+        drucke()
         title = f"Bisect {test}"
         wenn progress:
             title = f"{title} ({progress})"
-        print(title)
-        print("#" * len(title))
-        print()
+        drucke(title)
+        drucke("#" * len(title))
+        drucke()
 
         cmd = runtests.create_python_cmd()
         cmd.extend([
@@ -336,7 +336,7 @@ klasse Regrtest:
         ])
         cmd.extend(runtests.bisect_cmd_args())
         cmd.append(test)
-        print("+", shlex.join(cmd), flush=Wahr)
+        drucke("+", shlex.join(cmd), flush=Wahr)
 
         flush_std_streams()
 
@@ -345,12 +345,12 @@ klasse Regrtest:
         exitcode = proc.returncode
 
         title = f"{title}: exit code {exitcode}"
-        print(title)
-        print("#" * len(title))
-        print(flush=Wahr)
+        drucke(title)
+        drucke("#" * len(title))
+        drucke(flush=Wahr)
 
         wenn exitcode:
-            print(f"Bisect failed with exit code {exitcode}")
+            drucke(f"Bisect failed with exit code {exitcode}")
             return Falsch
 
         return Wahr
@@ -372,8 +372,8 @@ klasse Regrtest:
             return
 
         state = self.get_state()
-        print()
-        print(f"== Tests result: {state} ==")
+        drucke()
+        drucke(f"== Tests result: {state} ==")
 
         self.results.display_result(runtests.tests,
                                     self.quiet, self.print_slowest)
@@ -484,14 +484,14 @@ klasse Regrtest:
         filtered = bool(self.match_tests)
 
         # Total duration
-        print()
-        print("Total duration: %s" % format_duration(duration))
+        drucke()
+        drucke("Total duration: %s" % format_duration(duration))
 
         self.results.display_summary(self.first_runtests, filtered)
 
         # Result
         state = self.get_state()
-        print(f"Result: {state}")
+        drucke(f"Result: {state}")
 
     def create_run_tests(self, tests: TestTuple) -> RunTests:
         return RunTests(
@@ -525,7 +525,7 @@ klasse Regrtest:
         wenn self.hunt_refleak and self.hunt_refleak.warmups < 3:
             msg = ("WARNING: Running tests with --huntrleaks/-R and "
                    "less than 3 warmup repetitions can give false positives!")
-            print(msg, file=sys.stdout, flush=Wahr)
+            drucke(msg, file=sys.stdout, flush=Wahr)
 
         wenn self.num_workers < 0:
             # Use all CPUs + 2 extra worker processes fuer tests
@@ -541,7 +541,7 @@ klasse Regrtest:
                    or tests or self.cmdline_args)):
             display_header(self.use_resources, self.python_cmd)
 
-        print("Using random seed:", self.random_seed)
+        drucke("Using random seed:", self.random_seed)
 
         runtests = self.create_run_tests(selected)
         self.first_runtests = runtests
@@ -673,7 +673,7 @@ klasse Regrtest:
 
         cmd_text = shlex.join(cmd)
         try:
-            print(f"+ {cmd_text}", flush=Wahr)
+            drucke(f"+ {cmd_text}", flush=Wahr)
 
             wenn hasattr(os, 'execv') and not MS_WINDOWS:
                 os.execv(cmd[0], cmd)

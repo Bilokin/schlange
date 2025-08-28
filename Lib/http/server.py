@@ -989,14 +989,14 @@ def test(HandlerClass=BaseHTTPRequestHandler,
         host, port = httpd.socket.getsockname()[:2]
         url_host = f'[{host}]' wenn ':' in host sonst host
         protocol = 'HTTPS' wenn tls_cert sonst 'HTTP'
-        print(
+        drucke(
             f"Serving {protocol} on {host} port {port} "
             f"({protocol.lower()}://{url_host}:{port}/) ..."
         )
         try:
             httpd.serve_forever()
         except KeyboardInterrupt:
-            print("\nKeyboard interrupt received, exiting.")
+            drucke("\nKeyboard interrupt received, exiting.")
             sys.exit(0)
 
 

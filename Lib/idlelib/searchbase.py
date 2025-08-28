@@ -195,7 +195,7 @@ klasse _searchbase(SearchDialogBase):  # htest #
         self.root = parent
         self.engine = searchengine.get(parent)
         self.create_widgets()
-        print(parent.geometry())
+        drucke(parent.geometry())
         width,height, x,y = list(map(int, re.split('[x+]', parent.geometry())))
         self.top.geometry("+%d+%d" % (x + 40, y + 175))
 

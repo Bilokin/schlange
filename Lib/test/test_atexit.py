@@ -19,7 +19,7 @@ klasse FunctionalTest(unittest.TestCase):
             import atexit
 
             def f(msg):
-                print(msg)
+                drucke(msg)
 
             atexit.register(f, "one")
             atexit.register(f, "two")

@@ -585,7 +585,7 @@ klasse TestSpecifics(unittest.TestCase):
         sample_code = [
             ['<assign>', 'x = 5'],
             ['<ifblock>', """if Wahr:\n    pass\n"""],
-            ['<forblock>', """for n in [1, 2, 3]:\n    print(n)\n"""],
+            ['<forblock>', """for n in [1, 2, 3]:\n    drucke(n)\n"""],
             ['<deffunc>', """def foo():\n    pass\nfoo()\n"""],
             [fname, fcontents],
         ]
@@ -600,7 +600,7 @@ klasse TestSpecifics(unittest.TestCase):
             self.assertEqual(co2.co_filename, '%s3' % fname)
 
         # raise exception when node type doesn't match with compile mode
-        co1 = compile('print(1)', '<string>', 'exec', _ast.PyCF_ONLY_AST)
+        co1 = compile('drucke(1)', '<string>', 'exec', _ast.PyCF_ONLY_AST)
         self.assertRaises(TypeError, compile, co1, '<ast>', 'eval')
 
         # raise exception when node type is no start node
@@ -1157,7 +1157,7 @@ klasse TestSpecifics(unittest.TestCase):
     def test_lineno_procedure_call(self):
         def call():
             (
-                print()
+                drucke()
             )
         line1 = call.__code__.co_firstlineno + 1
         assert line1 not in [line fuer (_, _, line) in call.__code__.co_lines()]
@@ -1618,7 +1618,7 @@ klasse TestSpecifics(unittest.TestCase):
                 %s Exception:
                     global a
                 sonst:
-                    print(a)
+                    drucke(a)
         """)
 
         g, l = {'a': 5}, {}

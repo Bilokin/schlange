@@ -1482,7 +1482,7 @@ def cert_time_to_seconds(cert_time):
     "notBefore" or "notAfter" dates must use UTC (RFC 5280).
 
     Month is one of: Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec
-    UTC should be specified as GMT (see ASN1_TIME_print())
+    UTC should be specified as GMT (see ASN1_TIME_drucke())
     """
     from time import strptime
     from calendar import timegm

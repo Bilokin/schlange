@@ -70,7 +70,7 @@ def parse_files(filenames: list[str]) -> list[AstNode]:
             assert node is not Nichts
             result.append(node)  # type: ignore[arg-type]
         wenn not psr.eof():
-            pprint.pprint(result)
+            pprint.pdrucke(result)
             psr.backup()
             raise psr.make_syntax_error(
                 f"Extra stuff at the end of {filename}", psr.next(Wahr)

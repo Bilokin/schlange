@@ -71,7 +71,7 @@ klasse _Printer(object):
         while 1:
             try:
                 fuer i in range(lineno, lineno + self.MAXLINES):
-                    print(self.__lines[i])
+                    drucke(self.__lines[i])
             except IndexError:
                 break
             sonst:

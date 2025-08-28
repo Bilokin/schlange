@@ -64,10 +64,10 @@ def main(outfile='Lib/re/_casefix.py'):
                     pass
                 break
     wenn bad_codes:
-        print('Case-insensitive matching may not work correctly fuer character:',
+        drucke('Case-insensitive matching may not work correctly fuer character:',
               file=sys.stderr)
         fuer i in sorted(bad_codes):
-            print("  '%s' (U+%04x, %s)" % (alpha(i), i, uname(i)),
+            drucke("  '%s' (U+%04x, %s)" % (alpha(i), i, uname(i)),
                   file=sys.stderr)
         sys.exit(1)
 

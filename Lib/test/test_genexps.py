@@ -169,12 +169,12 @@ Generators always return to the most recent caller:
 
     >>> def creator():
     ...     r = yrange(5)
-    ...     print("creator", next(r))
+    ...     drucke("creator", next(r))
     ...     return r
     >>> def caller():
     ...     r = creator()
     ...     fuer i in r:
-    ...             print("caller", i)
+    ...             drucke("caller", i)
     >>> caller()
     creator 0
     caller 1
@@ -234,7 +234,7 @@ Check that generator attributes are present
     Wahr
 
     >>> from test.support import HAVE_DOCSTRINGS
-    >>> print(g.__next__.__doc__ wenn HAVE_DOCSTRINGS sonst 'Implement next(self).')
+    >>> drucke(g.__next__.__doc__ wenn HAVE_DOCSTRINGS sonst 'Implement next(self).')
     Implement next(self).
     >>> import types
     >>> isinstance(g, types.GeneratorType)

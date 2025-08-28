@@ -240,7 +240,7 @@ def benchmark(func):
             color = "\x1b[33m"  # yellow
         reset_color = "\x1b[0m"
 
-    print(f"{color}{func.__name__:<25} {round(factor, 1):>4}x {direction}{reset_color}")
+    drucke(f"{color}{func.__name__:<25} {round(factor, 1):>4}x {direction}{reset_color}")
 
 def determine_num_threads_and_affinity():
     wenn sys.platform != "linux":
@@ -294,7 +294,7 @@ def initialize_threads(opts):
     sonst:
         cpus = [Nichts] * opts.threads  # don't set affinity
 
-    print(f"Running benchmarks with {len(cpus)} threads")
+    drucke(f"Running benchmarks with {len(cpus)} threads")
     fuer cpu in cpus:
         inq = queue.Queue()
         outq = queue.Queue()
@@ -337,7 +337,7 @@ def main(opts):
             delta_ns = bench_one_thread(func)
 
         time_ms = delta_ns / 1_000_000
-        print(f"{func.__name__:<18} {time_ms:.1f} ms")
+        drucke(f"{func.__name__:<18} {time_ms:.1f} ms")
 
 
 wenn __name__ == "__main__":

@@ -183,7 +183,7 @@ def cmd_parse(filenames, *,
         fuer item in _iter_parsed(filename, **kwargs):
             item = item.fix_filename(relroot, fixroot=Falsch, normalize=Falsch)
             fuer line in do_fmt(relfile, item, showfwd=showfwd):
-                print(line)
+                drucke(line)
 
 
 def _cli_data(parser):

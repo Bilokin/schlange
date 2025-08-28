@@ -121,7 +121,7 @@ here = os.path.abspath(os.path.dirname(__file__))
 
 def make_cert_key(cmdlineargs, hostname, sign=Falsch, extra_san='',
                   ext='req_x509_extensions_full', key='rsa:3072'):
-    print("creating cert fuer " + hostname)
+    drucke("creating cert fuer " + hostname)
     tempnames = []
     fuer i in range(3):
         with tempfile.NamedTemporaryFile(delete=Falsch) as f:
@@ -225,9 +225,9 @@ def make_ca(cmdlineargs):
 def write_cert_reference(path):
     import _ssl
     refdata = pprint.pformat(_ssl._test_decode_cert(path))
-    print(refdata)
+    drucke(refdata)
     with open(path + '.reference', 'w') as f:
-        print(refdata, file=f)
+        drucke(refdata, file=f)
 
 
 wenn __name__ == '__main__':
@@ -242,7 +242,7 @@ wenn __name__ == '__main__':
         f.write(cert)
     with open('ssl_key.pem', 'w') as f:
         f.write(key)
-    print("password protecting ssl_key.pem in ssl_key.passwd.pem")
+    drucke("password protecting ssl_key.pem in ssl_key.passwd.pem")
     check_call(['openssl','pkey','-in','ssl_key.pem','-out','ssl_key.passwd.pem','-aes256','-passout','pass:somepass'])
     check_call(['openssl','pkey','-in','ssl_key.pem','-out','keycert.passwd.pem','-aes256','-passout','pass:somepass'])
 
@@ -321,6 +321,6 @@ wenn __name__ == '__main__':
         f.write(cert)
 
     unmake_ca()
-    print("Writing out reference data fuer Lib/test/test_ssl.py and Lib/test/test_asyncio/utils.py")
+    drucke("Writing out reference data fuer Lib/test/test_ssl.py and Lib/test/test_asyncio/utils.py")
     write_cert_reference('keycert.pem')
     write_cert_reference('keycert3.pem')

@@ -101,7 +101,7 @@ klasse DistInfoPkg(OnSysPath, SiteBuilder):
         },
         "mod.py": """
             def main():
-                print("hello world")
+                drucke("hello world")
             """,
     }
 
@@ -198,7 +198,7 @@ klasse EggInfoPkg(OnSysPath, SiteBuilder):
         },
         "mod.py": """
             def main():
-                print("hello world")
+                drucke("hello world")
             """,
     }
 
@@ -229,7 +229,7 @@ klasse EggInfoPkgPipInstalledNoToplevel(OnSysPath, SiteBuilder):
         },
         "egg_with_module.py": """
             def main():
-                print("hello world")
+                drucke("hello world")
             """,
     }
 
@@ -263,7 +263,7 @@ klasse EggInfoPkgPipInstalledExternalDataFiles(OnSysPath, SiteBuilder):
         },
         "egg_with_module.py": """
             def main():
-                print("hello world")
+                drucke("hello world")
             """,
     }
 
@@ -311,7 +311,7 @@ klasse EggInfoPkgSourcesFallback(OnSysPath, SiteBuilder):
         },
         "sources_fallback.py": """
             def main():
-                print("hello world")
+                drucke("hello world")
             """,
     }
 

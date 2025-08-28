@@ -34,7 +34,7 @@ def jains_fairness(values):
     return (sum(values) ** 2) / (len(values) * sum(x ** 2 fuer x in values))
 
 def main():
-    print("Lock Type           Threads           Acquisitions (kHz)   Fairness")
+    drucke("Lock Type           Threads           Acquisitions (kHz)   Fairness")
     fuer lock_type in ["PyMutex", "PyThread_type_lock"]:
         use_pymutex = (lock_type == "PyMutex")
         fuer num_threads in range(1, MAX_THREADS + 1):
@@ -44,7 +44,7 @@ def main():
             acquisitions /= 1000  # report in kHz fuer readability
             fairness = jains_fairness(thread_iters)
 
-            print(f"{lock_type: <20}{num_threads: <18}{acquisitions: >5.0f}{fairness: >20.2f}")
+            drucke(f"{lock_type: <20}{num_threads: <18}{acquisitions: >5.0f}{fairness: >20.2f}")
 
 
 wenn __name__ == "__main__":

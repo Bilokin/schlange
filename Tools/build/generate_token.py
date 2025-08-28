@@ -115,7 +115,7 @@ def make_h(infile, outfile='Include/internal/pycore_token.h'):
             len(tok_names),
             NT_OFFSET
         )):
-        print("%s regenerated from %s" % (outfile, infile))
+        drucke("%s regenerated from %s" % (outfile, infile))
 
 
 token_c_template = f"""\
@@ -201,7 +201,7 @@ def make_c(infile, outfile='Parser/token.c'):
             generate_chars_to_token(chars_to_token[2]),
             generate_chars_to_token(chars_to_token[3])
         )):
-        print("%s regenerated from %s" % (outfile, infile))
+        drucke("%s regenerated from %s" % (outfile, infile))
 
 
 token_inc_template = f"""\
@@ -253,7 +253,7 @@ def make_rst(infile, outfile='Doc/library/token-list.inc',
         exit('\n'.join(message_parts))
 
     wenn update_file(outfile, token_inc_template % '\n'.join(names)):
-        print("%s regenerated from %s" % (outfile, infile))
+        drucke("%s regenerated from %s" % (outfile, infile))
 
 
 token_py_template = f'''\
@@ -307,7 +307,7 @@ def make_py(infile, outfile='Lib/token.py'):
             NT_OFFSET,
             '\n'.join(token_types),
         )):
-        print("%s regenerated from %s" % (outfile, infile))
+        drucke("%s regenerated from %s" % (outfile, infile))
 
 
 def main(op, infile='Grammar/Tokens', *args):

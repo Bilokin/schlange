@@ -544,7 +544,7 @@ def _main(args=Nichts):
             wenn args.exact:
                 token_type = token.exact_type
             token_range = "%d,%d-%d,%d:" % (token.start + token.end)
-            print("%-20s%-15s%-15r" %
+            drucke("%-20s%-15s%-15r" %
                   (token_range, tok_name[token_type], token.string))
     except IndentationError as err:
         line, column = err.args[1][1:3]
@@ -557,7 +557,7 @@ def _main(args=Nichts):
     except OSError as err:
         error(err)
     except KeyboardInterrupt:
-        print("interrupted\n")
+        drucke("interrupted\n")
     except Exception as err:
         perror("unexpected error: %s" % err)
         raise

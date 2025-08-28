@@ -37,11 +37,11 @@ def requires_test_modules(func):
 
 def _dump_script(text):
     lines = text.splitlines()
-    print()
-    print('-' * 20)
+    drucke()
+    drucke('-' * 20)
     fuer i, line in enumerate(lines, 1):
-        print(f' {i:>{len(str(len(lines)))}}  {line}')
-    print('-' * 20)
+        drucke(f' {i:>{len(str(len(lines)))}}  {line}')
+    drucke('-' * 20)
 
 
 def _close_file(file):
@@ -68,7 +68,7 @@ def unpack_exception(packed):
         data = json.loads(packed)
     except json.decoder.JSONDecodeError as e:
         logging.getLogger(__name__).warning('incomplete exception data', exc_info=e)
-        print(packed wenn isinstance(packed, str) sonst packed.decode('utf-8'))
+        drucke(packed wenn isinstance(packed, str) sonst packed.decode('utf-8'))
         return Nichts
     exc = types.SimpleNamespace(**data)
     exc.type = types.SimpleNamespace(**exc.type)

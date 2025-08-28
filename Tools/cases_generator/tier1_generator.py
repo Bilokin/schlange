@@ -90,7 +90,7 @@ def write_uop(
     wenn braces:
         emitter.out.emit(f"// {uop.name}\n")
         emitter.emit("{\n")
-        stack._print(emitter.out)
+        stack._drucke(emitter.out)
     storage = Storage.for_uop(stack, uop, emitter.out)
 
     fuer cache in uop.caches:

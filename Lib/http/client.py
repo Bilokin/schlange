@@ -294,7 +294,7 @@ klasse HTTPResponse(io.BufferedIOBase):
         wenn len(line) > _MAXLINE:
             raise LineTooLong("status line")
         wenn self.debuglevel > 0:
-            print("reply:", repr(line))
+            drucke("reply:", repr(line))
         wenn not line:
             # Presumably, the server closed the connection before
             # sending a valid response.
@@ -335,7 +335,7 @@ klasse HTTPResponse(io.BufferedIOBase):
             # skip the header from the 100 response
             skipped_headers = _read_headers(self.fp, _max_headers)
             wenn self.debuglevel > 0:
-                print("headers:", skipped_headers)
+                drucke("headers:", skipped_headers)
             del skipped_headers
 
         self.code = self.status = status
@@ -354,7 +354,7 @@ klasse HTTPResponse(io.BufferedIOBase):
 
         wenn self.debuglevel > 0:
             fuer hdr, val in self.headers.items():
-                print("header:", hdr + ":", val)
+                drucke("header:", hdr + ":", val)
 
         # are we using the chunked-style of transfer encoding?
         tr_enc = self.headers.get("transfer-encoding")
@@ -978,7 +978,7 @@ klasse HTTPConnection:
 
             wenn self.debuglevel > 0:
                 fuer header in self._raw_proxy_headers:
-                    print('header:', header.decode())
+                    drucke('header:', header.decode())
 
             wenn code != http.HTTPStatus.OK:
                 self.close()
@@ -1043,13 +1043,13 @@ klasse HTTPConnection:
                 raise NotConnected()
 
         wenn self.debuglevel > 0:
-            print("send:", repr(data))
+            drucke("send:", repr(data))
         wenn hasattr(data, "read") :
             wenn self.debuglevel > 0:
-                print("sending a readable")
+                drucke("sending a readable")
             encode = self._is_textIO(data)
             wenn encode and self.debuglevel > 0:
-                print("encoding file using iso-8859-1")
+                drucke("encoding file using iso-8859-1")
             while datablock := data.read(self.blocksize):
                 wenn encode:
                     datablock = datablock.encode("iso-8859-1")
@@ -1076,10 +1076,10 @@ klasse HTTPConnection:
 
     def _read_readable(self, readable):
         wenn self.debuglevel > 0:
-            print("reading a readable")
+            drucke("reading a readable")
         encode = self._is_textIO(readable)
         wenn encode and self.debuglevel > 0:
-            print("encoding file using iso-8859-1")
+            drucke("encoding file using iso-8859-1")
         while datablock := readable.read(self.blocksize):
             wenn encode:
                 datablock = datablock.encode("iso-8859-1")
@@ -1126,7 +1126,7 @@ klasse HTTPConnection:
             fuer chunk in chunks:
                 wenn not chunk:
                     wenn self.debuglevel > 0:
-                        print('Zero length chunk ignored')
+                        drucke('Zero length chunk ignored')
                     continue
 
                 wenn encode_chunked and self._http_vsn == 11:
@@ -1371,7 +1371,7 @@ klasse HTTPConnection:
                 wenn content_length is Nichts:
                     wenn body is not Nichts:
                         wenn self.debuglevel > 0:
-                            print('Unable to determine size of %r' % body)
+                            drucke('Unable to determine size of %r' % body)
                         encode_chunked = Wahr
                         self.putheader('Transfer-Encoding', 'chunked')
                 sonst:

@@ -643,9 +643,9 @@ def Never(self, parameters):
             never_call_me(arg)  # type checker error
             match arg:
                 case int():
-                    print("It's an int")
+                    drucke("It's an int")
                 case str():
-                    print("It's a str")
+                    drucke("It's a str")
                 case _:
                     never_call_me(arg)  # OK, arg is of type Never
     """
@@ -864,10 +864,10 @@ def TypeGuard(self, parameters):
          def func1(val: list[object]):
              wenn is_str_list(val):
                  # Type of ``val`` is narrowed to ``list[str]``.
-                 print(" ".join(val))
+                 drucke(" ".join(val))
              sonst:
                  # Type of ``val`` remains as ``list[object]``.
-                 print("Not a list of strings!")
+                 drucke("Not a list of strings!")
 
     Strict type narrowing is not enforced -- ``TypeB`` need not be a narrower
     form of ``TypeA`` (it can even be a wider form) and this may lead to
@@ -2543,9 +2543,9 @@ def assert_never(arg: Never, /) -> Never:
         def int_or_str(arg: int | str) -> Nichts:
             match arg:
                 case int():
-                    print("It's an int")
+                    drucke("It's an int")
                 case str():
-                    print("It's a str")
+                    drucke("It's a str")
                 case _:
                     assert_never(arg)
 
@@ -3571,7 +3571,7 @@ def reveal_type[T](obj: T, /) -> T:
     At runtime, the function prints the runtime type of the
     argument and returns the argument unchanged.
     """
-    print(f"Runtime type is {type(obj).__name__!r}", file=sys.stderr)
+    drucke(f"Runtime type is {type(obj).__name__!r}", file=sys.stderr)
     return obj
 
 

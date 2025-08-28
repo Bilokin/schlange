@@ -81,16 +81,16 @@ def increase_int_max_str_digits(maxdigits):
     return _increase_int_max_str_digits
 
 def test_calc_pi():
-    print("\n# ======================================================================")
-    print("#                   Calculating pi, 10000 iterations")
-    print("# ======================================================================\n")
+    drucke("\n# ======================================================================")
+    drucke("#                   Calculating pi, 10000 iterations")
+    drucke("# ======================================================================\n")
 
     to_benchmark = [pi_float, pi_decimal]
     wenn C is not Nichts:
         to_benchmark.insert(1, pi_cdecimal)
 
     fuer prec in [9, 19]:
-        print("\nPrecision: %d decimal digits\n" % prec)
+        drucke("\nPrecision: %d decimal digits\n" % prec)
         fuer func in to_benchmark:
             start = time.time()
             wenn C is not Nichts:
@@ -98,15 +98,15 @@ def test_calc_pi():
             P.getcontext().prec = prec
             fuer i in range(10000):
                 x = func()
-            print("%s:" % func.__name__.replace("pi_", ""))
-            print("result: %s" % str(x))
-            print("time: %fs\n" % (time.time()-start))
+            drucke("%s:" % func.__name__.replace("pi_", ""))
+            drucke("result: %s" % str(x))
+            drucke("time: %fs\n" % (time.time()-start))
 
 @increase_int_max_str_digits(maxdigits=10000000)
 def test_factorial():
-    print("\n# ======================================================================")
-    print("#                               Factorial")
-    print("# ======================================================================\n")
+    drucke("\n# ======================================================================")
+    drucke("#                               Factorial")
+    drucke("# ======================================================================\n")
 
     wenn C is not Nichts:
         c = C.getcontext()
@@ -116,7 +116,7 @@ def test_factorial():
 
     fuer n in [100000, 1000000]:
 
-        print("n = %d\n" % n)
+        drucke("n = %d\n" % n)
 
         wenn C is not Nichts:
             # C version of decimal
@@ -126,9 +126,9 @@ def test_factorial():
             start_conv = time.time()
             sx = str(x)
             end_conv = time.time()
-            print("cdecimal:")
-            print("calculation time: %fs" % (end_calc-start_calc))
-            print("conversion time: %fs\n" % (end_conv-start_conv))
+            drucke("cdecimal:")
+            drucke("calculation time: %fs" % (end_calc-start_calc))
+            drucke("conversion time: %fs\n" % (end_conv-start_conv))
 
         # Python integers
         start_calc = time.time()
@@ -138,9 +138,9 @@ def test_factorial():
         sy = str(y)
         end_conv =  time.time()
 
-        print("int:")
-        print("calculation time: %fs" % (end_calc-start_calc))
-        print("conversion time: %fs\n\n" % (end_conv-start_conv))
+        drucke("int:")
+        drucke("calculation time: %fs" % (end_calc-start_calc))
+        drucke("conversion time: %fs\n\n" % (end_conv-start_conv))
 
         wenn C is not Nichts:
             assert(sx == sy)

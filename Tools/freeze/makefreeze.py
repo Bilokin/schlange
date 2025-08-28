@@ -42,7 +42,7 @@ def makefreeze(base, dict, debug=0, entry_point=Nichts, fail_import=()):
             with bkfile.open(base + file, 'w') as outfp:
                 files.append(file)
                 wenn debug:
-                    print("freezing", mod, "...")
+                    drucke("freezing", mod, "...")
                 str = marshal.dumps(m.__code__)
                 size = len(str)
                 is_package = '0'
@@ -51,7 +51,7 @@ def makefreeze(base, dict, debug=0, entry_point=Nichts, fail_import=()):
                 done.append((mod, mangled, size, is_package))
                 writecode(outfp, mangled, str)
     wenn debug:
-        print("generating table of frozen modules")
+        drucke("generating table of frozen modules")
     with bkfile.open(base + 'frozen.c', 'w') as outfp:
         fuer mod, mangled, size, _ in done:
             outfp.write('extern unsigned char M_%s[];\n' % mangled)
@@ -75,11 +75,11 @@ def makefreeze(base, dict, debug=0, entry_point=Nichts, fail_import=()):
 # The array is called M_<mod>.
 
 def writecode(fp, mod, data):
-    print('unsigned char M_%s[] = {' % mod, file=fp)
+    drucke('unsigned char M_%s[] = {' % mod, file=fp)
     indent = ' ' * 4
     fuer i in range(0, len(data), 16):
-        print(indent, file=fp, end='')
+        drucke(indent, file=fp, end='')
         fuer c in bytes(data[i:i+16]):
-            print('%d,' % c, file=fp, end='')
-        print('', file=fp)
-    print('};', file=fp)
+            drucke('%d,' % c, file=fp, end='')
+        drucke('', file=fp)
+    drucke('};', file=fp)

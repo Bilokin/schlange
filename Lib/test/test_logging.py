@@ -716,7 +716,7 @@ klasse HandlerTest(BaseTest):
                         self.handle_time = time.time()
                         h.handle(r)
                     except Exception:
-                        print('Deleted at %s, '
+                        drucke('Deleted at %s, '
                               'opened at %s' % (self.deletion_time,
                                                 self.handle_time))
                         raise
@@ -4897,7 +4897,7 @@ klasse FormatterTest(unittest.TestCase, AssertErrorMessage):
                     # mock fuer log record creation
                     time_ns_result = start_ns + offset_ns
                     record = logging.makeLogRecord({{'msg': 'test'}})
-                    print(record.created, record.relativeCreated)
+                    drucke(record.created, record.relativeCreated)
             finally:
                 time.time_ns = old_time_ns
                 time.time = old_time
@@ -6508,13 +6508,13 @@ klasse TimedRotatingFileHandlerTest(BaseFileTest):
             # print additional diagnostics
             dn, fn = os.path.split(self.fn)
             files = [f fuer f in os.listdir(dn) wenn f.startswith(fn)]
-            print('Test time: %s' % now.strftime("%Y-%m-%d %H-%M-%S"), file=sys.stderr)
-            print('The only matching files are: %s' % files, file=sys.stderr)
+            drucke('Test time: %s' % now.strftime("%Y-%m-%d %H-%M-%S"), file=sys.stderr)
+            drucke('The only matching files are: %s' % files, file=sys.stderr)
             fuer f in files:
-                print('Contents of %s:' % f)
+                drucke('Contents of %s:' % f)
                 path = os.path.join(dn, f)
                 with open(path, 'r') as tf:
-                    print(tf.read())
+                    drucke(tf.read())
         self.assertWahr(found, msg=msg)
 
     def test_rollover_at_midnight(self, weekly=Falsch):
@@ -6640,14 +6640,14 @@ klasse TimedRotatingFileHandlerTest(BaseFileTest):
 
                 actual = rh.computeRollover(today)
                 wenn actual != expected:
-                    print('failed in timezone: %d' % time.timezone)
-                    print('local vars: %s' % locals())
+                    drucke('failed in timezone: %d' % time.timezone)
+                    drucke('local vars: %s' % locals())
                 self.assertEqual(actual, expected)
 
                 actual = rh.computeRollover(today + 12 * 60 * 60 - 1)
                 wenn actual != expected:
-                    print('failed in timezone: %d' % time.timezone)
-                    print('local vars: %s' % locals())
+                    drucke('failed in timezone: %d' % time.timezone)
+                    drucke('local vars: %s' % locals())
                 self.assertEqual(actual, expected)
 
                 wenn day == wday:
@@ -6655,14 +6655,14 @@ klasse TimedRotatingFileHandlerTest(BaseFileTest):
                     expected += 7 * 24 * 60 * 60
                 actual = rh.computeRollover(today + 12 * 60 * 60)
                 wenn actual != expected:
-                    print('failed in timezone: %d' % time.timezone)
-                    print('local vars: %s' % locals())
+                    drucke('failed in timezone: %d' % time.timezone)
+                    drucke('local vars: %s' % locals())
                 self.assertEqual(actual, expected)
 
                 actual = rh.computeRollover(today + 13 * 60 * 60)
                 wenn actual != expected:
-                    print('failed in timezone: %d' % time.timezone)
-                    print('local vars: %s' % locals())
+                    drucke('failed in timezone: %d' % time.timezone)
+                    drucke('local vars: %s' % locals())
                 self.assertEqual(actual, expected)
             finally:
                 rh.close()
@@ -7173,14 +7173,14 @@ fuer when, exp in (('S', 1),
                                                         currentMinute) * 60 +
                                 currentSecond)
                         result = currentTime + r
-                        print('t: %s (%s)' % (t, rh.utc), file=sys.stderr)
-                        print('currentHour: %s' % currentHour, file=sys.stderr)
-                        print('currentMinute: %s' % currentMinute, file=sys.stderr)
-                        print('currentSecond: %s' % currentSecond, file=sys.stderr)
-                        print('r: %s' % r, file=sys.stderr)
-                        print('result: %s' % result, file=sys.stderr)
+                        drucke('t: %s (%s)' % (t, rh.utc), file=sys.stderr)
+                        drucke('currentHour: %s' % currentHour, file=sys.stderr)
+                        drucke('currentMinute: %s' % currentMinute, file=sys.stderr)
+                        drucke('currentSecond: %s' % currentSecond, file=sys.stderr)
+                        drucke('r: %s' % r, file=sys.stderr)
+                        drucke('result: %s' % result, file=sys.stderr)
                     except Exception as e:
-                        print('exception in diagnostic code: %s' % e, file=sys.stderr)
+                        drucke('exception in diagnostic code: %s' % e, file=sys.stderr)
             self.assertEqual(exp, actual)
             rh.close()
         name = "test_compute_rollover_%s" % when

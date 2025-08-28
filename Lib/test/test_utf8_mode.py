@@ -38,7 +38,7 @@ klasse UTF8ModeTests(unittest.TestCase):
 
     @unittest.skipIf(MS_WINDOWS, 'Windows has no POSIX locale')
     def test_posix_locale(self):
-        code = 'import sys; print(sys.flags.utf8_mode)'
+        code = 'import sys; drucke(sys.flags.utf8_mode)'
 
         fuer loc in POSIX_LOCALES:
             with self.subTest(LC_ALL=loc):
@@ -46,7 +46,7 @@ klasse UTF8ModeTests(unittest.TestCase):
                 self.assertEqual(out, '1')
 
     def test_xoption(self):
-        code = 'import sys; print(sys.flags.utf8_mode)'
+        code = 'import sys; drucke(sys.flags.utf8_mode)'
 
         out = self.get_output('-X', 'utf8', '-c', code)
         self.assertEqual(out, '1')
@@ -66,7 +66,7 @@ klasse UTF8ModeTests(unittest.TestCase):
             self.assertEqual(out, '0')
 
     def test_env_var(self):
-        code = 'import sys; print(sys.flags.utf8_mode)'
+        code = 'import sys; drucke(sys.flags.utf8_mode)'
 
         out = self.get_output('-c', code, PYTHONUTF8='1')
         self.assertEqual(out, '1')
@@ -100,7 +100,7 @@ klasse UTF8ModeTests(unittest.TestCase):
     def test_filesystemencoding(self):
         code = textwrap.dedent('''
             import sys
-            print("{}/{}".format(sys.getfilesystemencoding(),
+            drucke("{}/{}".format(sys.getfilesystemencoding(),
                                  sys.getfilesystemencodeerrors()))
         ''')
 
@@ -123,9 +123,9 @@ klasse UTF8ModeTests(unittest.TestCase):
     def test_stdio(self):
         code = textwrap.dedent('''
             import sys
-            print(f"stdin: {sys.stdin.encoding}/{sys.stdin.errors}")
-            print(f"stdout: {sys.stdout.encoding}/{sys.stdout.errors}")
-            print(f"stderr: {sys.stderr.encoding}/{sys.stderr.errors}")
+            drucke(f"stdin: {sys.stdin.encoding}/{sys.stdin.errors}")
+            drucke(f"stdout: {sys.stdout.encoding}/{sys.stdout.errors}")
+            drucke(f"stderr: {sys.stderr.encoding}/{sys.stderr.errors}")
         ''')
 
         out = self.get_output('-X', 'utf8', '-c', code,
@@ -155,7 +155,7 @@ klasse UTF8ModeTests(unittest.TestCase):
             import sys
             filename = sys.argv[1]
             with open(filename) as fp:
-                print(f"{fp.encoding}/{fp.errors}")
+                drucke(f"{fp.encoding}/{fp.errors}")
         ''')
         filename = __file__
 
@@ -176,7 +176,7 @@ klasse UTF8ModeTests(unittest.TestCase):
             from %s import open
             filename = sys.argv[1]
             with open(filename, %s) as fp:
-                print(f"{fp.encoding}/{fp.errors}")
+                drucke(f"{fp.encoding}/{fp.errors}")
         ''') % (module, ', '.join(args))
         out = self.get_output('-c', code, filename,
                               PYTHONUTF8='1')
@@ -200,7 +200,7 @@ klasse UTF8ModeTests(unittest.TestCase):
         self.check_io_encoding('_pyio')
 
     def test_locale_getpreferredencoding(self):
-        code = 'import locale; print(locale.getpreferredencoding(Falsch), locale.getpreferredencoding(Wahr))'
+        code = 'import locale; drucke(locale.getpreferredencoding(Falsch), locale.getpreferredencoding(Wahr))'
         out = self.get_output('-X', 'utf8', '-c', code)
         self.assertEqual(out, 'utf-8 utf-8')
 
@@ -214,7 +214,7 @@ klasse UTF8ModeTests(unittest.TestCase):
         arg = 'h\xe9\u20ac'.encode('utf-8')
         arg_utf8 = arg.decode('utf-8')
         arg_ascii = arg.decode('ascii', 'surrogateescape')
-        code = 'import locale, sys; print("%s:%s" % (locale.getpreferredencoding(), ascii(sys.argv[1:])))'
+        code = 'import locale, sys; drucke("%s:%s" % (locale.getpreferredencoding(), ascii(sys.argv[1:])))'
 
         def check(utf8_opt, expected, **kw):
             out = self.get_output('-X', utf8_opt, '-c', code, arg, **kw)
@@ -241,13 +241,13 @@ klasse UTF8ModeTests(unittest.TestCase):
         # twice when -X utf8 requires to parse the configuration twice (when
         # the encoding changes after reading the configuration, the
         # configuration is read again with the new encoding).
-        code = 'import sys; print(sys.flags.optimize)'
+        code = 'import sys; drucke(sys.flags.optimize)'
         out = self.get_output('-X', 'utf8', '-O', '-c', code)
         self.assertEqual(out, '1')
         out = self.get_output('-X', 'utf8', '-OO', '-c', code)
         self.assertEqual(out, '2')
 
-        code = 'import sys; print(sys.flags.ignore_environment)'
+        code = 'import sys; drucke(sys.flags.ignore_environment)'
         out = self.get_output('-X', 'utf8', '-E', '-c', code)
         self.assertEqual(out, '1')
 
@@ -265,7 +265,7 @@ klasse UTF8ModeTests(unittest.TestCase):
 
         code = (f'import os, sys; fd = sys.stdout.fileno(); '
                 f'out = open({filename!r}, "w", encoding="utf-8"); '
-                f'print(os.isatty(fd), os.device_encoding(fd), file=out); '
+                f'drucke(os.isatty(fd), os.device_encoding(fd), file=out); '
                 f'out.close()')
         cmd = [sys.executable, '-X', 'utf8', '-c', code]
         # The stdout TTY is inherited to the child process

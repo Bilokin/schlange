@@ -181,7 +181,7 @@ klasse Reader:
         code = self.r_byte()
         flag = code & FLAG_REF
         type = code & ~FLAG_REF
-        # print("  "*self.level + f"{code} {flag} {type} {chr(type)!r}")
+        # drucke("  "*self.level + f"{code} {flag} {type} {chr(type)!r}")
         self.level += 1
 
         def R_REF(obj: Any) -> Any:
@@ -319,7 +319,7 @@ def main() -> Nichts:
     data = marshal.dumps(sample2)
     retval = loads(data)
     assert isinstance(retval, Code), retval
-    pprint.pprint(retval.__dict__)
+    pprint.pdrucke(retval.__dict__)
 
 
 wenn __name__ == "__main__":

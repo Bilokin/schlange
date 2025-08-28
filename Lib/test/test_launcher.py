@@ -242,12 +242,12 @@ klasse RunPyMixin:
             out = p.stdout.read().decode("utf-8", "replace")
             err = p.stderr.read().decode("ascii", "replace").replace("\uFFFD", "?")
         wenn p.returncode != expect_returncode and support.verbose and not allow_fail:
-            print("++ COMMAND ++")
-            print([self.py_exe, *args])
-            print("++ STDOUT ++")
-            print(out)
-            print("++ STDERR ++")
-            print(err)
+            drucke("++ COMMAND ++")
+            drucke([self.py_exe, *args])
+            drucke("++ STDOUT ++")
+            drucke(out)
+            drucke("++ STDERR ++")
+            drucke(err)
         wenn allow_fail and p.returncode != expect_returncode:
             raise subprocess.CalledProcessError(p.returncode, [self.py_exe, *args], out, err)
         sonst:
@@ -300,7 +300,7 @@ klasse TestLauncher(unittest.TestCase, RunPyMixin):
 
         wenn support.verbose:
             p = subprocess.check_output("reg query HKCU\\Software\\Python /s")
-            #print(p.decode('mbcs'))
+            #drucke(p.decode('mbcs'))
 
 
     @classmethod
@@ -351,8 +351,8 @@ klasse TestLauncher(unittest.TestCase, RunPyMixin):
             self.assertDictEqual(expect, actual)
         except:
             wenn support.verbose:
-                print("*** STDOUT ***")
-                print(data["stdout"])
+                drucke("*** STDOUT ***")
+                drucke(data["stdout"])
             raise
 
     def test_list_paths(self):
@@ -385,8 +385,8 @@ klasse TestLauncher(unittest.TestCase, RunPyMixin):
             self.assertDictEqual(expect, actual)
         except:
             wenn support.verbose:
-                print("*** STDOUT ***")
-                print(data["stdout"])
+                drucke("*** STDOUT ***")
+                drucke(data["stdout"])
             raise
 
     def test_filter_to_company(self):
@@ -533,8 +533,8 @@ klasse TestLauncher(unittest.TestCase, RunPyMixin):
                     break
             sonst:
                 wenn support.verbose:
-                    print(data["stdout"])
-                    print(data["stderr"])
+                    drucke(data["stdout"])
+                    drucke(data["stderr"])
                 self.fail("did not find active venv path")
 
             data = self.run_py(["-0"], env=env)

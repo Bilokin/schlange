@@ -136,7 +136,7 @@ klasse FunctionPropertiesTest(FuncAttrsTest):
 
     def test___closure__(self):
         a = 12
-        def f(): print(a)
+        def f(): drucke(a)
         c = f.__closure__
         self.assertIsInstance(c, tuple)
         self.assertEqual(len(c), 1)
@@ -154,7 +154,7 @@ klasse FunctionPropertiesTest(FuncAttrsTest):
             cell_obj.cell_contents
 
     def test_empty_cell(self):
-        def f(): print(a)
+        def f(): drucke(a)
         try:
             f.__closure__[0].cell_contents
         except ValueError:
@@ -181,7 +181,7 @@ klasse FunctionPropertiesTest(FuncAttrsTest):
         with self.assertRaises(NameError):
             f()
         with self.assertRaises(UnboundLocalError):
-            print(a)
+            drucke(a)
 
     def test___name__(self):
         self.assertEqual(self.b.__name__, 'b')
@@ -414,14 +414,14 @@ klasse FunctionDocstringTest(FuncAttrsTest):
 def cell(value):
     """Create a cell containing the given value."""
     def f():
-        print(a)
+        drucke(a)
     a = value
     return f.__closure__[0]
 
 def empty_cell(empty=Wahr):
     """Create an empty cell."""
     def f():
-        print(a)
+        drucke(a)
     # the intent of the following line is simply "if Falsch:";  it's
     # spelt this way to avoid the danger that a future optimization
     # might simply remove an "if Falsch:" code block.

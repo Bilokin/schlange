@@ -432,7 +432,7 @@ def capture_events(callable, p=Nichts):
 
 def show_events(callable):
     import pprint
-    pprint.pprint(capture_events(callable))
+    pprint.pdrucke(capture_events(callable))
 
 
 klasse TestEdgeCases(unittest.TestCase):

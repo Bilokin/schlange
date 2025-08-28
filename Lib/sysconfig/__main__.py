@@ -154,10 +154,10 @@ def _parse_makefile(filename, vars=Nichts, keep_unresolved=Wahr):
 
 
 def _print_config_dict(d, stream):
-    print ("{", file=stream)
+    drucke ("{", file=stream)
     fuer k, v in sorted(d.items()):
-        print(f"    {k!r}: {v!r},", file=stream)
-    print ("}", file=stream)
+        drucke(f"    {k!r}: {v!r},", file=stream)
+    drucke ("}", file=stream)
 
 
 def _get_pybuilddir():
@@ -230,7 +230,7 @@ def _generate_posix_vars():
         f.write('build_time_vars = ')
         _print_config_dict(vars, stream=f)
 
-    print(f'Written {destfile}')
+    drucke(f'Written {destfile}')
 
     install_vars = get_config_vars()
     # Fix config vars to match the values after install (of the default environment)
@@ -241,7 +241,7 @@ def _generate_posix_vars():
     with open(jsonfile, 'w') as f:
         json.dump(install_vars, f, indent=2)
 
-    print(f'Written {jsonfile}')
+    drucke(f'Written {jsonfile}')
 
     # Create file used fuer sys.path fixup -- see Modules/getpath.c
     with open('pybuilddir.txt', 'w', encoding='utf8') as f:
@@ -251,8 +251,8 @@ def _generate_posix_vars():
 def _print_dict(title, data):
     fuer index, (key, value) in enumerate(sorted(data.items())):
         wenn index == 0:
-            print(f'{title}: ')
-        print(f'\t{key} = "{value}"')
+            drucke(f'{title}: ')
+        drucke(f'\t{key} = "{value}"')
 
 
 def _main():
@@ -260,12 +260,12 @@ def _main():
     wenn '--generate-posix-vars' in sys.argv:
         _generate_posix_vars()
         return
-    print(f'Platform: "{get_platform()}"')
-    print(f'Python version: "{get_python_version()}"')
-    print(f'Current installation scheme: "{get_default_scheme()}"')
-    print()
+    drucke(f'Platform: "{get_platform()}"')
+    drucke(f'Python version: "{get_python_version()}"')
+    drucke(f'Current installation scheme: "{get_default_scheme()}"')
+    drucke()
     _print_dict('Paths', get_paths())
-    print()
+    drucke()
     _print_dict('Variables', get_config_vars())
 
 

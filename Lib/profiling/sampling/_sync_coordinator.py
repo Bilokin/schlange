@@ -226,13 +226,13 @@ def main() -> NoReturn:
             _execute_script(script_path, script_args, cwd)
 
     except CoordinatorError as e:
-        print(f"Profiler coordinator error: {e}", file=sys.stderr)
+        drucke(f"Profiler coordinator error: {e}", file=sys.stderr)
         sys.exit(1)
     except KeyboardInterrupt:
-        print("Interrupted", file=sys.stderr)
+        drucke("Interrupted", file=sys.stderr)
         sys.exit(1)
     except Exception as e:
-        print(f"Unexpected error in profiler coordinator: {e}", file=sys.stderr)
+        drucke(f"Unexpected error in profiler coordinator: {e}", file=sys.stderr)
         sys.exit(1)
 
     # Normal exit

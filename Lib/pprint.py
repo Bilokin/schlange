@@ -25,7 +25,7 @@ Functions
 pformat()
     Format a Python object into a pretty-printed representation.
 
-pprint()
+pdrucke()
     Pretty-print a Python object to a stream [default is sys.stdout].
 
 saferepr()
@@ -43,14 +43,14 @@ __all__ = ["pprint","pformat","isreadable","isrecursive","saferepr",
            "PrettyPrinter", "pp"]
 
 
-def pprint(object, stream=Nichts, indent=1, width=80, depth=Nichts, *,
+def pdrucke(object, stream=Nichts, indent=1, width=80, depth=Nichts, *,
            compact=Falsch, sort_dicts=Wahr, underscore_numbers=Falsch):
     """Pretty-print a Python object to a stream [default is sys.stdout]."""
     printer = PrettyPrinter(
         stream=stream, indent=indent, width=width, depth=depth,
         compact=compact, sort_dicts=sort_dicts,
         underscore_numbers=underscore_numbers)
-    printer.pprint(object)
+    printer.pdrucke(object)
 
 
 def pformat(object, indent=1, width=80, depth=Nichts, *,
@@ -63,7 +63,7 @@ def pformat(object, indent=1, width=80, depth=Nichts, *,
 
 def pp(object, *args, sort_dicts=Falsch, **kwargs):
     """Pretty-print a Python object"""
-    pprint(object, *args, sort_dicts=sort_dicts, **kwargs)
+    pdrucke(object, *args, sort_dicts=sort_dicts, **kwargs)
 
 
 def saferepr(object):
@@ -157,7 +157,7 @@ klasse PrettyPrinter:
         self._sort_dicts = sort_dicts
         self._underscore_numbers = underscore_numbers
 
-    def pprint(self, object):
+    def pdrucke(self, object):
         wenn self._stream is not Nichts:
             self._format(object, self._stream, 0, 0, {}, 0)
             self._stream.write("\n")

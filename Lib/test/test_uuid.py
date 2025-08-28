@@ -1260,7 +1260,7 @@ klasse TestUUIDWithExtModule(CommandLineTestCases, BaseTestUUID, unittest.TestCa
     @unittest.skipUnless(os.name == 'posix', 'POSIX only')
     def test_unix_getnode_from_libuuid(self):
         self.check_has_stable_libuuid_extractable_node()
-        script = 'import uuid; print(uuid._unix_getnode())'
+        script = 'import uuid; drucke(uuid._unix_getnode())'
         _, n_a, _ = assert_python_ok('-c', script)
         _, n_b, _ = assert_python_ok('-c', script)
         n_a, n_b = n_a.decode().strip(), n_b.decode().strip()
@@ -1271,7 +1271,7 @@ klasse TestUUIDWithExtModule(CommandLineTestCases, BaseTestUUID, unittest.TestCa
     @unittest.skipUnless(os.name == 'nt', 'Windows only')
     def test_windows_getnode_from_libuuid(self):
         self.check_has_stable_libuuid_extractable_node()
-        script = 'import uuid; print(uuid._windll_getnode())'
+        script = 'import uuid; drucke(uuid._windll_getnode())'
         _, n_a, _ = assert_python_ok('-c', script)
         _, n_b, _ = assert_python_ok('-c', script)
         n_a, n_b = n_a.decode().strip(), n_b.decode().strip()
@@ -1424,7 +1424,7 @@ eth0      Link encap:Ethernet  HWaddr 12:34:56:78:90:ab
             self.skipTest('requires ' + requires)
         hex = '%012x' % node
         wenn support.verbose >= 2:
-            print(hex, end=' ')
+            drucke(hex, end=' ')
         self.assertWahr(0 < node < (1 << 48),
                         "%s is not an RFC 4122 node ID" % hex)
 

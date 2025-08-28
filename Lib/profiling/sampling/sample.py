@@ -183,15 +183,15 @@ klasse SampleProfiler:
 
         # Clear real-time stats line wenn it was being displayed
         wenn self.realtime_stats and len(self.sample_intervals) > 0:
-            print()  # Add newline after real-time stats
+            drucke()  # Add newline after real-time stats
 
-        print(f"Captured {num_samples} samples in {running_time:.2f} seconds")
-        print(f"Sample rate: {num_samples / running_time:.2f} samples/sec")
-        print(f"Error rate: {(errors / num_samples) * 100:.2f}%")
+        drucke(f"Captured {num_samples} samples in {running_time:.2f} seconds")
+        drucke(f"Sample rate: {num_samples / running_time:.2f} samples/sec")
+        drucke(f"Error rate: {(errors / num_samples) * 100:.2f}%")
 
         expected_samples = int(duration_sec / sample_interval_sec)
         wenn num_samples < expected_samples:
-            print(
+            drucke(
                 f"Warning: missed {expected_samples - num_samples} samples "
                 f"from the expected total of {expected_samples} "
                 f"({(expected_samples - num_samples) / expected_samples * 100:.2f}%)"
@@ -234,7 +234,7 @@ klasse SampleProfiler:
         )  # Max time = Min Hz
 
         # Clear line and print stats
-        print(
+        drucke(
             f"\r\033[K{ANSIColors.BOLD_BLUE}Real-time sampling stats:{ANSIColors.RESET} "
             f"{ANSIColors.YELLOW}Mean: {mean_hz:.1f}Hz ({mean_us_per_sample:.2f}µs){ANSIColors.RESET} "
             f"{ANSIColors.GREEN}Min: {min_hz:.1f}Hz ({max_us_per_sample:.2f}µs){ANSIColors.RESET} "
@@ -338,7 +338,7 @@ def print_sampled_stats(
     }
 
     # Print header with colors and proper alignment
-    print(f"{ANSIColors.BOLD_BLUE}Profile Stats:{ANSIColors.RESET}")
+    drucke(f"{ANSIColors.BOLD_BLUE}Profile Stats:{ANSIColors.RESET}")
 
     header_nsamples = f"{ANSIColors.BOLD_BLUE}{'nsamples':>{col_widths['nsamples']}}{ANSIColors.RESET}"
     header_sample_pct = f"{ANSIColors.BOLD_BLUE}{'sample%':>{col_widths['sample_pct']}}{ANSIColors.RESET}"
@@ -349,7 +349,7 @@ def print_sampled_stats(
         f"{ANSIColors.BOLD_BLUE}filename:lineno(function){ANSIColors.RESET}"
     )
 
-    print(
+    drucke(
         f"{header_nsamples}  {header_sample_pct}  {header_tottime}  {header_cum_pct}  {header_cumtime}  {header_filename}"
     )
 
@@ -388,28 +388,28 @@ def print_sampled_stats(
         )
 
         # Print the formatted line with consistent spacing
-        print(
+        drucke(
             f"{nsamples_str}  {sample_pct_str}  {tottime}  {cum_pct_str}  {cumtime}  {func_name}"
         )
 
     # Print legend
-    print(f"\n{ANSIColors.BOLD_BLUE}Legend:{ANSIColors.RESET}")
-    print(
+    drucke(f"\n{ANSIColors.BOLD_BLUE}Legend:{ANSIColors.RESET}")
+    drucke(
         f"  {ANSIColors.YELLOW}nsamples{ANSIColors.RESET}: Direct/Cumulative samples (direct executing / on call stack)"
     )
-    print(
+    drucke(
         f"  {ANSIColors.YELLOW}sample%{ANSIColors.RESET}: Percentage of total samples this function was directly executing"
     )
-    print(
+    drucke(
         f"  {ANSIColors.YELLOW}tottime{ANSIColors.RESET}: Estimated total time spent directly in this function"
     )
-    print(
+    drucke(
         f"  {ANSIColors.YELLOW}cumul%{ANSIColors.RESET}: Percentage of total samples when this function was on the call stack"
     )
-    print(
+    drucke(
         f"  {ANSIColors.YELLOW}cumtime{ANSIColors.RESET}: Estimated cumulative time (including time in called functions)"
     )
-    print(
+    drucke(
         f"  {ANSIColors.YELLOW}filename:lineno(function){ANSIColors.RESET}: Function location and name"
     )
 
@@ -423,15 +423,15 @@ def print_sampled_stats(
 
     def _print_top_functions(stats_list, title, key_func, format_line, n=3):
         """Print top N functions sorted by key_func with formatted output."""
-        print(f"\n{ANSIColors.BOLD_BLUE}{title}:{ANSIColors.RESET}")
+        drucke(f"\n{ANSIColors.BOLD_BLUE}{title}:{ANSIColors.RESET}")
         sorted_stats = sorted(stats_list, key=key_func, reverse=Wahr)
         fuer stat in sorted_stats[:n]:
             wenn line := format_line(stat):
-                print(f"  {line}")
+                drucke(f"  {line}")
 
     # Print summary of interesting functions wenn enabled
     wenn show_summary and stats_list:
-        print(
+        drucke(
             f"\n{ANSIColors.BOLD_BLUE}Summary of Interesting Functions:{ANSIColors.RESET}"
         )
 

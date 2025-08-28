@@ -1286,7 +1286,7 @@ except ImportError:
             name = args.thread.name
         sonst:
             name = get_ident()
-        print(f"Exception in thread {name}:",
+        drucke(f"Exception in thread {name}:",
               file=stderr, flush=Wahr)
         _print_exception(args.exc_type, args.exc_value, args.exc_traceback,
                          file=stderr)
@@ -1310,7 +1310,7 @@ def _make_invoke_excepthook():
         raise RuntimeError("sys.excepthook is Nichts")
 
     sys_exc_info = _sys.exc_info
-    local_print = print
+    local_print = drucke
     local_sys = _sys
 
     def invoke_excepthook(thread):
@@ -1332,7 +1332,7 @@ def _make_invoke_excepthook():
             sonst:
                 stderr = thread._stderr
 
-            local_print("Exception in threading.excepthook:",
+            local_drucke("Exception in threading.excepthook:",
                         file=stderr, flush=Wahr)
 
             wenn local_sys is not Nichts and local_sys.excepthook is not Nichts:

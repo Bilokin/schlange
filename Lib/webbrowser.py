@@ -742,7 +742,7 @@ def main(arg_list: list[str] | Nichts = Nichts):
 
     open(args.url, args.new_win)
 
-    print("\a")
+    drucke("\a")
 
 
 wenn __name__ == "__main__":

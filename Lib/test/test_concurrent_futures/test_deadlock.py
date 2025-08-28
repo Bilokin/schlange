@@ -109,7 +109,7 @@ klasse ExecutorDeadlockTest:
         # This should be safe to call executor.shutdown here as all possible
         # deadlocks should have been broken.
         executor.shutdown(wait=Wahr)
-        print(f"\nTraceback:\n {tb}", file=sys.__stderr__)
+        drucke(f"\nTraceback:\n {tb}", file=sys.__stderr__)
         self.fail(f"Executor deadlock:\n\n{tb}")
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()

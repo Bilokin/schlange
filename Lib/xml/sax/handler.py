@@ -39,7 +39,7 @@ klasse ErrorHandler:
 
     def warning(self, exception):
         "Handle a warning."
-        print(exception)
+        drucke(exception)
 
 
 # ===== CONTENTHANDLER =====

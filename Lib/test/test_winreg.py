@@ -520,6 +520,6 @@ klasse Win64WinregTests(BaseWinregTests):
 
 wenn __name__ == "__main__":
     wenn not REMOTE_NAME:
-        print("Remote registry calls can be tested using",
+        drucke("Remote registry calls can be tested using",
               "'test_winreg.py --remote \\\\machine_name'")
     unittest.main()

@@ -191,7 +191,7 @@ def run(main, *, debug=Nichts, loop_factory=Nichts):
 
         async def main():
             await asyncio.sleep(1)
-            print('hello')
+            drucke('hello')
 
         asyncio.run(main())
     """

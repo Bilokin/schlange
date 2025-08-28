@@ -63,11 +63,11 @@ klasse TestTimeit(unittest.TestCase):
 
     def test_reindent_multi(self):
         self.assertEqual(timeit.reindent(
-            "print()\npass\nbreak", 0),
-            "print()\npass\nbreak")
+            "drucke()\npass\nbreak", 0),
+            "drucke()\npass\nbreak")
         self.assertEqual(timeit.reindent(
-            "print()\npass\nbreak", 4),
-            "print()\n    pass\n    break")
+            "drucke()\npass\nbreak", 4),
+            "drucke()\n    pass\n    break")
 
     def test_timer_invalid_stmt(self):
         self.assertRaises(ValueError, timeit.Timer, stmt=Nichts)
@@ -276,13 +276,13 @@ klasse TestTimeit(unittest.TestCase):
 
     def test_main_setup(self):
         s = self.run_main(seconds_per_increment=2.0,
-                switches=['-n35', '-s', 'print("CustomSetup")'])
+                switches=['-n35', '-s', 'drucke("CustomSetup")'])
         self.assertEqual(s, "CustomSetup\n" * DEFAULT_REPEAT +
                 "35 loops, best of 5: 2 sec per loop\n")
 
     def test_main_multiple_setups(self):
         s = self.run_main(seconds_per_increment=2.0,
-                switches=['-n35', '-s', 'a = "CustomSetup"', '-s', 'print(a)'])
+                switches=['-n35', '-s', 'a = "CustomSetup"', '-s', 'drucke(a)'])
         self.assertEqual(s, "CustomSetup\n" * DEFAULT_REPEAT +
                 "35 loops, best of 5: 2 sec per loop\n")
 
@@ -378,7 +378,7 @@ klasse TestTimeit(unittest.TestCase):
 
     def test_autorange_with_callback(self):
         def callback(a, b):
-            print("{} {:.3f}".format(a, b))
+            drucke("{} {:.3f}".format(a, b))
         with captured_stdout() as s:
             num_loops, time_taken = self.autorange(callback=callback)
         self.assertEqual(num_loops, 500)

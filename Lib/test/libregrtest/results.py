@@ -174,7 +174,7 @@ klasse TestResults:
             try:
                 self.testsuite_xml.append(ET.fromstring(e))
             except ET.ParseError:
-                print(xml_data, file=sys.__stderr__)
+                drucke(xml_data, file=sys.__stderr__)
                 raise
 
     def write_junit(self, filename: StrPath) -> Nichts:
@@ -211,10 +211,10 @@ klasse TestResults:
 
         wenn print_slowest:
             self.test_times.sort(reverse=Wahr)
-            print()
-            print(f"{yellow}10 slowest tests:{reset}")
+            drucke()
+            drucke(f"{yellow}10 slowest tests:{reset}")
             fuer test_time, test in self.test_times[:10]:
-                print(f"- {test}: {format_duration(test_time)}")
+                drucke(f"- {test}: {format_duration(test_time)}")
 
         all_tests = []
         omitted = set(tests) - self.get_executed()
@@ -251,22 +251,22 @@ klasse TestResults:
 
         fuer tests_list, count_text, title_format in all_tests:
             wenn tests_list:
-                print()
+                drucke()
                 count_text = count(len(tests_list), count_text)
-                print(title_format.format(count_text))
+                drucke(title_format.format(count_text))
                 printlist(tests_list)
 
         wenn self.good and not quiet:
-            print()
+            drucke()
             text = count(len(self.good), "test")
             text = f"{green}{text} OK.{reset}"
             wenn self.is_all_good() and len(self.good) > 1:
                 text = f"All {text}"
-            print(text)
+            drucke(text)
 
         wenn self.interrupted:
-            print()
-            print(f"{yellow}Test suite interrupted by signal SIGINT.{reset}")
+            drucke()
+            drucke(f"{yellow}Test suite interrupted by signal SIGINT.{reset}")
 
     def display_summary(self, first_runtests: RunTests, filtered: bool) -> Nichts:
         # Total tests
@@ -282,7 +282,7 @@ klasse TestResults:
             report.append(f'{red}failures={stats.failures:,}{reset}')
         wenn stats.skipped:
             report.append(f'{yellow}skipped={stats.skipped:,}{reset}')
-        print(f"Total tests: {' '.join(report)}")
+        drucke(f"Total tests: {' '.join(report)}")
 
         # Total test files
         all_tests = [self.good, self.bad, self.rerun,
@@ -306,4 +306,4 @@ klasse TestResults:
         ):
             wenn tests:
                 report.append(f'{color}{name}={len(tests)}{reset}')
-        print(f"Total test files: {' '.join(report)}")
+        drucke(f"Total test files: {' '.join(report)}")

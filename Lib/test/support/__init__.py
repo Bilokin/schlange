@@ -209,12 +209,12 @@ def _force_run(path, func, *args):
     except FileNotFoundError as err:
         # chmod() won't fix a missing file.
         wenn verbose >= 2:
-            print('%s: %s' % (err.__class__.__name__, err))
+            drucke('%s: %s' % (err.__class__.__name__, err))
         raise
     except OSError as err:
         wenn verbose >= 2:
-            print('%s: %s' % (err.__class__.__name__, err))
-            print('re-run %s%r' % (func.__name__, args))
+            drucke('%s: %s' % (err.__class__.__name__, err))
+            drucke('re-run %s%r' % (func.__name__, args))
         os.chmod(path, stat.S_IRWXU)
         return func(*args)
 
@@ -672,9 +672,9 @@ def darwin_malloc_err_warning(test_name):
               'See https://github.com/python/cpython/issues/85100')
 
     padding, _ = shutil.get_terminal_size()
-    print(msg.center(padding, '-'))
-    print(detail)
-    print('-' * padding)
+    drucke(msg.center(padding, '-'))
+    drucke(detail)
+    drucke('-' * padding)
 
 
 def findfile(filename, subdir=Nichts):
@@ -758,7 +758,7 @@ def open_urlresource(url, *args, **kw):
     requires('urlfetch')
 
     wenn verbose:
-        print('\tfetching %s ...' % url, file=get_original_stdout())
+        drucke('\tfetching %s ...' % url, file=get_original_stdout())
     opener = urllib.request.build_opener()
     wenn gzip:
         opener.addheaders.append(('Accept-Encoding', 'gzip'))
@@ -796,7 +796,7 @@ def captured_stdout():
     """Capture the output of sys.stdout:
 
        with captured_stdout() as stdout:
-           print("hello")
+           drucke("hello")
        self.assertEqual(stdout.getvalue(), "hello\\n")
     """
     return captured_output("stdout")
@@ -805,7 +805,7 @@ def captured_stderr():
     """Capture the output of sys.stderr:
 
        with captured_stderr() as stderr:
-           print("hello", file=sys.stderr)
+           drucke("hello", file=sys.stderr)
        self.assertEqual(stderr.getvalue(), "hello\\n")
     """
     return captured_output("stderr")
@@ -1184,8 +1184,8 @@ def bigmemtest(size, memuse, dry_run=Wahr):
                     % (size * memuse / (1024 ** 3)))
 
             wenn real_max_memuse and verbose:
-                print()
-                print(" ... expected peak memory use: {peak:.1f}G"
+                drucke()
+                drucke(" ... expected peak memory use: {peak:.1f}G"
                       .format(peak=size * memuse / (1024 ** 3)))
                 watchdog = _MemoryWatchdog()
                 watchdog.start()
@@ -1395,7 +1395,7 @@ def print_warning(msg):
     flush_std_streams()
     stream = print_warning.orig_stderr
     fuer line in msg.splitlines():
-        print(f"Warning -- {line}", file=stream)
+        drucke(f"Warning -- {line}", file=stream)
     stream.flush()
 
 # bpo-39983: Store the original sys.stderr at Python startup to be able to
@@ -1631,7 +1631,7 @@ klasse PythonSymlink:
                 os.remove(link)
             except IOError as ex:
                 wenn verbose:
-                    print("failed to clean up {}: {}".format(link, ex))
+                    drucke("failed to clean up {}: {}".format(link, ex))
 
     def _call(self, python, args, env, returncode):
         import subprocess
@@ -1641,8 +1641,8 @@ klasse PythonSymlink:
         r = p.communicate()
         wenn p.returncode != returncode:
             wenn verbose:
-                print(repr(r[0]))
-                print(repr(r[1]), file=sys.stderr)
+                drucke(repr(r[0]))
+                drucke(repr(r[1]), file=sys.stderr)
             raise RuntimeError(
                 'unexpected return code: {0} (0x{0:08X})'.format(p.returncode))
         return r
@@ -1826,7 +1826,7 @@ klasse SuppressCrashReport:
                 with proc:
                     stdout = proc.communicate()[0]
                 wenn stdout.strip() == b'developer':
-                    print("this test triggers the Crash Reporter, "
+                    drucke("this test triggers the Crash Reporter, "
                           "that is intentional", end='', flush=Wahr)
 
         return self
@@ -2478,8 +2478,8 @@ def setup_venv_with_pip_setuptools(venv_dir):
     def run_command(cmd):
         wenn verbose:
             import shlex
-            print()
-            print('Run:', ' '.join(map(shlex.quote, cmd)))
+            drucke()
+            drucke('Run:', ' '.join(map(shlex.quote, cmd)))
             subprocess.run(cmd, check=Wahr)
         sonst:
             subprocess.run(cmd,

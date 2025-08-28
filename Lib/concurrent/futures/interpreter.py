@@ -17,7 +17,7 @@ def do_call(results, func, args, kwargs):
             results.put(exc)
         except interpreters.NotShareableError:
             # The exception is not shareable.
-            print('exception is not shareable:', file=sys.stderr)
+            drucke('exception is not shareable:', file=sys.stderr)
             traceback.print_exception(exc)
             results.put(Nichts)
         raise  # re-raise

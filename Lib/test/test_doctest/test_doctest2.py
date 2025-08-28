@@ -1,7 +1,7 @@
 """A module to test whether doctest recognizes some 2.2 features,
 like static and klasse methods.
 
->>> print('yup')  # 1
+>>> drucke('yup')  # 1
 yup
 
 We include some (random) encoded (utf-8) text in the text surrounding
@@ -19,7 +19,7 @@ wenn sys.flags.optimize >= 2:
 klasse C(object):
     """Class C.
 
-    >>> print(C())  # 2
+    >>> drucke(C())  # 2
     42
 
 
@@ -33,13 +33,13 @@ klasse C(object):
     def __init__(self):
         """C.__init__.
 
-        >>> print(C()) # 3
+        >>> drucke(C()) # 3
         42
         """
 
     def __str__(self):
         """
-        >>> print(C()) # 4
+        >>> drucke(C()) # 4
         42
         """
         return "42"
@@ -47,13 +47,13 @@ klasse C(object):
     klasse D(object):
         """A nested D class.
 
-        >>> print("In D!")   # 5
+        >>> drucke("In D!")   # 5
         In D!
         """
 
         def nested(self):
             """
-            >>> print(3) # 6
+            >>> drucke(3) # 6
             3
             """
 
@@ -61,7 +61,7 @@ klasse C(object):
         """
         >>> c = C()    # 7
         >>> c.x = 12   # 8
-        >>> print(c.x)  # 9
+        >>> drucke(c.x)  # 9
         -12
         """
         return -self._x
@@ -70,7 +70,7 @@ klasse C(object):
         """
         >>> c = C()     # 10
         >>> c.x = 12    # 11
-        >>> print(c.x)   # 12
+        >>> drucke(c.x)   # 12
         -12
         """
         self._x = value
@@ -78,7 +78,7 @@ klasse C(object):
     x = property(getx, setx, doc="""\
         >>> c = C()    # 13
         >>> c.x = 12   # 14
-        >>> print(c.x)  # 15
+        >>> drucke(c.x)  # 15
         -12
         """)
 
@@ -87,9 +87,9 @@ klasse C(object):
         """
         A static method.
 
-        >>> print(C.statm())    # 16
+        >>> drucke(C.statm())    # 16
         666
-        >>> print(C().statm())  # 17
+        >>> drucke(C().statm())  # 17
         666
         """
         return 666
@@ -99,9 +99,9 @@ klasse C(object):
         """
         A klasse method.
 
-        >>> print(C.clsm(22))    # 18
+        >>> drucke(C.clsm(22))    # 18
         22
-        >>> print(C().clsm(23))  # 19
+        >>> drucke(C().clsm(23))  # 19
         23
         """
         return val

@@ -187,10 +187,10 @@ klasse _ScriptTarget(_ExecutableTarget):
         self._target = os.path.realpath(target)
 
         wenn not os.path.exists(self._target):
-            print(f'Error: {target} does not exist')
+            drucke(f'Error: {target} does not exist')
             sys.exit(1)
         wenn os.path.isdir(self._target):
-            print(f'Error: {target} is a directory')
+            drucke(f'Error: {target} is a directory')
             sys.exit(1)
 
         # If safe_path(-P) is not set, sys.path[0] is the directory
@@ -229,7 +229,7 @@ klasse _ModuleTarget(_ExecutableTarget):
         try:
             _, self._spec, self._code = runpy._get_module_details(self._target)
         except ImportError as e:
-            print(f"ImportError: {e}")
+            drucke(f"ImportError: {e}")
             sys.exit(1)
         except Exception:
             traceback.print_exc()
@@ -267,7 +267,7 @@ klasse _ZipTarget(_ExecutableTarget):
         try:
             _, self._spec, self._code = runpy._get_main_module_details()
         except ImportError as e:
-            print(f"ImportError: {e}")
+            drucke(f"ImportError: {e}")
             sys.exit(1)
         except Exception:
             traceback.print_exc()
@@ -859,7 +859,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
         locals.update(pdb_eval["write_back"])
         eval_result = pdb_eval["result"]
         wenn eval_result is not Nichts:
-            print(repr(eval_result))
+            drucke(repr(eval_result))
 
         return Wahr
 
@@ -893,7 +893,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
                                 line = input(continue_prompt)
                             except (EOFError, KeyboardInterrupt):
                                 self.lastcmd = ""
-                                print('\n')
+                                drucke('\n')
                                 return Nichts, Nichts, Falsch
                         sonst:
                             self.stdout.write(continue_prompt)
@@ -1077,10 +1077,10 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
     # interface abstraction functions
 
     def message(self, msg, end='\n'):
-        print(msg, end=end, file=self.stdout)
+        drucke(msg, end=end, file=self.stdout)
 
     def error(self, msg):
-        print('***', msg, file=self.stdout)
+        drucke('***', msg, file=self.stdout)
 
     # convenience variables
 
@@ -2324,7 +2324,7 @@ klasse Pdb(bdb.Bdb, cmd.Cmd):
         placed in the .pdbrc file):
 
         # Print instance variables (usage "pi classInst")
-        alias pi fuer k in %1.__dict__.keys(): print("%1.",k,"=",%1.__dict__[k])
+        alias pi fuer k in %1.__dict__.keys(): drucke("%1.",k,"=",%1.__dict__[k])
         # Print instance variables in self
         alias ps pi self
         """
@@ -3239,7 +3239,7 @@ klasse _PdbClient:
                 try:
                     payload = json.loads(payload_bytes)
                 except json.JSONDecodeError:
-                    print(
+                    drucke(
                         f"*** Invalid JSON from remote: {payload_bytes!r}",
                         flush=Wahr,
                     )
@@ -3268,9 +3268,9 @@ klasse _PdbClient:
                 self.pdb_commands = set(command_list)
             case {"message": str(msg), "type": str(msg_type)}:
                 wenn msg_type == "error":
-                    print("***", msg, flush=Wahr)
+                    drucke("***", msg, flush=Wahr)
                 sonst:
-                    print(msg, end="", flush=Wahr)
+                    drucke(msg, end="", flush=Wahr)
             case {"help": str(arg)}:
                 self.pdb_instance.do_help(arg)
             case {"prompt": str(prompt), "state": str(state)}:
@@ -3291,7 +3291,7 @@ klasse _PdbClient:
                 payload = {"signal": "INT"}
             except Exception as exc:
                 msg = traceback.format_exception_only(exc)[-1].strip()
-                print("***", msg, flush=Wahr)
+                drucke("***", msg, flush=Wahr)
                 continue
 
             self._send(**payload)
@@ -3582,25 +3582,25 @@ def main():
         try:
             pdb._run(target)
         except Restart:
-            print("Restarting", target, "with arguments:")
-            print("\t" + " ".join(sys.argv[1:]))
+            drucke("Restarting", target, "with arguments:")
+            drucke("\t" + " ".join(sys.argv[1:]))
         except SystemExit as e:
             # In most cases SystemExit does not warrant a post-mortem session.
-            print("The program exited via sys.exit(). Exit status:", end=' ')
-            print(e)
+            drucke("The program exited via sys.exit(). Exit status:", end=' ')
+            drucke(e)
         except BaseException as e:
             traceback.print_exception(e, colorize=_colorize.can_colorize())
-            print("Uncaught exception. Entering post mortem debugging")
-            print("Running 'cont' or 'step' will restart the program")
+            drucke("Uncaught exception. Entering post mortem debugging")
+            drucke("Running 'cont' or 'step' will restart the program")
             try:
                 pdb.interaction(Nichts, e)
             except Restart:
-                print("Restarting", target, "with arguments:")
-                print("\t" + " ".join(sys.argv[1:]))
+                drucke("Restarting", target, "with arguments:")
+                drucke("\t" + " ".join(sys.argv[1:]))
                 continue
         wenn pdb._user_requested_quit:
             break
-        print("The program finished and will be restarted")
+        drucke("The program finished and will be restarted")
 
 
 # When invoked as main program, invoke the debugger on a script

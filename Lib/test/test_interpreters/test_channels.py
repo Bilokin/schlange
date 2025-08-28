@@ -198,7 +198,7 @@ klasse TestSendRecv(TestBase):
                 # When going to another interpreter we get a copy.
                 assert id(obj1) != {id(orig1)}, 'expected: obj1 is not orig1'
                 orig2 = b'eggs'
-                print(id(orig2))
+                drucke(id(orig2))
                 s.send_nowait(orig2)
                 """),
             channels=dict(r=r1, s=s2),
@@ -272,7 +272,7 @@ klasse TestSendRecv(TestBase):
                 # When going to another interpreter we get a copy.
                 assert id(obj1) != {id(orig1)}, 'expected: obj1 is not orig1'
                 orig2 = b'eggs'
-                print(id(orig2))
+                drucke(id(orig2))
                 s.send_nowait(orig2)
                 """),
             channels=dict(r=r1, s=s2),

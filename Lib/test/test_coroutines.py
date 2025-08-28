@@ -439,7 +439,7 @@ klasse AsyncBadSyntaxTest(unittest.TestCase):
 
             """async = 1""",
 
-            """print(await=1)"""
+            """drucke(await=1)"""
         ]
 
         fuer code in samples:
@@ -1602,7 +1602,7 @@ klasse CoroutineTest(unittest.TestCase):
 
         async def foo():
             async fuer i in tup:
-                print('never going to happen')
+                drucke('never going to happen')
 
         with self.assertRaisesRegex(
                 TypeError, "async for' requires an object.*__aiter__.*tuple"):
@@ -1621,7 +1621,7 @@ klasse CoroutineTest(unittest.TestCase):
 
         async def foo():
             async fuer i in aiter:
-                print('never going to happen')
+                drucke('never going to happen')
 
         with self.assertRaisesRegex(
                 TypeError,
@@ -1644,7 +1644,7 @@ klasse CoroutineTest(unittest.TestCase):
 
         async def foo():
             async fuer i in aiter:
-                print('never going to happen')
+                drucke('never going to happen')
 
         with self.assertRaisesRegex(
                 TypeError,

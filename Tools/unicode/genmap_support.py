@@ -181,7 +181,7 @@ def print_autogen(fo, source):
 
 
 def loadmap(fo, natcol=0, unicol=1, sbcs=0):
-    print("Loading from", fo)
+    drucke("Loading from", fo)
     fo.seek(0, 0)
     decmap = {}
     fuer line in fo:

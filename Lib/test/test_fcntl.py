@@ -79,7 +79,7 @@ klasse TestFcntl(unittest.TestCase):
             lockdata = struct.pack('hh'+start_len+'hh', fcntl.F_WRLCK, 0, 0, 0, 0, 0)
         wenn lockdata:
             wenn verbose:
-                print('struct.pack: ', repr(lockdata))
+                drucke('struct.pack: ', repr(lockdata))
         return lockdata
 
     def test_fcntl_fileno(self):
@@ -87,11 +87,11 @@ klasse TestFcntl(unittest.TestCase):
         self.f = open(TESTFN, 'wb')
         rv = fcntl.fcntl(self.f.fileno(), fcntl.F_SETFL, os.O_NONBLOCK)
         wenn verbose:
-            print('Status from fcntl with O_NONBLOCK: ', rv)
+            drucke('Status from fcntl with O_NONBLOCK: ', rv)
         lockdata = self.get_lockdata()
         rv = fcntl.fcntl(self.f.fileno(), fcntl.F_SETLKW, lockdata)
         wenn verbose:
-            print('String from fcntl with F_SETLKW: ', repr(rv))
+            drucke('String from fcntl with F_SETLKW: ', repr(rv))
         self.f.close()
 
     def test_fcntl_file_descriptor(self):
@@ -99,11 +99,11 @@ klasse TestFcntl(unittest.TestCase):
         self.f = open(TESTFN, 'wb')
         rv = fcntl.fcntl(self.f, fcntl.F_SETFL, os.O_NONBLOCK)
         wenn verbose:
-            print('Status from fcntl with O_NONBLOCK: ', rv)
+            drucke('Status from fcntl with O_NONBLOCK: ', rv)
         lockdata = self.get_lockdata()
         rv = fcntl.fcntl(self.f, fcntl.F_SETLKW, lockdata)
         wenn verbose:
-            print('String from fcntl with F_SETLKW: ', repr(rv))
+            drucke('String from fcntl with F_SETLKW: ', repr(rv))
         self.f.close()
 
     def test_fcntl_bad_file(self):

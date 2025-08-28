@@ -1,1 +1,1 @@
-print('Hello world...')
+drucke('Hello world...')

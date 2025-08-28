@@ -64,7 +64,7 @@ Unpack generic sequence
 Unpack in fuer statement
 
     >>> fuer a, *b, c in [(1,2,3), (4,5,6,7)]:
-    ...     print(a, b, c)
+    ...     drucke(a, b, c)
     ...
     1 [2] 3
     4 [5, 6] 7
@@ -192,13 +192,13 @@ List comprehension element unpacking
 
 Iterable argument unpacking
 
-    >>> print(*[1], *[2], 3)
+    >>> drucke(*[1], *[2], 3)
     1 2 3
 
 Make sure that they don't corrupt the passed-in dicts.
 
     >>> def f(x, y):
-    ...     print(x, y)
+    ...     drucke(x, y)
     ...
     >>> original_dict = {'x': 1}
     >>> f(**original_dict, y=2)
@@ -241,7 +241,7 @@ Make sure the raised errors are right fuer keyword argument unpackings
     RuntimeError: dictionary changed size during iteration
 
     >>> d.d = {chr(ord('a') + x): x fuer x in range(5)}
-    >>> def f(**kwargs): print(kwargs)
+    >>> def f(**kwargs): drucke(kwargs)
     >>> f(**d)
     Traceback (most recent call last):
     ...

@@ -94,7 +94,7 @@ klasse BufferSizesTests(BaseTests, unittest.TestCase):
         pat = re.compile(r'LINE (\d+) OF FILE (\d+)')
 
         wenn verbose:
-            print('1. Simple iteration')
+            drucke('1. Simple iteration')
         fi = FileInput(files=(t1, t2, t3, t4), encoding="utf-8")
         lines = list(fi)
         fi.close()
@@ -105,7 +105,7 @@ klasse BufferSizesTests(BaseTests, unittest.TestCase):
         self.assertEqual(fi.filename(), t4)
 
         wenn verbose:
-            print('2. Status variables')
+            drucke('2. Status variables')
         fi = FileInput(files=(t1, t2, t3, t4), encoding="utf-8")
         s = "x"
         while s and s != 'Line 6 of file 2\n':
@@ -117,14 +117,14 @@ klasse BufferSizesTests(BaseTests, unittest.TestCase):
         self.assertFalsch(fi.isstdin())
 
         wenn verbose:
-            print('3. Nextfile')
+            drucke('3. Nextfile')
         fi.nextfile()
         self.assertEqual(fi.readline(), 'Line 1 of file 3\n')
         self.assertEqual(fi.lineno(), 22)
         fi.close()
 
         wenn verbose:
-            print('4. Stdin')
+            drucke('4. Stdin')
         fi = FileInput(files=(t1, t2, t3, t4, '-'), encoding="utf-8")
         savestdin = sys.stdin
         try:
@@ -138,7 +138,7 @@ klasse BufferSizesTests(BaseTests, unittest.TestCase):
             sys.stdin = savestdin
 
         wenn verbose:
-            print('5. Boundary conditions')
+            drucke('5. Boundary conditions')
         fi = FileInput(files=(t1, t2, t3, t4), encoding="utf-8")
         self.assertEqual(fi.lineno(), 0)
         self.assertEqual(fi.filename(), Nichts)
@@ -147,13 +147,13 @@ klasse BufferSizesTests(BaseTests, unittest.TestCase):
         self.assertEqual(fi.filename(), Nichts)
 
         wenn verbose:
-            print('6. Inplace')
+            drucke('6. Inplace')
         savestdout = sys.stdout
         try:
             fi = FileInput(files=(t1, t2, t3, t4), inplace=Wahr, encoding="utf-8")
             fuer line in fi:
                 line = line[:-1].upper()
-                print(line)
+                drucke(line)
             fi.close()
         finally:
             sys.stdout = savestdout
@@ -320,7 +320,7 @@ klasse FileInputTests(BaseTests, unittest.TestCase):
         with FileInput(temp_file, mode='rb', inplace=Wahr) as fobj:
             line = fobj.readline()
             self.assertEqual(line, b'Initial text.')
-            # print() cannot be used with files opened in binary mode.
+            # drucke() cannot be used with files opened in binary mode.
             sys.stdout.write(b'New line.')
         with open(temp_file, 'rb') as f:
             self.assertEqual(f.read(), b'New line.')
@@ -331,7 +331,7 @@ klasse FileInputTests(BaseTests, unittest.TestCase):
                        encoding="ascii", errors="replace") as fobj:
             line = fobj.readline()
             self.assertEqual(line, 'Initial text \ufffd')
-            print("New line \x88")
+            drucke("New line \x88")
         with open(temp_file, 'rb') as f:
             self.assertEqual(f.read().rstrip(b'\r\n'), b'New line ?')
 
@@ -491,7 +491,7 @@ klasse FileInputTests(BaseTests, unittest.TestCase):
         with FileInput(t1, inplace=Wahr, encoding="utf-8") as fi:
             line = fi.readline()
             self.assertEqual(line, 'Path-like file.')
-            print('Modified %s' % line)
+            drucke('Modified %s' % line)
         with open(t1, encoding="utf-8") as f:
             self.assertEqual(f.read(), 'Modified Path-like file.\n')
 

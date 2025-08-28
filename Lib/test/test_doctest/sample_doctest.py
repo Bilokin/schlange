@@ -40,9 +40,9 @@ def test_silly_setup():
 def w_blank():
     """
     >>> wenn 1:
-    ...    print('a')
-    ...    print()
-    ...    print('b')
+    ...    drucke('a')
+    ...    drucke()
+    ...    drucke('b')
     a
     <BLANKLINE>
     b

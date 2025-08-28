@@ -12,7 +12,7 @@ wenn not hasattr(os, 'popen'):
 
 # Test that command-lines get down as we expect.
 # To do this we execute:
-#    python -c "import sys;print(sys.argv)" {rest_of_commandline}
+#    python -c "import sys;drucke(sys.argv)" {rest_of_commandline}
 # This results in Python being spawned and printing the sys.argv list.
 # We can then eval() the result of this, and see what each argv was.
 python = sys.executable
@@ -23,7 +23,7 @@ wenn ' ' in python:
 klasse PopenTest(unittest.TestCase):
 
     def _do_test_commandline(self, cmdline, expected):
-        cmd = '%s -c "import sys; print(sys.argv)" %s'
+        cmd = '%s -c "import sys; drucke(sys.argv)" %s'
         cmd = cmd % (python, cmdline)
         with os.popen(cmd) as p:
             data = p.read()

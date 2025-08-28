@@ -86,25 +86,25 @@ klasse TestThread(threading.Thread):
     def run(self):
         delay = random.random() / 10000.0
         wenn verbose:
-            print('task %s will run fuer %.1f usec' %
+            drucke('task %s will run fuer %.1f usec' %
                   (self.name, delay * 1e6))
 
         with self.sema:
             with self.mutex:
                 self.nrunning.inc()
                 wenn verbose:
-                    print(self.nrunning.get(), 'tasks are running')
+                    drucke(self.nrunning.get(), 'tasks are running')
                 self.testcase.assertLessEqual(self.nrunning.get(), 3)
 
             time.sleep(delay)
             wenn verbose:
-                print('task', self.name, 'done')
+                drucke('task', self.name, 'done')
 
             with self.mutex:
                 self.nrunning.dec()
                 self.testcase.assertGreaterEqual(self.nrunning.get(), 0)
                 wenn verbose:
-                    print('%s is finished. %d tasks are running' %
+                    drucke('%s is finished. %d tasks are running' %
                           (self.name, self.nrunning.get()))
 
 
@@ -221,7 +221,7 @@ klasse ThreadTests(BaseTestCase):
             self.assertEqual(len(native_ids), NUMTASKS + 1)
 
         wenn verbose:
-            print('waiting fuer all tasks to complete')
+            drucke('waiting fuer all tasks to complete')
         fuer t in threads:
             t.join()
             self.assertFalsch(t.is_alive())
@@ -229,7 +229,7 @@ klasse ThreadTests(BaseTestCase):
             self.assertIsNotNichts(t.ident)
             self.assertRegex(repr(t), r'^<TestThread\(.*, stopped -?\d+\)>$')
         wenn verbose:
-            print('all tasks done')
+            drucke('all tasks done')
         self.assertEqual(numrunning.get(), 0)
 
     def test_ident_of_no_threading_threads(self):
@@ -248,7 +248,7 @@ klasse ThreadTests(BaseTestCase):
     # run with a small(ish) thread stack size (256 KiB)
     def test_various_ops_small_stack(self):
         wenn verbose:
-            print('with 256 KiB thread stack size...')
+            drucke('with 256 KiB thread stack size...')
         try:
             threading.stack_size(262144)
         except _thread.error:
@@ -260,7 +260,7 @@ klasse ThreadTests(BaseTestCase):
     # run with a large thread stack size (1 MiB)
     def test_various_ops_large_stack(self):
         wenn verbose:
-            print('with 1 MiB thread stack size...')
+            drucke('with 1 MiB thread stack size...')
         try:
             threading.stack_size(0x100000)
         except _thread.error:
@@ -381,32 +381,32 @@ klasse ThreadTests(BaseTestCase):
         t.daemon = Wahr # so wenn this fails, we don't hang Python at shutdown
         t.start()
         wenn verbose:
-            print("    started worker thread")
+            drucke("    started worker thread")
 
         # Try a thread id that doesn't make sense.
         wenn verbose:
-            print("    trying nonsensical thread id")
+            drucke("    trying nonsensical thread id")
         result = set_async_exc(-1, exception)
         self.assertEqual(result, 0)  # no thread states modified
 
         # Now raise an exception in the worker thread.
         wenn verbose:
-            print("    waiting fuer worker thread to get started")
+            drucke("    waiting fuer worker thread to get started")
         ret = worker_started.wait()
         self.assertWahr(ret)
         wenn verbose:
-            print("    verifying worker hasn't exited")
+            drucke("    verifying worker hasn't exited")
         self.assertFalsch(t.finished)
         wenn verbose:
-            print("    attempting to raise asynch exception in worker")
+            drucke("    attempting to raise asynch exception in worker")
         result = set_async_exc(t.id, exception)
         self.assertEqual(result, 1) # one thread state modified
         wenn verbose:
-            print("    waiting fuer worker to say it caught the exception")
+            drucke("    waiting fuer worker to say it caught the exception")
         worker_saw_exception.wait(timeout=support.SHORT_TIMEOUT)
         self.assertWahr(t.finished)
         wenn verbose:
-            print("    all OK -- joining worker")
+            drucke("    all OK -- joining worker")
         wenn t.finished:
             t.join()
         # sonst the thread is still running, and we have no way to kill it
@@ -479,7 +479,7 @@ klasse ThreadTests(BaseTestCase):
             def killer():
                 import os, time
                 time.sleep(2)
-                print('program blocked; aborting')
+                drucke('program blocked; aborting')
                 os._exit(2)
             t = threading.Thread(target=killer)
             t.daemon = Wahr
@@ -504,7 +504,7 @@ klasse ThreadTests(BaseTestCase):
                     sleep(1)
                     # As a non-daemon thread we SHOULD wake up and nothing
                     # should be torn down yet
-                    print("Woke up, sleep function is:", sleep)
+                    drucke("Woke up, sleep function is:", sleep)
 
                 threading.Thread(target=child).start()
                 raise SystemExit
@@ -728,11 +728,11 @@ klasse ThreadTests(BaseTestCase):
             ident = threading.get_ident()
             pid = os.fork()
             wenn pid == 0:
-                print("current ident", threading.get_ident() == ident)
+                drucke("current ident", threading.get_ident() == ident)
                 main = threading.main_thread()
-                print("main", main.name)
-                print("main ident", main.ident == ident)
-                print("current is main", threading.current_thread() is main)
+                drucke("main", main.name)
+                drucke("main ident", main.ident == ident)
+                drucke("current is main", threading.current_thread() is main)
             sonst:
                 support.wait_process(pid, exitcode=0)
         """
@@ -759,11 +759,11 @@ klasse ThreadTests(BaseTestCase):
                             "always", category=DeprecationWarning)
                     pid = os.fork()
                     wenn pid == 0:
-                        print("current ident", threading.get_ident() == ident)
+                        drucke("current ident", threading.get_ident() == ident)
                         main = threading.main_thread()
-                        print("main", main.name, type(main).__name__)
-                        print("main ident", main.ident == ident)
-                        print("current is main", threading.current_thread() is main)
+                        drucke("main", main.name, type(main).__name__)
+                        drucke("main ident", main.ident == ident)
+                        drucke("current is main", threading.current_thread() is main)
                         # stdout is fully buffered because not a tty,
                         # we have to flush before exit.
                         sys.stdout.flush()
@@ -798,18 +798,18 @@ klasse ThreadTests(BaseTestCase):
                 wenn %s:
                     # call current_thread() before fork to allocate DummyThread
                     current = threading.current_thread()
-                    print("current", current.name, type(current).__name__)
-                print("ident in _active", ident in threading._active)
+                    drucke("current", current.name, type(current).__name__)
+                drucke("ident in _active", ident in threading._active)
                 # flush before fork, so child won't flush it again
                 sys.stdout.flush()
                 pid = os.fork()
                 wenn pid == 0:
-                    print("current ident", threading.get_ident() == ident)
+                    drucke("current ident", threading.get_ident() == ident)
                     main = threading.main_thread()
-                    print("main", main.name, type(main).__name__)
-                    print("main ident", main.ident == ident)
-                    print("current is main", threading.current_thread() is main)
-                    print("_dangling", [t.name fuer t in list(threading._dangling)])
+                    drucke("main", main.name, type(main).__name__)
+                    drucke("main ident", main.ident == ident)
+                    drucke("current is main", threading.current_thread() is main)
+                    drucke("_dangling", [t.name fuer t in list(threading._dangling)])
                     # stdout is fully buffered because not a tty,
                     # we have to flush before exit.
                     sys.stdout.flush()
@@ -867,7 +867,7 @@ klasse ThreadTests(BaseTestCase):
                     self.cycle = self
 
                 def __del__(self):
-                    print("GC:",
+                    drucke("GC:",
                           threading.current_thread() is main_thread,
                           threading.main_thread() is main_thread,
                           threading.enumerate() == [main_thread])
@@ -1090,7 +1090,7 @@ klasse ThreadTests(BaseTestCase):
 
             klasse Atexit:
                 def __del__(self):
-                    print("thread_dict.atexit = %r" % thread_dict.atexit)
+                    drucke("thread_dict.atexit = %r" % thread_dict.atexit)
 
             thread_dict = threading.local()
             thread_dict.atexit = "value"
@@ -1164,11 +1164,11 @@ klasse ThreadTests(BaseTestCase):
             import _thread
 
             def f():
-                print("shouldn't be printed")
+                drucke("shouldn't be printed")
 
             klasse AtFinalization:
                 def __del__(self):
-                    print("OK")
+                    drucke("OK")
                     _thread.start_new_thread(f, ())
             at_finalization = AtFinalization()
         """
@@ -1206,7 +1206,7 @@ klasse ThreadTests(BaseTestCase):
                                 self.thr.join(timeout={timeout})
                             except PythonFinalizationError:
                                 assert self.thr.is_alive()
-                                print('got the correct exception!')
+                                drucke('got the correct exception!')
 
                     # Cycle holds a reference to itself, which ensures it is
                     # cleaned up during the GC that runs after daemon threads
@@ -1239,7 +1239,7 @@ klasse ThreadTests(BaseTestCase):
                     assert not self.thr.is_alive()
                     self.thr.join()
                     assert not self.thr.is_alive()
-                    print('all clear!')
+                    drucke('all clear!')
 
             Cycle()
         """)
@@ -1291,7 +1291,7 @@ klasse ThreadTests(BaseTestCase):
                         lock.acquire()
                     except PythonFinalizationError:
                         assert self.thr.is_alive()
-                        print('got the correct exception!')
+                        drucke('got the correct exception!')
 
             # Cycle holds a reference to itself, which ensures it is
             # cleaned up during the GC that runs after daemon threads
@@ -1316,7 +1316,7 @@ klasse ThreadTests(BaseTestCase):
             import _thread
 
             def f():
-                print("shouldn't be printed")
+                drucke("shouldn't be printed")
 
             limits = resource.getrlimit(resource.RLIMIT_NPROC)
             [_, hard] = limits
@@ -1325,9 +1325,9 @@ klasse ThreadTests(BaseTestCase):
             try:
                 handle = _thread.start_joinable_thread(f)
             except RuntimeError:
-                print('ok')
+                drucke('ok')
             sonst:
-                print('!skip!')
+                drucke('!skip!')
                 handle.join()
         """
         _, out, err = assert_python_ok("-u", "-c", code)
@@ -1410,11 +1410,11 @@ klasse ThreadTests(BaseTestCase):
             from test import support
 
             parent_thread_native_id = threading.current_thread().native_id
-            print(parent_thread_native_id, flush=Wahr)
+            drucke(parent_thread_native_id, flush=Wahr)
             assert parent_thread_native_id == threading.get_native_id()
             childpid = os.fork()
             wenn childpid == 0:
-                print(threading.current_thread().native_id, flush=Wahr)
+                drucke(threading.current_thread().native_id, flush=Wahr)
                 assert threading.current_thread().native_id == threading.get_native_id()
             sonst:
                 try:
@@ -1439,7 +1439,7 @@ klasse ThreadJoinOnShutdown(BaseTestCase):
             # a thread, which waits fuer the main program to terminate
             def joiningfunc(mainthread):
                 mainthread.join()
-                print('end of thread')
+                drucke('end of thread')
                 # stdout is fully buffered because not a tty, we have to flush
                 # before exit.
                 sys.stdout.flush()
@@ -1457,7 +1457,7 @@ klasse ThreadJoinOnShutdown(BaseTestCase):
                                  args=(threading.current_thread(),))
             t.start()
             time.sleep(0.1)
-            print('end of main')
+            drucke('end of main')
             """
         self._run_and_join(script)
 
@@ -1477,7 +1477,7 @@ klasse ThreadJoinOnShutdown(BaseTestCase):
             t = threading.Thread(target=joiningfunc,
                                  args=(threading.current_thread(),))
             t.start()
-            print('end of main')
+            drucke('end of main')
             """
         self._run_and_join(script)
 
@@ -1500,7 +1500,7 @@ klasse ThreadJoinOnShutdown(BaseTestCase):
                 # child process
                 t = threading.Thread(target=joiningfunc,
                                      args=(main_thread,))
-                print('end of main')
+                drucke('end of main')
                 t.start()
                 t.join() # Should not block: main_thread is already stopped
 
@@ -1564,7 +1564,7 @@ klasse ThreadJoinOnShutdown(BaseTestCase):
 
             def thread2():
                 time.sleep(0.05)
-                print("OK")
+                drucke("OK")
 
             def thread1():
                 time.sleep(0.05)
@@ -1782,7 +1782,7 @@ klasse SubinterpThreadingTests(BaseTestCase):
             import test.support
             import threading
             def func():
-                print('this should not have run!')
+                drucke('this should not have run!')
             t = threading.Thread(target=func, daemon={daemon})
             {before_start}
             t.start()
@@ -1883,7 +1883,7 @@ klasse ThreadingExceptionTests(BaseTestCase):
             w = threading.Thread(target=outer)
             w.start()
             w.join()
-            print('end of main thread')
+            drucke('end of main thread')
             """
         expected_output = "end of main thread\n"
         p = subprocess.Popen([sys.executable, "-c", script],
@@ -2169,7 +2169,7 @@ klasse ExceptHookTests(BaseTestCase):
             return output.getvalue()
 
         def threading_hook(args):
-            print("Running a thread failed", file=sys.stderr)
+            drucke("Running a thread failed", file=sys.stderr)
 
         default_output = run_thread()
         with support.swap_attr(threading, 'excepthook', threading_hook):
@@ -2471,7 +2471,7 @@ klasse AtexitTests(unittest.TestCase):
             import threading
 
             def run_last():
-                print('parrot')
+                drucke('parrot')
 
             threading._register_atexit(run_last)
         """)

@@ -52,7 +52,7 @@ def main() -> Nichts:
     try:
         grammar, parser, tokenizer = build_parser(args.filename)
     except Exception as err:
-        print("ERROR: Failed to parse grammar file", file=sys.stderr)
+        drucke("ERROR: Failed to parse grammar file", file=sys.stderr)
         sys.exit(1)
 
     visitor = ASTGrammarPrinter()

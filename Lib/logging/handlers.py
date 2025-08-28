@@ -1162,7 +1162,7 @@ klasse NTEventLogHandler(logging.Handler):
                 logging.CRITICAL: win32evtlog.EVENTLOG_ERROR_TYPE,
          }
         except ImportError:
-            print("The Python Win32 extensions fuer NT (service, event "\
+            drucke("The Python Win32 extensions fuer NT (service, event "\
                         "logging) appear not to be available.")
             self._welu = Nichts
 

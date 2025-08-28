@@ -588,15 +588,15 @@ def main():
         opts, args = getopt.getopt(sys.argv[1:], 'hdeu')
     except getopt.error as msg:
         sys.stdout = sys.stderr
-        print(msg)
-        print(usage)
+        drucke(msg)
+        drucke(usage)
         sys.exit(2)
     func = encode
     fuer o, a in opts:
         wenn o == '-e': func = encode
         wenn o == '-d': func = decode
         wenn o == '-u': func = decode
-        wenn o == '-h': print(usage); return
+        wenn o == '-h': drucke(usage); return
     wenn args and args[0] != '-':
         with open(args[0], 'rb') as f:
             func(f, sys.stdout.buffer)

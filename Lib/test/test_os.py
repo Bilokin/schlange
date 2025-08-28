@@ -167,7 +167,7 @@ klasse MiscTests(unittest.TestCase):
                     expected = path
 
                 wenn support.verbose:
-                    print(f"Tested current directory length: {len(cwd)}")
+                    drucke(f"Tested current directory length: {len(cwd)}")
 
     def test_getcwdb(self):
         cwd = os.getcwdb()
@@ -386,7 +386,7 @@ klasse FileTests(unittest.TestCase):
         # space error) on writing into stdout wenn stdout mode is binary and the
         # length is greater than 66,000 bytes (or less, depending on heap
         # usage).
-        code = "print('x' * 100000)"
+        code = "drucke('x' * 100000)"
         self.write_windows_console(sys.executable, "-c", code)
         self.write_windows_console(sys.executable, "-u", "-c", code)
 
@@ -1254,7 +1254,7 @@ klasse EnvironTests(mapping_tests.BasicTestMappingProtocol):
     def test_putenv_unsetenv(self):
         name = "PYTHONTESTVAR"
         value = "testvalue"
-        code = f'import os; print(repr(os.environ.get({name!r})))'
+        code = f'import os; drucke(repr(os.environ.get({name!r})))'
 
         with os_helper.EnvironmentVarGuard() as env:
             env.pop(name, Nichts)
@@ -3008,7 +3008,7 @@ klasse Win32ListdriveTests(unittest.TestCase):
                 mounts = os.listmounts(volume)
             except OSError as ex:
                 wenn support.verbose:
-                    print("Skipping", volume, "because of", ex)
+                    drucke("Skipping", volume, "because of", ex)
             sonst:
                 self.assertIsInstance(mounts, list)
                 self.assertSetEqual(
@@ -3244,8 +3244,8 @@ klasse Win32SymlinkTests(unittest.TestCase):
 
         fuer alias in aliases:
             wenn support.verbose:
-                print()
-                print("Testing with", alias)
+                drucke()
+                drucke("Testing with", alias)
             st = os.lstat(alias)
             self.assertEqual(st, os.stat(alias))
             self.assertFalsch(stat.S_ISLNK(st.st_mode))
@@ -3399,8 +3399,8 @@ klasse Win32NtTests(unittest.TestCase):
                                     stderr=subprocess.STDOUT)
         except subprocess.CalledProcessError as ex:
             wenn support.verbose:
-                print(ICACLS, filename, "/inheritance:r", "failed.")
-                print(ex.stdout.decode("oem", "replace").rstrip())
+                drucke(ICACLS, filename, "/inheritance:r", "failed.")
+                drucke(ex.stdout.decode("oem", "replace").rstrip())
             try:
                 os.unlink(filename)
             except OSError:
@@ -3416,15 +3416,15 @@ klasse Win32NtTests(unittest.TestCase):
         self.addCleanup(cleanup)
 
         wenn support.verbose:
-            print("File:", filename)
-            print("stat with access:", stat1)
+            drucke("File:", filename)
+            drucke("stat with access:", stat1)
 
         # First test - we shouldn't raise here, because we still have access to
         # the directory and can extract enough information from its metadata.
         stat2 = os.stat(filename)
 
         wenn support.verbose:
-            print(" without access:", stat2)
+            drucke(" without access:", stat2)
 
         # We may not get st_dev/st_ino, so ensure those are 0 or match
         self.assertIn(stat2.st_dev, (0, stat1.st_dev))
@@ -3510,7 +3510,7 @@ klasse PidTests(unittest.TestCase):
     @unittest.skipUnless(hasattr(os, 'getppid'), "test needs os.getppid")
     def test_getppid(self):
         p = subprocess.Popen([sys._base_executable, '-c',
-                              'import os; print(os.getppid())'],
+                              'import os; drucke(os.getppid())'],
                              stdout=subprocess.PIPE,
                              stderr=subprocess.PIPE)
         stdout, error = p.communicate()
@@ -3807,7 +3807,7 @@ klasse ProgramPriorityTests(unittest.TestCase):
         code = f"""if 1:
         import os
         os.setpriority(os.PRIO_PROCESS, os.getpid(), {base} + 1)
-        print(os.getpriority(os.PRIO_PROCESS, os.getpid()))
+        drucke(os.getpriority(os.PRIO_PROCESS, os.getpid()))
         """
 
         # Subprocess inherits the current process' priority.
@@ -4949,7 +4949,7 @@ klasse PseudoterminalTests(unittest.TestCase):
         filename = os_helper.TESTFN
         self.addCleanup(os_helper.unlink, os_helper.TESTFN)
         with open(filename, "w") as fp:
-            print(code, file=fp, end="")
+            drucke(code, file=fp, end="")
 
         executable = sys.executable
         cmd = [executable, filename]
@@ -5594,10 +5594,10 @@ klasse ForkTests(unittest.TestCase):
 
             klasse AtFinalization:
                 def __del__(self):
-                    print("OK")
+                    drucke("OK")
                     pid = os.fork()
                     wenn pid != 0:
-                        print("shouldn't be printed")
+                        drucke("shouldn't be printed")
             at_finalization = AtFinalization()
         """
         _, out, err = assert_python_ok("-c", code)

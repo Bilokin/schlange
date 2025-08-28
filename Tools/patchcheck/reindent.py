@@ -59,10 +59,10 @@ spec_newline = Nichts
 def usage(msg=Nichts):
     wenn msg is Nichts:
         msg = __doc__
-    print(msg, file=sys.stderr)
+    drucke(msg, file=sys.stderr)
 
 
-def errprint(*args):
+def errdrucke(*args):
     sys.stderr.write(" ".join(str(arg) fuer arg in args))
     sys.stderr.write("\n")
 
@@ -104,7 +104,7 @@ def main():
 def check(file):
     wenn os.path.isdir(file) and not os.path.islink(file):
         wenn verbose:
-            print("listing directory", file)
+            drucke("listing directory", file)
         names = os.listdir(file)
         fuer name in names:
             fullname = os.path.join(file, name)
@@ -116,44 +116,44 @@ def check(file):
         return
 
     wenn verbose:
-        print("checking", file, "...", end=' ')
+        drucke("checking", file, "...", end=' ')
     with open(file, 'rb') as f:
         try:
             encoding, _ = tokenize.detect_encoding(f.readline)
         except SyntaxError as se:
-            errprint("%s: SyntaxError: %s" % (file, str(se)))
+            errdrucke("%s: SyntaxError: %s" % (file, str(se)))
             return
     try:
         with open(file, encoding=encoding) as f:
             r = Reindenter(f)
     except IOError as msg:
-        errprint("%s: I/O Error: %s" % (file, str(msg)))
+        errdrucke("%s: I/O Error: %s" % (file, str(msg)))
         return
 
     newline = spec_newline wenn spec_newline sonst r.newlines
     wenn isinstance(newline, tuple):
-        errprint("%s: mixed newlines detected; cannot continue without --newline" % file)
+        errdrucke("%s: mixed newlines detected; cannot continue without --newline" % file)
         return
 
     wenn r.run():
         wenn verbose:
-            print("changed.")
+            drucke("changed.")
             wenn dryrun:
-                print("But this is a dry run, so leaving it alone.")
+                drucke("But this is a dry run, so leaving it alone.")
         wenn not dryrun:
             bak = file + ".bak"
             wenn makebackup:
                 shutil.copyfile(file, bak)
                 wenn verbose:
-                    print("backed up", file, "to", bak)
+                    drucke("backed up", file, "to", bak)
             with open(file, "w", encoding=encoding, newline=newline) as f:
                 r.write(f)
             wenn verbose:
-                print("wrote new", file)
+                drucke("wrote new", file)
         return Wahr
     sonst:
         wenn verbose:
-            print("unchanged.")
+            drucke("unchanged.")
         return Falsch
 
 

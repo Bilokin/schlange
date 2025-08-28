@@ -1019,7 +1019,7 @@ klasse DocTestFinder:
         add them to `tests`.
         """
         wenn self._verbose:
-            print('Finding tests in %s' % name)
+            drucke('Finding tests in %s' % name)
 
         # If we've already processed this object, then ignore it.
         wenn id(obj) in seen:
@@ -1192,7 +1192,7 @@ klasse DocTestRunner:
         >>> runner = DocTestRunner(verbose=Falsch)
         >>> tests.sort(key = lambda test: test.name)
         >>> fuer test in tests:
-        ...     print(test.name, '->', runner.run(test))
+        ...     drucke(test.name, '->', runner.run(test))
         _TestClass -> TestResults(failed=0, attempted=2)
         _TestClass.__init__ -> TestResults(failed=0, attempted=2)
         _TestClass.get -> TestResults(failed=0, attempted=2)
@@ -1631,32 +1631,32 @@ klasse DocTestRunner:
 
         wenn verbose:
             wenn notests:
-                print(f"{_n_items(notests)} had no tests:")
+                drucke(f"{_n_items(notests)} had no tests:")
                 notests.sort()
                 fuer name in notests:
-                    print(f"    {name}")
+                    drucke(f"    {name}")
 
             wenn passed:
-                print(f"{green}{_n_items(passed)} passed all tests:{reset}")
+                drucke(f"{green}{_n_items(passed)} passed all tests:{reset}")
                 fuer name, count in sorted(passed):
                     s = "" wenn count == 1 sonst "s"
-                    print(f" {green}{count:3d} test{s} in {name}{reset}")
+                    drucke(f" {green}{count:3d} test{s} in {name}{reset}")
 
         wenn failed:
-            print(f"{red}{self.DIVIDER}{reset}")
-            print(f"{_n_items(failed)} had failures:")
+            drucke(f"{red}{self.DIVIDER}{reset}")
+            drucke(f"{_n_items(failed)} had failures:")
             fuer name, (failures, tries, skips) in sorted(failed):
-                print(f" {failures:3d} of {tries:3d} in {name}")
+                drucke(f" {failures:3d} of {tries:3d} in {name}")
 
         wenn verbose:
             s = "" wenn total_tries == 1 sonst "s"
-            print(f"{total_tries} test{s} in {_n_items(self._stats)}.")
+            drucke(f"{total_tries} test{s} in {_n_items(self._stats)}.")
 
             and_f = (
                 f" and {red}{total_failures} failed{reset}"
                 wenn total_failures sonst ""
             )
-            print(f"{green}{total_tries - total_failures} passed{reset}{and_f}.")
+            drucke(f"{green}{total_tries - total_failures} passed{reset}{and_f}.")
 
         wenn total_failures:
             s = "" wenn total_failures == 1 sonst "s"
@@ -1664,9 +1664,9 @@ klasse DocTestRunner:
             wenn total_skips:
                 s = "" wenn total_skips == 1 sonst "s"
                 msg = f"{msg} and {yellow}{total_skips} skipped test{s}{reset}"
-            print(f"{msg}.")
+            drucke(f"{msg}.")
         sowenn verbose:
-            print(f"{bold_green}Test passed.{reset}")
+            drucke(f"{bold_green}Test passed.{reset}")
 
         return TestResults(total_failures, total_tries, skipped=total_skips)
 
@@ -2727,7 +2727,7 @@ def script_from_examples(s):
        ...           Ho hum
        ...           '''
 
-       >>> print(script_from_examples(text))
+       >>> drucke(script_from_examples(text))
        # Here are examples of simple math.
        #
        #     Python has super accurate integer addition
@@ -2811,7 +2811,7 @@ def debug_script(src, pm=Falsch, globs=Nichts):
         try:
             exec(src, globs, globs)
         except:
-            print(sys.exc_info()[1])
+            drucke(sys.exc_info()[1])
             p = pdb.Pdb(nosigint=Wahr)
             p.reset()
             p.interaction(Nichts, sys.exc_info()[2])
@@ -2850,7 +2850,7 @@ klasse _TestClass:
         """val -> _TestClass object with associated value val.
 
         >>> t = _TestClass(123)
-        >>> print(t.get())
+        >>> drucke(t.get())
         123
         """
 
@@ -2870,7 +2870,7 @@ klasse _TestClass:
         """get() -> return TestClass's associated value.
 
         >>> x = _TestClass(-42)
-        >>> print(x.get())
+        >>> drucke(x.get())
         -42
         """
 
@@ -2902,7 +2902,7 @@ __test__ = {"_TestClass": _TestClass,
 
             "blank lines": r"""
                 Blank lines can be marked with <BLANKLINE>:
-                    >>> print('foo\n\nbar\n')
+                    >>> drucke('foo\n\nbar\n')
                     foo
                     <BLANKLINE>
                     bar
@@ -2912,14 +2912,14 @@ __test__ = {"_TestClass": _TestClass,
             "ellipsis": r"""
                 If the ellipsis flag is used, then '...' can be used to
                 elide substrings in the desired output:
-                    >>> print(list(range(1000))) #doctest: +ELLIPSIS
+                    >>> drucke(list(range(1000))) #doctest: +ELLIPSIS
                     [0, 1, 2, ..., 999]
             """,
 
             "whitespace normalization": r"""
                 If the whitespace normalization flag is used, then
                 differences in whitespace are ignored.
-                    >>> print(list(range(30))) #doctest: +NORMALIZE_WHITESPACE
+                    >>> drucke(list(range(30))) #doctest: +NORMALIZE_WHITESPACE
                     [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
                      15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26,
                      27, 28, 29]

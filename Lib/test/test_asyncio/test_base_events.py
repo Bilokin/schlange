@@ -793,7 +793,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
         code = '\n'.join((
             'import asyncio',
             'loop = asyncio.new_event_loop()',
-            'print(loop.get_debug())'))
+            'drucke(loop.get_debug())'))
 
         # Test with -E to not fail wenn the unit test was run with
         # PYTHONASYNCIODEBUG set to a non-empty string

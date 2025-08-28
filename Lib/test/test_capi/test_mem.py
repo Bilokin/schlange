@@ -143,7 +143,7 @@ klasse PyMemDebugTests(unittest.TestCase):
                     except MemoryError as e:
                         wenn outer_cnt != 3:
                             _testcapi.remove_mem_hooks()
-                        print('MemoryError', outer_cnt, j)
+                        drucke('MemoryError', outer_cnt, j)
                         _testcapi.remove_mem_hooks()
                         break
         """

@@ -150,7 +150,7 @@ klasse MiscSourceEncodingTest(unittest.TestCase):
     def test_file_parse_error_multiline(self):
         # gh96611:
         with open(TESTFN, "wb") as fd:
-            fd.write(b'print("""\n\xb1""")\n')
+            fd.write(b'drucke("""\n\xb1""")\n')
 
         try:
             retcode, stdout, stderr = script_helper.assert_python_failure(TESTFN)
@@ -175,18 +175,18 @@ klasse MiscSourceEncodingTest(unittest.TestCase):
 klasse AbstractSourceEncodingTest:
 
     def test_default_coding(self):
-        src = (b'print(ascii("\xc3\xa4"))\n')
+        src = (b'drucke(ascii("\xc3\xa4"))\n')
         self.check_script_output(src, br"'\xe4'")
 
     def test_first_coding_line(self):
         src = (b'#coding:iso8859-15\n'
-               b'print(ascii("\xc3\xa4"))\n')
+               b'drucke(ascii("\xc3\xa4"))\n')
         self.check_script_output(src, br"'\xc3\u20ac'")
 
     def test_second_coding_line(self):
         src = (b'#\n'
                b'#coding:iso8859-15\n'
-               b'print(ascii("\xc3\xa4"))\n')
+               b'drucke(ascii("\xc3\xa4"))\n')
         self.check_script_output(src, br"'\xc3\u20ac'")
 
     def test_third_coding_line(self):
@@ -194,56 +194,56 @@ klasse AbstractSourceEncodingTest:
         src = (b'#\n'
                b'#\n'
                b'#coding:iso8859-15\n'
-               b'print(ascii("\xc3\xa4"))\n')
+               b'drucke(ascii("\xc3\xa4"))\n')
         self.check_script_output(src, br"'\xe4'")
 
     def test_double_coding_line(self):
         # If the first line matches the second line is ignored.
         src = (b'#coding:iso8859-15\n'
                b'#coding:latin1\n'
-               b'print(ascii("\xc3\xa4"))\n')
+               b'drucke(ascii("\xc3\xa4"))\n')
         self.check_script_output(src, br"'\xc3\u20ac'")
 
     def test_double_coding_same_line(self):
         src = (b'#coding:iso8859-15 coding:latin1\n'
-               b'print(ascii("\xc3\xa4"))\n')
+               b'drucke(ascii("\xc3\xa4"))\n')
         self.check_script_output(src, br"'\xc3\u20ac'")
 
     def test_first_non_utf8_coding_line(self):
         src = (b'#coding:iso-8859-15 \xa4\n'
-               b'print(ascii("\xc3\xa4"))\n')
+               b'drucke(ascii("\xc3\xa4"))\n')
         self.check_script_output(src, br"'\xc3\u20ac'")
 
     def test_second_non_utf8_coding_line(self):
         src = (b'\n'
                b'#coding:iso-8859-15 \xa4\n'
-               b'print(ascii("\xc3\xa4"))\n')
+               b'drucke(ascii("\xc3\xa4"))\n')
         self.check_script_output(src, br"'\xc3\u20ac'")
 
     def test_utf8_bom(self):
-        src = (b'\xef\xbb\xbfprint(ascii("\xc3\xa4"))\n')
+        src = (b'\xef\xbb\xbfdrucke(ascii("\xc3\xa4"))\n')
         self.check_script_output(src, br"'\xe4'")
 
     def test_utf8_bom_and_utf8_coding_line(self):
         src = (b'\xef\xbb\xbf#coding:utf-8\n'
-               b'print(ascii("\xc3\xa4"))\n')
+               b'drucke(ascii("\xc3\xa4"))\n')
         self.check_script_output(src, br"'\xe4'")
 
     def test_crlf(self):
-        src = (b'print(ascii("""\r\n"""))\n')
+        src = (b'drucke(ascii("""\r\n"""))\n')
         out = self.check_script_output(src, br"'\n'")
 
     def test_crcrlf(self):
-        src = (b'print(ascii("""\r\r\n"""))\n')
+        src = (b'drucke(ascii("""\r\r\n"""))\n')
         out = self.check_script_output(src, br"'\n\n'")
 
     def test_crcrcrlf(self):
-        src = (b'print(ascii("""\r\r\r\n"""))\n')
+        src = (b'drucke(ascii("""\r\r\r\n"""))\n')
         out = self.check_script_output(src, br"'\n\n\n'")
 
     def test_crcrcrlf2(self):
         src = (b'#coding:iso-8859-1\n'
-               b'print(ascii("""\r\r\r\n"""))\n')
+               b'drucke(ascii("""\r\r\r\n"""))\n')
         out = self.check_script_output(src, br"'\n\n\n'")
 
 

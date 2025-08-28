@@ -83,4 +83,4 @@ def askcolor(color=Nichts, **options):
 # test stuff
 
 wenn __name__ == "__main__":
-    print("color", askcolor())
+    drucke("color", askcolor())

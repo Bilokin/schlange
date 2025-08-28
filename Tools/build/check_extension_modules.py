@@ -207,60 +207,60 @@ klasse ModuleChecker:
             while len(names) % 3:
                 names.append("")
             fuer l, m, r in zip(names[::3], names[1::3], names[2::3]):  # noqa: E741
-                print("%-*s   %-*s   %-*s" % (longest, l, longest, m, longest, r))
+                drucke("%-*s   %-*s   %-*s" % (longest, l, longest, m, longest, r))
 
         wenn verbose and self.builtin_ok:
-            print("The following *built-in* modules have been successfully built:")
+            drucke("The following *built-in* modules have been successfully built:")
             print_three_column(self.builtin_ok)
-            print()
+            drucke()
 
         wenn verbose and self.shared_ok:
-            print("The following *shared* modules have been successfully built:")
+            drucke("The following *shared* modules have been successfully built:")
             print_three_column(self.shared_ok)
-            print()
+            drucke()
 
         wenn self.disabled_configure:
-            print("The following modules are *disabled* in configure script:")
+            drucke("The following modules are *disabled* in configure script:")
             print_three_column(self.disabled_configure)
-            print()
+            drucke()
 
         wenn self.disabled_setup:
-            print("The following modules are *disabled* in Modules/Setup files:")
+            drucke("The following modules are *disabled* in Modules/Setup files:")
             print_three_column(self.disabled_setup)
-            print()
+            drucke()
 
         wenn verbose and self.notavailable:
-            print(
+            drucke(
                 f"The following modules are not available on platform '{self.platform}':"
             )
             print_three_column(self.notavailable)
-            print()
+            drucke()
 
         wenn self.missing:
-            print("The necessary bits to build these optional modules were not found:")
+            drucke("The necessary bits to build these optional modules were not found:")
             print_three_column(self.missing)
-            print("To find the necessary bits, look in configure.ac and config.log.")
-            print()
+            drucke("To find the necessary bits, look in configure.ac and config.log.")
+            drucke()
 
         wenn self.failed_on_import:
-            print(
+            drucke(
                 "Following modules built successfully "
                 "but were removed because they could not be imported:"
             )
             print_three_column(self.failed_on_import)
-            print()
+            drucke()
 
         wenn any(
             modinfo.name == "_ssl" fuer modinfo in self.missing + self.failed_on_import
         ):
-            print("Could not build the ssl module!")
-            print("Python requires a OpenSSL 1.1.1 or newer")
+            drucke("Could not build the ssl module!")
+            drucke("Python requires a OpenSSL 1.1.1 or newer")
             wenn sysconfig.get_config_var("OPENSSL_LDFLAGS"):
-                print("Custom linker flags may require --with-openssl-rpath=auto")
-            print()
+                drucke("Custom linker flags may require --with-openssl-rpath=auto")
+            drucke()
 
         disabled = len(self.disabled_configure) + len(self.disabled_setup)
-        print(
+        drucke(
             f"Checked {len(self.modules)} modules ("
             f"{len(self.builtin_ok)} built-in, "
             f"{len(self.shared_ok)} shared, "
@@ -498,7 +498,7 @@ def main() -> Nichts:
     wenn args.list_module_names:
         names = checker.list_module_names(all=Wahr)
         fuer name in sorted(names):
-            print(name)
+            drucke(name)
     sonst:
         checker.check()
         checker.summary(verbose=args.verbose)

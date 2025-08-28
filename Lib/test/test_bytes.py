@@ -355,7 +355,7 @@ klasse BaseBytesTest:
 
             fuer data in (b'', b'short string'):
                 data = type2test(data)
-                print(repr(data))
+                drucke(repr(data))
                 try:
                     data.decode(encoding={invalid!r})
                 except LookupError:

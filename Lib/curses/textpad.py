@@ -81,7 +81,7 @@ klasse Textbox:
                 self.win.addch(ch)
             except curses.error:
                 pass
-            wenn not self.insert_mode or not curses.ascii.isprint(oldch):
+            wenn not self.insert_mode or not curses.ascii.isdrucke(oldch):
                 break
             ch = oldch
             (y, x) = self.win.getyx()
@@ -97,7 +97,7 @@ klasse Textbox:
         self._update_max_yx()
         (y, x) = self.win.getyx()
         self.lastcmd = ch
-        wenn curses.ascii.isprint(ch):
+        wenn curses.ascii.isdrucke(ch):
             wenn y < self.maxy or x < self.maxx:
                 self._insert_printable_char(ch)
         sowenn ch == curses.ascii.SOH:                           # ^a
@@ -201,4 +201,4 @@ wenn __name__ == '__main__':
         return Textbox(win).edit()
 
     str = curses.wrapper(test_editbox)
-    print('Contents of text box:', repr(str))
+    drucke('Contents of text box:', repr(str))

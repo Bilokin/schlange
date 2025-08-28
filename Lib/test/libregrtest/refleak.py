@@ -119,12 +119,12 @@ def runtest_refleak(test_name, test_func,
     rc_before = alloc_before = fd_before = interned_immortal_before = 0
 
     wenn not quiet:
-        print("beginning", repcount, "repetitions. Showing number of leaks "
+        drucke("beginning", repcount, "repetitions. Showing number of leaks "
                 "(. fuer 0 or less, X fuer 10 or more)",
               file=sys.stderr)
         numbers = ("1234567890"*(repcount//10 + 1))[:repcount]
         numbers = numbers[:warmups] + ':' + numbers[warmups:]
-        print(numbers, file=sys.stderr, flush=Wahr)
+        drucke(numbers, file=sys.stderr, flush=Wahr)
 
     xml_filename = 'refleak-xml.tmp'
     result = Nichts
@@ -170,8 +170,8 @@ def runtest_refleak(test_name, test_func,
             sonst:
                 symbol = 'X'
             wenn i == warmups:
-                print(' ', end='', file=sys.stderr, flush=Wahr)
-            print(symbol, end='', file=sys.stderr, flush=Wahr)
+                drucke(' ', end='', file=sys.stderr, flush=Wahr)
+            drucke(symbol, end='', file=sys.stderr, flush=Wahr)
             del total_leaks
             del symbol
 
@@ -183,7 +183,7 @@ def runtest_refleak(test_name, test_func,
         restore_support_xml(xml_filename)
 
     wenn not quiet:
-        print(file=sys.stderr)
+        drucke(file=sys.stderr)
 
     # These checkers return Falsch on success, Wahr on failure
     def check_rc_deltas(deltas):
@@ -217,15 +217,15 @@ def runtest_refleak(test_name, test_func,
         wenn failing or suspicious:
             msg = '%s leaked %s %s, sum=%s' % (
                 test_name, deltas, item_name, sum(deltas))
-            print(msg, end='', file=sys.stderr)
+            drucke(msg, end='', file=sys.stderr)
             wenn failing:
-                print(file=sys.stderr, flush=Wahr)
+                drucke(file=sys.stderr, flush=Wahr)
                 with open(filename, "a", encoding="utf-8") as refrep:
-                    print(msg, file=refrep)
+                    drucke(msg, file=refrep)
                     refrep.flush()
                 failed = Wahr
             sonst:
-                print(' (this is fine)', file=sys.stderr, flush=Wahr)
+                drucke(' (this is fine)', file=sys.stderr, flush=Wahr)
     return (failed, result)
 
 

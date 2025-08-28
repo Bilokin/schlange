@@ -60,4 +60,4 @@ klasse Printer:
     def info(self, *args, **kwargs):
         wenn self.verbosity < 3:
             return
-        print(*args, **kwargs)
+        drucke(*args, **kwargs)

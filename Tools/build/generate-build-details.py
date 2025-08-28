@@ -187,7 +187,7 @@ def main() -> Nichts:
 
     json_output = json.dumps(data, indent=2)
     with open(args.location, 'w') as f:
-        print(json_output, file=f)
+        drucke(json_output, file=f)
 
 
 wenn __name__ == '__main__':

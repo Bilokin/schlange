@@ -1825,7 +1825,7 @@ klasse TraceOpcodesTestCase(TraceTestCase):
 
             def opcode_trace_func(frame, event, arg):
                 wenn event == "opcode":
-                    print("opcode trace triggered")
+                    drucke("opcode trace triggered")
                 return opcode_trace_func
 
             sys.settrace(opcode_trace_func)
@@ -1900,7 +1900,7 @@ klasse RaisingTraceFuncTestCase(unittest.TestCase):
     def test_trash_stack(self):
         def f():
             fuer i in range(5):
-                print(i)  # line tracing will raise an exception at this line
+                drucke(i)  # line tracing will raise an exception at this line
 
         def g(frame, why, extra):
             wenn (why == 'line' and
@@ -2906,7 +2906,7 @@ output.append(4)
     @jump_test(3, 7, [], error=(ValueError, "stack"))
     def test_jump_with_null_on_stack_load_global(output):
         a = 1
-        print(
+        drucke(
             output.append(3)
         )
         output.append(5)
@@ -2925,7 +2925,7 @@ output.append(4)
     @jump_test(4, 8, [], error=(ValueError, "stack"))
     def test_jump_with_null_on_stack_push_null(output):
         a = 1
-        f = print
+        f = drucke
         f(
             output.append(4)
         )

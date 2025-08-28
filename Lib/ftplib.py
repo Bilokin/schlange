@@ -166,7 +166,7 @@ klasse FTP:
         '''Get the welcome message from the server.
         (this is read and squirreled away by connect())'''
         wenn self.debugging:
-            print('*welcome*', self.sanitize(self.welcome))
+            drucke('*welcome*', self.sanitize(self.welcome))
         return self.welcome
 
     def set_debuglevel(self, level):
@@ -198,12 +198,12 @@ klasse FTP:
         sys.audit("ftplib.sendcmd", self, line)
         line = line + CRLF
         wenn self.debugging > 1:
-            print('*put*', self.sanitize(line))
+            drucke('*put*', self.sanitize(line))
         self.sock.sendall(line.encode(self.encoding))
 
     # Internal: send one command to the server (through putline())
     def putcmd(self, line):
-        wenn self.debugging: print('*cmd*', self.sanitize(line))
+        wenn self.debugging: drucke('*cmd*', self.sanitize(line))
         self.putline(line)
 
     # Internal: return one line from the server, stripping CRLF.
@@ -213,7 +213,7 @@ klasse FTP:
         wenn len(line) > self.maxline:
             raise Error("got more than %d bytes" % self.maxline)
         wenn self.debugging > 1:
-            print('*get*', self.sanitize(line))
+            drucke('*get*', self.sanitize(line))
         wenn not line:
             raise EOFError
         wenn line[-2:] == CRLF:
@@ -243,7 +243,7 @@ klasse FTP:
     def getresp(self):
         resp = self.getmultiline()
         wenn self.debugging:
-            print('*resp*', self.sanitize(resp))
+            drucke('*resp*', self.sanitize(resp))
         self.lastresp = resp[:3]
         c = resp[:1]
         wenn c in {'1', '2', '3'}:
@@ -268,7 +268,7 @@ klasse FTP:
         tried.  Instead, just send the ABOR command as OOB data.'''
         line = b'ABOR' + B_CRLF
         wenn self.debugging > 1:
-            print('*put urgent*', self.sanitize(line))
+            drucke('*put urgent*', self.sanitize(line))
         self.sock.sendall(line, MSG_OOB)
         resp = self.getmultiline()
         wenn resp[:3] not in {'426', '225', '226'}:
@@ -463,7 +463,7 @@ klasse FTP:
                 wenn len(line) > self.maxline:
                     raise Error("got more than %d bytes" % self.maxline)
                 wenn self.debugging > 2:
-                    print('*retr*', repr(line))
+                    drucke('*retr*', repr(line))
                 wenn not line:
                     break
                 wenn line[-2:] == CRLF:
@@ -873,7 +873,7 @@ def parse257(resp):
 
 def print_line(line):
     '''Default retrlines callback to print a line.'''
-    print(line)
+    drucke(line)
 
 
 def ftpcp(source, sourcename, target, targetname = '', type = 'I'):
@@ -914,7 +914,7 @@ def test():
     '''
 
     wenn len(sys.argv) < 2:
-        print(test.__doc__)
+        drucke(test.__doc__)
         sys.exit(0)
 
     import netrc
@@ -936,14 +936,14 @@ def test():
         netrcobj = netrc.netrc(rcfile)
     except OSError:
         wenn rcfile is not Nichts:
-            print("Could not open account file -- using anonymous login.",
+            drucke("Could not open account file -- using anonymous login.",
                   file=sys.stderr)
     sonst:
         try:
             userid, acct, passwd = netrcobj.authenticators(host)
         except (KeyError, TypeError):
             # no account fuer host
-            print("No account -- using anonymous login.", file=sys.stderr)
+            drucke("No account -- using anonymous login.", file=sys.stderr)
     ftp.login(userid, passwd, acct)
     fuer file in sys.argv[2:]:
         wenn file[:2] == '-l':

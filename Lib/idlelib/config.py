@@ -189,7 +189,7 @@ klasse IdleConf:
                     warn = ('\n Warning: os.path.expanduser("~") points to\n ' +
                             userDir + ',\n but the path does not exist.')
                     try:
-                        print(warn, file=sys.stderr)
+                        drucke(warn, file=sys.stderr)
                     except OSError:
                         pass
                 userDir = '~'
@@ -205,7 +205,7 @@ klasse IdleConf:
                     warn = ('\n Warning: unable to create user config directory\n' +
                             userDir + '\n Check path and permissions.\n Exiting!\n')
                     try:
-                        print(warn, file=sys.stderr)
+                        drucke(warn, file=sys.stderr)
                     except OSError:
                         pass
                 raise SystemExit
@@ -773,7 +773,7 @@ def _warn(msg, *key):
     key = (msg,) + key
     wenn key not in _warned:
         try:
-            print(msg, file=sys.stderr)
+            drucke(msg, file=sys.stderr)
         except OSError:
             pass
         _warned.add(key)
@@ -882,30 +882,30 @@ def _dump():  # htest # (not really, but ignore in coverage)
     from zlib import crc32
     line, crc = 0, 0
 
-    def sprint(obj):
+    def sdrucke(obj):
         nonlocal line, crc
         txt = str(obj)
         line += 1
         crc = crc32(txt.encode(encoding='utf-8'), crc)
-        print(txt)
-        #print('***', line, crc, '***')  # Uncomment fuer diagnosis.
+        drucke(txt)
+        #drucke('***', line, crc, '***')  # Uncomment fuer diagnosis.
 
     def dumpCfg(cfg):
-        print('\n', cfg, '\n')  # Cfg has variable '0xnnnnnnnn' address.
+        drucke('\n', cfg, '\n')  # Cfg has variable '0xnnnnnnnn' address.
         fuer key in sorted(cfg):
             sections = cfg[key].sections()
-            sprint(key)
-            sprint(sections)
+            sdrucke(key)
+            sdrucke(sections)
             fuer section in sections:
                 options = cfg[key].options(section)
-                sprint(section)
-                sprint(options)
+                sdrucke(section)
+                sdrucke(options)
                 fuer option in options:
-                    sprint(option + ' = ' + cfg[key].Get(section, option))
+                    sdrucke(option + ' = ' + cfg[key].Get(section, option))
 
     dumpCfg(idleConf.defaultCfg)
     dumpCfg(idleConf.userCfg)
-    print('\nlines = ', line, ', crc = ', crc, sep='')
+    drucke('\nlines = ', line, ', crc = ', crc, sep='')
 
 
 wenn __name__ == '__main__':

@@ -78,7 +78,7 @@ def main():
     cp932file = open_mapping_file('python-mappings/CP932.TXT', MAPPINGS_CP932)
     jisx0213file = open_mapping_file('python-mappings/jisx0213-2004-std.txt', MAPPINGS_JISX0213_2004)
 
-    print("Loading Mapping File...")
+    drucke("Loading Mapping File...")
 
     sjisdecmap = loadmap(jisx0208file, natcol=0, unicol=2)
     jisx0208decmap = loadmap(jisx0208file, natcol=1, unicol=2)
@@ -126,7 +126,7 @@ def main():
         fuer c2, code in m.items():
             jisx0208_0212encmap.setdefault(code >> 8, {})
             wenn (code & 0xff) in jisx0208_0212encmap[code >> 8]:
-                print("OOPS!!!", (code))
+                drucke("OOPS!!!", (code))
             jisx0208_0212encmap[code >> 8][code & 0xff] = 0x8000 | c1 << 8 | c2
 
     jisx0213bmpencmap = {}
@@ -167,56 +167,56 @@ def main():
 
     with open("mappings_jp.h", "w") as fp:
         print_autogen(fp, os.path.basename(__file__))
-        print("Generating JIS X 0208 decode map...")
+        drucke("Generating JIS X 0208 decode map...")
         writer = DecodeMapWriter(fp, "jisx0208", jisx0208decmap)
         writer.update_decode_map(JISX0208_C1, JISX0208_C2)
         writer.generate()
 
-        print("Generating JIS X 0212 decode map...")
+        drucke("Generating JIS X 0212 decode map...")
         writer = DecodeMapWriter(fp, "jisx0212", jisx0212decmap)
         writer.update_decode_map(JISX0212_C1, JISX0212_C2)
         writer.generate()
 
-        print("Generating JIS X 0208 && JIS X 0212 encode map...")
+        drucke("Generating JIS X 0208 && JIS X 0212 encode map...")
         writer = EncodeMapWriter(fp, "jisxcommon", jisx0208_0212encmap)
         writer.generate()
 
-        print("Generating CP932 Extension decode map...")
+        drucke("Generating CP932 Extension decode map...")
         writer = DecodeMapWriter(fp, "cp932ext", cp932decmap)
         writer.update_decode_map(CP932P0_C1, CP932P0_C2)
         writer.update_decode_map(CP932P1_C1, CP932P1_C2)
         writer.update_decode_map(CP932P2_C1, CP932P2_C2)
         writer.generate()
 
-        print("Generating CP932 Extension encode map...")
+        drucke("Generating CP932 Extension encode map...")
         writer = EncodeMapWriter(fp, "cp932ext", cp932encmap)
         writer.generate()
 
-        print("Generating JIS X 0213 Plane 1 BMP decode map...")
+        drucke("Generating JIS X 0213 Plane 1 BMP decode map...")
         writer = DecodeMapWriter(fp, "jisx0213_1_bmp", jis3decmap)
         writer.update_decode_map(JISX0213_C1, JISX0213_C2)
         writer.generate()
 
-        print("Generating JIS X 0213 Plane 2 BMP decode map...")
+        drucke("Generating JIS X 0213 Plane 2 BMP decode map...")
         writer = DecodeMapWriter(fp, "jisx0213_2_bmp", jis4decmap)
         writer.update_decode_map(JISX0213_C1, JISX0213_C2)
         writer.generate()
 
-        print("Generating JIS X 0213 BMP encode map...")
+        drucke("Generating JIS X 0213 BMP encode map...")
         writer = EncodeMapWriter(fp, "jisx0213_bmp", jisx0213bmpencmap)
         writer.generate()
 
-        print("Generating JIS X 0213 Plane 1 EMP decode map...")
+        drucke("Generating JIS X 0213 Plane 1 EMP decode map...")
         writer = DecodeMapWriter(fp, "jisx0213_1_emp", jis3_2_decmap)
         writer.update_decode_map(JISX0213_C1, JISX0213_C2)
         writer.generate()
 
-        print("Generating JIS X 0213 Plane 2 EMP decode map...")
+        drucke("Generating JIS X 0213 Plane 2 EMP decode map...")
         writer = DecodeMapWriter(fp, "jisx0213_2_emp", jis4_2_decmap)
         writer.update_decode_map(JISX0213_C1, JISX0213_C2)
         writer.generate()
 
-        print("Generating JIS X 0213 EMP encode map...")
+        drucke("Generating JIS X 0213 EMP encode map...")
         writer = EncodeMapWriter(fp, "jisx0213_emp", jisx0213empencmap)
         writer.generate()
 
@@ -230,12 +230,12 @@ static const struct pair_encodemap *jisx0213_pair_encmap;
 #else
 """)
 
-        print("Generating JIS X 0213 unicode-pair decode map...")
+        drucke("Generating JIS X 0213 unicode-pair decode map...")
         writer = DecodeMapWriter(fp, "jisx0213_pair", jisx0213pairdecmap)
         writer.update_decode_map(JISX0213_C1, JISX0213_C2)
         writer.generate(wide=Wahr)
 
-        print("Generating JIS X 0213 unicode-pair encode map...")
+        drucke("Generating JIS X 0213 unicode-pair encode map...")
         jisx0213pairencmap.sort()
         fp.write("static const struct pair_encodemap jisx0213_pair_encmap[JISX0213_ENCPAIRS] = {\n")
         filler = BufferedFiller()
@@ -245,7 +245,7 @@ static const struct pair_encodemap *jisx0213_pair_encmap;
         fp.write("};\n")
         fp.write("#endif\n")
 
-    print("Done!")
+    drucke("Done!")
 
 wenn __name__ == '__main__':
     main()

@@ -12,7 +12,7 @@ def example():
         x.append(i)
     x = "this is"
     y = "an example"
-    print(x, y)
+    drucke(x, y)
 
 
 @unittest.skipUnless(support.Py_DEBUG, "lltrace requires Py_DEBUG")
@@ -28,11 +28,11 @@ klasse TestLLTrace(unittest.TestCase):
         self.assertEqual(status, 0)
         result = stdout.decode('utf-8')
         wenn support.verbose:
-            print("\n\n--- code ---")
-            print(code)
-            print("\n--- stdout ---")
-            print(result)
-            print()
+            drucke("\n\n--- code ---")
+            drucke(code)
+            drucke("\n--- stdout ---")
+            drucke(result)
+            drucke()
         return result
 
     def test_lltrace(self):
@@ -103,7 +103,7 @@ klasse TestLLTrace(unittest.TestCase):
             console.push('__lltrace__ = 1')
             console.push('a = [1, 2, 3]')
             console.push('a[0] = 1')
-            print('unreachable wenn bug exists')
+            drucke('unreachable wenn bug exists')
         """)
         self.assertIn("unreachable wenn bug exists", stdout)
 

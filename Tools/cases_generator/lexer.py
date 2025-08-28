@@ -390,6 +390,6 @@ wenn __name__ == "__main__":
         src = sys.argv[2]
     sonst:
         src = open(filename).read()
-    # print(to_text(tokenize(src)))
+    # drucke(to_text(tokenize(src)))
     fuer tkn in tokenize(src, filename=filename):
-        print(tkn)
+        drucke(tkn)

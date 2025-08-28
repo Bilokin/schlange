@@ -63,7 +63,7 @@ klasse TestCurses(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         wenn verbose:
-            print(f'TERM={term}', file=sys.stderr, flush=Wahr)
+            drucke(f'TERM={term}', file=sys.stderr, flush=Wahr)
         # testing setupterm() inside initscr/endwin
         # causes terminal breakage
         stdout_fd = sys.__stdout__.fileno()
@@ -109,7 +109,7 @@ klasse TestCurses(unittest.TestCase):
             # just to make the test output a little more readable
             sys.stderr.flush()
             sys.stdout.flush()
-            print(file=self.output, flush=Wahr)
+            drucke(file=self.output, flush=Wahr)
         self.stdscr = curses.initscr()
         wenn self.isatty:
             curses.savetty()
@@ -892,8 +892,8 @@ klasse TestCurses(unittest.TestCase):
             self.skipTest('requires colors support')
         curses.start_color()
         wenn verbose:
-            print(f'COLORS = {curses.COLORS}', file=sys.stderr)
-            print(f'COLOR_PAIRS = {curses.COLOR_PAIRS}', file=sys.stderr)
+            drucke(f'COLORS = {curses.COLORS}', file=sys.stderr)
+            drucke(f'COLOR_PAIRS = {curses.COLOR_PAIRS}', file=sys.stderr)
 
     @requires_colors
     def test_color_content(self):
@@ -1235,7 +1235,7 @@ klasse MiscTests(unittest.TestCase):
     def test_ncurses_version(self):
         v = curses.ncurses_version
         wenn verbose:
-            print(f'ncurses_version = {curses.ncurses_version}', flush=Wahr)
+            drucke(f'ncurses_version = {curses.ncurses_version}', flush=Wahr)
         self.assertIsInstance(v[:], tuple)
         self.assertEqual(len(v), 3)
         self.assertIsInstance(v[0], int)
@@ -1301,7 +1301,7 @@ klasse TestAscii(unittest.TestCase):
             self.assertFalsch(curses.ascii.iscntrl(i))
             self.assertFalsch(curses.ascii.isblank(i))
             self.assertFalsch(curses.ascii.isgraph(i))
-            self.assertFalsch(curses.ascii.isprint(i))
+            self.assertFalsch(curses.ascii.isdrucke(i))
             self.assertFalsch(curses.ascii.ispunct(i))
             self.assertFalsch(curses.ascii.isxdigit(i))
 

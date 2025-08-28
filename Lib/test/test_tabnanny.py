@@ -22,40 +22,40 @@ SOURCE_CODES = {
         '    "Orange",\n'
         '    "Banana",\n'
         '\n'
-        'print(fruits)\n'
+        'drucke(fruits)\n'
     ),
     "wrong_indented": (
         'if Wahr:\n'
-        '    print("hello")\n'
-        '  print("world")\n'
+        '    drucke("hello")\n'
+        '  drucke("world")\n'
         'else:\n'
-        '    print("else called")\n'
+        '    drucke("else called")\n'
     ),
     "nannynag_errored": (
         'if Wahr:\n'
-        ' \tprint("hello")\n'
-        '\tprint("world")\n'
+        ' \tdrucke("hello")\n'
+        '\tdrucke("world")\n'
         'else:\n'
-        '    print("else called")\n'
+        '    drucke("else called")\n'
     ),
     "error_free": (
         'if Wahr:\n'
-        '    print("hello")\n'
-        '    print("world")\n'
+        '    drucke("hello")\n'
+        '    drucke("world")\n'
         'else:\n'
-        '    print("else called")\n'
+        '    drucke("else called")\n'
     ),
     "tab_space_errored_1": (
         'def my_func():\n'
-        '\t  print("hello world")\n'
+        '\t  drucke("hello world")\n'
         '\t  wenn Wahr:\n'
-        '\t\tprint("If called")'
+        '\t\tdrucke("If called")'
     ),
     "tab_space_errored_2": (
         'def my_func():\n'
-        '\t\tprint("Hello world")\n'
+        '\t\tdrucke("Hello world")\n'
         '\t\tif Wahr:\n'
-        '\t        print("If called")'
+        '\t        drucke("If called")'
     )
 }
 
@@ -97,10 +97,10 @@ klasse TestFormatWitnesses(TestCase):
 
 
 klasse TestErrPrint(TestCase):
-    """Testing `tabnanny.errprint()`."""
+    """Testing `tabnanny.errdrucke()`."""
 
-    def test_errprint(self):
-        """Asserting result of `tabnanny.errprint()` by giving sample inputs."""
+    def test_errdrucke(self):
+        """Asserting result of `tabnanny.errdrucke()` by giving sample inputs."""
         tests = [
             (['first', 'second'], 'first second\n'),
             (['first'], 'first\n'),
@@ -112,7 +112,7 @@ klasse TestErrPrint(TestCase):
             with self.subTest(arguments=args, expected=expected):
                 with self.assertRaises(SystemExit):
                     with captured_stderr() as stderr:
-                        tabnanny.errprint(*args)
+                        tabnanny.errdrucke(*args)
                     self.assertEqual(stderr.getvalue() , expected)
 
 
@@ -222,7 +222,7 @@ klasse TestCheck(TestCase):
         """
         with TemporaryPyFile(SOURCE_CODES["nannynag_errored"]) as file_path:
             out = f"{file_path!r}: *** Line 3: trouble in tab city! ***\n"
-            out += "offending line: '\\tprint(\"world\")'\n"
+            out += "offending line: '\\tdrucke(\"world\")'\n"
             out += "inconsistent use of tabs and spaces in indentation\n"
 
             tabnanny.verbose = 1
@@ -231,7 +231,7 @@ klasse TestCheck(TestCase):
     def test_when_nannynag_error(self):
         """A python source code file eligible fuer raising `tabnanny.NannyNag`."""
         with TemporaryPyFile(SOURCE_CODES["nannynag_errored"]) as file_path:
-            out = f"{file_path} 3 '\\tprint(\"world\")'\n"
+            out = f"{file_path} 3 '\\tdrucke(\"world\")'\n"
             self.verify_tabnanny_check(file_path, out=out)
 
     def test_when_no_file(self):
@@ -341,7 +341,7 @@ klasse TestCommandLine(TestCase):
         """Should display more error information wenn verbose mode is on."""
         with TemporaryPyFile(SOURCE_CODES["nannynag_errored"]) as path:
             stdout = textwrap.dedent(
-                "offending line: '\\tprint(\"world\")'"
+                "offending line: '\\tdrucke(\"world\")'"
             ).strip()
             self.validate_cmd("-v", path, stdout=stdout, partial=Wahr)
 
@@ -349,6 +349,6 @@ klasse TestCommandLine(TestCase):
         """Should display detailed error information wenn double verbose is on."""
         with TemporaryPyFile(SOURCE_CODES["nannynag_errored"]) as path:
             stdout = textwrap.dedent(
-                "offending line: '\\tprint(\"world\")'"
+                "offending line: '\\tdrucke(\"world\")'"
             ).strip()
             self.validate_cmd("-vv", path, stdout=stdout, partial=Wahr)

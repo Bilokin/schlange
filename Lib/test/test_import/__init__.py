@@ -453,12 +453,12 @@ klasse ImportTests(unittest.TestCase):
             pyc = TESTFN + ".pyc"
 
             with open(source, "w", encoding='utf-8') as f:
-                print("# This tests Python's ability to import a",
+                drucke("# This tests Python's ability to import a",
                       ext, "file.", file=f)
                 a = random.randrange(1000)
                 b = random.randrange(1000)
-                print("a =", a, file=f)
-                print("b =", b, file=f)
+                drucke("a =", a, file=f)
+                drucke("b =", b, file=f)
 
             wenn TESTFN in sys.modules:
                 del sys.modules[TESTFN]
@@ -530,7 +530,7 @@ klasse ImportTests(unittest.TestCase):
     def test_failing_import_sticks(self):
         source = TESTFN + ".py"
         with open(source, "w", encoding='utf-8') as f:
-            print("a = 1/0", file=f)
+            drucke("a = 1/0", file=f)
 
         # New in 2.4, we shouldn't be able to import that no matter how often
         # we try.
@@ -1051,7 +1051,7 @@ fractions.__name__ = substr('fractions')
 try:
     fractions.Fraction
 except TypeError as e:
-    print(str(e))
+    drucke(str(e))
 """)
             popen = script_helper.spawn_python("main.py", cwd=tmp)
             stdout, stderr = popen.communicate()
@@ -1067,7 +1067,7 @@ fractions.__name__ = substr('fractions')
 try:
     from fractions import Fraction
 except TypeError as e:
-    print(str(e))
+    drucke(str(e))
 """)
 
             popen = script_helper.spawn_python("main.py", cwd=tmp)
@@ -1085,19 +1085,19 @@ sys.stdlib_module_names = Nichts
 try:
     fractions.Fraction
 except AttributeError as e:
-    print(str(e))
+    drucke(str(e))
 
 del sys.stdlib_module_names
 try:
     fractions.Fraction
 except AttributeError as e:
-    print(str(e))
+    drucke(str(e))
 
 sys.path = [0]
 try:
     fractions.Fraction
 except AttributeError as e:
-    print(str(e))
+    drucke(str(e))
 """)
             popen = script_helper.spawn_python("main.py", cwd=tmp)
             stdout, stderr = popen.communicate()
@@ -1116,19 +1116,19 @@ sys.stdlib_module_names = Nichts
 try:
     from fractions import Fraction
 except ImportError as e:
-    print(str(e))
+    drucke(str(e))
 
 del sys.stdlib_module_names
 try:
     from fractions import Fraction
 except ImportError as e:
-    print(str(e))
+    drucke(str(e))
 
 sys.path = [0]
 try:
     from fractions import Fraction
 except ImportError as e:
-    print(str(e))
+    drucke(str(e))
 """)
             popen = script_helper.spawn_python("main.py", cwd=tmp)
             stdout, stderr = popen.communicate()
@@ -1146,13 +1146,13 @@ del fractions.__spec__.origin
 try:
     fractions.Fraction
 except AttributeError as e:
-    print(str(e))
+    drucke(str(e))
 
 fractions.__spec__.origin = []
 try:
     fractions.Fraction
 except AttributeError as e:
-    print(str(e))
+    drucke(str(e))
 """)
 
             popen = script_helper.spawn_python("main.py", cwd=tmp)
@@ -1170,13 +1170,13 @@ del fractions.__spec__.origin
 try:
     from fractions import Fraction
 except ImportError as e:
-    print(str(e))
+    drucke(str(e))
 
 fractions.__spec__.origin = []
 try:
     from fractions import Fraction
 except ImportError as e:
-    print(str(e))
+    drucke(str(e))
 """)
             popen = script_helper.spawn_python("main.py", cwd=tmp)
             stdout, stderr = popen.communicate()
@@ -1612,7 +1612,7 @@ klasse PycacheTests(unittest.TestCase):
         self.source = TESTFN + '.py'
         self._clean()
         with open(self.source, 'w', encoding='utf-8') as fp:
-            print('# This is a test file written by test_import.py', file=fp)
+            drucke('# This is a test file written by test_import.py', file=fp)
         sys.path.insert(0, os.curdir)
         importlib.invalidate_caches()
 
@@ -1757,7 +1757,7 @@ klasse PycacheTests(unittest.TestCase):
         __import__(TESTFN)
         unload(TESTFN)
         with open(self.source, 'a', encoding='utf-8') as fp:
-            print("x = 5", file=fp)
+            drucke("x = 5", file=fp)
         m = __import__(TESTFN)
         self.assertEqual(m.x, 5)
 
@@ -2528,7 +2528,7 @@ klasse SubinterpImportTests(unittest.TestCase):
         # See https://github.com/python/cpython/issues/104621.
         script = textwrap.dedent('''
             import _testsinglephase
-            print(_testsinglephase)
+            drucke(_testsinglephase)
             ''')
         interpid = _interpreters.create()
         self.addCleanup(lambda: _interpreters.destroy(interpid))

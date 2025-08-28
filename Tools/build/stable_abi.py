@@ -385,14 +385,14 @@ def generate_or_check(manifest, args, path, func):
         wenn args.generate:
             path.write_text(generated)
         sonst:
-            print(f'File {path} differs from expected!')
+            drucke(f'File {path} differs from expected!')
             diff = difflib.unified_diff(
                 generated.splitlines(), existing.splitlines(),
                 str(path), '<expected>',
                 lineterm='',
             )
             fuer line in diff:
-                print(line)
+                drucke(line)
             return Falsch
     return Wahr
 
@@ -461,9 +461,9 @@ def do_unixy_check(manifest, args):
 def _report_unexpected_items(items, msg):
     """If there are any `items`, report them using "msg" and return false"""
     wenn items:
-        print(msg, file=sys.stderr)
+        drucke(msg, file=sys.stderr)
         fuer item in sorted(items):
-            print(' -', item, file=sys.stderr)
+            drucke(' -', item, file=sys.stderr)
         return Falsch
     return Wahr
 
@@ -505,7 +505,7 @@ def binutils_check_library(manifest, library, expected_symbols, dynamic):
     available_symbols = set(binutils_get_exported_symbols(library, dynamic))
     missing_symbols = expected_symbols - available_symbols
     wenn missing_symbols:
-        print(textwrap.dedent(f"""\
+        drucke(textwrap.dedent(f"""\
             Some symbols from the limited API are missing from {library}:
                 {', '.join(missing_symbols)}
 
@@ -617,7 +617,7 @@ def check_dump(manifest, filename):
     with filename.open('rb') as file:
         from_file = tomllib.load(file)
     wenn dumped != from_file:
-        print('Dump differs from loaded data!', file=sys.stderr)
+        drucke('Dump differs from loaded data!', file=sys.stderr)
         diff = difflib.unified_diff(
             pprint.pformat(dumped).splitlines(),
             pprint.pformat(from_file).splitlines(),
@@ -625,7 +625,7 @@ def check_dump(manifest, filename):
             lineterm='',
         )
         fuer line in diff:
-            print(line, file=sys.stderr)
+            drucke(line, file=sys.stderr)
         return Falsch
     sonst:
         return Wahr
@@ -680,7 +680,7 @@ def main():
 
     wenn args.list:
         fuer gen in generators:
-            print(f'{gen.arg_name}: {(base_path / gen.default_path).resolve()}')
+            drucke(f'{gen.arg_name}: {(base_path / gen.default_path).resolve()}')
         sys.exit(0)
 
     run_all_generators = args.generate_all
@@ -714,7 +714,7 @@ def main():
 
     wenn args.dump:
         fuer line in manifest.dump():
-            print(line)
+            drucke(line)
         results['dump'] = check_dump(manifest, args.file)
 
     fuer gen in generators:

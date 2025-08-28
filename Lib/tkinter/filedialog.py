@@ -453,7 +453,7 @@ def test():
     loadfile = fd.go(key="test")
     fd = SaveFileDialog(root)
     savefile = fd.go(key="test")
-    print(loadfile, savefile)
+    drucke(loadfile, savefile)
 
     # Since the file name may contain non-ASCII characters, we need
     # to find an encoding that likely supports the file name, and
@@ -477,15 +477,15 @@ def test():
         fp=open(openfilename,"r")
         fp.close()
     except BaseException as exc:
-        print("Could not open File: ")
-        print(exc)
+        drucke("Could not open File: ")
+        drucke(exc)
 
-    print("open", openfilename.encode(enc))
+    drucke("open", openfilename.encode(enc))
 
     # dialog fuer saving files
 
     saveasfilename=asksaveasfilename()
-    print("saveas", saveasfilename.encode(enc))
+    drucke("saveas", saveasfilename.encode(enc))
 
 
 wenn __name__ == '__main__':

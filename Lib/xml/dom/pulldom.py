@@ -195,7 +195,7 @@ klasse PullDOM(xml.sax.ContentHandler):
 
 klasse ErrorHandler:
     def warning(self, exception):
-        print(exception)
+        drucke(exception)
     def error(self, exception):
         raise exception
     def fatalError(self, exception):

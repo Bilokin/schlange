@@ -36,7 +36,7 @@ klasse TypeAnnotationTests(unittest.TestCase):
     def test_annotations_getset_raises(self):
         # builtin types don't have __annotations__ (yet!)
         with self.assertRaises(AttributeError):
-            print(float.__annotations__)
+            drucke(float.__annotations__)
         with self.assertRaises(TypeError):
             float.__annotations__ = {}
         with self.assertRaises(TypeError):
@@ -306,11 +306,11 @@ klasse AnnotateTests(unittest.TestCase):
             f.__annotate__ = 42
         f.__annotate__ = lambda: 42
         with self.assertRaisesRegex(TypeError, r"takes 0 positional arguments but 1 was given"):
-            print(f.__annotations__)
+            drucke(f.__annotations__)
 
         f.__annotate__ = lambda x: 42
         with self.assertRaisesRegex(TypeError, r"__annotate__\(\) must return a dict, not int"):
-            print(f.__annotations__)
+            drucke(f.__annotations__)
 
         f.__annotate__ = lambda x: {"x": x}
         self.assertEqual(f.__annotations__, {"x": 1})

@@ -59,7 +59,7 @@ klasse TestSimpleInteract(unittest.TestCase):
         console = InteractiveColoredConsole()
         code = dedent("""\
         raise Exception('foobar')
-        print('spam', 'eggs', sep='&')
+        drucke('spam', 'eggs', sep='&')
         """)
         f = io.StringIO()
         with contextlib.redirect_stderr(f):
@@ -79,14 +79,14 @@ klasse TestSimpleInteract(unittest.TestCase):
 
     def test_runsource_compiles_and_runs_code(self):
         console = InteractiveColoredConsole()
-        source = "print('Hello, world!')"
+        source = "drucke('Hello, world!')"
         with patch.object(console, "runcode") as mock_runcode:
             console.runsource(source)
             mock_runcode.assert_called_once()
 
     def test_runsource_returns_false_for_successful_compilation(self):
         console = InteractiveColoredConsole()
-        source = "print('Hello, world!')"
+        source = "drucke('Hello, world!')"
         f = io.StringIO()
         with contextlib.redirect_stdout(f):
             result = console.runsource(source)
@@ -95,7 +95,7 @@ klasse TestSimpleInteract(unittest.TestCase):
     @force_not_colorized
     def test_runsource_returns_false_for_failed_compilation(self):
         console = InteractiveColoredConsole()
-        source = "print('Hello, world!'"
+        source = "drucke('Hello, world!'"
         f = io.StringIO()
         with contextlib.redirect_stderr(f):
             result = console.runsource(source)
@@ -118,7 +118,7 @@ SyntaxError: duplicate parameter 'x' in function definition"""
 
     def test_runsource_shows_syntax_error_for_failed_compilation(self):
         console = InteractiveColoredConsole()
-        source = "print('Hello, world!'"
+        source = "drucke('Hello, world!'"
         with patch.object(console, "showsyntaxerror") as mock_showsyntaxerror:
             console.runsource(source)
             mock_showsyntaxerror.assert_called_once()
@@ -144,7 +144,7 @@ SyntaxError: duplicate parameter 'x' in function definition"""
         console = InteractiveColoredConsole()
         source = dedent("""\
         x: int = 1
-        print(__annotate__(1))
+        drucke(__annotate__(1))
         """)
         f = io.StringIO()
         with contextlib.redirect_stdout(f):
@@ -157,7 +157,7 @@ SyntaxError: duplicate parameter 'x' in function definition"""
         source = dedent("""\
         from __future__ import annotations
         def g(x: int): ...
-        print(g.__annotations__)
+        drucke(g.__annotations__)
         """)
         f = io.StringIO()
         with contextlib.redirect_stdout(f):
@@ -170,7 +170,7 @@ SyntaxError: duplicate parameter 'x' in function definition"""
         f = io.StringIO()
         with contextlib.redirect_stdout(f):
             result = console.runsource("from __future__ import barry_as_FLUFL\n")
-            result = console.runsource("""print("black" <> 'blue')\n""")
+            result = console.runsource("""drucke("black" <> 'blue')\n""")
         self.assertFalsch(result)
         self.assertEqual(f.getvalue(), "Wahr\n")
 

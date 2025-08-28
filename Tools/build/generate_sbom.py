@@ -94,8 +94,8 @@ def spdx_id(value: str) -> str:
 def error_if(value: bool, error_message: str) -> Nichts:
     """Prints an error wenn a comparison fails along with a link to the devguide"""
     wenn value:
-        print(error_message)
-        print("See 'https://devguide.python.org/developer-workflow/sbom' fuer more information.")
+        drucke(error_message)
+        drucke("See 'https://devguide.python.org/developer-workflow/sbom' fuer more information.")
         sys.exit(1)
 
 
@@ -402,7 +402,7 @@ def create_externals_sbom() -> Nichts:
 def main() -> Nichts:
     # Don't regenerate the SBOM wenn we're not a git repository.
     wenn not is_root_directory_git_index():
-        print("Skipping SBOM generation due to not being a git repository")
+        drucke("Skipping SBOM generation due to not being a git repository")
         return
 
     create_source_sbom()

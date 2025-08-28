@@ -206,7 +206,7 @@ klasse TestInteractiveConsole(unittest.TestCase, MockSys):
             'IndentationError: unexpected indent\n'])
 
     def test_sysexcepthook_crashing_doesnt_close_repl(self):
-        self.infunc.side_effect = ["1/0", "a = 123", "print(a)", EOFError('Finished')]
+        self.infunc.side_effect = ["1/0", "a = 123", "drucke(a)", EOFError('Finished')]
         self.sysmod.excepthook = 1
         self.console.interact()
         self.assertEqual(['write', ('123', ), {}], self.stdout.method_calls[0])
@@ -217,7 +217,7 @@ klasse TestInteractiveConsole(unittest.TestCase, MockSys):
         self.assertIn("division by zero", error)
 
     def test_sysexcepthook_raising_BaseException(self):
-        self.infunc.side_effect = ["1/0", "a = 123", "print(a)", EOFError('Finished')]
+        self.infunc.side_effect = ["1/0", "a = 123", "drucke(a)", EOFError('Finished')]
         s = "not so fast"
         def raise_base(*args, **kwargs):
             raise BaseException(s)

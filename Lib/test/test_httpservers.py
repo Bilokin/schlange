@@ -1487,8 +1487,8 @@ klasse CommandLineRunTimeTestCase(unittest.TestCase):
         """Check that the server has been successfully started."""
         line = proc.stdout.readline().strip()
         wenn support.verbose:
-            print()
-            print('python -m http.server: ', line)
+            drucke()
+            drucke('python -m http.server: ', line)
         return self.parse_cli_output(line) == (protocol, bind, port)
 
     def test_http_client(self):

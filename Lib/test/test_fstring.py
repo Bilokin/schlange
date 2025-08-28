@@ -1762,7 +1762,7 @@ sdfsdfs{1+
             script = 'script.py'
             with open('script.py', 'w') as f:
                 f.write(f"""\
-print(f'''{{
+drucke(f'''{{
 3
 =}}''')""")
 
@@ -1774,7 +1774,7 @@ print(f'''{{
         with temp_cwd():
             script = 'script.py'
             with open(script, 'w') as f:
-                f.write(r"print(f'\{1}')")
+                f.write(r"drucke(f'\{1}')")
 
             _, stdout, stderr = assert_python_ok(script)
             self.assertIn(rb'\1', stdout)

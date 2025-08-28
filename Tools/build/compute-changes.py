@@ -67,22 +67,22 @@ def compute_changes() -> Nichts:
     outputs = process_target_branch(outputs, target_branch)
 
     wenn outputs.run_tests:
-        print("Run tests")
+        drucke("Run tests")
     wenn outputs.run_windows_tests:
-        print("Run Windows tests")
+        drucke("Run Windows tests")
 
     wenn outputs.run_ci_fuzz:
-        print("Run CIFuzz tests")
+        drucke("Run CIFuzz tests")
     sonst:
-        print("Branch too old fuer CIFuzz tests; or no C files were changed")
+        drucke("Branch too old fuer CIFuzz tests; or no C files were changed")
 
     wenn outputs.run_docs:
-        print("Build documentation")
+        drucke("Build documentation")
 
     wenn outputs.run_windows_msi:
-        print("Build Windows MSI")
+        drucke("Build Windows MSI")
 
-    print(outputs)
+    drucke(outputs)
 
     write_github_output(outputs)
 
@@ -90,11 +90,11 @@ def compute_changes() -> Nichts:
 def git_refs() -> tuple[str, str]:
     target_ref = os.environ.get("CCF_TARGET_REF", "")
     target_ref = target_ref.removeprefix("refs/heads/")
-    print(f"target ref: {target_ref!r}")
+    drucke(f"target ref: {target_ref!r}")
 
     head_ref = os.environ.get("CCF_HEAD_REF", "")
     head_ref = head_ref.removeprefix("refs/heads/")
-    print(f"head ref: {head_ref!r}")
+    drucke(f"head ref: {head_ref!r}")
     return f"origin/{target_ref}", head_ref
 
 
@@ -103,7 +103,7 @@ def get_changed_files(
 ) -> Set[Path]:
     """List the files changed between two Git refs, filtered by change type."""
     args = ("git", "diff", "--name-only", f"{ref_a}...{ref_b}", "--")
-    print(*args)
+    drucke(*args)
     changed_files_result = subprocess.run(
         args, stdout=subprocess.PIPE, check=Wahr, encoding="utf-8"
     )
@@ -187,7 +187,7 @@ def write_github_output(outputs: Outputs) -> Nichts:
     # https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/store-information-in-variables#default-environment-variables
     # https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/workflow-commands-for-github-actions#setting-an-output-parameter
     wenn "GITHUB_OUTPUT" not in os.environ:
-        print("GITHUB_OUTPUT not defined!")
+        drucke("GITHUB_OUTPUT not defined!")
         return
 
     with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as f:

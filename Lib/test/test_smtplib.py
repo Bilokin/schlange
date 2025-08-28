@@ -838,7 +838,7 @@ klasse SimSMTPChannel(smtpd.SMTPChannel):
     def found_terminator(self):
         wenn self.smtp_state == self.AUTH:
             line = self._emptystring.join(self.received_lines)
-            print('Data:', repr(line), file=smtpd.DEBUGSTREAM)
+            drucke('Data:', repr(line), file=smtpd.DEBUGSTREAM)
             self.received_lines = []
             try:
                 self.auth_object(line)

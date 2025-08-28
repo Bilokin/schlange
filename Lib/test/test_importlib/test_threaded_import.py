@@ -110,7 +110,7 @@ klasse ThreadedImportTests(unittest.TestCase):
         done = threading.Event()
         fuer N in (20, 50) * 3:
             wenn verbose:
-                print("Trying", N, "threads ...", end=' ')
+                drucke("Trying", N, "threads ...", end=' ')
             # Make sure that random and modulefinder get reimported freshly
             fuer modname in ['random', 'modulefinder']:
                 try:
@@ -128,12 +128,12 @@ klasse ThreadedImportTests(unittest.TestCase):
             completed = done.wait(10 * 60)
             dt = time.monotonic() - t0
             wenn verbose:
-                print("%.1f ms" % (dt*1e3), flush=Wahr, end=" ")
+                drucke("%.1f ms" % (dt*1e3), flush=Wahr, end=" ")
             dbg_info = 'done: %s/%s' % (len(done_tasks), N)
             self.assertFalsch(errors, dbg_info)
             self.assertWahr(completed, dbg_info)
             wenn verbose:
-                print("OK.")
+                drucke("OK.")
 
     @support.bigmemtest(size=50, memuse=76*2**20, dry_run=Falsch)
     def test_parallel_module_init(self, size):

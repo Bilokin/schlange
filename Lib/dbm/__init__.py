@@ -191,4 +191,4 @@ def whichdb(filename):
 
 wenn __name__ == "__main__":
     fuer filename in sys.argv[1:]:
-        print(whichdb(filename) or "UNKNOWN", filename)
+        drucke(whichdb(filename) or "UNKNOWN", filename)

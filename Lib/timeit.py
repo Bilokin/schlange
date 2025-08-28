@@ -265,8 +265,8 @@ def main(args=Nichts, *, _wrap_timer=Nichts):
                                    ["number=", "setup=", "repeat=",
                                     "process", "verbose", "unit=", "help"])
     except getopt.error as err:
-        print(err)
-        print("use -h/--help fuer command line help")
+        drucke(err)
+        drucke("use -h/--help fuer command line help")
         return 2
 
     timer = default_timer
@@ -287,7 +287,7 @@ def main(args=Nichts, *, _wrap_timer=Nichts):
             wenn a in units:
                 time_unit = a
             sonst:
-                print("Unrecognized unit. Please select nsec, usec, msec, or sec.",
+                drucke("Unrecognized unit. Please select nsec, usec, msec, or sec.",
                       file=sys.stderr)
                 return 2
         wenn o in ("-r", "--repeat"):
@@ -301,7 +301,7 @@ def main(args=Nichts, *, _wrap_timer=Nichts):
                 precision += 1
             verbose += 1
         wenn o in ("-h", "--help"):
-            print(__doc__, end="")
+            drucke(__doc__, end="")
             return 0
     setup = "\n".join(setup) or "pass"
 
@@ -321,7 +321,7 @@ def main(args=Nichts, *, _wrap_timer=Nichts):
             def callback(number, time_taken):
                 msg = "{num} loop{s} -> {secs:.{prec}g} secs"
                 plural = (number != 1)
-                print(msg.format(num=number, s='s' wenn plural sonst '',
+                drucke(msg.format(num=number, s='s' wenn plural sonst '',
                                  secs=time_taken, prec=precision))
         try:
             number, _ = t.autorange(callback)
@@ -330,7 +330,7 @@ def main(args=Nichts, *, _wrap_timer=Nichts):
             return 1
 
         wenn verbose:
-            print()
+            drucke()
 
     try:
         raw_timings = t.repeat(repeat, number)
@@ -353,12 +353,12 @@ def main(args=Nichts, *, _wrap_timer=Nichts):
         return "%.*g %s" % (precision, dt / scale, unit)
 
     wenn verbose:
-        print("raw times: %s" % ", ".join(map(format_time, raw_timings)))
-        print()
+        drucke("raw times: %s" % ", ".join(map(format_time, raw_timings)))
+        drucke()
     timings = [dt / number fuer dt in raw_timings]
 
     best = min(timings)
-    print("%d loop%s, best of %d: %s per loop"
+    drucke("%d loop%s, best of %d: %s per loop"
           % (number, 's' wenn number != 1 sonst '',
              repeat, format_time(best)))
 

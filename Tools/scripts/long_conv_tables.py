@@ -57,7 +57,7 @@ def conv_tables(long_bits):
 
 
 def main():
-    print(
+    drucke(
         f'''\
 // Tables are computed by Tools/scripts/long_conv_tables.py
 #if PYLONG_BITS_IN_DIGIT == 15

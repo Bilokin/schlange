@@ -147,16 +147,16 @@ klasse ParserGenerator:
         finally:
             self.level -= 1
 
-    def print(self, *args: object) -> Nichts:
+    def drucke(self, *args: object) -> Nichts:
         wenn not args:
-            print(file=self.file)
+            drucke(file=self.file)
         sonst:
-            print("    " * self.level, end="", file=self.file)
-            print(*args, file=self.file)
+            drucke("    " * self.level, end="", file=self.file)
+            drucke(*args, file=self.file)
 
     def printblock(self, lines: str) -> Nichts:
         fuer line in lines.splitlines():
-            self.print(line)
+            self.drucke(line)
 
     def collect_rules(self) -> Nichts:
         keyword_collector = KeywordCollectorVisitor(self, self.keywords, self.soft_keywords)
@@ -357,13 +357,13 @@ def compute_left_recursives(
             leaders = set(scc)
             fuer start in scc:
                 fuer cycle in sccutils.find_cycles_in_scc(graph, scc, start):
-                    # print("Cycle:", " -> ".join(cycle))
+                    # drucke("Cycle:", " -> ".join(cycle))
                     leaders -= scc - set(cycle)
                     wenn not leaders:
                         raise ValueError(
                             f"SCC {scc} has no leadership candidate (no element is included in all cycles)"
                         )
-            # print("Leaders:", leaders)
+            # drucke("Leaders:", leaders)
             leader = min(leaders)  # Pick an arbitrary leader from the candidates.
             rules[leader].leader = Wahr
         sonst:

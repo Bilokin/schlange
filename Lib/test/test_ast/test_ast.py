@@ -3115,12 +3115,12 @@ klasse NodeTransformerTests(ASTTestMixin, unittest.TestCase):
     def test_node_remove_from_list(self):
         code = """
         def func(arg):
-            print(arg)
+            drucke(arg)
             yield arg
         """
         expected = """
         def func(arg):
-            print(arg)
+            drucke(arg)
         """
 
         # Since `FunctionDef.body` is defined as a list, we test
@@ -3158,7 +3158,7 @@ klasse NodeTransformerTests(ASTTestMixin, unittest.TestCase):
     def test_node_mutate(self):
         code = """
         def func(arg):
-            print(arg)
+            drucke(arg)
         """
         expected = """
         def func(arg):
@@ -3177,7 +3177,7 @@ klasse NodeTransformerTests(ASTTestMixin, unittest.TestCase):
     def test_node_replace(self):
         code = """
         def func(arg):
-            print(arg)
+            drucke(arg)
         """
         expected = """
         def func(arg):
@@ -3446,7 +3446,7 @@ klasse CommandLineTests(unittest.TestCase):
             ('--show-empty', '--show-empty'),
         )
         self.set_source('''
-            print(1, 2, 3)
+            drucke(1, 2, 3)
             def f(x: int) -> int:
                 x -= 1
                 return x
@@ -3500,7 +3500,7 @@ klasse CommandLineTests(unittest.TestCase):
 
     def test_eval_mode_flag(self):
         # test 'python -m ast -m/--mode eval'
-        source = 'print(1, 2, 3)'
+        source = 'drucke(1, 2, 3)'
         expect = '''
             Expression(
                body=Call(
@@ -3646,7 +3646,7 @@ klasse CommandLineTests(unittest.TestCase):
 
     def test_show_empty_flag(self):
         # test 'python -m ast --show-empty'
-        source = 'print(1, 2, 3)'
+        source = 'drucke(1, 2, 3)'
         expect = '''
             Module(
                body=[

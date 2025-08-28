@@ -69,5 +69,5 @@ def main():
 
 wenn __name__=="__main__":
     msg = main()
-    print(msg)
+    drucke(msg)
     mainloop()

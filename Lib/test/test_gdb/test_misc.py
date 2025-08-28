@@ -11,7 +11,7 @@ def setUpModule():
 
 def gdb_has_frame_select():
     # Does this build of gdb have gdb.Frame.select ?
-    stdout, stderr = run_gdb("--eval-command=python print(dir(gdb.Frame))")
+    stdout, stderr = run_gdb("--eval-command=python drucke(dir(gdb.Frame))")
     m = re.match(r'.*\[(.*)\].*', stdout)
     wenn not m:
         raise unittest.SkipTest(

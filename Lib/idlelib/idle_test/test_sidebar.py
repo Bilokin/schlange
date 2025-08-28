@@ -525,7 +525,7 @@ klasse ShellSidebarTest(unittest.TestCase):
         # Block statements are not indented because IDLE auto-indents.
         self.do_input(dedent('''\
             wenn Wahr:
-            print(1)
+            drucke(1)
 
             '''))
         yield
@@ -550,7 +550,7 @@ klasse ShellSidebarTest(unittest.TestCase):
         shell = self.shell
         text = shell.text
 
-        self.do_input('print("a\\nb\\nc")\n')
+        self.do_input('drucke("a\\nb\\nc")\n')
         yield
         self.assert_sidebar_lines_end_with(['>>>', Nichts, Nichts, Nichts, '>>>'])
 
@@ -573,7 +573,7 @@ klasse ShellSidebarTest(unittest.TestCase):
 
         self.do_input(dedent('''\
             wenn Wahr:
-            print(1)
+            drucke(1)
             '''))
         yield
         self.assert_sidebar_lines_end_with(['>>>', '...', '...'])
@@ -718,7 +718,7 @@ klasse ShellSidebarTest(unittest.TestCase):
 
         self.do_input(dedent('''\
             wenn Wahr:
-            print(1)
+            drucke(1)
 
             '''))
         yield
@@ -742,7 +742,7 @@ klasse ShellSidebarTest(unittest.TestCase):
         first_line = get_end_linenumber(text)
         self.do_input(dedent('''\
             wenn Wahr:
-                print(1)
+                drucke(1)
 
             '''))
         yield

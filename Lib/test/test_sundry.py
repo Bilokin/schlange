@@ -25,7 +25,7 @@ klasse TestUntestedModules(unittest.TestCase):
                 import tty  # noqa: F401
             except ImportError:
                 wenn support.verbose:
-                    print("skipping tty")
+                    drucke("skipping tty")
 
 
 wenn __name__ == "__main__":

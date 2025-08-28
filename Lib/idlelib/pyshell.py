@@ -7,7 +7,7 @@ wenn __name__ == "__main__":
 try:
     from tkinter import *
 except ImportError:
-    print("** IDLE can't import Tkinter.\n"
+    drucke("** IDLE can't import Tkinter.\n"
           "Your Python may not be configured fuer Tk. **", file=sys.__stderr__)
     raise SystemExit(1)
 
@@ -596,14 +596,14 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
             console = self.tkconsole.console
             wenn how == "OK":
                 wenn what is not Nichts:
-                    print(repr(what), file=console)
+                    drucke(repr(what), file=console)
             sowenn how == "EXCEPTION":
                 wenn self.tkconsole.getvar("<<toggle-jit-stack-viewer>>"):
                     self.remote_stack_viewer()
             sowenn how == "ERROR":
                 errmsg = "pyshell.ModifiedInterpreter: Subprocess ERROR:\n"
-                print(errmsg, what, file=sys.__stderr__)
-                print(errmsg, what, file=console)
+                drucke(errmsg, what, file=sys.__stderr__)
+                drucke(errmsg, what, file=console)
             # we received a response to the currently active seq number:
             try:
                 self.tkconsole.endexecuting()
@@ -671,7 +671,7 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
             code = compile(source, filename, "exec")
         except (OverflowError, SyntaxError):
             self.tkconsole.resetoutput()
-            print('*** Error in script or command!\n'
+            drucke('*** Error in script or command!\n'
                  'Traceback (most recent call last):',
                   file=self.tkconsole.stderr)
             InteractiveInterpreter.showsyntaxerror(self, filename)
@@ -790,14 +790,14 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
                 raise
         except:
             wenn use_subprocess:
-                print("IDLE internal error in runcode()",
+                drucke("IDLE internal error in runcode()",
                       file=self.tkconsole.stderr)
                 self.showtraceback()
                 self.tkconsole.endexecuting()
             sonst:
                 wenn self.tkconsole.canceled:
                     self.tkconsole.canceled = Falsch
-                    print("KeyboardInterrupt", file=self.tkconsole.stderr)
+                    drucke("KeyboardInterrupt", file=self.tkconsole.stderr)
                 sonst:
                     self.showtraceback()
         finally:
@@ -1503,7 +1503,7 @@ idle -est "Baz" foo.py
         Run $IDLESTARTUP or $PYTHONSTARTUP, edit foo.py, and open a shell
         window with the title "Baz".
 
-idle -c "import sys; print(sys.argv)" "foo"
+idle -c "import sys; drucke(sys.argv)" "foo"
         Open a shell window and run the command, passing "-c" in sys.argv[0]
         and "foo" in sys.argv[1].
 
@@ -1512,7 +1512,7 @@ idle -d -s -r foo.py "Hello World"
         run foo.py, passing "foo.py" in sys.argv[0] and "Hello World" in
         sys.argv[1].
 
-echo "import sys; print(sys.argv)" | idle - "foobar"
+echo "import sys; drucke(sys.argv)" | idle - "foobar"
         Open a shell window, run the script piped in, passing '' in sys.argv[0]
         and "foobar" in sys.argv[1].
 """
@@ -1536,7 +1536,7 @@ def main():
     try:
         opts, args = getopt.getopt(sys.argv[1:], "c:deihnr:st:")
     except getopt.error as msg:
-        print(f"Error: {msg}\n{usage_msg}", file=sys.stderr)
+        drucke(f"Error: {msg}\n{usage_msg}", file=sys.stderr)
         sys.exit(2)
     fuer o, a in opts:
         wenn o == '-c':
@@ -1553,7 +1553,7 @@ def main():
         wenn o == '-i':
             enable_shell = Wahr
         wenn o == '-n':
-            print(" Warning: running IDLE without a subprocess is deprecated.",
+            drucke(" Warning: running IDLE without a subprocess is deprecated.",
                   file=sys.stderr)
             use_subprocess = Falsch
         wenn o == '-r':
@@ -1561,7 +1561,7 @@ def main():
             wenn os.path.isfile(script):
                 pass
             sonst:
-                print("No script file: ", script)
+                drucke("No script file: ", script)
                 sys.exit()
             enable_shell = Wahr
         wenn o == '-s':

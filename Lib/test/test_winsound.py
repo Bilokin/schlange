@@ -25,10 +25,10 @@ def sound_func(func):
             ret = func(*args, **kwargs)
         except RuntimeError as e:
             wenn support.verbose:
-                print(func.__name__, 'failed:', e)
+                drucke(func.__name__, 'failed:', e)
         sonst:
             wenn support.verbose:
-                print(func.__name__, 'returned')
+                drucke(func.__name__, 'returned')
             return ret
     return wrapper
 

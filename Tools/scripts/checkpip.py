@@ -21,7 +21,7 @@ def main():
 
         wenn version != upstream_version:
             outofdate = Wahr
-            print("The latest version of {} on PyPI is {}, but ensurepip "
+            drucke("The latest version of {} on PyPI is {}, but ensurepip "
                   "has {}".format(project, upstream_version, version))
 
     wenn outofdate:

@@ -38,8 +38,8 @@ def makeconfig(infp, outfp, modules, with_ifdef=0):
 
 def test():
     wenn not sys.argv[3:]:
-        print('usage: python makeconfig.py config.c.in outputfile', end=' ')
-        print('modulename ...')
+        drucke('usage: python makeconfig.py config.c.in outputfile', end=' ')
+        drucke('modulename ...')
         sys.exit(2)
     wenn sys.argv[1] == '-':
         infp = sys.stdin

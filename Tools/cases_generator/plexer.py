@@ -121,4 +121,4 @@ wenn __name__ == "__main__":
         assert tok
         left = repr(tok)
         right = lx.to_text([tok]).rstrip()
-        print(f"{left:40.40} {right}")
+        drucke(f"{left:40.40} {right}")

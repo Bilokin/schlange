@@ -96,7 +96,7 @@ klasse CygwinCCompiler(UnixCCompiler):
         UnixCCompiler.__init__(self, verbose, dry_run, force)
 
         status, details = check_config_h()
-        self.debug_print("Python's GCC status: %s (details: %s)" %
+        self.debug_drucke("Python's GCC status: %s (details: %s)" %
                          (status, details))
         wenn status is not CONFIG_H_OK:
             self.warn(
@@ -107,7 +107,7 @@ klasse CygwinCCompiler(UnixCCompiler):
 
         self.gcc_version, self.ld_version, self.dllwrap_version = \
             get_versions()
-        self.debug_print(self.compiler_type + ": gcc %s, ld %s, dllwrap %s\n" %
+        self.debug_drucke(self.compiler_type + ": gcc %s, ld %s, dllwrap %s\n" %
                          (self.gcc_version,
                           self.ld_version,
                           self.dllwrap_version) )

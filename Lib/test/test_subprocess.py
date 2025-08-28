@@ -191,7 +191,7 @@ klasse ProcessTestCase(BaseTestCase):
     def test_check_output(self):
         # check_output() function with zero return code
         output = subprocess.check_output(
-                [sys.executable, "-c", "print('BDFL')"])
+                [sys.executable, "-c", "drucke('BDFL')"])
         self.assertIn(b'BDFL', output)
 
         with self.assertRaisesRegex(ValueError,
@@ -240,27 +240,27 @@ klasse ProcessTestCase(BaseTestCase):
         """input=Nichts has a legacy meaning of input='' on check_output."""
         output = subprocess.check_output(
                 [sys.executable, "-c",
-                 "import sys; print('XX' wenn sys.stdin.read() sonst '')"],
+                 "import sys; drucke('XX' wenn sys.stdin.read() sonst '')"],
                 input=Nichts)
         self.assertNotIn(b'XX', output)
 
     def test_check_output_input_none_text(self):
         output = subprocess.check_output(
                 [sys.executable, "-c",
-                 "import sys; print('XX' wenn sys.stdin.read() sonst '')"],
+                 "import sys; drucke('XX' wenn sys.stdin.read() sonst '')"],
                 input=Nichts, text=Wahr)
         self.assertNotIn('XX', output)
 
     def test_check_output_input_none_universal_newlines(self):
         output = subprocess.check_output(
                 [sys.executable, "-c",
-                 "import sys; print('XX' wenn sys.stdin.read() sonst '')"],
+                 "import sys; drucke('XX' wenn sys.stdin.read() sonst '')"],
                 input=Nichts, universal_newlines=Wahr)
         self.assertNotIn('XX', output)
 
     def test_check_output_input_none_encoding_errors(self):
         output = subprocess.check_output(
-                [sys.executable, "-c", "print('foo')"],
+                [sys.executable, "-c", "drucke('foo')"],
                 input=Nichts, encoding='utf-8', errors='ignore')
         self.assertIn('foo', output)
 
@@ -268,7 +268,7 @@ klasse ProcessTestCase(BaseTestCase):
         # check_output() refuses to accept 'stdout' argument
         with self.assertRaises(ValueError) as c:
             output = subprocess.check_output(
-                    [sys.executable, "-c", "print('will not be run')"],
+                    [sys.executable, "-c", "drucke('will not be run')"],
                     stdout=sys.stdout)
             self.fail("Expected ValueError when stdout arg supplied.")
         self.assertIn('stdout', c.exception.args[0])
@@ -281,7 +281,7 @@ klasse ProcessTestCase(BaseTestCase):
         tf.seek(0)
         with self.assertRaises(ValueError) as c:
             output = subprocess.check_output(
-                    [sys.executable, "-c", "print('will not be run')"],
+                    [sys.executable, "-c", "drucke('will not be run')"],
                     stdin=tf, input=b'hare')
             self.fail("Expected ValueError when stdin and input args supplied.")
         self.assertIn('stdin', c.exception.args[0])
@@ -317,7 +317,7 @@ klasse ProcessTestCase(BaseTestCase):
 
     def test_stdin_none(self):
         # .stdin is Nichts when not redirected
-        p = subprocess.Popen([sys.executable, "-c", 'print("banana")'],
+        p = subprocess.Popen([sys.executable, "-c", 'drucke("banana")'],
                          stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         self.addCleanup(p.stdout.close)
         self.addCleanup(p.stderr.close)
@@ -336,7 +336,7 @@ klasse ProcessTestCase(BaseTestCase):
         # child goes to the parent stdout.  The parent also checks that the
         # child's stdout is Nichts.  See #11963.
         code = ('import sys; from subprocess import Popen, PIPE;'
-                'p = Popen([sys.executable, "-c", "print(\'test_stdout_none\')"],'
+                'p = Popen([sys.executable, "-c", "drucke(\'test_stdout_none\')"],'
                 '          stdin=PIPE, stderr=PIPE);'
                 'p.wait(); assert p.stdout is Nichts;')
         p = subprocess.Popen([sys.executable, "-c", code],
@@ -349,7 +349,7 @@ klasse ProcessTestCase(BaseTestCase):
 
     def test_stderr_none(self):
         # .stderr is Nichts when not redirected
-        p = subprocess.Popen([sys.executable, "-c", 'print("banana")'],
+        p = subprocess.Popen([sys.executable, "-c", 'drucke("banana")'],
                          stdin=subprocess.PIPE, stdout=subprocess.PIPE)
         self.addCleanup(p.stdout.close)
         self.addCleanup(p.stdin.close)
@@ -697,7 +697,7 @@ klasse ProcessTestCase(BaseTestCase):
     def test_stdout_devnull(self):
         p = subprocess.Popen([sys.executable, "-c",
                               'for i in range(10240):'
-                              'print("x" * 1024)'],
+                              'drucke("x" * 1024)'],
                               stdout=subprocess.DEVNULL)
         p.wait()
         self.assertEqual(p.stdout, Nichts)
@@ -836,7 +836,7 @@ klasse ProcessTestCase(BaseTestCase):
                     n == 'LC_CTYPE') # Locale coercion triggered
 
         with subprocess.Popen([sys.executable, "-c",
-                               'import os; print(list(os.environ.keys()))'],
+                               'import os; drucke(list(os.environ.keys()))'],
                               stdout=subprocess.PIPE, env={}) as p:
             stdout, stderr = p.communicate()
             child_env_names = eval(stdout.strip())
@@ -860,8 +860,8 @@ klasse ProcessTestCase(BaseTestCase):
         with subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=newenv) as p:
             stdout, stderr = p.communicate()
             wenn p.returncode and support.verbose:
-                print("STDOUT:", stdout.decode("ascii", "replace"))
-                print("STDERR:", stderr.decode("ascii", "replace"))
+                drucke("STDOUT:", stdout.decode("ascii", "replace"))
+                drucke("STDERR:", stderr.decode("ascii", "replace"))
             self.assertEqual(p.returncode, 0)
             self.assertEqual(stdout.strip(), b"fruit=orange")
 
@@ -1507,7 +1507,7 @@ klasse ProcessTestCase(BaseTestCase):
         code = ';'.join((
             'import subprocess, sys',
             'retcode = subprocess.call('
-                "[sys.executable, '-c', 'print(\"Hello World!\")'])",
+                "[sys.executable, '-c', 'drucke(\"Hello World!\")'])",
             'assert retcode == 0'))
         output = subprocess.check_output([sys.executable, '-c', code])
         self.assertStartsWith(output, b'Hello World!')
@@ -1677,7 +1677,7 @@ klasse RunFuncTestCase(BaseTestCase):
 
     def test_capture_stdout(self):
         # capture stdout with zero return code
-        cp = self.run_python("print('BDFL')", stdout=subprocess.PIPE)
+        cp = self.run_python("drucke('BDFL')", stdout=subprocess.PIPE)
         self.assertIn(b'BDFL', cp.stdout)
 
     def test_capture_stderr(self):
@@ -1711,7 +1711,7 @@ klasse RunFuncTestCase(BaseTestCase):
         tf.seek(0)
         with self.assertRaises(ValueError,
               msg="Expected ValueError when stdin and input args supplied.") as c:
-            output = self.run_python("print('will not be run')",
+            output = self.run_python("drucke('will not be run')",
                                      stdin=tf, input=b'hare')
         self.assertIn('stdin', c.exception.args[0])
         self.assertIn('input', c.exception.args[0])
@@ -1778,7 +1778,7 @@ klasse RunFuncTestCase(BaseTestCase):
         # run() refuses to accept stdout=STDOUT
         with self.assertRaises(ValueError,
                 msg=("STDOUT can only be used fuer stderr")):
-            self.run_python("print('will not be run')",
+            self.run_python("drucke('will not be run')",
                             stdout=subprocess.STDOUT)
 
     def test_stdout_with_capture_output_arg(self):
@@ -1788,7 +1788,7 @@ klasse RunFuncTestCase(BaseTestCase):
         with self.assertRaises(ValueError,
             msg=("Expected ValueError when stdout and capture_output "
                  "args supplied.")) as c:
-            output = self.run_python("print('will not be run')",
+            output = self.run_python("drucke('will not be run')",
                                       capture_output=Wahr, stdout=tf)
         self.assertIn('stdout', c.exception.args[0])
         self.assertIn('capture_output', c.exception.args[0])
@@ -1800,7 +1800,7 @@ klasse RunFuncTestCase(BaseTestCase):
         with self.assertRaises(ValueError,
             msg=("Expected ValueError when stderr and capture_output "
                  "args supplied.")) as c:
-            output = self.run_python("print('will not be run')",
+            output = self.run_python("drucke('will not be run')",
                                       capture_output=Wahr, stderr=tf)
         self.assertIn('stderr', c.exception.args[0])
         self.assertIn('capture_output', c.exception.args[0])
@@ -1995,7 +1995,7 @@ klasse POSIXProcessTestCase(BaseTestCase):
         # still indicates that it was called.
         try:
             output = subprocess.check_output(
-                    [sys.executable, "-c", "import os; print(os.getsid(0))"],
+                    [sys.executable, "-c", "import os; drucke(os.getsid(0))"],
                     start_new_session=Wahr)
         except PermissionError as e:
             wenn e.errno != errno.EPERM:
@@ -2013,7 +2013,7 @@ klasse POSIXProcessTestCase(BaseTestCase):
         # still indicates that it was called.
         try:
             output = subprocess.check_output(
-                    [sys.executable, "-c", "import os; print(os.getpgid(0))"],
+                    [sys.executable, "-c", "import os; drucke(os.getpgid(0))"],
                     process_group=0)
         except PermissionError as e:
             wenn e.errno != errno.EPERM:
@@ -2048,7 +2048,7 @@ klasse POSIXProcessTestCase(BaseTestCase):
                     try:
                         output = subprocess.check_output(
                                 [sys.executable, "-c",
-                                 "import os; print(os.getuid())"],
+                                 "import os; drucke(os.getuid())"],
                                 user=user,
                                 close_fds=close_fds)
                     except PermissionError as e:  # (EACCES, EPERM)
@@ -2096,7 +2096,7 @@ klasse POSIXProcessTestCase(BaseTestCase):
                     try:
                         output = subprocess.check_output(
                                 [sys.executable, "-c",
-                                 "import os; print(os.getgid())"],
+                                 "import os; drucke(os.getgid())"],
                                 group=group,
                                 close_fds=close_fds)
                     except PermissionError as e:  # (EACCES, EPERM)
@@ -2568,7 +2568,7 @@ klasse POSIXProcessTestCase(BaseTestCase):
             # failed.  Extremely unlikely: everyone supports CLOEXEC.
             subprocess.Popen([
                     sys.executable, "-c",
-                    "print('AssertionError:0:CLOEXEC failure.')"]).wait()
+                    "drucke('AssertionError:0:CLOEXEC failure.')"]).wait()
         finally:
             # Restore original stdin and stdout
             os.dup2(new_stdin, 0)
@@ -2750,7 +2750,7 @@ klasse POSIXProcessTestCase(BaseTestCase):
             encoded_value = value.encode("ascii", "surrogateescape")
 
             # test str with surrogates
-            script = "import os; print(ascii(os.getenv(%s)))" % repr(key)
+            script = "import os; drucke(ascii(os.getenv(%s)))" % repr(key)
             env = os.environ.copy()
             env[key] = value
             # Use C locale to get ASCII fuer the locale encoding to force
@@ -2765,7 +2765,7 @@ klasse POSIXProcessTestCase(BaseTestCase):
 
             # test bytes
             key = key.encode("ascii", "surrogateescape")
-            script = "import os; print(ascii(os.getenvb(%s)))" % repr(key)
+            script = "import os; drucke(ascii(os.getenvb(%s)))" % repr(key)
             env = os.environ.copy()
             env[key] = encoded_value
             stdout = subprocess.check_output(
@@ -2955,7 +2955,7 @@ klasse POSIXProcessTestCase(BaseTestCase):
         max_fd_open = max(open_fds)
 
         # Communicate the open_fds to the parent unittest.TestCase process.
-        print(','.join(map(str, sorted(open_fds))))
+        drucke(','.join(map(str, sorted(open_fds))))
         sys.stdout.flush()
 
         rlim_cur, rlim_max = resource.getrlimit(resource.RLIMIT_NOFILE)
@@ -3418,9 +3418,9 @@ klasse POSIXProcessTestCase(BaseTestCase):
 
         klasse AtFinalization:
             def __del__(self):
-                print("OK")
+                drucke("OK")
                 subprocess.Popen({ZERO_RETURN_CMD}, preexec_fn=dummy)
-                print("shouldn't be printed")
+                drucke("shouldn't be printed")
         at_finalization = AtFinalization()
         """
         _, out, err = assert_python_ok("-c", code)
@@ -3589,14 +3589,14 @@ klasse Win32ProcessTestCase(BaseTestCase):
             handles.append(msvcrt.get_osfhandle(fd))
 
         p = subprocess.Popen([sys.executable, "-c",
-                              "import msvcrt; print(msvcrt.open_osfhandle({}, 0))".format(handles[0])],
+                              "import msvcrt; drucke(msvcrt.open_osfhandle({}, 0))".format(handles[0])],
                              stdout=subprocess.PIPE, close_fds=Falsch)
         stdout, stderr = p.communicate()
         self.assertEqual(p.returncode, 0)
         int(stdout.strip())  # Check that stdout is an integer
 
         p = subprocess.Popen([sys.executable, "-c",
-                              "import msvcrt; print(msvcrt.open_osfhandle({}, 0))".format(handles[0])],
+                              "import msvcrt; drucke(msvcrt.open_osfhandle({}, 0))".format(handles[0])],
                              stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=Wahr)
         stdout, stderr = p.communicate()
         self.assertEqual(p.returncode, 1)
@@ -3607,7 +3607,7 @@ klasse Win32ProcessTestCase(BaseTestCase):
         startupinfo = subprocess.STARTUPINFO()
         startupinfo.lpAttributeList = {"handle_list": handle_list}
         p = subprocess.Popen([sys.executable, "-c",
-                              "import msvcrt; print(msvcrt.open_osfhandle({}, 0))".format(handles[0])],
+                              "import msvcrt; drucke(msvcrt.open_osfhandle({}, 0))".format(handles[0])],
                              stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                              startupinfo=startupinfo, close_fds=Wahr)
         stdout, stderr = p.communicate()
@@ -3620,7 +3620,7 @@ klasse Win32ProcessTestCase(BaseTestCase):
             startupinfo = subprocess.STARTUPINFO()
             startupinfo.lpAttributeList = {"handle_list": handles[:]}
             p = subprocess.Popen([sys.executable, "-c",
-                                  "import msvcrt; print(msvcrt.open_osfhandle({}, 0))".format(handles[0])],
+                                  "import msvcrt; drucke(msvcrt.open_osfhandle({}, 0))".format(handles[0])],
                                  stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                                  startupinfo=startupinfo, close_fds=Falsch)
             stdout, stderr = p.communicate()

@@ -123,7 +123,7 @@ klasse OriginalCommand:
     Returned by .register; can be used in the function registered.
     redir = WidgetRedirector(text)
     def my_insert(*args):
-        print("insert", args)
+        drucke("insert", args)
         original_insert(*args)
     original_insert = redir.register("insert", my_insert)
     '''
@@ -161,7 +161,7 @@ def _widget_redirector(parent):  # htest #
     text.focus_set()
     redir = WidgetRedirector(text)
     def my_insert(*args):
-        print("insert", args)
+        drucke("insert", args)
         original_insert(*args)
     original_insert = redir.register("insert", my_insert)
 

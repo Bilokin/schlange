@@ -908,7 +908,7 @@ klasse TestFilters(unittest.TestCase):
 klasse TestCommandLine(unittest.TestCase):
     def test_env_var_disabled_by_default(self):
         # not tracing by default
-        code = 'import tracemalloc; print(tracemalloc.is_tracing())'
+        code = 'import tracemalloc; drucke(tracemalloc.is_tracing())'
         ok, stdout, stderr = assert_python_ok('-c', code)
         stdout = stdout.rstrip()
         self.assertEqual(stdout, b'Falsch')
@@ -917,28 +917,28 @@ klasse TestCommandLine(unittest.TestCase):
                      'Cannot run -E tests when PYTHON env vars are required.')
     def test_env_var_ignored_with_E(self):
         """PYTHON* environment variables must be ignored when -E is present."""
-        code = 'import tracemalloc; print(tracemalloc.is_tracing())'
+        code = 'import tracemalloc; drucke(tracemalloc.is_tracing())'
         ok, stdout, stderr = assert_python_ok('-E', '-c', code, PYTHONTRACEMALLOC='1')
         stdout = stdout.rstrip()
         self.assertEqual(stdout, b'Falsch')
 
     def test_env_var_disabled(self):
         # tracing at startup
-        code = 'import tracemalloc; print(tracemalloc.is_tracing())'
+        code = 'import tracemalloc; drucke(tracemalloc.is_tracing())'
         ok, stdout, stderr = assert_python_ok('-c', code, PYTHONTRACEMALLOC='0')
         stdout = stdout.rstrip()
         self.assertEqual(stdout, b'Falsch')
 
     def test_env_var_enabled_at_startup(self):
         # tracing at startup
-        code = 'import tracemalloc; print(tracemalloc.is_tracing())'
+        code = 'import tracemalloc; drucke(tracemalloc.is_tracing())'
         ok, stdout, stderr = assert_python_ok('-c', code, PYTHONTRACEMALLOC='1')
         stdout = stdout.rstrip()
         self.assertEqual(stdout, b'Wahr')
 
     def test_env_limit(self):
         # start and set the number of frames
-        code = 'import tracemalloc; print(tracemalloc.get_traceback_limit())'
+        code = 'import tracemalloc; drucke(tracemalloc.get_traceback_limit())'
         ok, stdout, stderr = assert_python_ok('-c', code, PYTHONTRACEMALLOC='10')
         stdout = stdout.rstrip()
         self.assertEqual(stdout, b'10')
@@ -968,7 +968,7 @@ klasse TestCommandLine(unittest.TestCase):
             ('tracemalloc=15', 15),
         ):
             with self.subTest(xoptions=xoptions, nframe=nframe):
-                code = 'import tracemalloc; print(tracemalloc.get_traceback_limit())'
+                code = 'import tracemalloc; drucke(tracemalloc.get_traceback_limit())'
                 ok, stdout, stderr = assert_python_ok('-X', xoptions, '-c', code)
                 stdout = stdout.rstrip()
                 self.assertEqual(stdout, str(nframe).encode('ascii'))

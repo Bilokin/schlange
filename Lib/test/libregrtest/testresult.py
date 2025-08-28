@@ -171,13 +171,13 @@ wenn __name__ == '__main__':
             time.sleep(1.0)
 
         def test_fail(self):
-            print('stdout', file=sys.stdout)
-            print('stderr', file=sys.stderr)
+            drucke('stdout', file=sys.stdout)
+            drucke('stderr', file=sys.stderr)
             self.fail('failure message')
 
         def test_error(self):
-            print('stdout', file=sys.stdout)
-            print('stderr', file=sys.stderr)
+            drucke('stdout', file=sys.stdout)
+            drucke('stderr', file=sys.stderr)
             raise RuntimeError('error message')
 
     suite = unittest.TestSuite()
@@ -186,8 +186,8 @@ wenn __name__ == '__main__':
     runner_cls = get_test_runner_class(sum(a == '-v' fuer a in sys.argv))
     runner = runner_cls(sys.stdout)
     result = runner.run(suite)
-    print('Output:', stream.getvalue())
-    print('XML: ', end='')
+    drucke('Output:', stream.getvalue())
+    drucke('XML: ', end='')
     fuer s in ET.tostringlist(result.get_xml_element()):
-        print(s.decode(), end='')
-    print()
+        drucke(s.decode(), end='')
+    drucke()

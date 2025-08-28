@@ -5666,7 +5666,7 @@ klasse TestFlags(unittest.TestCase):
         r.close()
         w.close()
         flags = (tuple(sys.flags), grandchild_flags)
-        print(json.dumps(flags))
+        drucke(json.dumps(flags))
 
     def test_flags(self):
         import json
@@ -5994,8 +5994,8 @@ klasse TestStartMethod(unittest.TestCase):
         out = out.decode()
         err = err.decode()
         wenn out.rstrip() != 'ok' or err != '':
-            print(out)
-            print(err)
+            drucke(out)
+            drucke(err)
             self.fail("failed spawning forkserver or grandchild")
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
@@ -6948,8 +6948,8 @@ klasse _TestSpawnedSysPath(BaseTestCase):
         with open(init_name, "w") as f:
             cmd = '''if 1:
                 import sys
-                print('stderr', end='', file=sys.stderr)
-                print('stdout', end='', file=sys.stdout)
+                drucke('stderr', end='', file=sys.stderr)
+                drucke('stdout', end='', file=sys.stdout)
             '''
             f.write(cmd)
 
@@ -6999,7 +6999,7 @@ klasse MiscTestCase(unittest.TestCase):
                 def f(x): return x*x
                 wenn __name__ == '__main__':
                     with multiprocessing.Pool(200) as p:
-                        print(sum(p.map(f, range(1000))))
+                        drucke(sum(p.map(f, range(1000))))
             '''))
         rc, out, err = script_helper.assert_python_ok(testfn)
         self.assertEqual("332833500", out.decode('utf-8').strip())
@@ -7292,11 +7292,11 @@ klasse ForkInThreads(unittest.TestCase):
 
         pid = os.fork()
         wenn pid < 0:
-            print("Fork failed")
+            drucke("Fork failed")
         sowenn pid == 0:
-            print("In child")
+            drucke("In child")
             sys.exit(0)
-        print("In parent")
+        drucke("In parent")
         """
 
         res = assert_python_ok("-c", code, PYTHONWARNINGS='always')
@@ -7320,11 +7320,11 @@ klasse ForkInThreads(unittest.TestCase):
 
         pid, _ = os.forkpty()
         wenn pid < 0:
-            print(f"forkpty failed")
+            drucke(f"forkpty failed")
         sowenn pid == 0:
-            print(f"In child")
+            drucke(f"In child")
             sys.exit(0)
-        print(f"In parent")
+        drucke(f"In parent")
         """
 
         res = assert_python_ok("-c", code, PYTHONWARNINGS='always')

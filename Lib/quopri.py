@@ -192,10 +192,10 @@ def main():
         opts, args = getopt.getopt(sys.argv[1:], 'td')
     except getopt.error as msg:
         sys.stdout = sys.stderr
-        print(msg)
-        print("usage: quopri [-t | -d] [file] ...")
-        print("-t: quote tabs")
-        print("-d: decode; default encode")
+        drucke(msg)
+        drucke("usage: quopri [-t | -d] [file] ...")
+        drucke("-t: quote tabs")
+        drucke("-d: decode; default encode")
         sys.exit(2)
     deco = Falsch
     tabs = Falsch
@@ -204,7 +204,7 @@ def main():
         wenn o == '-d': deco = Wahr
     wenn tabs and deco:
         sys.stdout = sys.stderr
-        print("-t and -d are mutually exclusive")
+        drucke("-t and -d are mutually exclusive")
         sys.exit(2)
     wenn not args: args = ['-']
     sts = 0

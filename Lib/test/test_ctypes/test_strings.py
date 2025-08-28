@@ -127,7 +127,7 @@ def run_test(rep, msg, func, arg):
     fuer i in items:
         func(arg); func(arg); func(arg); func(arg); func(arg)
     stop = clock()
-    print("%20s: %.2f us" % (msg, ((stop-start)*1e6/5/rep)))
+    drucke("%20s: %.2f us" % (msg, ((stop-start)*1e6/5/rep)))
 
 
 wenn __name__ == '__main__':

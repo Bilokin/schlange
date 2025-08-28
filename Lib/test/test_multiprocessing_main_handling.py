@@ -68,7 +68,7 @@ wenn __name__ == '__main__':
                 break
 
     results.sort()
-    print(start_method, "->", results)
+    drucke(start_method, "->", results)
 
     pool.join()
 """
@@ -100,7 +100,7 @@ with Pool(5) as pool:
             break
 
 results.sort()
-print(start_method, "->", results)
+drucke(start_method, "->", results)
 
 pool.join()
 """
@@ -153,8 +153,8 @@ klasse MultiProcessingCmdLineMixin():
 
     def _check_output(self, script_name, exit_code, out, err):
         wenn verbose > 1:
-            print("Output from test script %r:" % script_name)
-            print(repr(out))
+            drucke("Output from test script %r:" % script_name)
+            drucke(repr(out))
         self.assertEqual(exit_code, 0)
         self.assertEqual(err.decode('utf-8'), '')
         expected_results = "%s -> [1, 4, 9]" % self.start_method

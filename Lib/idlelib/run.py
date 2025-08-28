@@ -141,7 +141,7 @@ def main(del_exitfunc=Falsch):
         assert(len(sys.argv) > 1)
         port = int(sys.argv[-1])
     except:
-        print("IDLE Subprocess: no IP port passed in sys.argv.",
+        drucke("IDLE Subprocess: no IP port passed in sys.argv.",
               file=sys.__stderr__)
         return
 
@@ -199,11 +199,11 @@ def manage_socket(address):
             server = MyRPCServer(address, MyHandler)
             break
         except OSError as err:
-            print("IDLE Subprocess: OSError: " + err.args[1] +
+            drucke("IDLE Subprocess: OSError: " + err.args[1] +
                   ", retrying....", file=sys.__stderr__)
             socket_error = err
     sonst:
-        print("IDLE Subprocess: Connection to "
+        drucke("IDLE Subprocess: Connection to "
               "IDLE GUI failed, exiting.", file=sys.__stderr__)
         show_socket_error(socket_error, address)
         global exit_now
@@ -256,24 +256,24 @@ def print_exception():
         cause = exc.__cause__
         wenn cause is not Nichts and id(cause) not in seen:
             print_exc(type(cause), cause, cause.__traceback__)
-            print("\nThe above exception was the direct cause "
+            drucke("\nThe above exception was the direct cause "
                   "of the following exception:\n", file=efile)
         sowenn (context is not Nichts and
               not exc.__suppress_context__ and
               id(context) not in seen):
             print_exc(type(context), context, context.__traceback__)
-            print("\nDuring handling of the above exception, "
+            drucke("\nDuring handling of the above exception, "
                   "another exception occurred:\n", file=efile)
         wenn tb:
             tbe = traceback.extract_tb(tb)
-            print('Traceback (most recent call last):', file=efile)
+            drucke('Traceback (most recent call last):', file=efile)
             exclude = ("run.py", "rpc.py", "threading.py", "queue.py",
                        "debugger_r.py", "bdb.py")
             cleanup_traceback(tbe, exclude)
             traceback.print_list(tbe, file=efile)
         lines = get_message_lines(typ, exc, tb)
         fuer line in lines:
-            print(line, end='', file=efile)
+            drucke(line, end='', file=efile)
 
     print_exc(typ, val, tb)
 
@@ -297,7 +297,7 @@ def cleanup_traceback(tb, exclude):
     wenn len(tb) == 0:
         # exception was in IDLE internals, don't prune!
         tb[:] = orig_tb[:]
-        print("** IDLE Internal Exception: ", file=sys.stderr)
+        drucke("** IDLE Internal Exception: ", file=sys.stderr)
     rpchandler = rpc.objecttable['exec'].rpchandler
     fuer i in range(len(tb)):
         fn, ln, nm, line = tb[i]
@@ -418,7 +418,7 @@ klasse MyRPCServer(rpc.RPCServer):
             thread.interrupt_main()
         except:
             erf = sys.__stderr__
-            print(textwrap.dedent(f"""
+            drucke(textwrap.dedent(f"""
             {'-'*40}
             Unhandled exception in user code execution server!'
             Thread: {threading.current_thread().name}
@@ -426,7 +426,7 @@ klasse MyRPCServer(rpc.RPCServer):
             Request: {request!r}
             """), file=erf)
             traceback.print_exc(limit=-20, file=erf)
-            print(textwrap.dedent(f"""
+            drucke(textwrap.dedent(f"""
             *** Unrecoverable, server exiting!
 
             Users should never see this message; it is likely transient.
@@ -594,7 +594,7 @@ klasse Executive:
             wenn e.args:  # SystemExit called with an argument.
                 ob = e.args[0]
                 wenn not isinstance(ob, (type(Nichts), int)):
-                    print('SystemExit: ' + str(ob), file=sys.stderr)
+                    drucke('SystemExit: ' + str(ob), file=sys.stderr)
             # Return to the interactive prompt.
         except:
             self.user_exc_info = sys.exc_info()  # For testing, hook, viewer.

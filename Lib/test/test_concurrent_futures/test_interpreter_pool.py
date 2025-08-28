@@ -178,9 +178,9 @@ klasse InterpreterPoolExecutorTest(
                 exe = InterpreterPoolExecutor(initializer=init,
                                               initargs=('initialized',))
                 fut = exe.submit(get_init_status)
-                print(fut.result())  # 'initialized'
+                drucke(fut.result())  # 'initialized'
                 exe.shutdown(wait=Wahr)
-                print(INITIALIZER_STATUS)  # 'uninitialized'
+                drucke(INITIALIZER_STATUS)  # 'uninitialized'
            """
         with os_helper.temp_dir() as tempdir:
             filename = script_helper.make_script(tempdir, 'my-script', text)
@@ -474,7 +474,7 @@ klasse InterpreterPoolExecutorTest(
         except AttributeError:
             pass
         sonst:
-            print('AttributeError not raised!', file=sys.stderr)
+            drucke('AttributeError not raised!', file=sys.stderr)
             sys.exit(1)
 
         try:
@@ -482,13 +482,13 @@ klasse InterpreterPoolExecutorTest(
         except ImportError:
             pass
         sonst:
-            print('ImportError not raised!', file=sys.stderr)
+            drucke('ImportError not raised!', file=sys.stderr)
             sys.exit(1)
 
         from concurrent.futures import *
 
         wenn 'InterpreterPoolExecutor' in globals():
-            print('InterpreterPoolExecutor should not be imported!',
+            drucke('InterpreterPoolExecutor should not be imported!',
                   file=sys.stderr)
             sys.exit(1)
         """)

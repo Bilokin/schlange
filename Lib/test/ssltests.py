@@ -13,7 +13,7 @@ TESTS = [
 ]
 
 def run_regrtests(*extra_args):
-    print(ssl.OPENSSL_VERSION)
+    drucke(ssl.OPENSSL_VERSION)
     args = [
         sys.executable,
         '-Werror', '-bb',  # turn warnings into exceptions

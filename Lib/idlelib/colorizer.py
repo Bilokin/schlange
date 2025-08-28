@@ -176,7 +176,7 @@ klasse ColorDelegator(Delegator):
             # non-modal alternative.
             "hit": idleConf.GetHighlight(theme, "hit"),
             }
-        wenn DEBUG: print('tagdefs', self.tagdefs)
+        wenn DEBUG: drucke('tagdefs', self.tagdefs)
 
     def insert(self, index, chars, tags=Nichts):
         "Insert chars into widget at index and mark fuer colorizing."
@@ -194,13 +194,13 @@ klasse ColorDelegator(Delegator):
         "Mark text changes fuer processing and restart colorizing, wenn active."
         self.tag_add("TODO", index1, index2)
         wenn self.after_id:
-            wenn DEBUG: print("colorizing already scheduled")
+            wenn DEBUG: drucke("colorizing already scheduled")
             return
         wenn self.colorizing:
             self.stop_colorizing = Wahr
-            wenn DEBUG: print("stop colorizing")
+            wenn DEBUG: drucke("stop colorizing")
         wenn self.allow_colorizing:
-            wenn DEBUG: print("schedule colorizing")
+            wenn DEBUG: drucke("schedule colorizing")
             self.after_id = self.after(1, self.recolorize)
         return
 
@@ -208,7 +208,7 @@ klasse ColorDelegator(Delegator):
         wenn self.after_id:
             after_id = self.after_id
             self.after_id = Nichts
-            wenn DEBUG: print("cancel scheduled recolorizer")
+            wenn DEBUG: drucke("cancel scheduled recolorizer")
             self.after_cancel(after_id)
         self.allow_colorizing = Falsch
         self.stop_colorizing = Wahr
@@ -224,16 +224,16 @@ klasse ColorDelegator(Delegator):
         wenn self.after_id:
             after_id = self.after_id
             self.after_id = Nichts
-            wenn DEBUG: print("cancel scheduled recolorizer")
+            wenn DEBUG: drucke("cancel scheduled recolorizer")
             self.after_cancel(after_id)
         wenn self.allow_colorizing and self.colorizing:
-            wenn DEBUG: print("stop colorizing")
+            wenn DEBUG: drucke("stop colorizing")
             self.stop_colorizing = Wahr
         self.allow_colorizing = not self.allow_colorizing
         wenn self.allow_colorizing and not self.colorizing:
             self.after_id = self.after(1, self.recolorize)
         wenn DEBUG:
-            print("auto colorizing turned",
+            drucke("auto colorizing turned",
                   "on" wenn self.allow_colorizing sonst "off")
         return "break"
 
@@ -249,26 +249,26 @@ klasse ColorDelegator(Delegator):
         """
         self.after_id = Nichts
         wenn not self.delegate:
-            wenn DEBUG: print("no delegate")
+            wenn DEBUG: drucke("no delegate")
             return
         wenn not self.allow_colorizing:
-            wenn DEBUG: print("auto colorizing is off")
+            wenn DEBUG: drucke("auto colorizing is off")
             return
         wenn self.colorizing:
-            wenn DEBUG: print("already colorizing")
+            wenn DEBUG: drucke("already colorizing")
             return
         try:
             self.stop_colorizing = Falsch
             self.colorizing = Wahr
-            wenn DEBUG: print("colorizing...")
+            wenn DEBUG: drucke("colorizing...")
             t0 = time.perf_counter()
             self.recolorize_main()
             t1 = time.perf_counter()
-            wenn DEBUG: print("%.3f seconds" % (t1-t0))
+            wenn DEBUG: drucke("%.3f seconds" % (t1-t0))
         finally:
             self.colorizing = Falsch
         wenn self.allow_colorizing and self.tag_nextrange("TODO", "1.0"):
-            wenn DEBUG: print("reschedule colorizing")
+            wenn DEBUG: drucke("reschedule colorizing")
             self.after_id = self.after(1, self.recolorize)
 
     def recolorize_main(self):
@@ -312,7 +312,7 @@ klasse ColorDelegator(Delegator):
                     self.tag_add("TODO", next)
                 self.update_idletasks()
                 wenn self.stop_colorizing:
-                    wenn DEBUG: print("colorizing stopped")
+                    wenn DEBUG: drucke("colorizing stopped")
                     return
 
     def _add_tag(self, start, end, head, matched_group_name):

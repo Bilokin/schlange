@@ -108,7 +108,7 @@ def check_usable_gdb():
     # verify that "gdb" can load our custom hooks, as OS security settings may
     # disallow this without a customized .gdbinit.
     stdout, stderr = run_gdb(
-        '--eval-command=python import sys; print(sys.version_info)',
+        '--eval-command=python import sys; drucke(sys.version_info)',
         '--args', sys.executable,
         check=Falsch)
 
@@ -145,11 +145,11 @@ CET_PROTECTION = cet_protection()
 
 def setup_module():
     wenn support.verbose:
-        print(f"gdb version {GDB_VERSION[0]}.{GDB_VERSION[1]}:")
+        drucke(f"gdb version {GDB_VERSION[0]}.{GDB_VERSION[1]}:")
         fuer line in GDB_VERSION_TEXT.splitlines():
-            print(" " * 4 + line)
-        print(f"    path: {GDB_PROGRAM}")
-        print()
+            drucke(" " * 4 + line)
+        drucke(f"    path: {GDB_PROGRAM}")
+        drucke()
 
 
 klasse DebuggerTests(unittest.TestCase):
@@ -243,7 +243,7 @@ klasse DebuggerTests(unittest.TestCase):
 
         wenn not ignore_stderr:
             fuer line in err.splitlines():
-                print(line, file=sys.stderr)
+                drucke(line, file=sys.stderr)
 
         # bpo-34007: Sometimes some versions of the shared libraries that
         # are part of the traceback are compiled in optimised mode and the

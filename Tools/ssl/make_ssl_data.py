@@ -232,11 +232,11 @@ def main(args=Nichts):
 
     wenn args.output is Nichts:
         fuer line in lines:
-            print(line)
+            drucke(line)
     sonst:
         with open(args.output, 'w') as output:
             fuer line in lines:
-                print(line, file=output)
+                drucke(line, file=output)
 
 
 wenn __name__ == "__main__":

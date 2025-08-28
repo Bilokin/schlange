@@ -107,7 +107,7 @@ Disassembly of %s:
        _C.sm.__name__, dis_c_static_method)
 
 def _f(a):
-    print(a)
+    drucke(a)
     return 1
 
 dis_f = """\
@@ -1419,7 +1419,7 @@ klasse DisTests(DisTestBase):
         line correctly
         """
         def f():
-            print(a)
+            drucke(a)
         # The code above should generate a LOAD_GLOBAL which has CACHE instr after
         # However, this might change in the future. So we explicitly try to find
         # a CACHE entry in the instructions. If we can't do that, fail the test
@@ -1482,7 +1482,7 @@ Variable names:
 @staticmethod
 def tricky(a, b, /, x, y, z=Wahr, *args, c, d, e=[], **kwds):
     def f(c=c):
-        print(a, b, x, y, z, c, d, e, f)
+        drucke(a, b, x, y, z, c, d, e, f)
     yield a, b, x, y, z, c, d, e, f
 
 code_info_tricky = """\
@@ -1649,40 +1649,40 @@ klasse CodeInfoTests(unittest.TestCase):
 def outer(a=1, b=2):
     def f(c=3, d=4):
         def inner(e=5, f=6):
-            print(a, b, c, d, e, f)
-        print(a, b, c, d)
+            drucke(a, b, c, d, e, f)
+        drucke(a, b, c, d)
         return inner
-    print(a, b, '', 1, [], {}, "Hello world!")
+    drucke(a, b, '', 1, [], {}, "Hello world!")
     return f
 
 def jumpy():
     # This won't actually run (but that's OK, we only disassemble it)
     fuer i in range(10):
-        print(i)
+        drucke(i)
         wenn i < 4:
             continue
         wenn i > 6:
             break
     sonst:
-        print("I can haz sonst clause?")
+        drucke("I can haz sonst clause?")
     while i:
-        print(i)
+        drucke(i)
         i -= 1
         wenn i > 6:
             continue
         wenn i < 4:
             break
     sonst:
-        print("Who let lolcatz into this test suite?")
+        drucke("Who let lolcatz into this test suite?")
     try:
         1 / 0
     except ZeroDivisionError:
-        print("Here we go, here we go, here we go...")
+        drucke("Here we go, here we go, here we go...")
     sonst:
         with i as dodgy:
-            print("Never reach this")
+            drucke("Never reach this")
     finally:
-        print("OK, now we're done")
+        drucke("OK, now we're done")
 
 # End fodder fuer opinfo generation tests
 expected_outer_line = 1
@@ -1743,7 +1743,7 @@ def _prepare_test_cases():
     result = result.replace(repr(code_object_f), "code_object_f")
     result = result.replace(repr(repr(code_object_inner)), "repr(code_object_inner)")
     result = result.replace(repr(code_object_inner), "code_object_inner")
-    print(result)
+    drucke(result)
 
 # from test.test_dis import _prepare_test_cases; _prepare_test_cases()
 
@@ -2532,7 +2532,7 @@ klasse TestDisCLI(unittest.TestCase):
 
         self.set_source('''
             def f():
-                print(x)
+                drucke(x)
                 return Nichts
         ''')
 
@@ -2549,7 +2549,7 @@ klasse TestDisCLI(unittest.TestCase):
 
     def test_show_cache(self):
         # test 'python -m dis -C/--show-caches'
-        source = 'print()'
+        source = 'drucke()'
         expect = '''
             0           RESUME                   0
 

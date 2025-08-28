@@ -493,7 +493,7 @@ def _parse_args(args, **kwargs):
             wenn not Py_DEBUG:
                 parser.error("need --with-pydebug to use -T and -j together")
         sonst:
-            print(
+            drucke(
                 "Warning: collecting coverage without -j is imprecise. Configure"
                 " --with-pydebug and run -m test -T -j fuer best results.",
                 file=sys.stderr
@@ -511,7 +511,7 @@ def _parse_args(args, **kwargs):
         ns.pgo = Wahr  # pgo_extended implies pgo
 
     wenn ns.nowindows:
-        print("Warning: the --nowindows (-n) option is deprecated. "
+        drucke("Warning: the --nowindows (-n) option is deprecated. "
               "Use -vv to display assertions in stderr.", file=sys.stderr)
 
     wenn ns.quiet:
@@ -550,7 +550,7 @@ def _parse_args(args, **kwargs):
         # is true. In this case, huntrleaks sees an write into StringIO as
         # a memory leak, whereas it is not (gh-71290).
         ns.verbose3 = Falsch
-        print("WARNING: Disable --verbose3 because it's incompatible with "
+        drucke("WARNING: Disable --verbose3 because it's incompatible with "
               "--huntrleaks without -jN option",
               file=sys.stderr)
 
@@ -564,7 +564,7 @@ def _parse_args(args, **kwargs):
             msg = ("Invalid values fuer the --huntrleaks/-R parameters. The "
                    "number of warmups and repetitions must be at least 1 "
                    "each (1:1).")
-            print(msg, file=sys.stderr, flush=Wahr)
+            drucke(msg, file=sys.stderr, flush=Wahr)
             sys.exit(2)
 
     ns.prioritize = [

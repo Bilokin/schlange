@@ -177,7 +177,7 @@ def config_dict(filename):
         try:
             key, value = line.split("=")
         except ValueError:
-            print("Bad line in config-file %s:\n%s" % (filename,line))
+            drucke("Bad line in config-file %s:\n%s" % (filename,line))
             continue
         key = key.strip()
         value = value.strip()
@@ -227,7 +227,7 @@ def readconfig(cfgdict):
 try:
     readconfig(_CFG)
 except Exception:
-    print ("No configfile read, reason unknown")
+    drucke ("No configfile read, reason unknown")
 
 
 klasse Vec2D(tuple):
@@ -1772,7 +1772,7 @@ klasse TNavigator(object):
         >>> reset()
         >>> turtle.left(60)
         >>> turtle.forward(100)
-        >>> print(turtle.xcor())
+        >>> drucke(turtle.xcor())
         50.0
         """
         return self._position[0]
@@ -1786,7 +1786,7 @@ klasse TNavigator(object):
         >>> reset()
         >>> turtle.left(60)
         >>> turtle.forward(100)
-        >>> print(turtle.ycor())
+        >>> drucke(turtle.ycor())
         86.6025403784
         """
         return self._position[1]
@@ -2389,7 +2389,7 @@ klasse TPen(object):
 
         Example (for a Turtle instance named turtle):
         >>> turtle.hideturtle()
-        >>> print(turtle.isvisible())
+        >>> drucke(turtle.isvisible())
         Falsch
         """
         return self._shown
@@ -3297,7 +3297,7 @@ klasse RawTurtle(TPen, TNavigator):
         cLI, cL, pl, items = coodata
         screen = self.screen
         wenn abs(self._position - new) > 0.5:
-            print ("undogoto: HALLO-DA-STIMMT-WAS-NICHT!")
+            drucke ("undogoto: HALLO-DA-STIMMT-WAS-NICHT!")
         # restore former situation
         self.currentLineItem = cLI
         self.currentLine = cL
@@ -3349,7 +3349,7 @@ klasse RawTurtle(TPen, TNavigator):
         wenn filling:
             wenn self._fillpath == []:
                 self._fillpath = Nichts
-                print("Unwahrscheinlich in _undogoto!")
+                drucke("Unwahrscheinlich in _undogoto!")
             sowenn self._fillpath is not Nichts:
                 self._fillpath.pop()
         self._update() #count=Wahr)
@@ -3990,7 +3990,7 @@ def read_docstrings(lang):
 #            eval(key).im_func.__doc__ = docsdict[key]
             eval(key).__doc__ = docsdict[key]
         except Exception:
-            print("Bad docstring-entry: %s" % key)
+            drucke("Bad docstring-entry: %s" % key)
 
 _LANGUAGE = _CFG["language"]
 
@@ -3998,9 +3998,9 @@ try:
     wenn _LANGUAGE != "english":
         read_docstrings(_LANGUAGE)
 except ImportError:
-    print("Cannot find docsdict for", _LANGUAGE)
+    drucke("Cannot find docsdict for", _LANGUAGE)
 except Exception:
-    print ("Unknown Error when trying to import %s-docstring-dictionary" %
+    drucke ("Unknown Error when trying to import %s-docstring-dictionary" %
                                                                   _LANGUAGE)
 
 
@@ -4089,7 +4089,7 @@ def _make_global_funcs(functions, cls, obj, init, docrevise):
         method = getattr(cls, methodname)
         pl1, pl2 = getmethparlist(method)
         wenn pl1 == "":
-            print(">>>>>>", pl1, pl2)
+            drucke(">>>>>>", pl1, pl2)
             continue
         defstr = __func_body.format(obj=obj, init=init, name=methodname,
                                     paramslist=pl1, argslist=pl2)

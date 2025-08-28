@@ -471,49 +471,49 @@ wenn (os.name == "posix" and
 def test():
     from ctypes import cdll
     wenn os.name == "nt":
-        print(cdll.msvcrt)
-        print(cdll.load("msvcrt"))
-        print(find_library("msvcrt"))
+        drucke(cdll.msvcrt)
+        drucke(cdll.load("msvcrt"))
+        drucke(find_library("msvcrt"))
 
     wenn os.name == "posix":
         # find and load_version
-        print(find_library("m"))
-        print(find_library("c"))
-        print(find_library("bz2"))
+        drucke(find_library("m"))
+        drucke(find_library("c"))
+        drucke(find_library("bz2"))
 
         # load
         wenn sys.platform == "darwin":
-            print(cdll.LoadLibrary("libm.dylib"))
-            print(cdll.LoadLibrary("libcrypto.dylib"))
-            print(cdll.LoadLibrary("libSystem.dylib"))
-            print(cdll.LoadLibrary("System.framework/System"))
+            drucke(cdll.LoadLibrary("libm.dylib"))
+            drucke(cdll.LoadLibrary("libcrypto.dylib"))
+            drucke(cdll.LoadLibrary("libSystem.dylib"))
+            drucke(cdll.LoadLibrary("System.framework/System"))
         # issue-26439 - fix broken test call fuer AIX
         sowenn sys.platform.startswith("aix"):
             from ctypes import CDLL
             wenn sys.maxsize < 2**32:
-                print(f"Using CDLL(name, os.RTLD_MEMBER): {CDLL('libc.a(shr.o)', os.RTLD_MEMBER)}")
-                print(f"Using cdll.LoadLibrary(): {cdll.LoadLibrary('libc.a(shr.o)')}")
+                drucke(f"Using CDLL(name, os.RTLD_MEMBER): {CDLL('libc.a(shr.o)', os.RTLD_MEMBER)}")
+                drucke(f"Using cdll.LoadLibrary(): {cdll.LoadLibrary('libc.a(shr.o)')}")
                 # librpm.so is only available as 32-bit shared library
-                print(find_library("rpm"))
-                print(cdll.LoadLibrary("librpm.so"))
+                drucke(find_library("rpm"))
+                drucke(cdll.LoadLibrary("librpm.so"))
             sonst:
-                print(f"Using CDLL(name, os.RTLD_MEMBER): {CDLL('libc.a(shr_64.o)', os.RTLD_MEMBER)}")
-                print(f"Using cdll.LoadLibrary(): {cdll.LoadLibrary('libc.a(shr_64.o)')}")
-            print(f"crypt\t:: {find_library('crypt')}")
-            print(f"crypt\t:: {cdll.LoadLibrary(find_library('crypt'))}")
-            print(f"crypto\t:: {find_library('crypto')}")
-            print(f"crypto\t:: {cdll.LoadLibrary(find_library('crypto'))}")
+                drucke(f"Using CDLL(name, os.RTLD_MEMBER): {CDLL('libc.a(shr_64.o)', os.RTLD_MEMBER)}")
+                drucke(f"Using cdll.LoadLibrary(): {cdll.LoadLibrary('libc.a(shr_64.o)')}")
+            drucke(f"crypt\t:: {find_library('crypt')}")
+            drucke(f"crypt\t:: {cdll.LoadLibrary(find_library('crypt'))}")
+            drucke(f"crypto\t:: {find_library('crypto')}")
+            drucke(f"crypto\t:: {cdll.LoadLibrary(find_library('crypto'))}")
         sonst:
-            print(cdll.LoadLibrary("libm.so"))
-            print(cdll.LoadLibrary("libcrypt.so"))
-            print(find_library("crypt"))
+            drucke(cdll.LoadLibrary("libm.so"))
+            drucke(cdll.LoadLibrary("libcrypt.so"))
+            drucke(find_library("crypt"))
 
     try:
         dllist
     except NameError:
-        print('dllist() not available')
+        drucke('dllist() not available')
     sonst:
-        print(dllist())
+        drucke(dllist())
 
 wenn __name__ == "__main__":
     test()

@@ -70,7 +70,7 @@ klasse shlex:
     def push_token(self, tok):
         "Push a token onto the stack popped by the get_token method"
         wenn self.debug >= 1:
-            print("shlex: pushing token " + repr(tok))
+            drucke("shlex: pushing token " + repr(tok))
         self.pushback.appendleft(tok)
 
     def push_source(self, newstream, newfile=Nichts):
@@ -83,16 +83,16 @@ klasse shlex:
         self.lineno = 1
         wenn self.debug:
             wenn newfile is not Nichts:
-                print('shlex: pushing to file %s' % (self.infile,))
+                drucke('shlex: pushing to file %s' % (self.infile,))
             sonst:
-                print('shlex: pushing to stream %s' % (self.instream,))
+                drucke('shlex: pushing to stream %s' % (self.instream,))
 
     def pop_source(self):
         "Pop the input source stack."
         self.instream.close()
         (self.infile, self.instream, self.lineno) = self.filestack.popleft()
         wenn self.debug:
-            print('shlex: popping to %s, line %d' \
+            drucke('shlex: popping to %s, line %d' \
                   % (self.instream, self.lineno))
         self.state = ' '
 
@@ -101,7 +101,7 @@ klasse shlex:
         wenn self.pushback:
             tok = self.pushback.popleft()
             wenn self.debug >= 1:
-                print("shlex: popping token " + repr(tok))
+                drucke("shlex: popping token " + repr(tok))
             return tok
         # No pushback.  Get a token.
         raw = self.read_token()
@@ -123,9 +123,9 @@ klasse shlex:
         # Neither inclusion nor EOF
         wenn self.debug >= 1:
             wenn raw != self.eof:
-                print("shlex: token=" + repr(raw))
+                drucke("shlex: token=" + repr(raw))
             sonst:
-                print("shlex: token=EOF")
+                drucke("shlex: token=EOF")
         return raw
 
     def read_token(self):
@@ -139,7 +139,7 @@ klasse shlex:
             wenn nextchar == '\n':
                 self.lineno += 1
             wenn self.debug >= 3:
-                print("shlex: in state %r I see character: %r" % (self.state,
+                drucke("shlex: in state %r I see character: %r" % (self.state,
                                                                   nextchar))
             wenn self.state is Nichts:
                 self.token = ''        # past end of file
@@ -150,7 +150,7 @@ klasse shlex:
                     break
                 sowenn nextchar in self.whitespace:
                     wenn self.debug >= 2:
-                        print("shlex: I see whitespace in whitespace state")
+                        drucke("shlex: I see whitespace in whitespace state")
                     wenn self.token or (self.posix and quoted):
                         break   # emit current token
                     sonst:
@@ -184,7 +184,7 @@ klasse shlex:
                 quoted = Wahr
                 wenn not nextchar:      # end of file
                     wenn self.debug >= 2:
-                        print("shlex: I see EOF in quotes state")
+                        drucke("shlex: I see EOF in quotes state")
                     # XXX what error should be raised here?
                     raise ValueError("No closing quotation")
                 wenn nextchar == self.state:
@@ -203,7 +203,7 @@ klasse shlex:
             sowenn self.state in self.escape:
                 wenn not nextchar:      # end of file
                     wenn self.debug >= 2:
-                        print("shlex: I see EOF in escape state")
+                        drucke("shlex: I see EOF in escape state")
                     # XXX what error should be raised here?
                     raise ValueError("No escaped character")
                 # In posix shells, only the quote itself or the escape
@@ -219,7 +219,7 @@ klasse shlex:
                     break
                 sowenn nextchar in self.whitespace:
                     wenn self.debug >= 2:
-                        print("shlex: I see whitespace in word state")
+                        drucke("shlex: I see whitespace in word state")
                     self.state = ' '
                     wenn self.token or (self.posix and quoted):
                         break   # emit current token
@@ -257,7 +257,7 @@ klasse shlex:
                     sonst:
                         self.pushback.appendleft(nextchar)
                     wenn self.debug >= 2:
-                        print("shlex: I see punctuation in word state")
+                        drucke("shlex: I see punctuation in word state")
                     self.state = ' '
                     wenn self.token or (self.posix and quoted):
                         break   # emit current token
@@ -269,9 +269,9 @@ klasse shlex:
             result = Nichts
         wenn self.debug > 1:
             wenn result:
-                print("shlex: raw token=" + repr(result))
+                drucke("shlex: raw token=" + repr(result))
             sonst:
-                print("shlex: raw token=EOF")
+                drucke("shlex: raw token=EOF")
         return result
 
     def sourcehook(self, newfile):
@@ -337,7 +337,7 @@ def quote(s):
 
 def _print_tokens(lexer):
     while tt := lexer.get_token():
-        print("Token: " + repr(tt))
+        drucke("Token: " + repr(tt))
 
 wenn __name__ == '__main__':
     wenn len(sys.argv) == 1:

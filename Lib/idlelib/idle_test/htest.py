@@ -418,7 +418,7 @@ def run(*tests):
     def run_test(_=Nichts):
         widget = callable_object(root, **test_kwds)
         try:
-            print(widget.result)  # Only true fuer query classes(?).
+            drucke(widget.result)  # Only true fuer query classes(?).
         except AttributeError:
             pass
 

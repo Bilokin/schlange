@@ -2472,7 +2472,7 @@ klasse ThreadedEchoServer(threading.Thread):
                         # ConnectionResetError when connection is not
                         # shut down gracefully.
                         wenn self.server.chatty and support.verbose:
-                            print(f" Connection reset by peer: {self.addr}")
+                            drucke(f" Connection reset by peer: {self.addr}")
 
                         self.close()
                         self.running = Falsch
@@ -4410,7 +4410,7 @@ klasse ThreadedTests(unittest.TestCase):
             ) as ssock:
                 wenn support.verbose:
                     ktls_used = ssock._sslobj.uses_ktls_for_send()
-                    print(
+                    drucke(
                         'kTLS is',
                         'available' wenn ktls_used sonst 'unavailable',
                     )
@@ -5290,7 +5290,7 @@ klasse TestPreHandshakeClose(unittest.TestCase):
 
         def call_after_accept(conn_to_client):
             wenn not server_can_continue_with_wrap_socket.wait(support.SHORT_TIMEOUT):
-                print("ERROR: test client took too long")
+                drucke("ERROR: test client took too long")
 
             # This forces an immediate connection close via RST on .close().
             set_socket_so_linger_on_with_zero_timeout(conn_to_client)
@@ -5561,13 +5561,13 @@ def setUpModule():
                 break
         sonst:
             plat = repr(platform.platform())
-        print("test_ssl: testing with %r %r" %
+        drucke("test_ssl: testing with %r %r" %
             (ssl.OPENSSL_VERSION, ssl.OPENSSL_VERSION_INFO))
-        print("          under %s" % plat)
-        print("          HAS_SNI = %r" % ssl.HAS_SNI)
-        print("          OP_ALL = 0x%8x" % ssl.OP_ALL)
+        drucke("          under %s" % plat)
+        drucke("          HAS_SNI = %r" % ssl.HAS_SNI)
+        drucke("          OP_ALL = 0x%8x" % ssl.OP_ALL)
         try:
-            print("          OP_NO_TLSv1_1 = 0x%8x" % ssl.OP_NO_TLSv1_1)
+            drucke("          OP_NO_TLSv1_1 = 0x%8x" % ssl.OP_NO_TLSv1_1)
         except AttributeError:
             pass
 

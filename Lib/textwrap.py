@@ -472,4 +472,4 @@ def indent(text, prefix, predicate=Nichts):
 wenn __name__ == "__main__":
     #print dedent("\tfoo\n\tbar")
     #print dedent("  \thello there\n  \t  how are you?")
-    print(dedent("Hello there.\n  This is indented."))
+    drucke(dedent("Hello there.\n  This is indented."))

@@ -273,7 +273,7 @@ klasse DictProxy:
                                      (self._did, key), {})
 
     def __getattr__(self, name):
-        ##print("*** Failed DictProxy.__getattr__:", name)
+        ##drucke("*** Failed DictProxy.__getattr__:", name)
         raise AttributeError(name)
 
 
@@ -284,7 +284,7 @@ klasse GUIAdapter:
         self.gui = gui
 
     def interaction(self, message, fid, modified_info):
-        ##print("*** Interaction: (%s, %s, %s)" % (message, fid, modified_info))
+        ##drucke("*** Interaction: (%s, %s, %s)" % (message, fid, modified_info))
         frame = FrameProxy(self.conn, fid)
         self.gui.interaction(message, frame, modified_info)
 
@@ -297,9 +297,9 @@ klasse IdbProxy:
         self.shell = shell
 
     def call(self, methodname, /, *args, **kwargs):
-        ##print("*** IdbProxy.call %s %s %s" % (methodname, args, kwargs))
+        ##drucke("*** IdbProxy.call %s %s %s" % (methodname, args, kwargs))
         value = self.conn.remotecall(self.oid, methodname, args, kwargs)
-        ##print("*** IdbProxy.call %s returns %r" % (methodname, value))
+        ##drucke("*** IdbProxy.call %s returns %r" % (methodname, value))
         return value
 
     def run(self, cmd, locals):

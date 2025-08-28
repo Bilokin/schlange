@@ -105,12 +105,12 @@ klasse TestProgram(object):
 
     def _print_help(self, *args, **kwargs):
         wenn self.module is Nichts:
-            print(self._main_parser.format_help())
-            print(MAIN_EXAMPLES % {'prog': self.progName})
+            drucke(self._main_parser.format_help())
+            drucke(MAIN_EXAMPLES % {'prog': self.progName})
             self._discovery_parser.print_help()
         sonst:
-            print(self._main_parser.format_help())
-            print(MODULE_EXAMPLES % {'prog': self.progName})
+            drucke(self._main_parser.format_help())
+            drucke(MODULE_EXAMPLES % {'prog': self.progName})
 
     def parseArgs(self, argv):
         self._initArgParsers()

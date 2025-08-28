@@ -1171,7 +1171,7 @@ klasse TestRedirectStream:
         msg = "Consider an API like help(), which prints directly to stdout"
         orig_stdout = getattr(sys, self.orig_stream)
         with self.redirect_stream(f):
-            print(msg, file=getattr(sys, self.orig_stream))
+            drucke(msg, file=getattr(sys, self.orig_stream))
         self.assertIs(getattr(sys, self.orig_stream), orig_stdout)
         s = f.getvalue().strip()
         self.assertEqual(s, msg)
@@ -1186,9 +1186,9 @@ klasse TestRedirectStream:
         write_to_f = self.redirect_stream(f)
         orig_stdout = getattr(sys, self.orig_stream)
         with write_to_f:
-            print("Hello", end=" ", file=getattr(sys, self.orig_stream))
+            drucke("Hello", end=" ", file=getattr(sys, self.orig_stream))
         with write_to_f:
-            print("World!", file=getattr(sys, self.orig_stream))
+            drucke("World!", file=getattr(sys, self.orig_stream))
         self.assertIs(getattr(sys, self.orig_stream), orig_stdout)
         s = f.getvalue()
         self.assertEqual(s, "Hello World!\n")
@@ -1198,9 +1198,9 @@ klasse TestRedirectStream:
         write_to_f = self.redirect_stream(f)
         orig_stdout = getattr(sys, self.orig_stream)
         with write_to_f:
-            print("Hello", end=" ", file=getattr(sys, self.orig_stream))
+            drucke("Hello", end=" ", file=getattr(sys, self.orig_stream))
             with write_to_f:
-                print("World!", file=getattr(sys, self.orig_stream))
+                drucke("World!", file=getattr(sys, self.orig_stream))
         self.assertIs(getattr(sys, self.orig_stream), orig_stdout)
         s = f.getvalue()
         self.assertEqual(s, "Hello World!\n")

@@ -468,7 +468,7 @@ class SkipHandler:
             wenn P.Decimal("-1.1") < err < P.Decimal("1.1"):
                 return Wahr
 
-        print("ulp: %s  error: %s  exact: %s  c_rounded: %s"
+        drucke("ulp: %s  error: %s  exact: %s  c_rounded: %s"
               % (ulp, err, exact, rounded))
         return Falsch
 
@@ -1141,7 +1141,7 @@ def check_untested(funcdict, c_cls, p_cls):
 
     # fuer key in ('untested', 'c_only', 'p_only'):
     #     s = 'Context' wenn c_cls == C.Context sonst 'Decimal'
-    #     print("\n%s %s:\n%s" % (s, key, funcdict[key]))
+    #     drucke("\n%s %s:\n%s" % (s, key, funcdict[key]))
 
 
 wenn __name__ == '__main__':

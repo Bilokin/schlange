@@ -1217,7 +1217,7 @@ klasse TestPasteEvent(TestCase):
             "def a():\n"
             "  fuer x in range(10):\n"
             "    wenn x%2:\n"
-            "      print(x)\n"
+            "      drucke(x)\n"
             "    sonst:\n"
             "      pass\n"
         )
@@ -1288,7 +1288,7 @@ klasse TestPasteEvent(TestCase):
             "def a():\n"
                 "for x in range(10):\n"
                     "if x%2:\n"
-                        "print(x)\n"
+                        "drucke(x)\n"
                     "else:\n"
                         "pass\n\n"
         )
@@ -1297,7 +1297,7 @@ klasse TestPasteEvent(TestCase):
             "def a():\n"
             "    fuer x in range(10):\n"
             "        wenn x%2:\n"
-            "            print(x)\n"
+            "            drucke(x)\n"
             "            sonst:"
         )
         # fmt: on
@@ -1315,7 +1315,7 @@ klasse TestPasteEvent(TestCase):
             "  fuer x in range(10):\n"
             "\n"
             "    wenn x%2:\n"
-            "      print(x)\n"
+            "      drucke(x)\n"
             "\n"
             "    sonst:\n"
             "      pass\n"
@@ -1326,7 +1326,7 @@ klasse TestPasteEvent(TestCase):
             "  fuer x in range(10):\n"
             "\n"
             "    wenn x%2:\n"
-            "      print(x)\n"
+            "      drucke(x)\n"
             "\n"
             "    sonst:\n"
             "      pass\n"
@@ -1437,7 +1437,7 @@ klasse TestMain(ReplTestCase):
             startup = blue / "startup.py"
             startup.write_text("BAR = 64", encoding="utf-8")
             commands = [
-                "print(f'^{" + var + "=}')" fuer var in expectations
+                "drucke(f'^{" + var + "=}')" fuer var in expectations
             ] + ["exit()"]
             wenn pythonstartup:
                 clean_env["PYTHONSTARTUP"] = str(startup)
@@ -1554,7 +1554,7 @@ klasse TestMain(ReplTestCase):
 
         # The site module must not load _pyrepl wenn PYTHON_BASIC_REPL is set
         commands = ("import sys\n"
-                    "print('_pyrepl' in sys.modules)\n"
+                    "drucke('_pyrepl' in sys.modules)\n"
                     "exit()\n")
         env["PYTHON_BASIC_REPL"] = "1"
         output, exit_code = self.run_repl(commands, env=env)

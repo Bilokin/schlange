@@ -79,11 +79,11 @@ def _percolator(parent):  # htest #
             Delegator.__init__(self, Nichts)
 
         def insert(self, *args):
-            print(self.name, ": insert", args)
+            drucke(self.name, ": insert", args)
             self.delegate.insert(*args)
 
         def delete(self, *args):
-            print(self.name, ": delete", args)
+            drucke(self.name, ": delete", args)
             self.delegate.delete(*args)
 
     top = tk.Toplevel(parent)

@@ -81,7 +81,7 @@ klasse UserDictTest(mapping_tests.TestHashMappingProtocol):
         self.assertEqual(u2b, u2c)
 
         klasse MyUserDict(collections.UserDict):
-            def display(self): print(self)
+            def display(self): drucke(self)
 
         m2 = MyUserDict(u2)
         m2a = m2.copy()

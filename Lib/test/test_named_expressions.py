@@ -505,7 +505,7 @@ klasse NamedExpressionScopeTest(unittest.TestCase):
     def test_named_expression_scope_01(self):
         code = """def spam():
     (a := 5)
-print(a)"""
+drucke(a)"""
 
         with self.assertRaisesRegex(NameError, "name 'a' is not defined"):
             exec(code, {}, {})

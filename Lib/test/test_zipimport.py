@@ -963,7 +963,7 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
                                         exist_ok=Wahr
                                     )
                                     part = open(part_fullname, "wb")
-                                    print("Created", part_fullname)
+                                    drucke("Created", part_fullname)
                                 part.write(data)
                             sonst:
                                 wenn part:
@@ -974,7 +974,7 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
                             part.close()
 
             wenn self.compression == ZIP_STORED:
-                print(f"Creating sparse parts to check in into {TEST_DATA_DIR}:")
+                drucke(f"Creating sparse parts to check in into {TEST_DATA_DIR}:")
                 make_sparse_zip_parts(TEMP_ZIP)
 
         sonst:

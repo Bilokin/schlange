@@ -11,7 +11,7 @@ def check(tag, expected, raw, compare=Nichts):
     global nerrors
 
     wenn verbose:
-        print("    checking", tag)
+        drucke("    checking", tag)
 
     orig = raw[:]   # save input in case of error
     wenn compare:
@@ -20,22 +20,22 @@ def check(tag, expected, raw, compare=Nichts):
         raw.sort()
 
     wenn len(expected) != len(raw):
-        print("error in", tag)
-        print("length mismatch;", len(expected), len(raw))
-        print(expected)
-        print(orig)
-        print(raw)
+        drucke("error in", tag)
+        drucke("length mismatch;", len(expected), len(raw))
+        drucke(expected)
+        drucke(orig)
+        drucke(raw)
         nerrors += 1
         return
 
     fuer i, good in enumerate(expected):
         maybe = raw[i]
         wenn good is not maybe:
-            print("error in", tag)
-            print("out of order at index", i, good, maybe)
-            print(expected)
-            print(orig)
-            print(raw)
+            drucke("error in", tag)
+            drucke("out of order at index", i, good, maybe)
+            drucke(expected)
+            drucke(orig)
+            drucke(raw)
             nerrors += 1
             return
 
@@ -57,7 +57,7 @@ klasse TestBase(unittest.TestCase):
             def __lt__(self, other):
                 wenn Complains.maybe_complain and random.random() < 0.001:
                     wenn verbose:
-                        print("        complaining at", self, other)
+                        drucke("        complaining at", self, other)
                     raise RuntimeError
                 return self.i < other.i
 
@@ -78,7 +78,7 @@ klasse TestBase(unittest.TestCase):
         fuer n in sizes:
             x = list(range(n))
             wenn verbose:
-                print("Testing size", n)
+                drucke("Testing size", n)
 
             s = x[:]
             check("identity", x, s)
@@ -97,8 +97,8 @@ klasse TestBase(unittest.TestCase):
             check("reversed via function", y, s, lambda a, b: (b>a)-(b<a))
 
             wenn verbose:
-                print("    Checking against an insane comparison function.")
-                print("        If the implementation isn't careful, this may segfault.")
+                drucke("    Checking against an insane comparison function.")
+                drucke("        If the implementation isn't careful, this may segfault.")
             s = x[:]
             s.sort(key=cmp_to_key(lambda a, b:  int(random.random() * 3) - 1))
             check("an insane function left some permutation", x, s)

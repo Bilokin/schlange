@@ -637,8 +637,8 @@ klasse DSLParser:
             wenn existing_function.name == function_name:
                 break
         sonst:
-            print(f"{cls=}, {module=}, {existing=}", file=sys.stderr)
-            print(f"{(cls or module).functions=}", file=sys.stderr)
+            drucke(f"{cls=}, {module=}, {existing=}", file=sys.stderr)
+            drucke(f"{(cls or module).functions=}", file=sys.stderr)
             fail(f"Couldn't find existing function {existing!r}!")
 
         fields = [x.strip() fuer x in full_name.split('.')]

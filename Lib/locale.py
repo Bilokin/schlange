@@ -335,10 +335,10 @@ def _test():
     setlocale(LC_ALL, "")
     #do grouping
     s1 = format_string("%d", 123456789,1)
-    print(s1, "is", atoi(s1))
+    drucke(s1, "is", atoi(s1))
     #standard formatting
     s1 = str(3.14)
-    print(s1, "is", atof(s1))
+    drucke(s1, "is", atof(s1))
 
 ### Locale name aliasing engine
 
@@ -356,10 +356,10 @@ def _replace_encoding(code, encoding):
         langname = code
     # Convert the encoding to a C lib compatible encoding string
     norm_encoding = encodings.normalize_encoding(encoding)
-    #print('norm encoding: %r' % norm_encoding)
+    #drucke('norm encoding: %r' % norm_encoding)
     norm_encoding = encodings.aliases.aliases.get(norm_encoding.lower(),
                                                   norm_encoding)
-    #print('aliased encoding: %r' % norm_encoding)
+    #drucke('aliased encoding: %r' % norm_encoding)
     encoding = norm_encoding
     norm_encoding = norm_encoding.lower()
     wenn norm_encoding in locale_encoding_alias:
@@ -369,7 +369,7 @@ def _replace_encoding(code, encoding):
         norm_encoding = norm_encoding.replace('-', '')
         wenn norm_encoding in locale_encoding_alias:
             encoding = locale_encoding_alias[norm_encoding]
-    #print('found encoding %r' % encoding)
+    #drucke('found encoding %r' % encoding)
     return langname + '.' + encoding
 
 def _append_modifier(code, modifier):
@@ -428,18 +428,18 @@ def normalize(localename):
     code = locale_alias.get(lookup_name, Nichts)
     wenn code is not Nichts:
         return code
-    #print('first lookup failed')
+    #drucke('first lookup failed')
 
     wenn modifier:
         # Second try: fullname without modifier (possibly with encoding)
         code = locale_alias.get(lang_enc, Nichts)
         wenn code is not Nichts:
-            #print('lookup without modifier succeeded')
+            #drucke('lookup without modifier succeeded')
             wenn '@' not in code:
                 return _append_modifier(code, modifier)
             wenn code.split('@', 1)[1].lower() == modifier:
                 return code
-        #print('second lookup failed')
+        #drucke('second lookup failed')
 
     wenn encoding:
         # Third try: langname (without encoding, possibly with modifier)
@@ -448,7 +448,7 @@ def normalize(localename):
             lookup_name += '@' + modifier
         code = locale_alias.get(lookup_name, Nichts)
         wenn code is not Nichts:
-            #print('lookup without encoding succeeded')
+            #drucke('lookup without encoding succeeded')
             wenn '@' not in code:
                 return _replace_encoding(code, encoding)
             code, modifier = code.split('@', 1)
@@ -458,7 +458,7 @@ def normalize(localename):
             # Fourth try: langname (without encoding and modifier)
             code = locale_alias.get(langname, Nichts)
             wenn code is not Nichts:
-                #print('lookup without modifier and encoding succeeded')
+                #drucke('lookup without modifier and encoding succeeded')
                 wenn '@' not in code:
                     code = _replace_encoding(code, encoding)
                     return _append_modifier(code, modifier)
@@ -1750,38 +1750,38 @@ def _print_locale():
     _init_categories()
     del categories['LC_ALL']
 
-    print('Locale defaults as determined by getdefaultlocale():')
-    print('-'*72)
+    drucke('Locale defaults as determined by getdefaultlocale():')
+    drucke('-'*72)
     lang, enc = getdefaultlocale()
-    print('Language: ', lang or '(undefined)')
-    print('Encoding: ', enc or '(undefined)')
-    print()
+    drucke('Language: ', lang or '(undefined)')
+    drucke('Encoding: ', enc or '(undefined)')
+    drucke()
 
-    print('Locale settings on startup:')
-    print('-'*72)
+    drucke('Locale settings on startup:')
+    drucke('-'*72)
     fuer name,category in categories.items():
-        print(name, '...')
+        drucke(name, '...')
         lang, enc = getlocale(category)
-        print('   Language: ', lang or '(undefined)')
-        print('   Encoding: ', enc or '(undefined)')
-        print()
+        drucke('   Language: ', lang or '(undefined)')
+        drucke('   Encoding: ', enc or '(undefined)')
+        drucke()
 
     try:
         setlocale(LC_ALL, "")
     except:
-        print('NOTE:')
-        print('setlocale(LC_ALL, "") does not support the default locale')
-        print('given in the OS environment variables.')
+        drucke('NOTE:')
+        drucke('setlocale(LC_ALL, "") does not support the default locale')
+        drucke('given in the OS environment variables.')
     sonst:
-        print()
-        print('Locale settings after calling setlocale(LC_ALL, ""):')
-        print('-'*72)
+        drucke()
+        drucke('Locale settings after calling setlocale(LC_ALL, ""):')
+        drucke('-'*72)
         fuer name,category in categories.items():
-            print(name, '...')
+            drucke(name, '...')
             lang, enc = getlocale(category)
-            print('   Language: ', lang or '(undefined)')
-            print('   Encoding: ', enc or '(undefined)')
-            print()
+            drucke('   Language: ', lang or '(undefined)')
+            drucke('   Encoding: ', enc or '(undefined)')
+            drucke()
 
 ###
 
@@ -1793,10 +1793,10 @@ sonst:
     __all__.append("LC_MESSAGES")
 
 wenn __name__=='__main__':
-    print('Locale aliasing:')
-    print()
+    drucke('Locale aliasing:')
+    drucke()
     _print_locale()
-    print()
-    print('Number formatting:')
-    print()
+    drucke()
+    drucke('Number formatting:')
+    drucke()
     _test()

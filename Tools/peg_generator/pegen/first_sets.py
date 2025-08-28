@@ -138,11 +138,11 @@ def main() -> Nichts:
     try:
         grammar, parser, tokenizer = build_parser(args.grammar_file)
     except Exception as err:
-        print("ERROR: Failed to parse grammar file", file=sys.stderr)
+        drucke("ERROR: Failed to parse grammar file", file=sys.stderr)
         sys.exit(1)
 
     firs_sets = FirstSetCalculator(grammar.rules).calculate()
-    pprint.pprint(firs_sets)
+    pprint.pdrucke(firs_sets)
 
 
 wenn __name__ == "__main__":

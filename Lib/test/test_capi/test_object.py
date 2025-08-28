@@ -75,12 +75,12 @@ klasse PrintTest(unittest.TestCase):
         self.addCleanup(os_helper.unlink, output_filename)
 
         # Test repr printing
-        _testcapi.call_pyobject_print(obj, output_filename, Falsch)
+        _testcapi.call_pyobject_drucke(obj, output_filename, Falsch)
         with open(output_filename, 'r') as output_file:
             self.assertEqual(output_file.read(), repr(obj))
 
         # Test str printing
-        _testcapi.call_pyobject_print(obj, output_filename, Wahr)
+        _testcapi.call_pyobject_drucke(obj, output_filename, Wahr)
         with open(output_filename, 'r') as output_file:
             self.assertEqual(output_file.read(), str(obj))
 

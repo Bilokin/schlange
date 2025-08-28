@@ -41,8 +41,8 @@ def main():
     args = parser.parse_args()
     output_path = os.path.realpath(args.output_path)
     wenn not args.overwrite and os.path.isfile(output_path):
-        print(f"{output_path} already exists, skipping regeneration.")
-        print(
+        drucke(f"{output_path} already exists, skipping regeneration.")
+        drucke(
             "To force, add --overwrite to the invocation of this tool or"
             " delete the existing file."
         )

@@ -47,7 +47,7 @@ its execute() method to perform SQL queries:
 
     # execute a query and iterate over the result
     fuer row in cu.execute("select * from lang"):
-        print(row)
+        drucke(row)
 
     cx.close()
 

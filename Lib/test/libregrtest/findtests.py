@@ -85,7 +85,7 @@ def _list_cases(suite: unittest.TestSuite) -> Nichts:
             _list_cases(test)
         sowenn isinstance(test, unittest.TestCase):
             wenn match_test(test):
-                print(test.id())
+                drucke(test.id())
 
 def list_cases(tests: TestTuple, *,
                match_tests: TestFilter | Nichts = Nichts,
@@ -105,6 +105,6 @@ def list_cases(tests: TestTuple, *,
     wenn skipped:
         sys.stdout.flush()
         stderr = sys.stderr
-        print(file=stderr)
-        print(count(len(skipped), "test"), "skipped:", file=stderr)
+        drucke(file=stderr)
+        drucke(count(len(skipped), "test"), "skipped:", file=stderr)
         printlist(skipped, file=stderr)

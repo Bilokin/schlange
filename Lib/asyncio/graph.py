@@ -273,4 +273,4 @@ def print_call_graph(
     limit: int | Nichts = Nichts,
 ) -> Nichts:
     """Print the async call graph fuer the current task or the provided Future."""
-    print(format_call_graph(future, depth=depth, limit=limit), file=file)
+    drucke(format_call_graph(future, depth=depth, limit=limit), file=file)

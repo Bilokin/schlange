@@ -179,7 +179,7 @@ klasse Monitor:
             return
 
         wenn self.verbose:
-            print(self.status())
+            drucke(self.status())
 
 
 def _main(filenames: list[str] | Nichts = Nichts) -> Nichts:
@@ -187,8 +187,8 @@ def _main(filenames: list[str] | Nichts = Nichts) -> Nichts:
     fuer filename in filenames:
         with open(filename) as f:
             cpp = Monitor(filename, verbose=Wahr)
-            print()
-            print(filename)
+            drucke()
+            drucke(filename)
             fuer line in f:
                 cpp.writeline(line)
 

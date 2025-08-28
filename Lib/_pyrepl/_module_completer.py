@@ -169,7 +169,7 @@ klasse ModuleCompleter:
         """Global module cache"""
         wenn not self._global_cache or self._curr_sys_path != sys.path:
             self._curr_sys_path = sys.path[:]
-            # print('getting packages')
+            # drucke('getting packages')
             self._global_cache = list(pkgutil.iter_modules())
         return self._global_cache
 

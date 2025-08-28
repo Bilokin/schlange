@@ -42,14 +42,14 @@ assertEqual(result, ['Top level assignment', 'Lower level reference'])
 assertEqual(__name__, '__main__')
 from importlib.machinery import BuiltinImporter
 _loader = __loader__ wenn __loader__ is BuiltinImporter sonst type(__loader__)
-print('__loader__==%a' % _loader)
-print('__file__==%a' % __file__)
-print('__cached__==%a' % __cached__)
-print('__package__==%r' % __package__)
+drucke('__loader__==%a' % _loader)
+drucke('__file__==%a' % __file__)
+drucke('__cached__==%a' % __cached__)
+drucke('__package__==%r' % __package__)
 # Check PEP 451 details
 import os.path
 wenn __package__ is not Nichts:
-    print('__main__ was located through the import system')
+    drucke('__main__ was located through the import system')
     assertIdentical(__spec__.loader, __loader__)
     expected_spec_name = os.path.splitext(os.path.basename(__file__))[0]
     wenn __package__:
@@ -69,11 +69,11 @@ wenn __spec__ is not Nichts:
 from test import test_cmd_line_script
 example_args_list = test_cmd_line_script.example_args
 assertEqual(sys.argv[1:], example_args_list)
-print('sys.argv[0]==%a' % sys.argv[0])
-print('sys.path[0]==%a' % sys.path[0])
+drucke('sys.argv[0]==%a' % sys.argv[0])
+drucke('sys.path[0]==%a' % sys.path[0])
 # Check the working directory
 import os
-print('cwd==%a' % os.getcwd())
+drucke('cwd==%a' % os.getcwd())
 """
 
 def _make_test_script(script_dir, script_basename, source=test_source):
@@ -96,8 +96,8 @@ klasse CmdLineTest(unittest.TestCase):
                              expected_path0, expected_package,
                              expected_loader, expected_cwd=Nichts):
         wenn verbose > 1:
-            print("Output from test script %r:" % script_name)
-            print(repr(data))
+            drucke("Output from test script %r:" % script_name)
+            drucke(repr(data))
         self.assertEqual(exit_code, 0)
         printed_loader = '__loader__==%a' % expected_loader
         printed_file = '__file__==%a' % expected_file
@@ -108,11 +108,11 @@ klasse CmdLineTest(unittest.TestCase):
             expected_cwd = os.getcwd()
         printed_cwd = 'cwd==%a' % expected_cwd
         wenn verbose > 1:
-            print('Expected output:')
-            print(printed_file)
-            print(printed_package)
-            print(printed_argv0)
-            print(printed_cwd)
+            drucke('Expected output:')
+            drucke(printed_file)
+            drucke(printed_package)
+            drucke(printed_argv0)
+            drucke(printed_cwd)
         self.assertIn(printed_loader.encode('utf-8'), data)
         self.assertIn(printed_file.encode('utf-8'), data)
         self.assertIn(printed_package.encode('utf-8'), data)
@@ -148,13 +148,13 @@ klasse CmdLineTest(unittest.TestCase):
             *run_args, __isolated=Falsch, __cwd=cwd, **env_vars
         )
         wenn verbose > 1:
-            print(f'Output from test script {script_exec_args!r:}')
-            print(repr(err))
-            print('Expected output: %r' % expected_msg)
+            drucke(f'Output from test script {script_exec_args!r:}')
+            drucke(repr(err))
+            drucke('Expected output: %r' % expected_msg)
         self.assertIn(expected_msg.encode('utf-8'), err)
 
     def test_dash_c_loader(self):
-        rc, out, err = assert_python_ok("-c", "print(__loader__)")
+        rc, out, err = assert_python_ok("-c", "drucke(__loader__)")
         expected = repr(importlib.machinery.BuiltinImporter).encode("utf-8")
         self.assertIn(expected, out)
 
@@ -164,7 +164,7 @@ klasse CmdLineTest(unittest.TestCase):
         # stdin is an interactive tty.
         p = spawn_python()
         try:
-            p.stdin.write(b"print(__loader__)\n")
+            p.stdin.write(b"drucke(__loader__)\n")
             p.stdin.flush()
         finally:
             out = kill_python(p)
@@ -193,7 +193,7 @@ klasse CmdLineTest(unittest.TestCase):
 
     def check_repl_stdout_flush(self, separate_stderr=Falsch):
         with self.interactive_python(separate_stderr) as p:
-            p.stdin.write(b"print('foo')\n")
+            p.stdin.write(b"drucke('foo')\n")
             p.stdin.flush()
             self.assertEqual(b'foo', p.stdout.readline().strip())
 
@@ -389,11 +389,11 @@ klasse CmdLineTest(unittest.TestCase):
         with os_helper.temp_dir() as script_dir:
             with os_helper.change_cwd(path=script_dir):
                 pkg_dir = os.path.join(script_dir, 'test_pkg')
-                make_pkg(pkg_dir, "import sys; print('init_argv0==%r' % sys.argv[0])")
+                make_pkg(pkg_dir, "import sys; drucke('init_argv0==%r' % sys.argv[0])")
                 script_name = _make_test_script(pkg_dir, 'script')
                 rc, out, err = assert_python_ok('-m', 'test_pkg.script', *example_args, __isolated=Falsch)
                 wenn verbose > 1:
-                    print(repr(out))
+                    drucke(repr(out))
                 expected = "init_argv0==%r" % '-m'
                 self.assertIn(expected.encode('utf-8'), out)
                 self._check_output(script_name, rc, out,
@@ -408,10 +408,10 @@ klasse CmdLineTest(unittest.TestCase):
                 with open("-c", "w", encoding="utf-8") as f:
                     f.write("data")
                     rc, out, err = assert_python_ok('-c',
-                        'import sys; print("sys.path[0]==%r" % sys.path[0])',
+                        'import sys; drucke("sys.path[0]==%r" % sys.path[0])',
                         __isolated=Falsch)
                     wenn verbose > 1:
-                        print(repr(out))
+                        drucke(repr(out))
                     expected = "sys.path[0]==%r" % ''
                     self.assertIn(expected.encode('utf-8'), out)
 
@@ -457,7 +457,7 @@ klasse CmdLineTest(unittest.TestCase):
     def check_dash_m_failure(self, *args):
         rc, out, err = assert_python_failure('-m', *args, __isolated=Falsch)
         wenn verbose > 1:
-            print(repr(out))
+            drucke(repr(out))
         self.assertEqual(rc, 1)
         return err
 
@@ -576,7 +576,7 @@ klasse CmdLineTest(unittest.TestCase):
             self.skipTest("need os_helper.TESTFN_NONASCII")
 
         # Issue #16218
-        source = 'print(ascii(__file__))\n'
+        source = 'drucke(ascii(__file__))\n'
         script_name = _make_test_script(os.getcwd(), name, source)
         self.addCleanup(os_helper.unlink, script_name)
         rc, stdout, stderr = assert_python_ok(script_name)
@@ -721,7 +721,7 @@ klasse CmdLineTest(unittest.TestCase):
         script = textwrap.dedent("""\
             import sys
             fuer entry in sys.path:
-                print(entry)
+                drucke(entry)
             """)
         # Always show full path diffs on errors
         self.maxDiff = Nichts
@@ -753,7 +753,7 @@ klasse CmdLineTest(unittest.TestCase):
         script = textwrap.dedent("""\
             import sys
             fuer entry in sys.path:
-                print(entry)
+                drucke(entry)
             """)
         # Always show full path diffs on errors
         self.maxDiff = Nichts
@@ -802,7 +802,7 @@ klasse CmdLineTest(unittest.TestCase):
         # GH-87235: On macOS passing a non-trivial script to /dev/fd/N can cause
         # problems because all open /dev/fd/N file descriptors share the same
         # offset.
-        script = 'print("12345678912345678912345")'
+        script = 'drucke("12345678912345678912345")'
         with os_helper.temp_dir() as work_dir:
             script_name = _make_test_script(work_dir, 'script.py', script)
             with open(script_name, "r") as fp:

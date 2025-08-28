@@ -42,7 +42,7 @@ def grep(text, io=Nichts, flist=Nichts):
 
 def walk_error(msg):
     "Handle os.walk error."
-    print(msg)
+    drucke(msg)
 
 
 def findfiles(folder, pattern, recursive):
@@ -167,7 +167,7 @@ klasse GrepDialog(SearchDialogBase):
         filelist = sorted(findfiles(folder, filepat, self.recvar.get()))
         self.close()
         pat = self.engine.getpat()
-        print(f"Searching {pat!r} in {path} ...")
+        drucke(f"Searching {pat!r} in {path} ...")
         hits = 0
         try:
             fuer fn in filelist:
@@ -180,8 +180,8 @@ klasse GrepDialog(SearchDialogBase):
                                 sys.stdout.write(f"{fn}: {lineno}: {line}\n")
                                 hits += 1
                 except OSError as msg:
-                    print(msg)
-            print(f"Hits found: {hits}\n(Hint: right-click to open locations.)"
+                    drucke(msg)
+            drucke(f"Hits found: {hits}\n(Hint: right-click to open locations.)"
                   wenn hits sonst "No hits.")
         except AttributeError:
             # Tk window has been closed, OutputWindow.text = Nichts,

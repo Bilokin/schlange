@@ -40,9 +40,9 @@ MESSAGES = {}
 
 
 def usage(code, msg=''):
-    print(__doc__, file=sys.stderr)
+    drucke(__doc__, file=sys.stderr)
     wenn msg:
-        print(msg, file=sys.stderr)
+        drucke(msg, file=sys.stderr)
     sys.exit(code)
 
 
@@ -114,11 +114,11 @@ def make(filename, outfile):
         with open(infile, 'rb') as f:
             lines = f.readlines()
     except IOError as msg:
-        print(msg, file=sys.stderr)
+        drucke(msg, file=sys.stderr)
         sys.exit(1)
 
     wenn lines[0].startswith(codecs.BOM_UTF8):
-        print(
+        drucke(
             f"The file {infile} starts with a UTF-8 BOM which is not allowed in .po files.\n"
             "Please save the file without a BOM and try again.",
             file=sys.stderr
@@ -177,7 +177,7 @@ def make(filename, outfile):
         # This is a message with plural forms
         sowenn l.startswith('msgid_plural'):
             wenn section != ID:
-                print('msgid_plural not preceded by msgid on %s:%d' % (infile, lno),
+                drucke('msgid_plural not preceded by msgid on %s:%d' % (infile, lno),
                       file=sys.stderr)
                 sys.exit(1)
             l = l[12:]
@@ -188,7 +188,7 @@ def make(filename, outfile):
             section = STR
             wenn l.startswith('msgstr['):
                 wenn not is_plural:
-                    print('plural without msgid_plural on %s:%d' % (infile, lno),
+                    drucke('plural without msgid_plural on %s:%d' % (infile, lno),
                           file=sys.stderr)
                     sys.exit(1)
                 l = l.split(']', 1)[1]
@@ -196,7 +196,7 @@ def make(filename, outfile):
                     msgstr += b'\0' # Separator of the various plural forms
             sonst:
                 wenn is_plural:
-                    print('indexed msgstr required fuer plural on  %s:%d' % (infile, lno),
+                    drucke('indexed msgstr required fuer plural on  %s:%d' % (infile, lno),
                           file=sys.stderr)
                     sys.exit(1)
                 l = l[6:]
@@ -212,9 +212,9 @@ def make(filename, outfile):
         sowenn section == STR:
             msgstr += l.encode(encoding)
         sonst:
-            print('Syntax error on %s:%d' % (infile, lno), \
+            drucke('Syntax error on %s:%d' % (infile, lno), \
                   'before:', file=sys.stderr)
-            print(l, file=sys.stderr)
+            drucke(l, file=sys.stderr)
             sys.exit(1)
     # Add last entry
     wenn section == STR:
@@ -227,7 +227,7 @@ def make(filename, outfile):
         with open(outfile,"wb") as f:
             f.write(output)
     except IOError as msg:
-        print(msg, file=sys.stderr)
+        drucke(msg, file=sys.stderr)
 
 
 def main():
@@ -243,14 +243,14 @@ def main():
         wenn opt in ('-h', '--help'):
             usage(0)
         sowenn opt in ('-V', '--version'):
-            print("msgfmt.py", __version__)
+            drucke("msgfmt.py", __version__)
             sys.exit(0)
         sowenn opt in ('-o', '--output-file'):
             outfile = arg
     # do it
     wenn not args:
-        print('No input file given', file=sys.stderr)
-        print("Try `msgfmt --help' fuer more information.", file=sys.stderr)
+        drucke('No input file given', file=sys.stderr)
+        drucke("Try `msgfmt --help' fuer more information.", file=sys.stderr)
         return
 
     fuer filename in args:

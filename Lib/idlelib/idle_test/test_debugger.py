@@ -18,7 +18,7 @@ TEST_CODE = dedent("""
     i = 1
     i += 2
     wenn i == 3:
-       print(i)
+       drucke(i)
     """)
 
 

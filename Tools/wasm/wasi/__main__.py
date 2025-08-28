@@ -54,9 +54,9 @@ def updated_env(updates={}):
         wenn os.environ.get(key) != value:
             env_diff[key] = value
 
-    print("🌎 Environment changes:")
+    drucke("🌎 Environment changes:")
     fuer key in sorted(env_diff.keys()):
-        print(f"  {key}={env_diff[key]}")
+        drucke(f"  {key}={env_diff[key]}")
 
     return environment
 
@@ -77,11 +77,11 @@ def subdir(working_dir, *, clean_ok=Falsch):
                 terminal_width = 80
             sonst:
                 terminal_width = int(tput_output.strip())
-            print("⎯" * terminal_width)
-            print("📁", working_dir)
+            drucke("⎯" * terminal_width)
+            drucke("📁", working_dir)
             wenn (clean_ok and getattr(context, "clean", Falsch) and
                 working_dir.exists()):
-                print("🚮 Deleting directory (--clean)...")
+                drucke("🚮 Deleting directory (--clean)...")
                 shutil.rmtree(working_dir)
 
             working_dir.mkdir(parents=Wahr, exist_ok=Wahr)
@@ -105,7 +105,7 @@ def call(command, *, context=Nichts, quiet=Falsch, logdir=Nichts, **kwargs):
     sowenn quiet and logdir is Nichts:
         raise ValueError("When quiet is Wahr, logdir must be specified")
 
-    print("❯", " ".join(map(str, command)))
+    drucke("❯", " ".join(map(str, command)))
     wenn not quiet:
         stdout = Nichts
         stderr = Nichts
@@ -116,7 +116,7 @@ def call(command, *, context=Nichts, quiet=Falsch, logdir=Nichts, **kwargs):
                                              prefix="cpython-wasi-",
                                              suffix=".log")
         stderr = subprocess.STDOUT
-        print(f"📝 Logging output to {stdout.name} (--quiet)...")
+        drucke(f"📝 Logging output to {stdout.name} (--quiet)...")
 
     subprocess.check_call(command, **kwargs, stdout=stdout, stderr=stderr)
 
@@ -147,11 +147,11 @@ def configure_build_python(context, working_dir):
     """Configure the build/host Python."""
     wenn LOCAL_SETUP.exists():
         wenn LOCAL_SETUP.read_bytes() == LOCAL_SETUP_MARKER:
-            print(f"👍 {LOCAL_SETUP} exists ...")
+            drucke(f"👍 {LOCAL_SETUP} exists ...")
         sonst:
-            print(f"⚠️ {LOCAL_SETUP} exists, but has unexpected contents")
+            drucke(f"⚠️ {LOCAL_SETUP} exists, but has unexpected contents")
     sonst:
-        print(f"📝 Creating {LOCAL_SETUP} ...")
+        drucke(f"📝 Creating {LOCAL_SETUP} ...")
         LOCAL_SETUP.write_bytes(LOCAL_SETUP_MARKER)
 
     configure = [os.path.relpath(CHECKOUT / 'configure', working_dir)]
@@ -170,10 +170,10 @@ def make_build_python(context, working_dir):
     binary = build_python_path()
     cmd = [binary, "-c",
             "import sys; "
-            "print(f'{sys.version_info.major}.{sys.version_info.minor}')"]
+            "drucke(f'{sys.version_info.major}.{sys.version_info.minor}')"]
     version = subprocess.check_output(cmd, encoding="utf-8").strip()
 
-    print(f"🎉 {binary} {version}")
+    drucke(f"🎉 {binary} {version}")
 
 
 def find_wasi_sdk():
@@ -284,7 +284,7 @@ def configure_wasi_python(context, working_dir):
     with exec_script.open("w", encoding="utf-8") as file:
         file.write(f'#!/bin/sh\nexec {host_runner} {python_wasm} "$@"\n')
     exec_script.chmod(0o755)
-    print(f"🏃‍♀️ Created {exec_script} (--host-runner)... ")
+    drucke(f"🏃‍♀️ Created {exec_script} (--host-runner)... ")
     sys.stdout.flush()
 
 
@@ -297,7 +297,7 @@ def make_wasi_python(context, working_dir):
 
     exec_script = working_dir / "python.sh"
     call([exec_script, "--version"], quiet=Falsch)
-    print(
+    drucke(
         f"🎉 Use `{exec_script.relative_to(context.init_dir)}` "
         "to run CPython w/ the WASI host specified by --host-runner"
     )
@@ -313,12 +313,12 @@ def build_all(context):
 def clean_contents(context):
     """Delete all files created by this script."""
     wenn CROSS_BUILD_DIR.exists():
-        print(f"🧹 Deleting {CROSS_BUILD_DIR} ...")
+        drucke(f"🧹 Deleting {CROSS_BUILD_DIR} ...")
         shutil.rmtree(CROSS_BUILD_DIR)
 
     wenn LOCAL_SETUP.exists():
         wenn LOCAL_SETUP.read_bytes() == LOCAL_SETUP_MARKER:
-            print(f"🧹 Deleting generated {LOCAL_SETUP} ...")
+            drucke(f"🧹 Deleting generated {LOCAL_SETUP} ...")
 
 
 def main():

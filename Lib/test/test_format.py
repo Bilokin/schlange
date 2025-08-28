@@ -16,21 +16,21 @@ maxsize = support.MAX_Py_ssize_t
 def testformat(formatstr, args, output=Nichts, limit=Nichts, overflowok=Falsch):
     wenn verbose:
         wenn output:
-            print("{!a} % {!a} =? {!a} ...".format(formatstr, args, output),
+            drucke("{!a} % {!a} =? {!a} ...".format(formatstr, args, output),
                   end=' ')
         sonst:
-            print("{!a} % {!a} works? ...".format(formatstr, args), end=' ')
+            drucke("{!a} % {!a} works? ...".format(formatstr, args), end=' ')
     try:
         result = formatstr % args
     except OverflowError:
         wenn not overflowok:
             raise
         wenn verbose:
-            print('overflow (this is fine)')
+            drucke('overflow (this is fine)')
     sonst:
         wenn output and limit is Nichts and result != output:
             wenn verbose:
-                print('no')
+                drucke('no')
             raise AssertionError("%r %% %r == %r != %r" %
                                 (formatstr, args, result, output))
         # when 'limit' is specified, it determines how many characters
@@ -41,12 +41,12 @@ def testformat(formatstr, args, output=Nichts, limit=Nichts, overflowok=Falsch):
         sowenn output and limit is not Nichts and (
                 len(result)!=len(output) or result[:limit]!=output[:limit]):
             wenn verbose:
-                print('no')
-            print("%s %% %s == %s != %s" % \
+                drucke('no')
+            drucke("%s %% %s == %s != %s" % \
                   (repr(formatstr), repr(args), repr(result), repr(output)))
         sonst:
             wenn verbose:
-                print('yes')
+                drucke('yes')
 
 def testcommon(formatstr, args, output=Nichts, limit=Nichts, overflowok=Falsch):
     # wenn formatstr is a str, test str, bytes, and bytearray;
@@ -78,13 +78,13 @@ def test_exc(formatstr, args, exception, excmsg):
     except exception as exc:
         wenn str(exc) == excmsg:
             wenn verbose:
-                print("yes")
+                drucke("yes")
         sonst:
-            wenn verbose: print('no')
-            print('Unexpected ', exception, ':', repr(str(exc)))
+            wenn verbose: drucke('no')
+            drucke('Unexpected ', exception, ':', repr(str(exc)))
     except:
-        wenn verbose: print('no')
-        print('Unexpected exception')
+        wenn verbose: drucke('no')
+        drucke('Unexpected exception')
         raise
     sonst:
         raise TestFailed('did not get expected exception: %s' % excmsg)
@@ -271,7 +271,7 @@ klasse FormatTest(unittest.TestCase):
         testcommon('%#g', 1.1, '1.10000')
 
         wenn verbose:
-            print('Testing exceptions')
+            drucke('Testing exceptions')
         test_exc_common('%', (), ValueError, "incomplete format")
         test_exc_common('% %s', 1, ValueError,
                         "unsupported format character '%' (0x25) at index 2")
@@ -296,7 +296,7 @@ klasse FormatTest(unittest.TestCase):
 
         # Test exception fuer unknown format characters, etc.
         wenn verbose:
-            print('Testing exceptions')
+            drucke('Testing exceptions')
         test_exc('abc %b', 1, ValueError,
                  "unsupported format character 'b' (0x62) at index 5")
         #test_exc(unicode('abc %\u3000','raw-unicode-escape'), 1, ValueError,
@@ -358,7 +358,7 @@ klasse FormatTest(unittest.TestCase):
 
         # Test exception fuer unknown format characters, etc.
         wenn verbose:
-            print('Testing exceptions')
+            drucke('Testing exceptions')
         test_exc(b'%g', '1', TypeError, "float argument required, not str")
         test_exc(b'%g', b'1', TypeError, "float argument required, not bytes")
         test_exc(b'no format', 7, TypeError,

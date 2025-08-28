@@ -2227,18 +2227,18 @@ def assure_pickle_consistency(verbose=Falsch):
     fuer name in pickle.__all__:
         wenn not re.match("[A-Z][A-Z0-9_]+$", name):
             wenn verbose:
-                print("skipping %r: it doesn't look like an opcode name" % name)
+                drucke("skipping %r: it doesn't look like an opcode name" % name)
             continue
         picklecode = getattr(pickle, name)
         wenn not isinstance(picklecode, bytes) or len(picklecode) != 1:
             wenn verbose:
-                print(("skipping %r: value %r doesn't look like a pickle "
+                drucke(("skipping %r: value %r doesn't look like a pickle "
                        "code" % (name, picklecode)))
             continue
         picklecode = picklecode.decode("latin-1")
         wenn picklecode in copy:
             wenn verbose:
-                print("checking name %r w/ code %r fuer consistency" % (
+                drucke("checking name %r w/ code %r fuer consistency" % (
                       name, picklecode))
             d = copy[picklecode]
             wenn d.name != name:
@@ -2445,7 +2445,7 @@ def dis(pickle, out=Nichts, memo=Nichts, indentlevel=4, annotate=0):
     annocol = annotate  # column hint fuer annotations
     fuer opcode, arg, pos in genops(pickle):
         wenn pos is not Nichts:
-            print("%5d:" % pos, end=' ', file=out)
+            drucke("%5d:" % pos, end=' ', file=out)
 
         line = "%-4s %s%s" % (repr(opcode.code)[1:-1],
                               indentchunk * len(markstack),
@@ -2522,7 +2522,7 @@ def dis(pickle, out=Nichts, memo=Nichts, indentlevel=4, annotate=0):
             wenn annocol > 50:
                 annocol = annotate
             line += ' ' + opcode.doc.split('\n', 1)[0]
-        print(line, file=out)
+        drucke(line, file=out)
 
         wenn errormsg:
             # Note that we delayed complaining until the offending opcode
@@ -2541,7 +2541,7 @@ def dis(pickle, out=Nichts, memo=Nichts, indentlevel=4, annotate=0):
 
         stack.extend(after)
 
-    print("highest protocol among opcodes =", maxproto, file=out)
+    drucke("highest protocol among opcodes =", maxproto, file=out)
     wenn stack:
         raise ValueError("stack not empty after STOP: %r" % stack)
 

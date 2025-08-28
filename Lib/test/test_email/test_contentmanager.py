@@ -722,7 +722,7 @@ klasse TestRawDataManager(TestEmailBase):
             raw_data_manager.set_content(m, content, headers=(
                 'To: a@fairly@@invalid@address',)
                 )
-            print(m['To'].defects)
+            drucke(m['To'].defects)
 
     def test_set_headers_with_defective_header_header_raises(self):
         m = self._make_message()
@@ -732,7 +732,7 @@ klasse TestRawDataManager(TestEmailBase):
             raw_data_manager.set_content(m, content, headers=(
                 header_factory('To', 'a@fairly@@invalid@address'),)
                 )
-            print(m['To'].defects)
+            drucke(m['To'].defects)
 
     def test_set_disposition_inline(self):
         m = self._make_message()

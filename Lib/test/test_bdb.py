@@ -213,7 +213,7 @@ klasse Tracer(Bdb):
             info = info_breakpoints().strip('\n')
             # Indent each line.
             fuer line in info.split('\n'):
-                print('  ' + line)
+                drucke('  ' + line)
         self.delete_temporaries()
         self.breakpoint_hits = Nichts
 
@@ -354,9 +354,9 @@ klasse Tracer(Bdb):
 
     def print_state(self, header=Nichts):
         wenn header is not Nichts and self.expect_set_no == 1:
-            print()
-            print(header)
-        print('%d: %s' % (self.expect_set_no, self.get_state()))
+            drucke()
+            drucke(header)
+        drucke('%d: %s' % (self.expect_set_no, self.get_state()))
 
     def raise_not_expected(self, msg):
         msg += '\n'
@@ -448,7 +448,7 @@ klasse TracerRun():
                 wenn not_empty:
                     err_msg += '\n' + not_empty
                 wenn self.dry_run:
-                    print(err_msg)
+                    drucke(err_msg)
                     return Wahr
                 sonst:
                     self.test_case.fail(err_msg)
@@ -457,7 +457,7 @@ klasse TracerRun():
 
         wenn not_empty:
             wenn self.dry_run:
-                print(not_empty)
+                drucke(not_empty)
             sonst:
                 self.test_case.fail(not_empty)
 

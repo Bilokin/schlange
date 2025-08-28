@@ -236,26 +236,26 @@ klasse PythonParserGenerator(ParserGenerator, GrammarVisitor):
         header = self.grammar.metas.get("header", MODULE_PREFIX)
         wenn header is not Nichts:
             basename = os.path.basename(filename)
-            self.print(header.rstrip("\n").format(filename=basename))
+            self.drucke(header.rstrip("\n").format(filename=basename))
         subheader = self.grammar.metas.get("subheader", "")
         wenn subheader:
-            self.print(subheader)
+            self.drucke(subheader)
         cls_name = self.grammar.metas.get("class", "GeneratedParser")
-        self.print("# Keywords and soft keywords are listed at the end of the parser definition.")
-        self.print(f"class {cls_name}(Parser):")
+        self.drucke("# Keywords and soft keywords are listed at the end of the parser definition.")
+        self.drucke(f"class {cls_name}(Parser):")
         fuer rule in self.all_rules.values():
-            self.print()
+            self.drucke()
             with self.indent():
                 self.visit(rule)
 
-        self.print()
+        self.drucke()
         with self.indent():
-            self.print(f"KEYWORDS = {tuple(self.keywords)}")
-            self.print(f"SOFT_KEYWORDS = {tuple(self.soft_keywords)}")
+            self.drucke(f"KEYWORDS = {tuple(self.keywords)}")
+            self.drucke(f"SOFT_KEYWORDS = {tuple(self.soft_keywords)}")
 
         trailer = self.grammar.metas.get("trailer", MODULE_SUFFIX.format(class_name=cls_name))
         wenn trailer is not Nichts:
-            self.print(trailer.rstrip("\n"))
+            self.drucke(trailer.rstrip("\n"))
 
     def alts_uses_locations(self, alts: Sequence[Alt]) -> bool:
         fuer alt in alts:
@@ -272,39 +272,39 @@ klasse PythonParserGenerator(ParserGenerator, GrammarVisitor):
         rhs = node.flatten()
         wenn node.left_recursive:
             wenn node.leader:
-                self.print("@memoize_left_rec")
+                self.drucke("@memoize_left_rec")
             sonst:
                 # Non-leader rules in a cycle are not memoized,
                 # but they must still be logged.
-                self.print("@logger")
+                self.drucke("@logger")
         sonst:
-            self.print("@memoize")
+            self.drucke("@memoize")
         node_type = node.type or "Any"
-        self.print(f"def {node.name}(self) -> Optional[{node_type}]:")
+        self.drucke(f"def {node.name}(self) -> Optional[{node_type}]:")
         with self.indent():
-            self.print(f"# {node.name}: {rhs}")
-            self.print("mark = self._mark()")
+            self.drucke(f"# {node.name}: {rhs}")
+            self.drucke("mark = self._mark()")
             wenn self.alts_uses_locations(node.rhs.alts):
-                self.print("tok = self._tokenizer.peek()")
-                self.print("start_lineno, start_col_offset = tok.start")
+                self.drucke("tok = self._tokenizer.peek()")
+                self.drucke("start_lineno, start_col_offset = tok.start")
             wenn is_loop:
-                self.print("children = []")
+                self.drucke("children = []")
             self.visit(rhs, is_loop=is_loop, is_gather=is_gather)
             wenn is_loop:
-                self.print("return children")
+                self.drucke("return children")
             sonst:
-                self.print("return Nichts")
+                self.drucke("return Nichts")
 
     def visit_NamedItem(self, node: NamedItem) -> Nichts:
         name, call = self.callmakervisitor.visit(node.item)
         wenn node.name:
             name = node.name
         wenn not name:
-            self.print(call)
+            self.drucke(call)
         sonst:
             wenn name != "cut":
                 name = self.dedupe(name)
-            self.print(f"({name} := {call})")
+            self.drucke(f"({name} := {call})")
 
     def visit_Rhs(self, node: Rhs, is_loop: bool = Falsch, is_gather: bool = Falsch) -> Nichts:
         wenn is_loop:
@@ -316,23 +316,23 @@ klasse PythonParserGenerator(ParserGenerator, GrammarVisitor):
         has_cut = any(isinstance(item.item, Cut) fuer item in node.items)
         with self.local_variable_context():
             wenn has_cut:
-                self.print("cut = Falsch")
+                self.drucke("cut = Falsch")
             wenn is_loop:
-                self.print("while (")
+                self.drucke("while (")
             sonst:
-                self.print("if (")
+                self.drucke("if (")
             with self.indent():
                 first = Wahr
                 fuer item in node.items:
                     wenn first:
                         first = Falsch
                     sonst:
-                        self.print("and")
+                        self.drucke("and")
                     self.visit(item)
                     wenn is_gather:
-                        self.print("is not Nichts")
+                        self.drucke("is not Nichts")
 
-            self.print("):")
+            self.drucke("):")
             with self.indent():
                 action = node.action
                 wenn not action:
@@ -349,19 +349,19 @@ klasse PythonParserGenerator(ParserGenerator, GrammarVisitor):
                         sonst:
                             action = f"[{', '.join(self.local_variable_names)}]"
                 sowenn "LOCATIONS" in action:
-                    self.print("tok = self._tokenizer.get_last_non_whitespace_token()")
-                    self.print("end_lineno, end_col_offset = tok.end")
+                    self.drucke("tok = self._tokenizer.get_last_non_whitespace_token()")
+                    self.drucke("end_lineno, end_col_offset = tok.end")
                     action = action.replace("LOCATIONS", self.location_formatting)
 
                 wenn is_loop:
-                    self.print(f"children.append({action})")
-                    self.print(f"mark = self._mark()")
+                    self.drucke(f"children.append({action})")
+                    self.drucke(f"mark = self._mark()")
                 sonst:
                     wenn "UNREACHABLE" in action:
                         action = action.replace("UNREACHABLE", self.unreachable_formatting)
-                    self.print(f"return {action}")
+                    self.drucke(f"return {action}")
 
-            self.print("self._reset(mark)")
+            self.drucke("self._reset(mark)")
             # Skip remaining alternatives wenn a cut was reached.
             wenn has_cut:
-                self.print("if cut: return Nichts")
+                self.drucke("if cut: return Nichts")

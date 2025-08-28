@@ -57,7 +57,7 @@ klasse Block:
     If the block processed was in a Python file, and looked like this:
       ____#/*[python]
       ____#__for a in range(20):
-      ____#____print(a)
+      ____#____drucke(a)
       ____#[python]*/
     "preindent" would be "____" and "indent" would be "__".
 

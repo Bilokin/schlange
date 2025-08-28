@@ -77,13 +77,13 @@ klasse TracebackCases(unittest.TestCase):
         compile("f(x, y fuer y in range(30), z)", "?", "exec")
 
     def syntax_error_bad_indentation(self):
-        compile("def spam():\n  print(1)\n print(2)", "?", "exec")
+        compile("def spam():\n  drucke(1)\n drucke(2)", "?", "exec")
 
     def syntax_error_with_caret_non_ascii(self):
         compile('Python = "\u1e54\xfd\u0163\u0125\xf2\xf1" +', "?", "exec")
 
     def syntax_error_bad_indentation2(self):
-        compile(" print(2)", "?", "exec")
+        compile(" drucke(2)", "?", "exec")
 
     def tokenizer_error_with_caret_range(self):
         compile("blech  (  ", "?", "exec")
@@ -204,7 +204,7 @@ klasse TracebackCases(unittest.TestCase):
         err = self.get_exception_format(self.syntax_error_bad_indentation,
                                         IndentationError)
         self.assertEqual(len(err), 4)
-        self.assertEqual(err[1].strip(), "print(2)")
+        self.assertEqual(err[1].strip(), "drucke(2)")
         self.assertIn("^", err[2])
         self.assertEqual(err[1].find(")") + 1, err[2].find("^"))
 
@@ -212,7 +212,7 @@ klasse TracebackCases(unittest.TestCase):
         err = self.get_exception_format(self.syntax_error_bad_indentation2,
                                         IndentationError)
         self.assertEqual(len(err), 3)
-        self.assertEqual(err[1].strip(), "print(2)")
+        self.assertEqual(err[1].strip(), "drucke(2)")
 
     def test_base_exception(self):
         # Test that exceptions derived from BaseException are formatted right
@@ -418,7 +418,7 @@ klasse TracebackCases(unittest.TestCase):
         # encoding may be different from the current interpreter, on Windows
         # at least.
         process = subprocess.Popen([sys.executable, "-c",
-                                    "import sys; print(sys.stdout.encoding)"],
+                                    "import sys; drucke(sys.stdout.encoding)"],
                                    stdout=subprocess.PIPE,
                                    stderr=subprocess.STDOUT)
         stdout, stderr = process.communicate()
@@ -598,7 +598,7 @@ klasse CAPIExceptionFormattingMixin:
             self.fail("No exception thrown.")
         except Exception as e:
             with captured_output("stderr") as tbstderr:
-                exception_print(e, self.LEGACY)
+                exception_drucke(e, self.LEGACY)
             return tbstderr.getvalue().splitlines()[slice_start:slice_end]
 
     callable_line = get_exception.__code__.co_firstlineno + 3
@@ -1474,7 +1474,7 @@ klasse TracebackErrorLocationCaretTestBase:
             ｗｗｗ = 1
             ｔｈ = 0
 
-            print(1, ｗｗｗ(
+            drucke(1, ｗｗｗ(
                     ｔｈ))
 
         actual = self.get_exception(f)
@@ -1484,7 +1484,7 @@ klasse TracebackErrorLocationCaretTestBase:
             "    callable()",
             "    ~~~~~~~~^^",
             f"  File \"{__file__}\", line {f.__code__.co_firstlineno + 4}, in f",
-            f"    print(1, ｗｗｗ(",
+            f"    drucke(1, ｗｗｗ(",
             f"             ~~~~~~^",
             f"            ｔｈ))",
             f"            ^^^^^",
@@ -1854,7 +1854,7 @@ klasse TracebackFormatMixin:
                 self._filter_debug_ranges(traceback_fmt.splitlines())
             ) + "\n"
             file_ = StringIO()
-            traceback_print(tb, file_)
+            traceback_drucke(tb, file_)
             python_fmt  = file_.getvalue()
             # Call all _tb and _exc functions
             with captured_output("stderr") as tbstderr:
@@ -2124,7 +2124,7 @@ klasse TracebackFormatMixin:
         sonst:
             from _testcapi import exception_print
             def render_exc():
-                exception_print(sys.exception())
+                exception_drucke(sys.exception())
             self._check_recursive_traceback_display(render_exc)
 
     def test_format_stack(self):
@@ -2158,7 +2158,7 @@ klasse TracebackFormatMixin:
                 exc_val = e
 
         with captured_output("stderr") as stderr_f:
-            exception_print(exc_val)
+            exception_drucke(exc_val)
 
         tb = stderr_f.getvalue().strip().splitlines()
         self.assertEqual(11, len(tb))
@@ -2180,7 +2180,7 @@ klasse TracebackFormatMixin:
         eg = self.deep_eg()
         with captured_output("stderr") as stderr_f:
             with support.infinite_recursion(max_depth=LIMIT):
-                exception_print(eg)
+                exception_drucke(eg)
         output = stderr_f.getvalue()
         self.assertIn('ExceptionGroup', output)
         self.assertLessEqual(output.count('ExceptionGroup'), LIMIT)
@@ -2201,7 +2201,7 @@ klasse TracebackFormatMixin:
         from _testcapi import exception_print
         with captured_output("stderr") as stderr:
             with support.catch_unraisable_exception():
-                exception_print(42)
+                exception_drucke(42)
         self.assertEqual(
             stderr.getvalue(),
             ('TypeError: print_exception(): '
@@ -3073,7 +3073,7 @@ klasse CExcReportingTests(BaseExceptionReportingTests, unittest.TestCase):
         from _testcapi import exception_print
         e = self.get_exception(e)
         with captured_output("stderr") as s:
-            exception_print(e)
+            exception_drucke(e)
         return s.getvalue()
 
 
@@ -3803,7 +3803,7 @@ klasse TestTracebackException(unittest.TestCase):
         self.assertEqual(list(exc.format()), ["Exception: haven\n"])
 
     @requires_debug_ranges()
-    def test_print(self):
+    def test_drucke(self):
         def f():
             x = 12
             try:
@@ -3812,7 +3812,7 @@ klasse TestTracebackException(unittest.TestCase):
                 return e
         exc = traceback.TracebackException.from_exception(f(), capture_locals=Wahr)
         output = StringIO()
-        exc.print(file=output)
+        exc.drucke(file=output)
         self.assertEqual(
             output.getvalue().split('\n')[-5:],
             ['    x/0',
@@ -4592,32 +4592,32 @@ klasse SuggestionFormattingTestBase(SuggestionFormattingTestMixin):
         def Substitution():
             noise = more_noise = a = bc = Nichts
             blech = Nichts
-            print(bluch)
+            drucke(bluch)
 
         def Elimination():
             noise = more_noise = a = bc = Nichts
             blch = Nichts
-            print(bluch)
+            drucke(bluch)
 
         def Addition():
             noise = more_noise = a = bc = Nichts
             bluchin = Nichts
-            print(bluch)
+            drucke(bluch)
 
         def SubstitutionOverElimination():
             blach = Nichts
             bluc = Nichts
-            print(bluch)
+            drucke(bluch)
 
         def SubstitutionOverAddition():
             blach = Nichts
             bluchi = Nichts
-            print(bluch)
+            drucke(bluch)
 
         def EliminationOverAddition():
             blucha = Nichts
             bluc = Nichts
-            print(bluch)
+            drucke(bluch)
 
         fuer func, suggestion in [(Substitution, "'blech'?"),
                                 (Elimination, "'blch'?"),
@@ -4630,13 +4630,13 @@ klasse SuggestionFormattingTestBase(SuggestionFormattingTestMixin):
 
     def test_name_error_suggestions_from_globals(self):
         def func():
-            print(global_for_suggestio)
+            drucke(global_for_suggestio)
         actual = self.get_suggestion(func)
         self.assertIn("'global_for_suggestions'?", actual)
 
     def test_name_error_suggestions_from_builtins(self):
         def func():
-            print(ZeroDivisionErrrrr)
+            drucke(ZeroDivisionErrrrr)
         actual = self.get_suggestion(func)
         self.assertIn("'ZeroDivisionError'?", actual)
 
@@ -4644,7 +4644,7 @@ klasse SuggestionFormattingTestBase(SuggestionFormattingTestMixin):
         def func():
             custom_globals = globals().copy()
             custom_globals["__builtins__"] = builtins
-            print(eval("ZeroDivisionErrrrr", custom_globals))
+            drucke(eval("ZeroDivisionErrrrr", custom_globals))
         actual = self.get_suggestion(func)
         self.assertIn("'ZeroDivisionError'?", actual)
 
@@ -4653,14 +4653,14 @@ klasse SuggestionFormattingTestBase(SuggestionFormattingTestMixin):
             abc = 1
             custom_globals = globals().copy()
             custom_globals[0] = 1
-            print(eval("abv", custom_globals, locals()))
+            drucke(eval("abv", custom_globals, locals()))
         actual = self.get_suggestion(func)
         self.assertIn("abc", actual)
 
     def test_name_error_suggestions_do_not_trigger_for_long_names(self):
         def func():
             somethingverywronghehehehehehe = Nichts
-            print(somethingverywronghe)
+            drucke(somethingverywronghe)
         actual = self.get_suggestion(func)
         self.assertNotIn("somethingverywronghehe", actual)
 
@@ -4776,7 +4776,7 @@ klasse SuggestionFormattingTestBase(SuggestionFormattingTestMixin):
             a781 = a782 = a783 = a784 = a785 = a786 = a787 = a788 = a789 = a790 = \
             a791 = a792 = a793 = a794 = a795 = a796 = a797 = a798 = a799 = a800 \
                 = Nichts
-            print(a0)
+            drucke(a0)
 
         actual = self.get_suggestion(func)
         self.assertNotRegex(actual, r"NameError.*a1")
@@ -4846,7 +4846,7 @@ klasse SuggestionFormattingTestBase(SuggestionFormattingTestMixin):
     def test_unbound_local_error_does_not_match(self):
         def func():
             something = 3
-            print(somethong)
+            drucke(somethong)
             somethong = 3
 
         actual = self.get_suggestion(func)
@@ -5115,7 +5115,7 @@ klasse TestColorizedTraceback(unittest.TestCase):
         except Exception as e:
             with captured_output("stderr") as tbstderr:
                 with unittest.mock.patch('_colorize.can_colorize', return_value=Wahr):
-                    exception_print(e)
+                    exception_drucke(e)
             actual = tbstderr.getvalue().splitlines()
 
         lno_foo = foo.__code__.co_firstlineno

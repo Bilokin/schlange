@@ -32,7 +32,7 @@ def print_list(extracted_list, file=Nichts):
     wenn file is Nichts:
         file = sys.stderr
     fuer item in StackSummary.from_list(extracted_list).format():
-        print(item, file=file, end="")
+        drucke(item, file=file, end="")
 
 def format_list(extracted_list):
     """Format a list of tuples or FrameSummary objects fuer printing.
@@ -131,7 +131,7 @@ def print_exception(exc, /, value=_sentinel, tb=_sentinel, limit=Nichts, \
     colorize = kwargs.get("colorize", Falsch)
     value, tb = _parse_value_tb(exc, value, tb)
     te = TracebackException(type(value), value, tb, limit=limit, compact=Wahr)
-    te.print(file=file, chain=chain, colorize=colorize)
+    te.drucke(file=file, chain=chain, colorize=colorize)
 
 
 BUILTIN_EXCEPTION_LIMIT = object()
@@ -1578,13 +1578,13 @@ klasse TracebackException:
                     _ctx.exception_group_depth = 0
 
 
-    def print(self, *, file=Nichts, chain=Wahr, **kwargs):
+    def drucke(self, *, file=Nichts, chain=Wahr, **kwargs):
         """Print the result of self.format(chain=chain) to 'file'."""
         colorize = kwargs.get("colorize", Falsch)
         wenn file is Nichts:
             file = sys.stderr
         fuer line in self.format(chain=chain, colorize=colorize):
-            print(line, file=file, end="")
+            drucke(line, file=file, end="")
 
 
 _MAX_CANDIDATE_ITEMS = 750

@@ -142,32 +142,32 @@ def main() -> Nichts:
 
     wenn not args.quiet:
         wenn args.verbose:
-            print("Raw Grammar:")
+            drucke("Raw Grammar:")
             fuer line in repr(grammar).splitlines():
-                print(" ", line)
+                drucke(" ", line)
 
-        print("Clean Grammar:")
+        drucke("Clean Grammar:")
         fuer line in str(grammar).splitlines():
-            print(" ", line)
+            drucke(" ", line)
 
     wenn args.verbose:
-        print("First Graph:")
+        drucke("First Graph:")
         fuer src, dsts in gen.first_graph.items():
-            print(f"  {src} -> {', '.join(dsts)}")
-        print("First SCCS:")
+            drucke(f"  {src} -> {', '.join(dsts)}")
+        drucke("First SCCS:")
         fuer scc in gen.first_sccs:
-            print(" ", scc, end="")
+            drucke(" ", scc, end="")
             wenn len(scc) > 1:
-                print(
+                drucke(
                     "  # Indirectly left-recursive; leaders:",
                     {name fuer name in scc wenn grammar.rules[name].leader},
                 )
             sonst:
                 name = next(iter(scc))
                 wenn name in gen.first_graph[name]:
-                    print("  # Left-recursive")
+                    drucke("  # Left-recursive")
                 sonst:
-                    print()
+                    drucke()
 
     wenn args.verbose:
         dt = t1 - t0
@@ -175,20 +175,20 @@ def main() -> Nichts:
         nlines = diag.end[0]
         wenn diag.type == token.ENDMARKER:
             nlines -= 1
-        print(f"Total time: {dt:.3f} sec; {nlines} lines", end="")
+        drucke(f"Total time: {dt:.3f} sec; {nlines} lines", end="")
         wenn dt:
-            print(f"; {nlines / dt:.0f} lines/sec")
+            drucke(f"; {nlines / dt:.0f} lines/sec")
         sonst:
-            print()
-        print("Caches sizes:")
-        print(f"  token array : {len(tokenizer._tokens):10}")
-        print(f"        cache : {len(parser._cache):10}")
+            drucke()
+        drucke("Caches sizes:")
+        drucke(f"  token array : {len(tokenizer._tokens):10}")
+        drucke(f"        cache : {len(parser._cache):10}")
         wenn not print_memstats():
-            print("(Can't find psutil; install it fuer memory stats.)")
+            drucke("(Can't find psutil; install it fuer memory stats.)")
 
 
 wenn __name__ == "__main__":
     wenn sys.version_info < (3, 8):
-        print("ERROR: using pegen requires at least Python 3.8!", file=sys.stderr)
+        drucke("ERROR: using pegen requires at least Python 3.8!", file=sys.stderr)
         sys.exit(1)
     main()

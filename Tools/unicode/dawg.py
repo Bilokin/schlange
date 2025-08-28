@@ -189,12 +189,12 @@ klasse Dawg:
             fuer label, child in sorted(node.edges.items()):
                 stack.append(child)
 
-    def prettyprint(self):
+    def prettydrucke(self):
         fuer node in sorted(self.enum_all_nodes(), key=lambda e: e.id):
             s_final = " final" wenn node.final sonst ""
-            print(f"{node.id}: ({node}) {s_final}")
+            drucke(f"{node.id}: ({node}) {s_final}")
             fuer label, child in sorted(node.edges.items()):
-                print(f"    {label} goto {child.id}")
+                drucke(f"    {label} goto {child.id}")
 
     def _inverse_lookup(self, number):
         assert 0, "not working in the current form, but keep it as the pure python version of compact lookup"
@@ -458,13 +458,13 @@ def _lookup(packed, s):
     skipped = 0  # keep track of number of final nodes that we skipped
     false = Falsch
     while stringpos < len(s):
-        #print(f"{node_offset=} {stringpos=}")
+        #drucke(f"{node_offset=} {stringpos=}")
         _, final, edge_offset = decode_node(packed, node_offset)
         prev_child_offset = edge_offset
         edgeindex = 0
         while 1:
             child_offset, last_edge, size, edgelabel_chars_offset = decode_edge(packed, edgeindex, prev_child_offset, edge_offset)
-            #print(f"    {edge_offset=} {child_offset=} {last_edge=} {size=} {edgelabel_chars_offset=}")
+            #drucke(f"    {edge_offset=} {child_offset=} {last_edge=} {size=} {edgelabel_chars_offset=}")
             edgeindex += 1
             prev_child_offset = child_offset
             wenn _match_edge(packed, s, size, edgelabel_chars_offset, stringpos):
@@ -525,7 +525,7 @@ def build_compression_dawg(ucdata):
     fuer name, value in ucdata:
         d.insert(name, value)
     packed, pos_to_code, reversedict = d.finish()
-    print("size of dawg [KiB]", round(len(packed) / 1024, 2))
+    drucke("size of dawg [KiB]", round(len(packed) / 1024, 2))
     # check that lookup and inverse_lookup work correctly on the input data
     fuer name, value in ucdata:
         assert lookup(packed, pos_to_code, name.encode('ascii')) == value

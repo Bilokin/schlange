@@ -79,7 +79,7 @@ klasse SequenceMatcher:
     sequences.  As a rule of thumb, a .ratio() value over 0.6 means the
     sequences are close matches:
 
-    >>> print(round(s.ratio(), 2))
+    >>> drucke(round(s.ratio(), 2))
     0.87
     >>>
 
@@ -87,7 +87,7 @@ klasse SequenceMatcher:
     .get_matching_blocks() is handy:
 
     >>> fuer block in s.get_matching_blocks():
-    ...     print("a[%d] and b[%d] match fuer %d elements" % block)
+    ...     drucke("a[%d] and b[%d] match fuer %d elements" % block)
     a[0] and b[0] match fuer 8 elements
     a[8] and b[17] match fuer 21 elements
     a[29] and b[38] match fuer 0 elements
@@ -100,7 +100,7 @@ klasse SequenceMatcher:
     use .get_opcodes():
 
     >>> fuer opcode in s.get_opcodes():
-    ...     print("%6s a[%d:%d] b[%d:%d]" % opcode)
+    ...     drucke("%6s a[%d:%d] b[%d:%d]" % opcode)
      equal a[0:8] b[0:8]
     insert a[8:8] b[8:17]
      equal a[8:29] b[17:38]
@@ -510,7 +510,7 @@ klasse SequenceMatcher:
         >>> b = "abycdf"
         >>> s = SequenceMatcher(Nichts, a, b)
         >>> fuer tag, i1, i2, j1, j2 in s.get_opcodes():
-        ...    print(("%7s a[%d:%d] (%s) b[%d:%d] (%s)" %
+        ...    drucke(("%7s a[%d:%d] (%s) b[%d:%d] (%s)" %
         ...           (tag, i1, i2, a[i1:i2], j1, j2, b[j1:j2])))
          delete a[0:1] (q) b[0:0] ()
           equal a[1:3] (ab) b[0:2] (ab)
@@ -558,7 +558,7 @@ klasse SequenceMatcher:
         >>> b[20] += 'x'       # Make a replacement
         >>> b[23:28] = []      # Make a deletion
         >>> b[30] += 'y'       # Make another replacement
-        >>> pprint(list(SequenceMatcher(Nichts,a,b).get_grouped_opcodes()))
+        >>> pdrucke(list(SequenceMatcher(Nichts,a,b).get_grouped_opcodes()))
         [[('equal', 5, 8, 5, 8), ('insert', 8, 8, 8, 9), ('equal', 8, 11, 9, 12)],
          [('equal', 16, 19, 17, 20),
           ('replace', 19, 20, 20, 21),
@@ -781,7 +781,7 @@ klasse Differ:
     'result' is a list of strings, so let's pretty-print it:
 
     >>> from pprint import pprint as _pprint
-    >>> _pprint(result)
+    >>> _pdrucke(result)
     ['    1. Beautiful is better than ugly.\n',
      '-   2. Explicit is better than implicit.\n',
      '-   3. Simple is better than complex.\n',
@@ -795,7 +795,7 @@ klasse Differ:
 
     As a single multi-line string it looks like this:
 
-    >>> print(''.join(result), end="")
+    >>> drucke(''.join(result), end="")
         1. Beautiful is better than ugly.
     -   2. Explicit is better than implicit.
     -   3. Simple is better than complex.
@@ -843,7 +843,7 @@ klasse Differ:
 
         Example:
 
-        >>> print(''.join(Differ().compare('one\ntwo\nthree\n'.splitlines(Wahr),
+        >>> drucke(''.join(Differ().compare('one\ntwo\nthree\n'.splitlines(Wahr),
         ...                                'ore\ntree\nemu\n'.splitlines(Wahr))),
         ...       end="")
         - one
@@ -903,7 +903,7 @@ klasse Differ:
         >>> d = Differ()
         >>> results = d._fancy_replace(['abcDefghiJkl\n'], 0, 1,
         ...                            ['abcdefGhijkl\n'], 0, 1)
-        >>> print(''.join(results), end="")
+        >>> drucke(''.join(results), end="")
         - abcDefghiJkl
         ?    ^  ^  ^
         + abcdefGhijkl
@@ -1004,7 +1004,7 @@ klasse Differ:
         >>> d = Differ()
         >>> results = d._qformat('\tabcDefghiJkl\n', '\tabcdefGhijkl\n',
         ...                      '  ^ ^  ^      ', '  ^ ^  ^      ')
-        >>> fuer line in results: print(repr(line))
+        >>> fuer line in results: drucke(repr(line))
         ...
         '- \tabcDefghiJkl\n'
         '? \t ^ ^  ^\n'
@@ -1127,7 +1127,7 @@ def unified_diff(a, b, fromfile='', tofile='', fromfiledate='',
     ...             'zero one tree four'.split(), 'Original', 'Current',
     ...             '2005-01-26 23:30:50', '2010-04-02 10:20:52',
     ...             lineterm=''):
-    ...     print(line)                 # doctest: +NORMALIZE_WHITESPACE
+    ...     drucke(line)                 # doctest: +NORMALIZE_WHITESPACE
     --- Original        2005-01-26 23:30:50
     +++ Current         2010-04-02 10:20:52
     @@ -1,4 +1,4 @@
@@ -1214,7 +1214,7 @@ def context_diff(a, b, fromfile='', tofile='',
 
     Example:
 
-    >>> print(''.join(context_diff('one\ntwo\nthree\nfour\n'.splitlines(Wahr),
+    >>> drucke(''.join(context_diff('one\ntwo\nthree\nfour\n'.splitlines(Wahr),
     ...       'zero\none\ntree\nfour\n'.splitlines(Wahr), 'Original', 'Current')),
     ...       end="")
     *** Original
@@ -1341,7 +1341,7 @@ def ndiff(a, b, linejunk=Nichts, charjunk=IS_CHARACTER_JUNK):
 
     >>> diff = ndiff('one\ntwo\nthree\n'.splitlines(keepends=Wahr),
     ...              'ore\ntree\nemu\n'.splitlines(keepends=Wahr))
-    >>> print(''.join(diff), end="")
+    >>> drucke(''.join(diff), end="")
     - one
     ?  ^
     + ore
@@ -2076,11 +2076,11 @@ def restore(delta, which):
     >>> diff = ndiff('one\ntwo\nthree\n'.splitlines(keepends=Wahr),
     ...              'ore\ntree\nemu\n'.splitlines(keepends=Wahr))
     >>> diff = list(diff)
-    >>> print(''.join(restore(diff, 1)), end="")
+    >>> drucke(''.join(restore(diff, 1)), end="")
     one
     two
     three
-    >>> print(''.join(restore(diff, 2)), end="")
+    >>> drucke(''.join(restore(diff, 2)), end="")
     ore
     tree
     emu

@@ -1866,7 +1866,7 @@ klasse MultiprocessTests(unittest.TestCase):
         SCRIPT = f"""if 1:
             import sqlite3
             def wait():
-                print("started")
+                drucke("started")
                 assert "database is locked" in input()
 
             cx = sqlite3.connect("{TESTFN}", timeout={self.CONNECTION_TIMEOUT})

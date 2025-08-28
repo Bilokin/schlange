@@ -639,9 +639,9 @@ def as_completed(fs, *, timeout=Nichts):
             reader, writer = await earliest_connect
 
             wenn earliest_connect is ipv6_connect:
-                print("IPv6 connection established.")
+                drucke("IPv6 connection established.")
             sonst:
-                print("IPv4 connection established.")
+                drucke("IPv4 connection established.")
 
     During asynchronous iteration, implicitly-created tasks will be yielded for
     supplied awaitables that aren't tasks or futures.

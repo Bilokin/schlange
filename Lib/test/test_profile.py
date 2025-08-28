@@ -137,7 +137,7 @@ klasse ProfileTest(unittest.TestCase):
 
 def regenerate_expected_output(filename, cls):
     filename = filename.rstrip('co')
-    print('Regenerating %s...' % filename)
+    drucke('Regenerating %s...' % filename)
     results = cls.do_profiling()
 
     newfile = []

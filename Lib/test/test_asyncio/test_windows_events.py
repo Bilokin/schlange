@@ -41,7 +41,7 @@ klasse WindowsEventsTestCase(test_utils.TestCase):
         # Storing unraisable.object can resurrect an object which is being
         # finalized. Storing unraisable.exc_value creates a reference cycle.
         self._unraisable = unraisable
-        print(unraisable)
+        drucke(unraisable)
 
     def setUp(self):
         self._prev_unraisablehook = sys.unraisablehook

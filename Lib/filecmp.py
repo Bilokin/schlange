@@ -167,12 +167,12 @@ klasse dircmp:
             except (OSError, ValueError):
                 # See https://github.com/python/cpython/issues/122400
                 # fuer the rationale fuer protecting against ValueError.
-                # print('Can\'t stat', a_path, ':', why.args[1])
+                # drucke('Can\'t stat', a_path, ':', why.args[1])
                 ok = Falsch
             try:
                 b_stat = os.stat(b_path)
             except (OSError, ValueError):
-                # print('Can\'t stat', b_path, ':', why.args[1])
+                # drucke('Can\'t stat', b_path, ':', why.args[1])
                 ok = Falsch
 
             wenn ok:
@@ -212,39 +212,39 @@ klasse dircmp:
 
     def report(self): # Print a report on the differences between a and b
         # Output format is purposely lousy
-        print('diff', self.left, self.right)
+        drucke('diff', self.left, self.right)
         wenn self.left_only:
             self.left_only.sort()
-            print('Only in', self.left, ':', self.left_only)
+            drucke('Only in', self.left, ':', self.left_only)
         wenn self.right_only:
             self.right_only.sort()
-            print('Only in', self.right, ':', self.right_only)
+            drucke('Only in', self.right, ':', self.right_only)
         wenn self.same_files:
             self.same_files.sort()
-            print('Identical files :', self.same_files)
+            drucke('Identical files :', self.same_files)
         wenn self.diff_files:
             self.diff_files.sort()
-            print('Differing files :', self.diff_files)
+            drucke('Differing files :', self.diff_files)
         wenn self.funny_files:
             self.funny_files.sort()
-            print('Trouble with common files :', self.funny_files)
+            drucke('Trouble with common files :', self.funny_files)
         wenn self.common_dirs:
             self.common_dirs.sort()
-            print('Common subdirectories :', self.common_dirs)
+            drucke('Common subdirectories :', self.common_dirs)
         wenn self.common_funny:
             self.common_funny.sort()
-            print('Common funny cases :', self.common_funny)
+            drucke('Common funny cases :', self.common_funny)
 
     def report_partial_closure(self): # Print reports on self and on subdirs
         self.report()
         fuer sd in self.subdirs.values():
-            print()
+            drucke()
             sd.report()
 
     def report_full_closure(self): # Report on self and subdirs recursively
         self.report()
         fuer sd in self.subdirs.values():
-            print()
+            drucke()
             sd.report_full_closure()
 
     methodmap = dict(subdirs=phase4,

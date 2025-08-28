@@ -351,7 +351,7 @@ klasse IBMTestCases:
             L = Sides[0].strip().split()
             id = L[0]
             wenn DEBUG:
-                print("Test ", id, end=" ")
+                drucke("Test ", id, end=" ")
             funct = L[1].lower()
             valstemp = L[2:]
             L = Sides[1].strip().split()
@@ -445,7 +445,7 @@ klasse IBMTestCases:
 
 
         wenn DEBUG:
-            print("--", self.context)
+            drucke("--", self.context)
         try:
             result = str(funct(*vals))
             wenn fname in self.LogicalFunctions:
@@ -453,7 +453,7 @@ klasse IBMTestCases:
         except Signals[self.decimal] as error:
             self.fail("Raised %s in %s" % (error, s))
         except: #Catch any error long enough to state the test case.
-            print("ERROR:", s)
+            drucke("ERROR:", s)
             raise
 
         myexceptions = self.getexceptions()

@@ -141,7 +141,7 @@ klasse QueueTests(TestBase):
             queue1.put(queue4)
             out = _run_output(interp, dedent("""
                 queue4 = queue1.get()
-                print(queue4.id)
+                drucke(queue4.id)
                 """))
             qid = int(out)
             self.assertEqual(qid, queue4.id)
@@ -150,7 +150,7 @@ klasse QueueTests(TestBase):
             out = _run_output(interp, dedent("""
                 queue5 = queues.create()
                 queue1.put(queue5)
-                print(queue5.id)
+                drucke(queue5.id)
                 """))
             qid = int(out)
             queue5 = queue1.get()
@@ -409,7 +409,7 @@ klasse TestQueueOps(TestBase):
                         # When going to another interpreter we get a copy.
                         assert id(obj) != {id(obj1)}, 'expected: obj is not obj1'
                         obj2 = b'eggs'
-                        print(id(obj2))
+                        drucke(id(obj2))
                         assert queue2.qsize() == 0, 'expected: queue2.qsize() == 0'
                         queue2.put(obj2)
                         assert queue2.qsize() == 1, 'expected: queue2.qsize() == 1'

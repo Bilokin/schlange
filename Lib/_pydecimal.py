@@ -394,19 +394,19 @@ def localcontext(ctx=Nichts, **kwargs):
              return +s  # Convert result to normal context
 
     >>> setcontext(DefaultContext)
-    >>> print(getcontext().prec)
+    >>> drucke(getcontext().prec)
     28
     >>> with localcontext():
     ...     ctx = getcontext()
     ...     ctx.prec += 2
-    ...     print(ctx.prec)
+    ...     drucke(ctx.prec)
     ...
     30
     >>> with localcontext(ExtendedContext):
-    ...     print(getcontext().prec)
+    ...     drucke(getcontext().prec)
     ...
     9
-    >>> print(getcontext().prec)
+    >>> drucke(getcontext().prec)
     28
     """
     wenn ctx is Nichts:
@@ -4198,18 +4198,18 @@ klasse Context(object):
         >>> c.compare_signal(Decimal('2.1'), Decimal('2.1'))
         Decimal('0')
         >>> c.flags[InvalidOperation] = 0
-        >>> print(c.flags[InvalidOperation])
+        >>> drucke(c.flags[InvalidOperation])
         0
         >>> c.compare_signal(Decimal('NaN'), Decimal('2.1'))
         Decimal('NaN')
-        >>> print(c.flags[InvalidOperation])
+        >>> drucke(c.flags[InvalidOperation])
         1
         >>> c.flags[InvalidOperation] = 0
-        >>> print(c.flags[InvalidOperation])
+        >>> drucke(c.flags[InvalidOperation])
         0
         >>> c.compare_signal(Decimal('sNaN'), Decimal('2.1'))
         Decimal('NaN')
-        >>> print(c.flags[InvalidOperation])
+        >>> drucke(c.flags[InvalidOperation])
         1
         >>> c.compare_signal(-1, 2)
         Decimal('-1')

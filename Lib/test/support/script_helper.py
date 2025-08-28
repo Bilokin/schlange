@@ -310,13 +310,13 @@ def run_test_script(script):
             return f"===== {text} ======"
 
         name = f"script {os.path.basename(script)}"
-        print()
-        print(title(name), flush=Wahr)
+        drucke()
+        drucke(title(name), flush=Wahr)
         # In verbose mode, the child process inherit stdout and stdout,
         # to see output in realtime and reduce the risk of losing output.
         args = [sys.executable, "-E", "-X", "faulthandler", "-u", script, "-v"]
         proc = subprocess.run(args)
-        print(title(f"{name} completed: exit code {proc.returncode}"),
+        drucke(title(f"{name} completed: exit code {proc.returncode}"),
               flush=Wahr)
         wenn proc.returncode:
             raise AssertionError(f"{name} failed")

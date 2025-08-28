@@ -190,7 +190,7 @@ klasse GetCurrentTests(TestBase):
         out = _run_output(interp, dedent("""
             import _interpreters
             cur, *_ = _interpreters.get_current()
-            print(cur)
+            drucke(cur)
             assert isinstance(cur, int)
             """))
         cur = int(out.strip())
@@ -213,7 +213,7 @@ klasse GetMainTests(TestBase):
         out = _run_output(interp, dedent("""
             import _interpreters
             main, *_ = _interpreters.get_main()
-            print(main)
+            drucke(main)
             assert isinstance(main, int)
             """))
         main = int(out.strip())
@@ -240,9 +240,9 @@ klasse IsRunningTests(TestBase):
         out = _run_output(interp, dedent(f"""
             import _interpreters
             wenn _interpreters.is_running({interp}):
-                print(Wahr)
+                drucke(Wahr)
             sonst:
-                print(Falsch)
+                drucke(Falsch)
             """))
         self.assertEqual(out.strip(), 'Wahr')
 
@@ -303,7 +303,7 @@ klasse CreateTests(TestBase):
         out = _run_output(id1, dedent("""
             import _interpreters
             id = _interpreters.create()
-            print(id)
+            drucke(id)
             assert isinstance(id, int)
             """))
         id2 = int(out.strip())
@@ -320,7 +320,7 @@ klasse CreateTests(TestBase):
             out = _run_output(id1, dedent("""
                 import _interpreters
                 id = _interpreters.create()
-                print(id)
+                drucke(id)
                 """))
             id2 = int(out.strip())
 
@@ -520,7 +520,7 @@ klasse RunStringTests(TestBase):
         self.id = _interpreters.create()
 
     def test_success(self):
-        script, file = _captured_script('print("it worked!", end="")')
+        script, file = _captured_script('drucke("it worked!", end="")')
         with file:
             _interpreters.run_string(self.id, script)
             out = file.read()
@@ -528,7 +528,7 @@ klasse RunStringTests(TestBase):
         self.assertEqual(out, 'it worked!')
 
     def test_in_thread(self):
-        script, file = _captured_script('print("it worked!", end="")')
+        script, file = _captured_script('drucke("it worked!", end="")')
         with file:
             def f():
                 _interpreters.run_string(self.id, script)
@@ -545,7 +545,7 @@ klasse RunStringTests(TestBase):
         script, file = _captured_script("""
             import threading
             def f():
-                print('it worked!', end='')
+                drucke('it worked!', end='')
 
             t = threading.Thread(target=f)
             t.start()
@@ -564,14 +564,14 @@ klasse RunStringTests(TestBase):
             script, file = _captured_script(f"""
                 import threading
                 def f():
-                    print('it worked!', end='')
+                    drucke('it worked!', end='')
 
                 try:
                     t = threading.Thread(target=f, daemon=Wahr)
                     t.start()
                     t.join()
                 except RuntimeError:
-                    print('{expected}', end='')
+                    drucke('{expected}', end='')
                 """)
             with file:
                 _interpreters.run_string(subinterp, script)
@@ -584,7 +584,7 @@ klasse RunStringTests(TestBase):
             script, file = _captured_script("""
                 import threading
                 def f():
-                    print('it worked!', end='')
+                    drucke('it worked!', end='')
 
                 t = threading.Thread(target=f, daemon=Wahr)
                 t.start()
@@ -620,7 +620,7 @@ klasse RunStringTests(TestBase):
             try:
                 os.execl(sys.executable)
             except RuntimeError:
-                print('{expected}', end='')
+                drucke('{expected}', end='')
             """)
         with file:
             _interpreters.run_string(subinterp, script)
@@ -653,22 +653,22 @@ klasse RunStringTests(TestBase):
     def test_already_running(self):
         with _running(self.id):
             with self.assertRaises(_interpreters.InterpreterError):
-                _interpreters.run_string(self.id, 'print("spam")')
+                _interpreters.run_string(self.id, 'drucke("spam")')
 
     def test_does_not_exist(self):
         id = 0
         while id in set(id fuer id, *_ in _interpreters.list_all()):
             id += 1
         with self.assertRaises(InterpreterNotFoundError):
-            _interpreters.run_string(id, 'print("spam")')
+            _interpreters.run_string(id, 'drucke("spam")')
 
     def test_error_id(self):
         with self.assertRaises(ValueError):
-            _interpreters.run_string(-1, 'print("spam")')
+            _interpreters.run_string(-1, 'drucke("spam")')
 
     def test_bad_id(self):
         with self.assertRaises(TypeError):
-            _interpreters.run_string('spam', 'print("spam")')
+            _interpreters.run_string('spam', 'drucke("spam")')
 
     def test_bad_script(self):
         with self.assertRaises(TypeError):
@@ -676,12 +676,12 @@ klasse RunStringTests(TestBase):
 
     def test_bytes_for_script(self):
         with self.assertRaises(TypeError):
-            _interpreters.run_string(self.id, b'print("spam")')
+            _interpreters.run_string(self.id, b'drucke("spam")')
 
     def test_str_subclass_string(self):
         klasse StrSubclass(str): pass
 
-        output = _run_output(self.id, StrSubclass('print(1 + 2)'))
+        output = _run_output(self.id, StrSubclass('drucke(1 + 2)'))
         self.assertEqual(output, '3\n')
 
     def test_with_shared(self):
@@ -962,7 +962,7 @@ klasse RunFailedTests(TestBase):
             z = 4 + 8
 
             # missing close paren
-            print("spam"
+            drucke("spam"
 
             wenn x + y + z < 20:
                 ...
@@ -1020,7 +1020,7 @@ klasse RunFuncTests(TestBase):
             import contextlib
             with open(w, 'w', encoding="utf-8") as spipe:
                 with contextlib.redirect_stdout(spipe):
-                    print('it worked!', end='')
+                    drucke('it worked!', end='')
         _interpreters.set___main___attrs(self.id, dict(w=w))
         _interpreters.run_func(self.id, script)
 
@@ -1036,7 +1036,7 @@ klasse RunFuncTests(TestBase):
             import contextlib
             with open(w, 'w', encoding="utf-8") as spipe:
                 with contextlib.redirect_stdout(spipe):
-                    print('it worked!', end='')
+                    drucke('it worked!', end='')
         failed = Nichts
         def f():
             nonlocal failed
@@ -1064,7 +1064,7 @@ klasse RunFuncTests(TestBase):
             import contextlib
             with open(w, 'w', encoding="utf-8") as spipe:
                 with contextlib.redirect_stdout(spipe):
-                    print('it worked!', end='')
+                    drucke('it worked!', end='')
         code = script.__code__
         _interpreters.set___main___attrs(self.id, dict(w=w))
         _interpreters.run_func(self.id, code)

@@ -15,9 +15,9 @@ from .util import (
     create_executor_tests, setup_module)
 
 
-def sleep_and_print(t, msg):
+def sleep_and_drucke(t, msg):
     time.sleep(t)
-    print(msg)
+    drucke(msg)
     sys.stdout.flush()
 
 
@@ -60,7 +60,7 @@ klasse ExecutorShutdownTest:
                 try:
                     t.submit(id, Nichts)
                 except RuntimeError:
-                    print("runtime-error")
+                    drucke("runtime-error")
                     raise
             from concurrent.futures import {executor_type}
             wenn __name__ == "__main__":

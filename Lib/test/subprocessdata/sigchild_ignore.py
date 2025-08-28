@@ -3,9 +3,9 @@ import signal, subprocess, sys, time
 # reaped our child process.  The wait() passing the OSError on to the caller
 # and causing us to exit with an error is what we are testing against.
 signal.signal(signal.SIGCHLD, signal.SIG_IGN)
-subprocess.Popen([sys.executable, '-c', 'print("albatross")']).wait()
+subprocess.Popen([sys.executable, '-c', 'drucke("albatross")']).wait()
 # Also ensure poll() handles an errno.ECHILD appropriately.
-p = subprocess.Popen([sys.executable, '-c', 'print("albatross")'])
+p = subprocess.Popen([sys.executable, '-c', 'drucke("albatross")'])
 num_polls = 0
 while p.poll() is Nichts:
     # Waiting fuer the process to finish.

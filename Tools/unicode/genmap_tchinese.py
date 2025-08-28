@@ -175,11 +175,11 @@ def main_tw():
 
 
 def write_big5_maps(fp, display_name, table_name, decode_map, encode_map):
-    print(f'Generating {display_name} decode map...')
+    drucke(f'Generating {display_name} decode map...')
     writer = DecodeMapWriter(fp, table_name, decode_map)
     writer.update_decode_map(BIG5_C1, BIG5_C2)
     writer.generate()
-    print(f'Generating {display_name} encode map...')
+    drucke(f'Generating {display_name} encode map...')
     writer = EncodeMapWriter(fp, table_name, encode_map)
     writer.generate()
 
@@ -213,23 +213,23 @@ def main_hkscs():
         make_hkscs_map(table)
     )
     with open('mappings_hk.h', 'w') as fp:
-        print('Generating BIG5HKSCS decode map...')
+        drucke('Generating BIG5HKSCS decode map...')
         print_autogen(fp, os.path.basename(__file__))
         writer = DecodeMapWriter(fp, 'big5hkscs', hkscsdecmap)
         writer.update_decode_map(BIG5HKSCS_C1, BIG5HKSCS_C2)
         writer.generate()
 
-        print('Generating BIG5HKSCS decode map Unicode plane hints...')
+        drucke('Generating BIG5HKSCS decode map Unicode plane hints...')
         writer = HintsWriter(fp, 'big5hkscs', isbmpmap)
         writer.fillhints(bh2s(0x8740), bh2s(0xa0fe))
         writer.fillhints(bh2s(0xc6a1), bh2s(0xc8fe))
         writer.fillhints(bh2s(0xf9d6), bh2s(0xfefe))
 
-        print('Generating BIG5HKSCS encode map (BMP)...')
+        drucke('Generating BIG5HKSCS encode map (BMP)...')
         writer = EncodeMapWriter(fp, 'big5hkscs_bmp', hkscsencmap_bmp)
         writer.generate()
 
-        print('Generating BIG5HKSCS encode map (non-BMP)...')
+        drucke('Generating BIG5HKSCS encode map (non-BMP)...')
         writer = EncodeMapWriter(fp, 'big5hkscs_nonbmp', hkscsencmap_nonbmp)
         writer.generate()
 

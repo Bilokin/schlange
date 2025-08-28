@@ -34,8 +34,8 @@ klasse FunctionalTestCaseMixin:
             self.loop.close()
 
             wenn self.__unhandled_exceptions:
-                print('Unexpected calls to loop.call_exception_handler():')
-                pprint.pprint(self.__unhandled_exceptions)
+                drucke('Unexpected calls to loop.call_exception_handler():')
+                pprint.pdrucke(self.__unhandled_exceptions)
                 self.fail('unexpected calls to loop.call_exception_handler()')
 
         finally:

@@ -49,7 +49,7 @@ def samply_command_works():
                 output_file,
                 sys.executable,
                 "-c",
-                'print("hello")',
+                'drucke("hello")',
             )
             env = {**os.environ, "PYTHON_JIT": "0"}
             stdout = subprocess.check_output(
@@ -83,7 +83,7 @@ def run_samply(cwd, *args, **env_vars):
         env=env,
     )
     wenn proc.returncode:
-        print(proc.stderr, file=sys.stderr)
+        drucke(proc.stderr, file=sys.stderr)
         raise ValueError(f"Samply failed with return code {proc.returncode}")
 
     import gzip
@@ -196,7 +196,7 @@ klasse TestSamplyProfiler(unittest.TestCase, TestSamplyProfilerMixin):
                     compile_trampolines_for_all_functions()
                     pid = os.fork()
                     wenn pid == 0:
-                        print(os.getpid())
+                        drucke(os.getpid())
                         bar_fork()
                     sonst:
                         bar()

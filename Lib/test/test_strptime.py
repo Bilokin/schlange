@@ -308,7 +308,7 @@ klasse StrptimeTests(unittest.TestCase):
                          (fmt, strf_output, strp_output[position],
                           time_tuple[position]))
         wenn support.verbose >= 3:
-            print("testing of %r format: %r -> %r" %
+            drucke("testing of %r format: %r -> %r" %
                   (fmt, strf_output, strp_output[position]))
 
     def test_year(self):

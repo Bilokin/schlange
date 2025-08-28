@@ -184,7 +184,7 @@ def main(import_, options):
                 benchmarks = [b]
                 break
         sonst:
-            print('Unknown benchmark: {!r}'.format(options.benchmark),
+            drucke('Unknown benchmark: {!r}'.format(options.benchmark),
                   file=sys.stderr)
             sys.exit(1)
     seconds = 1
@@ -193,22 +193,22 @@ def main(import_, options):
     header = ('Measuring imports/second over {} second{}, best out of {}\n'
               'Entire benchmark run should take about {} seconds\n'
               'Using {!r} as __import__\n')
-    print(header.format(seconds, seconds_plural, repeat,
+    drucke(header.format(seconds, seconds_plural, repeat,
                         len(benchmarks) * seconds * repeat, __import__))
     new_results = {}
     fuer benchmark in benchmarks:
-        print(benchmark.__doc__, "[", end=' ')
+        drucke(benchmark.__doc__, "[", end=' ')
         sys.stdout.flush()
         results = []
         fuer result in benchmark(seconds=seconds, repeat=repeat):
             results.append(result)
-            print(result, end=' ')
+            drucke(result, end=' ')
             sys.stdout.flush()
         assert not sys.dont_write_bytecode
-        print("]", "best is", format(max(results), ',d'))
+        drucke("]", "best is", format(max(results), ',d'))
         new_results[benchmark.__doc__] = results
     wenn prev_results:
-        print('\n\nComparing new vs. old\n')
+        drucke('\n\nComparing new vs. old\n')
         fuer benchmark in benchmarks:
             benchmark_name = benchmark.__doc__
             old_result = max(prev_results[benchmark_name])
@@ -216,7 +216,7 @@ def main(import_, options):
             result = '{:,d} vs. {:,d} ({:%})'.format(new_result,
                                                      old_result,
                                               new_result/old_result)
-            print(benchmark_name, ':', result)
+            drucke(benchmark_name, ':', result)
     wenn options.dest_file:
         with open(options.dest_file, 'w', encoding='utf-8') as dest_file:
             json.dump(new_results, dest_file, indent=2)

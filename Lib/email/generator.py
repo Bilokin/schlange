@@ -495,12 +495,12 @@ klasse DecodedGenerator(Generator):
         fuer part in msg.walk():
             maintype = part.get_content_maintype()
             wenn maintype == 'text':
-                print(part.get_payload(decode=Falsch), file=self)
+                drucke(part.get_payload(decode=Falsch), file=self)
             sowenn maintype == 'multipart':
                 # Just skip this
                 pass
             sonst:
-                print(self._fmt % {
+                drucke(self._fmt % {
                     'type'       : part.get_content_type(),
                     'maintype'   : part.get_content_maintype(),
                     'subtype'    : part.get_content_subtype(),

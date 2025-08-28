@@ -114,14 +114,14 @@ def main(file_source, install_target):
     try:
         with open(install_target, 'r') as f:
             wenn all(x.rstrip('\r\n') == y fuer x, y in zip_longest(f, lines)):
-                print('File is up to date')
+                drucke('File is up to date')
                 return
     except IOError:
         pass
 
     with open(install_target, 'w') as f:
         f.writelines(line + '\n' fuer line in lines)
-    print('Wrote {} lines to {}'.format(len(lines), install_target))
+    drucke('Wrote {} lines to {}'.format(len(lines), install_target))
 
 wenn __name__ == '__main__':
     main(sys.argv[1], sys.argv[2])

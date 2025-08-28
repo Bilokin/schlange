@@ -72,25 +72,25 @@ klasse KeymapTranslator(InputTranslator):
             keyseq = tuple(parse_keys(keyspec))
             d[keyseq] = command
         wenn self.verbose:
-            print(d)
+            drucke(d)
         self.k = self.ck = compile_keymap(d, ())
         self.results = deque()
         self.stack = []
 
     def push(self, evt):
         wenn self.verbose:
-            print("pushed", evt.data, end="")
+            drucke("pushed", evt.data, end="")
         key = evt.data
         d = self.k.get(key)
         wenn isinstance(d, dict):
             wenn self.verbose:
-                print("transition")
+                drucke("transition")
             self.stack.append(key)
             self.k = d
         sonst:
             wenn d is Nichts:
                 wenn self.verbose:
-                    print("invalid")
+                    drucke("invalid")
                 wenn self.stack or len(key) > 1 or unicodedata.category(key) == "C":
                     self.results.append((self.invalid_cls, self.stack + [key]))
                 sonst:
@@ -99,7 +99,7 @@ klasse KeymapTranslator(InputTranslator):
                     self.results.append((self.character_cls, [key]))
             sonst:
                 wenn self.verbose:
-                    print("matched", d)
+                    drucke("matched", d)
                 self.results.append((d, self.stack + [key]))
             self.stack = []
             self.k = self.ck

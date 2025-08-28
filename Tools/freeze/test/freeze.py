@@ -29,8 +29,8 @@ klasse UnsupportedError(Exception):
 
 def _run_quiet(cmd, *, cwd=Nichts):
     wenn cwd:
-        print('+', 'cd', cwd, flush=Wahr)
-    print('+', shlex.join(cmd), flush=Wahr)
+        drucke('+', 'cd', cwd, flush=Wahr)
+    drucke('+', shlex.join(cmd), flush=Wahr)
     try:
         return subprocess.run(
             cmd,
@@ -41,12 +41,12 @@ def _run_quiet(cmd, *, cwd=Nichts):
         )
     except subprocess.CalledProcessError as err:
         # Don't be quiet wenn things fail
-        print(f"{err.__class__.__name__}: {err}")
-        print("--- STDOUT ---")
-        print(err.stdout)
-        print("--- STDERR ---")
-        print(err.stderr)
-        print("---- END ----")
+        drucke(f"{err.__class__.__name__}: {err}")
+        drucke("--- STDOUT ---")
+        drucke(err.stdout)
+        drucke("--- STDERR ---")
+        drucke(err.stderr)
+        drucke("---- END ----")
         raise
 
 
@@ -85,7 +85,7 @@ def ensure_opt(args, name, value):
 
 
 def copy_source_tree(newroot, oldroot):
-    print(f'copying the source tree from {oldroot} to {newroot}...')
+    drucke(f'copying the source tree from {oldroot} to {newroot}...')
     wenn os.path.exists(newroot):
         wenn newroot == SRCDIR:
             raise Exception('this probably isn\'t what you wanted')
@@ -102,8 +102,8 @@ def copy_source_tree(newroot, oldroot):
 # freezing
 
 def prepare(script=Nichts, outdir=Nichts):
-    print()
-    print("cwd:", os.getcwd())
+    drucke()
+    drucke("cwd:", os.getcwd())
 
     wenn not outdir:
         outdir = OUTDIR
@@ -112,7 +112,7 @@ def prepare(script=Nichts, outdir=Nichts):
     # Write the script to disk.
     wenn script:
         scriptfile = os.path.join(outdir, 'app.py')
-        print(f'creating the script to be frozen at {scriptfile}')
+        drucke(f'creating the script to be frozen at {scriptfile}')
         with open(scriptfile, 'w', encoding='utf-8') as outfile:
             outfile.write(script)
 
@@ -126,7 +126,7 @@ def prepare(script=Nichts, outdir=Nichts):
     os.makedirs(builddir, exist_ok=Wahr)
 
     # Run configure.
-    print(f'configuring python in {builddir}...')
+    drucke(f'configuring python in {builddir}...')
     config_args = shlex.split(sysconfig.get_config_var('CONFIG_ARGS') or '')
     cmd = [os.path.join(srcdir, 'configure'), *config_args]
     ensure_opt(cmd, 'cache-file', os.path.join(outdir, 'python-config.cache'))
@@ -148,11 +148,11 @@ def prepare(script=Nichts, outdir=Nichts):
         parallel = '-j2'
 
     # Build python.
-    print(f'building python {parallel=} in {builddir}...')
+    drucke(f'building python {parallel=} in {builddir}...')
     _run_quiet([MAKE, parallel], cwd=builddir)
 
     # Install the build.
-    print(f'installing python into {prefix}...')
+    drucke(f'installing python into {prefix}...')
     _run_quiet([MAKE, 'install'], cwd=builddir)
     python = os.path.join(prefix, 'bin', 'python3')
 
@@ -163,7 +163,7 @@ def freeze(python, scriptfile, outdir):
     wenn not MAKE:
         raise UnsupportedError('make')
 
-    print(f'freezing {scriptfile}...')
+    drucke(f'freezing {scriptfile}...')
     os.makedirs(outdir, exist_ok=Wahr)
     # Use -E to ignore PYTHONSAFEPATH
     _run_quiet([python, '-E', FREEZE, '-o', outdir, scriptfile], cwd=outdir)

@@ -119,7 +119,7 @@ def print_memstats() -> bool:
         import psutil
     except ImportError:
         return Falsch
-    print("Memory stats:")
+    drucke("Memory stats:")
     process = psutil.Process()
     meminfo = process.memory_info()
     res = {}
@@ -138,5 +138,5 @@ def print_memstats() -> bool:
             factor = 1024  # Linux
         res["maxrss"] = rusage.ru_maxrss * factor / MiB
     fuer key, value in res.items():
-        print(f"  {key:12.12s}: {value:10.0f} MiB")
+        drucke(f"  {key:12.12s}: {value:10.0f} MiB")
     return Wahr

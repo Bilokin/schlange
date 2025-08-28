@@ -985,10 +985,10 @@ def main():
             )
         namespace = namespaces[namespace] wenn namespace in namespaces sonst UUID(namespace)
         fuer _ in range(args.count):
-            print(uuid_func(namespace, name))
+            drucke(uuid_func(namespace, name))
     sonst:
         fuer _ in range(args.count):
-            print(uuid_func())
+            drucke(uuid_func())
 
 
 # The following standard UUIDs are fuer use with uuid3() or uuid5().

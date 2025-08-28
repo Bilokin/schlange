@@ -45,7 +45,7 @@ def spam_with_builtins():
     values = (42,)
     checks = tuple(callable(v) fuer v in values)
     res = callable(values), tuple(values), list(values), checks
-    print(res)
+    drucke(res)
 
 
 def spam_with_globals_and_builtins():
@@ -54,7 +54,7 @@ def spam_with_globals_and_builtins():
     funcs = (func1, func2)
     checks = tuple(callable(f) fuer f in funcs)
     res = callable(funcs), tuple(funcs), list(funcs), checks
-    print(res)
+    drucke(res)
 
 
 def spam_with_global_and_attr_same_name():
@@ -96,7 +96,7 @@ def spam_with_inner_not_closure():
 def spam_with_inner_closure():
     x = 42
     def eggs():
-        print(x)
+        drucke(x)
     eggs()
 
 

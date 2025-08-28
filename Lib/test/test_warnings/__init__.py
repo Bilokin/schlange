@@ -911,7 +911,7 @@ klasse _WarningsTests(BaseTest, unittest.TestCase):
         try:
             with self.module.catch_warnings():
                 self.module.filterwarnings("always", category=UserWarning)
-                self.module.showwarning = print
+                self.module.showwarning = drucke
                 with support.captured_output('stdout'):
                     self.module.warn('Warning!')
                 self.module.showwarning = 23
@@ -1398,7 +1398,7 @@ klasse EnvironmentVariableTests(BaseTest):
             code = "import sys; sys.modules.pop('warnings', Nichts); sys.modules['_warnings'] = Nichts; "
         sonst:
             code = ""
-        code += "import warnings; [print(f) fuer f in warnings._get_filters()]"
+        code += "import warnings; [drucke(f) fuer f in warnings._get_filters()]"
 
         rc, stdout, stderr = assert_python_ok("-c", code, __isolated=Wahr)
         stdout_lines = [line.strip() fuer line in stdout.splitlines()]

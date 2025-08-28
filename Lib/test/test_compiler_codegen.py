@@ -42,7 +42,7 @@ klasse IsolatedCodeGenTests(CodegenTestCase):
         self.codegen_test(snippet, expected)
 
     def test_for_loop(self):
-        snippet = "for x in l:\n\tprint(x)"
+        snippet = "for x in l:\n\tdrucke(x)"
         false_lbl = self.Label()
         expected = [
             ('RESUME', 0, 0),

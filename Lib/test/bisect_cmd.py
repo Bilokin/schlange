@@ -31,14 +31,14 @@ import time
 def write_tests(filename, tests):
     with open(filename, "w") as fp:
         fuer name in tests:
-            print(name, file=fp)
+            drucke(name, file=fp)
         fp.flush()
 
 
 def write_output(filename, tests):
     wenn not filename:
         return
-    print("Writing %s tests into %s" % (len(tests), filename))
+    drucke("Writing %s tests into %s" % (len(tests), filename))
     write_tests(filename, tests)
     return filename
 
@@ -65,7 +65,7 @@ def list_cases(args):
     exitcode = proc.returncode
     wenn exitcode:
         cmd = format_shell_args(cmd)
-        print("Failed to list tests: %s failed with exit code %s"
+        drucke("Failed to list tests: %s failed with exit code %s"
               % (cmd, exitcode))
         sys.exit(exitcode)
     tests = proc.stdout.splitlines()
@@ -80,7 +80,7 @@ def run_tests(args, tests, huntrleaks=Nichts):
         cmd = python_cmd()
         cmd.extend(['-u', '-m', 'test', '--matchfile', tmp])
         cmd.extend(args.test_args)
-        print("+ %s" % format_shell_args(cmd))
+        drucke("+ %s" % format_shell_args(cmd))
 
         sys.stdout.flush()
         sys.stderr.flush()
@@ -116,8 +116,8 @@ def main():
     args = parse_args()
     fuer opt in ('-w', '--rerun', '--verbose2'):
         wenn opt in args.test_args:
-            print(f"WARNING: {opt} option should not be used to bisect!")
-            print()
+            drucke(f"WARNING: {opt} option should not be used to bisect!")
+            drucke()
 
     wenn args.input:
         with open(args.input) as fp:
@@ -125,14 +125,14 @@ def main():
     sonst:
         tests = list_cases(args)
 
-    print("Start bisection with %s tests" % len(tests))
-    print("Test arguments: %s" % format_shell_args(args.test_args))
-    print("Bisection will stop when getting %s or less tests "
+    drucke("Start bisection with %s tests" % len(tests))
+    drucke("Test arguments: %s" % format_shell_args(args.test_args))
+    drucke("Bisection will stop when getting %s or less tests "
           "(-n/--max-tests option), or after %s iterations "
           "(-N/--max-iter option)"
           % (args.max_tests, args.max_iter))
     output = write_output(args.output, tests)
-    print()
+    drucke()
 
     start_time = time.monotonic()
     iteration = 1
@@ -142,41 +142,41 @@ def main():
             ntest = max(ntest // 2, 1)
             subtests = random.sample(tests, ntest)
 
-            print(f"[+] Iteration {iteration}/{args.max_iter}: "
+            drucke(f"[+] Iteration {iteration}/{args.max_iter}: "
                   f"run {len(subtests)} tests/{len(tests)}")
-            print()
+            drucke()
 
             exitcode = run_tests(args, subtests)
 
-            print("ran %s tests/%s" % (ntest, len(tests)))
-            print("exit", exitcode)
+            drucke("ran %s tests/%s" % (ntest, len(tests)))
+            drucke("exit", exitcode)
             wenn exitcode:
-                print("Tests failed: continuing with this subtest")
+                drucke("Tests failed: continuing with this subtest")
                 tests = subtests
                 output = write_output(args.output, tests)
             sonst:
-                print("Tests succeeded: skipping this subtest, trying a new subset")
-            print()
+                drucke("Tests succeeded: skipping this subtest, trying a new subset")
+            drucke()
             iteration += 1
     except KeyboardInterrupt:
-        print()
-        print("Bisection interrupted!")
-        print()
+        drucke()
+        drucke("Bisection interrupted!")
+        drucke()
 
-    print("Tests (%s):" % len(tests))
+    drucke("Tests (%s):" % len(tests))
     fuer test in tests:
-        print("* %s" % test)
-    print()
+        drucke("* %s" % test)
+    drucke()
 
     wenn output:
-        print("Output written into %s" % output)
+        drucke("Output written into %s" % output)
 
     dt = math.ceil(time.monotonic() - start_time)
     wenn len(tests) <= args.max_tests:
-        print("Bisection completed in %s iterations and %s"
+        drucke("Bisection completed in %s iterations and %s"
               % (iteration, datetime.timedelta(seconds=dt)))
     sonst:
-        print("Bisection failed after %s iterations and %s"
+        drucke("Bisection failed after %s iterations and %s"
               % (iteration, datetime.timedelta(seconds=dt)))
         sys.exit(1)
 

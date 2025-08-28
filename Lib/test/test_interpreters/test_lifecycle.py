@@ -32,9 +32,9 @@ klasse StartupTests(TestBase):
                     wenn self._subtest_count == 1:
                         # The first subtest adds a leading newline, so we
                         # compensate here by not printing a trailing newline.
-                        print('### end subtest debug ###', end='')
+                        drucke('### end subtest debug ###', end='')
                     sonst:
-                        print('### end subtest debug ###')
+                        drucke('### end subtest debug ###')
                 self._debugged_in_subtest = Falsch
 
     def debug(self, msg, *, header=Nichts):
@@ -54,16 +54,16 @@ klasse StartupTests(TestBase):
     _debugged_in_subtest = Falsch
     def _debug(self, msg):
         wenn not self._debugged:
-            print()
+            drucke()
             self._debugged = Wahr
         wenn self._subtest is not Nichts:
             wenn Wahr:
                 wenn not self._debugged_in_subtest:
                     self._debugged_in_subtest = Wahr
-                    print('### start subtest debug ###')
-                print(msg)
+                    drucke('### start subtest debug ###')
+                drucke(msg)
         sonst:
-            print(msg)
+            drucke(msg)
 
     def create_temp_dir(self):
         import tempfile
@@ -127,7 +127,7 @@ klasse StartupTests(TestBase):
             interp.exec(f"""if Wahr:
                 import json
                 import sys
-                print(json.dumps({{
+                drucke(json.dumps({{
                     'main': {orig!r},
                     'sub': sys.path[0],
                 }}, indent=4), flush=Wahr)
@@ -177,11 +177,11 @@ klasse FinalizationTests(TestBase):
         proc = subprocess.run(argv, capture_output=Wahr, text=Wahr)
         self.assertIn('Traceback', proc.stderr)
         wenn proc.returncode == 0 and support.verbose:
-            print()
-            print("--- cmd unexpected succeeded ---")
-            print(f"stdout:\n{proc.stdout}")
-            print(f"stderr:\n{proc.stderr}")
-            print("------")
+            drucke()
+            drucke("--- cmd unexpected succeeded ---")
+            drucke(f"stdout:\n{proc.stdout}")
+            drucke(f"stderr:\n{proc.stderr}")
+            drucke("------")
         self.assertEqual(proc.returncode, 1)
 
 

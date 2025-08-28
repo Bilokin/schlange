@@ -25,7 +25,7 @@ def setUpModule():
         libc_name = find_library("c")
 
     wenn test.support.verbose:
-        print("libc_name is", libc_name)
+        drucke("libc_name is", libc_name)
 
 
 klasse LoaderTest(unittest.TestCase):
@@ -73,8 +73,8 @@ klasse LoaderTest(unittest.TestCase):
         # discussion about alternative approaches.
         #self.assertIsNotNichts(libc_name)
         wenn test.support.verbose:
-            print(find_library("kernel32"))
-            print(find_library("user32"))
+            drucke(find_library("kernel32"))
+            drucke(find_library("user32"))
 
         wenn os.name == "nt":
             ctypes.windll.kernel32.GetModuleHandleW

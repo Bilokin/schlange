@@ -33,7 +33,7 @@ def run_unittest(test_mod, runtests: RunTests):
     tests = loader.loadTestsFromModule(test_mod)
 
     fuer error in loader.errors:
-        print(error, file=sys.stderr)
+        drucke(error, file=sys.stderr)
     wenn loader.errors:
         raise Exception("errors while loading tests")
     _filter_suite(tests, match_test)
@@ -210,7 +210,7 @@ def _runtest_env_changed_exc(result: TestResult, runtests: RunTests,
             _load_run_test(result, runtests)
     except support.ResourceDenied as exc:
         wenn not quiet and not pgo:
-            print(
+            drucke(
                 f"{stdout.YELLOW}{test_name} skipped -- {exc}{stdout.RESET}",
                 flush=Wahr,
             )
@@ -218,7 +218,7 @@ def _runtest_env_changed_exc(result: TestResult, runtests: RunTests,
         return
     except unittest.SkipTest as exc:
         wenn not quiet and not pgo:
-            print(
+            drucke(
                 f"{stdout.YELLOW}{test_name} skipped -- {exc}{stdout.RESET}",
                 flush=Wahr,
             )
@@ -228,7 +228,7 @@ def _runtest_env_changed_exc(result: TestResult, runtests: RunTests,
         msg = f"{stderr.RED}test {test_name} failed{stderr.RESET}"
         wenn display_failure:
             msg = f"{stderr.RED}{msg} -- {exc}{stderr.RESET}"
-        print(msg, file=sys.stderr, flush=Wahr)
+        drucke(msg, file=sys.stderr, flush=Wahr)
         result.state = State.FAILED
         result.errors = exc.errors
         result.failures = exc.failures
@@ -238,7 +238,7 @@ def _runtest_env_changed_exc(result: TestResult, runtests: RunTests,
         msg = f"{stderr.RED}test {test_name} failed{stderr.RESET}"
         wenn display_failure:
             msg = f"{stderr.RED}{msg} -- {exc}{stderr.RESET}"
-        print(msg, file=sys.stderr, flush=Wahr)
+        drucke(msg, file=sys.stderr, flush=Wahr)
         result.state = State.FAILED
         result.stats = exc.stats
         return
@@ -246,13 +246,13 @@ def _runtest_env_changed_exc(result: TestResult, runtests: RunTests,
         result.state = State.DID_NOT_RUN
         return
     except KeyboardInterrupt:
-        print()
+        drucke()
         result.state = State.INTERRUPTED
         return
     except:
         wenn not pgo:
             msg = traceback.format_exc()
-            print(
+            drucke(
                 f"{stderr.RED}test {test_name} crashed -- {msg}{stderr.RESET}",
                 file=sys.stderr,
                 flush=Wahr,
@@ -349,7 +349,7 @@ def run_single_test(test_name: TestName, runtests: RunTests) -> TestResult:
     except:
         wenn not pgo:
             msg = traceback.format_exc()
-            print(f"{red}test {test_name} crashed -- {msg}{reset}",
+            drucke(f"{red}test {test_name} crashed -- {msg}{reset}",
                   file=sys.stderr, flush=Wahr)
         result.state = State.UNCAUGHT_EXC
 

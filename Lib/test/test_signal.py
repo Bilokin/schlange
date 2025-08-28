@@ -627,7 +627,7 @@ klasse WakeupSocketSignalTests(unittest.TestCase):
             except (BlockingIOError, TimeoutError):
                 pass
 
-        print(f"%s bytes written into the socketpair" % written, flush=Wahr)
+        drucke(f"%s bytes written into the socketpair" % written, flush=Wahr)
 
         write.setblocking(Falsch)
         try:
@@ -719,7 +719,7 @@ klasse SiginterruptTest(unittest.TestCase):
             wenn interrupt is not Nichts:
                 signal.siginterrupt(signal.SIGALRM, interrupt)
 
-            print("ready")
+            drucke("ready")
             sys.stdout.flush()
 
             # run the test twice
@@ -976,11 +976,11 @@ klasse PendingSignalsTests(unittest.TestCase):
             try:
                 signal.pthread_sigmask(signal.SIG_UNBLOCK, [blocked])
             except ZeroDivisionError:
-                print("the signal handler has been called",
+                drucke("the signal handler has been called",
                       file=sys.stderr)
                 sys.exit(1)
         except BaseException as err:
-            print("error: {}".format(err), file=sys.stderr)
+            drucke("error: {}".format(err), file=sys.stderr)
             sys.stderr.flush()
             sys.exit(1)
         ''' % (test.strip(), blocked)
@@ -1080,7 +1080,7 @@ klasse PendingSignalsTests(unittest.TestCase):
             killer.start()
             received = signal.sigwait([signum])
             wenn received != signum:
-                print("sigwait() received %s, not %s" % (received, signum),
+                drucke("sigwait() received %s, not %s" % (received, signum),
                       file=sys.stderr)
                 sys.exit(1)
             killer.join()
@@ -1248,7 +1248,7 @@ klasse StressTest(unittest.TestCase):
         durations = [times[i+1] - times[i] fuer i in range(len(times) - 1)]
         med = statistics.median(durations)
         wenn support.verbose:
-            print("detected median itimer() resolution: %.6f s." % (med,))
+            drucke("detected median itimer() resolution: %.6f s." % (med,))
         return med
 
     def decide_itimer_count(self):

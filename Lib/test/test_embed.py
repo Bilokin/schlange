@@ -130,10 +130,10 @@ klasse EmbeddingTestsMixin:
             p.wait()
             raise
         wenn p.returncode != returncode and support.verbose:
-            print(f"--- {cmd} failed ---")
-            print(f"stdout:\n{out}")
-            print(f"stderr:\n{err}")
-            print("------")
+            drucke(f"--- {cmd} failed ---")
+            drucke(f"stdout:\n{out}")
+            drucke(f"stderr:\n{err}")
+            drucke("------")
 
         self.assertEqual(p.returncode, returncode,
                          "bad returncode %d, stderr is %r" %
@@ -165,7 +165,7 @@ klasse EmbeddingTestsMixin:
             wenn line == "--- Pass {} ---".format(numloops):
                 self.assertEqual(len(current_run), 0)
                 wenn support.verbose > 1:
-                    print(line)
+                    drucke(line)
                 numloops += 1
                 continue
 
@@ -179,7 +179,7 @@ klasse EmbeddingTestsMixin:
             interp = Interp(*match.groups())
             wenn support.verbose > 2:
                 # 5 lines per pass is super-spammy, so limit that to -vvv
-                print(interp)
+                drucke(interp)
             self.assertWahr(interp.interp)
             self.assertWahr(interp.tstate)
             self.assertWahr(interp.modules)
@@ -244,9 +244,9 @@ klasse EmbeddingTests(EmbeddingTestsMixin, unittest.TestCase):
         env = dict(os.environ, PYTHONIOENCODING="utf-8:surrogateescape")
         out, err = self.run_embedded_interpreter("test_forced_io_encoding", env=env)
         wenn support.verbose > 1:
-            print()
-            print(out)
-            print(err)
+            drucke()
+            drucke(out)
+            drucke(err)
         expected_stream_encoding = "utf-8"
         expected_errors = "surrogateescape"
         expected_output = '\n'.join([
@@ -290,9 +290,9 @@ klasse EmbeddingTests(EmbeddingTestsMixin, unittest.TestCase):
         env = dict(os.environ, PYTHONPATH=os.pathsep.join(sys.path))
         out, err = self.run_embedded_interpreter("test_pre_initialization_api", env=env)
         wenn support.verbose > 1:
-            print()
-            print(out)
-            print(err)
+            drucke()
+            drucke(out)
+            drucke(err)
         wenn MS_WINDOWS:
             expected_path = self.test_exe
         sonst:
@@ -311,9 +311,9 @@ klasse EmbeddingTests(EmbeddingTestsMixin, unittest.TestCase):
         out, err = self.run_embedded_interpreter(
                         "test_pre_initialization_sys_options", env=env)
         wenn support.verbose > 1:
-            print()
-            print(out)
-            print(err)
+            drucke()
+            drucke(out)
+            drucke(err)
         expected_output = (
             "sys.warnoptions: ['once', 'module', 'default']\n"
             "sys._xoptions: {'not_an_option': '1', 'also_not_an_option': '2'}\n"
@@ -365,7 +365,7 @@ klasse EmbeddingTests(EmbeddingTestsMixin, unittest.TestCase):
         # bpo-46417: Py_Finalize() clears structseq static types. Check that
         # sys attributes using struct types still work when
         # Py_Finalize()/Py_Initialize() is called multiple times.
-        # print() calls type->tp_repr(instance) and so checks that the types
+        # drucke() calls type->tp_repr(instance) and so checks that the types
         # are still working properly.
         script = support.findfile('_test_embed_structseq.py')
         with open(script, encoding="utf-8") as fp:
@@ -419,7 +419,7 @@ klasse EmbeddingTests(EmbeddingTestsMixin, unittest.TestCase):
 
             assert is_specialized(func), "no specialized instructions found"
 
-            print("Tests passed")
+            drucke("Tests passed")
         """)
         run = self.run_embedded_interpreter
         out, err = run("test_repeated_init_exec", code)
@@ -427,7 +427,7 @@ klasse EmbeddingTests(EmbeddingTestsMixin, unittest.TestCase):
 
     def test_ucnhash_capi_reset(self):
         # bpo-47182: unicodeobject.c:ucnhash_capi was not reset on shutdown.
-        code = "print('\\N{digit nine}')"
+        code = "drucke('\\N{digit nine}')"
         out, err = self.run_embedded_interpreter("test_repeated_init_exec", code)
         self.assertEqual(out, '9\n' * INIT_LOOPS)
 
@@ -435,7 +435,7 @@ klasse EmbeddingTests(EmbeddingTestsMixin, unittest.TestCase):
         code = (
             "import datetime;"
             "d = datetime.datetime.strptime('2000-01-01', '%Y-%m-%d');"
-            "print(d.strftime('%Y%m%d'))"
+            "drucke(d.strftime('%Y%m%d'))"
         )
         out, err = self.run_embedded_interpreter("test_repeated_init_exec", code)
         self.assertEqual(out, '20000101\n' * INIT_LOOPS)
@@ -468,7 +468,7 @@ klasse EmbeddingTests(EmbeddingTestsMixin, unittest.TestCase):
             import json
             import sys
             text = json.dumps(list(results))
-            print(text, file=sys.stderr)
+            drucke(text, file=sys.stderr)
             """)
         out, err = self.run_embedded_interpreter(
                 "test_repeated_init_exec", script, script)
@@ -503,15 +503,15 @@ klasse EmbeddingTests(EmbeddingTestsMixin, unittest.TestCase):
                 _ssl = Nichts
             wenn _ssl is not Nichts:
                 _ssl.txt2obj(txt='1.3')
-            print('1')
+            drucke('1')
 
             import _queue
             _queue.SimpleQueue().put_nowait(item=Nichts)
-            print('2')
+            drucke('2')
 
             import _zoneinfo
             _zoneinfo.ZoneInfo.clear_cache(only_keys=['Foo/Bar'])
-            print('3')
+            drucke('3')
         """)
         out, err = self.run_embedded_interpreter("test_repeated_init_exec", code)
         self.assertEqual(out, '1\n2\n3\n' * INIT_LOOPS)
@@ -1269,7 +1269,7 @@ klasse InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
 
     def test_init_run_main(self):
         code = ('import _testinternalcapi, json; '
-                'print(json.dumps(_testinternalcapi.get_configs()))')
+                'drucke(json.dumps(_testinternalcapi.get_configs()))')
         config = {
             'argv': ['-c', 'arg2'],
             'orig_argv': ['python3', '-c', code, 'arg2'],
@@ -1629,8 +1629,8 @@ klasse InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
 
             filename = os.path.join(tmpdir, 'pyvenv.cfg')
             with open(filename, "w", encoding="utf8") as fp:
-                print("home = %s" % pyvenv_home, file=fp)
-                print("include-system-site-packages = false", file=fp)
+                drucke("home = %s" % pyvenv_home, file=fp)
+                drucke("include-system-site-packages = false", file=fp)
 
             paths = self.module_search_paths()
             wenn not MS_WINDOWS:
@@ -1878,8 +1878,8 @@ klasse AuditingTests(EmbeddingTestsMixin, unittest.TestCase):
     def test_audit_run_interactivehook(self):
         startup = os.path.join(self.oldcwd, os_helper.TESTFN) + ".py"
         with open(startup, "w", encoding="utf-8") as f:
-            print("import sys", file=f)
-            print("sys.__interactivehook__ = lambda: Nichts", file=f)
+            drucke("import sys", file=f)
+            drucke("sys.__interactivehook__ = lambda: Nichts", file=f)
         try:
             env = {**remove_python_envvars(), "PYTHONSTARTUP": startup}
             self.run_embedded_interpreter("test_audit_run_interactivehook",
@@ -1891,7 +1891,7 @@ klasse AuditingTests(EmbeddingTestsMixin, unittest.TestCase):
     def test_audit_run_startup(self):
         startup = os.path.join(self.oldcwd, os_helper.TESTFN) + ".py"
         with open(startup, "w", encoding="utf-8") as f:
-            print("pass", file=f)
+            drucke("pass", file=f)
         try:
             env = {**remove_python_envvars(), "PYTHONSTARTUP": startup}
             self.run_embedded_interpreter("test_audit_run_startup",
@@ -1973,7 +1973,7 @@ klasse MiscTests(EmbeddingTestsMixin, unittest.TestCase):
         cmd = [
             sys.executable,
             "-I", "-X", "presite=test._test_embed_structseq",
-            "-c", "print('unique-python-message')",
+            "-c", "drucke('unique-python-message')",
         ]
         proc = subprocess.run(
             cmd,

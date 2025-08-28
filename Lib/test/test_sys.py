@@ -897,20 +897,20 @@ klasse SysModuleTest(unittest.TestCase):
         # not representable in ASCII.
 
         env["PYTHONIOENCODING"] = "cp424"
-        p = subprocess.Popen([sys.executable, "-c", 'print(chr(0xa2))'],
+        p = subprocess.Popen([sys.executable, "-c", 'drucke(chr(0xa2))'],
                              stdout = subprocess.PIPE, env=env)
         out = p.communicate()[0].strip()
         expected = ("\xa2" + os.linesep).encode("cp424")
         self.assertEqual(out, expected)
 
         env["PYTHONIOENCODING"] = "ascii:replace"
-        p = subprocess.Popen([sys.executable, "-c", 'print(chr(0xa2))'],
+        p = subprocess.Popen([sys.executable, "-c", 'drucke(chr(0xa2))'],
                              stdout = subprocess.PIPE, env=env)
         out = p.communicate()[0].strip()
         self.assertEqual(out, b'?')
 
         env["PYTHONIOENCODING"] = "ascii"
-        p = subprocess.Popen([sys.executable, "-c", 'print(chr(0xa2))'],
+        p = subprocess.Popen([sys.executable, "-c", 'drucke(chr(0xa2))'],
                              stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                              env=env)
         out, err = p.communicate()
@@ -919,7 +919,7 @@ klasse SysModuleTest(unittest.TestCase):
         self.assertIn(rb"'\xa2'", err)
 
         env["PYTHONIOENCODING"] = "ascii:"
-        p = subprocess.Popen([sys.executable, "-c", 'print(chr(0xa2))'],
+        p = subprocess.Popen([sys.executable, "-c", 'drucke(chr(0xa2))'],
                              stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                              env=env)
         out, err = p.communicate()
@@ -928,7 +928,7 @@ klasse SysModuleTest(unittest.TestCase):
         self.assertIn(rb"'\xa2'", err)
 
         env["PYTHONIOENCODING"] = ":surrogateescape"
-        p = subprocess.Popen([sys.executable, "-c", 'print(chr(0xdcbd))'],
+        p = subprocess.Popen([sys.executable, "-c", 'drucke(chr(0xdcbd))'],
                              stdout=subprocess.PIPE, env=env)
         out = p.communicate()[0].strip()
         self.assertEqual(out, b'\xbd')
@@ -943,7 +943,7 @@ klasse SysModuleTest(unittest.TestCase):
 
         env["PYTHONIOENCODING"] = ""
         p = subprocess.Popen([sys.executable, "-c",
-                                'print(%a)' % os_helper.FS_NONASCII],
+                                'drucke(%a)' % os_helper.FS_NONASCII],
                                 stdout=subprocess.PIPE, env=env)
         out = p.communicate()[0].strip()
         self.assertEqual(out, os.fsencode(os_helper.FS_NONASCII))
@@ -964,7 +964,7 @@ klasse SysModuleTest(unittest.TestCase):
         python_dir = os.path.dirname(os.path.realpath(sys.executable))
         p = subprocess.Popen(
             ["nonexistent", "-c",
-             'import sys; print(sys.executable.encode("ascii", "backslashreplace"))'],
+             'import sys; drucke(sys.executable.encode("ascii", "backslashreplace"))'],
             executable=sys.executable, stdout=subprocess.PIPE, cwd=python_dir)
         stdout = p.communicate()[0]
         executable = stdout.strip().decode("ASCII")
@@ -994,7 +994,7 @@ klasse SysModuleTest(unittest.TestCase):
             'import sys',
             'def dump(name):',
             '    std = getattr(sys, name)',
-            '    print("%s: %s" % (name, std.errors))',
+            '    drucke("%s: %s" % (name, std.errors))',
             'dump("stdin")',
             'dump("stdout")',
             'dump("stderr")',
@@ -1168,10 +1168,10 @@ klasse SysModuleTest(unittest.TestCase):
 
             klasse AtExit:
                 is_finalizing = sys.is_finalizing
-                print = print
+                print = drucke
 
                 def __del__(self):
-                    self.print(self.is_finalizing(), flush=Wahr)
+                    self.drucke(self.is_finalizing(), flush=Wahr)
 
             # Keep a reference in the __main__ module namespace, so the
             # AtExit destructor will be called at Python exit
@@ -1186,8 +1186,8 @@ klasse SysModuleTest(unittest.TestCase):
             import sys
             klasse A:
                 def __del__(self, sys=sys):
-                    print(sys.flags)
-                    print(sys.float_info)
+                    drucke(sys.flags)
+                    drucke(sys.float_info)
             a = A()
             """
         rc, out, err = assert_python_ok('-c', code)
@@ -1267,7 +1267,7 @@ klasse SysModuleTest(unittest.TestCase):
     def test__enablelegacywindowsfsencoding(self):
         code = ('import sys',
                 'sys._enablelegacywindowsfsencoding()',
-                'print(sys.getfilesystemencoding(), sys.getfilesystemencodeerrors())')
+                'drucke(sys.getfilesystemencoding(), sys.getfilesystemencodeerrors())')
         rc, out, err = assert_python_ok('-c', '; '.join(code))
         out = out.decode('ascii', 'replace').rstrip()
         self.assertEqual(out, 'mbcs replace')
@@ -1276,8 +1276,8 @@ klasse SysModuleTest(unittest.TestCase):
     def test_orig_argv(self):
         code = textwrap.dedent('''
             import sys
-            print(sys.argv)
-            print(sys.orig_argv)
+            drucke(sys.argv)
+            drucke(sys.orig_argv)
         ''')
         args = [sys.executable, '-I', '-X', 'utf8', '-c', code, 'arg']
         proc = subprocess.run(args, check=Wahr, capture_output=Wahr, text=Wahr)
@@ -1985,7 +1985,7 @@ sock.connect(('localhost', {port}))
 # Signal that the process is ready
 sock.sendall(b"ready")
 
-print("Target process running...")
+drucke("Target process running...")
 
 # Wait fuer remote script to be executed
 # (the execution will happen as the following
@@ -2053,14 +2053,14 @@ sock.close()
 
     def test_remote_exec(self):
         """Test basic remote exec functionality"""
-        script = 'print("Remote script executed successfully!")'
+        script = 'drucke("Remote script executed successfully!")'
         returncode, stdout, stderr = self._run_remote_exec_test(script)
         # self.assertEqual(returncode, 0)
         self.assertIn(b"Remote script executed successfully!", stdout)
         self.assertEqual(stderr, b"")
 
     def test_remote_exec_bytes(self):
-        script = 'print("Remote script executed successfully!")'
+        script = 'drucke("Remote script executed successfully!")'
         script_path = os.fsencode(os_helper.TESTFN) + b'_bytes_remote.py'
         returncode, stdout, stderr = self._run_remote_exec_test(script,
                                                     script_path=script_path)
@@ -2071,7 +2071,7 @@ sock.close()
     @unittest.skipIf(sys.platform == 'darwin',
                      'undecodable paths are not supported on macOS')
     def test_remote_exec_undecodable(self):
-        script = 'print("Remote script executed successfully!")'
+        script = 'drucke("Remote script executed successfully!")'
         script_path = os_helper.TESTFN_UNDECODABLE + b'_undecodable_remote.py'
         fuer script_path in [script_path, os.fsdecode(script_path)]:
             returncode, stdout, stderr = self._run_remote_exec_test(script,
@@ -2082,7 +2082,7 @@ sock.close()
     def test_remote_exec_with_self_process(self):
         """Test remote exec with the target process being the same as the test process"""
 
-        code = 'import sys;print("Remote script executed successfully!", file=sys.stderr)'
+        code = 'import sys;drucke("Remote script executed successfully!", file=sys.stderr)'
         file = os_helper.TESTFN + '_remote_self.py'
         with open(file, 'w') as f:
             f.write(code)
@@ -2090,7 +2090,7 @@ sock.close()
         with mock.patch('sys.stderr', new_callable=StringIO) as mock_stderr:
             with mock.patch('sys.stdout', new_callable=StringIO) as mock_stdout:
                 sys.remote_exec(os.getpid(), os.path.abspath(file))
-                print("Done")
+                drucke("Done")
                 self.assertEqual(mock_stderr.getvalue(), "Remote script executed successfully!\n")
                 self.assertEqual(mock_stdout.getvalue(), "Done\n")
 
@@ -2099,11 +2099,11 @@ sock.close()
         prologue = '''\
 import sys
 def audit_hook(event, arg):
-    print(f"Audit event: {event}, arg: {arg}".encode("ascii", errors="replace"))
+    drucke(f"Audit event: {event}, arg: {arg}".encode("ascii", errors="replace"))
 sys.addaudithook(audit_hook)
 '''
         script = '''
-print("Remote script executed successfully!")
+drucke("Remote script executed successfully!")
 '''
         returncode, stdout, stderr = self._run_remote_exec_test(script, prologue=prologue)
         self.assertEqual(returncode, 0)
@@ -2130,7 +2130,7 @@ raise Exception("Remote script exception")
         script = textwrap.dedent(
             """
             assert globals() is not __import__("__main__").__dict__
-            print("Remote script executed successfully!")
+            drucke("Remote script executed successfully!")
             """
         )
         returncode, stdout, stderr = self._run_remote_exec_test(script)
@@ -2143,17 +2143,17 @@ raise Exception("Remote script exception")
         env = os.environ.copy()
         env['PYTHON_DISABLE_REMOTE_DEBUG'] = '1'
         with self.assertRaisesRegex(RuntimeError, "Remote debugging is not enabled in the remote process"):
-            self._run_remote_exec_test("print('should not run')", env=env)
+            self._run_remote_exec_test("drucke('should not run')", env=env)
 
     def test_remote_exec_disabled_by_xoption(self):
         """Test remote exec is disabled with -Xdisable-remote-debug"""
         with self.assertRaisesRegex(RuntimeError, "Remote debugging is not enabled in the remote process"):
-            self._run_remote_exec_test("print('should not run')", python_args=['-Xdisable-remote-debug'])
+            self._run_remote_exec_test("drucke('should not run')", python_args=['-Xdisable-remote-debug'])
 
     def test_remote_exec_invalid_pid(self):
         """Test remote exec with invalid process ID"""
         with self.assertRaises(OSError):
-            sys.remote_exec(99999, "print('should not run')")
+            sys.remote_exec(99999, "drucke('should not run')")
 
     def test_remote_exec_invalid_script(self):
         """Test remote exec with invalid script type"""
@@ -2182,7 +2182,7 @@ this is invalid python code
         script = os_helper.TESTFN + '_remote.py'
         self.addCleanup(os_helper.unlink, script)
         with open(script, 'w') as f:
-            f.write('print("Remote script executed successfully!")')
+            f.write('drucke("Remote script executed successfully!")')
         env = os.environ.copy()
         env['PYTHON_DISABLE_REMOTE_DEBUG'] = '1'
 
@@ -2195,7 +2195,7 @@ this is invalid python code
         script = os_helper.TESTFN + '_remote.py'
         self.addCleanup(os_helper.unlink, script)
         with open(script, 'w') as f:
-            f.write('print("Remote script executed successfully!")')
+            f.write('drucke("Remote script executed successfully!")')
 
         _, out, err = assert_python_failure('-Xdisable-remote-debug', '-c', f'import os, sys; sys.remote_exec(os.getpid(), "{script}")')
         self.assertIn(b"Remote debugging is not enabled", err)

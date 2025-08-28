@@ -254,7 +254,7 @@ klasse SubprocessMixin:
         # and signal handlers are inherited.
         old_handler = signal.signal(signal.SIGHUP, signal.SIG_DFL)
         try:
-            code = 'import time; print("sleeping", flush=Wahr); time.sleep(3600)'
+            code = 'import time; drucke("sleeping", flush=Wahr); time.sleep(3600)'
             args = [sys.executable, '-c', code]
             proc = self.loop.run_until_complete(
                 asyncio.create_subprocess_exec(
@@ -388,7 +388,7 @@ klasse SubprocessMixin:
         # asyncio issue #209: stdin must not be inheritable, otherwise
         # the Process.communicate() hangs
         async def len_message(message):
-            code = 'import sys; data = sys.stdin.read(); print(len(data))'
+            code = 'import sys; data = sys.stdin.read(); drucke(len(data))'
             proc = await asyncio.create_subprocess_exec(
                 sys.executable, '-c', code,
                 stdin=asyncio.subprocess.PIPE,
@@ -407,7 +407,7 @@ klasse SubprocessMixin:
     def test_empty_input(self):
 
         async def empty_input():
-            code = 'import sys; data = sys.stdin.read(); print(len(data))'
+            code = 'import sys; data = sys.stdin.read(); drucke(len(data))'
             proc = await asyncio.create_subprocess_exec(
                 sys.executable, '-c', code,
                 stdin=asyncio.subprocess.PIPE,
@@ -426,7 +426,7 @@ klasse SubprocessMixin:
     def test_devnull_input(self):
 
         async def empty_input():
-            code = 'import sys; data = sys.stdin.read(); print(len(data))'
+            code = 'import sys; data = sys.stdin.read(); drucke(len(data))'
             proc = await asyncio.create_subprocess_exec(
                 sys.executable, '-c', code,
                 stdin=asyncio.subprocess.DEVNULL,
@@ -445,7 +445,7 @@ klasse SubprocessMixin:
     def test_devnull_output(self):
 
         async def empty_output():
-            code = 'import sys; data = sys.stdin.read(); print(len(data))'
+            code = 'import sys; data = sys.stdin.read(); drucke(len(data))'
             proc = await asyncio.create_subprocess_exec(
                 sys.executable, '-c', code,
                 stdin=asyncio.subprocess.PIPE,
@@ -464,7 +464,7 @@ klasse SubprocessMixin:
     def test_devnull_error(self):
 
         async def empty_error():
-            code = 'import sys; data = sys.stdin.read(); print(len(data))'
+            code = 'import sys; data = sys.stdin.read(); drucke(len(data))'
             proc = await asyncio.create_subprocess_exec(
                 sys.executable, '-c', code,
                 stdin=asyncio.subprocess.PIPE,
@@ -485,7 +485,7 @@ klasse SubprocessMixin:
     def test_devstdin_input(self):
 
         async def devstdin_input(message):
-            code = 'file = open("/dev/stdin"); data = file.read(); print(len(data))'
+            code = 'file = open("/dev/stdin"); data = file.read(); drucke(len(data))'
             proc = await asyncio.create_subprocess_exec(
                 sys.executable, '-c', code,
                 stdin=asyncio.subprocess.PIPE,
@@ -859,7 +859,7 @@ klasse SubprocessMixin:
         async def main():
             outputs = [f'foo{i}' fuer i in range(10)]
             res = await asyncio.gather(*[get_command_stdout(sys.executable, '-c',
-                                        f'print({out!r})') fuer out in outputs])
+                                        f'drucke({out!r})') fuer out in outputs])
             self.assertEqual(res, outputs)
 
         self.loop.run_until_complete(main())

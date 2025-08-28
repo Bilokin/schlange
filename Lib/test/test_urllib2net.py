@@ -274,7 +274,7 @@ klasse OtherNetworkTests(unittest.TestCase):
                                 buf = f.read()
                                 debug("read %d bytes" % len(buf))
                         except TimeoutError:
-                            print("<timeout: %s>" % url, file=sys.stderr)
+                            drucke("<timeout: %s>" % url, file=sys.stderr)
                         f.close()
                 time.sleep(0.1)
 

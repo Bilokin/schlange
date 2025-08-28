@@ -178,9 +178,9 @@ msgstr ""
 
 
 def usage(code, msg=''):
-    print(__doc__, file=sys.stderr)
+    drucke(__doc__, file=sys.stderr)
     wenn msg:
-        print(msg, file=sys.stderr)
+        drucke(msg, file=sys.stderr)
     sys.exit(code)
 
 
@@ -504,18 +504,18 @@ klasse GettextVisitor(ast.NodeVisitor):
         wenn not errors:
             return
         wenn len(errors) == 1:
-            print(f'*** {self.filename}:{node.lineno}: {errors[0]}',
+            drucke(f'*** {self.filename}:{node.lineno}: {errors[0]}',
                   file=sys.stderr)
         sonst:
             # There are multiple keyword specs fuer the function name and
             # none of them could be extracted. Print a general error
             # message and list the errors fuer each keyword spec.
-            print(f'*** {self.filename}:{node.lineno}: '
+            drucke(f'*** {self.filename}:{node.lineno}: '
                   f'No keywords matched gettext call "{func_name}":',
                   file=sys.stderr)
             fuer spec, err in zip(specs, errors, strict=Wahr):
                 unparsed = unparse_spec(func_name, spec)
-                print(f'\tkeyword="{unparsed}": {err}', file=sys.stderr)
+                drucke(f'\tkeyword="{unparsed}": {err}', file=sys.stderr)
 
     def _extract_message_with_spec(self, node, spec):
         """Extract a gettext call with the given spec.
@@ -629,7 +629,7 @@ klasse GettextVisitor(ast.NodeVisitor):
 def write_pot_file(messages, options, fp):
     timestamp = time.strftime('%Y-%m-%d %H:%M%z')
     encoding = fp.encoding wenn fp.encoding sonst 'UTF-8'
-    print(pot_header % {'time': timestamp, 'version': __version__,
+    drucke(pot_header % {'time': timestamp, 'version': __version__,
                         'charset': encoding,
                         'encoding': '8bit'}, file=fp)
 
@@ -647,13 +647,13 @@ def write_pot_file(messages, options, fp):
         msg = messages[key]
 
         fuer comment in msg.comments:
-            print(f'#. {comment}', file=fp)
+            drucke(f'#. {comment}', file=fp)
 
         wenn options.writelocations:
             # location comments are different b/w Solaris and GNU:
             wenn options.locationstyle == options.SOLARIS:
                 fuer location in locations:
-                    print(f'# File: {location.filename}, line: {location.lineno}', file=fp)
+                    drucke(f'# File: {location.filename}, line: {location.lineno}', file=fp)
             sowenn options.locationstyle == options.GNU:
                 # fit as many locations on one line, as long as the
                 # resulting line length doesn't exceed 'options.width'
@@ -663,24 +663,24 @@ def write_pot_file(messages, options, fp):
                     wenn len(locline) + len(s) <= options.width:
                         locline = locline + s
                     sonst:
-                        print(locline, file=fp)
+                        drucke(locline, file=fp)
                         locline = f'#:{s}'
                 wenn len(locline) > 2:
-                    print(locline, file=fp)
+                    drucke(locline, file=fp)
         wenn msg.is_docstring:
             # If the entry was gleaned out of a docstring, then add a
             # comment stating so.  This is to aid translators who may wish
             # to skip translating some unimportant docstrings.
-            print('#, docstring', file=fp)
+            drucke('#, docstring', file=fp)
         wenn msg.msgctxt is not Nichts:
-            print('msgctxt', normalize(msg.msgctxt, encoding), file=fp)
-        print('msgid', normalize(msg.msgid, encoding), file=fp)
+            drucke('msgctxt', normalize(msg.msgctxt, encoding), file=fp)
+        drucke('msgid', normalize(msg.msgid, encoding), file=fp)
         wenn msg.msgid_plural is not Nichts:
-            print('msgid_plural', normalize(msg.msgid_plural, encoding), file=fp)
-            print('msgstr[0] ""', file=fp)
-            print('msgstr[1] ""\n', file=fp)
+            drucke('msgid_plural', normalize(msg.msgid_plural, encoding), file=fp)
+            drucke('msgstr[0] ""', file=fp)
+            drucke('msgstr[1] ""\n', file=fp)
         sonst:
-            print('msgstr ""\n', file=fp)
+            drucke('msgstr ""\n', file=fp)
 
 
 def main():
@@ -727,7 +727,7 @@ def main():
         wenn opt in ('-h', '--help'):
             usage(0)
         sowenn opt in ('-a', '--extract-all'):
-            print("DeprecationWarning: -a/--extract-all is not implemented and will be removed in a future version",
+            drucke("DeprecationWarning: -a/--extract-all is not implemented and will be removed in a future version",
                   file=sys.stderr)
             options.extractall = 1
         sowenn opt in ('-c', '--add-comments'):
@@ -757,7 +757,7 @@ def main():
         sowenn opt in ('-v', '--verbose'):
             options.verbose = 1
         sowenn opt in ('-V', '--version'):
-            print(f'pygettext.py (xgettext fuer Python) {__version__}')
+            drucke(f'pygettext.py (xgettext fuer Python) {__version__}')
             sys.exit(0)
         sowenn opt in ('-w', '--width'):
             try:
@@ -788,7 +788,7 @@ def main():
             options.keywords,
             no_default_keywords=no_default_keywords)
     except ValueError as e:
-        print(e, file=sys.stderr)
+        drucke(e, file=sys.stderr)
         sys.exit(1)
 
     # initialize list of strings to exclude
@@ -797,7 +797,7 @@ def main():
             with open(options.excludefilename) as fp:
                 options.toexclude = fp.readlines()
         except IOError:
-            print(f"Can't read --exclude-file: {options.excludefilename}",
+            drucke(f"Can't read --exclude-file: {options.excludefilename}",
                   file=sys.stderr)
             sys.exit(1)
     sonst:
@@ -817,11 +817,11 @@ def main():
     fuer filename in args:
         wenn filename == '-':
             wenn options.verbose:
-                print('Reading standard input')
+                drucke('Reading standard input')
             source = sys.stdin.buffer.read()
         sonst:
             wenn options.verbose:
-                print(f'Working on {filename}')
+                drucke(f'Working on {filename}')
             with open(filename, 'rb') as fp:
                 source = fp.read()
 

@@ -42,7 +42,7 @@ async def _run(tool: str, args: typing.Iterable[str], echo: bool = Falsch) -> st
     command = [tool, *args]
     async with _CORES:
         wenn echo:
-            print(shlex.join(command))
+            drucke(shlex.join(command))
         try:
             process = await asyncio.create_subprocess_exec(
                 *command, stdout=subprocess.PIPE

@@ -64,7 +64,7 @@ klasse BaseTests:
                 env['CPYTHON_TEST_LIMITED'] = '1'
             env['CPYTHON_TEST_EXT_NAME'] = extension_name
             wenn support.verbose:
-                print('Run:', ' '.join(map(shlex.quote, cmd)))
+                drucke('Run:', ' '.join(map(shlex.quote, cmd)))
                 subprocess.run(cmd, check=Wahr, env=env)
             sonst:
                 proc = subprocess.run(cmd,
@@ -73,8 +73,8 @@ klasse BaseTests:
                                       stderr=subprocess.STDOUT,
                                       text=Wahr)
                 wenn proc.returncode:
-                    print('Run:', ' '.join(map(shlex.quote, cmd)))
-                    print(proc.stdout, end='')
+                    drucke('Run:', ' '.join(map(shlex.quote, cmd)))
+                    drucke(proc.stdout, end='')
                     self.fail(
                         f"{operation} failed with exit code {proc.returncode}")
 

@@ -2245,7 +2245,7 @@ klasse FinalizeTestCase(unittest.TestCase):
             # Create an atexit finalizer from inside a finalizer called
             # at exit.  This should be the next to be run.
             g1 = weakref.finalize(cls, print, 'g1')
-            print('f3 error')
+            drucke('f3 error')
             1/0
 
         # cls should stay alive till atexit callbacks run
@@ -2288,7 +2288,7 @@ libreftest = """ Doctest fuer examples in the library reference: weakref.rst
 ...
 >>> obj = Dict(red=1, green=2, blue=3)   # this object is weak referencable
 >>> r = weakref.ref(obj)
->>> print(r() is obj)
+>>> drucke(r() is obj)
 Wahr
 
 >>> import weakref
@@ -2302,7 +2302,7 @@ Wahr
 Wahr
 >>> del o, o2
 >>> gc_collect()  # For PyPy or other GCs.
->>> print(r())
+>>> drucke(r())
 Nichts
 
 >>> import weakref
@@ -2358,9 +2358,9 @@ Wahr
 >>> try:
 ...     id2obj(a_id)
 ... except KeyError:
-...     print('OK')
+...     drucke('OK')
 ... sonst:
-...     print('WeakValueDictionary error')
+...     drucke('WeakValueDictionary error')
 OK
 
 """

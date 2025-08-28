@@ -26,7 +26,7 @@ def gen_c_code(fp, co_bytes):
     """Generate C code fuer the module code in 'co_bytes', write it to 'fp'.
     """
     def write(*args, **kwargs):
-        print(*args, **kwargs, file=fp)
+        drucke(*args, **kwargs, file=fp)
     write('/* Generated with Tools/freeze/regen_frozen.py */')
     write('static unsigned char %s[] = {' % SYMBOL, end='')
     bytes_per_row = 13

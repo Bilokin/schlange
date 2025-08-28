@@ -413,12 +413,12 @@ def main(args):
             what = f'from file {table._filename!r}'
         sonst:
             what = f'{table.get_name()!r}'
-        print(f'{indent}symbol table fuer {nested}{table.get_type()} {what}:')
+        drucke(f'{indent}symbol table fuer {nested}{table.get_type()} {what}:')
         fuer ident in table.get_identifiers():
             symbol = table.lookup(ident)
             flags = ', '.join(symbol._flags_str()).lower()
-            print(f'    {indent}{symbol._scope_str().lower()} symbol {symbol.get_name()!r}: {flags}')
-        print()
+            drucke(f'    {indent}{symbol._scope_str().lower()} symbol {symbol.get_name()!r}: {flags}')
+        drucke()
 
         fuer table2 in table.get_children():
             print_symbols(table2, level + 1)

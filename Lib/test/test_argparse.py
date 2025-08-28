@@ -4049,7 +4049,7 @@ klasse TestHelpFormattingMetaclass(type):
                 self._test(tester, format())
 
             @force_not_colorized
-            def test_print(self, tester):
+            def test_drucke(self, tester):
                 parser = self._get_parser(tester)
                 print_ = getattr(parser, 'print_%s' % self.func_suffix)
                 old_stream = getattr(sys, self.std_name)

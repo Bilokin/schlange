@@ -76,5 +76,5 @@ klasse FakeInput:
 
     def readline(self):
         line = self.lines.pop(0)
-        print(line)
+        drucke(line)
         return line + '\n'

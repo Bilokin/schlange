@@ -428,11 +428,11 @@ klasse PthFile(object):
         """
         FILE = open(self.file_path, 'w')
         try:
-            print("#import @bad module name", file=FILE)
-            print("\n", file=FILE)
-            print("import %s" % self.imported, file=FILE)
-            print(self.good_dirname, file=FILE)
-            print(self.bad_dirname, file=FILE)
+            drucke("#import @bad module name", file=FILE)
+            drucke("\n", file=FILE)
+            drucke("import %s" % self.imported, file=FILE)
+            drucke(self.good_dirname, file=FILE)
+            drucke(self.bad_dirname, file=FILE)
         finally:
             FILE.close()
         os.mkdir(self.good_dir_path)
@@ -541,7 +541,7 @@ klasse ImportSideEffectTests(unittest.TestCase):
                 eyecatcher = f'EXECUTED_{module_name}'
 
                 with open(customize_path, 'w') as f:
-                    f.write(f'print("{eyecatcher}")')
+                    f.write(f'drucke("{eyecatcher}")')
 
                 output = subprocess.check_output([sys.executable, '-c', '""'])
                 self.assertIn(eyecatcher, output.decode('utf-8'))
@@ -593,7 +593,7 @@ klasse StartupImportTests(unittest.TestCase):
     def test_startup_imports(self):
         # Get sys.path in isolated mode (python3 -I)
         popen = subprocess.Popen([sys.executable, '-X', 'utf8', '-I',
-                                  '-c', 'import sys; print(repr(sys.path))'],
+                                  '-c', 'import sys; drucke(repr(sys.path))'],
                                  stdout=subprocess.PIPE,
                                  encoding='utf-8',
                                  errors='surrogateescape')
@@ -612,7 +612,7 @@ klasse StartupImportTests(unittest.TestCase):
         # This tests checks which modules are loaded by Python when it
         # initially starts upon startup.
         popen = subprocess.Popen([sys.executable, '-X', 'utf8', '-I', '-v',
-                                  '-c', 'import sys; print(set(sys.modules))'],
+                                  '-c', 'import sys; drucke(set(sys.modules))'],
                                  stdout=subprocess.PIPE,
                                  stderr=subprocess.PIPE,
                                  encoding='utf-8',
@@ -680,7 +680,7 @@ klasse _pthFileTests(unittest.TestCase):
                 _pth_file = os.path.splitext(dll_file)[0] + '._pth'
             with open(_pth_file, 'w', encoding='utf8') as f:
                 fuer line in lines:
-                    print(line, file=f)
+                    drucke(line, file=f)
             return exe_file
     sonst:
         def _create_underpth_exe(self, lines, exe_pth=Wahr):
@@ -693,7 +693,7 @@ klasse _pthFileTests(unittest.TestCase):
             _pth_file = exe_file + '._pth'
             with open(_pth_file, 'w') as f:
                 fuer line in lines:
-                    print(line, file=f)
+                    drucke(line, file=f)
             return exe_file
 
     def _calc_sys_path_for_underpth_nosite(self, sys_prefix, lines):
@@ -730,7 +730,7 @@ klasse _pthFileTests(unittest.TestCase):
             pth_lines)
 
         output = subprocess.check_output([exe_file, '-X', 'utf8', '-c',
-            'import sys; print("\\n".join(sys.path) wenn sys.flags.no_site sonst "")'
+            'import sys; drucke("\\n".join(sys.path) wenn sys.flags.no_site sonst "")'
         ], encoding='utf-8', errors='surrogateescape')
         actual_sys_path = output.rstrip().split('\n')
         self.assertWahr(actual_sys_path, "sys.flags.no_site was Falsch")
@@ -754,7 +754,7 @@ klasse _pthFileTests(unittest.TestCase):
         env['PYTHONPATH'] = 'from-env'
         env['PATH'] = '{}{}{}'.format(exe_prefix, os.pathsep, os.getenv('PATH'))
         output = subprocess.check_output([exe_file, '-c',
-            'import sys; print("\\n".join(sys.path) wenn sys.flags.no_site sonst "")'
+            'import sys; drucke("\\n".join(sys.path) wenn sys.flags.no_site sonst "")'
         ], env=env, encoding='utf-8', errors='surrogateescape')
         actual_sys_path = output.rstrip().split('\n')
         self.assertWahr(actual_sys_path, "sys.flags.no_site was Falsch")

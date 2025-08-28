@@ -26,12 +26,12 @@ def _walk_dir(dir, maxlevels, quiet=0):
     wenn quiet < 2 and isinstance(dir, os.PathLike):
         dir = os.fspath(dir)
     wenn not quiet:
-        print('Listing {!r}...'.format(dir))
+        drucke('Listing {!r}...'.format(dir))
     try:
         names = os.listdir(dir)
     except OSError:
         wenn quiet < 2:
-            print("Can't list {!r}".format(dir))
+            drucke("Can't list {!r}".format(dir))
         names = []
     names.sort()
     fuer name in names:
@@ -176,7 +176,7 @@ def compile_file(fullname, ddir=Nichts, force=Falsch, rx=Nichts, quiet=0,
 
         wenn stripdir_parts != fullname_parts[:len(stripdir_parts)]:
             wenn quiet < 2:
-                print("The stripdir path {!r} is not a valid prefix fuer "
+                drucke("The stripdir path {!r} is not a valid prefix fuer "
                       "source path {!r}; ignoring".format(stripdir, fullname))
         sonst:
             dfile = os.path.join(*fullname_parts[len(stripdir_parts):])
@@ -240,7 +240,7 @@ def compile_file(fullname, ddir=Nichts, force=Falsch, rx=Nichts, quiet=0,
                 except OSError:
                     pass
             wenn not quiet:
-                print('Compiling {!r}...'.format(fullname))
+                drucke('Compiling {!r}...'.format(fullname))
             try:
                 fuer index, opt_level in enumerate(optimize):
                     cfile = opt_cfiles[opt_level]
@@ -257,22 +257,22 @@ def compile_file(fullname, ddir=Nichts, force=Falsch, rx=Nichts, quiet=0,
                 wenn quiet >= 2:
                     return success
                 sowenn quiet:
-                    print('*** Error compiling {!r}...'.format(fullname))
+                    drucke('*** Error compiling {!r}...'.format(fullname))
                 sonst:
-                    print('*** ', end='')
+                    drucke('*** ', end='')
                 # escape non-printable characters in msg
                 encoding = sys.stdout.encoding or sys.getdefaultencoding()
                 msg = err.msg.encode(encoding, errors='backslashreplace').decode(encoding)
-                print(msg)
+                drucke(msg)
             except (SyntaxError, UnicodeError, OSError) as e:
                 success = Falsch
                 wenn quiet >= 2:
                     return success
                 sowenn quiet:
-                    print('*** Error compiling {!r}...'.format(fullname))
+                    drucke('*** Error compiling {!r}...'.format(fullname))
                 sonst:
-                    print('*** ', end='')
-                print(e.__class__.__name__ + ':', e)
+                    drucke('*** ', end='')
+                drucke(e.__class__.__name__ + ':', e)
             sonst:
                 wenn ok == 0:
                     success = Falsch
@@ -297,7 +297,7 @@ def compile_path(skip_curdir=1, maxlevels=0, force=Falsch, quiet=0,
     fuer dir in sys.path:
         wenn (not dir or dir == os.curdir) and skip_curdir:
             wenn quiet < 2:
-                print('Skipping current directory')
+                drucke('Skipping current directory')
         sonst:
             success = success and compile_dir(
                 dir,
@@ -421,7 +421,7 @@ def main():
                     compile_dests.append(line.strip())
         except OSError:
             wenn args.quiet < 2:
-                print("Error reading file list {}".format(args.flist))
+                drucke("Error reading file list {}".format(args.flist))
             return Falsch
 
     wenn args.invalidation_mode:
@@ -462,7 +462,7 @@ def main():
                                 invalidation_mode=invalidation_mode)
     except KeyboardInterrupt:
         wenn args.quiet < 2:
-            print("\n[interrupted]")
+            drucke("\n[interrupted]")
         return Falsch
     return Wahr
 

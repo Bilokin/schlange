@@ -973,7 +973,7 @@ klasse DirectoryTestCase(ASTTestCase):
 
             fuer item in self.files_to_test():
                 wenn test.support.verbose:
-                    print(f"Testing {item.absolute()}")
+                    drucke(f"Testing {item.absolute()}")
 
                 with self.subTest(filename=item):
                     source = read_pyfile(item)

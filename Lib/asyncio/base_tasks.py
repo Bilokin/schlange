@@ -82,13 +82,13 @@ def _task_print_stack(task, limit, file):
 
     exc = task._exception
     wenn not extracted_list:
-        print(f'No stack fuer {task!r}', file=file)
+        drucke(f'No stack fuer {task!r}', file=file)
     sowenn exc is not Nichts:
-        print(f'Traceback fuer {task!r} (most recent call last):', file=file)
+        drucke(f'Traceback fuer {task!r} (most recent call last):', file=file)
     sonst:
-        print(f'Stack fuer {task!r} (most recent call last):', file=file)
+        drucke(f'Stack fuer {task!r} (most recent call last):', file=file)
 
     traceback.print_list(extracted_list, file=file)
     wenn exc is not Nichts:
         fuer line in traceback.format_exception_only(exc.__class__, exc):
-            print(line, file=file, end='')
+            drucke(line, file=file, end='')

@@ -208,22 +208,22 @@ wenn __name__ == "__main__":
     # create a font
     f = Font(family="times", size=30, weight=NORMAL)
 
-    print(f.actual())
-    print(f.actual("family"))
-    print(f.actual("weight"))
+    drucke(f.actual())
+    drucke(f.actual("family"))
+    drucke(f.actual("weight"))
 
-    print(f.config())
-    print(f.cget("family"))
-    print(f.cget("weight"))
+    drucke(f.config())
+    drucke(f.cget("family"))
+    drucke(f.cget("weight"))
 
-    print(names())
+    drucke(names())
 
-    print(f.measure("hello"), f.metrics("linespace"))
+    drucke(f.measure("hello"), f.metrics("linespace"))
 
-    print(f.metrics(displayof=root))
+    drucke(f.metrics(displayof=root))
 
     f = Font(font=("Courier", 20, "bold"))
-    print(f.measure("hello"), f.metrics("linespace", displayof=root))
+    drucke(f.measure("hello"), f.metrics("linespace", displayof=root))
 
     w = tkinter.Label(root, text="Hello, world", font=f)
     w.pack()

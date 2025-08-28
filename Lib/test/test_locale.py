@@ -56,7 +56,7 @@ klasse BaseLocalizedTest(unittest.TestCase):
         self.addCleanup(locale.setlocale, self.locale_type, oldlocale)
         locale.setlocale(self.locale_type, self.enUS_locale)
         wenn verbose:
-            print("testing with %r..." % self.enUS_locale, end=' ', flush=Wahr)
+            drucke("testing with %r..." % self.enUS_locale, end=' ', flush=Wahr)
 
 
 klasse BaseCookedTest(unittest.TestCase):
@@ -502,7 +502,7 @@ klasse TestRealLocales(unittest.TestCase):
             self.skipTest('test needs Turkish locale')
         loc = locale.getlocale(locale.LC_CTYPE)
         wenn verbose:
-            print('testing with %a' % (loc,), end=' ', flush=Wahr)
+            drucke('testing with %a' % (loc,), end=' ', flush=Wahr)
         try:
             locale.setlocale(locale.LC_CTYPE, loc)
         except locale.Error as exc:

@@ -130,7 +130,7 @@ klasse AuditTest(unittest.TestCase):
             self.fail(stderr)
 
         wenn support.verbose:
-            print(*events, sep='\n')
+            drucke(*events, sep='\n')
         self.assertEqual(events[0][0], "socket.gethostname")
         self.assertEqual(events[1][0], "socket.__new__")
         self.assertEqual(events[2][0], "socket.bind")
@@ -142,7 +142,7 @@ klasse AuditTest(unittest.TestCase):
             self.fail(stderr)
 
         wenn support.verbose:
-            print(*events, sep='\n')
+            drucke(*events, sep='\n')
         self.assertEqual(
             [event[0] fuer event in events],
             ["gc.get_objects", "gc.get_referrers", "gc.get_referents"]
@@ -157,7 +157,7 @@ klasse AuditTest(unittest.TestCase):
             self.fail(stderr)
 
         wenn support.verbose:
-            print(*events, sep='\n')
+            drucke(*events, sep='\n')
         self.assertEqual(events[0][0], "http.client.connect")
         self.assertEqual(events[0][2], "www.python.org 80")
         self.assertEqual(events[1][0], "http.client.send")
@@ -172,7 +172,7 @@ klasse AuditTest(unittest.TestCase):
             self.fail(stderr)
 
         wenn support.verbose:
-            print(*events, sep='\n')
+            drucke(*events, sep='\n')
         actual = [ev[0] fuer ev in events]
         expected = ["sqlite3.connect", "sqlite3.connect/handle"] * 2
 
@@ -190,7 +190,7 @@ klasse AuditTest(unittest.TestCase):
             self.fail(stderr)
 
         wenn support.verbose:
-            print(*events, sep='\n')
+            drucke(*events, sep='\n')
         actual = [(ev[0], ev[2]) fuer ev in events]
         expected = [("sys._getframe", "test_sys_getframe")]
 
@@ -202,7 +202,7 @@ klasse AuditTest(unittest.TestCase):
             self.fail(stderr)
 
         wenn support.verbose:
-            print(*events, sep='\n')
+            drucke(*events, sep='\n')
         actual = [(ev[0], ev[2]) fuer ev in events]
         expected = [("sys._getframemodulename", "0")]
 
@@ -215,7 +215,7 @@ klasse AuditTest(unittest.TestCase):
             self.fail(stderr)
 
         wenn support.verbose:
-            print(*events, sep='\n')
+            drucke(*events, sep='\n')
         actual = [(ev[0], ev[2]) fuer ev in events]
         expected = [
             ("_thread.start_new_thread", "(<test_func>, (), Nichts)"),
@@ -234,7 +234,7 @@ klasse AuditTest(unittest.TestCase):
             self.fail(stderr)
 
         wenn support.verbose:
-            print(*events, sep='\n')
+            drucke(*events, sep='\n')
         actual = [(ev[0], ev[2]) fuer ev in events]
         expected = [("_wmi.exec_query", "SELECT * FROM Win32_OperatingSystem")]
 
@@ -248,7 +248,7 @@ klasse AuditTest(unittest.TestCase):
             self.fail(stderr)
 
         wenn support.verbose:
-            print('Events:', *events, sep='\n  ')
+            drucke('Events:', *events, sep='\n  ')
 
         self.assertSequenceEqual(
             events,
@@ -274,7 +274,7 @@ klasse AuditTest(unittest.TestCase):
             self.fail(stderr)
 
         wenn support.verbose:
-            print(*events, sep='\n')
+            drucke(*events, sep='\n')
 
         actual = [(ev[0], ev[2]) fuer ev in events]
         expected = [("time.sleep", "0"),
@@ -295,7 +295,7 @@ klasse AuditTest(unittest.TestCase):
             self.fail(stderr)
 
         wenn support.verbose:
-            print(*events, sep='\n')
+            drucke(*events, sep='\n')
         actual = [(ev[0], ev[2]) fuer ev in events]
         expected = [("sys.monitoring.register_callback", "(Nichts,)")]
 
@@ -310,7 +310,7 @@ klasse AuditTest(unittest.TestCase):
             self.fail(stderr)
 
         wenn support.verbose:
-            print(*events, sep='\n')
+            drucke(*events, sep='\n')
         actual = [(ev[0], ev[2]) fuer ev in events]
         expected = [("_winapi.CreateNamedPipe", f"({pipe_name!r}, 3, 8)")]
 

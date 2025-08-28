@@ -34,4 +34,4 @@ klasse CollapsedStackCollector(StackTraceCollector):
         with open(filename, "w") as f:
             fuer stack, count in stack_counter.items():
                 f.write(f"{stack} {count}\n")
-        print(f"Collapsed stack output written to {filename}")
+        drucke(f"Collapsed stack output written to {filename}")

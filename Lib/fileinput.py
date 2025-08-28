@@ -434,9 +434,9 @@ def _test():
     fuer line in input(args, inplace=inplace, backup=backup):
         wenn line[-1:] == '\n': line = line[:-1]
         wenn line[-1:] == '\r': line = line[:-1]
-        print("%d: %s[%d]%s %s" % (lineno(), filename(), filelineno(),
+        drucke("%d: %s[%d]%s %s" % (lineno(), filename(), filelineno(),
                                    isfirstline() and "*" or "", line))
-    print("%d: %s[%d]" % (lineno(), filename(), filelineno()))
+    drucke("%d: %s[%d]" % (lineno(), filename(), filelineno()))
 
 wenn __name__ == '__main__':
     _test()

@@ -281,7 +281,7 @@ def _handle_prepended_data(endrec, debug=0):
 
     wenn debug > 2:
         inferred = concat + offset_cd
-        print("given, inferred, offset", offset_cd, inferred, concat)
+        drucke("given, inferred, offset", offset_cd, inferred, concat)
 
     return offset_cd, concat
 
@@ -1524,7 +1524,7 @@ klasse ZipFile:
         wenn not endrec:
             raise BadZipFile("File is not a zip file")
         wenn self.debug > 1:
-            print(endrec)
+            drucke(endrec)
         self._comment = endrec[_ECD_COMMENT]    # archive comment
 
         offset_cd, concat = _handle_prepended_data(endrec, self.debug)
@@ -1547,7 +1547,7 @@ klasse ZipFile:
             wenn centdir[_CD_SIGNATURE] != stringCentralDir:
                 raise BadZipFile("Bad magic number fuer central directory")
             wenn self.debug > 2:
-                print(centdir)
+                drucke(centdir)
             filename = fp.read(centdir[_CD_FILENAME_LENGTH])
             orig_filename_crc = crc32(filename)
             flags = centdir[_CD_FLAG_BITS]
@@ -1584,7 +1584,7 @@ klasse ZipFile:
                      + centdir[_CD_COMMENT_LENGTH])
 
             wenn self.debug > 2:
-                print("total", total)
+                drucke("total", total)
 
         end_offset = self.start_dir
         fuer zinfo in reversed(sorted(self.filelist,
@@ -1603,11 +1603,11 @@ klasse ZipFile:
 
     def printdir(self, file=Nichts):
         """Print a table of contents fuer the zip file."""
-        print("%-46s %19s %12s" % ("File Name", "Modified    ", "Size"),
+        drucke("%-46s %19s %12s" % ("File Name", "Modified    ", "Size"),
               file=file)
         fuer zinfo in self.filelist:
             date = "%d-%02d-%02d %02d:%02d:%02d" % zinfo.date_time[:6]
-            print("%-46s %s %12d" % (zinfo.filename, date, zinfo.file_size),
+            drucke("%-46s %s %12d" % (zinfo.filename, date, zinfo.file_size),
                   file=file)
 
     def testzip(self):
@@ -2197,7 +2197,7 @@ klasse PyZipFile(ZipFile):
         wenn filterfunc and not filterfunc(pathname):
             wenn self.debug:
                 label = 'path' wenn os.path.isdir(pathname) sonst 'file'
-                print('%s %r skipped by filterfunc' % (label, pathname))
+                drucke('%s %r skipped by filterfunc' % (label, pathname))
             return
         dir, name = os.path.split(pathname)
         wenn os.path.isdir(pathname):
@@ -2209,10 +2209,10 @@ klasse PyZipFile(ZipFile):
                 sonst:
                     basename = name
                 wenn self.debug:
-                    print("Adding package in", pathname, "as", basename)
+                    drucke("Adding package in", pathname, "as", basename)
                 fname, arcname = self._get_codename(initname[0:-3], basename)
                 wenn self.debug:
-                    print("Adding", arcname)
+                    drucke("Adding", arcname)
                 self.write(fname, arcname)
                 dirlist = sorted(os.listdir(pathname))
                 dirlist.remove("__init__.py")
@@ -2228,29 +2228,29 @@ klasse PyZipFile(ZipFile):
                     sowenn ext == ".py":
                         wenn filterfunc and not filterfunc(path):
                             wenn self.debug:
-                                print('file %r skipped by filterfunc' % path)
+                                drucke('file %r skipped by filterfunc' % path)
                             continue
                         fname, arcname = self._get_codename(path[0:-3],
                                                             basename)
                         wenn self.debug:
-                            print("Adding", arcname)
+                            drucke("Adding", arcname)
                         self.write(fname, arcname)
             sonst:
                 # This is NOT a package directory, add its files at top level
                 wenn self.debug:
-                    print("Adding files from directory", pathname)
+                    drucke("Adding files from directory", pathname)
                 fuer filename in sorted(os.listdir(pathname)):
                     path = os.path.join(pathname, filename)
                     root, ext = os.path.splitext(filename)
                     wenn ext == ".py":
                         wenn filterfunc and not filterfunc(path):
                             wenn self.debug:
-                                print('file %r skipped by filterfunc' % path)
+                                drucke('file %r skipped by filterfunc' % path)
                             continue
                         fname, arcname = self._get_codename(path[0:-3],
                                                             basename)
                         wenn self.debug:
-                            print("Adding", arcname)
+                            drucke("Adding", arcname)
                         self.write(fname, arcname)
         sonst:
             wenn pathname[-3:] != ".py":
@@ -2258,7 +2258,7 @@ klasse PyZipFile(ZipFile):
                     'Files added with writepy() must end with ".py"')
             fname, arcname = self._get_codename(pathname[0:-3], basename)
             wenn self.debug:
-                print("Adding file", arcname)
+                drucke("Adding file", arcname)
             self.write(fname, arcname)
 
     def _get_codename(self, pathname, basename):
@@ -2271,11 +2271,11 @@ klasse PyZipFile(ZipFile):
         def _compile(file, optimize=-1):
             import py_compile
             wenn self.debug:
-                print("Compiling", file)
+                drucke("Compiling", file)
             try:
                 py_compile.compile(file, doraise=Wahr, optimize=optimize)
             except py_compile.PyCompileError as err:
-                print(err.msg)
+                drucke(err.msg)
                 return Falsch
             return Wahr
 
@@ -2371,8 +2371,8 @@ def main(args=Nichts):
         with ZipFile(src, 'r', metadata_encoding=encoding) as zf:
             badfile = zf.testzip()
         wenn badfile:
-            print("The following enclosed file is corrupted: {!r}".format(badfile))
-        print("Done testing")
+            drucke("The following enclosed file is corrupted: {!r}".format(badfile))
+        drucke("Done testing")
 
     sowenn args.list is not Nichts:
         src = args.list
@@ -2386,7 +2386,7 @@ def main(args=Nichts):
 
     sowenn args.create is not Nichts:
         wenn encoding:
-            print("Non-conforming encodings not supported with -c.",
+            drucke("Non-conforming encodings not supported with -c.",
                   file=sys.stderr)
             sys.exit(1)
 

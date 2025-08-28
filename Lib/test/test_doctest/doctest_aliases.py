@@ -5,7 +5,7 @@ klasse TwoNames:
 
     def f(self):
         '''
-        >>> print(TwoNames().f())
+        >>> drucke(TwoNames().f())
         f
         '''
         return 'f'

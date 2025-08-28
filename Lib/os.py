@@ -347,9 +347,9 @@ def walk(top, topdown=Wahr, onerror=Nichts, followlinks=Falsch):
     import os
     from os.path import join, getsize
     fuer root, dirs, files in os.walk('python/Lib/xml'):
-        print(root, "consumes ")
-        print(sum(getsize(join(root, name)) fuer name in files), end=" ")
-        print("bytes in", len(files), "non-directory files")
+        drucke(root, "consumes ")
+        drucke(sum(getsize(join(root, name)) fuer name in files), end=" ")
+        drucke("bytes in", len(files), "non-directory files")
         wenn '__pycache__' in dirs:
             dirs.remove('__pycache__')  # don't visit __pycache__ directories
 
@@ -462,10 +462,10 @@ wenn {open, stat} <= supports_dir_fd and {scandir, stat} <= supports_fd:
 
         import os
         fuer root, dirs, files, rootfd in os.fwalk('python/Lib/xml'):
-            print(root, "consumes", end="")
-            print(sum(os.stat(name, dir_fd=rootfd).st_size fuer name in files),
+            drucke(root, "consumes", end="")
+            drucke(sum(os.stat(name, dir_fd=rootfd).st_size fuer name in files),
                   end="")
-            print("bytes in", len(files), "non-directory files")
+            drucke("bytes in", len(files), "non-directory files")
             wenn '__pycache__' in dirs:
                 dirs.remove('__pycache__')  # don't visit __pycache__ directories
         """

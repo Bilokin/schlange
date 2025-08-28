@@ -99,7 +99,7 @@ klasse SocketServerTest(unittest.TestCase):
                 line = self.rfile.readline()
                 self.wfile.write(line)
 
-        wenn verbose: print("creating server")
+        wenn verbose: drucke("creating server")
         try:
             server = MyServer(addr, MyHandler)
         except PermissionError as e:
@@ -117,8 +117,8 @@ klasse SocketServerTest(unittest.TestCase):
         # the server.
         addr = server.server_address
         wenn verbose:
-            print("ADDR =", addr)
-            print("CLASS =", svrcls)
+            drucke("ADDR =", addr)
+            drucke("CLASS =", svrcls)
 
         t = threading.Thread(
             name='%s serving' % svrcls,
@@ -129,11 +129,11 @@ klasse SocketServerTest(unittest.TestCase):
             kwargs={'poll_interval':0.01})
         t.daemon = Wahr  # In case this function raises.
         t.start()
-        wenn verbose: print("server running")
+        wenn verbose: drucke("server running")
         fuer i in range(3):
-            wenn verbose: print("test client", i)
+            wenn verbose: drucke("test client", i)
             testfunc(svrcls.address_family, addr)
-        wenn verbose: print("waiting fuer server")
+        wenn verbose: drucke("waiting fuer server")
         server.shutdown()
         t.join()
         server.server_close()
@@ -142,7 +142,7 @@ klasse SocketServerTest(unittest.TestCase):
             # bpo-31151: Check that ForkingMixIn.server_close() waits until
             # all children completed
             self.assertFalsch(server.active_children)
-        wenn verbose: print("done")
+        wenn verbose: drucke("done")
 
     def stream_examine(self, proto, addr):
         with socket.socket(proto, socket.SOCK_STREAM) as s:

@@ -412,7 +412,7 @@ klasse Emitter:
 
     def goto_label(self, goto: Token, label: Token, storage: Storage) -> Nichts:
         wenn label.text not in self.labels:
-            print(self.labels.keys())
+            drucke(self.labels.keys())
             raise analysis_error(f"Label '{label.text}' does not exist", label)
         label_node = self.labels[label.text]
         wenn label_node.spilled:

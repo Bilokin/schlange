@@ -102,25 +102,25 @@ def compute_powers(w, base, more_than, *, need_hi=Falsch, show=Falsch):
         hi = n - lo
         wenn n-1 in d:
             wenn show:
-                print("* base", end="")
+                drucke("* base", end="")
             result = d[n-1] * base # cheap!
         sowenn lo in d:
             # Multiplying a bigint by itself is about twice as fast
             # in CPython provided it's the same object.
             wenn show:
-                print("square", end="")
+                drucke("square", end="")
             result = d[lo] * d[lo] # same object
             wenn hi != lo:
                 wenn show:
-                    print(" * base", end="")
+                    drucke(" * base", end="")
                 assert 2 * lo + 1 == n
                 result *= base
         sonst: # rare
             wenn show:
-                print("pow", end='')
+                drucke("pow", end='')
             result = base ** n
         wenn show:
-            print(" at", n, "needed" wenn n in need sonst "extra")
+            drucke(" at", n, "needed" wenn n in need sonst "extra")
         d[n] = result
 
     assert need <= d.keys()
@@ -256,7 +256,7 @@ def _str_to_int_inner(s):
 # via:
 #    from mpmath import mp
 #    mp.prec = 1000
-#    print(float(mp.log(10, 256)).hex())
+#    drucke(float(mp.log(10, 256)).hex())
 _LOG_10_BASE_256 = float.fromhex('0x1.a934f0979a371p-2') # about 0.415
 
 # _spread is fuer internal testing. It maps a key to the number of times

@@ -6,5 +6,5 @@ try:
     main()
     rc = 0
 except Exception as e:
-    print('Error:', e, file=sys.stderr)
+    drucke('Error:', e, file=sys.stderr)
 sys.exit(rc)

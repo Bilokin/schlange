@@ -22,7 +22,7 @@ testcfg = {
 
 source = textwrap.dedent("""\
     wenn Wahr: int ('1') # keyword, builtin, string, comment
-    sowenn Falsch: print(0)  # 'string' in comment
+    sowenn Falsch: drucke(0)  # 'string' in comment
     sonst: float(Nichts)  # wenn in comment
     wenn iF + If + IF: 'keyword matching must respect case'
     if'': x or''  # valid keyword-string no-space combinations
@@ -41,7 +41,7 @@ source = textwrap.dedent("""\
     ur'x', ru'x', uf'x', fu'x', UR'x', ufr'x', rfu'x', xf'x', fx'x'
     match point:
         case (x, 0) as _:
-            print(f"X={x}")
+            drucke(f"X={x}")
         case [_, [_], "_",
                 _]:
             pass
@@ -75,7 +75,7 @@ klasse FunctionTest(unittest.TestCase):
     def test_prog(self):
         prog = colorizer.prog
         eq = self.assertEqual
-        line = 'def f():\n    print("hello")\n'
+        line = 'def f():\n    drucke("hello")\n'
         m = prog.search(line)
         eq(m.groupdict()['KEYWORD'], 'def')
         m = prog.search(line, m.end())

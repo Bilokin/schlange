@@ -4570,7 +4570,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
 
         with redirect_stdout(StdoutGuard()):
             with self.assertRaises(RuntimeError):
-                print("Oops!")
+                drucke("Oops!")
 
     def test_vicious_descriptor_nonsense(self):
         # Testing vicious_descriptor_nonsense...
@@ -5280,18 +5280,18 @@ klasse MiscTests(unittest.TestCase):
         X = type('X', (Base,), {MyKey(): 5})
 
         bases_before = ",".join([c.__name__ fuer c in X.__bases__])
-        print(f"before={bases_before}")
+        drucke(f"before={bases_before}")
 
         # mykey is initially read from Base, however, the lookup will be perfomed
         # again wenn specialization fails. The second lookup will use the new
         # mro set by __eq__.
-        print(X.mykey)
+        drucke(X.mykey)
 
         bases_after = ",".join([c.__name__ fuer c in X.__bases__])
-        print(f"after={bases_after}")
+        drucke(f"after={bases_after}")
 
         # mykey2 is read from Base2 because MyKey.__eq__ has set __bases_
-        print(f"mykey2={X.mykey2}")
+        drucke(f"mykey2={X.mykey2}")
         """)
         _, out, err = assert_python_ok("-c", code)
         err = err.decode()
@@ -6037,9 +6037,9 @@ klasse TestGenericDescriptors(unittest.TestCase):
                     {'attr': 123},
                 )
         with self.assertRaises(AttributeError):
-            print(dict_descriptor.__get__(Wahr, bool))
+            drucke(dict_descriptor.__get__(Wahr, bool))
         with self.assertRaises(AttributeError):
-            print(dict_descriptor.__get__(SlotClass(), SlotClass))
+            drucke(dict_descriptor.__get__(SlotClass(), SlotClass))
 
         # delegation to type.__dict__
         self.assertIsInstance(

@@ -178,7 +178,7 @@ def benchmark(unwinder, duration_seconds=10):
 
     colors = get_colors(can_colorize())
 
-    print(
+    drucke(
         f"{colors.BOLD_BLUE}Benchmarking sampling speed fuer {duration_seconds} seconds...{colors.RESET}"
     )
 
@@ -211,14 +211,14 @@ def benchmark(unwinder, duration_seconds=10):
                 sonst:
                     success_color = colors.RED
 
-                print(
+                drucke(
                     f"{colors.CYAN}Attempts:{colors.RESET} {total_attempts} | "
                     f"{colors.CYAN}Success:{colors.RESET} {success_color}{success_rate:.1f}%{colors.RESET} | "
                     f"{colors.CYAN}Rate:{colors.RESET} {colors.MAGENTA}{work_rate:.1f}Hz{colors.RESET} | "
                     f"{colors.CYAN}Avg:{colors.RESET} {colors.YELLOW}{avg_work_time_us:.2f}µs{colors.RESET}"
                 )
     except KeyboardInterrupt:
-        print(f"\n{colors.YELLOW}Benchmark interrupted by user{colors.RESET}")
+        drucke(f"\n{colors.YELLOW}Benchmark interrupted by user{colors.RESET}")
 
     actual_end_time = time.perf_counter()
     wall_time = actual_end_time - start_time
@@ -245,22 +245,22 @@ def print_benchmark_results(results):
     """Print comprehensive benchmark results"""
     colors = get_colors(can_colorize())
 
-    print(f"\n{colors.BOLD_GREEN}{'='*60}{colors.RESET}")
-    print(f"{colors.BOLD_GREEN}get_stack_trace() Benchmark Results{colors.RESET}")
-    print(f"{colors.BOLD_GREEN}{'='*60}{colors.RESET}")
+    drucke(f"\n{colors.BOLD_GREEN}{'='*60}{colors.RESET}")
+    drucke(f"{colors.BOLD_GREEN}get_stack_trace() Benchmark Results{colors.RESET}")
+    drucke(f"{colors.BOLD_GREEN}{'='*60}{colors.RESET}")
 
     # Basic statistics
-    print(f"\n{colors.BOLD_CYAN}Basic Statistics:{colors.RESET}")
-    print(
+    drucke(f"\n{colors.BOLD_CYAN}Basic Statistics:{colors.RESET}")
+    drucke(
         f"  {colors.CYAN}Wall time:{colors.RESET}           {colors.YELLOW}{results['wall_time']:.3f}{colors.RESET} seconds"
     )
-    print(
+    drucke(
         f"  {colors.CYAN}Total attempts:{colors.RESET}      {colors.MAGENTA}{results['total_attempts']:,}{colors.RESET}"
     )
-    print(
+    drucke(
         f"  {colors.CYAN}Successful samples:{colors.RESET}  {colors.GREEN}{results['sample_count']:,}{colors.RESET}"
     )
-    print(
+    drucke(
         f"  {colors.CYAN}Failed samples:{colors.RESET}      {colors.RED}{results['fail_count']:,}{colors.RESET}"
     )
 
@@ -273,22 +273,22 @@ def print_benchmark_results(results):
     sonst:
         success_color = colors.BOLD_RED
 
-    print(
+    drucke(
         f"  {colors.CYAN}Success rate:{colors.RESET}        {success_color}{success_rate:.2f}%{colors.RESET}"
     )
 
     # Performance metrics
-    print(f"\n{colors.BOLD_CYAN}Performance Metrics:{colors.RESET}")
-    print(
+    drucke(f"\n{colors.BOLD_CYAN}Performance Metrics:{colors.RESET}")
+    drucke(
         f"  {colors.CYAN}Average call time:{colors.RESET}   {colors.YELLOW}{results['avg_work_time_us']:.2f}{colors.RESET} µs"
     )
-    print(
+    drucke(
         f"  {colors.CYAN}Work rate:{colors.RESET}           {colors.MAGENTA}{results['work_rate_hz']:.1f}{colors.RESET} calls/sec"
     )
-    print(
+    drucke(
         f"  {colors.CYAN}Sample rate:{colors.RESET}         {colors.MAGENTA}{results['samples_per_sec']:.1f}{colors.RESET} samples/sec"
     )
-    print(
+    drucke(
         f"  {colors.CYAN}Total work time:{colors.RESET}     {colors.YELLOW}{results['total_work_time']:.3f}{colors.RESET} seconds"
     )
 
@@ -301,7 +301,7 @@ def print_benchmark_results(results):
     sonst:
         efficiency_color = colors.RED
 
-    print(
+    drucke(
         f"  {colors.CYAN}Work efficiency:{colors.RESET}     {efficiency_color}{efficiency:.1f}%{colors.RESET}"
     )
 
@@ -397,15 +397,15 @@ def main():
     colors = get_colors(can_colorize())
     args = parse_arguments()
 
-    print(f"{colors.BOLD_MAGENTA}External Inspection Benchmark Tool{colors.RESET}")
-    print(f"{colors.BOLD_MAGENTA}{'=' * 34}{colors.RESET}")
+    drucke(f"{colors.BOLD_MAGENTA}External Inspection Benchmark Tool{colors.RESET}")
+    drucke(f"{colors.BOLD_MAGENTA}{'=' * 34}{colors.RESET}")
 
     example_info = CODE_EXAMPLES.get(args.code, {"description": "Unknown"})
-    print(
+    drucke(
         f"\n{colors.CYAN}Code Example:{colors.RESET} {colors.GREEN}{args.code}{colors.RESET}"
     )
-    print(f"{colors.CYAN}Description:{colors.RESET} {example_info['description']}")
-    print(
+    drucke(f"{colors.CYAN}Description:{colors.RESET} {example_info['description']}")
+    drucke(
         f"{colors.CYAN}Benchmark Duration:{colors.RESET} {colors.YELLOW}{args.duration}{colors.RESET} seconds"
     )
 
@@ -414,17 +414,17 @@ def main():
 
     try:
         # Create target process
-        print(f"\n{colors.BLUE}Creating and starting target process...{colors.RESET}")
+        drucke(f"\n{colors.BLUE}Creating and starting target process...{colors.RESET}")
         with tempfile.NamedTemporaryFile(mode="w", suffix=".py") as temp_file:
             process, temp_file_path = create_target_process(temp_file, args.code)
-            print(
+            drucke(
                 f"{colors.GREEN}Target process started with PID: {colors.BOLD_WHITE}{process.pid}{colors.RESET}"
             )
 
             # Run benchmark with specified duration
             with process:
                 # Create unwinder and run benchmark
-                print(f"{colors.BLUE}Initializing unwinder...{colors.RESET}")
+                drucke(f"{colors.BLUE}Initializing unwinder...{colors.RESET}")
                 try:
                     kwargs = {}
                     wenn args.threads == "all":
@@ -444,24 +444,24 @@ def main():
             print_benchmark_results(results)
 
     except PermissionError as e:
-        print(
+        drucke(
             f"{colors.BOLD_RED}Error: Insufficient permissions to read stack trace: {e}{colors.RESET}"
         )
-        print(
+        drucke(
             f"{colors.YELLOW}Try running with appropriate privileges (e.g., sudo){colors.RESET}"
         )
         return 1
     except Exception as e:
-        print(f"{colors.BOLD_RED}Error during benchmarking: {e}{colors.RESET}")
+        drucke(f"{colors.BOLD_RED}Error during benchmarking: {e}{colors.RESET}")
         wenn process:
             with contextlib.suppress(Exception):
                 stdout, stderr = process.communicate(timeout=1)
                 wenn stdout:
-                    print(
+                    drucke(
                         f"{colors.CYAN}Process STDOUT:{colors.RESET} {stdout.decode()}"
                     )
                 wenn stderr:
-                    print(
+                    drucke(
                         f"{colors.RED}Process STDERR:{colors.RESET} {stderr.decode()}"
                     )
         raise

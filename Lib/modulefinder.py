@@ -133,11 +133,11 @@ klasse ModuleFinder:
     def msg(self, level, str, *args):
         wenn level <= self.debug:
             fuer i in range(self.indent):
-                print("   ", end=' ')
-            print(str, end=' ')
+                drucke("   ", end=' ')
+            drucke(str, end=' ')
             fuer arg in args:
-                print(repr(arg), end=' ')
-            print()
+                drucke(repr(arg), end=' ')
+            drucke()
 
     def msgin(self, *args):
         level = args[0]
@@ -497,35 +497,35 @@ klasse ModuleFinder:
         """Print a report to stdout, listing the found modules with their
         paths, as well as modules that are missing, or seem to be missing.
         """
-        print()
-        print("  %-25s %s" % ("Name", "File"))
-        print("  %-25s %s" % ("----", "----"))
+        drucke()
+        drucke("  %-25s %s" % ("Name", "File"))
+        drucke("  %-25s %s" % ("----", "----"))
         # Print modules found
         keys = sorted(self.modules.keys())
         fuer key in keys:
             m = self.modules[key]
             wenn m.__path__:
-                print("P", end=' ')
+                drucke("P", end=' ')
             sonst:
-                print("m", end=' ')
-            print("%-25s" % key, m.__file__ or "")
+                drucke("m", end=' ')
+            drucke("%-25s" % key, m.__file__ or "")
 
         # Print missing modules
         missing, maybe = self.any_missing_maybe()
         wenn missing:
-            print()
-            print("Missing modules:")
+            drucke()
+            drucke("Missing modules:")
             fuer name in missing:
                 mods = sorted(self.badmodules[name].keys())
-                print("?", name, "imported from", ', '.join(mods))
+                drucke("?", name, "imported from", ', '.join(mods))
         # Print modules that may be missing, but then again, maybe not...
         wenn maybe:
-            print()
-            print("Submodules that appear to be missing, but could also be", end=' ')
-            print("global names in the parent package:")
+            drucke()
+            drucke("Submodules that appear to be missing, but could also be", end=' ')
+            drucke("global names in the parent package:")
             fuer name in maybe:
                 mods = sorted(self.badmodules[name].keys())
-                print("?", name, "imported from", ', '.join(mods))
+                drucke("?", name, "imported from", ', '.join(mods))
 
     def any_missing(self):
         """Return a list of modules that appear to be missing. Use
@@ -611,7 +611,7 @@ def test():
     try:
         opts, args = getopt.getopt(sys.argv[1:], "dmp:qx:")
     except getopt.error as msg:
-        print(msg)
+        drucke(msg)
         return
 
     # Process options
@@ -642,9 +642,9 @@ def test():
     path[0] = os.path.dirname(script)
     path = addpath + path
     wenn debug > 1:
-        print("path:")
+        drucke("path:")
         fuer item in path:
-            print("   ", repr(item))
+            drucke("   ", repr(item))
 
     # Create the module finder and turn its crank
     mf = ModuleFinder(path, debug, exclude)
@@ -668,4 +668,4 @@ wenn __name__ == '__main__':
     try:
         mf = test()
     except KeyboardInterrupt:
-        print("\n[interrupted]")
+        drucke("\n[interrupted]")

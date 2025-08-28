@@ -44,7 +44,7 @@ def install_threading_hook(reader: Reader) -> Nichts:
                 fuer tb in self.messages:
                     count += 1
                     wenn tb:
-                        print(tb)
+                        drucke(tb)
                 self.messages.clear()
                 reader.scheduled_commands.append("ctrl-c")
                 reader.prepare()

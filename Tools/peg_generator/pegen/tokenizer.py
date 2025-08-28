@@ -112,7 +112,7 @@ klasse Tokenizer:
         sonst:
             fill = "-" * self._index + "*"
         wenn self._index == 0:
-            print(f"{fill} (Bof)")
+            drucke(f"{fill} (Bof)")
         sonst:
             tok = self._tokens[self._index - 1]
-            print(f"{fill} {shorttok(tok)}")
+            drucke(f"{fill} {shorttok(tok)}")

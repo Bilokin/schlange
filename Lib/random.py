@@ -973,8 +973,8 @@ def _test_generator(n, func, args):
     low = min(data)
     high = max(data)
 
-    print(f'{t1 - t0:.3f} sec, {n} times {func.__name__}{args!r}')
-    print('avg %g, stddev %g, min %g, max %g\n' % (xbar, sigma, low, high))
+    drucke(f'{t1 - t0:.3f} sec, {n} times {func.__name__}{args!r}')
+    drucke('avg %g, stddev %g, min %g, max %g\n' % (xbar, sigma, low, high))
 
 
 def _test(N=10_000):
@@ -1076,4 +1076,4 @@ def main(arg_list: list[str] | Nichts = Nichts) -> int | str:
 
 
 wenn __name__ == '__main__':
-    print(main())
+    drucke(main())

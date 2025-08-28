@@ -32,7 +32,7 @@ def probe_den(nd):
         wenn s2 < s1:
             count += 1
             wenn count >= 3:
-                print(
+                drucke(
                     "for",
                     nd,
                     "denom digits,",
@@ -43,7 +43,7 @@ def probe_den(nd):
         sonst:
             count = 0
     sonst:
-        print("for", nd, "denom digits, no num seems big enough")
+        drucke("for", nd, "denom digits, no num seems big enough")
 
 
 def main():

@@ -45,7 +45,7 @@ wenn os.name == 'nt':
         except UnicodeEncodeError:
             pass
         sonst:
-            print('WARNING: The filename %r CAN be encoded by the filesystem '
+            drucke('WARNING: The filename %r CAN be encoded by the filesystem '
                   'encoding (%s). Unicode filename tests may not be effective'
                   % (TESTFN_UNENCODABLE, sys.getfilesystemencoding()))
             TESTFN_UNENCODABLE = Nichts
@@ -428,7 +428,7 @@ wenn sys.platform.startswith("win"):
                 try:
                     mode = os.lstat(fullname).st_mode
                 except OSError as exc:
-                    print("support.rmtree(): os.lstat(%r) failed with %s"
+                    drucke("support.rmtree(): os.lstat(%r) failed with %s"
                           % (fullname, exc),
                           file=sys.__stderr__)
                     mode = 0

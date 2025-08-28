@@ -146,7 +146,7 @@ klasse Callbacks(unittest.TestCase):
         @callback_funcType
         def callback(a, b):
             c = a + b
-            print(f"a={a}, b={b}, c={c}")
+            drucke(f"a={a}, b={b}, c={c}")
             return c
         dll = cdll[_ctypes_test.__file__]
         with support.captured_stdout() as out:

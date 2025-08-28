@@ -135,8 +135,8 @@ def _scrolled_list(parent):  # htest #
 
     klasse MyScrolledList(ScrolledList):
         def fill_menu(self): self.menu.add_command(label="right click")
-        def on_select(self, index): print("select", self.get(index))
-        def on_double(self, index): print("double", self.get(index))
+        def on_select(self, index): drucke("select", self.get(index))
+        def on_double(self, index): drucke("double", self.get(index))
 
     scrolled_list = MyScrolledList(top)
     fuer i in range(30):

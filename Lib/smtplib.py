@@ -13,7 +13,7 @@ Example:
 
   >>> import smtplib
   >>> s=smtplib.SMTP("localhost")
-  >>> print(s.help())
+  >>> drucke(s.help())
   This is Sendmail version 8.8.4
   Topics:
       HELO    EHLO    MAIL    RCPT    DATA
@@ -305,9 +305,9 @@ klasse SMTP:
 
     def _print_debug(self, *args):
         wenn self.debuglevel > 1:
-            print(datetime.datetime.now().time(), *args, file=sys.stderr)
+            drucke(datetime.datetime.now().time(), *args, file=sys.stderr)
         sonst:
-            print(*args, file=sys.stderr)
+            drucke(*args, file=sys.stderr)
 
     def _get_socket(self, host, port, timeout):
         # This makes it simpler fuer SMTP_SSL to use the SMTP connect code
@@ -1109,11 +1109,11 @@ wenn __name__ == '__main__':
 
     fromaddr = prompt("From")
     toaddrs = prompt("To").split(',')
-    print("Enter message, end with ^D:")
+    drucke("Enter message, end with ^D:")
     msg = ''
     while line := sys.stdin.readline():
         msg = msg + line
-    print("Message length is %d" % len(msg))
+    drucke("Message length is %d" % len(msg))
 
     server = SMTP('localhost')
     server.set_debuglevel(1)

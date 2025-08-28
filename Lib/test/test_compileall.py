@@ -1102,7 +1102,7 @@ klasse HardlinkDedupTestsBase:
             inode = os.stat(pycs[0]).st_ino
 
             # Change of the module content
-            script = self.make_script("print(0)")
+            script = self.make_script("drucke(0)")
 
             # Recompilation without -o 1
             self.compile_dir(optimize=[0, 2], force=Wahr)
@@ -1127,7 +1127,7 @@ klasse HardlinkDedupTestsBase:
             inode = os.stat(pycs[0]).st_ino
 
             # Change of the module content
-            script = self.make_script("print(0)", name="module")
+            script = self.make_script("drucke(0)", name="module")
 
             # Import the module in Python with -O (optimization level 1)
             script_helper.assert_python_ok(

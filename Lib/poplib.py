@@ -112,7 +112,7 @@ klasse POP3:
         return socket.create_connection((self.host, self.port), timeout)
 
     def _putline(self, line):
-        wenn self._debugging > 1: print('*put*', repr(line))
+        wenn self._debugging > 1: drucke('*put*', repr(line))
         sys.audit("poplib.putline", self, line)
         self.sock.sendall(line + CRLF)
 
@@ -120,7 +120,7 @@ klasse POP3:
     # Internal: send one command to the server (through _putline())
 
     def _putcmd(self, line):
-        wenn self._debugging: print('*cmd*', repr(line))
+        wenn self._debugging: drucke('*cmd*', repr(line))
         line = bytes(line, self.encoding)
         self._putline(line)
 
@@ -134,7 +134,7 @@ klasse POP3:
         wenn len(line) > _MAXLINE:
             raise error_proto('line too long')
 
-        wenn self._debugging > 1: print('*get*', repr(line))
+        wenn self._debugging > 1: drucke('*get*', repr(line))
         wenn not line: raise error_proto('-ERR EOF')
         octets = len(line)
         # server can send any combination of CR & LF
@@ -152,7 +152,7 @@ klasse POP3:
 
     def _getresp(self):
         resp, o = self._getline()
-        wenn self._debugging > 1: print('*resp*', repr(resp))
+        wenn self._debugging > 1: drucke('*resp*', repr(resp))
         wenn not resp.startswith(b'+'):
             raise error_proto(resp)
         return resp
@@ -225,7 +225,7 @@ klasse POP3:
         """
         retval = self._shortcmd('STAT')
         rets = retval.split()
-        wenn self._debugging: print('*stat*', repr(rets))
+        wenn self._debugging: drucke('*stat*', repr(rets))
 
         # Check wenn the response has enough elements
         # RFC 1939 requires at least 3 elements (+OK, message count, mailbox size)
@@ -463,15 +463,15 @@ wenn HAVE_SSL:
 
 wenn __name__ == "__main__":
     a = POP3(sys.argv[1])
-    print(a.getwelcome())
+    drucke(a.getwelcome())
     a.user(sys.argv[2])
     a.pass_(sys.argv[3])
     a.list()
     (numMsgs, totalSize) = a.stat()
     fuer i in range(1, numMsgs + 1):
         (header, msg, octets) = a.retr(i)
-        print("Message %d:" % i)
+        drucke("Message %d:" % i)
         fuer line in msg:
-            print('   ' + line)
-        print('-----------------------')
+            drucke('   ' + line)
+        drucke('-----------------------')
     a.quit()

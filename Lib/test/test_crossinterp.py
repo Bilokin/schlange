@@ -1114,7 +1114,7 @@ klasse PureShareableScriptTests(_GetXIDataTests):
         '',
         'spam',
         '# a comment',
-        'print("spam")',
+        'drucke("spam")',
         'raise Exception("spam")',
         """if Wahr:
             do_something()

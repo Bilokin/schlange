@@ -46,7 +46,7 @@ klasse Properties:
         fuer tkns in self.escaping_calls.values():
             text += f"{indent}    {tkns}\n"
         text += ", ".join([f"{key}: {value}" fuer (key, value) in simple_properties.items()])
-        print(indent, text, sep="")
+        drucke(indent, text, sep="")
 
     @staticmethod
     def from_list(properties: list["Properties"]) -> "Properties":
@@ -189,10 +189,10 @@ klasse Uop:
     instruction_size: int | Nichts = Nichts
 
     def dump(self, indent: str) -> Nichts:
-        print(
+        drucke(
             indent, self.name, ", ".join(self.annotations) wenn self.annotations sonst ""
         )
-        print(indent, self.stack, ", ".join([str(c) fuer c in self.caches]))
+        drucke(indent, self.stack, ", ".join([str(c) fuer c in self.caches]))
         self.properties.dump("    " + indent)
 
     @property
@@ -268,7 +268,7 @@ klasse Instruction:
         return Properties.from_list([part.properties fuer part in self.parts])
 
     def dump(self, indent: str) -> Nichts:
-        print(indent, self.name, "=", ", ".join([part.name fuer part in self.parts]))
+        drucke(indent, self.name, "=", ", ".join([part.name fuer part in self.parts]))
         self.properties.dump("    " + indent)
 
     @property
@@ -295,7 +295,7 @@ klasse PseudoInstruction:
     opcode: int = -1
 
     def dump(self, indent: str) -> Nichts:
-        print(indent, self.name, "->", " or ".join([t.name fuer t in self.targets]))
+        drucke(indent, self.name, "->", " or ".join([t.name fuer t in self.targets]))
 
     @property
     def properties(self) -> Properties:
@@ -309,7 +309,7 @@ klasse Family:
     members: list[Instruction]
 
     def dump(self, indent: str) -> Nichts:
-        print(indent, self.name, "= ", ", ".join([m.name fuer m in self.members]))
+        drucke(indent, self.name, "= ", ", ".join([m.name fuer m in self.members]))
 
 
 @dataclass
@@ -1286,16 +1286,16 @@ def analyze_files(filenames: list[str]) -> Analysis:
 
 
 def dump_analysis(analysis: Analysis) -> Nichts:
-    print("Uops:")
+    drucke("Uops:")
     fuer u in analysis.uops.values():
         u.dump("    ")
-    print("Instructions:")
+    drucke("Instructions:")
     fuer i in analysis.instructions.values():
         i.dump("    ")
-    print("Families:")
+    drucke("Families:")
     fuer f in analysis.families.values():
         f.dump("    ")
-    print("Pseudos:")
+    drucke("Pseudos:")
     fuer p in analysis.pseudos.values():
         p.dump("    ")
 
@@ -1304,7 +1304,7 @@ wenn __name__ == "__main__":
     import sys
 
     wenn len(sys.argv) < 2:
-        print("No input")
+        drucke("No input")
     sonst:
         filenames = sys.argv[1:]
         dump_analysis(analyze_files(filenames))

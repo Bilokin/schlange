@@ -137,7 +137,7 @@ def main():
     subsystem = 'console'
 
     wenn sys.platform == "darwin" and sysconfig.get_config_var("PYTHONFRAMEWORK"):
-        print(f"{sys.argv[0]} cannot be used with framework builds of Python", file=sys.stderr)
+        drucke(f"{sys.argv[0]} cannot be used with framework builds of Python", file=sys.stderr)
         sys.exit(1)
 
 
@@ -167,7 +167,7 @@ def main():
     # process option arguments
     fuer o, a in opts:
         wenn o == '-h':
-            print(__doc__)
+            drucke(__doc__)
             return
         wenn o == '-d':
             debug = debug + 1
@@ -231,7 +231,7 @@ def main():
     wenn win:
         extensions_c = 'frozen_extensions.c'
     wenn ishome:
-        print("(Using Python source directory)")
+        drucke("(Using Python source directory)")
         configdir = exec_prefix
         incldir = os.path.join(prefix, 'Include')
         config_h_dir = exec_prefix
@@ -319,7 +319,7 @@ def main():
     wenn odir and not os.path.isdir(odir):
         try:
             os.mkdir(odir)
-            print("Created output directory", odir)
+            drucke("Created output directory", odir)
         except OSError as msg:
             usage('%s: mkdir failed (%s)' % (odir, str(msg)))
     base = ''
@@ -380,7 +380,7 @@ def main():
 
     wenn debug > 0:
         mf.report()
-        print()
+        drucke()
     dict = mf.modules
 
     wenn error_if_any_missing:
@@ -476,18 +476,18 @@ def main():
     # Done!
 
     wenn odir:
-        print('Now run "make" in', odir, end=' ')
-        print('to build the target:', base_target)
+        drucke('Now run "make" in', odir, end=' ')
+        drucke('to build the target:', base_target)
     sonst:
-        print('Now run "make" to build the target:', base_target)
+        drucke('Now run "make" to build the target:', base_target)
 
 
 # Print usage message and exit
 
 def usage(msg):
     sys.stdout = sys.stderr
-    print("Error:", msg)
-    print("Use ``%s -h'' fuer help" % sys.argv[0])
+    drucke("Error:", msg)
+    drucke("Use ``%s -h'' fuer help" % sys.argv[0])
     sys.exit(2)
 
 

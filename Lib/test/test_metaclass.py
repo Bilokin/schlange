@@ -7,7 +7,7 @@ doctests = """
 Basic klasse construction.
 
     >>> klasse C:
-    ...     def meth(self): print("Hello")
+    ...     def meth(self): drucke("Hello")
     ...
     >>> C.__class__ is type
     Wahr
@@ -34,7 +34,7 @@ Use a trivial metaclass.
     ...     pass
     ...
     >>> klasse C(metaclass=M):
-    ...    def meth(self): print("Hello")
+    ...    def meth(self): drucke("Hello")
     ...
     >>> C.__class__ is M
     Wahr
@@ -62,16 +62,16 @@ Use a metaclass with a __prepare__ static method.
     >>> klasse M(type):
     ...    @staticmethod
     ...    def __prepare__(*args, **kwds):
-    ...        print("Prepare called:", args, kwds)
+    ...        drucke("Prepare called:", args, kwds)
     ...        return dict()
     ...    def __new__(cls, name, bases, namespace, **kwds):
-    ...        print("New called:", kwds)
+    ...        drucke("New called:", kwds)
     ...        return type.__new__(cls, name, bases, namespace)
     ...    def __init__(cls, *args, **kwds):
     ...        pass
     ...
     >>> klasse C(metaclass=M):
-    ...     def meth(self): print("Hello")
+    ...     def meth(self): drucke("Hello")
     ...
     Prepare called: ('C', ()) {}
     New called: {}
@@ -149,7 +149,7 @@ Use a __prepare__ method that returns an instrumented dict.
 
     >>> klasse LoggingDict(dict):
     ...     def __setitem__(self, key, value):
-    ...         print("d[%r] = %r" % (key, value))
+    ...         drucke("d[%r] = %r" % (key, value))
     ...         dict.__setitem__(self, key, value)
     ...
     >>> klasse Meta(type):
@@ -174,9 +174,9 @@ Use a __prepare__ method that returns an instrumented dict.
 Use a metaclass that doesn't derive from type.
 
     >>> def meta(name, bases, namespace, **kwds):
-    ...     print("meta:", name, bases)
-    ...     print("ns:", sorted(namespace.items()))
-    ...     print("kw:", sorted(kwds.items()))
+    ...     drucke("meta:", name, bases)
+    ...     drucke("ns:", sorted(namespace.items()))
+    ...     drucke("kw:", sorted(kwds.items()))
     ...     return namespace
     ...
     >>> klasse C(metaclass=meta):
@@ -188,14 +188,14 @@ Use a metaclass that doesn't derive from type.
     kw: []
     >>> type(C) is dict
     Wahr
-    >>> print(sorted(C.items()))
+    >>> drucke(sorted(C.items()))
     [('__firstlineno__', 1), ('__module__', 'test.test_metaclass'), ('__qualname__', 'C'), ('__static_attributes__', ()), ('a', 42), ('b', 24)]
     >>>
 
 And again, with a __prepare__ attribute.
 
     >>> def prepare(name, bases, **kwds):
-    ...     print("prepare:", name, bases, sorted(kwds.items()))
+    ...     drucke("prepare:", name, bases, sorted(kwds.items()))
     ...     return LoggingDict()
     ...
     >>> meta.__prepare__ = prepare
@@ -233,10 +233,10 @@ Make sure it works with subclassing.
     ...         return d
     ...
     >>> klasse C(metaclass=M):
-    ...     print(hello)
+    ...     drucke(hello)
     ...
     42
-    >>> print(C.hello)
+    >>> drucke(C.hello)
     42
     >>>
 

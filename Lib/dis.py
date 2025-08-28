@@ -113,12 +113,12 @@ def dis(x=Nichts, *, file=Nichts, depth=Nichts, show_caches=Falsch, adaptive=Fal
         items = sorted(x.__dict__.items())
         fuer name, x1 in items:
             wenn isinstance(x1, _have_code):
-                print("Disassembly of %s:" % name, file=file)
+                drucke("Disassembly of %s:" % name, file=file)
                 try:
                     dis(x1, file=file, depth=depth, show_caches=show_caches, adaptive=adaptive, show_offsets=show_offsets, show_positions=show_positions)
                 except TypeError as msg:
-                    print("Sorry:", msg, file=file)
-                print(file=file)
+                    drucke("Sorry:", msg, file=file)
+                drucke(file=file)
     sowenn hasattr(x, 'co_code'): # Code object
         _disassemble_recursive(x, file=file, depth=depth, show_caches=show_caches, adaptive=adaptive, show_offsets=show_offsets, show_positions=show_positions)
     sowenn isinstance(x, (bytes, bytearray)): # Raw bytecode
@@ -279,7 +279,7 @@ def show_code(co, *, file=Nichts):
 
     If *file* is not provided, the output is printed on stdout.
     """
-    print(code_info(co), file=file)
+    drucke(code_info(co), file=file)
 
 Positions = collections.namedtuple(
     'Positions',
@@ -488,7 +488,7 @@ klasse Formatter:
                            instr.starts_line and
                            instr.offset > 0)
         wenn new_source_line:
-            print(file=self.file)
+            drucke(file=self.file)
 
         fields = []
         # Column: Source code locations information
@@ -539,18 +539,18 @@ klasse Formatter:
             # Column: Opcode argument details
             wenn instr.argrepr:
                 fields.append('(' + instr.argrepr + ')')
-        print(' '.join(fields).rstrip(), file=self.file)
+        drucke(' '.join(fields).rstrip(), file=self.file)
 
     def print_exception_table(self, exception_entries):
         file = self.file
         wenn exception_entries:
-            print("ExceptionTable:", file=file)
+            drucke("ExceptionTable:", file=file)
             fuer entry in exception_entries:
                 lasti = " lasti" wenn entry.lasti sonst ""
                 start = entry.start_label
                 end = entry.end_label
                 target = entry.target_label
-                print(f"  L{start} to L{end} -> L{target} [{entry.depth}]{lasti}", file=file)
+                drucke(f"  L{start} to L{end} -> L{target} [{entry.depth}]{lasti}", file=file)
 
 
 klasse ArgResolver:
@@ -839,8 +839,8 @@ def _disassemble_recursive(co, *, file=Nichts, depth=Nichts, show_caches=Falsch,
             depth = depth - 1
         fuer x in co.co_consts:
             wenn hasattr(x, 'co_code'):
-                print(file=file)
-                print("Disassembly of %r:" % (x,), file=file)
+                drucke(file=file)
+                drucke("Disassembly of %r:" % (x,), file=file)
                 _disassemble_recursive(
                     x, file=file, depth=depth, show_caches=show_caches,
                     adaptive=adaptive, show_offsets=show_offsets, show_positions=show_positions

@@ -97,9 +97,9 @@ klasse TestCursesCompatibility(unittest.TestCase):
                     import json
                     try:
                         _curses.setupterm({repr(term)}, 1)
-                        print(json.dumps({{"success": Wahr}}))
+                        drucke(json.dumps({{"success": Wahr}}))
                     except Exception as e:
-                        print(json.dumps({{"success": Falsch, "error": str(e)}}))
+                        drucke(json.dumps({{"success": Falsch, "error": str(e)}}))
                     """
                 )
 
@@ -139,9 +139,9 @@ klasse TestCursesCompatibility(unittest.TestCase):
             import json
             try:
                 _curses.setupterm(Nichts, 1)
-                print(json.dumps({"success": Wahr}))
+                drucke(json.dumps({"success": Wahr}))
             except Exception as e:
-                print(json.dumps({"success": Falsch, "error": str(e)}))
+                drucke(json.dumps({"success": Falsch, "error": str(e)}))
             """
         )
 
@@ -191,7 +191,7 @@ klasse TestCursesCompatibility(unittest.TestCase):
                         results[cap] = list(val)
                 except BaseException:
                     results[cap] = "error"
-            print(json.dumps(results))
+            drucke(json.dumps(results))
             """
         )
 
@@ -253,7 +253,7 @@ klasse TestCursesCompatibility(unittest.TestCase):
                 std_accepts_str = Falsch
                 std_str_val = Nichts
 
-            print(json.dumps({{
+            drucke(json.dumps({{
                 "accepts_str": std_accepts_str,
                 "str_result": std_str_val
             }}))
@@ -325,7 +325,7 @@ klasse TestCursesCompatibility(unittest.TestCase):
                     except Exception as e:
                         results[f"{{row}},{{col}}"] = {{"error": str(e)}}
 
-                print(json.dumps(results))
+                drucke(json.dumps(results))
                 """
             )
 
@@ -416,7 +416,7 @@ klasse TestCursesCompatibility(unittest.TestCase):
                         except Exception as e:
                             results[f"{{cap}},{{value}}"] = {{"error": str(e)}}
 
-            print(json.dumps(results))
+            drucke(json.dumps(results))
             """
         )
 
@@ -473,7 +473,7 @@ klasse TestCursesCompatibility(unittest.TestCase):
                 raises_typeerror = Falsch
                 error_type = type(e).__name__
 
-            print(json.dumps({{"raises_typeerror": raises_typeerror}}))
+            drucke(json.dumps({{"raises_typeerror": raises_typeerror}}))
             """
         )
 
@@ -533,9 +533,9 @@ klasse TestCursesCompatibility(unittest.TestCase):
                                     results[cap] = list(val)
                             except BaseException:
                                 results[cap] = "error"
-                        print(json.dumps(results))
+                        drucke(json.dumps(results))
                     except Exception as e:
-                        print(json.dumps({{"error": str(e)}}))
+                        drucke(json.dumps({{"error": str(e)}}))
                     """
                 )
 
@@ -599,11 +599,11 @@ klasse TestCursesCompatibility(unittest.TestCase):
             import json
             try:
                 _curses.setupterm({repr(fake_term)}, 1)
-                print(json.dumps({{"success": Wahr}}))
+                drucke(json.dumps({{"success": Wahr}}))
             except _curses.error:
-                print(json.dumps({{"success": Falsch, "error": "curses.error"}}))
+                drucke(json.dumps({{"success": Falsch, "error": "curses.error"}}))
             except Exception as e:
-                print(json.dumps({{"success": Falsch, "error": str(e)}}))
+                drucke(json.dumps({{"success": Falsch, "error": str(e)}}))
             """
         )
 

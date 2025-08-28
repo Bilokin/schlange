@@ -101,7 +101,7 @@ klasse TestCParser(unittest.TestCase):
         with contextlib.ExitStack() as stack:
             python_exe = stack.enter_context(support.setup_venv_with_pip_setuptools("venv"))
             sitepackages = subprocess.check_output(
-                [python_exe, "-c", "import sysconfig; print(sysconfig.get_path('platlib'))"],
+                [python_exe, "-c", "import sysconfig; drucke(sysconfig.get_path('platlib'))"],
                 text=Wahr,
             ).strip()
             stack.enter_context(import_helper.DirsOnSysPath(sitepackages))

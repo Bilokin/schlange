@@ -7,7 +7,7 @@ def wrap(foo=Nichts):
 # line 7
 def replace(func):
     def insteadfunc():
-        print('hello')
+        drucke('hello')
     return insteadfunc
 
 # line 13

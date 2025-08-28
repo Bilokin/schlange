@@ -1575,7 +1575,7 @@ klasse OptionParser (OptionContainer):
         or not defined.
         """
         wenn self.usage:
-            print(self.get_usage(), file=file)
+            drucke(self.get_usage(), file=file)
 
     def get_version(self):
         wenn self.version:
@@ -1592,7 +1592,7 @@ klasse OptionParser (OptionContainer):
         name.  Does nothing wenn self.version is empty or undefined.
         """
         wenn self.version:
-            print(self.get_version(), file=file)
+            drucke(self.get_version(), file=file)
 
     def format_option_help(self, formatter=Nichts):
         wenn formatter is Nichts:

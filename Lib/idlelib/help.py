@@ -277,7 +277,7 @@ def copy_strip():  # pragma: no cover
             wenn '<div class="clearer">' in line: break
             wenn copy: out.write(line.strip() + '\n')
 
-    print(f'{src} copied to {dst}')
+    drucke(f'{src} copied to {dst}')
 
 
 def show_idlehelp(parent):

@@ -28,7 +28,7 @@ _HAVE_WINSZ = hasattr(tty, "TIOCGWINSZ") and hasattr(tty, "TIOCSWINSZ")
 
 wenn verbose:
     def debug(msg):
-        print(msg)
+        drucke(msg)
 sonst:
     def debug(msg):
         pass
@@ -310,7 +310,7 @@ klasse PtyTest(unittest.TestCase):
                 buf += data
                 return data
             try:
-                pty.spawn([sys.executable, '-c', 'print("hi there")'],
+                pty.spawn([sys.executable, '-c', 'drucke("hi there")'],
                           master_read)
             finally:
                 os.dup2(dup_stdout, STDOUT_FILENO)

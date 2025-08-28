@@ -136,11 +136,11 @@ def askretrycancel(title=Nichts, message=Nichts, **options):
 
 wenn __name__ == "__main__":
 
-    print("info", showinfo("Spam", "Egg Information"))
-    print("warning", showwarning("Spam", "Egg Warning"))
-    print("error", showerror("Spam", "Egg Alert"))
-    print("question", askquestion("Spam", "Question?"))
-    print("proceed", askokcancel("Spam", "Proceed?"))
-    print("yes/no", askyesno("Spam", "Got it?"))
-    print("yes/no/cancel", askyesnocancel("Spam", "Want it?"))
-    print("try again", askretrycancel("Spam", "Try again?"))
+    drucke("info", showinfo("Spam", "Egg Information"))
+    drucke("warning", showwarning("Spam", "Egg Warning"))
+    drucke("error", showerror("Spam", "Egg Alert"))
+    drucke("question", askquestion("Spam", "Question?"))
+    drucke("proceed", askokcancel("Spam", "Proceed?"))
+    drucke("yes/no", askyesno("Spam", "Got it?"))
+    drucke("yes/no/cancel", askyesnocancel("Spam", "Want it?"))
+    drucke("try again", askretrycancel("Spam", "Try again?"))

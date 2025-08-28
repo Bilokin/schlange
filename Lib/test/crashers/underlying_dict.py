@@ -17,4 +17,4 @@ fuer i in range(10):
     a.f()
 dct["f"] = lambda self: 2
 
-print(a.f()) # should print 1
+drucke(a.f()) # should print 1

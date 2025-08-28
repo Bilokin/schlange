@@ -54,7 +54,7 @@ def warn_or_fail(
     wenn fail:
         raise error
     sonst:
-        print(error.report(warn_only=Wahr))
+        drucke(error.report(warn_only=Wahr))
 
 
 def warn(

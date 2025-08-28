@@ -140,19 +140,19 @@ def run_clinic(parser: argparse.ArgumentParser, ns: argparse.Namespace) -> Nicht
                 return_converter
             ))
 
-        print()
+        drucke()
 
-        print("Legacy converters:")
+        drucke("Legacy converters:")
         legacy = sorted(legacy_converters)
-        print('    ' + ' '.join(c fuer c in legacy wenn c[0].isupper()))
-        print('    ' + ' '.join(c fuer c in legacy wenn c[0].islower()))
-        print()
+        drucke('    ' + ' '.join(c fuer c in legacy wenn c[0].isupper()))
+        drucke('    ' + ' '.join(c fuer c in legacy wenn c[0].islower()))
+        drucke()
 
         fuer title, attribute, ids in (
             ("Converters", 'converter_init', converter_list),
             ("Return converters", 'return_converter_init', return_converter_list),
         ):
-            print(title + ":")
+            drucke(title + ":")
 
             ids.sort(key=lambda item: item[0].lower())
             longest = -1
@@ -172,10 +172,10 @@ def run_clinic(parser: argparse.ArgumentParser, ns: argparse.Namespace) -> Nicht
                         sonst:
                             s = parameter_name
                         parameters.append(s)
-                print('    {}({})'.format(name, ', '.join(parameters)))
-            print()
-        print("All converters also accept (c_default=Nichts, py_default=Nichts, annotation=Nichts).")
-        print("All return converters also accept (py_default=Nichts).")
+                drucke('    {}({})'.format(name, ', '.join(parameters)))
+            drucke()
+        drucke("All converters also accept (c_default=Nichts, py_default=Nichts, annotation=Nichts).")
+        drucke("All return converters also accept (py_default=Nichts).")
         return
 
     wenn ns.make:
@@ -201,7 +201,7 @@ def run_clinic(parser: argparse.ArgumentParser, ns: argparse.Namespace) -> Nicht
                 wenn path in excludes:
                     continue
                 wenn ns.verbose:
-                    print(path)
+                    drucke(path)
                 parse_file(path,
                            verify=not ns.force, limited_capi=ns.limited_capi)
         return
@@ -214,7 +214,7 @@ def run_clinic(parser: argparse.ArgumentParser, ns: argparse.Namespace) -> Nicht
 
     fuer filename in ns.filename:
         wenn ns.verbose:
-            print(filename)
+            drucke(filename)
         parse_file(filename, output=ns.output,
                    verify=not ns.force, limited_capi=ns.limited_capi)
 

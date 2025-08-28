@@ -374,10 +374,10 @@ klasse TestReaderInColor(ScreenEqualMixin, TestCase):
                     ''',
                 )
                 match case:
-                    case "emscripten": print("on the web")
+                    case "emscripten": drucke("on the web")
                     case "ios" | "android":
-                        print("on the phone")
-                    case _: print('arms around', match.group(1))
+                        drucke("on the phone")
+                    case _: drucke('arms around', match.group(1))
             """
         )
         expected = dedent(

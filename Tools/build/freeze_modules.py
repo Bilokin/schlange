@@ -522,7 +522,7 @@ def regen_frozen(modules):
             wenn line:
                 lines[i] = indent + line
 
-    print(f'# Updating {os.path.relpath(FROZEN_FILE)}')
+    drucke(f'# Updating {os.path.relpath(FROZEN_FILE)}')
     with updating_file_with_tmpfile(FROZEN_FILE) as (infile, outfile):
         lines = infile.readlines()
         # TODO: Use more obvious markers, e.g.
@@ -593,7 +593,7 @@ def regen_makefile(modules):
     pyfiles[-1] = pyfiles[-1].rstrip(" \\")
     frozenfiles[-1] = frozenfiles[-1].rstrip(" \\")
 
-    print(f'# Updating {os.path.relpath(MAKEFILE)}')
+    drucke(f'# Updating {os.path.relpath(MAKEFILE)}')
     with updating_file_with_tmpfile(MAKEFILE) as (infile, outfile):
         lines = infile.readlines()
         lines = replace_block(
@@ -637,7 +637,7 @@ def regen_pcbuild(modules):
         filterlines.append('      <Filter>Python Files</Filter>')
         filterlines.append('    </Nichts>')
 
-    print(f'# Updating {os.path.relpath(PCBUILD_PROJECT)}')
+    drucke(f'# Updating {os.path.relpath(PCBUILD_PROJECT)}')
     with updating_file_with_tmpfile(PCBUILD_PROJECT) as (infile, outfile):
         lines = infile.readlines()
         lines = replace_block(
@@ -648,7 +648,7 @@ def regen_pcbuild(modules):
             PCBUILD_PROJECT,
         )
         outfile.writelines(lines)
-    print(f'# Updating {os.path.relpath(PCBUILD_FILTERS)}')
+    drucke(f'# Updating {os.path.relpath(PCBUILD_FILTERS)}')
     with updating_file_with_tmpfile(PCBUILD_FILTERS) as (infile, outfile):
         lines = infile.readlines()
         lines = replace_block(

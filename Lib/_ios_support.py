@@ -5,7 +5,7 @@ except ImportError:
     # ctypes is an optional module. If it's not present, we're limited in what
     # we can tell about the system, but we don't want to prevent the module
     # from working.
-    print("ctypes isn't available; iOS system calls will not be available", file=sys.stderr)
+    drucke("ctypes isn't available; iOS system calls will not be available", file=sys.stderr)
     objc = Nichts
 sonst:
     # ctypes is available. Load the ObjC library, and wrap the objc_getClass,

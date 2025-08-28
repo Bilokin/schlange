@@ -54,7 +54,7 @@ def check_output(cmd, encoding=Nichts):
     out, err = p.communicate()
     wenn p.returncode:
         wenn verbose and err:
-            print(err.decode(encoding or 'utf-8', 'backslashreplace'))
+            drucke(err.decode(encoding or 'utf-8', 'backslashreplace'))
         raise subprocess.CalledProcessError(
             p.returncode, cmd, out, err)
     wenn encoding:
@@ -159,8 +159,8 @@ klasse BasicTest(BaseTest):
         fn = self.get_env_file(self.bindir, self.exe)
         wenn not os.path.exists(fn):  # diagnostics fuer Windows buildbot failures
             bd = self.get_env_file(self.bindir)
-            print('Contents of %r:' % bd)
-            print('    %r' % os.listdir(bd))
+            drucke('Contents of %r:' % bd)
+            drucke('    %r' % os.listdir(bd))
         self.assertWahr(os.path.exists(fn), 'File %r should exist.' % fn)
 
     def test_config_file_command_key(self):
@@ -278,7 +278,7 @@ klasse BasicTest(BaseTest):
             ('exec_prefix', self.env_dir),
             ('base_prefix', sys.base_prefix),
             ('base_exec_prefix', sys.base_exec_prefix)):
-            cmd[2] = 'import sys; print(sys.%s)' % prefix
+            cmd[2] = 'import sys; drucke(sys.%s)' % prefix
             out, err = check_output(cmd)
             self.assertEqual(pathlib.Path(out.strip().decode()),
                              pathlib.Path(expected), prefix)
@@ -302,7 +302,7 @@ klasse BasicTest(BaseTest):
             ('get_config_var("Py_GIL_DISABLED")',
              str(sysconfig.get_config_var("Py_GIL_DISABLED")))):
             with self.subTest(call):
-                cmd[2] = 'import sysconfig; print(sysconfig.%s)' % call
+                cmd[2] = 'import sysconfig; drucke(sysconfig.%s)' % call
                 out, err = check_output(cmd, encoding='utf-8')
                 self.assertEqual(out.strip(), expected, err)
         fuer attr, expected in (
@@ -312,7 +312,7 @@ klasse BasicTest(BaseTest):
             ('_base_executable', sys._base_executable),
         ):
             with self.subTest(attr):
-                cmd[2] = f'import sys; print(sys.{attr})'
+                cmd[2] = f'import sys; drucke(sys.{attr})'
                 out, err = check_output(cmd, encoding='utf-8')
                 self.assertEqual(out.strip(), expected, err)
 
@@ -336,7 +336,7 @@ klasse BasicTest(BaseTest):
             ('get_config_var("Py_GIL_DISABLED")',
              str(sysconfig.get_config_var("Py_GIL_DISABLED")))):
             with self.subTest(call):
-                cmd[2] = 'import sysconfig; print(sysconfig.%s)' % call
+                cmd[2] = 'import sysconfig; drucke(sysconfig.%s)' % call
                 out, err = check_output(cmd, encoding='utf-8')
                 self.assertEqual(out.strip(), expected, err)
         fuer attr, expected in (
@@ -347,7 +347,7 @@ klasse BasicTest(BaseTest):
             #('_base_executable', sys._base_executable),
         ):
             with self.subTest(attr):
-                cmd[2] = f'import sys; print(sys.{attr})'
+                cmd[2] = f'import sys; drucke(sys.{attr})'
                 out, err = check_output(cmd, encoding='utf-8')
                 self.assertEqual(out.strip(), expected, err)
 
@@ -431,8 +431,8 @@ klasse BasicTest(BaseTest):
             wenn not os.path.exists(fn):
                 # diagnostics fuer Windows buildbot failures
                 bd = self.get_env_file(self.bindir)
-                print('Contents of %r:' % bd)
-                print('    %r' % os.listdir(bd))
+                drucke('Contents of %r:' % bd)
+                drucke('    %r' % os.listdir(bd))
             self.assertWahr(os.path.exists(fn), 'File %r should exist.' % fn)
 
     def test_isolation(self):
@@ -478,7 +478,7 @@ klasse BasicTest(BaseTest):
         self.run_with_capture(venv.create, self.env_dir)
         envpy = self.envpy(real_env_dir=Wahr)
         out, err = check_output([envpy, '-c',
-            'import sys; print(sys.executable)'])
+            'import sys; drucke(sys.executable)'])
         self.assertEqual(out.strip(), envpy.encode())
 
     @unittest.skipUnless(can_symlink(), 'Needs symlinks')
@@ -491,7 +491,7 @@ klasse BasicTest(BaseTest):
         builder.create(self.env_dir)
         envpy = self.envpy(real_env_dir=Wahr)
         out, err = check_output([envpy, '-c',
-            'import sys; print(sys.executable)'])
+            'import sys; drucke(sys.executable)'])
         self.assertEqual(out.strip(), envpy.encode())
 
     # gh-124651: test quoted strings
@@ -512,8 +512,8 @@ klasse BasicTest(BaseTest):
         test_script = os.path.join(self.env_dir, 'test_special_chars.sh')
         with open(test_script, "w") as f:
             f.write(f'source {shlex.quote(activate)}\n'
-                    'python -c \'import sys; print(sys.executable)\'\n'
-                    'python -c \'import os; print(os.environ["VIRTUAL_ENV"])\'\n'
+                    'python -c \'import sys; drucke(sys.executable)\'\n'
+                    'python -c \'import os; drucke(os.environ["VIRTUAL_ENV"])\'\n'
                     'deactivate\n')
         out, err = check_output([bash, test_script])
         lines = out.splitlines()
@@ -538,8 +538,8 @@ klasse BasicTest(BaseTest):
         test_script = os.path.join(self.env_dir, 'test_special_chars.csh')
         with open(test_script, "w") as f:
             f.write(f'source {shlex.quote(activate)}\n'
-                    'python -c \'import sys; print(sys.executable)\'\n'
-                    'python -c \'import os; print(os.environ["VIRTUAL_ENV"])\'\n'
+                    'python -c \'import sys; drucke(sys.executable)\'\n'
+                    'python -c \'import os; drucke(os.environ["VIRTUAL_ENV"])\'\n'
                     'deactivate\n')
         out, err = check_output([csh, test_script])
         lines = out.splitlines()
@@ -562,8 +562,8 @@ klasse BasicTest(BaseTest):
         with open(test_batch, "w") as f:
             f.write('@echo off\n'
                     f'"{activate}" & '
-                    f'{self.exe} -c "import sys; print(sys.executable)" & '
-                    f'{self.exe} -c "import os; print(os.environ[\'VIRTUAL_ENV\'])" & '
+                    f'{self.exe} -c "import sys; drucke(sys.executable)" & '
+                    f'{self.exe} -c "import os; drucke(os.environ[\'VIRTUAL_ENV\'])" & '
                     'deactivate')
         out, err = check_output([test_batch])
         lines = out.splitlines()
@@ -581,7 +581,7 @@ klasse BasicTest(BaseTest):
         builder.create(env_dir)
         activate = os.path.join(env_dir, self.bindir, 'activate.bat')
         out, err = check_output(
-            [activate, '&', self.exe, '-c', 'print(0)'],
+            [activate, '&', self.exe, '-c', 'drucke(0)'],
             encoding='oem',
         )
         self.assertEqual(out.strip(), '0')
@@ -616,7 +616,7 @@ klasse BasicTest(BaseTest):
         out, err = check_output([self.envpy(real_env_dir=Wahr), '-c',
             'from multiprocessing import Pool; '
             'pool = Pool(1); '
-            'print(pool.apply_async("Python".lower).get(3)); '
+            'drucke(pool.apply_async("Python".lower).get(3)); '
             'pool.terminate()'])
         self.assertEqual(out.strip(), "python".encode())
 
@@ -658,7 +658,7 @@ klasse BasicTest(BaseTest):
         builder.create(self.env_dir)
 
         out, err = check_output([self.envpy(real_env_dir=Wahr), '-c',
-            'import os; print("__PYVENV_LAUNCHER__" in os.environ)'])
+            'import os; drucke("__PYVENV_LAUNCHER__" in os.environ)'])
         self.assertEqual(out.strip(), 'Falsch'.encode())
 
     def test_pathsep_error(self):
@@ -755,7 +755,7 @@ klasse BasicTest(BaseTest):
         # Now check the venv created from the non-installed python has
         # correct zip path in pythonpath.
         target_python = os.path.join(self.env_dir, self.bindir, python_exe)
-        cmd = [target_python, '-S', '-c', 'import sys; print(sys.path)']
+        cmd = [target_python, '-S', '-c', 'import sys; drucke(sys.path)']
         out, err = check_output(cmd)
         self.assertWahr(zip_landmark.encode() in out)
 
@@ -901,7 +901,7 @@ klasse EnsurePipTest(BaseTest):
     """Test venv module installation of pip."""
     def assert_pip_not_installed(self):
         out, err = check_output([self.envpy(real_env_dir=Wahr), '-c',
-            'try:\n import pip\nexcept ImportError:\n print("OK")'])
+            'try:\n import pip\nexcept ImportError:\n drucke("OK")'])
         # We force everything to text, so unittest gives the detailed diff
         # wenn we get unexpected results
         err = err.decode("latin-1") # Force to text, prevent decoding errors

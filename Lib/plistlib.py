@@ -39,7 +39,7 @@ Generate Plist example:
         someMoreData = b"<lots of binary gunk>" * 10,
         aDate = datetime.datetime.now()
     )
-    print(plistlib.dumps(pl).decode())
+    drucke(plistlib.dumps(pl).decode())
 
 Parse Plist example:
 
@@ -52,7 +52,7 @@ Parse Plist example:
     </dict>
     </plist>'''
     pl = plistlib.loads(plist)
-    print(pl["foo"])
+    drucke(pl["foo"])
 """
 __all__ = [
     "InvalidFileException", "FMT_XML", "FMT_BINARY", "load", "dump", "loads", "dumps", "UID"

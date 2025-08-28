@@ -13,21 +13,21 @@ NotDefined = object()
 # arguments.
 dispatch = {
     (Falsch, Falsch, Falsch):
-        lambda args, sep, end, file: print(*args),
+        lambda args, sep, end, file: drucke(*args),
     (Falsch, Falsch, Wahr):
-        lambda args, sep, end, file: print(file=file, *args),
+        lambda args, sep, end, file: drucke(file=file, *args),
     (Falsch, Wahr,  Falsch):
-        lambda args, sep, end, file: print(end=end, *args),
+        lambda args, sep, end, file: drucke(end=end, *args),
     (Falsch, Wahr,  Wahr):
-        lambda args, sep, end, file: print(end=end, file=file, *args),
+        lambda args, sep, end, file: drucke(end=end, file=file, *args),
     (Wahr,  Falsch, Falsch):
-        lambda args, sep, end, file: print(sep=sep, *args),
+        lambda args, sep, end, file: drucke(sep=sep, *args),
     (Wahr,  Falsch, Wahr):
-        lambda args, sep, end, file: print(sep=sep, file=file, *args),
+        lambda args, sep, end, file: drucke(sep=sep, file=file, *args),
     (Wahr,  Wahr,  Falsch):
-        lambda args, sep, end, file: print(sep=sep, end=end, *args),
+        lambda args, sep, end, file: drucke(sep=sep, end=end, *args),
     (Wahr,  Wahr,  Wahr):
-        lambda args, sep, end, file: print(sep=sep, end=end, file=file, *args),
+        lambda args, sep, end, file: drucke(sep=sep, end=end, file=file, *args),
 }
 
 
@@ -60,7 +60,7 @@ klasse TestPrint(unittest.TestCase):
 
         self.assertEqual(t.getvalue(), expected)
 
-    def test_print(self):
+    def test_drucke(self):
         def x(expected, args, sep=NotDefined, end=NotDefined):
             # Run the test 2 ways: not using file, and using
             # file directed to a StringIO.
@@ -114,9 +114,9 @@ klasse TestPrint(unittest.TestCase):
                 self.flushed += 1
 
         f = filelike()
-        print(1, file=f, end='', flush=Wahr)
-        print(2, file=f, end='', flush=Wahr)
-        print(3, file=f, flush=Falsch)
+        drucke(1, file=f, end='', flush=Wahr)
+        drucke(2, file=f, end='', flush=Wahr)
+        drucke(3, file=f, flush=Falsch)
         self.assertEqual(f.written, '123\n')
         self.assertEqual(f.flushed, 2)
 
@@ -138,7 +138,7 @@ klasse TestPrint(unittest.TestCase):
 
         with support.swap_attr(sys, 'stdout', Nichts):
             sys.stdout = StringIO()  # the only reference
-            print(X())  # should not crash
+            drucke(X())  # should not crash
 
 
 klasse TestPy2MigrationHint(unittest.TestCase):
@@ -151,7 +151,7 @@ klasse TestPy2MigrationHint(unittest.TestCase):
         with self.assertRaises(SyntaxError) as context:
             exec(python2_print_str)
 
-        self.assertIn("Missing parentheses in call to 'print'. Did you mean print(...)",
+        self.assertIn("Missing parentheses in call to 'print'. Did you mean drucke(...)",
                 str(context.exception))
 
     def test_string_with_soft_space(self):
@@ -159,7 +159,7 @@ klasse TestPy2MigrationHint(unittest.TestCase):
         with self.assertRaises(SyntaxError) as context:
             exec(python2_print_str)
 
-        self.assertIn("Missing parentheses in call to 'print'. Did you mean print(...)",
+        self.assertIn("Missing parentheses in call to 'print'. Did you mean drucke(...)",
                 str(context.exception))
 
     def test_string_with_excessive_whitespace(self):
@@ -167,7 +167,7 @@ klasse TestPy2MigrationHint(unittest.TestCase):
         with self.assertRaises(SyntaxError) as context:
             exec(python2_print_str)
 
-        self.assertIn("Missing parentheses in call to 'print'. Did you mean print(...)",
+        self.assertIn("Missing parentheses in call to 'print'. Did you mean drucke(...)",
                 str(context.exception))
 
     def test_string_with_leading_whitespace(self):
@@ -177,7 +177,7 @@ klasse TestPy2MigrationHint(unittest.TestCase):
         with self.assertRaises(SyntaxError) as context:
             exec(python2_print_str)
 
-        self.assertIn("Missing parentheses in call to 'print'. Did you mean print(...)",
+        self.assertIn("Missing parentheses in call to 'print'. Did you mean drucke(...)",
                 str(context.exception))
 
     # bpo-32685: Suggestions fuer print statement should be proper when
@@ -188,7 +188,7 @@ klasse TestPy2MigrationHint(unittest.TestCase):
         with self.assertRaises(SyntaxError) as context:
             exec(python2_print_str)
 
-        self.assertIn("Missing parentheses in call to 'print'. Did you mean print(...)",
+        self.assertIn("Missing parentheses in call to 'print'. Did you mean drucke(...)",
                 str(context.exception))
 
     def test_string_in_loop_on_same_line(self):
@@ -196,7 +196,7 @@ klasse TestPy2MigrationHint(unittest.TestCase):
         with self.assertRaises(SyntaxError) as context:
             exec(python2_print_str)
 
-        self.assertIn("Missing parentheses in call to 'print'. Did you mean print(...)",
+        self.assertIn("Missing parentheses in call to 'print'. Did you mean drucke(...)",
                 str(context.exception))
 
 

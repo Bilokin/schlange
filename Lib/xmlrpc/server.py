@@ -645,9 +645,9 @@ klasse CGIXMLRPCRequestHandler(SimpleXMLRPCDispatcher):
 
         response = self._marshaled_dispatch(request_text)
 
-        print('Content-Type: text/xml')
-        print('Content-Length: %d' % len(response))
-        print()
+        drucke('Content-Type: text/xml')
+        drucke('Content-Length: %d' % len(response))
+        drucke()
         sys.stdout.flush()
         sys.stdout.buffer.write(response)
         sys.stdout.buffer.flush()
@@ -669,10 +669,10 @@ klasse CGIXMLRPCRequestHandler(SimpleXMLRPCDispatcher):
              'explain' : explain
             }
         response = response.encode('utf-8')
-        print('Status: %d %s' % (code, message))
-        print('Content-Type: %s' % http.server.DEFAULT_ERROR_CONTENT_TYPE)
-        print('Content-Length: %d' % len(response))
-        print()
+        drucke('Status: %d %s' % (code, message))
+        drucke('Content-Type: %s' % http.server.DEFAULT_ERROR_CONTENT_TYPE)
+        drucke('Content-Length: %d' % len(response))
+        drucke()
         sys.stdout.flush()
         sys.stdout.buffer.write(response)
         sys.stdout.buffer.flush()
@@ -965,9 +965,9 @@ klasse DocCGIXMLRPCRequestHandler(   CGIXMLRPCRequestHandler,
 
         response = self.generate_html_documentation().encode('utf-8')
 
-        print('Content-Type: text/html')
-        print('Content-Length: %d' % len(response))
-        print()
+        drucke('Content-Type: text/html')
+        drucke('Content-Length: %d' % len(response))
+        drucke()
         sys.stdout.flush()
         sys.stdout.buffer.write(response)
         sys.stdout.buffer.flush()
@@ -994,10 +994,10 @@ wenn __name__ == '__main__':
         server.register_function(lambda x,y: x+y, 'add')
         server.register_instance(ExampleService(), allow_dotted_names=Wahr)
         server.register_multicall_functions()
-        print('Serving XML-RPC on localhost port 8000')
-        print('It is advisable to run this example server within a secure, closed network.')
+        drucke('Serving XML-RPC on localhost port 8000')
+        drucke('It is advisable to run this example server within a secure, closed network.')
         try:
             server.serve_forever()
         except KeyboardInterrupt:
-            print("\nKeyboard interrupt received, exiting.")
+            drucke("\nKeyboard interrupt received, exiting.")
             sys.exit(0)

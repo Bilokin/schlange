@@ -216,11 +216,11 @@ def build_task_table(result):
     return table
 
 def _print_cycle_exception(exception: CycleFoundException):
-    print("ERROR: await-graph contains cycles - cannot print a tree!", file=sys.stderr)
-    print("", file=sys.stderr)
+    drucke("ERROR: await-graph contains cycles - cannot print a tree!", file=sys.stderr)
+    drucke("", file=sys.stderr)
     fuer c in exception.cycles:
         inames = " → ".join(exception.id2name.get(tid, hex(tid)) fuer tid in c)
-        print(f"cycle: {inames}", file=sys.stderr)
+        drucke(f"cycle: {inames}", file=sys.stderr)
 
 
 def _get_awaited_by_tasks(pid: int) -> list:
@@ -229,7 +229,7 @@ def _get_awaited_by_tasks(pid: int) -> list:
     except RuntimeError as e:
         while e.__context__ is not Nichts:
             e = e.__context__
-        print(f"Error retrieving tasks: {e}")
+        drucke(f"Error retrieving tasks: {e}")
         sys.exit(1)
 
 
@@ -259,10 +259,10 @@ _row_header = ('tid', 'task id', 'task name', 'coroutine stack',
 
 def _display_awaited_by_tasks_table(table):
     """Print the table in a simple tabular format."""
-    print(_fmt_table_row(*_row_header))
-    print('-' * 180)
+    drucke(_fmt_table_row(*_row_header))
+    drucke('-' * 180)
     fuer row in table:
-        print(_fmt_table_row(*row))
+        drucke(_fmt_table_row(*row))
 
 
 def _fmt_table_row(tid, task_id, task_name, coro_stack,
@@ -296,4 +296,4 @@ def display_awaited_by_tasks_tree(pid: int) -> Nichts:
         sys.exit(1)
 
     fuer tree in result:
-        print("\n".join(tree))
+        drucke("\n".join(tree))

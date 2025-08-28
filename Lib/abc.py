@@ -124,14 +124,14 @@ sonst:
 
         def _dump_registry(cls, file=Nichts):
             """Debug helper to print the ABC registry."""
-            print(f"Class: {cls.__module__}.{cls.__qualname__}", file=file)
-            print(f"Inv. counter: {get_cache_token()}", file=file)
+            drucke(f"Class: {cls.__module__}.{cls.__qualname__}", file=file)
+            drucke(f"Inv. counter: {get_cache_token()}", file=file)
             (_abc_registry, _abc_cache, _abc_negative_cache,
              _abc_negative_cache_version) = _get_dump(cls)
-            print(f"_abc_registry: {_abc_registry!r}", file=file)
-            print(f"_abc_cache: {_abc_cache!r}", file=file)
-            print(f"_abc_negative_cache: {_abc_negative_cache!r}", file=file)
-            print(f"_abc_negative_cache_version: {_abc_negative_cache_version!r}",
+            drucke(f"_abc_registry: {_abc_registry!r}", file=file)
+            drucke(f"_abc_cache: {_abc_cache!r}", file=file)
+            drucke(f"_abc_negative_cache: {_abc_negative_cache!r}", file=file)
+            drucke(f"_abc_negative_cache_version: {_abc_negative_cache_version!r}",
                   file=file)
 
         def _abc_registry_clear(cls):

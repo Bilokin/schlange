@@ -101,9 +101,9 @@ DATA_SIZE_DEFAULT = 33554432
 
 
 def usage(code, msg=''):
-    print(__doc__ % globals(), file=sys.stderr)
+    drucke(__doc__ % globals(), file=sys.stderr)
     wenn msg:
-        print(msg, file=sys.stderr)
+        drucke(msg, file=sys.stderr)
     sys.exit(code)
 
 
@@ -157,7 +157,7 @@ klasse SMTPChannel(asynchat.async_chat):
             wenn err.errno != errno.ENOTCONN:
                 raise
             return
-        print('Peer:', repr(self.peer), file=DEBUGSTREAM)
+        drucke('Peer:', repr(self.peer), file=DEBUGSTREAM)
         self.push('220 %s %s' % (self.fqdn, __version__))
 
     def _set_post_data_state(self):
@@ -322,7 +322,7 @@ klasse SMTPChannel(asynchat.async_chat):
     # Implementation of base klasse abstract method
     def found_terminator(self):
         line = self._emptystring.join(self.received_lines)
-        print('Data:', repr(line), file=DEBUGSTREAM)
+        drucke('Data:', repr(line), file=DEBUGSTREAM)
         self.received_lines = []
         wenn self.smtp_state == self.COMMAND:
             sz, self.num_bytes = self.num_bytes, 0
@@ -505,7 +505,7 @@ klasse SMTPChannel(asynchat.async_chat):
         wenn not self.seen_greeting:
             self.push('503 Error: send HELO first')
             return
-        print('===> MAIL', arg, file=DEBUGSTREAM)
+        drucke('===> MAIL', arg, file=DEBUGSTREAM)
         syntaxerr = '501 Syntax: MAIL FROM: <address>'
         wenn self.extended_smtp:
             syntaxerr += ' [SP <mail-parameters>]'
@@ -552,14 +552,14 @@ klasse SMTPChannel(asynchat.async_chat):
             self.push('555 MAIL FROM parameters not recognized or not implemented')
             return
         self.mailfrom = address
-        print('sender:', self.mailfrom, file=DEBUGSTREAM)
+        drucke('sender:', self.mailfrom, file=DEBUGSTREAM)
         self.push('250 OK')
 
     def smtp_RCPT(self, arg):
         wenn not self.seen_greeting:
             self.push('503 Error: send HELO first');
             return
-        print('===> RCPT', arg, file=DEBUGSTREAM)
+        drucke('===> RCPT', arg, file=DEBUGSTREAM)
         wenn not self.mailfrom:
             self.push('503 Error: need MAIL command')
             return
@@ -587,7 +587,7 @@ klasse SMTPChannel(asynchat.async_chat):
             self.push('555 RCPT TO parameters not recognized or not implemented')
             return
         self.rcpttos.append(address)
-        print('recips:', self.rcpttos, file=DEBUGSTREAM)
+        drucke('recips:', self.rcpttos, file=DEBUGSTREAM)
         self.push('250 OK')
 
     def smtp_RSET(self, arg):
@@ -645,12 +645,12 @@ klasse SMTPServer(asyncore.dispatcher):
             self.close()
             raise
         sonst:
-            print('%s started at %s\n\tLocal addr: %s\n\tRemote addr:%s' % (
+            drucke('%s started at %s\n\tLocal addr: %s\n\tRemote addr:%s' % (
                 self.__class__.__name__, time.ctime(time.time()),
                 localaddr, remoteaddr), file=DEBUGSTREAM)
 
     def handle_accepted(self, conn, addr):
-        print('Incoming connection from %s' % repr(addr), file=DEBUGSTREAM)
+        drucke('Incoming connection from %s' % repr(addr), file=DEBUGSTREAM)
         channel = self.channel_class(self,
                                      conn,
                                      addr,
@@ -706,22 +706,22 @@ klasse DebuggingServer(SMTPServer):
                 wenn not isinstance(data, str):
                     # decoded_data=false; make header match other binary output
                     peerheader = repr(peerheader.encode('utf-8'))
-                print(peerheader)
+                drucke(peerheader)
                 inheaders = 0
             wenn not isinstance(data, str):
                 # Avoid spurious 'str on bytes instance' warning.
                 line = repr(line)
-            print(line)
+            drucke(line)
 
     def process_message(self, peer, mailfrom, rcpttos, data, **kwargs):
-        print('---------- MESSAGE FOLLOWS ----------')
+        drucke('---------- MESSAGE FOLLOWS ----------')
         wenn kwargs:
             wenn kwargs.get('mail_options'):
-                print('mail options: %s' % kwargs['mail_options'])
+                drucke('mail options: %s' % kwargs['mail_options'])
             wenn kwargs.get('rcpt_options'):
-                print('rcpt options: %s\n' % kwargs['rcpt_options'])
+                drucke('rcpt options: %s\n' % kwargs['rcpt_options'])
         self._print_message_content(peer, data)
-        print('------------ END MESSAGE ------------')
+        drucke('------------ END MESSAGE ------------')
 
 
 klasse PureProxy(SMTPServer):
@@ -742,7 +742,7 @@ klasse PureProxy(SMTPServer):
         data = NEWLINE.join(lines)
         refused = self._deliver(mailfrom, rcpttos, data)
         # TBD: what to do with refused addresses?
-        print('we got some refusals:', refused, file=DEBUGSTREAM)
+        drucke('we got some refusals:', refused, file=DEBUGSTREAM)
 
     def _deliver(self, mailfrom, rcpttos, data):
         import smtplib
@@ -755,10 +755,10 @@ klasse PureProxy(SMTPServer):
             finally:
                 s.quit()
         except smtplib.SMTPRecipientsRefused as e:
-            print('got SMTPRecipientsRefused', file=DEBUGSTREAM)
+            drucke('got SMTPRecipientsRefused', file=DEBUGSTREAM)
             refused = e.recipients
         except (OSError, smtplib.SMTPException) as e:
-            print('got', e.__class__, file=DEBUGSTREAM)
+            drucke('got', e.__class__, file=DEBUGSTREAM)
             # All recipients were refused.  If the exception had an associated
             # error code, use it.  Otherwise,fake it with a non-triggering
             # exception code.
@@ -791,7 +791,7 @@ def parseargs():
         wenn opt in ('-h', '--help'):
             usage(0)
         sowenn opt in ('-V', '--version'):
-            print(__version__)
+            drucke(__version__)
             sys.exit(0)
         sowenn opt in ('-n', '--nosetuid'):
             options.setuid = Falsch
@@ -806,7 +806,7 @@ def parseargs():
                 int_size = int(arg)
                 options.size_limit = int_size
             except:
-                print('Invalid size: ' + arg, file=sys.stderr)
+                drucke('Invalid size: ' + arg, file=sys.stderr)
                 sys.exit(1)
 
     # parse the rest of the arguments
@@ -860,13 +860,13 @@ wenn __name__ == '__main__':
         try:
             import pwd
         except ImportError:
-            print('Cannot import module "pwd"; try running with -n option.', file=sys.stderr)
+            drucke('Cannot import module "pwd"; try running with -n option.', file=sys.stderr)
             sys.exit(1)
         nobody = pwd.getpwnam('nobody')[2]
         try:
             os.setuid(nobody)
         except PermissionError:
-            print('Cannot setuid "nobody"; try running with -n option.', file=sys.stderr)
+            drucke('Cannot setuid "nobody"; try running with -n option.', file=sys.stderr)
             sys.exit(1)
     try:
         asyncore.loop()

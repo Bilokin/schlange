@@ -25,11 +25,11 @@ klasse Test_OpenGL_libs(unittest.TestCase):
 
         # print, fuer debugging
         wenn test.support.verbose:
-            print("OpenGL libraries:")
+            drucke("OpenGL libraries:")
             fuer item in (("GL", lib_gl),
                          ("GLU", lib_glu),
                          ("gle", lib_gle)):
-                print("\t", item)
+                drucke("\t", item)
 
         cls.gl = cls.glu = cls.gle = Nichts
         wenn lib_gl:

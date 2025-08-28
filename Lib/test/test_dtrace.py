@@ -180,7 +180,7 @@ klasse CheckDtraceProbes(unittest.TestCase):
         wenn sysconfig.get_config_var('WITH_DTRACE'):
             readelf_major_version, readelf_minor_version = cls.get_readelf_version()
             wenn support.verbose:
-                print(f"readelf version: {readelf_major_version}.{readelf_minor_version}")
+                drucke(f"readelf version: {readelf_major_version}.{readelf_minor_version}")
         sonst:
             raise unittest.SkipTest("CPython must be configured with the --with-dtrace option.")
 

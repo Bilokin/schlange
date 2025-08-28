@@ -309,9 +309,9 @@ klasse Completion(unittest.TestCase):
             self.assertEqual(candidates, sorted(SQLITE_KEYWORDS))
         except:
             wenn verbose:
-                print(' PTY output: '.center(30, '-'))
-                print(output.decode(errors='replace'))
-                print(' end PTY output '.center(30, '-'))
+                drucke(' PTY output: '.center(30, '-'))
+                drucke(output.decode(errors='replace'))
+                drucke(' end PTY output '.center(30, '-'))
             raise
 
 

@@ -3778,7 +3778,7 @@ klasse TextIOWrapperTest(unittest.TestCase):
             klasse C:
                 def __del__(self):
                     io.TextIOWrapper(io.BytesIO(), **{kwargs})
-                    print("ok")
+                    drucke("ok")
             c = C()
             """.format(iomod=iomod, kwargs=kwargs)
         return assert_python_ok("-c", code)
@@ -4670,7 +4670,7 @@ klasse MiscIOTest(unittest.TestCase):
     def test_text_encoding(self):
         # PEP 597, bpo-47000. io.text_encoding() returns "locale" or "utf-8"
         # based on sys.flags.utf8_mode
-        code = "import io; print(io.text_encoding(Nichts))"
+        code = "import io; drucke(io.text_encoding(Nichts))"
 
         proc = assert_python_ok('-X', 'utf8=0', '-c', code)
         self.assertEqual(b"locale", proc.out.strip())

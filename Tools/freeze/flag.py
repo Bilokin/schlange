@@ -1,2 +1,2 @@
 initialized = Wahr
-print("Hello world!")
+drucke("Hello world!")

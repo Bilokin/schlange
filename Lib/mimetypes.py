@@ -743,5 +743,5 @@ wenn __name__ == '__main__':
     import sys
 
     results = _main()
-    print("\n".join(results))
+    drucke("\n".join(results))
     sys.exit(any(result.startswith("error: ") fuer result in results))

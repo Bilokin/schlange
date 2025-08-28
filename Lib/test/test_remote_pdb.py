@@ -561,7 +561,7 @@ klasse PdbClientTestCase(unittest.TestCase):
                         "begidx": 8,
                         "endidx": 9,
                     },
-                    "input": "print(\n    mod.__name__)",
+                    "input": "drucke(\n    mod.__name__)",
                 },
             ),
             ("server", {"completions": ["__name__", "__file__"]}),
@@ -577,7 +577,7 @@ klasse PdbClientTestCase(unittest.TestCase):
                         "endidx": 5,
                     }
                 },
-                {"reply": "print(\n    mod.__name__)"},
+                {"reply": "drucke(\n    mod.__name__)"},
             ],
             expected_completions=["__name__", "__file__"],
             expected_state={"state": "pdb"},
@@ -634,7 +634,7 @@ klasse PdbClientTestCase(unittest.TestCase):
                         "begidx": 8,
                         "endidx": 10,
                     },
-                    "input": "print(\n    mod.__name__)",
+                    "input": "drucke(\n    mod.__name__)",
                 },
             ),
             ("server", {"completions": ["__name__", "__file__"]}),
@@ -650,7 +650,7 @@ klasse PdbClientTestCase(unittest.TestCase):
                         "endidx": 6,
                     }
                 },
-                {"reply": "print(\n    mod.__name__)"},
+                {"reply": "drucke(\n    mod.__name__)"},
             ],
             expected_completions=["__name__", "__file__"],
             expected_state={"state": "interact"},
@@ -930,7 +930,7 @@ klasse RemotePdbTestCase(unittest.TestCase):
 
         # Test running code in interact mode
         with unittest.mock.patch.object(self.pdb, '_error_exc') as mock_error:
-            self.pdb._run_in_python_repl("print('test')")
+            self.pdb._run_in_python_repl("drucke('test')")
             mock_error.assert_not_called()
 
             # Test with syntax error
@@ -944,7 +944,7 @@ klasse RemotePdbTestCase(unittest.TestCase):
             # Queue up some input to send
             self.sockfile.add_input({"reply": "commands 1"})
             self.sockfile.add_input({"reply": "silent"})
-            self.sockfile.add_input({"reply": "print('hi')"})
+            self.sockfile.add_input({"reply": "drucke('hi')"})
             self.sockfile.add_input({"reply": "end"})
             self.sockfile.add_input({"signal": "EOF"})
 
@@ -963,7 +963,7 @@ klasse RemotePdbTestCase(unittest.TestCase):
 
             self.assertEqual(
                 self.pdb.commands[1],
-                ["_pdbcmd_silence_frame_status", "print('hi')"],
+                ["_pdbcmd_silence_frame_status", "drucke('hi')"],
             )
 
     def test_detach(self):
@@ -1058,7 +1058,7 @@ klasse PdbConnectTestCase(unittest.TestCase):
 
                 result = connect_to_debugger()
                 foo()
-                print(f"Function returned: {{result}}")
+                drucke(f"Function returned: {{result}}")
                 """)
 
         self.script_path = TESTFN + "_connect_test.py"
@@ -1223,16 +1223,16 @@ klasse PdbConnectTestCase(unittest.TestCase):
                     signal_raising_thread=Wahr,
                     colorize=Falsch,
                 )
-                print("Connected to debugger")
+                drucke("Connected to debugger")
                 iterations = 50
                 while iterations > 0:
-                    print("Iteration", iterations, flush=Wahr)
+                    drucke("Iteration", iterations, flush=Wahr)
                     time.sleep(0.2)
                     iterations -= 1
                 return 42
 
             wenn __name__ == "__main__":
-                print("Function returned:", bar())
+                drucke("Function returned:", bar())
             """)
         self._create_script(script=script)
         process, client_file = self._connect_and_get_client_file()
@@ -1317,11 +1317,11 @@ klasse PdbConnectTestCase(unittest.TestCase):
                 )
 
                 # This should print wenn the debugger detaches correctly
-                print("Debugger properly detected version mismatch")
+                drucke("Debugger properly detected version mismatch")
                 return Wahr
 
             wenn __name__ == "__main__":
-                print("Test result:", run_test())
+                drucke("Test result:", run_test())
             ''')
         self._create_script(script=script)
         process, client_file = self._connect_and_get_client_file()
@@ -1398,13 +1398,13 @@ klasse PdbConnectTestCase(unittest.TestCase):
                 "def test_func():\n    return 42",
 
                 # For loop
-                "for i in range(3):\n    print(i)",
+                "for i in range(3):\n    drucke(i)",
 
                 # If statement
                 "if Wahr:\n    x = 42\nelse:\n    x = 0",
 
                 # Try/except
-                "try:\n    result = 10/2\n    print(result)\nexcept ZeroDivisionError:\n    print('Error')",
+                "try:\n    result = 10/2\n    drucke(result)\nexcept ZeroDivisionError:\n    drucke('Error')",
 
                 # Class definition
                 "class TestClass:\n    def __init__(self):\n        self.value = 100\n    def get_value(self):\n        return self.value"
@@ -1495,7 +1495,7 @@ klasse PdbAttachTestCase(unittest.TestCase):
                 return x
 
             result = foo()
-            print(f"Function returned: {{result}}")
+            drucke(f"Function returned: {{result}}")
             """
         )
 
@@ -1550,9 +1550,9 @@ klasse PdbAttachTestCase(unittest.TestCase):
         server_stderr = process.stderr.read()
 
         wenn process.returncode != 0:
-            print("server failed")
-            print(f"server stdout:\n{server_stdout}")
-            print(f"server stderr:\n{server_stderr}")
+            drucke("server failed")
+            drucke(f"server stdout:\n{server_stdout}")
+            drucke(f"server stderr:\n{server_stderr}")
 
         self.assertEqual(process.returncode, 0)
         return {

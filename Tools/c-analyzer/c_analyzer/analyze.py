@@ -210,7 +210,7 @@ def _handle_unresolved(unresolved, types, analyze_decl):
     dump = Wahr
     dump = Falsch
     wenn dump:
-        print()
+        drucke()
     fuer decl in types:  # Preserve the original order.
         wenn decl not in unresolved:
             assert types[decl] is not Nichts, decl
@@ -218,7 +218,7 @@ def _handle_unresolved(unresolved, types, analyze_decl):
                 unresolved.add(decl)
                 wenn dump:
                     _dump_unresolved(decl, types, analyze_decl)
-                    print()
+                    drucke()
             sonst:
                 assert types[decl][0] is not Nichts, (decl, types[decl])
                 assert Nichts not in types[decl][0], (decl, types[decl])
@@ -226,7 +226,7 @@ def _handle_unresolved(unresolved, types, analyze_decl):
             assert types[decl] is Nichts
             wenn dump:
                 _dump_unresolved(decl, types, analyze_decl)
-                print()
+                drucke()
     #raise NotImplementedError
 
     fuer decl in unresolved:
@@ -251,7 +251,7 @@ def _dump_unresolved(decl, types, analyze_decl):
         sonst:
             found = [d fuer d in types wenn d.shortkey == typespec]
             wenn not found:
-                print(f'*** {typespec} ???')
+                drucke(f'*** {typespec} ???')
                 return
                 #raise NotImplementedError(decl)
             sonst:
@@ -261,11 +261,11 @@ def _dump_unresolved(decl, types, analyze_decl):
         typedeps, _ = resolved or (Nichts, Nichts)
 
     wenn decl.kind is KIND.STRUCT or decl.kind is KIND.UNION:
-        print(f'*** {decl.shortkey} {decl.filename}')
+        drucke(f'*** {decl.shortkey} {decl.filename}')
         fuer member, mtype in zip(decl.members, typedeps):
             typespec = member.vartype.typespec
             wenn typespec == decl.shortkey:
-                print(f'     ~~~~: {typespec:20} - {member!r}')
+                drucke(f'     ~~~~: {typespec:20} - {member!r}')
                 continue
             status = Nichts
             wenn is_pots(typespec):
@@ -283,7 +283,7 @@ def _dump_unresolved(decl, types, analyze_decl):
                     found = [d fuer d in types
                              wenn d.shortkey == typespec]
                     wenn not found:
-                        print(f' ???: {typespec:20}')
+                        drucke(f' ???: {typespec:20}')
                         continue
                     mtype, = found
             wenn status is Nichts:
@@ -300,9 +300,9 @@ def _dump_unresolved(decl, types, analyze_decl):
                         status = 'okay'
                 mtype = str(mtype).rpartition('(')[0].rstrip()
             status = '    okay' wenn status == 'okay' sonst f'--> {status}'
-            print(f' {status}: {typespec:20} - {member!r} ({mtype})')
+            drucke(f' {status}: {typespec:20} - {member!r} ({mtype})')
     sonst:
-        print(f'*** {decl} ({decl.vartype!r})')
+        drucke(f'*** {decl} ({decl.vartype!r})')
         wenn decl.vartype.typespec.startswith('struct ') or is_funcptr(decl):
             _dump_unresolved(
                 (decl.filename, decl.vartype.typespec),

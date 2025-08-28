@@ -53,9 +53,9 @@ flags: 3
 consts: ('Nichts',)
 
 >>> def attrs(obj):
-...     print(obj.attr1)
-...     print(obj.attr2)
-...     print(obj.attr3)
+...     drucke(obj.attr1)
+...     drucke(obj.attr2)
+...     drucke(obj.attr3)
 
 >>> dump(attrs.__code__)
 name: attrs
@@ -184,13 +184,13 @@ consts: ("'hello'", "'world'")
 ...     '''This line is not docstring'''
 ...     pass
 
->>> print(class_with_docstring.__doc__)
+>>> drucke(class_with_docstring.__doc__)
 This is a docstring fuer class
 
 >>> klasse class_without_docstring:
 ...     pass
 
->>> print(class_without_docstring.__doc__)
+>>> drucke(class_without_docstring.__doc__)
 Nichts
 """
 
@@ -239,8 +239,8 @@ def dump(co):
     fuer attr in ["name", "argcount", "posonlyargcount",
                  "kwonlyargcount", "names", "varnames",
                  "cellvars", "freevars", "nlocals", "flags"]:
-        print("%s: %s" % (attr, getattr(co, "co_" + attr)))
-    print("consts:", tuple(consts(co.co_consts)))
+        drucke("%s: %s" % (attr, getattr(co, "co_" + attr)))
+    drucke("consts:", tuple(consts(co.co_consts)))
 
 # Needed fuer test_closure_injection below
 # Defined at global scope to avoid implicitly closing over __class__

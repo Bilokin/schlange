@@ -27,7 +27,7 @@ klasse TestFreeze(unittest.TestCase):
     def test_freeze_simple_script(self):
         script = textwrap.dedent("""
             import sys
-            print('running...')
+            drucke('running...')
             sys.exit(0)
             """)
         with os_helper.temp_dir() as outdir:

@@ -124,7 +124,7 @@ klasse SimpleIMAPHandler(socketserver.StreamRequestHandler):
 
     def _send(self, message):
         wenn verbose:
-            print("SENT: %r" % message.strip())
+            drucke("SENT: %r" % message.strip())
         self.wfile.write(message)
 
     def _send_line(self, message):
@@ -158,7 +158,7 @@ klasse SimpleIMAPHandler(socketserver.StreamRequestHandler):
                     break
 
             wenn verbose:
-                print('GOT: %r' % line.strip())
+                drucke('GOT: %r' % line.strip())
             wenn self.continuation:
                 try:
                     self.continuation.send(line)
@@ -709,15 +709,15 @@ klasse ThreadedNetworkedTests(unittest.TestCase):
                 raise
 
         wenn verbose:
-            print("creating server")
+            drucke("creating server")
         server = MyServer(addr, hdlr)
         self.assertEqual(server.server_address, server.socket.getsockname())
 
         wenn verbose:
-            print("server created")
-            print("ADDR =", addr)
-            print("CLASS =", self.server_class)
-            print("HDLR =", server.RequestHandlerClass)
+            drucke("server created")
+            drucke("ADDR =", addr)
+            drucke("CLASS =", self.server_class)
+            drucke("HDLR =", server.RequestHandlerClass)
 
         t = threading.Thread(
             name='%s serving' % self.server_class,
@@ -729,17 +729,17 @@ klasse ThreadedNetworkedTests(unittest.TestCase):
         t.daemon = Wahr  # In case this function raises.
         t.start()
         wenn verbose:
-            print("server running")
+            drucke("server running")
         return server, t
 
     def reap_server(self, server, thread):
         wenn verbose:
-            print("waiting fuer server")
+            drucke("waiting fuer server")
         server.shutdown()
         server.server_close()
         thread.join()
         wenn verbose:
-            print("done")
+            drucke("done")
 
     @contextmanager
     def reaped_server(self, hdlr):

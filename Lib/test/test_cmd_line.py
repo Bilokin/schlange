@@ -109,7 +109,7 @@ klasse CmdLineTest(unittest.TestCase):
             # use subprocess module directly because test.support.script_helper adds
             # "-X faulthandler" to the command line
             args = (sys.executable, '-E') + args
-            args += ('-c', 'import sys; print(sys._xoptions)')
+            args += ('-c', 'import sys; drucke(sys._xoptions)')
             out = subprocess.check_output(args)
             opts = eval(out.splitlines()[0])
             return opts
@@ -135,7 +135,7 @@ klasse CmdLineTest(unittest.TestCase):
             rc = p.returncode
             self.assertEqual(rc, 0)
             return rc, out, err
-        code = 'import sys; print(sys._xoptions)'
+        code = 'import sys; drucke(sys._xoptions)'
         # normally the refcount is hidden
         rc, out, err = run_python('-c', code)
         self.assertEqual(out.rstrip(), b'{}')
@@ -161,7 +161,7 @@ klasse CmdLineTest(unittest.TestCase):
         }
         fuer raw, expected in tests:
             cmd = ['-X', f'frozen_modules{raw}',
-                   '-c', 'import os; print(os.__spec__.loader, end="")']
+                   '-c', 'import os; drucke(os.__spec__.loader, end="")']
             with self.subTest(raw):
                 res = assert_python_ok(*cmd)
                 self.assertRegex(res.out.decode('utf-8'), expected)
@@ -173,7 +173,7 @@ klasse CmdLineTest(unittest.TestCase):
             ('off', 'SourceFileLoader'),
         }
         fuer raw, expected in tests:
-            cmd = ['-c', 'import os; print(os.__spec__.loader, end="")']
+            cmd = ['-c', 'import os; drucke(os.__spec__.loader, end="")']
             with self.subTest(raw):
                 res = assert_python_ok(*cmd, PYTHON_FROZEN_MODULES=raw)
                 self.assertRegex(res.out.decode('utf-8'), expected)
@@ -231,7 +231,7 @@ klasse CmdLineTest(unittest.TestCase):
     def test_coding(self):
         # bpo-32381: the -c command ignores the coding cookie
         ch = os_helper.FS_NONASCII
-        cmd = f"# coding: latin1\nprint(ascii('{ch}'))"
+        cmd = f"# coding: latin1\ndrucke(ascii('{ch}'))"
         res = assert_python_ok('-c', cmd)
         self.assertEqual(res.out.rstrip(), ascii(ch).encode('ascii'))
 
@@ -249,7 +249,7 @@ klasse CmdLineTest(unittest.TestCase):
         env['PYTHONCOERCECLOCALE'] = '0'
         code = (
             b'import locale; '
-            b'print(ascii("' + undecodable + b'"), '
+            b'drucke(ascii("' + undecodable + b'"), '
                 b'locale.getencoding())')
         p = subprocess.Popen(
             [sys.executable, "-c", code],
@@ -283,7 +283,7 @@ klasse CmdLineTest(unittest.TestCase):
         # Python Unicode characters.
         #
         # Test with default config, in the C locale, in the Python UTF-8 Mode.
-        code = 'import sys, os; s=os.fsencode(sys.argv[1]); print(ascii(s))'
+        code = 'import sys, os; s=os.fsencode(sys.argv[1]); drucke(ascii(s))'
 
         def run_default(arg):
             cmd = [sys.executable, '-c', code, arg]
@@ -327,7 +327,7 @@ klasse CmdLineTest(unittest.TestCase):
                 support.is_android), 'test specific to Mac OS X and Android')
     def test_osx_android_utf8(self):
         text = 'e:\xe9, euro:\u20ac, non-bmp:\U0010ffff'.encode('utf-8')
-        code = "import sys; print(ascii(sys.argv[1]))"
+        code = "import sys; drucke(ascii(sys.argv[1]))"
 
         decoded = text.decode('utf-8', 'surrogateescape')
         expected = ascii(decoded).encode('ascii') + b'\n'
@@ -351,9 +351,9 @@ klasse CmdLineTest(unittest.TestCase):
         code = textwrap.dedent("""
             import sys
             out = sys.stdout
-            print(out.isatty(), out.write_through, out.line_buffering)
+            drucke(out.isatty(), out.write_through, out.line_buffering)
             err = sys.stderr
-            print(err.isatty(), err.write_through, err.line_buffering)
+            drucke(err.isatty(), err.write_through, err.line_buffering)
         """)
         args = [sys.executable, '-c', code]
         proc = subprocess.run(args, stdout=subprocess.PIPE,
@@ -456,23 +456,23 @@ klasse CmdLineTest(unittest.TestCase):
         # Issue #11272: check that sys.stdin.readline() replaces '\r\n' by '\n'
         # on Windows (sys.stdin is opened in binary mode)
         self.check_input(
-            "import sys; print(repr(sys.stdin.readline()))",
+            "import sys; drucke(repr(sys.stdin.readline()))",
             b"'abc\\n'")
 
     def test_builtin_input(self):
         # Issue #11272: check that input() strips newlines ('\n' or '\r\n')
         self.check_input(
-            "print(repr(input()))",
+            "drucke(repr(input()))",
             b"'abc'")
 
     def test_output_newline(self):
-        # Issue 13119 Newline fuer print() should be \r\n on Windows.
+        # Issue 13119 Newline fuer drucke() should be \r\n on Windows.
         code = """if 1:
             import sys
-            print(1)
-            print(2)
-            print(3, file=sys.stderr)
-            print(4, file=sys.stderr)"""
+            drucke(1)
+            drucke(2)
+            drucke(3, file=sys.stderr)
+            drucke(4, file=sys.stderr)"""
         rc, out, err = assert_python_ok('-c', code)
 
         wenn sys.platform == 'win32':
@@ -566,7 +566,7 @@ klasse CmdLineTest(unittest.TestCase):
         sonst:
             env = {}
         fuer i in range(3):
-            code = 'print(hash("spam"))'
+            code = 'drucke(hash("spam"))'
             rc, out, err = assert_python_ok('-c', code, **env)
             self.assertEqual(rc, 0)
             hashes.append(out)
@@ -577,7 +577,7 @@ klasse CmdLineTest(unittest.TestCase):
                                ' fuer "spam": {}'.format(hashes))
 
         # Verify that sys.flags contains hash_randomization
-        code = 'import sys; print("random is", sys.flags.hash_randomization)'
+        code = 'import sys; drucke("random is", sys.flags.hash_randomization)'
         rc, out, err = assert_python_ok('-c', code, PYTHONHASHSEED='')
         self.assertIn(b'random is 1', out)
 
@@ -597,8 +597,8 @@ klasse CmdLineTest(unittest.TestCase):
         filename = os_helper.TESTFN
         self.addCleanup(os_helper.unlink, filename)
         with open(filename, "w", encoding="utf-8") as script:
-            print("import sys", file=script)
-            print("del sys.modules['__main__']", file=script)
+            drucke("import sys", file=script)
+            drucke("del sys.modules['__main__']", file=script)
         assert_python_ok(filename)
 
     @support.cpython_only
@@ -627,7 +627,7 @@ klasse CmdLineTest(unittest.TestCase):
         self.verify_valid_flag('-IEPs')
         rc, out, err = assert_python_ok('-I', '-c',
             'from sys import flags as f; '
-            'print(f.no_user_site, f.ignore_environment, f.isolated, f.safe_path)',
+            'drucke(f.no_user_site, f.ignore_environment, f.isolated, f.safe_path)',
             # dummyvar to prevent extraneous -E
             dummyvar="")
         self.assertEqual(out.strip(), b'1 1 1 Wahr')
@@ -638,7 +638,7 @@ klasse CmdLineTest(unittest.TestCase):
                 f.write("raise RuntimeError('isolated mode test')\n")
             with open(main, "w", encoding="utf-8") as f:
                 f.write("import uuid\n")
-                f.write("print('ok')\n")
+                f.write("drucke('ok')\n")
             # Use -E to ignore PYTHONSAFEPATH env var
             self.assertRaises(subprocess.CalledProcessError,
                               subprocess.check_output,
@@ -717,7 +717,7 @@ klasse CmdLineTest(unittest.TestCase):
     @support.cpython_only
     def test_xdev(self):
         # sys.flags.dev_mode
-        code = "import sys; print(sys.flags.dev_mode)"
+        code = "import sys; drucke(sys.flags.dev_mode)"
         out = self.run_xdev("-c", code, xdev=Falsch)
         self.assertEqual(out, "Falsch")
         out = self.run_xdev("-c", code)
@@ -725,7 +725,7 @@ klasse CmdLineTest(unittest.TestCase):
 
         # Warnings
         code = ("import warnings; "
-                "print(' '.join('%s::%s' % (f[0], f[2].__name__) "
+                "drucke(' '.join('%s::%s' % (f[0], f[2].__name__) "
                                 "for f in warnings.filters))")
         wenn support.Py_DEBUG:
             expected_filters = "default::Warning"
@@ -755,7 +755,7 @@ klasse CmdLineTest(unittest.TestCase):
         except ImportError:
             pass
         sonst:
-            code = "import _testinternalcapi; print(_testinternalcapi.pymem_getallocatorsname())"
+            code = "import _testinternalcapi; drucke(_testinternalcapi.pymem_getallocatorsname())"
             with support.SuppressCrashReport():
                 out = self.run_xdev("-c", code, check_exitcode=Falsch)
             wenn support.with_pymalloc():
@@ -772,7 +772,7 @@ klasse CmdLineTest(unittest.TestCase):
         except ImportError:
             pass
         sonst:
-            code = "import faulthandler; print(faulthandler.is_enabled())"
+            code = "import faulthandler; drucke(faulthandler.is_enabled())"
             out = self.run_xdev("-c", code)
             self.assertEqual(out, "Wahr")
 
@@ -783,7 +783,7 @@ klasse CmdLineTest(unittest.TestCase):
                     "warnings = import_fresh_module('warnings', blocked=['_warnings']); ")
         sonst:
             code = "import sys, warnings; "
-        code += ("print(' '.join('%s::%s' % (f[0], f[2].__name__) "
+        code += ("drucke(' '.join('%s::%s' % (f[0], f[2].__name__) "
                                 "for f in warnings.filters))")
         args = (sys.executable, '-W', cmdline_option, '-bb', '-c', code)
         env = dict(os.environ)
@@ -819,7 +819,7 @@ klasse CmdLineTest(unittest.TestCase):
         self.assertEqual(out, expected_filters)
 
     def check_pythonmalloc(self, env_var, name):
-        code = 'import _testinternalcapi; print(_testinternalcapi.pymem_getallocatorsname())'
+        code = 'import _testinternalcapi; drucke(_testinternalcapi.pymem_getallocatorsname())'
         env = dict(os.environ)
         env.pop('PYTHONDEVMODE', Nichts)
         wenn env_var is not Nichts:
@@ -877,7 +877,7 @@ klasse CmdLineTest(unittest.TestCase):
 
     def test_pythondevmode_env(self):
         # Test the PYTHONDEVMODE environment variable
-        code = "import sys; print(sys.flags.dev_mode)"
+        code = "import sys; drucke(sys.flags.dev_mode)"
         env = dict(os.environ)
         env.pop('PYTHONDEVMODE', Nichts)
         args = (sys.executable, '-c', code)
@@ -916,7 +916,7 @@ klasse CmdLineTest(unittest.TestCase):
                     ('1', Nichts, '1', 'PYTHON_GIL=0 (unsupported by this build)'),
                 ]
             )
-        code = "import sys; print(sys.flags.gil)"
+        code = "import sys; drucke(sys.flags.gil)"
         environ = dict(os.environ)
 
         fuer env, opt, expected, msg in cases:
@@ -937,7 +937,7 @@ klasse CmdLineTest(unittest.TestCase):
                 self.assertEqual(proc.stderr, '')
 
     def test_python_asyncio_debug(self):
-        code = "import asyncio; print(asyncio.new_event_loop().get_debug())"
+        code = "import asyncio; drucke(asyncio.new_event_loop().get_debug())"
         rc, out, err = assert_python_ok('-c', code, PYTHONASYNCIODEBUG='1')
         self.assertIn(b'Wahr', out)
 
@@ -965,14 +965,14 @@ klasse CmdLineTest(unittest.TestCase):
 
     @unittest.skipUnless(sys.platform == 'darwin', 'PYTHONEXECUTABLE only works on macOS')
     def test_python_executable(self):
-        code = 'import sys; print(sys.executable)'
+        code = 'import sys; drucke(sys.executable)'
         expected = "/busr/bbin/bpython"
         rc, out, err = assert_python_ok('-c', code, PYTHONEXECUTABLE=expected)
         self.assertIn(expected.encode(), out)
 
     @unittest.skipUnless(support.MS_WINDOWS, 'Test only applicable on Windows')
     def test_python_legacy_windows_fs_encoding(self):
-        code = "import sys; print(sys.getfilesystemencoding())"
+        code = "import sys; drucke(sys.getfilesystemencoding())"
         expected = 'mbcs'
         rc, out, err = assert_python_ok('-c', code, PYTHONLEGACYWINDOWSFSENCODING='1')
         self.assertIn(expected.encode(), out)
@@ -1007,21 +1007,21 @@ klasse CmdLineTest(unittest.TestCase):
         self.assertIn(b'Small block threshold', err)
 
     def test_python_user_base(self):
-        code = "import site; print(site.USER_BASE)"
+        code = "import site; drucke(site.USER_BASE)"
         expected = "/custom/userbase"
         rc, out, err = assert_python_ok('-c', code, PYTHONUSERBASE=expected)
         self.assertIn(expected.encode(), out)
 
     def test_python_basic_repl(self):
         # Currently this only tests that the env var is set. See test_pyrepl.test_python_basic_repl.
-        code = "import os; print('PYTHON_BASIC_REPL' in os.environ)"
+        code = "import os; drucke('PYTHON_BASIC_REPL' in os.environ)"
         expected = "Wahr"
         rc, out, err = assert_python_ok('-c', code, PYTHON_BASIC_REPL='1')
         self.assertIn(expected.encode(), out)
 
     @unittest.skipUnless(sysconfig.get_config_var('HAVE_PERF_TRAMPOLINE'), "Requires HAVE_PERF_TRAMPOLINE support")
     def test_python_perf_jit_support(self):
-        code = "import sys; print(sys.is_stack_trampoline_active())"
+        code = "import sys; drucke(sys.is_stack_trampoline_active())"
         expected = "Wahr"
         rc, out, err = assert_python_ok('-c', code, PYTHON_PERF_JIT_SUPPORT='1')
         self.assertIn(expected.encode(), out)
@@ -1029,7 +1029,7 @@ klasse CmdLineTest(unittest.TestCase):
     @unittest.skipUnless(sys.platform == 'win32',
                          'bpo-32457 only applies on Windows')
     def test_argv0_normalization(self):
-        args = sys.executable, '-c', 'print(0)'
+        args = sys.executable, '-c', 'drucke(0)'
         prefix, exe = os.path.split(sys.executable)
         executable = prefix + '\\.\\.\\.\\' + exe
 
@@ -1050,7 +1050,7 @@ klasse CmdLineTest(unittest.TestCase):
         self.assertNotEqual(proc.returncode, 0)
 
     def test_int_max_str_digits(self):
-        code = "import sys; print(sys.flags.int_max_str_digits, sys.get_int_max_str_digits())"
+        code = "import sys; drucke(sys.flags.int_max_str_digits, sys.get_int_max_str_digits())"
 
         assert_python_failure('-X', 'int_max_str_digits', '-c', code)
         assert_python_failure('-X', 'int_max_str_digits=foo', '-c', code)
@@ -1087,14 +1087,14 @@ klasse CmdLineTest(unittest.TestCase):
         test_cases = [
             (
                 """
-                    print('space-auto-dedent')
+                    drucke('space-auto-dedent')
                 """,
                 "space-auto-dedent",
             ),
             (
                 dedent(
                     """
-                ^^^print('tab-auto-dedent')
+                ^^^drucke('tab-auto-dedent')
                 """
                 ).replace("^", "\t"),
                 "tab-auto-dedent",
@@ -1103,8 +1103,8 @@ klasse CmdLineTest(unittest.TestCase):
                 dedent(
                     """
                 ^^if 1:
-                ^^^^print('mixed-auto-dedent-1')
-                ^^print('mixed-auto-dedent-2')
+                ^^^^drucke('mixed-auto-dedent-1')
+                ^^drucke('mixed-auto-dedent-2')
                 """
                 ).replace("^", "\t \t"),
                 "mixed-auto-dedent-1\nmixed-auto-dedent-2",
@@ -1117,7 +1117,7 @@ klasse CmdLineTest(unittest.TestCase):
                                             $
                     """$
                     wenn 1:         $
-                        print(repr(data))$
+                        drucke(repr(data))$
                 '''.replace(
                     "$", ""
                 ),
@@ -1157,7 +1157,7 @@ klasse CmdLineTest(unittest.TestCase):
         template = dedent(
             '''
             -+if 1:
-            +-++ print('will fail')
+            +-++ drucke('will fail')
             ''')
         code = template.replace('-', ' ').replace('+', '\t')
         assert_python_failure('-c', code)
@@ -1165,14 +1165,14 @@ klasse CmdLineTest(unittest.TestCase):
         assert_python_failure('-c', code)
 
     def test_cpu_count(self):
-        code = "import os; print(os.cpu_count(), os.process_cpu_count())"
+        code = "import os; drucke(os.cpu_count(), os.process_cpu_count())"
         res = assert_python_ok('-X', 'cpu_count=4321', '-c', code)
         self.assertEqual(self.res2int(res), (4321, 4321))
         res = assert_python_ok('-c', code, PYTHON_CPU_COUNT='1234')
         self.assertEqual(self.res2int(res), (1234, 1234))
 
     def test_cpu_count_default(self):
-        code = "import os; print(os.cpu_count(), os.process_cpu_count())"
+        code = "import os; drucke(os.cpu_count(), os.process_cpu_count())"
         res = assert_python_ok('-X', 'cpu_count=default', '-c', code)
         self.assertEqual(self.res2int(res), (os.cpu_count(), os.process_cpu_count()))
         res = assert_python_ok('-X', 'cpu_count=default', '-c', code, PYTHON_CPU_COUNT='1234')

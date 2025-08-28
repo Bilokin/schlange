@@ -301,7 +301,7 @@ klasse GCTests(unittest.TestCase):
         #    had been NULL-ed out by func_clear().  Now, we clear
         #    weakrefs to unreachable objects before calling `tp_clear`
         #    but after calling finalizers.
-        print(f"{func=}")
+        drucke(f"{func=}")
         """
         rc, stdout, stderr = assert_python_ok("-c", code)
         self.assertEqual(rc, 0)
@@ -319,7 +319,7 @@ klasse GCTests(unittest.TestCase):
         import _datetime
         klasse C:
             def __del__(self):
-                print('__del__ called')
+                drucke('__del__ called')
                 _datetime.timedelta(days=1)  # crash?
 
         l = [C()]
@@ -775,7 +775,7 @@ klasse GCTests(unittest.TestCase):
         code = """if 1:
             klasse C:
                 def __del__(self):
-                    print('__del__ called')
+                    drucke('__del__ called')
             l = [C()]
             l.append(l)
             """
@@ -788,7 +788,7 @@ klasse GCTests(unittest.TestCase):
             module = """if 1:
                 klasse C:
                     def __del__(self):
-                        print('__del__ called')
+                        drucke('__del__ called')
                 l = [C()]
                 l.append(l)
                 """
@@ -805,7 +805,7 @@ klasse GCTests(unittest.TestCase):
         code = """if 1:
             klasse ClassWithDel:
                 def __del__(self):
-                    print('__del__ called')
+                    drucke('__del__ called')
             a = ClassWithDel()
             a.link = a
             raise SystemExit(0)"""
@@ -1608,7 +1608,7 @@ def tearDownModule():
     gc.set_debug(debug)
     # test gc.enable() even wenn GC is disabled by default
     wenn verbose:
-        print("restoring automatic collection")
+        drucke("restoring automatic collection")
     # make sure to always test gc.enable()
     gc.enable()
     assert gc.isenabled()

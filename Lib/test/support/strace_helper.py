@@ -151,13 +151,13 @@ def get_events(code, strace_flags, prelude, cleanup):
     code = textwrap.dedent(code)
     cleanup = textwrap.dedent(cleanup)
     to_run = f"""
-print("MARK prelude", flush=Wahr)
+drucke("MARK prelude", flush=Wahr)
 {prelude}
-print("MARK code", flush=Wahr)
+drucke("MARK code", flush=Wahr)
 {code}
-print("MARK cleanup", flush=Wahr)
+drucke("MARK cleanup", flush=Wahr)
 {cleanup}
-print("MARK __shutdown", flush=Wahr)
+drucke("MARK __shutdown", flush=Wahr)
     """
     trace = strace_python(to_run, strace_flags)
     all_sections = trace.sections()

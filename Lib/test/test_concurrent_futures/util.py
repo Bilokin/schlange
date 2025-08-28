@@ -68,7 +68,7 @@ klasse ExecutorMixin:
 
         dt = time.monotonic() - self.t1
         wenn support.verbose:
-            print("%.2fs" % dt, end=' ')
+            drucke("%.2fs" % dt, end=' ')
         self.assertLess(dt, 300, "synchronization issue: test lasted too long")
 
         super().tearDown()

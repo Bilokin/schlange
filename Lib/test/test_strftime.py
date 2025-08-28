@@ -80,7 +80,7 @@ klasse StrftimeTest(unittest.TestCase):
         self.strftest2(now)
 
         wenn support.verbose:
-            print("Strftime test, platform: %s, Python version: %s" % \
+            drucke("Strftime test, platform: %s, Python version: %s" % \
                   (sys.platform, sys.version.split()[0]))
 
         fuer j in range(-5, 5):
@@ -92,7 +92,7 @@ klasse StrftimeTest(unittest.TestCase):
 
     def strftest1(self, now):
         wenn support.verbose:
-            print("strftime test for", time.ctime(now))
+            drucke("strftime test for", time.ctime(now))
         now = self.now
         # Make sure any characters that could be taken as regex syntax is
         # escaped in escapestr()
@@ -173,20 +173,20 @@ klasse StrftimeTest(unittest.TestCase):
                 msg = "Error fuer nonstandard '%s' format (%s): %s" % \
                       (e[0], e[2], str(result))
                 wenn support.verbose:
-                    print(msg)
+                    drucke(msg)
                 continue
             wenn re.match(escapestr(e[1], self.ampm), result):
                 wenn support.verbose:
-                    print("Supports nonstandard '%s' format (%s)" % (e[0], e[2]))
+                    drucke("Supports nonstandard '%s' format (%s)" % (e[0], e[2]))
             sowenn not result or result[0] == '%':
                 wenn support.verbose:
-                    print("Does not appear to support '%s' format (%s)" % \
+                    drucke("Does not appear to support '%s' format (%s)" % \
                            (e[0], e[2]))
             sonst:
                 wenn support.verbose:
-                    print("Conflict fuer nonstandard '%s' format (%s):" % \
+                    drucke("Conflict fuer nonstandard '%s' format (%s):" % \
                            (e[0], e[2]))
-                    print("  Expected %s, but got %s" % (e[1], result))
+                    drucke("  Expected %s, but got %s" % (e[1], result))
 
 
 klasse Y1900Tests(unittest.TestCase):

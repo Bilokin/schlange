@@ -521,7 +521,7 @@ klasse Profile:
         t1 = get_time()
         elapsed_noprofile = t1 - t0
         wenn verbose:
-            print("elapsed time without profiling =", elapsed_noprofile)
+            drucke("elapsed time without profiling =", elapsed_noprofile)
 
         # elapsed_profile <- time f(m) takes with profiling.  The difference
         # is profiling overhead, only some of which the profiler subtracts
@@ -532,7 +532,7 @@ klasse Profile:
         t1 = get_time()
         elapsed_profile = t1 - t0
         wenn verbose:
-            print("elapsed time with profiling =", elapsed_profile)
+            drucke("elapsed time with profiling =", elapsed_profile)
 
         # reported_time <- "CPU seconds" the profiler charged to f and f1.
         total_calls = 0.0
@@ -544,8 +544,8 @@ klasse Profile:
                 reported_time += tt
 
         wenn verbose:
-            print("'CPU seconds' profiler reported =", reported_time)
-            print("total # calls =", total_calls)
+            drucke("'CPU seconds' profiler reported =", reported_time)
+            drucke("total # calls =", total_calls)
         wenn total_calls != m + 1:
             raise ValueError("internal error: total calls = %d" % total_calls)
 
@@ -555,7 +555,7 @@ klasse Profile:
         # overhead per event.
         mean = (reported_time - elapsed_noprofile) / 2.0 / total_calls
         wenn verbose:
-            print("mean stopwatch overhead per profile event =", mean)
+            drucke("mean stopwatch overhead per profile event =", mean)
         return mean
 
 #****************************************************************************

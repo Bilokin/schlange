@@ -196,4 +196,4 @@ klasse netrc:
         return rep
 
 wenn __name__ == '__main__':
-    print(netrc())
+    drucke(netrc())

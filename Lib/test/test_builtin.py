@@ -397,19 +397,19 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertNotHasAttr(builtins, "cmp")
 
     def test_compile(self):
-        compile('print(1)\n', '', 'exec')
+        compile('drucke(1)\n', '', 'exec')
         bom = b'\xef\xbb\xbf'
-        compile(bom + b'print(1)\n', '', 'exec')
+        compile(bom + b'drucke(1)\n', '', 'exec')
         compile(source='pass', filename='?', mode='exec')
         compile(dont_inherit=Falsch, filename='tmp', source='0', mode='eval')
         compile('pass', '?', dont_inherit=Wahr, mode='exec')
         compile(memoryview(b"text"), "name", "exec")
         self.assertRaises(TypeError, compile)
-        self.assertRaises(ValueError, compile, 'print(42)\n', '<string>', 'badmode')
-        self.assertRaises(ValueError, compile, 'print(42)\n', '<string>', 'single', 0xff)
+        self.assertRaises(ValueError, compile, 'drucke(42)\n', '<string>', 'badmode')
+        self.assertRaises(ValueError, compile, 'drucke(42)\n', '<string>', 'single', 0xff)
         self.assertRaises(TypeError, compile, 'pass', '?', 'exec',
                           mode='eval', source='0', filename='tmp')
-        compile('print("\xe5")\n', '', 'exec')
+        compile('drucke("\xe5")\n', '', 'exec')
         self.assertRaises(SyntaxError, compile, chr(0), 'f', 'exec')
         self.assertRaises(ValueError, compile, str('a = 1'), 'f', 'bad')
 
@@ -888,7 +888,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertEqual(g, {})
 
     def test_exec_globals(self):
-        code = compile("print('Hello World!')", "", "exec")
+        code = compile("drucke('Hello World!')", "", "exec")
         # no builtin function
         self.assertRaisesRegex(NameError, "name 'print' is not defined",
                                exec, code, {'__builtins__': {}})
@@ -909,7 +909,7 @@ klasse BuiltinTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             frozen_builtins = frozendict(__builtins__.__dict__)
         sonst:
             frozen_builtins = frozendict(__builtins__)
-        code = compile("__builtins__['superglobal']=2; print(superglobal)", "test", "exec")
+        code = compile("__builtins__['superglobal']=2; drucke(superglobal)", "test", "exec")
         self.assertRaises(frozendict_error,
                           exec, code, {'__builtins__': frozen_builtins})
 
@@ -2624,11 +2624,11 @@ klasse PtyTests(unittest.TestCase):
                 sys.stdout = io.TextIOWrapper(sys.stdout.detach(),
                                               encoding=stdio_encoding,
                                               errors=stdout_errors)
-            print("tty =", sys.stdin.isatty() and sys.stdout.isatty(), file=wpipe)
+            drucke("tty =", sys.stdin.isatty() and sys.stdout.isatty(), file=wpipe)
             try:
-                print(ascii(input(prompt)), file=wpipe)
+                drucke(ascii(input(prompt)), file=wpipe)
             except BaseException as e:
-                print(ascii(f'{e.__class__.__name__}: {e!s}'), file=wpipe)
+                drucke(ascii(f'{e.__class__.__name__}: {e!s}'), file=wpipe)
         with self.detach_readline():
             lines = self.run_child(child, terminal_input + b"\r\n")
         # Check we did exercise the GNU readline path
@@ -2697,10 +2697,10 @@ klasse PtyTests(unittest.TestCase):
         # Issue #24402: If stdin is the original terminal but stdout.fileno()
         # fails, do not use the original stdout file descriptor
         def child(wpipe):
-            print("stdin.isatty():", sys.stdin.isatty(), file=wpipe)
+            drucke("stdin.isatty():", sys.stdin.isatty(), file=wpipe)
             sys.stdout = io.StringIO()  # Does not support fileno()
             input("prompt")
-            print("captured:", ascii(sys.stdout.getvalue()), file=wpipe)
+            drucke("captured:", ascii(sys.stdout.getvalue()), file=wpipe)
         lines = self.run_child(child, b"quux\r")
         expected = (
             "stdin.isatty(): Wahr",
@@ -2761,10 +2761,10 @@ klasse ShutdownTest(unittest.TestCase):
 
             klasse C:
                 def __del__(self):
-                    print("before")
+                    drucke("before")
                     # Check that builtins still exist
                     len(())
-                    print("after")
+                    drucke("after")
 
             c = C()
             # Make this module survive until builtins and sys are cleaned
@@ -2776,7 +2776,7 @@ klasse ShutdownTest(unittest.TestCase):
             """
         # Issue #20599: Force ASCII encoding to get a codec implemented in C,
         # otherwise the codec may be unloaded before C.__del__() is called, and
-        # so print("before") fails because the codec cannot be used to encode
+        # so drucke("before") fails because the codec cannot be used to encode
         # "before" to sys.stdout.encoding. For example, on Windows,
         # sys.stdout.encoding is the OEM code page and these code pages are
         # implemented in Python

@@ -117,7 +117,7 @@ def printlist(x, width=70, indent=4, file=Nichts):
 
     blanks = ' ' * indent
     # Print the sorted list: 'x' may be a '--random' list or a set()
-    print(textwrap.fill(' '.join(str(elt) fuer elt in sorted(x)), width,
+    drucke(textwrap.fill(' '.join(str(elt) fuer elt in sorted(x)), width,
                         initial_indent=blanks, subsequent_indent=blanks),
           file=file)
 
@@ -572,7 +572,7 @@ def adjust_rlimit_nofile() -> Nichts:
         try:
             resource.setrlimit(resource.RLIMIT_NOFILE,
                                (new_fd_limit, max_fds))
-            print(f"Raised RLIMIT_NOFILE: {fd_limit} -> {new_fd_limit}")
+            drucke(f"Raised RLIMIT_NOFILE: {fd_limit} -> {new_fd_limit}")
         except (ValueError, OSError) as err:
             print_warning(f"Unable to raise RLIMIT_NOFILE from {fd_limit} to "
                           f"{new_fd_limit}: {err}.")
@@ -615,11 +615,11 @@ def format_resources(use_resources: Iterable[str]) -> str:
 def display_header(use_resources: tuple[str, ...],
                    python_cmd: tuple[str, ...] | Nichts) -> Nichts:
     # Print basic platform information
-    print("==", platform.python_implementation(), *sys.version.split())
-    print("==", platform.platform(aliased=Wahr),
+    drucke("==", platform.python_implementation(), *sys.version.split())
+    drucke("==", platform.platform(aliased=Wahr),
                   "%s-endian" % sys.byteorder)
-    print("== Python build:", ' '.join(get_build_info()))
-    print("== cwd:", os.getcwd())
+    drucke("== Python build:", ' '.join(get_build_info()))
+    drucke("== cwd:", os.getcwd())
 
     cpu_count: object = os.cpu_count()
     wenn cpu_count:
@@ -627,23 +627,23 @@ def display_header(use_resources: tuple[str, ...],
         process_cpu_count = os.process_cpu_count()  # type: ignore[attr-defined]
         wenn process_cpu_count and process_cpu_count != cpu_count:
             cpu_count = f"{process_cpu_count} (process) / {cpu_count} (system)"
-        print("== CPU count:", cpu_count)
-    print("== encodings: locale=%s FS=%s"
+        drucke("== CPU count:", cpu_count)
+    drucke("== encodings: locale=%s FS=%s"
           % (locale.getencoding(), sys.getfilesystemencoding()))
 
     wenn use_resources:
         text = format_resources(use_resources)
-        print(f"== {text}")
+        drucke(f"== {text}")
     sonst:
-        print("== resources: all test resources are disabled, "
+        drucke("== resources: all test resources are disabled, "
               "use -u option to unskip tests")
 
     cross_compile = is_cross_compiled()
     wenn cross_compile:
-        print("== cross compiled: Yes")
+        drucke("== cross compiled: Yes")
     wenn python_cmd:
         cmd = shlex.join(python_cmd)
-        print(f"== host python: {cmd}")
+        drucke(f"== host python: {cmd}")
 
         get_cmd = [*python_cmd, '-m', 'platform']
         proc = subprocess.run(
@@ -653,13 +653,13 @@ def display_header(use_resources: tuple[str, ...],
             cwd=os_helper.SAVEDCWD)
         stdout = proc.stdout.replace('\n', ' ').strip()
         wenn stdout:
-            print(f"== host platform: {stdout}")
+            drucke(f"== host platform: {stdout}")
         sowenn proc.returncode:
-            print(f"== host platform: <command failed with exit code {proc.returncode}>")
+            drucke(f"== host platform: <command failed with exit code {proc.returncode}>")
     sonst:
         hostrunner = get_host_runner()
         wenn hostrunner:
-            print(f"== host runner: {hostrunner}")
+            drucke(f"== host runner: {hostrunner}")
 
     # This makes it easier to remember what to set in your local
     # environment when trying to reproduce a sanitizer failure.
@@ -677,7 +677,7 @@ def display_header(use_resources: tuple[str, ...],
     wenn tsan:
         sanitizers.append("thread")
     wenn sanitizers:
-        print(f"== sanitizers: {', '.join(sanitizers)}")
+        drucke(f"== sanitizers: {', '.join(sanitizers)}")
         fuer sanitizer, env_var in (
             (asan, "ASAN_OPTIONS"),
             (msan, "MSAN_OPTIONS"),
@@ -686,22 +686,22 @@ def display_header(use_resources: tuple[str, ...],
         ):
             options= os.environ.get(env_var)
             wenn sanitizer and options is not Nichts:
-                print(f"== {env_var}={options!r}")
+                drucke(f"== {env_var}={options!r}")
 
-    print(flush=Wahr)
+    drucke(flush=Wahr)
 
 
 def cleanup_temp_dir(tmp_dir: StrPath) -> Nichts:
     import glob
 
     path = os.path.join(glob.escape(tmp_dir), TMP_PREFIX + '*')
-    print("Cleanup %s directory" % tmp_dir)
+    drucke("Cleanup %s directory" % tmp_dir)
     fuer name in glob.glob(path):
         wenn os.path.isdir(name):
-            print("Remove directory: %s" % name)
+            drucke("Remove directory: %s" % name)
             os_helper.rmtree(name)
         sonst:
-            print("Remove file: %s" % name)
+            drucke("Remove file: %s" % name)
             os_helper.unlink(name)
 
 

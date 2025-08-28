@@ -46,7 +46,7 @@ def fn():
     def test_name_after_use(self):
         prog_text = """\
 def fn():
-    print(name_use)
+    drucke(name_use)
     global name_use
 """
         check_syntax_error(self, prog_text, lineno=3, offset=5)

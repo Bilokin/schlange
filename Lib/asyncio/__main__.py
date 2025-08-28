@@ -177,7 +177,7 @@ wenn __name__ == '__main__':
         case _:
             # shouldn't happen as an invalid command-line wouldn't parse
             # but let's keep it fuer the next person adding a command
-            print(f"error: unhandled command {args.command}", file=sys.stderr)
+            drucke(f"error: unhandled command {args.command}", file=sys.stderr)
             parser.print_usage(file=sys.stderr)
             sys.exit(1)
 

@@ -880,7 +880,7 @@ klasse TestBasicOps(unittest.TestCase):
             result = []
             fuer i, j in zip_longest(r1, r2, fillvalue=0):
                 with support.captured_output('stdout'):
-                    print((i, j))
+                    drucke((i, j))
                 result.append((i, j))
             return result
         self.assertEqual(run(r1, r2), [(1,2), (1,2), (1,2), (0,2)])

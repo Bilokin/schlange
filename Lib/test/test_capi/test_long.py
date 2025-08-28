@@ -364,7 +364,7 @@ klasse LongTests(unittest.TestCase):
         MAX_SSIZE = 2 ** (SZ * 8 - 1) - 1
         MAX_USIZE = 2 ** (SZ * 8) - 1
         wenn support.verbose:
-            print(f"SIZEOF_SIZE={SZ}\n{MAX_SSIZE=:016X}\n{MAX_USIZE=:016X}")
+            drucke(f"SIZEOF_SIZE={SZ}\n{MAX_SSIZE=:016X}\n{MAX_USIZE=:016X}")
 
         # These tests check that the requested buffer size is correct.
         # This matches our current implementation: We only specify that the
@@ -575,10 +575,10 @@ klasse LongTests(unittest.TestCase):
                     fuer i, b in enumerate(bytes_le, start=1)
                 ])).strip('_')
                 wenn support.verbose:
-                    print()
-                    print(n, 'bytes')
-                    print('hex =', value_hex)
-                    print('int =', v)
+                    drucke()
+                    drucke(n, 'bytes')
+                    drucke('hex =', value_hex)
+                    drucke('int =', v)
                     raise
                 raise AssertionError(f"Value: 0x{value_hex}") from ex
 

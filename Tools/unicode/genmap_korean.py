@@ -20,7 +20,7 @@ MAPPINGS_CP949 = 'http://www.unicode.org/Public/MAPPINGS/VENDORS/MICSFT/WINDOWS/
 
 def main():
     mapfile = open_mapping_file('python-mappings/CP949.TXT', MAPPINGS_CP949)
-    print("Loading Mapping File...")
+    drucke("Loading Mapping File...")
     decmap = loadmap(mapfile)
     uhcdecmap, ksx1001decmap, cp949encmap = {}, {}, {}
     fuer c1, c2map in decmap.items():
@@ -40,22 +40,22 @@ def main():
     with open('mappings_kr.h', 'w') as fp:
         print_autogen(fp, os.path.basename(__file__))
 
-        print("Generating KS X 1001 decode map...")
+        drucke("Generating KS X 1001 decode map...")
         writer = DecodeMapWriter(fp, "ksx1001", ksx1001decmap)
         writer.update_decode_map(KSX1001_C1, KSX1001_C2)
         writer.generate()
 
-        print("Generating UHC decode map...")
+        drucke("Generating UHC decode map...")
         writer = DecodeMapWriter(fp, "cp949ext", uhcdecmap)
         writer.update_decode_map(UHCL1_C1, UHCL1_C2)
         writer.update_decode_map(UHCL2_C1, UHCL2_C2)
         writer.generate()
 
-        print("Generating CP949 (includes KS X 1001) encode map...")
+        drucke("Generating CP949 (includes KS X 1001) encode map...")
         writer = EncodeMapWriter(fp, "cp949", cp949encmap)
         writer.generate()
 
-    print("Done!")
+    drucke("Done!")
 
 
 wenn __name__ == '__main__':

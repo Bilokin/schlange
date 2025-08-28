@@ -1943,7 +1943,7 @@ klasse TestGetClosureVars(unittest.TestCase):
         # Basic test of the 4 different resolution mechanisms
         def f(nonlocal_ref):
             def g(local_ref):
-                print(local_ref, nonlocal_ref, _global_ref, unbound_ref)
+                drucke(local_ref, nonlocal_ref, _global_ref, unbound_ref)
             return g
         _arg = object()
         nonlocal_vars = {"nonlocal_ref": _arg}
@@ -1957,7 +1957,7 @@ klasse TestGetClosureVars(unittest.TestCase):
     def test_generator_closure(self):
         def f(nonlocal_ref):
             def g(local_ref):
-                print(local_ref, nonlocal_ref, _global_ref, unbound_ref)
+                drucke(local_ref, nonlocal_ref, _global_ref, unbound_ref)
                 yield
             return g
         _arg = object()
@@ -1973,7 +1973,7 @@ klasse TestGetClosureVars(unittest.TestCase):
         klasse C:
             def f(self, nonlocal_ref):
                 def g(local_ref):
-                    print(local_ref, nonlocal_ref, _global_ref, unbound_ref)
+                    drucke(local_ref, nonlocal_ref, _global_ref, unbound_ref)
                 return g
         _arg = object()
         nonlocal_vars = {"nonlocal_ref": _arg}
@@ -1988,7 +1988,7 @@ klasse TestGetClosureVars(unittest.TestCase):
         klasse C:
             _global_ref = object()
         def f():
-            print(C._global_ref, _global_ref)
+            drucke(C._global_ref, _global_ref)
         nonlocal_vars = {"C": C}
         global_vars = {"_global_ref": _global_ref}
         builtin_vars = {"print": print}
@@ -2048,7 +2048,7 @@ klasse TestGetClosureVars(unittest.TestCase):
         self.assertRaises(TypeError, inspect.getclosurevars, {})
 
     def _private_globals(self):
-        code = """def f(): print(path)"""
+        code = """def f(): drucke(path)"""
         ns = {}
         exec(code, ns)
         return ns["f"], ns
@@ -6165,12 +6165,12 @@ klasse TestReload(unittest.TestCase):
 
     src_before = textwrap.dedent("""\
 def foo():
-    print("Bla")
+    drucke("Bla")
     """)
 
     src_after = textwrap.dedent("""\
 def foo():
-    print("Oh no!")
+    drucke("Oh no!")
     """)
 
     def assertInspectEqual(self, path, source):
@@ -6241,14 +6241,14 @@ klasse TestRepl(unittest.TestCase):
     def test_getsource(self):
         output = self.run_on_interactive_mode(textwrap.dedent("""\
         def f():
-            print(0)
+            drucke(0)
             return 1 + 2
 
         import inspect
-        print(f"The source is: <<<{inspect.getsource(f)}>>>")
+        drucke(f"The source is: <<<{inspect.getsource(f)}>>>")
         """))
 
-        expected = "The source is: <<<def f():\n    print(0)\n    return 1 + 2\n>>>"
+        expected = "The source is: <<<def f():\n    drucke(0)\n    return 1 + 2\n>>>"
         self.assertIn(expected, output)
 
 

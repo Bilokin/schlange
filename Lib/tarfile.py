@@ -257,11 +257,11 @@ def copyfileobj(src, dst, length=Nichts, exception=OSError, bufsize=Nichts):
         dst.write(buf)
     return
 
-def _safe_print(s):
+def _safe_drucke(s):
     encoding = getattr(sys.stdout, 'encoding', Nichts)
     wenn encoding is not Nichts:
         s = s.encode(encoding, 'backslashreplace').decode(encoding)
-    print(s, end=' ')
+    drucke(s, end=' ')
 
 
 klasse TarError(Exception):
@@ -2261,31 +2261,31 @@ klasse TarFile(object):
         fuer tarinfo in members:
             wenn verbose:
                 wenn tarinfo.mode is Nichts:
-                    _safe_print("??????????")
+                    _safe_drucke("??????????")
                 sonst:
                     modetype = type2mode.get(tarinfo.type, 0)
-                    _safe_print(stat.filemode(modetype | tarinfo.mode))
-                _safe_print("%s/%s" % (tarinfo.uname or tarinfo.uid,
+                    _safe_drucke(stat.filemode(modetype | tarinfo.mode))
+                _safe_drucke("%s/%s" % (tarinfo.uname or tarinfo.uid,
                                        tarinfo.gname or tarinfo.gid))
                 wenn tarinfo.ischr() or tarinfo.isblk():
-                    _safe_print("%10s" %
+                    _safe_drucke("%10s" %
                             ("%d,%d" % (tarinfo.devmajor, tarinfo.devminor)))
                 sonst:
-                    _safe_print("%10d" % tarinfo.size)
+                    _safe_drucke("%10d" % tarinfo.size)
                 wenn tarinfo.mtime is Nichts:
-                    _safe_print("????-??-?? ??:??:??")
+                    _safe_drucke("????-??-?? ??:??:??")
                 sonst:
-                    _safe_print("%d-%02d-%02d %02d:%02d:%02d" \
+                    _safe_drucke("%d-%02d-%02d %02d:%02d:%02d" \
                                 % time.localtime(tarinfo.mtime)[:6])
 
-            _safe_print(tarinfo.name + ("/" wenn tarinfo.isdir() sonst ""))
+            _safe_drucke(tarinfo.name + ("/" wenn tarinfo.isdir() sonst ""))
 
             wenn verbose:
                 wenn tarinfo.issym():
-                    _safe_print("-> " + tarinfo.linkname)
+                    _safe_drucke("-> " + tarinfo.linkname)
                 wenn tarinfo.islnk():
-                    _safe_print("link to " + tarinfo.linkname)
-            print()
+                    _safe_drucke("link to " + tarinfo.linkname)
+            drucke()
 
     def add(self, name, arcname=Nichts, recursive=Wahr, *, filter=Nichts):
         """Add the file 'name' to the archive. 'name' may be any type of file
@@ -2992,7 +2992,7 @@ klasse TarFile(object):
         """Write debugging output to sys.stderr.
         """
         wenn level <= self.debug:
-            print(msg, file=sys.stderr)
+            drucke(msg, file=sys.stderr)
 
     def __enter__(self):
         self._check()
@@ -3066,9 +3066,9 @@ def main():
         wenn is_tarfile(src):
             with open(src, 'r') as tar:
                 tar.getmembers()
-                print(tar.getmembers(), file=sys.stderr)
+                drucke(tar.getmembers(), file=sys.stderr)
             wenn args.verbose:
-                print('{!r} is a tar archive.'.format(src))
+                drucke('{!r} is a tar archive.'.format(src))
         sonst:
             parser.exit(1, '{!r} is not a tar archive.\n'.format(src))
 
@@ -3098,7 +3098,7 @@ def main():
                 sonst:
                     msg = ('{!r} file is extracted '
                            'into {!r} directory.').format(src, curdir)
-                print(msg)
+                drucke(msg)
         sonst:
             parser.exit(1, '{!r} is not a tar archive.\n'.format(src))
 
@@ -3129,7 +3129,7 @@ def main():
                 tf.add(file_name)
 
         wenn args.verbose:
-            print('{!r} file created.'.format(tar_name))
+            drucke('{!r} file created.'.format(tar_name))
 
 wenn __name__ == '__main__':
     main()

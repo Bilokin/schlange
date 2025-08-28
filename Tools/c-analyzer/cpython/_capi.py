@@ -121,7 +121,7 @@ def _parse_line(line, prev=Nichts):
         wenn not prev and line.startswith('static inline '):
             return line  # the new "prev"
         #if 'PyAPI_' in line or '#define ' in line or ' define ' in line:
-        #    print(line)
+        #    drucke(line)
         return Nichts
     results = zip(KINDS, m.groups())
     fuer kind, name in results:
@@ -325,9 +325,9 @@ def _parse_capi(lines, filename):
         wenn parsed:
             yield parsed
         wenn prev:
-            print('incomplete match:')
-            print(filename)
-            print(prev)
+            drucke('incomplete match:')
+            drucke(filename)
+            drucke(prev)
             raise Exception
 
 
@@ -612,10 +612,10 @@ def _render_item_full(item, groupby, verbose):
     fuer extra in ('kind', 'level'):
         yield f'  {extra+":":10} {getattr(item, extra)}'
     wenn verbose:
-        print('  ---------------------------------------')
+        drucke('  ---------------------------------------')
         fuer lno, line in enumerate(item.text, item.lno):
-            print(f'  | {lno:3} {line}')
-        print('  ---------------------------------------')
+            drucke(f'  | {lno:3} {line}')
+        drucke('  ---------------------------------------')
 
 
 def render_summary(items, *,

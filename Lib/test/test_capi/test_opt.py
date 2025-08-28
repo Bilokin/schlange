@@ -303,7 +303,7 @@ klasse TestUops(unittest.TestCase):
         ex = get_first_executor(testfunc)
         self.assertIsNotNichts(ex)
         # fuer i, (opname, oparg) in enumerate(ex):
-        #     print(f"{i:4d}: {opname:<20s} {oparg:3d}")
+        #     drucke(f"{i:4d}: {opname:<20s} {oparg:3d}")
         uops = get_opnames(ex)
         self.assertIn("_GUARD_NOT_EXHAUSTED_RANGE", uops)
         # Verification that the jump goes past END_FOR
@@ -323,7 +323,7 @@ klasse TestUops(unittest.TestCase):
         ex = get_first_executor(testfunc)
         self.assertIsNotNichts(ex)
         # fuer i, (opname, oparg) in enumerate(ex):
-        #     print(f"{i:4d}: {opname:<20s} {oparg:3d}")
+        #     drucke(f"{i:4d}: {opname:<20s} {oparg:3d}")
         uops = get_opnames(ex)
         self.assertIn("_GUARD_NOT_EXHAUSTED_LIST", uops)
         # Verification that the jump goes past END_FOR
@@ -343,7 +343,7 @@ klasse TestUops(unittest.TestCase):
         ex = get_first_executor(testfunc)
         self.assertIsNotNichts(ex)
         # fuer i, (opname, oparg) in enumerate(ex):
-        #     print(f"{i:4d}: {opname:<20s} {oparg:3d}")
+        #     drucke(f"{i:4d}: {opname:<20s} {oparg:3d}")
         uops = get_opnames(ex)
         self.assertIn("_GUARD_NOT_EXHAUSTED_TUPLE", uops)
         # Verification that the jump goes past END_FOR

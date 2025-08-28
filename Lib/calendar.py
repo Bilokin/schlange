@@ -356,7 +356,7 @@ klasse TextCalendar(Calendar):
         """
         Print a single week (no newline).
         """
-        print(self.formatweek(theweek, width), end='')
+        drucke(self.formatweek(theweek, width), end='')
 
     def formatday(self, day, weekday, width):
         """
@@ -405,7 +405,7 @@ klasse TextCalendar(Calendar):
         """
         Print a month's calendar.
         """
-        print(self.formatmonth(theyear, themonth, w, l), end='')
+        drucke(self.formatmonth(theyear, themonth, w, l), end='')
 
     def formatmonth(self, theyear, themonth, w=0, l=0):
         """
@@ -463,7 +463,7 @@ klasse TextCalendar(Calendar):
 
     def pryear(self, theyear, w=0, l=0, c=6, m=3):
         """Print a year's calendar."""
-        print(self.formatyear(theyear, w, l, c, m), end='')
+        drucke(self.formatyear(theyear, w, l, c, m), end='')
 
 
 klasse HTMLCalendar(Calendar):
@@ -804,7 +804,7 @@ _spacing = 6                # Number of spaces between columns
 
 def format(cols, colwidth=_colwidth, spacing=_spacing):
     """Prints multi-column formatting fuer year calendars"""
-    print(formatstring(cols, colwidth, spacing))
+    drucke(formatstring(cols, colwidth, spacing))
 
 
 def formatstring(cols, colwidth=_colwidth, spacing=_spacing):

@@ -44,14 +44,14 @@ def is_local_symbol_type(symtype):
 
 
 def get_exported_symbols(library, dynamic=Falsch):
-    print(f"Check that {library} only exports symbols starting with Py or _Py")
+    drucke(f"Check that {library} only exports symbols starting with Py or _Py")
 
     # Only look at dynamic symbols
     args = ['nm', '--no-sort']
     wenn dynamic:
         args.append('--dynamic')
     args.append(library)
-    print(f"+ {' '.join(args)}")
+    drucke(f"+ {' '.join(args)}")
     proc = subprocess.run(args, stdout=subprocess.PIPE, encoding='utf-8')
     wenn proc.returncode:
         sys.stdout.write(proc.stdout)
@@ -95,7 +95,7 @@ def get_smelly_symbols(stdout, dynamic=Falsch):
             smelly_symbols.append(result)
 
     wenn local_symbols:
-        print(f"Ignore {len(local_symbols)} local symbols")
+        drucke(f"Ignore {len(local_symbols)} local symbols")
     return smelly_symbols, python_symbols
 
 
@@ -104,21 +104,21 @@ def check_library(library, dynamic=Falsch):
     smelly_symbols, python_symbols = get_smelly_symbols(nm_output, dynamic)
 
     wenn not smelly_symbols:
-        print(f"OK: no smelly symbol found ({len(python_symbols)} Python symbols)")
+        drucke(f"OK: no smelly symbol found ({len(python_symbols)} Python symbols)")
         return 0
 
-    print()
+    drucke()
     smelly_symbols.sort()
     fuer symbol in smelly_symbols:
-        print(f"Smelly symbol: {symbol}")
+        drucke(f"Smelly symbol: {symbol}")
 
-    print()
-    print(f"ERROR: Found {len(smelly_symbols)} smelly symbols!")
+    drucke()
+    drucke(f"ERROR: Found {len(smelly_symbols)} smelly symbols!")
     return len(smelly_symbols)
 
 
 def check_extensions():
-    print(__file__)
+    drucke(__file__)
     # This assumes pybuilddir.txt is in same directory as pyconfig.h.
     # In the case of out-of-tree builds, we can't assume pybuilddir.txt is
     # in the source folder.
@@ -128,21 +128,21 @@ def check_extensions():
         with open(filename, encoding="utf-8") as fp:
             pybuilddir = fp.readline()
     except FileNotFoundError:
-        print(f"Cannot check extensions because {filename} does not exist")
+        drucke(f"Cannot check extensions because {filename} does not exist")
         return Wahr
 
-    print(f"Check extension modules from {pybuilddir} directory")
+    drucke(f"Check extension modules from {pybuilddir} directory")
     builddir = os.path.join(config_dir, pybuilddir)
     nsymbol = 0
     fuer name in os.listdir(builddir):
         wenn not name.endswith(".so"):
             continue
         wenn IGNORED_EXTENSION in name:
-            print()
-            print(f"Ignore extension: {name}")
+            drucke()
+            drucke(f"Ignore extension: {name}")
             continue
 
-        print()
+        drucke()
         filename = os.path.join(builddir, name)
         nsymbol += check_library(filename, dynamic=Wahr)
 
@@ -164,19 +164,19 @@ def main():
     wenn not LDLIBRARY:
         raise Exception("failed to get LDLIBRARY variable from sysconfig")
     wenn LDLIBRARY != LIBRARY:
-        print()
+        drucke()
         nsymbol += check_library(LDLIBRARY, dynamic=Wahr)
 
     # Check extension modules like _ssl.cpython-310d-x86_64-linux-gnu.so
     nsymbol += check_extensions()
 
     wenn nsymbol:
-        print()
-        print(f"ERROR: Found {nsymbol} smelly symbols in total!")
+        drucke()
+        drucke(f"ERROR: Found {nsymbol} smelly symbols in total!")
         sys.exit(1)
 
-    print()
-    print(f"OK: all exported symbols of all libraries "
+    drucke()
+    drucke(f"OK: all exported symbols of all libraries "
           f"are prefixed with {' or '.join(map(repr, ALLOWED_PREFIXES))}")
 
 

@@ -97,7 +97,7 @@ def load_raw_data(input: Path) -> RawData:
                     try:
                         key, value = line.split(":")
                     except ValueError:
-                        print(
+                        drucke(
                             f"Unparsable line: '{line.strip()}' in {filename}",
                             file=sys.stderr,
                         )
@@ -1430,23 +1430,23 @@ def output_markdown(
     match obj:
         case Section():
             wenn obj.title:
-                print("#" * level, obj.title, file=out)
-                print(file=out)
-                print("<details>", file=out)
-                print("<summary>", obj.summary, "</summary>", file=out)
-                print(file=out)
+                drucke("#" * level, obj.title, file=out)
+                drucke(file=out)
+                drucke("<details>", file=out)
+                drucke("<summary>", obj.summary, "</summary>", file=out)
+                drucke(file=out)
             wenn obj.doc:
-                print(obj.doc, file=out)
+                drucke(obj.doc, file=out)
 
             wenn head_stats is not Nichts and obj.comparative is Falsch:
-                print("Not included in comparative output.\n")
+                drucke("Not included in comparative output.\n")
             sonst:
                 fuer part in obj.part_iter(base_stats, head_stats):
                     output_markdown(out, part, base_stats, head_stats, level=level + 1)
-            print(file=out)
+            drucke(file=out)
             wenn obj.title:
-                print("</details>", file=out)
-                print(file=out)
+                drucke("</details>", file=out)
+                drucke(file=out)
 
         case Table():
             header, rows = obj.get_table(base_stats, head_stats)
@@ -1460,37 +1460,37 @@ def output_markdown(
                 sonst:
                     alignments.append("left")
 
-            print("<table>", file=out)
-            print("<thead>", file=out)
-            print("<tr>", file=out)
+            drucke("<table>", file=out)
+            drucke("<thead>", file=out)
+            drucke("<tr>", file=out)
             fuer item, align in zip(header, alignments):
                 wenn item.endswith(":"):
                     item = item[:-1]
-                print(f'<th align="{align}">{item}</th>', file=out)
-            print("</tr>", file=out)
-            print("</thead>", file=out)
+                drucke(f'<th align="{align}">{item}</th>', file=out)
+            drucke("</tr>", file=out)
+            drucke("</thead>", file=out)
 
-            print("<tbody>", file=out)
+            drucke("<tbody>", file=out)
             fuer row in rows:
                 wenn len(row) != len(header):
                     raise ValueError(
                         "Wrong number of elements in row '" + str(row) + "'"
                     )
-                print("<tr>", file=out)
+                drucke("<tr>", file=out)
                 fuer col, align in zip(row, alignments):
-                    print(f'<td align="{align}">{to_markdown(col)}</td>', file=out)
-                print("</tr>", file=out)
-            print("</tbody>", file=out)
+                    drucke(f'<td align="{align}">{to_markdown(col)}</td>', file=out)
+                drucke("</tr>", file=out)
+            drucke("</tbody>", file=out)
 
-            print("</table>", file=out)
-            print(file=out)
+            drucke("</table>", file=out)
+            drucke(file=out)
 
         case list():
             fuer part in obj:
                 output_markdown(out, part, base_stats, head_stats, level=level)
 
-            print("---", file=out)
-            print("Stats gathered on:", date.today(), file=out)
+            drucke("---", file=out)
+            drucke("Stats gathered on:", date.today(), file=out)
 
 
 def output_stats(inputs: list[Path], json_output=str | Nichts):

@@ -45,11 +45,11 @@ def parse_warning_ignore_file(file_path: str) -> set[IgnoreRule]:
 
                     # Directories must have a wildcard count
                     wenn is_directory and count != "*":
-                        print(
+                        drucke(
                             f"Error parsing ignore file: {file_path} "
                             f"at line: {i}"
                         )
-                        print(
+                        drucke(
                             f"Directory {file_name} must have count set to *"
                         )
                         sys.exit(1)
@@ -103,7 +103,7 @@ def extract_warnings_from_compiler_output(
                     "option": match.group("option").lstrip("[").rstrip("]"),
                 })
             except AttributeError:
-                print(
+                drucke(
                     f"Error parsing compiler output. "
                     f"Unable to extract warning on line {i}:\n{line}"
                 )
@@ -178,14 +178,14 @@ def get_unexpected_warnings(
             unexpected_warnings[file] = (files_with_warnings[file], 0)
 
     wenn unexpected_warnings:
-        print("Unexpected warnings:")
+        drucke("Unexpected warnings:")
         fuer file in unexpected_warnings:
-            print(
+            drucke(
                 f"{file} expected {unexpected_warnings[file][1]} warnings,"
                 f" found {len(unexpected_warnings[file][0])}"
             )
             fuer warning in unexpected_warnings[file][0]:
-                print(warning)
+                drucke(warning)
 
         return 1
 
@@ -217,9 +217,9 @@ def get_unexpected_improvements(
                 ))
 
     wenn unexpected_improvements:
-        print("Unexpected improvements:")
+        drucke("Unexpected improvements:")
         fuer file in unexpected_improvements:
-            print(f"{file[0]} expected {file[1]} warnings, found {file[2]}")
+            drucke(f"{file[0]} expected {file[1]} warnings, found {file[2]}")
         return 1
 
     return 0
@@ -277,7 +277,7 @@ def main(argv: list[str] | Nichts = Nichts) -> int:
 
     # Check that the compiler output file is a valid path
     wenn not Path(args.compiler_output_file_path).is_file():
-        print(
+        drucke(
             f"Compiler output file does not exist:"
             f" {args.compiler_output_file_path}"
         )
@@ -285,14 +285,14 @@ def main(argv: list[str] | Nichts = Nichts) -> int:
 
     # Check that a warning ignore file was specified and wenn so is a valid path
     wenn not args.warning_ignore_file_path:
-        print(
+        drucke(
             "Warning ignore file not specified."
             " Continuing without it (no warnings ignored)."
         )
         ignore_rules = set()
     sonst:
         wenn not Path(args.warning_ignore_file_path).is_file():
-            print(
+            drucke(
                 f"Warning ignore file does not exist:"
                 f" {args.warning_ignore_file_path}"
             )
@@ -318,7 +318,7 @@ def main(argv: list[str] | Nichts = Nichts) -> int:
     wenn args.fail_on_improvement:
         exit_code |= status
 
-    print(
+    drucke(
         "For information about this tool and its configuration"
         " visit https://devguide.python.org/development-tools/warnings/"
     )

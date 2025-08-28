@@ -181,10 +181,10 @@ Traceback (most recent call last):
 SyntaxError: expected expression before 'if', but statement is given
 
 >>> wenn Wahr:
-...     print("Hello"
+...     drucke("Hello"
 ...
 ... wenn 2:
-...    print(123))
+...    drucke(123))
 Traceback (most recent call last):
 SyntaxError: invalid syntax
 
@@ -690,7 +690,7 @@ Traceback (most recent call last):
 SyntaxError: invalid syntax
 
 >>> def g(*args, **kwargs):
-...     print(args, sorted(kwargs.items()))
+...     drucke(args, sorted(kwargs.items()))
 >>> g(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
 ...   20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37,
 ...   38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55,
@@ -875,7 +875,7 @@ continue in fuer loop under finally should be ok.
     ...     finally:
     ...         fuer abc in range(10):
     ...             continue
-    ...     print(abc)
+    ...     drucke(abc)
     >>> test()
     9
 
@@ -887,7 +887,7 @@ break in fuer loop under finally should be ok.
     ...     finally:
     ...         fuer abc in range(10):
     ...             break
-    ...     print(abc)
+    ...     drucke(abc)
     >>> test()
     0
 
@@ -899,7 +899,7 @@ return in function under finally should be ok.
     ...     finally:
     ...         def f():
     ...             return 42
-    ...     print(f())
+    ...     drucke(f())
     >>> test()
     42
 
@@ -914,7 +914,7 @@ return in function under finally should be ok.
     ...         fuer i in range(10):
     ...             def f():
     ...                 return 42
-    ...     print(f())
+    ...     drucke(f())
     >>> test()
     42
 
@@ -925,7 +925,7 @@ return in function under finally should be ok.
     ...         def f():
     ...             fuer i in range(10):
     ...                 return 42
-    ...     print(f())
+    ...     drucke(f())
     >>> test()
     42
 
@@ -946,11 +946,11 @@ so we need to be sure that a break is actually inside a loop.  If it
 isn't, there should be a syntax error.
 
    >>> try:
-   ...     print(1)
+   ...     drucke(1)
    ...     break
-   ...     print(2)
+   ...     drucke(2)
    ... finally:
-   ...     print(3)
+   ...     drucke(3)
    Traceback (most recent call last):
      ...
    SyntaxError: 'break' outside loop
@@ -970,7 +970,7 @@ sowenn can't come after an else.
 Misuse of the nonlocal and global statement can lead to a few unique syntax errors.
 
    >>> def f():
-   ...     print(x)
+   ...     drucke(x)
    ...     global x
    Traceback (most recent call last):
      ...
@@ -992,7 +992,7 @@ Misuse of the nonlocal and global statement can lead to a few unique syntax erro
    >>> def f():
    ...     x = 1
    ...     def g():
-   ...         print(x)
+   ...         drucke(x)
    ...         nonlocal x
    Traceback (most recent call last):
      ...
@@ -2810,7 +2810,7 @@ klasse SyntaxErrorTestCase(unittest.TestCase):
 
     def test_expression_with_assignment(self):
         self._check_error(
-            "print(end1 + end2 = ' ')",
+            "drucke(end1 + end2 = ' ')",
             'expression cannot contain assignment, perhaps you meant "=="?',
             offset=7
         )
@@ -2875,7 +2875,7 @@ klasse SyntaxErrorTestCase(unittest.TestCase):
     def test_raise_from_error_message(self):
         source = """if 1:
         raise AssertionError() from Nichts
-        print(1,,2)
+        drucke(1,,2)
         """
         self._check_error(source, "invalid syntax", lineno=3)
 

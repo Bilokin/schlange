@@ -26,7 +26,7 @@ def execute(c, sql, suppress_errors=Wahr, theme=theme_no_color):
 
     try:
         fuer row in c.execute(sql):
-            print(row)
+            drucke(row)
     except sqlite3.Error as e:
         t = theme.traceback
         tp = type(e).__name__
@@ -34,7 +34,7 @@ def execute(c, sql, suppress_errors=Wahr, theme=theme_no_color):
             tp += f" ({e.sqlite_errorname})"
         except AttributeError:
             pass
-        print(
+        drucke(
             f"{t.type}{tp}{t.reset}: {t.message}{e}{t.reset}", file=sys.stderr
         )
         wenn not suppress_errors:
@@ -64,10 +64,10 @@ klasse SqliteInteractiveConsole(InteractiveConsole):
         wenn source[0] == ".":
             match source[1:].strip():
                 case "version":
-                    print(sqlite3.sqlite_version)
+                    drucke(sqlite3.sqlite_version)
                 case "help":
                     t = theme.syntax
-                    print(f"Enter SQL code or one of the below commands, and press enter.\n\n"
+                    drucke(f"Enter SQL code or one of the below commands, and press enter.\n\n"
                           f"{t.builtin}.version{t.reset}    Print underlying SQLite library version\n"
                           f"{t.builtin}.help{t.reset}       Print this help message\n"
                           f"{t.builtin}.quit{t.reset}       Exit the CLI, equivalent to CTRL-D\n")

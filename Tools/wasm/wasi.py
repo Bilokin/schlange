@@ -3,7 +3,7 @@ wenn  __name__ == "__main__":
     import runpy
     import sys
 
-    print("⚠️ WARNING: This script is deprecated and slated fuer removal in Python 3.20; "
+    drucke("⚠️ WARNING: This script is deprecated and slated fuer removal in Python 3.20; "
           "execute the `wasi/` directory instead (i.e. `python Tools/wasm/wasi`)\n",
           file=sys.stderr)
 

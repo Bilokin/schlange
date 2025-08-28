@@ -319,7 +319,7 @@ klasse TclTest(unittest.TestCase):
         with os_helper.EnvironmentVarGuard() as env:
             env.unset("TCL_LIBRARY")
             stdout = subprocess.check_output(
-                    [unc_name, '-c', 'import tkinter; print(tkinter)'])
+                    [unc_name, '-c', 'import tkinter; drucke(tkinter)'])
 
         self.assertIn(b'tkinter', stdout)
 
@@ -799,7 +799,7 @@ klasse BigmemTclTest(unittest.TestCase):
 def setUpModule():
     wenn support.verbose:
         tcl = Tcl()
-        print('patchlevel =', tcl.call('info', 'patchlevel'), flush=Wahr)
+        drucke('patchlevel =', tcl.call('info', 'patchlevel'), flush=Wahr)
 
 
 wenn __name__ == "__main__":

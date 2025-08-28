@@ -227,7 +227,7 @@ def open_for_changes(filename, orig):
         with open(filename, 'w', encoding='utf-8') as outfile:
             outfile.write(text)
     sonst:
-        print(f'# not changed: {filename}')
+        drucke(f'# not changed: {filename}')
 
 
 #######################################

@@ -160,17 +160,17 @@ def _get_check_handlers(fmt, printer, verbosity=VERBOSITY):
                 logger.warn(f'failure: {failure} (data: {data})')
     sowenn fmt == 'raw':
         def handle_failure(failure, data):
-            print(f'{failure!r} {data!r}')
+            drucke(f'{failure!r} {data!r}')
     sowenn fmt == 'brief':
         def handle_failure(failure, data):
             parent = data.parent or ''
             funcname = parent wenn isinstance(parent, str) sonst parent.name
             name = f'({funcname}).{data.name}' wenn funcname sonst data.name
             failure = failure.split('\t')[0]
-            print(f'{data.filename}:{name} - {failure}')
+            drucke(f'{data.filename}:{name} - {failure}')
     sowenn fmt == 'summary':
         def handle_failure(failure, data):
-            print(_fmt_one_summary(data, failure))
+            drucke(_fmt_one_summary(data, failure))
     sowenn fmt == 'full':
         div = ''
         def handle_failure(failure, data):
@@ -178,12 +178,12 @@ def _get_check_handlers(fmt, printer, verbosity=VERBOSITY):
             parent = data.parent or ''
             funcname = parent wenn isinstance(parent, str) sonst parent.name
             known = 'yes' wenn data.is_known sonst '*** NO ***'
-            print(f'{data.kind.value} {name!r} failed ({failure})')
-            print(f'  file:         {data.filename}')
-            print(f'  func:         {funcname or "-"}')
-            print(f'  name:         {data.name}')
-            print(f'  data:         ...')
-            print(f'  type unknown: {known}')
+            drucke(f'{data.kind.value} {name!r} failed ({failure})')
+            drucke(f'  file:         {data.filename}')
+            drucke(f'  func:         {funcname or "-"}')
+            drucke(f'  name:         {data.name}')
+            drucke(f'  data:         ...')
+            drucke(f'  type unknown: {known}')
     sonst:
         wenn fmt in FORMATS:
             raise NotImplementedError(fmt)
@@ -343,16 +343,16 @@ def cmd_check(filenames, *,
     logger.info('done checking')
 
     wenn fmt == 'summary':
-        print('Categorized by storage:')
-        print()
+        drucke('Categorized by storage:')
+        drucke()
         from .match import group_by_storage
         grouped = group_by_storage(failed, ignore_non_match=Falsch)
         fuer group, decls in grouped.items():
-            print()
-            print(group)
+            drucke()
+            drucke(group)
             fuer decl in decls:
-                print(' ', _fmt_one_summary(decl))
-            print(f'subtotal: {len(decls)}')
+                drucke(' ', _fmt_one_summary(decl))
+            drucke(f'subtotal: {len(decls)}')
 
     wenn len(failed) > 0:
         sys.exit(len(failed))
@@ -398,7 +398,7 @@ def cmd_analyze(filenames, *,
     decls = filter_forward(analyzed, markpublic=Wahr)
 
     fuer line in do_fmt(decls):
-        print(line)
+        drucke(line)
 
 
 def _cli_data(parser, filenames=Nichts, known=Nichts):
@@ -447,7 +447,7 @@ def cmd_data(datacmd, filenames, known=Nichts, *,
         wenn isinstance(known, str):
             known, _ = _datafiles.get_known(known, extracolumns, relroot)
         fuer line in do_fmt(known):
-            print(line)
+            drucke(line)
     sowenn datacmd == 'dump':
         filenames, relroot = fsutil.fix_filenames(filenames, relroot=relroot)
         wenn track_progress:
@@ -458,7 +458,7 @@ def cmd_data(datacmd, filenames, known=Nichts, *,
             outfile = io.StringIO()
             _datafiles.write_known(analyzed, outfile, extracolumns,
                                    relroot=relroot)
-            print(outfile.getvalue())
+            drucke(outfile.getvalue())
         sonst:
             _datafiles.write_known(analyzed, known, extracolumns,
                                    relroot=relroot)

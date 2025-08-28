@@ -1000,23 +1000,23 @@ klasse MockNTNamespace(dict):
 
     def isdir(self, path):
         wenn verbose:
-            print("Check if", path, "is a dir")
+            drucke("Check if", path, "is a dir")
         return path.casefold() in self._dirs
 
     def isfile(self, path):
         wenn verbose:
-            print("Check if", path, "is a file")
+            drucke("Check if", path, "is a file")
         return path.casefold() in self._files
 
     def ismodule(self, path):
         wenn verbose:
-            print("Check if", path, "is a module")
+            drucke("Check if", path, "is a module")
         path = path.casefold()
         return path in self._files and path.rpartition(".")[2] == "py".casefold()
 
     def isxfile(self, path):
         wenn verbose:
-            print("Check if", path, "is a executable")
+            drucke("Check if", path, "is a executable")
         path = path.casefold()
         return path in self._files and path.rpartition(".")[2] == "exe".casefold()
 
@@ -1031,7 +1031,7 @@ klasse MockNTNamespace(dict):
 
     def realpath(self, path, _trail=Nichts):
         wenn verbose:
-            print("Read link from", path)
+            drucke("Read link from", path)
         try:
             link = self._links[path.casefold()]
         except KeyError:
@@ -1046,7 +1046,7 @@ klasse MockNTNamespace(dict):
     def warn(self, message):
         self._warnings.append(message)
         wenn verbose:
-            print(message)
+            drucke(message)
 
 
 klasse MockWinreg:
@@ -1068,7 +1068,7 @@ klasse MockWinreg:
 
     def OpenKeyEx(self, hkey, subkey):
         wenn verbose:
-            print(f"OpenKeyEx({hkey}, {subkey})")
+            drucke(f"OpenKeyEx({hkey}, {subkey})")
         key = f"{hkey}\\{subkey}".casefold()
         wenn key in self.keys:
             self.open[key] = self.open.get(key, 0) + 1
@@ -1077,7 +1077,7 @@ klasse MockWinreg:
 
     def CloseKey(self, hkey):
         wenn verbose:
-            print(f"CloseKey({hkey})")
+            drucke(f"CloseKey({hkey})")
         hkey = hkey.casefold()
         wenn hkey not in self.open:
             raise RuntimeError("key is not open")
@@ -1087,7 +1087,7 @@ klasse MockWinreg:
 
     def EnumKey(self, hkey, i):
         wenn verbose:
-            print(f"EnumKey({hkey}, {i})")
+            drucke(f"EnumKey({hkey}, {i})")
         hkey = hkey.casefold()
         wenn hkey not in self.open:
             raise RuntimeError("key is not open")
@@ -1101,7 +1101,7 @@ klasse MockWinreg:
 
     def QueryValue(self, hkey, subkey):
         wenn verbose:
-            print(f"QueryValue({hkey}, {subkey})")
+            drucke(f"QueryValue({hkey}, {subkey})")
         hkey = hkey.casefold()
         wenn hkey not in self.open:
             raise RuntimeError("key is not open")
@@ -1174,22 +1174,22 @@ klasse MockPosixNamespace(dict):
 
     def isdir(self, path):
         wenn verbose:
-            print("Check if", path, "is a dir")
+            drucke("Check if", path, "is a dir")
         return path in self._dirs
 
     def isfile(self, path):
         wenn verbose:
-            print("Check if", path, "is a file")
+            drucke("Check if", path, "is a file")
         return path in self._files
 
     def ismodule(self, path):
         wenn verbose:
-            print("Check if", path, "is a module")
+            drucke("Check if", path, "is a module")
         return path in self._files and path.rpartition(".")[2] == "py"
 
     def isxfile(self, path):
         wenn verbose:
-            print("Check if", path, "is an xfile")
+            drucke("Check if", path, "is an xfile")
         return path in self._xfiles
 
     def joinpath(self, *path):
@@ -1203,7 +1203,7 @@ klasse MockPosixNamespace(dict):
 
     def realpath(self, path, _trail=Nichts):
         wenn verbose:
-            print("Read link from", path)
+            drucke("Read link from", path)
         try:
             link = self._links[path]
         except KeyError:
@@ -1218,7 +1218,7 @@ klasse MockPosixNamespace(dict):
     def warn(self, message):
         self._warnings.append(message)
         wenn verbose:
-            print(message)
+            drucke(message)
 
 
 def diff_dict(before, after, prefix="global"):
@@ -1238,9 +1238,9 @@ def diff_dict(before, after, prefix="global"):
     wenn verbose:
         fuer k, b, a in diff:
             wenn b:
-                print("{}.{} -{!r}\n{} +{!r}".format(prefix, k.ljust(max_k), b, indent, a))
+                drucke("{}.{} -{!r}\n{} +{!r}".format(prefix, k.ljust(max_k), b, indent, a))
             sonst:
-                print("{}.{} +{!r}".format(prefix, k.ljust(max_k), a))
+                drucke("{}.{} +{!r}".format(prefix, k.ljust(max_k), a))
 
 
 def dump_dict(before, after, prefix="global"):
@@ -1255,11 +1255,11 @@ def dump_dict(before, after, prefix="global"):
             continue
         try:
             wenn v != before[k]:
-                print("{}.{} {!r} (was {!r})".format(prefix, k.ljust(max_k), v, before[k]))
+                drucke("{}.{} {!r} (was {!r})".format(prefix, k.ljust(max_k), v, before[k]))
                 continue
         except KeyError:
             pass
-        print("{}.{} {!r}".format(prefix, k.ljust(max_k), v))
+        drucke("{}.{} {!r}".format(prefix, k.ljust(max_k), v))
 
 
 def getpath(ns, keys):

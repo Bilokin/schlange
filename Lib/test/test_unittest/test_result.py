@@ -24,12 +24,12 @@ def restore_traceback():
 
 
 def bad_cleanup1():
-    print('do cleanup1')
+    drucke('do cleanup1')
     raise TypeError('bad cleanup1')
 
 
 def bad_cleanup2():
-    print('do cleanup2')
+    drucke('do cleanup2')
     raise ValueError('bad cleanup2')
 
 
@@ -811,8 +811,8 @@ klasse TestOutputBuffering(unittest.TestCase):
         result._original_stdout = io.StringIO()
         result._original_stderr = io.StringIO()
 
-        print('foo')
-        print('bar', file=sys.stderr)
+        drucke('foo')
+        drucke('bar', file=sys.stderr)
 
         self.assertEqual(out_stream.getvalue(), 'foo\n')
         self.assertEqual(err_stream.getvalue(), 'bar\n')
@@ -855,9 +855,9 @@ klasse TestOutputBuffering(unittest.TestCase):
             result._original_stdout = io.StringIO()
             result._original_stderr = io.StringIO()
 
-            print('foo', file=sys.stdout)
+            drucke('foo', file=sys.stdout)
             wenn include_error:
-                print('bar', file=sys.stderr)
+                drucke('bar', file=sys.stderr)
 
 
             addFunction = getattr(result, add_attr)
@@ -893,7 +893,7 @@ klasse TestOutputBuffering(unittest.TestCase):
 
         klasse Foo(unittest.TestCase):
             def setUp(self):
-                print('set up')
+                drucke('set up')
                 1/0
             def test_foo(self):
                 pass
@@ -915,7 +915,7 @@ klasse TestOutputBuffering(unittest.TestCase):
 
         klasse Foo(unittest.TestCase):
             def tearDown(self):
-                print('tear down')
+                drucke('tear down')
                 1/0
             def test_foo(self):
                 pass
@@ -937,7 +937,7 @@ klasse TestOutputBuffering(unittest.TestCase):
 
         klasse Foo(unittest.TestCase):
             def setUp(self):
-                print('set up')
+                drucke('set up')
                 self.addCleanup(bad_cleanup1)
                 self.addCleanup(bad_cleanup2)
             def test_foo(self):
@@ -967,7 +967,7 @@ klasse TestOutputBuffering(unittest.TestCase):
 
         klasse Foo(unittest.TestCase):
             def setUp(self):
-                print('set up')
+                drucke('set up')
                 self.addCleanup(bad_cleanup1)
                 self.addCleanup(bad_cleanup2)
                 1/0
@@ -1008,11 +1008,11 @@ klasse TestOutputBuffering(unittest.TestCase):
 
         klasse Foo(unittest.TestCase):
             def setUp(self):
-                print('set up')
+                drucke('set up')
                 self.addCleanup(bad_cleanup1)
                 self.addCleanup(bad_cleanup2)
             def tearDown(self):
-                print('tear down')
+                drucke('tear down')
                 1/0
             def test_foo(self):
                 pass
@@ -1052,7 +1052,7 @@ klasse TestOutputBuffering(unittest.TestCase):
         klasse Foo(unittest.TestCase):
             @classmethod
             def setUpClass(cls):
-                print('set up class')
+                drucke('set up class')
                 1/0
             def test_foo(self):
                 pass
@@ -1075,7 +1075,7 @@ klasse TestOutputBuffering(unittest.TestCase):
         klasse Foo(unittest.TestCase):
             @classmethod
             def tearDownClass(cls):
-                print('tear down class')
+                drucke('tear down class')
                 1/0
             def test_foo(self):
                 pass
@@ -1098,12 +1098,12 @@ klasse TestOutputBuffering(unittest.TestCase):
         klasse Foo(unittest.TestCase):
             @classmethod
             def setUpClass(cls):
-                print('set up class')
+                drucke('set up class')
                 cls.addClassCleanup(bad_cleanup1)
                 cls.addClassCleanup(bad_cleanup2)
             @classmethod
             def tearDownClass(cls):
-                print('tear down class')
+                drucke('tear down class')
             def test_foo(self):
                 pass
         suite = unittest.TestSuite([Foo('test_foo')])
@@ -1131,7 +1131,7 @@ klasse TestOutputBuffering(unittest.TestCase):
         klasse Foo(unittest.TestCase):
             @classmethod
             def setUpClass(cls):
-                print('set up class')
+                drucke('set up class')
                 cls.addClassCleanup(bad_cleanup1)
                 cls.addClassCleanup(bad_cleanup2)
                 1/0
@@ -1170,12 +1170,12 @@ klasse TestOutputBuffering(unittest.TestCase):
         klasse Foo(unittest.TestCase):
             @classmethod
             def setUpClass(cls):
-                print('set up class')
+                drucke('set up class')
                 cls.addClassCleanup(bad_cleanup1)
                 cls.addClassCleanup(bad_cleanup2)
             @classmethod
             def tearDownClass(cls):
-                print('tear down class')
+                drucke('tear down class')
                 1/0
             def test_foo(self):
                 pass
@@ -1215,7 +1215,7 @@ klasse TestOutputBuffering(unittest.TestCase):
         klasse Module(object):
             @staticmethod
             def setUpModule():
-                print('set up module')
+                drucke('set up module')
                 1/0
 
         Foo.__module__ = 'Module'
@@ -1243,7 +1243,7 @@ klasse TestOutputBuffering(unittest.TestCase):
         klasse Module(object):
             @staticmethod
             def tearDownModule():
-                print('tear down module')
+                drucke('tear down module')
                 1/0
 
         Foo.__module__ = 'Module'
@@ -1271,7 +1271,7 @@ klasse TestOutputBuffering(unittest.TestCase):
         klasse Module(object):
             @staticmethod
             def setUpModule():
-                print('set up module')
+                drucke('set up module')
                 unittest.addModuleCleanup(bad_cleanup1)
                 unittest.addModuleCleanup(bad_cleanup2)
 
@@ -1309,7 +1309,7 @@ klasse TestOutputBuffering(unittest.TestCase):
         klasse Module(object):
             @staticmethod
             def setUpModule():
-                print('set up module')
+                drucke('set up module')
                 unittest.addModuleCleanup(bad_cleanup1)
                 unittest.addModuleCleanup(bad_cleanup2)
                 1/0
@@ -1360,12 +1360,12 @@ klasse TestOutputBuffering(unittest.TestCase):
         klasse Module(object):
             @staticmethod
             def setUpModule():
-                print('set up module')
+                drucke('set up module')
                 unittest.addModuleCleanup(bad_cleanup1)
                 unittest.addModuleCleanup(bad_cleanup2)
             @staticmethod
             def tearDownModule():
-                print('tear down module')
+                drucke('tear down module')
                 1/0
 
         Foo.__module__ = 'Module'

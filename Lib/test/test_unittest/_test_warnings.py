@@ -59,4 +59,4 @@ wenn __name__ == '__main__':
 
     # print all the warning messages collected
     fuer w in ws:
-        print(w.message)
+        drucke(w.message)

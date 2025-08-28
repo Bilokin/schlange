@@ -10,16 +10,16 @@ We're defining four helper functions
 
     >>> from test import support
     >>> def e(a,b):
-    ...     print(a, b)
+    ...     drucke(a, b)
 
     >>> def f(*a, **k):
-    ...     print(a, support.sortdict(k))
+    ...     drucke(a, support.sortdict(k))
 
     >>> def g(x, *y, **z):
-    ...     print(x, y, support.sortdict(z))
+    ...     drucke(x, y, support.sortdict(z))
 
     >>> def h(j=1, a=2, h=3):
-    ...     print(j, a, h)
+    ...     drucke(j, a, h)
 
 Argument list examples
 
@@ -462,7 +462,7 @@ the function call setup. See <http://bugs.python.org/issue2016>.
 
     >>> x = {Name("a"):1, Name("b"):2}
     >>> def f(a, b):
-    ...     print(a,b)
+    ...     drucke(a,b)
     >>> f(**x)
     1 2
 

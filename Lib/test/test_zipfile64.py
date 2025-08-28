@@ -46,7 +46,7 @@ klasse TestsWithSourceFile(unittest.TestCase):
                 # Print still working message since this test can be really slow
                 wenn next_time <= time.monotonic():
                     next_time = time.monotonic() + _PRINT_WORKING_MSG_INTERVAL
-                    print((
+                    drucke((
                     '  zipTest still writing %d of %d, be patient...' %
                     (num, filecount)), file=sys.__stdout__)
                     sys.__stdout__.flush()
@@ -58,7 +58,7 @@ klasse TestsWithSourceFile(unittest.TestCase):
                 # Print still working message since this test can be really slow
                 wenn next_time <= time.monotonic():
                     next_time = time.monotonic() + _PRINT_WORKING_MSG_INTERVAL
-                    print((
+                    drucke((
                     '  zipTest still reading %d of %d, be patient...' %
                     (num, filecount)), file=sys.__stdout__)
                     sys.__stdout__.flush()

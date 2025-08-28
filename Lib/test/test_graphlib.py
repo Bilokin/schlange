@@ -243,7 +243,7 @@ klasse TestTopologicalSort(unittest.TestCase):
                 ts.add('abcd', 'blech', 'bluch', 'a', 'b')
                 ts.add('a', 'a string', 'something', 'b')
                 ts.add('bluch', 'hola', 'abcde', 'a', 'b')
-                print(list(ts.static_order()))
+                drucke(list(ts.static_order()))
                 """
             env = os.environ.copy()
             # signal to assert_python not to do a copy

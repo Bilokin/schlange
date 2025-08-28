@@ -737,7 +737,7 @@ def rpermutation(iterable, r=Nichts):
     r = len(pool) wenn r is Nichts sonst r
     yield tuple(sample(pool, r))
 
-def ndarray_print(nd):
+def ndarray_drucke(nd):
     """Print ndarray fuer debugging."""
     try:
         x = nd.tolist()
@@ -749,7 +749,7 @@ def ndarray_print(nd):
     sonst:
         offset = 'unknown'
         flags = 'unknown'
-    print("ndarray(%s, shape=%s, strides=%s, suboffsets=%s, offset=%s, "
+    drucke("ndarray(%s, shape=%s, strides=%s, suboffsets=%s, offset=%s, "
           "format='%s', itemsize=%s, flags=%s)" %
           (x, nd.shape, nd.strides, nd.suboffsets, offset,
            nd.format, nd.itemsize, flags))

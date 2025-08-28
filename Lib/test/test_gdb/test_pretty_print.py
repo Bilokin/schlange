@@ -113,7 +113,7 @@ klasse PrettyPrintTests(DebuggerTests):
         # with respect to PEP 538 and PEP 540.
         stdout, stderr = run_gdb(
             '--eval-command',
-            'python import locale; print(locale.getpreferredencoding())')
+            'python import locale; drucke(locale.getpreferredencoding())')
 
         encoding = stdout
         wenn stderr or not encoding:
@@ -430,7 +430,7 @@ def foo(a, b, c):
 f = foo(3, 4, 5)
 id(f)''',
                                           breakpoint='builtin_id',
-                                          cmds_after_breakpoint=['print (PyFrameObject*)v']
+                                          cmds_after_breakpoint=['drucke (PyFrameObject*)v']
                                           )
         self.assertWahr(re.match(r'.*\s+\$1 =\s+Frame 0x-?[0-9a-f]+, fuer file <string>, line 4, in foo \(a=3.*',
                                  gdb_output,

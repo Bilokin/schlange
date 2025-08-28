@@ -132,7 +132,7 @@ def start_threads(threads, unlock=Nichts):
                 started.append(t)
         except:
             wenn support.verbose:
-                print("Can't start %d threads, only %d threads started" %
+                drucke("Can't start %d threads, only %d threads started" %
                       (len(threads), len(started)))
             raise
         yield
@@ -149,7 +149,7 @@ def start_threads(threads, unlock=Nichts):
                 wenn not started:
                     break
                 wenn support.verbose:
-                    print('Unable to join %d threads during a period of '
+                    drucke('Unable to join %d threads during a period of '
                           '%d minutes' % (len(started), timeout))
         finally:
             started = [t fuer t in started wenn t.is_alive()]

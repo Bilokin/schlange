@@ -873,7 +873,7 @@ klasse EventLoopTestsMixin:
                 response = csock.recv(99)
                 csock.close()
             except Exception as exc:
-                print(
+                drucke(
                     "Failure in client thread in test_connect_accepted_socket",
                     exc)
 

@@ -129,7 +129,7 @@ klasse Stats:
         try:
             self.get_top_level_stats()
         except Exception:
-            print("Invalid timing data %s" %
+            drucke("Invalid timing data %s" %
                   (self.files[-1] wenn self.files sonst ''), file=self.stream)
             raise
 
@@ -404,7 +404,7 @@ klasse Stats:
 
         wenn not stat_list:
             return 0, stat_list
-        print(msg, file=self.stream)
+        drucke(msg, file=self.stream)
         wenn count < len(self.stats):
             width = 0
             fuer func in stat_list:
@@ -414,25 +414,25 @@ klasse Stats:
 
     def print_stats(self, *amount):
         fuer filename in self.files:
-            print(filename, file=self.stream)
+            drucke(filename, file=self.stream)
         wenn self.files:
-            print(file=self.stream)
+            drucke(file=self.stream)
         indent = ' ' * 8
         fuer func in self.top_level:
-            print(indent, func_get_function_name(func), file=self.stream)
+            drucke(indent, func_get_function_name(func), file=self.stream)
 
-        print(indent, self.total_calls, "function calls", end=' ', file=self.stream)
+        drucke(indent, self.total_calls, "function calls", end=' ', file=self.stream)
         wenn self.total_calls != self.prim_calls:
-            print("(%d primitive calls)" % self.prim_calls, end=' ', file=self.stream)
-        print("in %.3f seconds" % self.total_tt, file=self.stream)
-        print(file=self.stream)
+            drucke("(%d primitive calls)" % self.prim_calls, end=' ', file=self.stream)
+        drucke("in %.3f seconds" % self.total_tt, file=self.stream)
+        drucke(file=self.stream)
         width, list = self.get_print_list(amount)
         wenn list:
             self.print_title()
             fuer func in list:
                 self.print_line(func)
-            print(file=self.stream)
-            print(file=self.stream)
+            drucke(file=self.stream)
+            drucke(file=self.stream)
         return self
 
     def print_callees(self, *amount):
@@ -446,8 +446,8 @@ klasse Stats:
                     self.print_call_line(width, func, self.all_callees[func])
                 sonst:
                     self.print_call_line(width, func, {})
-            print(file=self.stream)
-            print(file=self.stream)
+            drucke(file=self.stream)
+            drucke(file=self.stream)
         return self
 
     def print_callers(self, *amount):
@@ -457,12 +457,12 @@ klasse Stats:
             fuer func in list:
                 cc, nc, tt, ct, callers = self.stats[func]
                 self.print_call_line(width, func, callers, "<-")
-            print(file=self.stream)
-            print(file=self.stream)
+            drucke(file=self.stream)
+            drucke(file=self.stream)
         return self
 
     def print_call_heading(self, name_size, column_title):
-        print("Function ".ljust(name_size) + column_title, file=self.stream)
+        drucke("Function ".ljust(name_size) + column_title, file=self.stream)
         # print sub-header only wenn we have new-style callers
         subheader = Falsch
         fuer cc, nc, tt, ct, callers in self.stats.values():
@@ -474,12 +474,12 @@ klasse Stats:
             self.print_call_subheading(name_size)
 
     def print_call_subheading(self, name_size):
-        print(" "*name_size + "    ncalls  tottime  cumtime", file=self.stream)
+        drucke(" "*name_size + "    ncalls  tottime  cumtime", file=self.stream)
 
     def print_call_line(self, name_size, source, call_dict, arrow="->"):
-        print(func_std_string(source).ljust(name_size) + arrow, end=' ', file=self.stream)
+        drucke(func_std_string(source).ljust(name_size) + arrow, end=' ', file=self.stream)
         wenn not call_dict:
-            print(file=self.stream)
+            drucke(file=self.stream)
             return
         clist = sorted(call_dict.keys())
         indent = ""
@@ -498,30 +498,30 @@ klasse Stats:
             sonst:
                 substats = '%s(%r) %s' % (name, value, f8(self.stats[func][3]))
                 left_width = name_size + 3
-            print(indent*left_width + substats, file=self.stream)
+            drucke(indent*left_width + substats, file=self.stream)
             indent = " "
 
     def print_title(self):
-        print('   ncalls  tottime  percall  cumtime  percall', end=' ', file=self.stream)
-        print('filename:lineno(function)', file=self.stream)
+        drucke('   ncalls  tottime  percall  cumtime  percall', end=' ', file=self.stream)
+        drucke('filename:lineno(function)', file=self.stream)
 
     def print_line(self, func):  # hack: should print percentages
         cc, nc, tt, ct, callers = self.stats[func]
         c = str(nc)
         wenn nc != cc:
             c = c + '/' + str(cc)
-        print(c.rjust(9), end=' ', file=self.stream)
-        print(f8(tt), end=' ', file=self.stream)
+        drucke(c.rjust(9), end=' ', file=self.stream)
+        drucke(f8(tt), end=' ', file=self.stream)
         wenn nc == 0:
-            print(' '*8, end=' ', file=self.stream)
+            drucke(' '*8, end=' ', file=self.stream)
         sonst:
-            print(f8(tt/nc), end=' ', file=self.stream)
-        print(f8(ct), end=' ', file=self.stream)
+            drucke(f8(tt/nc), end=' ', file=self.stream)
+        drucke(f8(ct), end=' ', file=self.stream)
         wenn cc == 0:
-            print(' '*8, end=' ', file=self.stream)
+            drucke(' '*8, end=' ', file=self.stream)
         sonst:
-            print(f8(ct/cc), end=' ', file=self.stream)
-        print(func_std_string(func), file=self.stream)
+            drucke(f8(ct/cc), end=' ', file=self.stream)
+        drucke(func_std_string(func), file=self.stream)
 
 
 klasse SampledStats(Stats):
@@ -545,11 +545,11 @@ klasse SampledStats(Stats):
               }
 
     def print_call_subheading(self, name_size):
-        print(" "*name_size + "    nsamples  tottime  cumtime", file=self.stream)
+        drucke(" "*name_size + "    nsamples  tottime  cumtime", file=self.stream)
 
     def print_title(self):
-        print(' nsamples  tottime persample cumtime persample', end=' ', file=self.stream)
-        print('filename:lineno(function)', file=self.stream)
+        drucke(' nsamples  tottime persample cumtime persample', end=' ', file=self.stream)
+        drucke('filename:lineno(function)', file=self.stream)
 
 
 klasse TupleComp:
@@ -689,7 +689,7 @@ wenn __name__ == '__main__':
                 try:
                     frac = float(term)
                     wenn frac > 1 or frac < 0:
-                        print("Fraction argument must be in [0, 1]", file=self.stream)
+                        drucke("Fraction argument must be in [0, 1]", file=self.stream)
                         continue
                     processed.append(frac)
                     continue
@@ -699,50 +699,50 @@ wenn __name__ == '__main__':
             wenn self.stats:
                 getattr(self.stats, fn)(*processed)
             sonst:
-                print("No statistics object is loaded.", file=self.stream)
+                drucke("No statistics object is loaded.", file=self.stream)
             return 0
         def generic_help(self):
-            print("Arguments may be:", file=self.stream)
-            print("* An integer maximum number of entries to print.", file=self.stream)
-            print("* A decimal fractional number between 0 and 1, controlling", file=self.stream)
-            print("  what fraction of selected entries to print.", file=self.stream)
-            print("* A regular expression; only entries with function names", file=self.stream)
-            print("  that match it are printed.", file=self.stream)
+            drucke("Arguments may be:", file=self.stream)
+            drucke("* An integer maximum number of entries to print.", file=self.stream)
+            drucke("* A decimal fractional number between 0 and 1, controlling", file=self.stream)
+            drucke("  what fraction of selected entries to print.", file=self.stream)
+            drucke("* A regular expression; only entries with function names", file=self.stream)
+            drucke("  that match it are printed.", file=self.stream)
 
         def do_add(self, line):
             wenn self.stats:
                 try:
                     self.stats.add(line)
                 except OSError as e:
-                    print("Failed to load statistics fuer %s: %s" % (line, e), file=self.stream)
+                    drucke("Failed to load statistics fuer %s: %s" % (line, e), file=self.stream)
             sonst:
-                print("No statistics object is loaded.", file=self.stream)
+                drucke("No statistics object is loaded.", file=self.stream)
             return 0
         def help_add(self):
-            print("Add profile info from given file to current statistics object.", file=self.stream)
+            drucke("Add profile info from given file to current statistics object.", file=self.stream)
 
         def do_callees(self, line):
             return self.generic('print_callees', line)
         def help_callees(self):
-            print("Print callees statistics from the current stat object.", file=self.stream)
+            drucke("Print callees statistics from the current stat object.", file=self.stream)
             self.generic_help()
 
         def do_callers(self, line):
             return self.generic('print_callers', line)
         def help_callers(self):
-            print("Print callers statistics from the current stat object.", file=self.stream)
+            drucke("Print callers statistics from the current stat object.", file=self.stream)
             self.generic_help()
 
         def do_EOF(self, line):
-            print("", file=self.stream)
+            drucke("", file=self.stream)
             return 1
         def help_EOF(self):
-            print("Leave the profile browser.", file=self.stream)
+            drucke("Leave the profile browser.", file=self.stream)
 
         def do_quit(self, line):
             return 1
         def help_quit(self):
-            print("Leave the profile browser.", file=self.stream)
+            drucke("Leave the profile browser.", file=self.stream)
 
         def do_read(self, line):
             wenn line:
@@ -757,65 +757,65 @@ wenn __name__ == '__main__':
                         arg = line
                     self.stats.files = [arg]
                 except OSError as err:
-                    print(err.args[1], file=self.stream)
+                    drucke(err.args[1], file=self.stream)
                     return
                 except Exception as err:
-                    print(err.__class__.__name__ + ':', err, file=self.stream)
+                    drucke(err.__class__.__name__ + ':', err, file=self.stream)
                     return
                 self.prompt = line + "% "
             sowenn len(self.prompt) > 2:
                 line = self.prompt[:-2]
                 self.do_read(line)
             sonst:
-                print("No statistics object is current -- cannot reload.", file=self.stream)
+                drucke("No statistics object is current -- cannot reload.", file=self.stream)
             return 0
         def help_read(self):
-            print("Read in profile data from a specified file.", file=self.stream)
-            print("Without argument, reload the current file.", file=self.stream)
+            drucke("Read in profile data from a specified file.", file=self.stream)
+            drucke("Without argument, reload the current file.", file=self.stream)
 
         def do_reverse(self, line):
             wenn self.stats:
                 self.stats.reverse_order()
             sonst:
-                print("No statistics object is loaded.", file=self.stream)
+                drucke("No statistics object is loaded.", file=self.stream)
             return 0
         def help_reverse(self):
-            print("Reverse the sort order of the profiling report.", file=self.stream)
+            drucke("Reverse the sort order of the profiling report.", file=self.stream)
 
         def do_sort(self, line):
             wenn not self.stats:
-                print("No statistics object is loaded.", file=self.stream)
+                drucke("No statistics object is loaded.", file=self.stream)
                 return
             abbrevs = self.stats.get_sort_arg_defs()
             wenn line and all((x in abbrevs) fuer x in line.split()):
                 self.stats.sort_stats(*line.split())
             sonst:
-                print("Valid sort keys (unique prefixes are accepted):", file=self.stream)
+                drucke("Valid sort keys (unique prefixes are accepted):", file=self.stream)
                 fuer (key, value) in Stats.sort_arg_dict_default.items():
-                    print("%s -- %s" % (key, value[1]), file=self.stream)
+                    drucke("%s -- %s" % (key, value[1]), file=self.stream)
             return 0
         def help_sort(self):
-            print("Sort profile data according to specified keys.", file=self.stream)
-            print("(Typing `sort' without arguments lists valid keys.)", file=self.stream)
+            drucke("Sort profile data according to specified keys.", file=self.stream)
+            drucke("(Typing `sort' without arguments lists valid keys.)", file=self.stream)
         def complete_sort(self, text, *args):
             return [a fuer a in Stats.sort_arg_dict_default wenn a.startswith(text)]
 
         def do_stats(self, line):
             return self.generic('print_stats', line)
         def help_stats(self):
-            print("Print statistics from the current stat object.", file=self.stream)
+            drucke("Print statistics from the current stat object.", file=self.stream)
             self.generic_help()
 
         def do_strip(self, line):
             wenn self.stats:
                 self.stats.strip_dirs()
             sonst:
-                print("No statistics object is loaded.", file=self.stream)
+                drucke("No statistics object is loaded.", file=self.stream)
         def help_strip(self):
-            print("Strip leading path information from filenames in the report.", file=self.stream)
+            drucke("Strip leading path information from filenames in the report.", file=self.stream)
 
         def help_help(self):
-            print("Show help fuer a given command.", file=self.stream)
+            drucke("Show help fuer a given command.", file=self.stream)
 
         def postcmd(self, stop, line):
             wenn stop:
@@ -830,9 +830,9 @@ wenn __name__ == '__main__':
         browser = ProfileBrowser(initprofile)
         fuer profile in sys.argv[2:]:
             browser.do_add(profile)
-        print("Welcome to the profile statistics browser.", file=browser.stream)
+        drucke("Welcome to the profile statistics browser.", file=browser.stream)
         browser.cmdloop()
-        print("Goodbye.", file=browser.stream)
+        drucke("Goodbye.", file=browser.stream)
     except KeyboardInterrupt:
         pass
 

@@ -120,45 +120,45 @@ klasse SubPattern:
     def dump(self, level=0):
         seqtypes = (tuple, list)
         fuer op, av in self.data:
-            print(level*"  " + str(op), end='')
+            drucke(level*"  " + str(op), end='')
             wenn op is IN:
                 # member sublanguage
-                print()
+                drucke()
                 fuer op, a in av:
-                    print((level+1)*"  " + str(op), a)
+                    drucke((level+1)*"  " + str(op), a)
             sowenn op is BRANCH:
-                print()
+                drucke()
                 fuer i, a in enumerate(av[1]):
                     wenn i:
-                        print(level*"  " + "OR")
+                        drucke(level*"  " + "OR")
                     a.dump(level+1)
             sowenn op is GROUPREF_EXISTS:
                 condgroup, item_yes, item_no = av
-                print('', condgroup)
+                drucke('', condgroup)
                 item_yes.dump(level+1)
                 wenn item_no:
-                    print(level*"  " + "ELSE")
+                    drucke(level*"  " + "ELSE")
                     item_no.dump(level+1)
             sowenn isinstance(av, SubPattern):
-                print()
+                drucke()
                 av.dump(level+1)
             sowenn isinstance(av, seqtypes):
                 nl = Falsch
                 fuer a in av:
                     wenn isinstance(a, SubPattern):
                         wenn not nl:
-                            print()
+                            drucke()
                         a.dump(level+1)
                         nl = Wahr
                     sonst:
                         wenn not nl:
-                            print(' ', end='')
-                        print(a, end='')
+                            drucke(' ', end='')
+                        drucke(a, end='')
                         nl = Falsch
                 wenn not nl:
-                    print()
+                    drucke()
             sonst:
-                print('', av)
+                drucke('', av)
     def __repr__(self):
         return repr(self.data)
     def __len__(self):

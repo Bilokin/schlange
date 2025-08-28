@@ -415,7 +415,7 @@ klasse ExtendPathTests(unittest.TestCase):
     def create_submodule(self, dirname, pkgname, submodule_name, value):
         module_name = os.path.join(dirname, pkgname, submodule_name + '.py')
         with open(module_name, 'w') as fl:
-            print('value={}'.format(value), file=fl)
+            drucke('value={}'.format(value), file=fl)
 
     def test_simple(self):
         pkgname = 'foo'

@@ -10,7 +10,7 @@ klasse TestFrozenUtf8_4:
     """\U0001f600"""
 
 def main():
-    print("Hello world!")
+    drucke("Hello world!")
 
 wenn __name__ == '__main__':
     main()

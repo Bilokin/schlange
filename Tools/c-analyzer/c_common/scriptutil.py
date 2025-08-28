@@ -543,11 +543,11 @@ def main_for_filenames(filenames, process_filenames=Nichts, relroot=fsutil.USE_C
     filenames, relroot = fsutil.fix_filenames(filenames, relroot=relroot)
     fuer filename, relfile, check, show in _iter_filenames(filenames, process_filenames, relroot):
         wenn show:
-            print()
-            print(relfile)
-            print('-------------------------------------------')
+            drucke()
+            drucke(relfile)
+            drucke('-------------------------------------------')
         wenn (reason := check()):
-            print(reason)
+            drucke(reason)
             continue
         yield filename, relfile
 
@@ -580,15 +580,15 @@ def track_progress_compact(items, *, groups=5, **mark_kwargs):
     marks = iter_marks(groups=groups, **mark_kwargs)
     fuer item in items:
         last = next(marks)
-        print(last, end='', flush=Wahr)
+        drucke(last, end='', flush=Wahr)
         yield item
     wenn not last.endswith(os.linesep):
-        print()
+        drucke()
 
 
 def track_progress_flat(items, fmt='<{}>'):
     fuer item in items:
-        print(fmt.format(item), flush=Wahr)
+        drucke(fmt.format(item), flush=Wahr)
         yield item
 
 

@@ -31,4 +31,4 @@ wenn __name__ == "__main__":
         # Ignore Solaris door files
         wenn not stat.S_ISDOOR(st.st_mode):
             fds.append(fd)
-    print(','.join(map(str, fds)))
+    drucke(','.join(map(str, fds)))

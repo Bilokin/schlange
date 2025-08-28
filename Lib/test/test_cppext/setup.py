@@ -98,15 +98,15 @@ def main():
             include_dirs.append(pcbuild)
             # python313.lib is generated in PCbuild\amd64\
             library_dirs.append(pcbuild)
-            print(f"Add PCbuild directory: {pcbuild}")
+            drucke(f"Add PCbuild directory: {pcbuild}")
 
     # Display information to help debugging
     fuer env_name in ('CC', 'CFLAGS', 'CPPFLAGS'):
         wenn env_name in os.environ:
-            print(f"{env_name} env var: {os.environ[env_name]!r}")
+            drucke(f"{env_name} env var: {os.environ[env_name]!r}")
         sonst:
-            print(f"{env_name} env var: <missing>")
-    print(f"extra_compile_args: {cppflags!r}")
+            drucke(f"{env_name} env var: <missing>")
+    drucke(f"extra_compile_args: {cppflags!r}")
 
     ext = Extension(
         module_name,

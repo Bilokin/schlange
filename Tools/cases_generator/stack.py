@@ -269,7 +269,7 @@ klasse Stack:
         c_offset = (self.base_offset - self.physical_sp).to_c()
         assign = f"{var.name} = {indirect}stack_pointer[{c_offset}];\n"
         out.emit(assign)
-        self._print(out)
+        self._drucke(out)
         return Local.from_memory(var, self.base_offset)
 
     def clear(self, out: CWriter) -> Nichts:
@@ -298,7 +298,7 @@ klasse Stack:
             out.emit(f"stack_pointer += {diff.to_c()};\n")
             out.emit(f"assert(WITHIN_STACK_BOUNDS());\n")
             self.physical_sp = self.logical_sp
-            self._print(out)
+            self._drucke(out)
 
     def save_variables(self, out: CWriter) -> Nichts:
         out.start_line()
@@ -309,15 +309,15 @@ klasse Stack:
                 not var.memory_offset and
                 not var.is_array()
             ):
-                self._print(out)
+                self._drucke(out)
                 var.memory_offset = var_offset
                 stack_offset = var_offset - self.physical_sp
                 Stack._do_emit(out, var.item, stack_offset)
-                self._print(out)
+                self._drucke(out)
             var_offset = var_offset.push(var.item)
 
     def flush(self, out: CWriter) -> Nichts:
-        self._print(out)
+        self._drucke(out)
         self.save_variables(out)
         self._save_physical_sp(out)
         out.start_line()
@@ -337,7 +337,7 @@ klasse Stack:
             f"/* Variables=[{variables}]; base={self.base_offset.to_c()}; sp={self.physical_sp.to_c()}; logical_sp={self.logical_sp.to_c()} */"
         )
 
-    def _print(self, out: CWriter) -> Nichts:
+    def _drucke(self, out: CWriter) -> Nichts:
         wenn PRINT_STACKS:
             out.emit(self.as_comment() + "\n")
 
@@ -592,8 +592,8 @@ klasse Storage:
             other.clear_dead_inputs()
         wenn len(self.inputs) != len(other.inputs) and self.check_liveness:
             diff = self.inputs[-1] wenn len(self.inputs) > len(other.inputs) sonst other.inputs[-1]
-            self._print(out)
-            other._print(out)
+            self._drucke(out)
+            other._drucke(out)
             raise StackError(f"Unmergeable inputs. Differing state of '{diff.name}'")
         fuer var, other_var in zip(self.inputs, other.inputs):
             wenn var.in_local != other_var.in_local:
@@ -633,7 +633,7 @@ klasse Storage:
         outputs = ", ".join([var.compact_str() fuer var in self.outputs])
         return f"{stack_comment[:-2]}{next_line}inputs: {inputs} outputs: {outputs}*/"
 
-    def _print(self, out: CWriter) -> Nichts:
+    def _drucke(self, out: CWriter) -> Nichts:
         wenn PRINT_STACKS:
             out.emit(self.as_comment() + "\n")
 

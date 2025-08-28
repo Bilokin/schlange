@@ -720,7 +720,7 @@ klasse TestIncompleteFrameAreInvisible(unittest.TestCase):
             gc.set_threshold(1,1,1)
             klasse GCHello:
                 def __del__(self):
-                    print("Destroyed from gc")
+                    drucke("Destroyed from gc")
 
             def gen():
                 yield

@@ -123,7 +123,7 @@ klasse AllTest(unittest.TestCase):
             wenn denied:
                 continue
             wenn support.verbose:
-                print(f"Check {modname}", flush=Wahr)
+                drucke(f"Check {modname}", flush=Wahr)
             try:
                 # This heuristic speeds up the process by removing, de facto,
                 # most test modules (and avoiding the auto-executing ones).
@@ -137,9 +137,9 @@ klasse AllTest(unittest.TestCase):
                 failed_imports.append(modname)
 
         wenn support.verbose:
-            print('Following modules have no __all__ and have been ignored:',
+            drucke('Following modules have no __all__ and have been ignored:',
                   ignored)
-            print('Following modules failed to be imported:', failed_imports)
+            drucke('Following modules failed to be imported:', failed_imports)
 
 
 wenn __name__ == "__main__":

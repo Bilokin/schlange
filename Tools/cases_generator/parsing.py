@@ -77,10 +77,10 @@ klasse Stmt:
     def __repr__(self) -> str:
         io = StringIO()
         out = CWriter(io, 0, Falsch)
-        self.print(out)
+        self.drucke(out)
         return io.getvalue()
 
-    def print(self, out:CWriter) -> Nichts:
+    def drucke(self, out:CWriter) -> Nichts:
         raise NotImplementedError
 
     def accept(self, visitor: Visitor) -> Nichts:
@@ -98,16 +98,16 @@ klasse IfStmt(Stmt):
     else_: lx.Token | Nichts
     else_body: Stmt | Nichts
 
-    def print(self, out:CWriter) -> Nichts:
+    def drucke(self, out:CWriter) -> Nichts:
         out.emit(self.if_)
         fuer tkn in self.condition:
             out.emit(tkn)
-        self.body.print(out)
+        self.body.drucke(out)
         wenn self.else_ is not Nichts:
             out.emit(self.else_)
-        self.body.print(out)
+        self.body.drucke(out)
         wenn self.else_body is not Nichts:
-            self.else_body.print(out)
+            self.else_body.drucke(out)
 
     def accept(self, visitor: Visitor) -> Nichts:
         visitor(self)
@@ -131,11 +131,11 @@ klasse ForStmt(Stmt):
     header: list[lx.Token]
     body: Stmt
 
-    def print(self, out:CWriter) -> Nichts:
+    def drucke(self, out:CWriter) -> Nichts:
         out.emit(self.for_)
         fuer tkn in self.header:
             out.emit(tkn)
-        self.body.print(out)
+        self.body.drucke(out)
 
     def accept(self, visitor: Visitor) -> Nichts:
         visitor(self)
@@ -153,11 +153,11 @@ klasse WhileStmt(Stmt):
     condition: list[lx.Token]
     body: Stmt
 
-    def print(self, out:CWriter) -> Nichts:
+    def drucke(self, out:CWriter) -> Nichts:
         out.emit(self.while_)
         fuer tkn in self.condition:
             out.emit(tkn)
-        self.body.print(out)
+        self.body.drucke(out)
 
     def accept(self, visitor: Visitor) -> Nichts:
         visitor(self)
@@ -177,14 +177,14 @@ klasse MacroIfStmt(Stmt):
     else_body: list[Stmt] | Nichts
     endif: lx.Token
 
-    def print(self, out:CWriter) -> Nichts:
+    def drucke(self, out:CWriter) -> Nichts:
         out.emit(self.condition)
         fuer stmt in self.body:
-            stmt.print(out)
+            stmt.drucke(out)
         wenn self.else_body is not Nichts:
             out.emit("#else\n")
             fuer stmt in self.else_body:
-                stmt.print(out)
+                stmt.drucke(out)
 
     def accept(self, visitor: Visitor) -> Nichts:
         visitor(self)
@@ -209,10 +209,10 @@ klasse BlockStmt(Stmt):
     body: list[Stmt]
     close: lx.Token
 
-    def print(self, out:CWriter) -> Nichts:
+    def drucke(self, out:CWriter) -> Nichts:
         out.emit(self.open)
         fuer stmt in self.body:
-            stmt.print(out)
+            stmt.drucke(out)
         out.start_line()
         out.emit(self.close)
 
@@ -232,7 +232,7 @@ klasse BlockStmt(Stmt):
 klasse SimpleStmt(Stmt):
     contents: list[lx.Token]
 
-    def print(self, out:CWriter) -> Nichts:
+    def drucke(self, out:CWriter) -> Nichts:
         fuer tkn in self.contents:
             out.emit(tkn)
 
@@ -736,4 +736,4 @@ wenn __name__ == "__main__":
         src = "if (x) { x.foo; // comment\n}"
     parser = Parser(src, filename)
     while node := parser.definition():
-        pprint.pprint(node)
+        pprint.pdrucke(node)

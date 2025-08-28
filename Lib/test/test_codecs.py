@@ -1349,7 +1349,7 @@ punycode_testcases = [
 
 fuer i in punycode_testcases:
     wenn len(i)!=2:
-        print(repr(i))
+        drucke(repr(i))
 
 
 klasse PunycodeTest(unittest.TestCase):
@@ -3508,7 +3508,7 @@ klasse CodePageTest(unittest.TestCase):
                 self.assertEqual(codecs.code_page_decode(cp, b'abc'), ('abc', 3), f'cp{cp}')
             sonst:
                 wenn support.verbose:
-                    print(f"  skipping cp={cp}")
+                    drucke(f"  skipping cp={cp}")
         self.assertEqual(codecs.code_page_decode(42, b'abc'),
                          ('\uf061\uf062\uf063', 3))
 

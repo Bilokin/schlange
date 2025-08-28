@@ -30,11 +30,11 @@ def status(message, modal=Falsch, info=Nichts):
             sys.stdout.flush()
             result = fxn(*args, **kwargs)
             wenn not modal and not info:
-                print("done")
+                drucke("done")
             sowenn info:
-                print(info(result))
+                drucke(info(result))
             sonst:
-                print("yes" wenn result sonst "NO")
+                drucke("yes" wenn result sonst "NO")
             return result
         return call_fxn
     return decorated_fxn
@@ -227,11 +227,11 @@ def main():
     # Test suite run and passed.
     has_c_files = any(fn fuer fn in file_paths wenn fn.endswith(('.c', '.h')))
     has_python_files = any(fn fuer fn in file_paths wenn fn.endswith('.py'))
-    print()
+    drucke()
     wenn has_c_files:
-        print("Did you run the test suite and check fuer refleaks?")
+        drucke("Did you run the test suite and check fuer refleaks?")
     sowenn has_python_files:
-        print("Did you run the test suite?")
+        drucke("Did you run the test suite?")
 
 
 wenn __name__ == '__main__':

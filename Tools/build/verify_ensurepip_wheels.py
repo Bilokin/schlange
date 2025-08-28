@@ -23,13 +23,13 @@ GITHUB_ACTIONS = os.getenv("GITHUB_ACTIONS") == "true"
 def print_notice(file_path: str | Path, message: str) -> Nichts:
     wenn GITHUB_ACTIONS:
         message = f"::notice file={file_path}::{message}"
-    print(message, end="\n\n")
+    drucke(message, end="\n\n")
 
 
 def print_error(file_path: str | Path, message: str) -> Nichts:
     wenn GITHUB_ACTIONS:
         message = f"::error file={file_path}::{message}"
-    print(message, end="\n\n")
+    drucke(message, end="\n\n")
 
 
 def verify_wheel(package_name: str) -> bool:
@@ -45,7 +45,7 @@ def verify_wheel(package_name: str) -> bool:
 
     package_path = package_paths[0]
 
-    print(f"Verifying checksum fuer {package_path}.")
+    drucke(f"Verifying checksum fuer {package_path}.")
 
     # Find the version of the package used by ensurepip
     package_version_match = re.search(
@@ -80,8 +80,8 @@ def verify_wheel(package_name: str) -> bool:
     # Compute the SHA 256 digest of the wheel on disk
     actual_digest = hashlib.sha256(package_path.read_bytes()).hexdigest()
 
-    print(f"Expected digest: {expected_digest}")
-    print(f"Actual digest:   {actual_digest}")
+    drucke(f"Expected digest: {expected_digest}")
+    drucke(f"Actual digest:   {actual_digest}")
 
     wenn actual_digest != expected_digest:
         print_error(

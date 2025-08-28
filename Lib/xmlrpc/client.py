@@ -1315,7 +1315,7 @@ klasse Transport:
 
         while data := stream.read(1024):
             wenn self.verbose:
-                print("body:", repr(data))
+                drucke("body:", repr(data))
             p.feed(data)
 
         wenn stream is not response:
@@ -1488,9 +1488,9 @@ wenn __name__ == "__main__":
     server = ServerProxy("http://localhost:8000")
 
     try:
-        print(server.currentTime.getCurrentTime())
+        drucke(server.currentTime.getCurrentTime())
     except Error as v:
-        print("ERROR", v)
+        drucke("ERROR", v)
 
     multi = MultiCall(server)
     multi.getData()
@@ -1498,6 +1498,6 @@ wenn __name__ == "__main__":
     multi.add(1,2)
     try:
         fuer response in multi():
-            print(response)
+            drucke(response)
     except Error as v:
-        print("ERROR", v)
+        drucke("ERROR", v)

@@ -1,1 +1,1 @@
-print("böse")
+drucke("böse")

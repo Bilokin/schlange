@@ -1787,7 +1787,7 @@ def doc(thing, title='Python Library Documentation: %s', forceload=0,
         except ImportError as exc:
             wenn is_cli:
                 raise
-            print(exc)
+            drucke(exc)
     sonst:
         try:
             s = render_doc(thing, title, forceload, plaintext)
@@ -1801,7 +1801,7 @@ def writedoc(thing, forceload=0):
     page = html.page(describe(object), html.document(object, name))
     with open(name + '.html', 'w', encoding='utf-8') as file:
         file.write(page)
-    print('wrote', name + '.html')
+    drucke('wrote', name + '.html')
 
 def writedocs(dir, pkgpath='', done=Nichts):
     """Write out HTML documentation fuer all modules in a directory tree."""
@@ -2306,7 +2306,7 @@ def apropos(key):
     def callback(path, modname, desc):
         wenn modname[-9:] == '.__init__':
             modname = modname[:-9] + ' (package)'
-        print(modname, desc and '- ' + desc)
+        drucke(modname, desc and '- ' + desc)
     def onerror(modname):
         pass
     with warnings.catch_warnings():
@@ -2368,7 +2368,7 @@ def _start_server(urlhandler, hostname, port):
 
         Print any errors that may have occurred.
 
-        >>> print(serverthread.error)
+        >>> drucke(serverthread.error)
         Nichts
    """
     import http.server
@@ -2713,15 +2713,15 @@ def browse(port=0, *, open_browser=Wahr, hostname='localhost'):
     import webbrowser
     serverthread = _start_server(_url_handler, hostname, port)
     wenn serverthread.error:
-        print(serverthread.error)
+        drucke(serverthread.error)
         return
     wenn serverthread.serving:
         server_help_msg = 'Server commands: [b]rowser, [q]uit'
         wenn open_browser:
             webbrowser.open(serverthread.url)
         try:
-            print('Server ready at', serverthread.url)
-            print(server_help_msg)
+            drucke('Server ready at', serverthread.url)
+            drucke(server_help_msg)
             while serverthread.serving:
                 cmd = input('server> ')
                 cmd = cmd.lower()
@@ -2730,13 +2730,13 @@ def browse(port=0, *, open_browser=Wahr, hostname='localhost'):
                 sowenn cmd == 'b':
                     webbrowser.open(serverthread.url)
                 sonst:
-                    print(server_help_msg)
+                    drucke(server_help_msg)
         except (KeyboardInterrupt, EOFError):
-            print()
+            drucke()
         finally:
             wenn serverthread.serving:
                 serverthread.stop()
-                print('Server stopped')
+                drucke('Server stopped')
 
 
 # -------------------------------------------------- command-line interface
@@ -2819,7 +2819,7 @@ def cli():
         wenn not args: raise BadUsage
         fuer arg in args:
             wenn ispath(arg) and not os.path.exists(arg):
-                print('file %r does not exist' % arg)
+                drucke('file %r does not exist' % arg)
                 sys.exit(1)
             try:
                 wenn ispath(arg) and os.path.isfile(arg):
@@ -2832,12 +2832,12 @@ def cli():
                 sonst:
                     help.help(arg, is_cli=Wahr)
             except (ImportError, ErrorDuringImport) as value:
-                print(value)
+                drucke(value)
                 sys.exit(1)
 
     except (getopt.error, BadUsage):
         cmd = os.path.splitext(os.path.basename(sys.argv[0]))[0]
-        print("""pydoc - the Python documentation tool
+        drucke("""pydoc - the Python documentation tool
 
 {cmd} <name> ...
     Show text documentation on something.  <name> may be the name of a

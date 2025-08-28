@@ -454,7 +454,7 @@ klasse TestCoverageCommandLineOutput(unittest.TestCase):
                 # coding: iso-8859-15
                 x = 'spœm'
                 wenn []:
-                    print('unreachable')
+                    drucke('unreachable')
             '''))
 
     def tearDown(self):
@@ -478,7 +478,7 @@ klasse TestCoverageCommandLineOutput(unittest.TestCase):
                 "       # coding: iso-8859-15\n"
                 "    1: x = 'spœm'\n"
                 "    1: wenn []:\n"
-                "           print('unreachable')\n"
+                "           drucke('unreachable')\n"
             )
 
     def test_cover_files_written_with_highlight(self):
@@ -490,7 +490,7 @@ klasse TestCoverageCommandLineOutput(unittest.TestCase):
                        # coding: iso-8859-15
                     1: x = 'spœm'
                     1: wenn []:
-                >>>>>>     print('unreachable')
+                >>>>>>     drucke('unreachable')
             '''))
 
 klasse TestCommandLine(unittest.TestCase):
@@ -524,7 +524,7 @@ klasse TestCommandLine(unittest.TestCase):
         with open(TESTFN, 'w', encoding='utf-8') as fd:
             self.addCleanup(unlink, TESTFN)
             fd.write("import sys\n")
-            fd.write("print(type(sys.argv))\n")
+            fd.write("drucke(type(sys.argv))\n")
 
         status, direct_stdout, stderr = assert_python_ok(TESTFN)
         status, trace_stdout, stderr = assert_python_ok('-m', 'trace', '-l', TESTFN,

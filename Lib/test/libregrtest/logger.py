@@ -39,7 +39,7 @@ klasse Logger:
         wenn empty:
             line = line[:-1]
 
-        print(line, flush=Wahr)
+        drucke(line, flush=Wahr)
 
     def get_load_avg(self) -> float | Nichts:
         wenn hasattr(os, 'getloadavg'):

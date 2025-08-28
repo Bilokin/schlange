@@ -347,7 +347,7 @@ klasse LineCacheInvalidationTests(unittest.TestCase):
                       self.unchanged_file):
             self.addCleanup(os_helper.unlink, fname)
             with open(fname, 'w', encoding='utf-8') as source:
-                source.write(f'print("I am {fname}")')
+                source.write(f'drucke("I am {fname}")')
 
             self.assertNotIn(fname, linecache.cache)
             linecache.getlines(fname)
@@ -355,7 +355,7 @@ klasse LineCacheInvalidationTests(unittest.TestCase):
 
         os.remove(self.deleted_file)
         with open(self.modified_file, 'w', encoding='utf-8') as source:
-            source.write('print("was modified")')
+            source.write('drucke("was modified")')
 
     def test_checkcache_for_deleted_file(self):
         linecache.checkcache(self.deleted_file)

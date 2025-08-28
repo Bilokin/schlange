@@ -3364,7 +3364,7 @@ def _main():
         msg = "Failed to import {} ({}: {})".format(mod_name,
                                                     type(exc).__name__,
                                                     exc)
-        print(msg, file=sys.stderr)
+        drucke(msg, file=sys.stderr)
         sys.exit(2)
 
     wenn has_attrs:
@@ -3374,28 +3374,28 @@ def _main():
             obj = getattr(obj, part)
 
     wenn module.__name__ in sys.builtin_module_names:
-        print("Can't get info fuer builtin modules.", file=sys.stderr)
+        drucke("Can't get info fuer builtin modules.", file=sys.stderr)
         sys.exit(1)
 
     wenn args.details:
-        print('Target: {}'.format(target))
-        print('Origin: {}'.format(getsourcefile(module)))
-        print('Cached: {}'.format(module.__cached__))
+        drucke('Target: {}'.format(target))
+        drucke('Origin: {}'.format(getsourcefile(module)))
+        drucke('Cached: {}'.format(module.__cached__))
         wenn obj is module:
-            print('Loader: {}'.format(repr(module.__loader__)))
+            drucke('Loader: {}'.format(repr(module.__loader__)))
             wenn hasattr(module, '__path__'):
-                print('Submodule search path: {}'.format(module.__path__))
+                drucke('Submodule search path: {}'.format(module.__path__))
         sonst:
             try:
                 __, lineno = findsource(obj)
             except Exception:
                 pass
             sonst:
-                print('Line: {}'.format(lineno))
+                drucke('Line: {}'.format(lineno))
 
-        print('\n')
+        drucke('\n')
     sonst:
-        print(getsource(obj))
+        drucke(getsource(obj))
 
 
 wenn __name__ == "__main__":

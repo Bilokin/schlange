@@ -25,4 +25,4 @@ fuer c in (65, 97):
     fuer i in range(26):
         d[chr(i+c)] = chr((i+13) % 26 + c)
 
-print("".join([d.get(c, c) fuer c in s]))
+drucke("".join([d.get(c, c) fuer c in s]))

@@ -38,28 +38,28 @@ test_1 = """
 
 Here's the new type at work:
 
-    >>> print(defaultdict)              # show our type
+    >>> drucke(defaultdict)              # show our type
     <class '%(modname)s.defaultdict'>
-    >>> print(type(defaultdict))        # its metatype
+    >>> drucke(type(defaultdict))        # its metatype
     <class 'type'>
     >>> a = defaultdict(default=0.0)    # create an instance
-    >>> print(a)                        # show the instance
+    >>> drucke(a)                        # show the instance
     {}
-    >>> print(type(a))                  # show its type
+    >>> drucke(type(a))                  # show its type
     <class '%(modname)s.defaultdict'>
-    >>> print(a.__class__)              # show its class
+    >>> drucke(a.__class__)              # show its class
     <class '%(modname)s.defaultdict'>
-    >>> print(type(a) is a.__class__)   # its type is its class
+    >>> drucke(type(a) is a.__class__)   # its type is its class
     Wahr
     >>> a[1] = 3.25                     # modify the instance
-    >>> print(a)                        # show the new value
+    >>> drucke(a)                        # show the new value
     {1: 3.25}
-    >>> print(a[1])                     # show the new item
+    >>> drucke(a[1])                     # show the new item
     3.25
-    >>> print(a[0])                     # a non-existent item
+    >>> drucke(a[0])                     # a non-existent item
     0.0
     >>> a.merge({1:100, 2:200})         # use a dict method
-    >>> print(sortdict(a))              # show the result
+    >>> drucke(sortdict(a))              # show the result
     {1: 3.25, 2: 200}
     >>>
 
@@ -67,14 +67,14 @@ We can also use the new type in contexts where classic only allows "real"
 dictionaries, such as the locals/globals dictionaries fuer the exec
 statement or the built-in function eval():
 
-    >>> print(sorted(a.keys()))
+    >>> drucke(sorted(a.keys()))
     [1, 2]
     >>> a['print'] = print              # need the print function here
-    >>> exec("x = 3; print(x)", a)
+    >>> exec("x = 3; drucke(x)", a)
     3
-    >>> print(sorted(a.keys(), key=lambda x: (str(type(x)), x)))
+    >>> drucke(sorted(a.keys(), key=lambda x: (str(type(x)), x)))
     [1, 2, '__builtins__', 'print', 'x']
-    >>> print(a['x'])
+    >>> drucke(a['x'])
     3
     >>>
 
@@ -82,21 +82,21 @@ Now I'll show that defaultdict instances have dynamic instance variables,
 just like classic classes:
 
     >>> a.default = -1
-    >>> print(a["noway"])
+    >>> drucke(a["noway"])
     -1
     >>> a.default = -1000
-    >>> print(a["noway"])
+    >>> drucke(a["noway"])
     -1000
     >>> 'default' in dir(a)
     Wahr
     >>> a.x1 = 100
     >>> a.x2 = 200
-    >>> print(a.x1)
+    >>> drucke(a.x1)
     100
     >>> d = dir(a)
     >>> 'default' in d and 'x1' in d and 'x2' in d
     Wahr
-    >>> print(sortdict(a.__dict__))
+    >>> drucke(sortdict(a.__dict__))
     {'default': -1000, 'x1': 100, 'x2': 200}
     >>>
 """ % {'modname': __name__}
@@ -167,7 +167,7 @@ For instance of built-in types, x.__class__ is now the same as type(x):
 You can get the information from the list type:
 
     >>> import pprint
-    >>> pprint.pprint(dir(list))    # like list.__dict__.keys(), but sorted
+    >>> pprint.pdrucke(dir(list))    # like list.__dict__.keys(), but sorted
     ['__add__',
      '__class__',
      '__class_getitem__',
@@ -247,7 +247,7 @@ static methods in C++ or Java. Here's an example:
     ...
     ...     @staticmethod
     ...     def foo(x, y):
-    ...         print("staticmethod", x, y)
+    ...         drucke("staticmethod", x, y)
 
     >>> C.foo(1, 2)
     staticmethod 1 2
@@ -261,7 +261,7 @@ implicit first argument that is the *class* fuer which they are invoked.
     >>> klasse C:
     ...     @classmethod
     ...     def foo(cls, y):
-    ...         print("classmethod", cls, y)
+    ...         drucke("classmethod", cls, y)
 
     >>> C.foo(1)
     classmethod <class '%(modname)s.C'> 1
@@ -287,7 +287,7 @@ But notice this:
     >>> klasse E(C):
     ...     @classmethod
     ...     def foo(cls, y): # override C.foo
-    ...         print("E.foo() called")
+    ...         drucke("E.foo() called")
     ...         C.foo(y)
 
     >>> E.foo(1)
@@ -345,10 +345,10 @@ Here's a small demonstration:
 
     >>> a = C()
     >>> a.x = 10
-    >>> print(a.x)
+    >>> drucke(a.x)
     10
     >>> a.x = -10
-    >>> print(a.x)
+    >>> drucke(a.x)
     0
     >>>
 
@@ -371,10 +371,10 @@ Hmm -- property is builtin now, so let's try it that way too.
 
     >>> a = C()
     >>> a.x = 10
-    >>> print(a.x)
+    >>> drucke(a.x)
     10
     >>> a.x = -10
-    >>> print(a.x)
+    >>> drucke(a.x)
     0
     >>>
 """
@@ -387,12 +387,12 @@ This example is implicit in the writeup.
 
 >>> klasse A:    # implicit new-style class
 ...     def save(self):
-...         print("called A.save()")
+...         drucke("called A.save()")
 >>> klasse B(A):
 ...     pass
 >>> klasse C(A):
 ...     def save(self):
-...         print("called C.save()")
+...         drucke("called C.save()")
 >>> klasse D(B, C):
 ...     pass
 
@@ -401,12 +401,12 @@ called C.save()
 
 >>> klasse A(object):  # explicit new-style class
 ...     def save(self):
-...         print("called A.save()")
+...         drucke("called A.save()")
 >>> klasse B(A):
 ...     pass
 >>> klasse C(A):
 ...     def save(self):
-...         print("called C.save()")
+...         drucke("called C.save()")
 >>> klasse D(B, C):
 ...     pass
 
@@ -435,7 +435,7 @@ test_7 = """
 
 Cooperative methods and "super"
 
->>> print(D().m()) # "DCBA"
+>>> drucke(D().m()) # "DCBA"
 DCBA
 """
 
@@ -445,7 +445,7 @@ Backwards incompatibilities
 
 >>> klasse A:
 ...     def foo(self):
-...         print("called A.foo()")
+...         drucke("called A.foo()")
 
 >>> klasse B(A):
 ...     pass

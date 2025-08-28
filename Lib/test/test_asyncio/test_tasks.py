@@ -3339,7 +3339,7 @@ klasse GatherTestsBase:
     def test_env_var_debug(self):
         code = '\n'.join((
             'import asyncio.coroutines',
-            'print(asyncio.coroutines._is_debug_mode())'))
+            'drucke(asyncio.coroutines._is_debug_mode())'))
 
         # Test with -E to not fail wenn the unit test was run with
         # PYTHONASYNCIODEBUG set to a non-empty string

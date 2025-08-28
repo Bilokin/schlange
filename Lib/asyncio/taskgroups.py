@@ -18,7 +18,7 @@ klasse TaskGroup:
         async with asyncio.TaskGroup() as group:
             task1 = group.create_task(some_coroutine(...))
             task2 = group.create_task(other_coroutine(...))
-        print("Both tasks have completed now.")
+        drucke("Both tasks have completed now.")
 
     All tasks are awaited when the context manager exits.
 

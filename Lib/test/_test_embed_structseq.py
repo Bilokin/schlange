@@ -59,4 +59,4 @@ try:
 except SystemExit as exc:
     wenn exc.args[0] != 0:
         raise
-print("Tests passed")
+drucke("Tests passed")

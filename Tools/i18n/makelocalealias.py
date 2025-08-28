@@ -97,18 +97,18 @@ def parse_glibc_supported(filename):
         data[locale] = alias
     return data
 
-def pprint(data):
+def pdrucke(data):
     items = sorted(data.items())
     fuer k, v in items:
-        print('    %-40s%a,' % ('%a:' % k, v))
+        drucke('    %-40s%a,' % ('%a:' % k, v))
 
 def print_differences(data, olddata):
     items = sorted(olddata.items())
     fuer k, v in items:
         wenn k not in data:
-            print('#    removed %a' % k)
+            drucke('#    removed %a' % k)
         sowenn olddata[k] != data[k]:
-            print('#    updated %a -> %a to %a' % \
+            drucke('#    updated %a -> %a to %a' % \
                   (k, olddata[k], data[k]))
         # Additions are not mentioned
 
@@ -132,7 +132,7 @@ def check(data):
     errors = 0
     fuer k, v in data.items():
         wenn locale.normalize(k) != v:
-            print('ERROR: %a -> %a != %a' % (k, locale.normalize(k), v),
+            drucke('ERROR: %a -> %a != %a' % (k, locale.normalize(k), v),
                   file=sys.stderr)
             errors += 1
     return errors
@@ -161,7 +161,7 @@ wenn __name__ == '__main__':
         wenn len(data) == n:
             break
     print_differences(data, locale.locale_alias)
-    print()
-    print('locale_alias = {')
-    pprint(data)
-    print('}')
+    drucke()
+    drucke('locale_alias = {')
+    pdrucke(data)
+    drucke('}')

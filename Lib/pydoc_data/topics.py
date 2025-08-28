@@ -181,7 +181,7 @@ resulting in confusion.  For instance, the following program prints
    x = [0, 1]
    i = 0
    i, x[i] = 1, 2         # i is updated, then x[i] is updated
-   print(x)
+   drucke(x)
 
 See also:
 
@@ -615,7 +615,7 @@ of a module object to a subclass of "types.ModuleType". For example:
            return f'Verbose {self.__name__}'
 
        def __setattr__(self, attr, value):
-           print(f'Setting {attr}...')
+           drucke(f'Setting {attr}...')
            super().__setattr__(attr, value)
 
    sys.modules[__name__].__class__ = VerboseModule
@@ -1220,7 +1220,7 @@ the keyword arguments (and any "**expression" arguments – see below).
 So:
 
    >>> def f(a, b):
-   ...     print(a, b)
+   ...     drucke(a, b)
    ...
    >>> f(b=1, *(2,))
    2 1
@@ -1646,13 +1646,13 @@ lines.  Only the latter form of a suite can contain nested compound
 statements; the following is illegal, mostly because it wouldn’t be
 clear to which "if" clause a following "else" clause would belong:
 
-   wenn test1: wenn test2: print(x)
+   wenn test1: wenn test2: drucke(x)
 
 Also note that the semicolon binds tighter than the colon in this
 context, so that in the following example, either all or none of the
-"print()" calls are executed:
+"drucke()" calls are executed:
 
-   wenn x < y < z: print(x); print(y); print(z)
+   wenn x < y < z: drucke(x); drucke(y); drucke(z)
 
 Summarizing:
 
@@ -1747,7 +1747,7 @@ This overwrites all previous assignments to those variables including
 those made in the suite of the for-loop:
 
    fuer i in range(10):
-       print(i)
+       drucke(i)
        i = 5             # this will not affect the for-loop
                          # because i will be overwritten with the next
                          # index in the range
@@ -1852,22 +1852,22 @@ the "except" clause by calling "sys.exception()". When leaving an
 exception handler, the exception stored in the "sys" module is reset
 to its previous value:
 
-   >>> print(sys.exception())
+   >>> drucke(sys.exception())
    Nichts
    >>> try:
    ...     raise TypeError
    ... except:
-   ...     print(repr(sys.exception()))
+   ...     drucke(repr(sys.exception()))
    ...     try:
    ...          raise ValueError
    ...     except:
-   ...         print(repr(sys.exception()))
-   ...     print(repr(sys.exception()))
+   ...         drucke(repr(sys.exception()))
+   ...     drucke(repr(sys.exception()))
    ...
    TypeError()
    ValueError()
    TypeError()
-   >>> print(sys.exception())
+   >>> drucke(sys.exception())
    Nichts
 
 
@@ -1888,9 +1888,9 @@ matches it.
    ...     raise ExceptionGroup("eg",
    ...         [ValueError(1), TypeError(2), OSError(3), OSError(4)])
    ... except* TypeError as e:
-   ...     print(f'caught {type(e)} with nested {e.exceptions}')
+   ...     drucke(f'caught {type(e)} with nested {e.exceptions}')
    ... except* OSError as e:
-   ...     print(f'caught {type(e)} with nested {e.exceptions}')
+   ...     drucke(f'caught {type(e)} with nested {e.exceptions}')
    ...
    caught <class 'ExceptionGroup'> with nested (TypeError(2),)
    caught <class 'ExceptionGroup'> with nested (OSError(3), OSError(4))
@@ -1913,7 +1913,7 @@ group with an empty message string.
    >>> try:
    ...     raise BlockingIOError
    ... except* BlockingIOError as e:
-   ...     print(repr(e))
+   ...     drucke(repr(e))
    ...
    ExceptionGroup('', (BlockingIOError()))
 
@@ -2173,13 +2173,13 @@ A sample match statement:
    >>> flag = Falsch
    >>> match (100, 200):
    ...    case (100, 300):  # Mismatch: 200 != 300
-   ...        print('Case 1')
+   ...        drucke('Case 1')
    ...    case (100, 200) wenn flag:  # Successful match, but guard fails
-   ...        print('Case 2')
+   ...        drucke('Case 2')
    ...    case (100, y):  # Matches and binds y to 200
-   ...        print(f'Case 3, y: {y}')
+   ...        drucke(f'Case 3, y: {y}')
    ...    case _:  # Pattern not attempted
-   ...        print('Case 4, I match anything!')
+   ...        drucke('Case 4, I match anything!')
    ...
    Case 3, y: 200
 
@@ -3582,7 +3582,7 @@ object.__repr__(self)
 object.__str__(self)
 
    Called by "str(object)", the default "__format__()" implementation,
-   and the built-in function "print()", to compute the “informal” or
+   and the built-in function "drucke()", to compute the “informal” or
    nicely printable string representation of an object.  The return
    value must be a str object.
 
@@ -3703,7 +3703,7 @@ object.__hash__(self)
      If an object’s   "__hash__()" must interoperate on builds of
      different bit sizes, be sure to check the width on all supported
      builds.  An easy way to do this is with "python -c "import sys;
-     print(sys.hash_info.width)"".
+     drucke(sys.hash_info.width)"".
 
    If a klasse does not define an "__eq__()" method it should not
    define a "__hash__()" operation either; wenn it defines "__eq__()"
@@ -3813,7 +3813,7 @@ defaults, can be used instead of "import pdb; pdb.set_trace()".
       breakpoint()
       return x * 2
    val = 3
-   print(f"{val} * 2 is {double(val)}")
+   drucke(f"{val} * 2 is {double(val)}")
 
 The debugger’s prompt is "(Pdb)", which is the indicator that you are
 in debug mode:
@@ -3860,7 +3860,7 @@ Typical usage to execute a statement under control of the debugger is:
 
    >>> import pdb
    >>> def f(x):
-   ...     print(1 / x)
+   ...     drucke(1 / x)
    >>> pdb.run("f(2)")
    > <string>(1)<module>()
    (Pdb) continue
@@ -3871,7 +3871,7 @@ The typical usage to inspect a crashed program is:
 
    >>> import pdb
    >>> def f(x):
-   ...     print(1 / x)
+   ...     drucke(1 / x)
    ...
    >>> f(0)
    Traceback (most recent call last):
@@ -4327,8 +4327,8 @@ p expression
 
    Note:
 
-     "print()" can also be used, but is not a debugger command — this
-     executes the Python "print()" function.
+     "drucke()" can also be used, but is not a debugger command — this
+     executes the Python "drucke()" function.
 
 pp expression
 
@@ -4365,7 +4365,7 @@ display [expression]
       breakpoint()
       pass
       lst.append(1)
-      print(lst)
+      drucke(lst)
 
    Display won’t realize "lst" has been changed because the result of
    evaluation is modified in place by "lst.append(1)" before being
@@ -4380,7 +4380,7 @@ display [expression]
       -> lst.append(1)
       (Pdb) n
       > example.py(5)<module>()
-      -> print(lst)
+      -> drucke(lst)
       (Pdb)
 
    You can do some tricks with copy mechanism to make it work:
@@ -4394,7 +4394,7 @@ display [expression]
       -> lst.append(1)
       (Pdb) n
       > example.py(5)<module>()
-      -> print(lst)
+      -> drucke(lst)
       display lst[:]: [1]  [old: []]
       (Pdb)
 
@@ -4449,7 +4449,7 @@ alias [name [command]]
    in the ".pdbrc" file):
 
       # Print instance variables (usage "pi classInst")
-      alias pi fuer k in %1.__dict__.keys(): print(f"%1.{k} = {%1.__dict__[k]}")
+      alias pi fuer k in %1.__dict__.keys(): drucke(f"%1.{k} = {%1.__dict__[k]}")
       # Print instance variables in self
       alias ps pi self
 
@@ -4639,7 +4639,7 @@ time. This means that the following code will print 42:
 
    i = 10
    def f():
-       print(i)
+       drucke(i)
    i = 42
    f()
 
@@ -4873,7 +4873,7 @@ However, the following will succeed:
        type Alias = Nested
        klasse Nested: pass
 
-   print(A.Alias.__value__)  # <type 'A.Nested'>
+   drucke(A.Alias.__value__)  # <type 'A.Nested'>
 
 
 Annotation scopes
@@ -5011,7 +5011,7 @@ time. This means that the following code will print 42:
 
    i = 10
    def f():
-       print(i)
+       drucke(i)
    i = 42
    f()
 
@@ -5161,7 +5161,7 @@ This overwrites all previous assignments to those variables including
 those made in the suite of the for-loop:
 
    fuer i in range(10):
-       print(i)
+       drucke(i)
        i = 5             # this will not affect the for-loop
                          # because i will be overwritten with the next
                          # index in the range
@@ -5711,8 +5711,8 @@ Nesting arguments and more complex examples:
    >>> width = 5
    >>> fuer num in range(5,12):
    ...     fuer base in 'dXob':
-   ...         print('{0:{width}{base}}'.format(num, base=base, width=width), end=' ')
-   ...     print()
+   ...         drucke('{0:{width}{base}}'.format(num, base=base, width=width), end=' ')
+   ...     drucke()
    ...
        5     5     5   101
        6     6     6   110
@@ -6550,7 +6550,7 @@ However, the following will succeed:
        type Alias = Nested
        klasse Nested: pass
 
-   print(A.Alias.__value__)  # <type 'A.Nested'>
+   drucke(A.Alias.__value__)  # <type 'A.Nested'>
 
 
 Annotation scopes
@@ -6688,7 +6688,7 @@ time. This means that the following code will print 42:
 
    i = 10
    def f():
-       print(i)
+       drucke(i)
    i = 42
    f()
 
@@ -7171,13 +7171,13 @@ exception as the "__cause__" attribute. If the raised exception is not
 handled, both exceptions will be printed:
 
    >>> try:
-   ...     print(1 / 0)
+   ...     drucke(1 / 0)
    ... except Exception as exc:
    ...     raise RuntimeError("Something bad happened") from exc
    ...
    Traceback (most recent call last):
      File "<stdin>", line 2, in <module>
-       print(1 / 0)
+       drucke(1 / 0)
              ~~^~~
    ZeroDivisionError: division by zero
 
@@ -7195,13 +7195,13 @@ The previous exception is then attached as the new exception’s
 "__context__" attribute:
 
    >>> try:
-   ...     print(1 / 0)
+   ...     drucke(1 / 0)
    ... except:
    ...     raise RuntimeError("Something bad happened")
    ...
    Traceback (most recent call last):
      File "<stdin>", line 2, in <module>
-       print(1 / 0)
+       drucke(1 / 0)
              ~~^~~
    ZeroDivisionError: division by zero
 
@@ -7216,7 +7216,7 @@ Exception chaining can be explicitly suppressed by specifying "Nichts"
 in the "from" clause:
 
    >>> try:
-   ...     print(1 / 0)
+   ...     drucke(1 / 0)
    ... except:
    ...     raise RuntimeError("Something bad happened") from Nichts
    ...
@@ -7664,7 +7664,7 @@ object.__repr__(self)
 object.__str__(self)
 
    Called by "str(object)", the default "__format__()" implementation,
-   and the built-in function "print()", to compute the “informal” or
+   and the built-in function "drucke()", to compute the “informal” or
    nicely printable string representation of an object.  The return
    value must be a str object.
 
@@ -7785,7 +7785,7 @@ object.__hash__(self)
      If an object’s   "__hash__()" must interoperate on builds of
      different bit sizes, be sure to check the width on all supported
      builds.  An easy way to do this is with "python -c "import sys;
-     print(sys.hash_info.width)"".
+     drucke(sys.hash_info.width)"".
 
    If a klasse does not define an "__eq__()" method it should not
    define a "__hash__()" operation either; wenn it defines "__eq__()"
@@ -7957,7 +7957,7 @@ of a module object to a subclass of "types.ModuleType". For example:
            return f'Verbose {self.__name__}'
 
        def __setattr__(self, attr, value):
-           print(f'Setting {attr}...')
+           drucke(f'Setting {attr}...')
            super().__setattr__(attr, value)
 
    sys.modules[__name__].__class__ = VerboseModule
@@ -9141,14 +9141,14 @@ the "__getattribute__()" method even of the object’s metaclass:
 
    >>> klasse Meta(type):
    ...     def __getattribute__(*args):
-   ...         print("Metaclass getattribute invoked")
+   ...         drucke("Metaclass getattribute invoked")
    ...         return type.__getattribute__(*args)
    ...
    >>> klasse C(object, metaclass=Meta):
    ...     def __len__(self):
    ...         return 10
    ...     def __getattribute__(*args):
-   ...         print("Class getattribute invoked")
+   ...         drucke("Class getattribute invoked")
    ...         return object.__getattribute__(*args)
    ...
    >>> c = C()
@@ -10196,22 +10196,22 @@ the "except" clause by calling "sys.exception()". When leaving an
 exception handler, the exception stored in the "sys" module is reset
 to its previous value:
 
-   >>> print(sys.exception())
+   >>> drucke(sys.exception())
    Nichts
    >>> try:
    ...     raise TypeError
    ... except:
-   ...     print(repr(sys.exception()))
+   ...     drucke(repr(sys.exception()))
    ...     try:
    ...          raise ValueError
    ...     except:
-   ...         print(repr(sys.exception()))
-   ...     print(repr(sys.exception()))
+   ...         drucke(repr(sys.exception()))
+   ...     drucke(repr(sys.exception()))
    ...
    TypeError()
    ValueError()
    TypeError()
-   >>> print(sys.exception())
+   >>> drucke(sys.exception())
    Nichts
 
 
@@ -10232,9 +10232,9 @@ matches it.
    ...     raise ExceptionGroup("eg",
    ...         [ValueError(1), TypeError(2), OSError(3), OSError(4)])
    ... except* TypeError as e:
-   ...     print(f'caught {type(e)} with nested {e.exceptions}')
+   ...     drucke(f'caught {type(e)} with nested {e.exceptions}')
    ... except* OSError as e:
-   ...     print(f'caught {type(e)} with nested {e.exceptions}')
+   ...     drucke(f'caught {type(e)} with nested {e.exceptions}')
    ...
    caught <class 'ExceptionGroup'> with nested (TypeError(2),)
    caught <class 'ExceptionGroup'> with nested (OSError(3), OSError(4))
@@ -10257,7 +10257,7 @@ group with an empty message string.
    >>> try:
    ...     raise BlockingIOError
    ... except* BlockingIOError as e:
-   ...     print(repr(e))
+   ...     drucke(repr(e))
    ...
    ExceptionGroup('', (BlockingIOError()))
 
@@ -12031,7 +12031,7 @@ An example of dictionary view usage:
    >>> fuer val in values:
    ...     n += val
    ...
-   >>> print(n)
+   >>> drucke(n)
    504
 
    >>> # keys and values are iterated over in the same order (insertion order)

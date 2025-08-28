@@ -297,7 +297,7 @@ def _syscmd_ver(system='', release='', version='',
                                            encoding="locale",
                                            shell=Wahr)
         except (OSError, subprocess.CalledProcessError) as why:
-            #print('Command %s failed: %s' % (cmd, why))
+            #drucke('Command %s failed: %s' % (cmd, why))
             continue
         sonst:
             break
@@ -1422,7 +1422,7 @@ def _main(args: list[str] | Nichts = Nichts):
     terse = args.terse or ("terse" in args.args)
     aliased = args.aliased and ('nonaliased' not in args.args)
 
-    print(platform(aliased, terse))
+    drucke(platform(aliased, terse))
 
 
 wenn __name__ == "__main__":

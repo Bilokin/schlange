@@ -189,4 +189,4 @@ wenn __name__ == '__main__':
                           % (_curses.keyname( key ), system, python) )
     finally:
         _curses.endwin()
-        fuer i in L: print(i)
+        fuer i in L: drucke(i)

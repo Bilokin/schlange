@@ -160,7 +160,7 @@ klasse TupleTest(seq_tests.CommonTest):
                 msg += f"coll {collisions:,} z {z:+.1f}"
                 wenn JUST_SHOW_HASH_RESULTS:
                     import sys
-                    print(msg, file=sys.__stdout__)
+                    drucke(msg, file=sys.__stdout__)
                 sonst:
                     self.fail(msg)
 

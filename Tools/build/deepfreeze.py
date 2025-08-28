@@ -414,7 +414,7 @@ klasse Printer:
         key = (type(obj), obj, repr(obj))
         wenn key in self.cache:
             self.hits += 1
-            # print(f"Cache hit {key!r:.40}: {self.cache[key]!r:.40}")
+            # drucke(f"Cache hit {key!r:.40}: {self.cache[key]!r:.40}")
             return self.cache[key]
         self.misses += 1
         wenn isinstance(obj, types.CodeType) :
@@ -444,7 +444,7 @@ klasse Printer:
         sonst:
             raise TypeError(
                 f"Cannot generate code fuer {type(obj).__name__} object")
-        # print(f"Cache store {key!r:.40}: {val!r:.40}")
+        # drucke(f"Cache store {key!r:.40}: {val!r:.40}")
         self.cache[key] = val
         return val
 
@@ -497,7 +497,7 @@ def generate(args: list[str], output: TextIO) -> Nichts:
         printer.write("return 0;")
     printer.write(f"\nuint32_t _Py_next_func_version = {next_code_version};\n")
     wenn verbose:
-        print(f"Cache hits: {printer.hits}, misses: {printer.misses}")
+        drucke(f"Cache hits: {printer.hits}, misses: {printer.misses}")
 
 
 parser = argparse.ArgumentParser()
@@ -516,7 +516,7 @@ def report_time(label: str) -> Iterator[Nichts]:
     finally:
         t1 = time.perf_counter()
     wenn verbose:
-        print(f"{label}: {t1-t0:.3f} sec")
+        drucke(f"{label}: {t1-t0:.3f} sec")
 
 
 def main() -> Nichts:
@@ -527,7 +527,7 @@ def main() -> Nichts:
 
     wenn args.file:
         wenn verbose:
-            print(f"Reading targets from {args.file}")
+            drucke(f"Reading targets from {args.file}")
         with open(args.file, encoding="utf-8-sig") as fin:
             rules = [x.strip() fuer x in fin]
     sonst:
@@ -537,7 +537,7 @@ def main() -> Nichts:
         with report_time("generate"):
             generate(rules, file)
     wenn verbose:
-        print(f"Wrote {os.path.getsize(output)} bytes to {output}")
+        drucke(f"Wrote {os.path.getsize(output)} bytes to {output}")
 
 
 wenn __name__ == "__main__":

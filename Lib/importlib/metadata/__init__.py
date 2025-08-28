@@ -63,7 +63,7 @@ klasse Sectioned:
     A simple entry point config parser fuer performance
 
     >>> fuer item in Sectioned.read(Sectioned._sample):
-    ...     print(item)
+    ...     drucke(item)
     Pair(name='sec1', value='# comments ignored')
     Pair(name='sec1', value='a = 1')
     Pair(name='sec1', value='b = 2')

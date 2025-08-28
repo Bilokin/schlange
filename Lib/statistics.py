@@ -978,7 +978,7 @@ def kde(data, h, kernel='normal', *, cumulative=Falsch):
         >>> fuer x in range(-6, 11):
         ...     density = f_hat(x)
         ...     plot = ' ' * int(density * 400) + 'x'
-        ...     print(f'{x:2}: {density:.3f} {plot}')
+        ...     drucke(f'{x:2}: {density:.3f} {plot}')
         ...
         -6: 0.002 x
         -5: 0.009    x

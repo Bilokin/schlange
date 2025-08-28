@@ -173,7 +173,7 @@ klasse CoverageResults:
                     counts, calledfuncs, callers = pickle.load(f)
                 self.update(self.__class__(counts, calledfuncs, callers=callers))
             except (OSError, EOFError, ValueError) as err:
-                print(("Skipping counts file %r: %s"
+                drucke(("Skipping counts file %r: %s"
                                       % (self.infile, err)), file=sys.stderr)
 
     def is_ignored_filename(self, filename):
@@ -215,28 +215,28 @@ klasse CoverageResults:
                          will raise a FileNotFoundError.
         """
         wenn self.calledfuncs:
-            print()
-            print("functions called:")
+            drucke()
+            drucke("functions called:")
             calls = self.calledfuncs
             fuer filename, modulename, funcname in sorted(calls):
-                print(("filename: %s, modulename: %s, funcname: %s"
+                drucke(("filename: %s, modulename: %s, funcname: %s"
                        % (filename, modulename, funcname)))
 
         wenn self.callers:
-            print()
-            print("calling relationships:")
+            drucke()
+            drucke("calling relationships:")
             lastfile = lastcfile = ""
             fuer ((pfile, pmod, pfunc), (cfile, cmod, cfunc)) \
                     in sorted(self.callers):
                 wenn pfile != lastfile:
-                    print()
-                    print("***", pfile, "***")
+                    drucke()
+                    drucke("***", pfile, "***")
                     lastfile = pfile
                     lastcfile = ""
                 wenn cfile != pfile and lastcfile != cfile:
-                    print("  -->", cfile)
+                    drucke("  -->", cfile)
                     lastcfile = cfile
-                print("    %s.%s -> %s.%s" % (pmod, pfunc, cmod, cfunc))
+                drucke("    %s.%s -> %s.%s" % (pmod, pfunc, cmod, cfunc))
 
         # turn the counts data ("(filename, lineno) = count") into something
         # accessible on a per-file basis
@@ -282,10 +282,10 @@ klasse CoverageResults:
                 sums[modulename] = n_lines, n_hits, modulename, filename
 
         wenn summary and sums:
-            print("lines   cov%   module   (path)")
+            drucke("lines   cov%   module   (path)")
             fuer m in sorted(sums):
                 n_lines, n_hits, modulename, filename = sums[m]
-                print(f"{n_lines:5d}   {n_hits/n_lines:.1%}   {modulename}   ({filename})")
+                drucke(f"{n_lines:5d}   {n_hits/n_lines:.1%}   {modulename}   ({filename})")
 
         wenn self.outfile:
             # try and store counts and module info into self.outfile
@@ -294,7 +294,7 @@ klasse CoverageResults:
                     pickle.dump((self.counts, self.calledfuncs, self.callers),
                                 f, 1)
             except OSError as err:
-                print("Can't save counts files because %s" % err, file=sys.stderr)
+                drucke("Can't save counts files because %s" % err, file=sys.stderr)
 
     def write_results_file(self, path, lines, lnotab, lines_hit, encoding=Nichts):
         """Return a coverage results file in path."""
@@ -303,7 +303,7 @@ klasse CoverageResults:
         try:
             outfile = open(path, "w", encoding=encoding)
         except OSError as err:
-            print(("trace: Could not open %r fuer writing: %s "
+            drucke(("trace: Could not open %r fuer writing: %s "
                                   "- skipping" % (path, err)), file=sys.stderr)
             return 0, 0
 
@@ -380,7 +380,7 @@ def _find_executable_linenos(filename):
             prog = f.read()
             encoding = f.encoding
     except OSError as err:
-        print(("Not printing coverage data fuer %r: %s"
+        drucke(("Not printing coverage data fuer %r: %s"
                               % (filename, err)), file=sys.stderr)
         return {}
     code = compile(prog, filename, "exec")
@@ -545,7 +545,7 @@ klasse Trace:
                     ignore_it = self.ignore.names(filename, modulename)
                     wenn not ignore_it:
                         wenn self.trace:
-                            print((" --- modulename: %s, funcname: %s"
+                            drucke((" --- modulename: %s, funcname: %s"
                                    % (modulename, code.co_name)))
                         return self.localtrace
             sonst:
@@ -560,14 +560,14 @@ klasse Trace:
             self.counts[key] = self.counts.get(key, 0) + 1
 
             wenn self.start_time:
-                print('%.2f' % (_time() - self.start_time), end=' ')
+                drucke('%.2f' % (_time() - self.start_time), end=' ')
             bname = os.path.basename(filename)
             line = linecache.getline(filename, lineno)
-            print("%s(%d)" % (bname, lineno), end='')
+            drucke("%s(%d)" % (bname, lineno), end='')
             wenn line:
-                print(": ", line, end='')
+                drucke(": ", line, end='')
             sonst:
-                print()
+                drucke()
         return self.localtrace
 
     def localtrace_trace(self, frame, why, arg):
@@ -577,14 +577,14 @@ klasse Trace:
             lineno = frame.f_lineno
 
             wenn self.start_time:
-                print('%.2f' % (_time() - self.start_time), end=' ')
+                drucke('%.2f' % (_time() - self.start_time), end=' ')
             bname = os.path.basename(filename)
             line = linecache.getline(filename, lineno)
-            print("%s(%d)" % (bname, lineno), end='')
+            drucke("%s(%d)" % (bname, lineno), end='')
             wenn line:
-                print(": ", line, end='')
+                drucke(": ", line, end='')
             sonst:
-                print()
+                drucke()
         return self.localtrace
 
     def localtrace_count(self, frame, why, arg):

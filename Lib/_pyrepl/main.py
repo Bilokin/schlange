@@ -27,7 +27,7 @@ def interactive_console(mainmodule=Nichts, quiet=Falsch, pythonstartup=Falsch):
         wenn not os.getenv('PYTHON_BASIC_REPL') and FAIL_REASON:
             from .trace import trace
             trace(FAIL_REASON)
-            print(FAIL_REASON, file=sys.stderr)
+            drucke(FAIL_REASON, file=sys.stderr)
         return sys._baserepl()
 
     wenn not mainmodule:

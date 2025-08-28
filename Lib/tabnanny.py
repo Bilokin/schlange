@@ -27,7 +27,7 @@ __all__ = ["check", "NannyNag", "process_tokens"]
 verbose = 0
 filename_only = 0
 
-def errprint(*args):
+def errdrucke(*args):
     sep = ""
     fuer arg in args:
         sys.stderr.write(sep + str(arg))
@@ -42,14 +42,14 @@ def main():
     try:
         opts, args = getopt.getopt(sys.argv[1:], "qv")
     except getopt.error as msg:
-        errprint(msg)
+        errdrucke(msg)
     fuer o, a in opts:
         wenn o == '-q':
             filename_only = filename_only + 1
         wenn o == '-v':
             verbose = verbose + 1
     wenn not args:
-        errprint("Usage:", sys.argv[0], "[-v] file_or_directory ...")
+        errdrucke("Usage:", sys.argv[0], "[-v] file_or_directory ...")
     fuer arg in args:
         check(arg)
 
@@ -79,7 +79,7 @@ def check(file):
 
     wenn os.path.isdir(file) and not os.path.islink(file):
         wenn verbose:
-            print("%r: listing directory" % (file,))
+            drucke("%r: listing directory" % (file,))
         names = os.listdir(file)
         fuer name in names:
             fullname = os.path.join(file, name)
@@ -92,45 +92,45 @@ def check(file):
     try:
         f = tokenize.open(file)
     except OSError as msg:
-        errprint("%r: I/O Error: %s" % (file, msg))
+        errdrucke("%r: I/O Error: %s" % (file, msg))
         return
 
     wenn verbose > 1:
-        print("checking %r ..." % file)
+        drucke("checking %r ..." % file)
 
     try:
         process_tokens(tokenize.generate_tokens(f.readline))
 
     except tokenize.TokenError as msg:
-        errprint("%r: Token Error: %s" % (file, msg))
+        errdrucke("%r: Token Error: %s" % (file, msg))
         return
 
     except IndentationError as msg:
-        errprint("%r: Indentation Error: %s" % (file, msg))
+        errdrucke("%r: Indentation Error: %s" % (file, msg))
         return
 
     except SyntaxError as msg:
-        errprint("%r: Syntax Error: %s" % (file, msg))
+        errdrucke("%r: Syntax Error: %s" % (file, msg))
         return
 
     except NannyNag as nag:
         badline = nag.get_lineno()
         line = nag.get_line()
         wenn verbose:
-            print("%r: *** Line %d: trouble in tab city! ***" % (file, badline))
-            print("offending line: %r" % (line,))
-            print(nag.get_msg())
+            drucke("%r: *** Line %d: trouble in tab city! ***" % (file, badline))
+            drucke("offending line: %r" % (line,))
+            drucke(nag.get_msg())
         sonst:
             wenn ' ' in file: file = '"' + file + '"'
-            wenn filename_only: print(file)
-            sonst: print(file, badline, repr(line))
+            wenn filename_only: drucke(file)
+            sonst: drucke(file, badline, repr(line))
         return
 
     finally:
         f.close()
 
     wenn verbose:
-        print("%r: Clean bill of health." % (file,))
+        drucke("%r: Clean bill of health." % (file,))
 
 klasse Whitespace:
     # the characters used fuer space and tab

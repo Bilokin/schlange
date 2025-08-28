@@ -287,7 +287,7 @@ klasse Bdb:
                 return self.dispatch_exception(frame, arg)
             wenn event == 'opcode':
                 return self.dispatch_opcode(frame, arg)
-            print('bdb.Bdb.dispatch: unknown debugging event:', repr(event))
+            drucke('bdb.Bdb.dispatch: unknown debugging event:', repr(event))
             return self.trace_dispatch
 
     def dispatch_line(self, frame):
@@ -637,7 +637,7 @@ klasse Bdb:
     # error message wenn something went wrong, Nichts wenn all is well.
     # Set_break prints out the breakpoint line and file:lineno.
     # Call self.get_*break*() to see the breakpoints or better
-    # fuer bp in Breakpoint.bpbynumber: wenn bp: bp.bpprint().
+    # fuer bp in Breakpoint.bpbynumber: wenn bp: bp.bpdrucke().
 
     def _add_to_breaks(self, filename, lineno):
         """Add breakpoint to breaks, wenn not already there."""
@@ -1019,7 +1019,7 @@ klasse Breakpoint:
         """Mark the breakpoint as disabled."""
         self.enabled = Falsch
 
-    def bpprint(self, out=Nichts):
+    def bpdrucke(self, out=Nichts):
         """Print the output of bpformat().
 
         The optional out argument directs where the output is sent
@@ -1027,7 +1027,7 @@ klasse Breakpoint:
         """
         wenn out is Nichts:
             out = sys.stdout
-        print(self.bpformat(), file=out)
+        drucke(self.bpformat(), file=out)
 
     def bpformat(self):
         """Return a string with information about the breakpoint.
@@ -1155,27 +1155,27 @@ klasse Tdb(Bdb):
     def user_call(self, frame, args):
         name = frame.f_code.co_name
         wenn not name: name = '???'
-        print('+++ call', name, args)
+        drucke('+++ call', name, args)
     def user_line(self, frame):
         import linecache
         name = frame.f_code.co_name
         wenn not name: name = '???'
         fn = self.canonic(frame.f_code.co_filename)
         line = linecache.getline(fn, frame.f_lineno, frame.f_globals)
-        print('+++', fn, frame.f_lineno, name, ':', line.strip())
+        drucke('+++', fn, frame.f_lineno, name, ':', line.strip())
     def user_return(self, frame, retval):
-        print('+++ return', retval)
+        drucke('+++ return', retval)
     def user_exception(self, frame, exc_stuff):
-        print('+++ exception', exc_stuff)
+        drucke('+++ exception', exc_stuff)
         self.set_continue()
 
 def foo(n):
-    print('foo(', n, ')')
+    drucke('foo(', n, ')')
     x = bar(n*10)
-    print('bar returned', x)
+    drucke('bar returned', x)
 
 def bar(a):
-    print('bar(', a, ')')
+    drucke('bar(', a, ')')
     return a/2
 
 def test():

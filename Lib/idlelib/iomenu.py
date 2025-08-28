@@ -417,7 +417,7 @@ def _io_binding(parent):  # htest #
         def reset_undo(self): pass
         def open(self, event):
             self.text.event_generate("<<open-window-from-file>>")
-        def print(self, event):
+        def drucke(self, event):
             self.text.event_generate("<<print-window>>")
         def save(self, event):
             self.text.event_generate("<<save-window>>")

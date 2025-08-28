@@ -71,14 +71,14 @@ klasse ABCMeta(type):
 
     def _dump_registry(cls, file=Nichts):
         """Debug helper to print the ABC registry."""
-        print(f"Class: {cls.__module__}.{cls.__qualname__}", file=file)
-        print(f"Inv. counter: {get_cache_token()}", file=file)
+        drucke(f"Class: {cls.__module__}.{cls.__qualname__}", file=file)
+        drucke(f"Inv. counter: {get_cache_token()}", file=file)
         fuer name in cls.__dict__:
             wenn name.startswith("_abc_"):
                 value = getattr(cls, name)
                 wenn isinstance(value, WeakSet):
                     value = set(value)
-                print(f"{name}: {value!r}", file=file)
+                drucke(f"{name}: {value!r}", file=file)
 
     def _abc_registry_clear(cls):
         """Clear the registry (for debugging or testing)."""

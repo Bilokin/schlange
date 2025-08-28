@@ -18,7 +18,7 @@ klasse TestGdbm(unittest.TestCase):
             except ImportError:
                 pass
             sonst:
-                print(f"gdbm version: {version}")
+                drucke(f"gdbm version: {version}")
 
     def setUp(self):
         self.g = Nichts

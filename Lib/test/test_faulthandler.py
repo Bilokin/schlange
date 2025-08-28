@@ -205,7 +205,7 @@ klasse FaultHandlerTests(unittest.TestCase):
             gc.collect()
 
             # Should not reach this line
-            print("exit", file=sys.stderr)
+            drucke("exit", file=sys.stderr)
             """,
             9,
             'Segmentation fault',
@@ -431,7 +431,7 @@ klasse FaultHandlerTests(unittest.TestCase):
     @support.requires_subprocess()
     def test_disabled_by_default(self):
         # By default, the module should be disabled
-        code = "import faulthandler; print(faulthandler.is_enabled())"
+        code = "import faulthandler; drucke(faulthandler.is_enabled())"
         args = (sys.executable, "-E", "-c", code)
         # don't use assert_python_ok() because it always enables faulthandler
         output = subprocess.check_output(args)
@@ -440,7 +440,7 @@ klasse FaultHandlerTests(unittest.TestCase):
     @support.requires_subprocess()
     def test_sys_xoptions(self):
         # Test python -X faulthandler
-        code = "import faulthandler; print(faulthandler.is_enabled())"
+        code = "import faulthandler; drucke(faulthandler.is_enabled())"
         args = filter(Nichts, (sys.executable,
                              "-E" wenn sys.flags.ignore_environment sonst "",
                              "-X", "faulthandler", "-c", code))
@@ -453,7 +453,7 @@ klasse FaultHandlerTests(unittest.TestCase):
     @support.requires_subprocess()
     def test_env_var(self):
         # empty env var
-        code = "import faulthandler; print(faulthandler.is_enabled())"
+        code = "import faulthandler; drucke(faulthandler.is_enabled())"
         args = (sys.executable, "-c", code)
         env = dict(os.environ)
         env['PYTHONFAULTHANDLER'] = ''
@@ -757,7 +757,7 @@ klasse FaultHandlerTests(unittest.TestCase):
                     output = file
                 sonst:
                     output = sys.stderr
-                print("Error: signal handler not called!", file=output)
+                drucke("Error: signal handler not called!", file=output)
                 exitcode = 1
             sonst:
                 exitcode = 0

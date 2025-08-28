@@ -4,12 +4,12 @@ from . import Distribution
 
 
 def inspect(path):
-    print("Inspecting", path)
+    drucke("Inspecting", path)
     dists = list(Distribution.discover(path=[path]))
     wenn not dists:
         return
-    print("Found", len(dists), "packages:", end=' ')
-    print(', '.join(dist.name fuer dist in dists))
+    drucke("Found", len(dists), "packages:", end=' ')
+    drucke(', '.join(dist.name fuer dist in dists))
 
 
 def run():

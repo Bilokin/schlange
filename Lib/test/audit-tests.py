@@ -347,7 +347,7 @@ def test_excepthook():
                 raise TypeError(f"Expected isinstance({args[2]!r}, " f"{args[1]!r})")
             wenn args[0] != excepthook:
                 raise ValueError(f"Expected {args[0]} == {excepthook}")
-            print(event, repr(args[2]))
+            drucke(event, repr(args[2]))
 
     sys.addaudithook(hook)
     sys.excepthook = excepthook
@@ -364,7 +364,7 @@ def test_unraisablehook():
         wenn event == "sys.unraisablehook":
             wenn args[0] != unraisablehook:
                 raise ValueError(f"Expected {args[0]} == {unraisablehook}")
-            print(event, repr(args[1].exc_value), args[1].err_msg)
+            drucke(event, repr(args[1].exc_value), args[1].err_msg)
 
     sys.addaudithook(hook)
     sys.unraisablehook = unraisablehook
@@ -378,7 +378,7 @@ def test_winreg():
     def hook(event, args):
         wenn not event.startswith("winreg."):
             return
-        print(event, *args)
+        drucke(event, *args)
 
     sys.addaudithook(hook)
 
@@ -400,7 +400,7 @@ def test_socket():
 
     def hook(event, args):
         wenn event.startswith("socket."):
-            print(event, *args)
+            drucke(event, *args)
 
     sys.addaudithook(hook)
 
@@ -422,7 +422,7 @@ def test_gc():
 
     def hook(event, args):
         wenn event.startswith("gc."):
-            print(event, *args)
+            drucke(event, *args)
 
     sys.addaudithook(hook)
 
@@ -440,7 +440,7 @@ def test_http_client():
 
     def hook(event, args):
         wenn event.startswith("http.client."):
-            print(event, *args[1:])
+            drucke(event, *args[1:])
 
     sys.addaudithook(hook)
 
@@ -448,7 +448,7 @@ def test_http_client():
     try:
         conn.request('GET', '/')
     except OSError:
-        print('http.client.send', '[cannot send]')
+        drucke('http.client.send', '[cannot send]')
     finally:
         conn.close()
 
@@ -458,7 +458,7 @@ def test_sqlite3():
 
     def hook(event, *args):
         wenn event.startswith("sqlite3."):
-            print(event, *args)
+            drucke(event, *args)
 
     sys.addaudithook(hook)
     cx1 = sqlite3.connect(":memory:")
@@ -483,7 +483,7 @@ def test_sys_getframe():
 
     def hook(event, args):
         wenn event.startswith("sys."):
-            print(event, args[0].f_code.co_name)
+            drucke(event, args[0].f_code.co_name)
 
     sys.addaudithook(hook)
     sys._getframe()
@@ -494,7 +494,7 @@ def test_sys_getframemodulename():
 
     def hook(event, args):
         wenn event.startswith("sys."):
-            print(event, *args)
+            drucke(event, *args)
 
     sys.addaudithook(hook)
     sys._getframemodulename()
@@ -505,7 +505,7 @@ def test_threading():
 
     def hook(event, args):
         wenn event.startswith(("_thread.", "cpython.PyThreadState", "test.")):
-            print(event, args)
+            drucke(event, args)
 
     sys.addaudithook(hook)
 
@@ -550,7 +550,7 @@ def test_wmi_exec_query():
 
     def hook(event, args):
         wenn event.startswith("_wmi."):
-            print(event, args[0])
+            drucke(event, args[0])
 
     sys.addaudithook(hook)
     try:
@@ -566,7 +566,7 @@ def test_syslog():
 
     def hook(event, args):
         wenn event.startswith("syslog."):
-            print(event, *args)
+            drucke(event, *args)
 
     sys.addaudithook(hook)
     syslog.openlog('python')
@@ -599,7 +599,7 @@ def test_time(mode):
     def hook(event, args):
         wenn event.startswith("time."):
             wenn mode == 'print':
-                print(event, *args)
+                drucke(event, *args)
             sowenn mode == 'fail':
                 raise AssertionError('hook failed')
     sys.addaudithook(hook)
@@ -616,7 +616,7 @@ def test_sys_monitoring_register_callback():
 
     def hook(event, args):
         wenn event.startswith("sys.monitoring"):
-            print(event, args)
+            drucke(event, args)
 
     sys.addaudithook(hook)
     sys.monitoring.register_callback(1, 1, Nichts)
@@ -627,7 +627,7 @@ def test_winapi_createnamedpipe(pipe_name):
 
     def hook(event, args):
         wenn event == "_winapi.CreateNamedPipe":
-            print(event, args)
+            drucke(event, args)
 
     sys.addaudithook(hook)
     _winapi.CreateNamedPipe(pipe_name, _winapi.PIPE_ACCESS_DUPLEX, 8, 2, 0, 0, 0, 0)
@@ -653,7 +653,7 @@ def test_sys_remote_exec():
     def hook(event, args):
         wenn event not in ["sys.remote_exec", "cpython.remote_debugger_script"]:
             return
-        print(event, args)
+        drucke(event, args)
         match event:
             case "sys.remote_exec":
                 nonlocal event_pid, event_script_path

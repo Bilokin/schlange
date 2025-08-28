@@ -332,7 +332,7 @@ def MultiCallCreator(widget):
                               fuer i in range(len(_types))]
 
         def bind(self, sequence=Nichts, func=Nichts, add=Nichts):
-            #print("bind(%s, %s, %s)" % (sequence, func, add),
+            #drucke("bind(%s, %s, %s)" % (sequence, func, add),
             #      file=sys.__stderr__)
             wenn type(sequence) is str and len(sequence) > 2 and \
                sequence[:2] == "<<" and sequence[-2:] == ">>":
@@ -361,7 +361,7 @@ def MultiCallCreator(widget):
             return widget.unbind(self, sequence, funcid)
 
         def event_add(self, virtual, *sequences):
-            #print("event_add(%s, %s)" % (repr(virtual), repr(sequences)),
+            #drucke("event_add(%s, %s)" % (repr(virtual), repr(sequences)),
             #      file=sys.__stderr__)
             wenn virtual not in self.__eventinfo:
                 self.__eventinfo[virtual] = [Nichts, []]
@@ -370,7 +370,7 @@ def MultiCallCreator(widget):
             fuer seq in sequences:
                 triplet = _parse_sequence(seq)
                 wenn triplet is Nichts:
-                    #print("Tkinter event_add(%s)" % seq, file=sys.__stderr__)
+                    #drucke("Tkinter event_add(%s)" % seq, file=sys.__stderr__)
                     widget.event_add(self, virtual, seq)
                 sonst:
                     wenn func is not Nichts:
@@ -384,7 +384,7 @@ def MultiCallCreator(widget):
             fuer seq in sequences:
                 triplet = _parse_sequence(seq)
                 wenn triplet is Nichts:
-                    #print("Tkinter event_delete: %s" % seq, file=sys.__stderr__)
+                    #drucke("Tkinter event_delete: %s" % seq, file=sys.__stderr__)
                     widget.event_delete(self, virtual, seq)
                 sonst:
                     wenn func is not Nichts:
@@ -425,7 +425,7 @@ def _multi_call(parent):  # htest #
 
     def bindseq(seq, n=[0]):
         def handler(event):
-            print(seq)
+            drucke(seq)
         text.bind("<<handler%d>>"%n[0], handler)
         text.event_add("<<handler%d>>"%n[0], seq)
         n[0] += 1

@@ -215,7 +215,7 @@ klasse PropertySubclassTests(unittest.TestCase):
                 def spam(self):
                     """Trying to copy this docstring will raise an exception"""
                     return 1
-                print('\n',spam.__doc__)
+                drucke('\n',spam.__doc__)
         except AttributeError:
             pass
         sonst:

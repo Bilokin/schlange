@@ -85,7 +85,7 @@ klasse TestInteractiveInterpreter(unittest.TestCase):
         user_input = """
             import sys, _testcapi
             1/0
-            print('After the exception.')
+            drucke('After the exception.')
             _testcapi.set_nomemory(0)
             sys.exit(0)
         """
@@ -134,7 +134,7 @@ klasse TestInteractiveInterpreter(unittest.TestCase):
     def test_close_stdin(self):
         user_input = dedent('''
             import os
-            print("before close")
+            drucke("before close")
             os.close(0)
         ''')
         prepare_repl = dedent('''
@@ -206,7 +206,7 @@ klasse TestInteractiveInterpreter(unittest.TestCase):
         with os_helper.temp_dir() as tmpdir:
             script = os.path.join(tmpdir, "pythonstartup.py")
             with open(script, "w") as f:
-                f.write("print('from pythonstartup')" + os.linesep)
+                f.write("drucke('from pythonstartup')" + os.linesep)
 
             env = os.environ.copy()
             env['PYTHONSTARTUP'] = script
@@ -275,7 +275,7 @@ klasse TestInteractiveInterpreter(unittest.TestCase):
         p.stdin.write(user_input)
         user_input2 = dedent("""
         import linecache
-        print(linecache._interactive_cache[linecache._make_key(foo.__code__)])
+        drucke(linecache._interactive_cache[linecache._make_key(foo.__code__)])
         """)
         p.stdin.write(user_input2)
         output = kill_python(p)
@@ -287,7 +287,7 @@ klasse TestInteractiveInterpreter(unittest.TestCase):
         with os_helper.temp_dir() as tmpdir:
             script = os.path.join(tmpdir, "pythonstartup.py")
             with open(script, "w") as f:
-                f.write("print('pythonstartup done!')" + os.linesep)
+                f.write("drucke('pythonstartup done!')" + os.linesep)
                 f.write("exit(0)" + os.linesep)
 
             env = os.environ.copy()
@@ -343,7 +343,7 @@ klasse TestInteractiveModeSyntaxErrors(unittest.TestCase):
     def test_interactive_syntax_error_correct_line(self):
         output = run_on_interactive_mode(dedent("""\
         def f():
-            print(0)
+            drucke(0)
             return yield 42
         """))
 
@@ -358,7 +358,7 @@ klasse TestInteractiveModeSyntaxErrors(unittest.TestCase):
 
 klasse TestAsyncioREPL(unittest.TestCase):
     def test_multiple_statements_fail_early(self):
-        user_input = "1 / 0; print(f'afterwards: {1+1}')"
+        user_input = "1 / 0; drucke(f'afterwards: {1+1}')"
         p = spawn_repl("-m", "asyncio")
         p.stdin.write(user_input)
         output = kill_python(p)
@@ -374,7 +374,7 @@ klasse TestAsyncioREPL(unittest.TestCase):
         p = spawn_repl("-m", "asyncio")
         p.stdin.write(user_input)
         user_input2 = dedent("""
-        print(f"toplevel contextvar test: {var.get()}")
+        drucke(f"toplevel contextvar test: {var.get()}")
         """)
         p.stdin.write(user_input2)
         output = kill_python(p)
@@ -393,7 +393,7 @@ klasse TestAsyncioREPL(unittest.TestCase):
         p.stdin.write(user_input2)
         user_input3 = "await set_var()\n"
         p.stdin.write(user_input3)
-        user_input4 = "print(f'toplevel contextvar test: {var.get()}')\n"
+        user_input4 = "drucke(f'toplevel contextvar test: {var.get()}')\n"
         p.stdin.write(user_input4)
         output = kill_python(p)
         self.assertEqual(p.returncode, 0)

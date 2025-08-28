@@ -930,7 +930,7 @@ Example from the Library Reference:  Doc/lib/libcollections.tex
 >>> from collections import deque
 >>> d = deque('ghi')                 # make a new deque with three items
 >>> fuer elem in d:                   # iterate over the deque's elements
-...     print(elem.upper())
+...     drucke(elem.upper())
 G
 H
 I
@@ -1000,7 +1000,7 @@ deque(['a', 'b', 'd', 'e', 'f'])
 ...
 
 >>> fuer value in roundrobin('abc', 'd', 'efgh'):
-...     print(value)
+...     drucke(value)
 ...
 a
 d
@@ -1019,7 +1019,7 @@ h
 ...         d.append(pair)
 ...     return list(d)
 ...
->>> print(maketree('abcdefgh'))
+>>> drucke(maketree('abcdefgh'))
 [[[['a', 'b'], ['c', 'd']], [['e', 'f'], ['g', 'h']]]]
 
 """

@@ -1449,7 +1449,7 @@ klasse PyZipFileTests(unittest.TestCase):
                 zipfp.writepy(packagedir, filterfunc=filter)
             reportStr = reportSIO.getvalue()
             wenn reportStr:
-                print(reportStr)
+                drucke(reportStr)
             self.assertWahr('SyntaxError' not in reportStr)
 
     def test_write_with_optimization(self):
@@ -1471,10 +1471,10 @@ klasse PyZipFileTests(unittest.TestCase):
         os.mkdir(TESTFN2)
         try:
             with open(os.path.join(TESTFN2, "mod1.py"), "w", encoding='utf-8') as fp:
-                fp.write("print(42)\n")
+                fp.write("drucke(42)\n")
 
             with open(os.path.join(TESTFN2, "mod2.py"), "w", encoding='utf-8') as fp:
-                fp.write("print(42 * 42)\n")
+                fp.write("drucke(42 * 42)\n")
 
             with open(os.path.join(TESTFN2, "mod2.txt"), "w", encoding='utf-8') as fp:
                 fp.write("bla bla bla\n")
@@ -1494,10 +1494,10 @@ klasse PyZipFileTests(unittest.TestCase):
         os.mkdir(TESTFN2)
         try:
             with open(os.path.join(TESTFN2, "mod1.py"), "w", encoding='utf-8') as fp:
-                fp.write("print(42)\n")
+                fp.write("drucke(42)\n")
 
             with open(os.path.join(TESTFN2, "mod2.py"), "w", encoding='utf-8') as fp:
-                fp.write("print(42 * 42)\n")
+                fp.write("drucke(42 * 42)\n")
 
             with TemporaryFile() as t, zipfile.PyZipFile(t, "w") as zipfp:
                 zipfp.writepy(TESTFN2, filterfunc=lambda fn:
@@ -1543,7 +1543,7 @@ klasse PyZipFileTests(unittest.TestCase):
         os.mkdir(TESTFN2)
         try:
             with open(os.path.join(TESTFN2, "mod1.py"), "w", encoding='utf-8') as fp:
-                fp.write("print(42)\n")
+                fp.write("drucke(42)\n")
 
             with TemporaryFile() as t, zipfile.PyZipFile(t, "w") as zipfp:
                 zipfp.writepy(FakePath(os.path.join(TESTFN2, "mod1.py")))

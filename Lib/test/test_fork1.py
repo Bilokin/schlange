@@ -49,7 +49,7 @@ klasse ForkTest(ForkWait):
                     os._exit(exitcode)
                 sonst:
                     wenn support.verbose > 1:
-                        print("Child encountered partial module")
+                        drucke("Child encountered partial module")
                     os._exit(1)
             sonst:
                 t.join()
@@ -84,7 +84,7 @@ klasse ForkTest(ForkWait):
             except RuntimeError:
                 wenn in_child:
                     wenn support.verbose > 1:
-                        print("RuntimeError in child")
+                        drucke("RuntimeError in child")
                     os._exit(1)
                 raise
             wenn in_child:
