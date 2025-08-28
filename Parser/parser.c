@@ -21,7 +21,6 @@ static KeywordToken *reserved_keywords[] = {
     (KeywordToken[]) {{NULL, -1}},
     (KeywordToken[]) {{NULL, -1}},
     (KeywordToken[]) {
-        {"if", 687},
         {"as", 685},
         {"in", 700},
         {"or", 589},
@@ -39,10 +38,9 @@ static KeywordToken *reserved_keywords[] = {
     (KeywordToken[]) {
         {"from", 638},
         {"pass", 527},
+        {"wenn", 687},
         {"with", 652},
         {"fuer", 699},
-        {"elif", 692},
-        {"else", 691},
         {"None", 624},
         {"True", 623},
         {NULL, -1},
@@ -53,6 +51,7 @@ static KeywordToken *reserved_keywords[] = {
         {"break", 528},
         {"async", 703},
         {"while", 694},
+        {"sonst", 691},
         {"False", 625},
         {"await", 598},
         {NULL, -1},
@@ -63,6 +62,7 @@ static KeywordToken *reserved_keywords[] = {
         {"assert", 533},
         {"global", 530},
         {"klasse", 706},
+        {"sowenn", 692},
         {"except", 682},
         {"lambda", 622},
         {NULL, -1},
@@ -1892,7 +1892,7 @@ simple_stmt_rule(Parser *p)
 
 // compound_stmt:
 //     | &('def' | '@' | 'async') function_def
-//     | &'if' if_stmt
+//     | &'wenn' if_stmt
 //     | &('klasse' | '@') class_def
 //     | &('with' | 'async') with_stmt
 //     | &('fuer' | 'async') for_stmt
@@ -1932,26 +1932,26 @@ compound_stmt_rule(Parser *p)
         D(fprintf(stderr, "%*c%s compound_stmt[%d-%d]: %s failed!\n", p->level, ' ',
                   p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "&('def' | '@' | 'async') function_def"));
     }
-    { // &'if' if_stmt
+    { // &'wenn' if_stmt
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> compound_stmt[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "&'if' if_stmt"));
+        D(fprintf(stderr, "%*c> compound_stmt[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "&'wenn' if_stmt"));
         stmt_ty if_stmt_var;
         if (
-            _PyPegen_lookahead_with_int(1, _PyPegen_expect_token, p, 687)  // token='if'
+            _PyPegen_lookahead_with_int(1, _PyPegen_expect_token, p, 687)  // token='wenn'
             &&
             (if_stmt_var = if_stmt_rule(p))  // if_stmt
         )
         {
-            D(fprintf(stderr, "%*c+ compound_stmt[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "&'if' if_stmt"));
+            D(fprintf(stderr, "%*c+ compound_stmt[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "&'wenn' if_stmt"));
             _res = if_stmt_var;
             goto done;
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s compound_stmt[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "&'if' if_stmt"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "&'wenn' if_stmt"));
     }
     { // &('klasse' | '@') class_def
         if (p->error_indicator) {
@@ -5982,8 +5982,8 @@ default_rule(Parser *p)
 
 // if_stmt:
 //     | invalid_if_stmt
-//     | 'if' named_expression ':' block elif_stmt
-//     | 'if' named_expression ':' block else_block?
+//     | 'wenn' named_expression ':' block elif_stmt
+//     | 'wenn' named_expression ':' block else_block?
 static stmt_ty
 if_stmt_rule(Parser *p)
 {
@@ -6024,19 +6024,19 @@ if_stmt_rule(Parser *p)
         D(fprintf(stderr, "%*c%s if_stmt[%d-%d]: %s failed!\n", p->level, ' ',
                   p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "invalid_if_stmt"));
     }
-    { // 'if' named_expression ':' block elif_stmt
+    { // 'wenn' named_expression ':' block elif_stmt
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> if_stmt[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'if' named_expression ':' block elif_stmt"));
+        D(fprintf(stderr, "%*c> if_stmt[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'wenn' named_expression ':' block elif_stmt"));
         Token * _keyword;
         Token * _literal;
         expr_ty a;
         asdl_stmt_seq* b;
         stmt_ty c;
         if (
-            (_keyword = _PyPegen_expect_token(p, 687))  // token='if'
+            (_keyword = _PyPegen_expect_token(p, 687))  // token='wenn'
             &&
             (a = named_expression_rule(p))  // named_expression
             &&
@@ -6047,7 +6047,7 @@ if_stmt_rule(Parser *p)
             (c = elif_stmt_rule(p))  // elif_stmt
         )
         {
-            D(fprintf(stderr, "%*c+ if_stmt[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'if' named_expression ':' block elif_stmt"));
+            D(fprintf(stderr, "%*c+ if_stmt[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'wenn' named_expression ':' block elif_stmt"));
             Token *_token = _PyPegen_get_last_nonnwhitespace_token(p);
             if (_token == NULL) {
                 p->level--;
@@ -6067,21 +6067,21 @@ if_stmt_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s if_stmt[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'if' named_expression ':' block elif_stmt"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'wenn' named_expression ':' block elif_stmt"));
     }
-    { // 'if' named_expression ':' block else_block?
+    { // 'wenn' named_expression ':' block else_block?
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> if_stmt[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'if' named_expression ':' block else_block?"));
+        D(fprintf(stderr, "%*c> if_stmt[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'wenn' named_expression ':' block else_block?"));
         Token * _keyword;
         Token * _literal;
         expr_ty a;
         asdl_stmt_seq* b;
         void *c;
         if (
-            (_keyword = _PyPegen_expect_token(p, 687))  // token='if'
+            (_keyword = _PyPegen_expect_token(p, 687))  // token='wenn'
             &&
             (a = named_expression_rule(p))  // named_expression
             &&
@@ -6092,7 +6092,7 @@ if_stmt_rule(Parser *p)
             (c = else_block_rule(p), !p->error_indicator)  // else_block?
         )
         {
-            D(fprintf(stderr, "%*c+ if_stmt[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'if' named_expression ':' block else_block?"));
+            D(fprintf(stderr, "%*c+ if_stmt[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'wenn' named_expression ':' block else_block?"));
             Token *_token = _PyPegen_get_last_nonnwhitespace_token(p);
             if (_token == NULL) {
                 p->level--;
@@ -6112,7 +6112,7 @@ if_stmt_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s if_stmt[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'if' named_expression ':' block else_block?"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'wenn' named_expression ':' block else_block?"));
     }
     _res = NULL;
   done:
@@ -6122,8 +6122,8 @@ if_stmt_rule(Parser *p)
 
 // elif_stmt:
 //     | invalid_elif_stmt
-//     | 'elif' named_expression ':' block elif_stmt
-//     | 'elif' named_expression ':' block else_block?
+//     | 'sowenn' named_expression ':' block elif_stmt
+//     | 'sowenn' named_expression ':' block else_block?
 static stmt_ty
 elif_stmt_rule(Parser *p)
 {
@@ -6164,19 +6164,19 @@ elif_stmt_rule(Parser *p)
         D(fprintf(stderr, "%*c%s elif_stmt[%d-%d]: %s failed!\n", p->level, ' ',
                   p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "invalid_elif_stmt"));
     }
-    { // 'elif' named_expression ':' block elif_stmt
+    { // 'sowenn' named_expression ':' block elif_stmt
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> elif_stmt[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'elif' named_expression ':' block elif_stmt"));
+        D(fprintf(stderr, "%*c> elif_stmt[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'sowenn' named_expression ':' block elif_stmt"));
         Token * _keyword;
         Token * _literal;
         expr_ty a;
         asdl_stmt_seq* b;
         stmt_ty c;
         if (
-            (_keyword = _PyPegen_expect_token(p, 692))  // token='elif'
+            (_keyword = _PyPegen_expect_token(p, 692))  // token='sowenn'
             &&
             (a = named_expression_rule(p))  // named_expression
             &&
@@ -6187,7 +6187,7 @@ elif_stmt_rule(Parser *p)
             (c = elif_stmt_rule(p))  // elif_stmt
         )
         {
-            D(fprintf(stderr, "%*c+ elif_stmt[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'elif' named_expression ':' block elif_stmt"));
+            D(fprintf(stderr, "%*c+ elif_stmt[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'sowenn' named_expression ':' block elif_stmt"));
             Token *_token = _PyPegen_get_last_nonnwhitespace_token(p);
             if (_token == NULL) {
                 p->level--;
@@ -6207,21 +6207,21 @@ elif_stmt_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s elif_stmt[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'elif' named_expression ':' block elif_stmt"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'sowenn' named_expression ':' block elif_stmt"));
     }
-    { // 'elif' named_expression ':' block else_block?
+    { // 'sowenn' named_expression ':' block else_block?
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> elif_stmt[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'elif' named_expression ':' block else_block?"));
+        D(fprintf(stderr, "%*c> elif_stmt[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'sowenn' named_expression ':' block else_block?"));
         Token * _keyword;
         Token * _literal;
         expr_ty a;
         asdl_stmt_seq* b;
         void *c;
         if (
-            (_keyword = _PyPegen_expect_token(p, 692))  // token='elif'
+            (_keyword = _PyPegen_expect_token(p, 692))  // token='sowenn'
             &&
             (a = named_expression_rule(p))  // named_expression
             &&
@@ -6232,7 +6232,7 @@ elif_stmt_rule(Parser *p)
             (c = else_block_rule(p), !p->error_indicator)  // else_block?
         )
         {
-            D(fprintf(stderr, "%*c+ elif_stmt[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'elif' named_expression ':' block else_block?"));
+            D(fprintf(stderr, "%*c+ elif_stmt[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'sowenn' named_expression ':' block else_block?"));
             Token *_token = _PyPegen_get_last_nonnwhitespace_token(p);
             if (_token == NULL) {
                 p->level--;
@@ -6252,7 +6252,7 @@ elif_stmt_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s elif_stmt[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'elif' named_expression ':' block else_block?"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'sowenn' named_expression ':' block else_block?"));
     }
     _res = NULL;
   done:
@@ -6260,7 +6260,7 @@ elif_stmt_rule(Parser *p)
     return _res;
 }
 
-// else_block: invalid_else_stmt | 'else' &&':' block
+// else_block: invalid_else_stmt | 'sonst' &&':' block
 static asdl_stmt_seq*
 else_block_rule(Parser *p)
 {
@@ -6292,24 +6292,24 @@ else_block_rule(Parser *p)
         D(fprintf(stderr, "%*c%s else_block[%d-%d]: %s failed!\n", p->level, ' ',
                   p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "invalid_else_stmt"));
     }
-    { // 'else' &&':' block
+    { // 'sonst' &&':' block
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> else_block[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'else' &&':' block"));
+        D(fprintf(stderr, "%*c> else_block[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'sonst' &&':' block"));
         Token * _keyword;
         Token * _literal;
         asdl_stmt_seq* b;
         if (
-            (_keyword = _PyPegen_expect_token(p, 691))  // token='else'
+            (_keyword = _PyPegen_expect_token(p, 691))  // token='sonst'
             &&
             (_literal = _PyPegen_expect_forced_token(p, 11, ":"))  // forced_token=':'
             &&
             (b = block_rule(p))  // block
         )
         {
-            D(fprintf(stderr, "%*c+ else_block[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'else' &&':' block"));
+            D(fprintf(stderr, "%*c+ else_block[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'sonst' &&':' block"));
             _res = b;
             if (_res == NULL && PyErr_Occurred()) {
                 p->error_indicator = 1;
@@ -6320,7 +6320,7 @@ else_block_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s else_block[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'else' &&':' block"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'sonst' &&':' block"));
     }
     _res = NULL;
   done:
@@ -7959,7 +7959,7 @@ case_block_rule(Parser *p)
     return _res;
 }
 
-// guard: 'if' named_expression
+// guard: 'wenn' named_expression
 static expr_ty
 guard_rule(Parser *p)
 {
@@ -7972,21 +7972,21 @@ guard_rule(Parser *p)
     }
     expr_ty _res = NULL;
     int _mark = p->mark;
-    { // 'if' named_expression
+    { // 'wenn' named_expression
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> guard[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'if' named_expression"));
+        D(fprintf(stderr, "%*c> guard[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'wenn' named_expression"));
         Token * _keyword;
         expr_ty guard;
         if (
-            (_keyword = _PyPegen_expect_token(p, 687))  // token='if'
+            (_keyword = _PyPegen_expect_token(p, 687))  // token='wenn'
             &&
             (guard = named_expression_rule(p))  // named_expression
         )
         {
-            D(fprintf(stderr, "%*c+ guard[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'if' named_expression"));
+            D(fprintf(stderr, "%*c+ guard[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'wenn' named_expression"));
             _res = guard;
             if (_res == NULL && PyErr_Occurred()) {
                 p->error_indicator = 1;
@@ -7997,7 +7997,7 @@ guard_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s guard[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'if' named_expression"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'wenn' named_expression"));
     }
     _res = NULL;
   done:
@@ -11393,7 +11393,7 @@ expressions_rule(Parser *p)
 // expression:
 //     | invalid_expression
 //     | invalid_legacy_expression
-//     | disjunction 'if' disjunction 'else' expression
+//     | disjunction 'wenn' disjunction 'sonst' expression
 //     | disjunction
 //     | lambdef
 static expr_ty
@@ -11459,12 +11459,12 @@ expression_rule(Parser *p)
         D(fprintf(stderr, "%*c%s expression[%d-%d]: %s failed!\n", p->level, ' ',
                   p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "invalid_legacy_expression"));
     }
-    { // disjunction 'if' disjunction 'else' expression
+    { // disjunction 'wenn' disjunction 'sonst' expression
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> expression[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "disjunction 'if' disjunction 'else' expression"));
+        D(fprintf(stderr, "%*c> expression[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "disjunction 'wenn' disjunction 'sonst' expression"));
         Token * _keyword;
         Token * _keyword_1;
         expr_ty a;
@@ -11473,16 +11473,16 @@ expression_rule(Parser *p)
         if (
             (a = disjunction_rule(p))  // disjunction
             &&
-            (_keyword = _PyPegen_expect_token(p, 687))  // token='if'
+            (_keyword = _PyPegen_expect_token(p, 687))  // token='wenn'
             &&
             (b = disjunction_rule(p))  // disjunction
             &&
-            (_keyword_1 = _PyPegen_expect_token(p, 691))  // token='else'
+            (_keyword_1 = _PyPegen_expect_token(p, 691))  // token='sonst'
             &&
             (c = expression_rule(p))  // expression
         )
         {
-            D(fprintf(stderr, "%*c+ expression[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "disjunction 'if' disjunction 'else' expression"));
+            D(fprintf(stderr, "%*c+ expression[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "disjunction 'wenn' disjunction 'sonst' expression"));
             Token *_token = _PyPegen_get_last_nonnwhitespace_token(p);
             if (_token == NULL) {
                 p->level--;
@@ -11502,7 +11502,7 @@ expression_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s expression[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "disjunction 'if' disjunction 'else' expression"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "disjunction 'wenn' disjunction 'sonst' expression"));
     }
     { // disjunction
         if (p->error_indicator) {
@@ -17739,8 +17739,8 @@ for_if_clauses_rule(Parser *p)
 }
 
 // for_if_clause:
-//     | 'async' 'fuer' star_targets 'in' ~ disjunction (('if' disjunction))*
-//     | 'fuer' star_targets 'in' ~ disjunction (('if' disjunction))*
+//     | 'async' 'fuer' star_targets 'in' ~ disjunction (('wenn' disjunction))*
+//     | 'fuer' star_targets 'in' ~ disjunction (('wenn' disjunction))*
 //     | invalid_for_if_clause
 //     | invalid_for_target
 static comprehension_ty
@@ -17755,12 +17755,12 @@ for_if_clause_rule(Parser *p)
     }
     comprehension_ty _res = NULL;
     int _mark = p->mark;
-    { // 'async' 'fuer' star_targets 'in' ~ disjunction (('if' disjunction))*
+    { // 'async' 'fuer' star_targets 'in' ~ disjunction (('wenn' disjunction))*
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> for_if_clause[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'async' 'fuer' star_targets 'in' ~ disjunction (('if' disjunction))*"));
+        D(fprintf(stderr, "%*c> for_if_clause[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'async' 'fuer' star_targets 'in' ~ disjunction (('wenn' disjunction))*"));
         int _cut_var = 0;
         Token * _keyword;
         Token * _keyword_1;
@@ -17781,10 +17781,10 @@ for_if_clause_rule(Parser *p)
             &&
             (b = disjunction_rule(p))  // disjunction
             &&
-            (c = (asdl_expr_seq*)_loop0_86_rule(p))  // (('if' disjunction))*
+            (c = (asdl_expr_seq*)_loop0_86_rule(p))  // (('wenn' disjunction))*
         )
         {
-            D(fprintf(stderr, "%*c+ for_if_clause[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'async' 'fuer' star_targets 'in' ~ disjunction (('if' disjunction))*"));
+            D(fprintf(stderr, "%*c+ for_if_clause[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'async' 'fuer' star_targets 'in' ~ disjunction (('wenn' disjunction))*"));
             _res = CHECK_VERSION ( comprehension_ty , 6 , "Async comprehensions are" , _PyAST_comprehension ( a , b , c , 1 , p -> arena ) );
             if (_res == NULL && PyErr_Occurred()) {
                 p->error_indicator = 1;
@@ -17795,18 +17795,18 @@ for_if_clause_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s for_if_clause[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'async' 'fuer' star_targets 'in' ~ disjunction (('if' disjunction))*"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'async' 'fuer' star_targets 'in' ~ disjunction (('wenn' disjunction))*"));
         if (_cut_var) {
             p->level--;
             return NULL;
         }
     }
-    { // 'fuer' star_targets 'in' ~ disjunction (('if' disjunction))*
+    { // 'fuer' star_targets 'in' ~ disjunction (('wenn' disjunction))*
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> for_if_clause[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'fuer' star_targets 'in' ~ disjunction (('if' disjunction))*"));
+        D(fprintf(stderr, "%*c> for_if_clause[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'fuer' star_targets 'in' ~ disjunction (('wenn' disjunction))*"));
         int _cut_var = 0;
         Token * _keyword;
         Token * _keyword_1;
@@ -17824,10 +17824,10 @@ for_if_clause_rule(Parser *p)
             &&
             (b = disjunction_rule(p))  // disjunction
             &&
-            (c = (asdl_expr_seq*)_loop0_86_rule(p))  // (('if' disjunction))*
+            (c = (asdl_expr_seq*)_loop0_86_rule(p))  // (('wenn' disjunction))*
         )
         {
-            D(fprintf(stderr, "%*c+ for_if_clause[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'fuer' star_targets 'in' ~ disjunction (('if' disjunction))*"));
+            D(fprintf(stderr, "%*c+ for_if_clause[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'fuer' star_targets 'in' ~ disjunction (('wenn' disjunction))*"));
             _res = _PyAST_comprehension ( a , b , c , 0 , p -> arena );
             if (_res == NULL && PyErr_Occurred()) {
                 p->error_indicator = 1;
@@ -17838,7 +17838,7 @@ for_if_clause_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s for_if_clause[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'fuer' star_targets 'in' ~ disjunction (('if' disjunction))*"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'fuer' star_targets 'in' ~ disjunction (('wenn' disjunction))*"));
         if (_cut_var) {
             p->level--;
             return NULL;
@@ -21076,7 +21076,7 @@ invalid_kwarg_rule(Parser *p)
 }
 
 // expression_without_invalid:
-//     | disjunction 'if' disjunction 'else' expression
+//     | disjunction 'wenn' disjunction 'sonst' expression
 //     | disjunction
 //     | lambdef
 static expr_ty
@@ -21104,13 +21104,13 @@ expression_without_invalid_rule(Parser *p)
     UNUSED(_start_lineno); // Only used by EXTRA macro
     int _start_col_offset = p->tokens[_mark]->col_offset;
     UNUSED(_start_col_offset); // Only used by EXTRA macro
-    { // disjunction 'if' disjunction 'else' expression
+    { // disjunction 'wenn' disjunction 'sonst' expression
         if (p->error_indicator) {
             p->call_invalid_rules = _prev_call_invalid;
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> expression_without_invalid[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "disjunction 'if' disjunction 'else' expression"));
+        D(fprintf(stderr, "%*c> expression_without_invalid[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "disjunction 'wenn' disjunction 'sonst' expression"));
         Token * _keyword;
         Token * _keyword_1;
         expr_ty a;
@@ -21119,16 +21119,16 @@ expression_without_invalid_rule(Parser *p)
         if (
             (a = disjunction_rule(p))  // disjunction
             &&
-            (_keyword = _PyPegen_expect_token(p, 687))  // token='if'
+            (_keyword = _PyPegen_expect_token(p, 687))  // token='wenn'
             &&
             (b = disjunction_rule(p))  // disjunction
             &&
-            (_keyword_1 = _PyPegen_expect_token(p, 691))  // token='else'
+            (_keyword_1 = _PyPegen_expect_token(p, 691))  // token='sonst'
             &&
             (c = expression_rule(p))  // expression
         )
         {
-            D(fprintf(stderr, "%*c+ expression_without_invalid[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "disjunction 'if' disjunction 'else' expression"));
+            D(fprintf(stderr, "%*c+ expression_without_invalid[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "disjunction 'wenn' disjunction 'sonst' expression"));
             Token *_token = _PyPegen_get_last_nonnwhitespace_token(p);
             if (_token == NULL) {
                 p->call_invalid_rules = _prev_call_invalid;
@@ -21150,7 +21150,7 @@ expression_without_invalid_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s expression_without_invalid[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "disjunction 'if' disjunction 'else' expression"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "disjunction 'wenn' disjunction 'sonst' expression"));
     }
     { // disjunction
         if (p->error_indicator) {
@@ -21335,9 +21335,9 @@ invalid_type_param_rule(Parser *p)
 // invalid_expression:
 //     | STRING ((!STRING expression_without_invalid))+ STRING
 //     | !(NAME STRING | SOFT_KEYWORD) disjunction expression_without_invalid
-//     | disjunction 'if' disjunction !('else' | ':')
-//     | disjunction 'if' disjunction 'else' !expression
-//     | (pass_stmt | break_stmt | continue_stmt) 'if' disjunction 'else' simple_stmt
+//     | disjunction 'wenn' disjunction !('sonst' | ':')
+//     | disjunction 'wenn' disjunction 'sonst' !expression
+//     | (pass_stmt | break_stmt | continue_stmt) 'wenn' disjunction 'sonst' simple_stmt
 //     | 'lambda' lambda_params? ':' &FSTRING_MIDDLE
 //     | 'lambda' lambda_params? ':' &TSTRING_MIDDLE
 static void *
@@ -21411,27 +21411,27 @@ invalid_expression_rule(Parser *p)
         D(fprintf(stderr, "%*c%s invalid_expression[%d-%d]: %s failed!\n", p->level, ' ',
                   p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "!(NAME STRING | SOFT_KEYWORD) disjunction expression_without_invalid"));
     }
-    { // disjunction 'if' disjunction !('else' | ':')
+    { // disjunction 'wenn' disjunction !('sonst' | ':')
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> invalid_expression[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "disjunction 'if' disjunction !('else' | ':')"));
+        D(fprintf(stderr, "%*c> invalid_expression[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "disjunction 'wenn' disjunction !('sonst' | ':')"));
         Token * _keyword;
         expr_ty a;
         expr_ty b;
         if (
             (a = disjunction_rule(p))  // disjunction
             &&
-            (_keyword = _PyPegen_expect_token(p, 687))  // token='if'
+            (_keyword = _PyPegen_expect_token(p, 687))  // token='wenn'
             &&
             (b = disjunction_rule(p))  // disjunction
             &&
             _PyPegen_lookahead(0, _tmp_115_rule, p)
         )
         {
-            D(fprintf(stderr, "%*c+ invalid_expression[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "disjunction 'if' disjunction !('else' | ':')"));
-            _res = RAISE_SYNTAX_ERROR_KNOWN_RANGE ( a , b , "expected 'else' after 'if' expression" );
+            D(fprintf(stderr, "%*c+ invalid_expression[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "disjunction 'wenn' disjunction !('sonst' | ':')"));
+            _res = RAISE_SYNTAX_ERROR_KNOWN_RANGE ( a , b , "expected 'sonst' after 'wenn' expression" );
             if (_res == NULL && PyErr_Occurred()) {
                 p->error_indicator = 1;
                 p->level--;
@@ -21441,14 +21441,14 @@ invalid_expression_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s invalid_expression[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "disjunction 'if' disjunction !('else' | ':')"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "disjunction 'wenn' disjunction !('sonst' | ':')"));
     }
-    { // disjunction 'if' disjunction 'else' !expression
+    { // disjunction 'wenn' disjunction 'sonst' !expression
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> invalid_expression[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "disjunction 'if' disjunction 'else' !expression"));
+        D(fprintf(stderr, "%*c> invalid_expression[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "disjunction 'wenn' disjunction 'sonst' !expression"));
         Token * _keyword;
         Token * _keyword_1;
         expr_ty a;
@@ -21456,17 +21456,17 @@ invalid_expression_rule(Parser *p)
         if (
             (a = disjunction_rule(p))  // disjunction
             &&
-            (_keyword = _PyPegen_expect_token(p, 687))  // token='if'
+            (_keyword = _PyPegen_expect_token(p, 687))  // token='wenn'
             &&
             (b = disjunction_rule(p))  // disjunction
             &&
-            (_keyword_1 = _PyPegen_expect_token(p, 691))  // token='else'
+            (_keyword_1 = _PyPegen_expect_token(p, 691))  // token='sonst'
             &&
             _PyPegen_lookahead_for_expr(0, expression_rule, p)
         )
         {
-            D(fprintf(stderr, "%*c+ invalid_expression[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "disjunction 'if' disjunction 'else' !expression"));
-            _res = RAISE_SYNTAX_ERROR_ON_NEXT_TOKEN ( "expected expression after 'else', but statement is given" );
+            D(fprintf(stderr, "%*c+ invalid_expression[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "disjunction 'wenn' disjunction 'sonst' !expression"));
+            _res = RAISE_SYNTAX_ERROR_ON_NEXT_TOKEN ( "expected expression after 'sonst', but statement is given" );
             if (_res == NULL && PyErr_Occurred()) {
                 p->error_indicator = 1;
                 p->level--;
@@ -21476,14 +21476,14 @@ invalid_expression_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s invalid_expression[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "disjunction 'if' disjunction 'else' !expression"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "disjunction 'wenn' disjunction 'sonst' !expression"));
     }
-    { // (pass_stmt | break_stmt | continue_stmt) 'if' disjunction 'else' simple_stmt
+    { // (pass_stmt | break_stmt | continue_stmt) 'wenn' disjunction 'sonst' simple_stmt
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> invalid_expression[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "(pass_stmt | break_stmt | continue_stmt) 'if' disjunction 'else' simple_stmt"));
+        D(fprintf(stderr, "%*c> invalid_expression[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "(pass_stmt | break_stmt | continue_stmt) 'wenn' disjunction 'sonst' simple_stmt"));
         Token * _keyword;
         Token * _keyword_1;
         stmt_ty a;
@@ -21492,17 +21492,17 @@ invalid_expression_rule(Parser *p)
         if (
             (a = (stmt_ty)_tmp_116_rule(p))  // pass_stmt | break_stmt | continue_stmt
             &&
-            (_keyword = _PyPegen_expect_token(p, 687))  // token='if'
+            (_keyword = _PyPegen_expect_token(p, 687))  // token='wenn'
             &&
             (b = disjunction_rule(p))  // disjunction
             &&
-            (_keyword_1 = _PyPegen_expect_token(p, 691))  // token='else'
+            (_keyword_1 = _PyPegen_expect_token(p, 691))  // token='sonst'
             &&
             (c = simple_stmt_rule(p))  // simple_stmt
         )
         {
-            D(fprintf(stderr, "%*c+ invalid_expression[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "(pass_stmt | break_stmt | continue_stmt) 'if' disjunction 'else' simple_stmt"));
-            _res = RAISE_SYNTAX_ERROR_KNOWN_LOCATION ( a , "expected expression before 'if', but statement is given" );
+            D(fprintf(stderr, "%*c+ invalid_expression[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "(pass_stmt | break_stmt | continue_stmt) 'wenn' disjunction 'sonst' simple_stmt"));
+            _res = RAISE_SYNTAX_ERROR_KNOWN_LOCATION ( a , "expected expression before 'wenn', but statement is given" );
             if (_res == NULL && PyErr_Occurred()) {
                 p->error_indicator = 1;
                 p->level--;
@@ -21512,7 +21512,7 @@ invalid_expression_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s invalid_expression[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "(pass_stmt | break_stmt | continue_stmt) 'if' disjunction 'else' simple_stmt"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "(pass_stmt | break_stmt | continue_stmt) 'wenn' disjunction 'sonst' simple_stmt"));
     }
     { // 'lambda' lambda_params? ':' &FSTRING_MIDDLE
         if (p->error_indicator) {
@@ -25302,8 +25302,8 @@ invalid_class_argument_pattern_rule(Parser *p)
 }
 
 // invalid_if_stmt:
-//     | 'if' named_expression NEWLINE
-//     | 'if' named_expression ':' NEWLINE !INDENT
+//     | 'wenn' named_expression NEWLINE
+//     | 'wenn' named_expression ':' NEWLINE !INDENT
 static void *
 invalid_if_stmt_rule(Parser *p)
 {
@@ -25316,24 +25316,24 @@ invalid_if_stmt_rule(Parser *p)
     }
     void * _res = NULL;
     int _mark = p->mark;
-    { // 'if' named_expression NEWLINE
+    { // 'wenn' named_expression NEWLINE
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> invalid_if_stmt[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'if' named_expression NEWLINE"));
+        D(fprintf(stderr, "%*c> invalid_if_stmt[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'wenn' named_expression NEWLINE"));
         Token * _keyword;
         expr_ty named_expression_var;
         Token * newline_var;
         if (
-            (_keyword = _PyPegen_expect_token(p, 687))  // token='if'
+            (_keyword = _PyPegen_expect_token(p, 687))  // token='wenn'
             &&
             (named_expression_var = named_expression_rule(p))  // named_expression
             &&
             (newline_var = _PyPegen_expect_token(p, NEWLINE))  // token='NEWLINE'
         )
         {
-            D(fprintf(stderr, "%*c+ invalid_if_stmt[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'if' named_expression NEWLINE"));
+            D(fprintf(stderr, "%*c+ invalid_if_stmt[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'wenn' named_expression NEWLINE"));
             _res = RAISE_SYNTAX_ERROR ( "expected ':'" );
             if (_res == NULL && PyErr_Occurred()) {
                 p->error_indicator = 1;
@@ -25344,20 +25344,20 @@ invalid_if_stmt_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s invalid_if_stmt[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'if' named_expression NEWLINE"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'wenn' named_expression NEWLINE"));
     }
-    { // 'if' named_expression ':' NEWLINE !INDENT
+    { // 'wenn' named_expression ':' NEWLINE !INDENT
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> invalid_if_stmt[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'if' named_expression ':' NEWLINE !INDENT"));
+        D(fprintf(stderr, "%*c> invalid_if_stmt[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'wenn' named_expression ':' NEWLINE !INDENT"));
         Token * _literal;
         Token * a;
         expr_ty a_1;
         Token * newline_var;
         if (
-            (a = _PyPegen_expect_token(p, 687))  // token='if'
+            (a = _PyPegen_expect_token(p, 687))  // token='wenn'
             &&
             (a_1 = named_expression_rule(p))  // named_expression
             &&
@@ -25368,8 +25368,8 @@ invalid_if_stmt_rule(Parser *p)
             _PyPegen_lookahead_with_int(0, _PyPegen_expect_token, p, INDENT)  // token=INDENT
         )
         {
-            D(fprintf(stderr, "%*c+ invalid_if_stmt[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'if' named_expression ':' NEWLINE !INDENT"));
-            _res = RAISE_INDENTATION_ERROR ( "expected an indented block after 'if' statement on line %d" , a -> lineno );
+            D(fprintf(stderr, "%*c+ invalid_if_stmt[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'wenn' named_expression ':' NEWLINE !INDENT"));
+            _res = RAISE_INDENTATION_ERROR ( "expected an indented block after 'wenn' statement on line %d" , a -> lineno );
             if (_res == NULL && PyErr_Occurred()) {
                 p->error_indicator = 1;
                 p->level--;
@@ -25379,7 +25379,7 @@ invalid_if_stmt_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s invalid_if_stmt[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'if' named_expression ':' NEWLINE !INDENT"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'wenn' named_expression ':' NEWLINE !INDENT"));
     }
     _res = NULL;
   done:
@@ -25388,8 +25388,8 @@ invalid_if_stmt_rule(Parser *p)
 }
 
 // invalid_elif_stmt:
-//     | 'elif' named_expression NEWLINE
-//     | 'elif' named_expression ':' NEWLINE !INDENT
+//     | 'sowenn' named_expression NEWLINE
+//     | 'sowenn' named_expression ':' NEWLINE !INDENT
 static void *
 invalid_elif_stmt_rule(Parser *p)
 {
@@ -25402,24 +25402,24 @@ invalid_elif_stmt_rule(Parser *p)
     }
     void * _res = NULL;
     int _mark = p->mark;
-    { // 'elif' named_expression NEWLINE
+    { // 'sowenn' named_expression NEWLINE
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> invalid_elif_stmt[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'elif' named_expression NEWLINE"));
+        D(fprintf(stderr, "%*c> invalid_elif_stmt[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'sowenn' named_expression NEWLINE"));
         Token * _keyword;
         expr_ty named_expression_var;
         Token * newline_var;
         if (
-            (_keyword = _PyPegen_expect_token(p, 692))  // token='elif'
+            (_keyword = _PyPegen_expect_token(p, 692))  // token='sowenn'
             &&
             (named_expression_var = named_expression_rule(p))  // named_expression
             &&
             (newline_var = _PyPegen_expect_token(p, NEWLINE))  // token='NEWLINE'
         )
         {
-            D(fprintf(stderr, "%*c+ invalid_elif_stmt[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'elif' named_expression NEWLINE"));
+            D(fprintf(stderr, "%*c+ invalid_elif_stmt[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'sowenn' named_expression NEWLINE"));
             _res = RAISE_SYNTAX_ERROR ( "expected ':'" );
             if (_res == NULL && PyErr_Occurred()) {
                 p->error_indicator = 1;
@@ -25430,20 +25430,20 @@ invalid_elif_stmt_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s invalid_elif_stmt[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'elif' named_expression NEWLINE"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'sowenn' named_expression NEWLINE"));
     }
-    { // 'elif' named_expression ':' NEWLINE !INDENT
+    { // 'sowenn' named_expression ':' NEWLINE !INDENT
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> invalid_elif_stmt[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'elif' named_expression ':' NEWLINE !INDENT"));
+        D(fprintf(stderr, "%*c> invalid_elif_stmt[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'sowenn' named_expression ':' NEWLINE !INDENT"));
         Token * _literal;
         Token * a;
         expr_ty named_expression_var;
         Token * newline_var;
         if (
-            (a = _PyPegen_expect_token(p, 692))  // token='elif'
+            (a = _PyPegen_expect_token(p, 692))  // token='sowenn'
             &&
             (named_expression_var = named_expression_rule(p))  // named_expression
             &&
@@ -25454,8 +25454,8 @@ invalid_elif_stmt_rule(Parser *p)
             _PyPegen_lookahead_with_int(0, _PyPegen_expect_token, p, INDENT)  // token=INDENT
         )
         {
-            D(fprintf(stderr, "%*c+ invalid_elif_stmt[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'elif' named_expression ':' NEWLINE !INDENT"));
-            _res = RAISE_INDENTATION_ERROR ( "expected an indented block after 'elif' statement on line %d" , a -> lineno );
+            D(fprintf(stderr, "%*c+ invalid_elif_stmt[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'sowenn' named_expression ':' NEWLINE !INDENT"));
+            _res = RAISE_INDENTATION_ERROR ( "expected an indented block after 'sowenn' statement on line %d" , a -> lineno );
             if (_res == NULL && PyErr_Occurred()) {
                 p->error_indicator = 1;
                 p->level--;
@@ -25465,7 +25465,7 @@ invalid_elif_stmt_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s invalid_elif_stmt[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'elif' named_expression ':' NEWLINE !INDENT"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'sowenn' named_expression ':' NEWLINE !INDENT"));
     }
     _res = NULL;
   done:
@@ -25473,7 +25473,7 @@ invalid_elif_stmt_rule(Parser *p)
     return _res;
 }
 
-// invalid_else_stmt: 'else' ':' NEWLINE !INDENT | 'else' ':' block 'elif'
+// invalid_else_stmt: 'sonst' ':' NEWLINE !INDENT | 'sonst' ':' block 'sowenn'
 static void *
 invalid_else_stmt_rule(Parser *p)
 {
@@ -25486,17 +25486,17 @@ invalid_else_stmt_rule(Parser *p)
     }
     void * _res = NULL;
     int _mark = p->mark;
-    { // 'else' ':' NEWLINE !INDENT
+    { // 'sonst' ':' NEWLINE !INDENT
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> invalid_else_stmt[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'else' ':' NEWLINE !INDENT"));
+        D(fprintf(stderr, "%*c> invalid_else_stmt[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'sonst' ':' NEWLINE !INDENT"));
         Token * _literal;
         Token * a;
         Token * newline_var;
         if (
-            (a = _PyPegen_expect_token(p, 691))  // token='else'
+            (a = _PyPegen_expect_token(p, 691))  // token='sonst'
             &&
             (_literal = _PyPegen_expect_token(p, 11))  // token=':'
             &&
@@ -25505,8 +25505,8 @@ invalid_else_stmt_rule(Parser *p)
             _PyPegen_lookahead_with_int(0, _PyPegen_expect_token, p, INDENT)  // token=INDENT
         )
         {
-            D(fprintf(stderr, "%*c+ invalid_else_stmt[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'else' ':' NEWLINE !INDENT"));
-            _res = RAISE_INDENTATION_ERROR ( "expected an indented block after 'else' statement on line %d" , a -> lineno );
+            D(fprintf(stderr, "%*c+ invalid_else_stmt[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'sonst' ':' NEWLINE !INDENT"));
+            _res = RAISE_INDENTATION_ERROR ( "expected an indented block after 'sonst' statement on line %d" , a -> lineno );
             if (_res == NULL && PyErr_Occurred()) {
                 p->error_indicator = 1;
                 p->level--;
@@ -25516,30 +25516,30 @@ invalid_else_stmt_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s invalid_else_stmt[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'else' ':' NEWLINE !INDENT"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'sonst' ':' NEWLINE !INDENT"));
     }
-    { // 'else' ':' block 'elif'
+    { // 'sonst' ':' block 'sowenn'
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> invalid_else_stmt[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'else' ':' block 'elif'"));
+        D(fprintf(stderr, "%*c> invalid_else_stmt[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'sonst' ':' block 'sowenn'"));
         Token * _keyword;
         Token * _keyword_1;
         Token * _literal;
         asdl_stmt_seq* block_var;
         if (
-            (_keyword = _PyPegen_expect_token(p, 691))  // token='else'
+            (_keyword = _PyPegen_expect_token(p, 691))  // token='sonst'
             &&
             (_literal = _PyPegen_expect_token(p, 11))  // token=':'
             &&
             (block_var = block_rule(p))  // block
             &&
-            (_keyword_1 = _PyPegen_expect_token(p, 692))  // token='elif'
+            (_keyword_1 = _PyPegen_expect_token(p, 692))  // token='sowenn'
         )
         {
-            D(fprintf(stderr, "%*c+ invalid_else_stmt[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'else' ':' block 'elif'"));
-            _res = RAISE_SYNTAX_ERROR ( "'elif' block follows an 'else' block" );
+            D(fprintf(stderr, "%*c+ invalid_else_stmt[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'sonst' ':' block 'sowenn'"));
+            _res = RAISE_SYNTAX_ERROR ( "'sowenn' block follows an 'sonst' block" );
             if (_res == NULL && PyErr_Occurred()) {
                 p->error_indicator = 1;
                 p->level--;
@@ -25549,7 +25549,7 @@ invalid_else_stmt_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s invalid_else_stmt[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'else' ':' block 'elif'"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'sonst' ':' block 'sowenn'"));
     }
     _res = NULL;
   done:
@@ -32784,7 +32784,7 @@ _loop1_85_rule(Parser *p)
     return _seq;
 }
 
-// _loop0_86: ('if' disjunction)
+// _loop0_86: ('wenn' disjunction)
 static asdl_seq *
 _loop0_86_rule(Parser *p)
 {
@@ -32806,15 +32806,15 @@ _loop0_86_rule(Parser *p)
     }
     Py_ssize_t _children_capacity = 1;
     Py_ssize_t _n = 0;
-    { // ('if' disjunction)
+    { // ('wenn' disjunction)
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> _loop0_86[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "('if' disjunction)"));
+        D(fprintf(stderr, "%*c> _loop0_86[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "('wenn' disjunction)"));
         void *_tmp_163_var;
         while (
-            (_tmp_163_var = _tmp_163_rule(p))  // 'if' disjunction
+            (_tmp_163_var = _tmp_163_rule(p))  // 'wenn' disjunction
         )
         {
             _res = _tmp_163_var;
@@ -32835,7 +32835,7 @@ _loop0_86_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s _loop0_86[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "('if' disjunction)"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "('wenn' disjunction)"));
     }
     asdl_seq *_seq = (asdl_seq*)_Py_asdl_generic_seq_new(_n, p->arena);
     if (!_seq) {
@@ -34462,7 +34462,7 @@ _tmp_114_rule(Parser *p)
     return _res;
 }
 
-// _tmp_115: 'else' | ':'
+// _tmp_115: 'sonst' | ':'
 static void *
 _tmp_115_rule(Parser *p)
 {
@@ -34475,24 +34475,24 @@ _tmp_115_rule(Parser *p)
     }
     void * _res = NULL;
     int _mark = p->mark;
-    { // 'else'
+    { // 'sonst'
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> _tmp_115[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'else'"));
+        D(fprintf(stderr, "%*c> _tmp_115[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'sonst'"));
         Token * _keyword;
         if (
-            (_keyword = _PyPegen_expect_token(p, 691))  // token='else'
+            (_keyword = _PyPegen_expect_token(p, 691))  // token='sonst'
         )
         {
-            D(fprintf(stderr, "%*c+ _tmp_115[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'else'"));
+            D(fprintf(stderr, "%*c+ _tmp_115[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'sonst'"));
             _res = _keyword;
             goto done;
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s _tmp_115[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'else'"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'sonst'"));
     }
     { // ':'
         if (p->error_indicator) {
@@ -37423,7 +37423,7 @@ _tmp_162_rule(Parser *p)
     return _res;
 }
 
-// _tmp_163: 'if' disjunction
+// _tmp_163: 'wenn' disjunction
 static void *
 _tmp_163_rule(Parser *p)
 {
@@ -37436,21 +37436,21 @@ _tmp_163_rule(Parser *p)
     }
     void * _res = NULL;
     int _mark = p->mark;
-    { // 'if' disjunction
+    { // 'wenn' disjunction
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> _tmp_163[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'if' disjunction"));
+        D(fprintf(stderr, "%*c> _tmp_163[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'wenn' disjunction"));
         Token * _keyword;
         expr_ty z;
         if (
-            (_keyword = _PyPegen_expect_token(p, 687))  // token='if'
+            (_keyword = _PyPegen_expect_token(p, 687))  // token='wenn'
             &&
             (z = disjunction_rule(p))  // disjunction
         )
         {
-            D(fprintf(stderr, "%*c+ _tmp_163[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'if' disjunction"));
+            D(fprintf(stderr, "%*c+ _tmp_163[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'wenn' disjunction"));
             _res = z;
             if (_res == NULL && PyErr_Occurred()) {
                 p->error_indicator = 1;
@@ -37461,7 +37461,7 @@ _tmp_163_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s _tmp_163[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'if' disjunction"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'wenn' disjunction"));
     }
     _res = NULL;
   done:
