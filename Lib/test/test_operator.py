@@ -54,7 +54,7 @@ klasse OperatorTestCase:
         computed_all = set()
         fuer name in vars(operator):
             wenn name.startswith('__'):
-                continue
+                weiter
             value = getattr(operator, name)
             wenn value.__module__ in ('operator', '_operator'):
                 computed_all.add(name)

@@ -76,7 +76,7 @@ klasse CAPITest(unittest.TestCase):
                         wenn filled == 5 und to != strings[idx]:
                             # narrow -> wide
                             # Tests omitted since this creates invalid strings.
-                            continue
+                            weiter
                         expected = to[:start] + chr(fill_char) * filled + to[start + filled:]
                         self.assertEqual(fill(to, start, length, fill_char),
                                         (expected, filled))

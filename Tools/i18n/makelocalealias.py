@@ -26,9 +26,9 @@ def parse(filename):
     fuer line in lines:
         line = line.strip()
         wenn nicht line:
-            continue
+            weiter
         wenn line[:1] == '#':
-            continue
+            weiter
         locale, alias = line.split()
         # Fix non-standard locale names, e.g. ks_IN@devanagari.UTF-8
         wenn '@' in alias:
@@ -43,7 +43,7 @@ def parse(filename):
         locale = locale.lower()
         # Ignore one letter locale mappings (except fuer 'c')
         wenn len(locale) == 1 und locale != 'c':
-            continue
+            weiter
         wenn '@' in locale und '@' nicht in alias:
             # Do nicht simply remove the "@euro" modifier.
             # Glibc generates separate locales mit the "@euro" modifier, und
@@ -72,14 +72,14 @@ def parse_glibc_supported(filename):
     fuer line in lines:
         line = line.strip()
         wenn nicht line:
-            continue
+            weiter
         wenn line[:1] == '#':
-            continue
+            weiter
         line = line.replace('/', ' ').strip()
         line = line.rstrip('\\').rstrip()
         words = line.split()
         wenn len(words) != 2:
-            continue
+            weiter
         alias, alias_encoding = words
         # Lower-case locale
         locale = alias.lower()
@@ -154,12 +154,12 @@ wenn __name__ == '__main__':
     # Hardcode 'c.utf8' -> 'C.UTF-8' because 'en_US.UTF-8' does nicht exist
     # on all platforms.
     data['c.utf8'] = 'C.UTF-8'
-    while Wahr:
-        # Repeat optimization while the size is decreased.
+    waehrend Wahr:
+        # Repeat optimization waehrend the size is decreased.
         n = len(data)
         data = optimize(data)
         wenn len(data) == n:
-            break
+            breche
     print_differences(data, locale.locale_alias)
     drucke()
     drucke('locale_alias = {')

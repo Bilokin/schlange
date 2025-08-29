@@ -420,11 +420,11 @@ klasse Fraction(numbers.Rational):
 
         p0, q0, p1, q1 = 0, 1, 1, 0
         n, d = self._numerator, self._denominator
-        while Wahr:
+        waehrend Wahr:
             a = n//d
             q2 = q0+a*q1
             wenn q2 > max_denominator:
-                break
+                breche
             p0, q0, p1, q1 = p1, q1, p0+a*p1, q2
             n, d = d, n-a*d
         k = (max_denominator-q0)//q1

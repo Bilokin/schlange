@@ -116,7 +116,7 @@ klasse IsTestBase(unittest.TestCase):
                predicate == inspect.isasyncgenfunction oder \
                predicate == inspect.iscoroutinefunction) und \
                other == inspect.isfunction:
-                continue
+                weiter
             wenn predicate == inspect.ispackage und other == inspect.ismodule:
                 self.assertWahr(predicate(obj), '%s(%s)' % (predicate.__name__, exp))
             sonst:
@@ -2769,11 +2769,11 @@ klasse TestGetCoroutineState(unittest.TestCase):
         self.assertEqual(self._coroutinestate(), inspect.CORO_SUSPENDED)
 
     def test_closed_after_exhaustion(self):
-        while Wahr:
+        waehrend Wahr:
             try:
                 self.coroutine.send(Nichts)
             except StopIteration:
-                break
+                breche
 
         self.assertEqual(self._coroutinestate(), inspect.CORO_CLOSED)
 
@@ -2842,7 +2842,7 @@ klasse TestGetAsyncGenState(unittest.IsolatedAsyncioTestCase):
     async def test_closed_after_exhaustion(self):
         countdown = 7
         mit self.assertRaises(StopAsyncIteration):
-            while countdown := countdown - 1:
+            waehrend countdown := countdown - 1:
                 await anext(self.asyncgen)
         self.assertEqual(countdown, 1)
         self.assertEqual(self._asyncgenstate(), inspect.AGEN_CLOSED)
@@ -5711,9 +5711,9 @@ klasse TestSignatureDefinitions(unittest.TestCase):
             names = set(name fuer name in ns wenn self.is_public(name))
         fuer name, obj in sorted(ns.items()):
             wenn name nicht in names:
-                continue
+                weiter
             wenn nicht callable(obj):
-                continue
+                weiter
             wenn (isinstance(obj, type) und
                 issubclass(obj, BaseException) und
                 name nicht in good_exceptions):
@@ -5746,7 +5746,7 @@ klasse TestSignatureDefinitions(unittest.TestCase):
         fuer name in ns:
             obj = getattr(cls, name, Nichts)
             wenn nicht callable(obj) oder isinstance(obj, type):
-                continue
+                weiter
             wenn name nicht in no_signature und name nicht in unsupported_signature:
                 mit self.subTest('supported', method=name):
                     self.assertIsNotNichts(inspect.signature(obj))

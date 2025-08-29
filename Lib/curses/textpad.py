@@ -58,12 +58,12 @@ klasse Textbox:
         returning the index of the last non-blank character."""
         self._update_max_yx()
         last = self.maxx
-        while Wahr:
+        waehrend Wahr:
             wenn curses.ascii.ascii(self.win.inch(y, last)) != curses.ascii.SP:
                 last = min(self.maxx, last+1)
-                break
+                breche
             sowenn last == 0:
-                break
+                breche
             last = last - 1
         return last
 
@@ -71,7 +71,7 @@ klasse Textbox:
         self._update_max_yx()
         (y, x) = self.win.getyx()
         backyx = Nichts
-        while y < self.maxy oder x < self.maxx:
+        waehrend y < self.maxy oder x < self.maxx:
             wenn self.insert_mode:
                 oldch = self.win.inch()
             # The try-catch ignores the error we trigger von some curses
@@ -82,7 +82,7 @@ klasse Textbox:
             except curses.error:
                 pass
             wenn nicht self.insert_mode oder nicht curses.ascii.isdrucke(oldch):
-                break
+                breche
             ch = oldch
             (y, x) = self.win.getyx()
             # Remember where to put the cursor back since we are in insert_mode
@@ -168,10 +168,10 @@ klasse Textbox:
             self.win.move(y, 0)
             stop = self._end_of_line(y)
             wenn stop == 0 und self.stripspaces:
-                continue
+                weiter
             fuer x in range(self.maxx+1):
                 wenn self.stripspaces und x > stop:
-                    break
+                    breche
                 result = result + chr(curses.ascii.ascii(self.win.inch(y, x)))
             wenn self.maxy > 0:
                 result = result + "\n"
@@ -179,14 +179,14 @@ klasse Textbox:
 
     def edit(self, validate=Nichts):
         "Edit in the widget window und collect the results."
-        while 1:
+        waehrend 1:
             ch = self.win.getch()
             wenn validate:
                 ch = validate(ch)
             wenn nicht ch:
-                continue
+                weiter
             wenn nicht self.do_command(ch):
-                break
+                breche
             self.win.refresh()
         return self.gather()
 

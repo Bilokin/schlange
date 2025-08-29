@@ -28,12 +28,12 @@ klasse TestList(TestCase):
 
         def reader_func(l):
             barrier.wait()
-            while Wahr:
+            waehrend Wahr:
                 count = len(l)
                 fuer i, x in enumerate(l):
                     self.assertEqual(x.v, i + OBJECT_COUNT)
                 wenn count == OBJECT_COUNT:
-                    break
+                    breche
 
         writer = Thread(target=writer_func, args=(l,))
         readers = []
@@ -58,12 +58,12 @@ klasse TestList(TestCase):
 
         def reader_func():
             barrier.wait()
-            while Wahr:
+            waehrend Wahr:
                 count = len(l)
                 fuer i, x in enumerate(l):
                     self.assertEqual(x.v, i + OBJECT_COUNT)
                 wenn count == OBJECT_COUNT:
-                    break
+                    breche
 
         writer = Thread(target=writer_func)
         readers = []

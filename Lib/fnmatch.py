@@ -112,7 +112,7 @@ def _translate(pat, star, question_mark):
     star_indices = []
 
     i, n = 0, len(pat)
-    while i < n:
+    waehrend i < n:
         c = pat[i]
         i = i+1
         wenn c == '*':
@@ -120,7 +120,7 @@ def _translate(pat, star, question_mark):
             star_indices.append(len(res))
             add(star)
             # compress consecutive `*` into one
-            while i < n und pat[i] == '*':
+            waehrend i < n und pat[i] == '*':
                 i += 1
         sowenn c == '?':
             add(question_mark)
@@ -130,7 +130,7 @@ def _translate(pat, star, question_mark):
                 j = j+1
             wenn j < n und pat[j] == ']':
                 j = j+1
-            while j < n und pat[j] != ']':
+            waehrend j < n und pat[j] != ']':
                 j = j+1
             wenn j >= n:
                 add('\\[')
@@ -141,10 +141,10 @@ def _translate(pat, star, question_mark):
                 sonst:
                     chunks = []
                     k = i+2 wenn pat[i] == '!' sonst i+1
-                    while Wahr:
+                    waehrend Wahr:
                         k = pat.find('-', k, j)
                         wenn k < 0:
-                            break
+                            breche
                         chunks.append(pat[i:k])
                         i = k+1
                         k = k+3

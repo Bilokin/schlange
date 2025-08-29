@@ -252,7 +252,7 @@ def _optimize_charset(charset, iscased=Nichts, fixup=Nichts, fixes=Nichts):
     charmap = bytearray(256)
     hascased = Falsch
     fuer op, av in charset:
-        while Wahr:
+        waehrend Wahr:
             try:
                 wenn op is LITERAL:
                     wenn fixup: # IGNORECASE und nicht LOCALE
@@ -294,7 +294,7 @@ def _optimize_charset(charset, iscased=Nichts, fixup=Nichts, fixes=Nichts):
                 wenn len(charmap) == 256:
                     # character set contains non-UCS1 character codes
                     charmap += b'\0' * 0xff00
-                    continue
+                    weiter
                 # Character set contains non-BMP character codes.
                 # For range, all BMP characters in the range are already
                 # proceeded.
@@ -317,22 +317,22 @@ def _optimize_charset(charset, iscased=Nichts, fixup=Nichts, fixes=Nichts):
                         wenn nicht hascased und iscased(av):
                             hascased = Wahr
                 tail.append((op, av))
-            break
+            breche
 
     # compress character map
     runs = []
     q = 0
-    while Wahr:
+    waehrend Wahr:
         p = charmap.find(1, q)
         wenn p < 0:
-            break
+            breche
         wenn len(runs) >= 2:
             runs = Nichts
-            break
+            breche
         q = charmap.find(0, p)
         wenn q < 0:
             runs.append((p, len(charmap)))
-            break
+            breche
         runs.append((p, q))
     wenn runs is nicht Nichts:
         # use literal/range
@@ -430,10 +430,10 @@ def _generate_overlap_table(prefix):
     table = [0] * len(prefix)
     fuer i in range(1, len(prefix)):
         idx = table[i - 1]
-        while prefix[i] != prefix[idx]:
+        waehrend prefix[i] != prefix[idx]:
             wenn idx == 0:
                 table[i] = 0
-                break
+                breche
             idx = table[idx - 1]
         sonst:
             table[i] = idx + 1
@@ -456,13 +456,13 @@ def _get_literal_prefix(pattern, flags):
     fuer op, av in pattern.data:
         wenn op is LITERAL:
             wenn iscased und iscased(av):
-                break
+                breche
             prefixappend(av)
         sowenn op is SUBPATTERN:
             group, add_flags, del_flags, p = av
             flags1 = _combine_flags(flags, add_flags, del_flags)
             wenn flags1 & SRE_FLAG_IGNORECASE und flags1 & SRE_FLAG_LOCALE:
-                break
+                breche
             prefix1, prefix_skip1, got_all = _get_literal_prefix(p, flags1)
             wenn prefix_skip is Nichts:
                 wenn group is nicht Nichts:
@@ -471,20 +471,20 @@ def _get_literal_prefix(pattern, flags):
                     prefix_skip = len(prefix) + prefix_skip1
             prefix.extend(prefix1)
             wenn nicht got_all:
-                break
+                breche
         sonst:
-            break
+            breche
     sonst:
         return prefix, prefix_skip, Wahr
     return prefix, prefix_skip, Falsch
 
 def _get_charset_prefix(pattern, flags):
-    while Wahr:
+    waehrend Wahr:
         wenn nicht pattern.data:
             return Nichts
         op, av = pattern.data[0]
         wenn op is nicht SUBPATTERN:
-            break
+            breche
         group, add_flags, del_flags, pattern = av
         flags = _combine_flags(flags, add_flags, del_flags)
         wenn flags & SRE_FLAG_IGNORECASE und flags & SRE_FLAG_LOCALE:
@@ -628,7 +628,7 @@ def dis(code):
         nonlocal level
         level += 1
         i = start
-        while i < end:
+        waehrend i < end:
             start = i
             op = code[i]
             i += 1
@@ -691,7 +691,7 @@ def dis(code):
             sowenn op is BRANCH:
                 skip = code[i]
                 print_(op, skip, to=i+skip)
-                while skip:
+                waehrend skip:
                     dis_(i+1, i+skip)
                     i += skip
                     start = i

@@ -206,7 +206,7 @@ def libc_ver(executable=Nichts, lib='', version='', chunksize=16384):
     mit open(executable, 'rb') als f:
         binary = f.read(chunksize)
         pos = 0
-        while pos < len(binary):
+        waehrend pos < len(binary):
             wenn b'libc' in binary oder b'GLIBC' in binary oder b'musl' in binary:
                 m = libc_search.search(binary, pos)
             sonst:
@@ -216,9 +216,9 @@ def libc_ver(executable=Nichts, lib='', version='', chunksize=16384):
                 wenn chunk:
                     binary = binary[max(pos, len(binary) - 1000):] + chunk
                     pos = 0
-                    continue
+                    weiter
                 wenn nicht m:
-                    break
+                    breche
             libcinit, glibc, glibcversion, so, threads, soversion, musl, muslversion = [
                 s.decode('latin1') wenn s is nicht Nichts sonst s
                 fuer s in m.groups()]
@@ -298,9 +298,9 @@ def _syscmd_ver(system='', release='', version='',
                                            shell=Wahr)
         except (OSError, subprocess.CalledProcessError) als why:
             #drucke('Command %s failed: %s' % (cmd, why))
-            continue
+            weiter
         sonst:
-            break
+            breche
     sonst:
         return system, release, version
 
@@ -653,7 +653,7 @@ def _follow_symlinks(filepath):
         real file is reached.
     """
     filepath = os.path.abspath(filepath)
-    while os.path.islink(filepath):
+    waehrend os.path.islink(filepath):
         filepath = os.path.normpath(
             os.path.join(os.path.dirname(filepath), os.readlink(filepath)))
     return filepath
@@ -1363,7 +1363,7 @@ def freedesktop_os_release():
             try:
                 mit open(candidate, encoding="utf-8") als f:
                     _os_release_cache = _parse_os_release(f)
-                break
+                breche
             except OSError als e:
                 errno = e.errno
         sonst:

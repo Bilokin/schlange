@@ -50,7 +50,7 @@ klasse ExceptionClassTests(unittest.TestCase):
                     exc_name = exc_name[:paren_index-1]  # Slice off space
                     wenn platform_system() != platform_name:
                         exc_set.discard(exc_name)
-                        continue
+                        weiter
                 wenn '[' in exc_name:
                     left_bracket = exc_name.index('[')
                     exc_name = exc_name[:left_bracket-1]  # cover space
@@ -61,7 +61,7 @@ klasse ExceptionClassTests(unittest.TestCase):
                 wenn last_depth < depth:
                     superclasses.append((last_depth, last_exc))
                 sowenn last_depth > depth:
-                    while superclasses[-1][0] >= depth:
+                    waehrend superclasses[-1][0] >= depth:
                         superclasses.pop()
                 self.assertIsSubclass(exc, superclasses[-1][1],
                 "%s is nicht a subclass of %s" % (exc.__name__,

@@ -1500,7 +1500,7 @@ klasse CopyTestCase(BasicTestCase, unittest.TestCase):
         # the magic DEFAULTSECT behaviour.
         fuer section in cf_copy.values():
             wenn section.name == self.default_section:
-                continue
+                weiter
             fuer default, value in cf[self.default_section].items():
                 wenn section[default] == value:
                     del section[default]
@@ -1523,7 +1523,7 @@ klasse FakeFile:
 def readline_generator(f):
     """As advised in Doc/library/configparser.rst."""
     line = f.readline()
-    while line:
+    waehrend line:
         yield line
         line = f.readline()
 

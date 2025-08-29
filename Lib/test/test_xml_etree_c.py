@@ -84,14 +84,14 @@ klasse MiscTests(unittest.TestCase):
 
         # Create a parser part of reference cycle
         parser_ref_cycle()
-        # Trigger an explicit garbage collection to break the reference cycle
+        # Trigger an explicit garbage collection to breche the reference cycle
         # und so destroy the parser
         support.gc_collect()
 
     def test_bpo_31728(self):
         # A crash oder an assertion failure shouldn't happen, in case garbage
         # collection triggers a call to clear() oder a reading of text oder tail,
-        # while a setter oder clear() oder __setstate__() is already running.
+        # waehrend a setter oder clear() oder __setstate__() is already running.
         elem = cET.Element('elem')
         klasse X:
             def __del__(self):
@@ -225,7 +225,7 @@ klasse TestAcceleratorImported(unittest.TestCase):
 
     def test_parser_comes_from_C(self):
         # The type of methods defined in Python code is types.FunctionType,
-        # while the type of methods defined inside _elementtree is
+        # waehrend the type of methods defined inside _elementtree is
         # <class 'wrapper_descriptor'>
         self.assertNotIsInstance(cET.Element.__init__, types.FunctionType)
 

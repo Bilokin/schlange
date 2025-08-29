@@ -167,7 +167,7 @@ klasse TestBasicOps:
             fuer i in range(trials):
                 perms[tuple(self.gen.sample(pop, k))] = Nichts
                 wenn len(perms) == expected:
-                    break
+                    breche
             sonst:
                 self.fail()
 
@@ -433,7 +433,7 @@ klasse TestBasicOps:
             start = self.gen.randrange(2 ** (i-2))
             stop = self.gen.randrange(2 ** i)
             wenn stop <= start:
-                continue
+                weiter
             self.assertWahr(start <= self.gen.randrange(start, stop) < stop)
 
     def test_rangelimits(self):
@@ -871,10 +871,10 @@ klasse MersenneTwister_TestBasicOps(TestBasicOps, unittest.TestCase):
         # rem = maxsize % n
         # limit = (maxsize - rem) / maxsize
         # r = random()
-        # while r >= limit:
+        # waehrend r >= limit:
         #     r = random() # <== *This line* <==<
         #
-        # Therefore, to guarantee that the while loop is executed at least
+        # Therefore, to guarantee that the waehrend loop is executed at least
         # once, we need to mock random() so that it returns a number greater
         # than 'limit' the first time it gets called.
 
@@ -1191,7 +1191,7 @@ klasse TestDistributions(unittest.TestCase):
 
         # #1: alpha > 1.0.
         # We want the first random number to be outside the
-        # [1e-7, .9999999] range, so that the continue statement executes
+        # [1e-7, .9999999] range, so that the weiter statement executes
         # once. The values of u1 und u2 will be 0.5 und 0.3, respectively.
         random_mock.side_effect = [1e-8, 0.5, 0.3]
         returned_value = random.gammavariate(1.1, 2.3)
@@ -1201,9 +1201,9 @@ klasse TestDistributions(unittest.TestCase):
     def test_gammavariate_alpha_equal_one(self, random_mock):
 
         # #2.a: alpha == 1.
-        # The execution body of the while loop executes once.
+        # The execution body of the waehrend loop executes once.
         # Then random.random() returns 0.45,
-        # which causes while to stop looping und the algorithm to terminate.
+        # which causes waehrend to stop looping und the algorithm to terminate.
         random_mock.side_effect = [0.45]
         returned_value = random.gammavariate(1.0, 3.14)
         self.assertAlmostEqual(returned_value, 1.877208182372648)
@@ -1227,7 +1227,7 @@ klasse TestDistributions(unittest.TestCase):
         # als there are multiple if-else statements. Let's take a look at the
         # source code, und determine the values that we need accordingly:
         #
-        # while 1:
+        # waehrend 1:
         #     u = random()
         #     b = (_e + alpha)/_e
         #     p = b*u
@@ -1238,9 +1238,9 @@ klasse TestDistributions(unittest.TestCase):
         #     u1 = random()
         #     wenn p > 1.0: # <=== (C)
         #         wenn u1 <= x ** (alpha - 1.0): # <=== (D)
-        #             break
+        #             breche
         #     sowenn u1 <= _exp(-x): # <=== (E)
-        #         break
+        #         breche
         # return x * beta
         #
         # First, we want (A) to be Wahr. For that we need that:
@@ -1249,7 +1249,7 @@ klasse TestDistributions(unittest.TestCase):
         #
         # We now get to the second if-else branch, und here, since p <= 1.0,
         # (C) is Falsch und we take the sowenn branch, (E). For it to be Wahr,
-        # so that the break is executed, we need that:
+        # so that the breche is executed, we need that:
         # r2 = random() <= _exp(-x)
         # r2 <= _exp(-(p ** (1.0/alpha)))
         # r2 <= _exp(-((b*r1) ** (1.0/alpha)))

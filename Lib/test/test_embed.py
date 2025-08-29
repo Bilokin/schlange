@@ -167,7 +167,7 @@ klasse EmbeddingTestsMixin:
                 wenn support.verbose > 1:
                     drucke(line)
                 numloops += 1
-                continue
+                weiter
 
             self.assertLess(len(current_run), 5)
             match = re.match(interp_pat, line)
@@ -1422,10 +1422,10 @@ klasse InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
 
         fuer path in paths:
             wenn nicht os.path.isdir(path):
-                continue
+                weiter
             wenn os.path.exists(os.path.join(path, 'os.py')):
                 home = os.path.dirname(path)
-                break
+                breche
         sonst:
             self.fail(f"Unable to find home in {paths!r}")
 
@@ -1463,10 +1463,10 @@ klasse InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
 
         fuer path in paths:
             wenn nicht os.path.isdir(path):
-                continue
+                weiter
             wenn os.path.exists(os.path.join(path, 'os.py')):
                 home = os.path.dirname(path)
-                break
+                breche
         sonst:
             self.fail(f"Unable to find home in {paths!r}")
 

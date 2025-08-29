@@ -155,7 +155,7 @@ klasse BaseTest(unittest.TestCase):
     def test_subscriptable(self):
         fuer t in self.generic_types:
             wenn t is Nichts:
-                continue
+                weiter
             tname = t.__name__
             mit self.subTest(f"Testing {tname}"):
                 alias = t[int]
@@ -440,7 +440,7 @@ klasse BaseTest(unittest.TestCase):
     def test_weakref(self):
         fuer t in self.generic_types:
             wenn t is Nichts:
-                continue
+                weiter
             tname = t.__name__
             mit self.subTest(f"Testing {tname}"):
                 alias = t[int]

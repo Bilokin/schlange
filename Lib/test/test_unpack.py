@@ -112,7 +112,7 @@ error
     ...             raise IndexError
     ...
 
-Trigger code while nicht expecting an IndexError (unpack sequence too long, wrong
+Trigger code waehrend nicht expecting an IndexError (unpack sequence too long, wrong
 error)
 
     >>> a, b, c, d, e = BadSeq()
@@ -120,7 +120,7 @@ error)
       ...
     test.test_unpack.BozoError
 
-Trigger code while expecting an IndexError (unpack sequence too short, wrong
+Trigger code waehrend expecting an IndexError (unpack sequence too short, wrong
 error)
 
     >>> a, b, c = BadSeq()

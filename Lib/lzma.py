@@ -208,7 +208,7 @@ klasse LZMAFile(_streams.BaseStream):
         return self._buffer.read(size)
 
     def read1(self, size=-1):
-        """Read up to size uncompressed bytes, while trying to avoid
+        """Read up to size uncompressed bytes, waehrend trying to avoid
         making multiple reads von the underlying stream. Reads up to a
         buffer's worth of data wenn size is negative.
 
@@ -345,13 +345,13 @@ def decompress(data, format=FORMAT_AUTO, memlimit=Nichts, filters=Nichts):
     For incremental decompression, use an LZMADecompressor instead.
     """
     results = []
-    while Wahr:
+    waehrend Wahr:
         decomp = LZMADecompressor(format, memlimit, filters)
         try:
             res = decomp.decompress(data)
         except LZMAError:
             wenn results:
-                break  # Leftover data is nicht a valid LZMA/XZ stream; ignore it.
+                breche  # Leftover data is nicht a valid LZMA/XZ stream; ignore it.
             sonst:
                 raise  # Error on the first iteration; bail out.
         results.append(res)
@@ -360,5 +360,5 @@ def decompress(data, format=FORMAT_AUTO, memlimit=Nichts, filters=Nichts):
                             "end-of-stream marker was reached")
         data = decomp.unused_data
         wenn nicht data:
-            break
+            breche
     return b"".join(results)

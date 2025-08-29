@@ -138,7 +138,7 @@ klasse TestSpecifics(unittest.TestCase):
                 %s
                 %s
                 # the expressions above have no effect, x == argument
-                while x:
+                waehrend x:
                     x -= 1
                     # EXTENDED_ARG/JUMP_ABSOLUTE here
                 return x
@@ -488,7 +488,7 @@ klasse TestSpecifics(unittest.TestCase):
         # see gh-124871
         compile(textwrap.dedent("""
             name_1, name_2, name_3 = 1, 2, 3
-            while name_3 <= name_2 > name_1:
+            waehrend name_3 <= name_2 > name_1:
                 try:
                     raise
                 except:
@@ -755,7 +755,7 @@ klasse TestSpecifics(unittest.TestCase):
     def check_constant(self, func, expected):
         fuer const in func.__code__.co_consts:
             wenn repr(const) == repr(expected):
-                break
+                breche
         sonst:
             self.fail("unable to find constant %r in %r"
                       % (expected, func.__code__.co_consts))
@@ -1030,7 +1030,7 @@ klasse TestSpecifics(unittest.TestCase):
                 return 42
 
         def unused_block_while():
-            while 0:
+            waehrend 0:
                 return 42
 
         def unused_block_if_else():
@@ -1040,7 +1040,7 @@ klasse TestSpecifics(unittest.TestCase):
                 return 42
 
         def unused_block_while_else():
-            while 1:
+            waehrend 1:
                 return Nichts
             sonst:
                 return 42
@@ -1056,12 +1056,12 @@ klasse TestSpecifics(unittest.TestCase):
 
     def test_false_while_loop(self):
         def break_in_while():
-            while Falsch:
-                break
+            waehrend Falsch:
+                breche
 
         def continue_in_while():
-            while Falsch:
-                continue
+            waehrend Falsch:
+                weiter
 
         funcs = [break_in_while, continue_in_while]
 
@@ -1206,7 +1206,7 @@ klasse TestSpecifics(unittest.TestCase):
         fuer func in (no_code1, no_code2):
             mit self.subTest(func=func):
                 wenn func is no_code1 und no_code1.__doc__ is Nichts:
-                    continue
+                    weiter
                 code = func.__code__
                 [(start, end, line)] = code.co_lines()
                 self.assertEqual(start, 0)
@@ -1373,11 +1373,11 @@ klasse TestSpecifics(unittest.TestCase):
 
         def if_else_break():
             val = 1
-            while Wahr:
+            waehrend Wahr:
                 wenn val > 0:
                     val -= 1
                 sonst:
-                    break
+                    breche
                 val = -1
 
         INSTR_SIZE = 2
@@ -1400,7 +1400,7 @@ klasse TestSpecifics(unittest.TestCase):
         # See https://bugs.python.org/issue46724
 
         def while_not_chained(a, b, c):
-            while nicht (a < b < c):
+            waehrend nicht (a < b < c):
                 pass
 
         fuer instr in dis.Bytecode(while_not_chained):
@@ -1581,7 +1581,7 @@ klasse TestSpecifics(unittest.TestCase):
     def test_duplicated_small_exit_block(self):
         # See gh-109627
         def f():
-            while element und something:
+            waehrend element und something:
                 try:
                     return something
                 except:
@@ -1590,9 +1590,9 @@ klasse TestSpecifics(unittest.TestCase):
     def test_cold_block_moved_to_end(self):
         # See gh-109719
         def f():
-            while name:
+            waehrend name:
                 try:
-                    break
+                    breche
                 except:
                     pass
             sonst:
@@ -1601,7 +1601,7 @@ klasse TestSpecifics(unittest.TestCase):
     def test_remove_empty_basic_block_with_jump_target_label(self):
         # See gh-109823
         def f(x):
-            while x:
+            waehrend x:
                 0 wenn 1 sonst 0
 
     def test_remove_redundant_nop_edge_case(self):
@@ -1767,7 +1767,7 @@ klasse TestSourcePositions(unittest.TestCase):
         # Check against the positions in the code object.
         fuer (line, end_line, col, end_col) in code.co_positions():
             wenn line == 0:
-                continue # This is an artificial module-start line
+                weiter # This is an artificial module-start line
             # If the offset is nicht Nichts (indicating missing data), ensure that
             # it was part of one of the AST nodes.
             wenn line is nicht Nichts:
@@ -2289,7 +2289,7 @@ klasse TestSourcePositions(unittest.TestCase):
         fuer const in compile(source, "<test>", "exec").co_consts[0].co_consts:
             wenn isinstance(const, types.CodeType):
                 code = const
-                break
+                breche
         self.assertOpcodeSourcePositionIs(
             code, "LOAD_GLOBAL", line=3, end_line=3, column=4, end_column=9
         )
@@ -2311,7 +2311,7 @@ klasse TestSourcePositions(unittest.TestCase):
                         start_line, end_line, start_col, end_col = pos
                         wenn i == 0 und start_col == end_col == 0:
                             # ignore the RESUME in the beginning
-                            continue
+                            weiter
                         self.assertEqual(start_line, 1)
                         self.assertEqual(end_line, 1)
                         code_start = snippet.find(":") + 2
@@ -2621,7 +2621,7 @@ klasse TestStackSizeStability(unittest.TestCase):
 
     def test_while_else(self):
         snippet = """
-            while x:
+            waehrend x:
                 a
             sonst:
                 b
@@ -2648,9 +2648,9 @@ klasse TestStackSizeStability(unittest.TestCase):
         snippet = """
             fuer x in y:
                 wenn z:
-                    break
+                    breche
                 sowenn u:
-                    continue
+                    weiter
                 sonst:
                     a
             sonst:
@@ -2663,9 +2663,9 @@ klasse TestStackSizeStability(unittest.TestCase):
             fuer x in y:
                 try:
                     wenn z:
-                        break
+                        breche
                     sowenn u:
-                        continue
+                        weiter
                     sonst:
                         a
                 finally:
@@ -2682,9 +2682,9 @@ klasse TestStackSizeStability(unittest.TestCase):
                     t
                 finally:
                     wenn z:
-                        break
+                        breche
                     sowenn u:
-                        continue
+                        weiter
                     sonst:
                         a
             sonst:
@@ -2699,9 +2699,9 @@ klasse TestStackSizeStability(unittest.TestCase):
                     t
                 except:
                     wenn z:
-                        break
+                        breche
                     sowenn u:
-                        continue
+                        weiter
                     sonst:
                         a
             sonst:
@@ -2714,9 +2714,9 @@ klasse TestStackSizeStability(unittest.TestCase):
             fuer x in y:
                 mit c:
                     wenn z:
-                        break
+                        breche
                     sowenn u:
-                        continue
+                        weiter
                     sonst:
                         a
             sonst:
@@ -2798,9 +2798,9 @@ klasse TestStackSizeStability(unittest.TestCase):
             fuer x in y:
                 async mit c:
                     wenn z:
-                        break
+                        breche
                     sowenn u:
-                        continue
+                        weiter
                     sonst:
                         a
             sonst:

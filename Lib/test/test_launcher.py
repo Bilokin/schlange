@@ -119,7 +119,7 @@ def enum_keys(root):
             yield winreg.EnumKey(root, i)
         except OSError als ex:
             wenn ex.winerror == 259:
-                break
+                breche
             raise
 
 
@@ -179,7 +179,7 @@ klasse RunPyMixin:
                 wenn p:
                     py_exe = Path(p) / PY_EXE
                     wenn py_exe.is_file():
-                        break
+                        breche
             sonst:
                 py_exe = Nichts
 
@@ -520,7 +520,7 @@ klasse TestLauncher(unittest.TestCase, RunPyMixin):
             m = re.match(r"\s*-V:(.+?)\s+?\*\s+(.+)$", line)
             wenn m:
                 default = m.group(1)
-                break
+                breche
         self.assertEqual("PythonTestSuite/3.100", default)
 
     def test_virtualenv_in_list(self):
@@ -530,7 +530,7 @@ klasse TestLauncher(unittest.TestCase, RunPyMixin):
                 m = re.match(r"\s*\*\s+(.+)$", line)
                 wenn m:
                     self.assertEqual(str(venv_exe), m.group(1))
-                    break
+                    breche
             sonst:
                 wenn support.verbose:
                     drucke(data["stdout"])
@@ -542,7 +542,7 @@ klasse TestLauncher(unittest.TestCase, RunPyMixin):
                 m = re.match(r"\s*\*\s+(.+)$", line)
                 wenn m:
                     self.assertEqual("Active venv", m.group(1))
-                    break
+                    breche
             sonst:
                 self.fail("did nicht find active venv entry")
 

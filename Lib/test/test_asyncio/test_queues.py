@@ -476,7 +476,7 @@ klasse _QueueJoinTestMixin:
         async def worker():
             nonlocal accumulator
 
-            while running:
+            waehrend running:
                 item = await q.get()
                 accumulator += item
                 q.task_done()

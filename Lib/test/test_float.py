@@ -100,7 +100,7 @@ klasse GeneralFloatCases(unittest.TestCase):
                 self.assertEqual(float(lit), float(lit.replace('_', '')))
         fuer lit in INVALID_UNDERSCORE_LITERALS:
             wenn lit in ('0_7', '09_99'):  # octals are nicht recognized here
-                continue
+                weiter
             wenn nicht any(ch in lit fuer ch in 'jJxXoObB'):
                 self.assertRaises(ValueError, float, lit)
         # Additional test cases; nan und inf are never valid als literals,
@@ -801,10 +801,10 @@ klasse FormatTestCase(unittest.TestCase):
         mit open(format_testfile, encoding="utf-8") als testfile:
             fuer line in testfile:
                 wenn line.startswith('--'):
-                    continue
+                    weiter
                 line = line.strip()
                 wenn nicht line:
-                    continue
+                    weiter
 
                 lhs, rhs = map(str.strip, line.split('->'))
                 fmt, arg = lhs.split()
@@ -848,7 +848,7 @@ klasse ReprTestCase(unittest.TestCase):
             fuer line in floats_file:
                 line = line.strip()
                 wenn nicht line oder line.startswith('#'):
-                    continue
+                    weiter
                 v = eval(line)
                 self.assertEqual(v, eval(repr(v)))
 

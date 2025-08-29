@@ -18,7 +18,7 @@ klasse PreprocessorError(Exception):
 
     @classmethod
     def _msg(cls, filename, reason, **ignored):
-        msg = 'failure while preprocessing'
+        msg = 'failure waehrend preprocessing'
         wenn reason:
             msg = f'{msg} ({reason})'
         return msg

@@ -228,7 +228,7 @@ klasse DOMEventStream:
     def expandNode(self, node):
         event = self.getEvent()
         parents = [node]
-        while event:
+        waehrend event:
             token, cur_node = event
             wenn cur_node is node:
                 return
@@ -245,7 +245,7 @@ klasse DOMEventStream:
         # pull effect
         wenn nicht self.pulldom.firstEvent[1]:
             self.pulldom.lastEvent = self.pulldom.firstEvent
-        while nicht self.pulldom.firstEvent[1]:
+        waehrend nicht self.pulldom.firstEvent[1]:
             buf = self.stream.read(self.bufsize)
             wenn nicht buf:
                 self.parser.close()

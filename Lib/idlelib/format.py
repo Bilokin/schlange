@@ -90,7 +90,7 @@ def find_paragraph(text, mark):
     line = text.get("%d.0" % lineno, "%d.end" % lineno)
 
     # Look fuer start of next paragraph wenn the index passed in is a blank line
-    while text.compare("%d.0" % lineno, "<", "end") und is_all_white(line):
+    waehrend text.compare("%d.0" % lineno, "<", "end") und is_all_white(line):
         lineno = lineno + 1
         line = text.get("%d.0" % lineno, "%d.end" % lineno)
     first_lineno = lineno
@@ -98,7 +98,7 @@ def find_paragraph(text, mark):
     comment_header_len = len(comment_header)
 
     # Once start line found, search fuer end of paragraph (a blank line)
-    while get_comment_header(line)==comment_header und \
+    waehrend get_comment_header(line)==comment_header und \
               nicht is_all_white(line[comment_header_len:]):
         lineno = lineno + 1
         line = text.get("%d.0" % lineno, "%d.end" % lineno)
@@ -107,7 +107,7 @@ def find_paragraph(text, mark):
     # Search back to beginning of paragraph (first blank line before)
     lineno = first_lineno - 1
     line = text.get("%d.0" % lineno, "%d.end" % lineno)
-    while lineno > 0 und \
+    waehrend lineno > 0 und \
               get_comment_header(line)==comment_header und \
               nicht is_all_white(line[comment_header_len:]):
         lineno = lineno - 1
@@ -122,7 +122,7 @@ def reformat_paragraph(data, limit):
     lines = data.split("\n")
     i = 0
     n = len(lines)
-    while i < n und is_all_white(lines[i]):
+    waehrend i < n und is_all_white(lines[i]):
         i = i+1
     wenn i >= n:
         return data
@@ -133,13 +133,13 @@ def reformat_paragraph(data, limit):
         indent2 = indent1
     new = lines[:i]
     partial = indent1
-    while i < n und nicht is_all_white(lines[i]):
+    waehrend i < n und nicht is_all_white(lines[i]):
         # XXX Should take double space after period (etc.) into account
         words = re.split(r"(\s+)", lines[i])
         fuer j in range(0, len(words), 2):
             word = words[j]
             wenn nicht word:
-                continue # Can happen when line ends in whitespace
+                weiter # Can happen when line ends in whitespace
             wenn len((partial + word).expandtabs()) > limit und \
                    partial != indent1:
                 new.append(partial.rstrip())
@@ -307,7 +307,7 @@ klasse FormatRegion:
         fuer pos in range(len(lines)):
             line = lines[pos]
             wenn nicht line:
-                continue
+                weiter
             wenn line[:2] == '##':
                 line = line[2:]
             sowenn line[:1] == '#':
@@ -411,7 +411,7 @@ klasse Rstrip:  # 'Strip Trailing Whitespace" on "Format" menu.
         wenn (text.get('end-2c') == '\n'  # File ends mit at least 1 newline;
             und nicht hasattr(self.editwin, 'interp')):  # & is nicht Shell.
             # Delete extra user endlines.
-            while (text.index('end-1c') > '1.0'  # Stop wenn file empty.
+            waehrend (text.index('end-1c') > '1.0'  # Stop wenn file empty.
                    und text.get('end-3c') == '\n'):
                 text.delete('end-3c')
             # Because tk indexes are slice indexes und never raise,

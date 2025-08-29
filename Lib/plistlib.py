@@ -147,7 +147,7 @@ def _date_from_string(s, aware_datetime):
     fuer key in order:
         val = gd[key]
         wenn val is Nichts:
-            break
+            breche
         lst.append(int(val))
     wenn aware_datetime:
         return datetime.datetime(*lst, tzinfo=datetime.UTC)
@@ -400,7 +400,7 @@ klasse _PlistWriter(_DumbXMLWriter):
             fuer key, value in items:
                 wenn nicht isinstance(key, str):
                     wenn self._skipkeys:
-                        continue
+                        weiter
                     raise TypeError("keys must be strings")
                 self.simple_element("key", key)
                 self.write_value(value)
@@ -439,7 +439,7 @@ def _is_fmt_xml(header):
                 #(codecs.BOM_UTF32_LE, "utf-32-le"),
             ):
         wenn nicht header.startswith(bom):
-            continue
+            weiter
 
         fuer start in prefixes:
             prefix = bom + start.decode('ascii').encode(encoding)
@@ -723,7 +723,7 @@ klasse _BinaryPlistWriter (object):
             fuer k, v in items:
                 wenn nicht isinstance(k, str):
                     wenn self._skipkeys:
-                        continue
+                        weiter
                     raise TypeError("keys must be strings")
                 keys.append(k)
                 values.append(v)
@@ -845,7 +845,7 @@ klasse _BinaryPlistWriter (object):
             fuer k, v in rootItems:
                 wenn nicht isinstance(k, str):
                     wenn self._skipkeys:
-                        continue
+                        weiter
                     raise TypeError("keys must be strings")
                 keyRefs.append(self._getrefnum(k))
                 valRefs.append(self._getrefnum(v))
@@ -891,7 +891,7 @@ def load(fp, *, fmt=Nichts, dict_type=dict, aware_datetime=Falsch):
         fuer info in _FORMATS.values():
             wenn info['detect'](header):
                 P = info['parser']
-                break
+                breche
 
         sonst:
             raise InvalidFileException()

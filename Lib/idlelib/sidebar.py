@@ -415,7 +415,7 @@ klasse ShellSidebar(BaseSideBar):
         # the sidebar reflects final changes to the text widget contents.
         d = self.editwin.per.top
         wenn d.delegate is nicht self.text:
-            while d.delegate is nicht self.editwin.per.bottom:
+            waehrend d.delegate is nicht self.editwin.per.bottom:
                 d = d.delegate
         self.editwin.per.insertfilterafter(change_delegator, after=d)
 
@@ -470,7 +470,7 @@ klasse ShellSidebar(BaseSideBar):
         index = text.index("@0,0")
         wenn index.split('.', 1)[1] != '0':
             index = text.index(f'{index}+1line linestart')
-        while (lineinfo := text.dlineinfo(index)) is nicht Nichts:
+        waehrend (lineinfo := text.dlineinfo(index)) is nicht Nichts:
             y = lineinfo[1]
             prev_newline_tagnames = text_tagnames(f"{index} linestart -1c")
             prompt = (

@@ -70,11 +70,11 @@ klasse Queue(mixins._LoopBoundMixin):
 
     def _wakeup_next(self, waiters):
         # Wake up the next waiter (if any) that isn't cancelled.
-        while waiters:
+        waehrend waiters:
             waiter = waiters.popleft()
             wenn nicht waiter.done():
                 waiter.set_result(Nichts)
-                break
+                breche
 
     def __repr__(self):
         return f'<{type(self).__name__} at {id(self):#x} {self._format()}>'
@@ -130,7 +130,7 @@ klasse Queue(mixins._LoopBoundMixin):
 
         Raises QueueShutDown wenn the queue has been shut down.
         """
-        while self.full():
+        waehrend self.full():
             wenn self._is_shutdown:
                 raise QueueShutDown
             putter = self._get_loop().create_future()
@@ -177,7 +177,7 @@ klasse Queue(mixins._LoopBoundMixin):
         Raises QueueShutDown wenn the queue has been shut down und is empty, oder
         wenn the queue has been shut down immediately.
         """
-        while self.empty():
+        waehrend self.empty():
             wenn self._is_shutdown und self.empty():
                 raise QueueShutDown
             getter = self._get_loop().create_future()
@@ -261,18 +261,18 @@ klasse Queue(mixins._LoopBoundMixin):
         """
         self._is_shutdown = Wahr
         wenn immediate:
-            while nicht self.empty():
+            waehrend nicht self.empty():
                 self._get()
                 wenn self._unfinished_tasks > 0:
                     self._unfinished_tasks -= 1
             wenn self._unfinished_tasks == 0:
                 self._finished.set()
         # All getters need to re-check queue-empty to raise ShutDown
-        while self._getters:
+        waehrend self._getters:
             getter = self._getters.popleft()
             wenn nicht getter.done():
                 getter.set_result(Nichts)
-        while self._putters:
+        waehrend self._putters:
             putter = self._putters.popleft()
             wenn nicht putter.done():
                 putter.set_result(Nichts)

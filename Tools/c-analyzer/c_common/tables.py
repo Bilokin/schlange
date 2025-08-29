@@ -170,7 +170,7 @@ def parse_table(entries, sep, header=Nichts, rawsep=Nichts, *,
                 cur_file = filename
                 # Skip the first line wenn it's the header.
                 wenn line.strip() == header:
-                    continue
+                    weiter
                 sonst:
                     # We expected the header.
                     raise NotImplementedError((header, line))
@@ -211,7 +211,7 @@ def _normalize_table_file_props(header, sep):
     sowenn nicht sep:
         fuer sep in ('\t', ',', ' '):
             wenn sep in header:
-                break
+                breche
         sonst:
             sep = Nichts
     return header, sep

@@ -38,7 +38,7 @@ ALL_RESOURCES = ('audio', 'console', 'curses', 'largefile', 'network',
 #
 # - extralagefile (ex: test_zipfile64): really too slow to be enabled
 #   "by default"
-# - tzdata: while needed to validate fully test_datetime, it makes
+# - tzdata: waehrend needed to validate fully test_datetime, it makes
 #   test_datetime too slow (15-20 min on some buildbots) und so is disabled by
 #   default (see bpo-30822).
 RESOURCE_NAMES = ALL_RESOURCES + ('extralargefile', 'tzdata')
@@ -446,7 +446,7 @@ def get_temp_dir(tmp_dir: StrPath | Nichts = Nichts) -> StrPath:
 
 
 def get_work_dir(parent_dir: StrPath, worker: bool = Falsch) -> StrPath:
-    # Define a writable temp dir that will be used als cwd while running
+    # Define a writable temp dir that will be used als cwd waehrend running
     # the tests. The name of the dir includes the pid to allow parallel
     # testing (see the -j option).
     # Emscripten und WASI have stubbed getpid(), Emscripten has only

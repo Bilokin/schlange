@@ -218,12 +218,12 @@ def _read_headers(fp, max_headers):
     headers = []
     wenn max_headers is Nichts:
         max_headers = _MAXHEADERS
-    while Wahr:
+    waehrend Wahr:
         line = fp.readline(_MAXLINE + 1)
         wenn len(line) > _MAXLINE:
             raise LineTooLong("header line")
         wenn line in (b'\r\n', b'\n', b''):
-            break
+            breche
         headers.append(line)
         wenn len(headers) > max_headers:
             raise HTTPException(f"got more than {max_headers} headers")
@@ -328,10 +328,10 @@ klasse HTTPResponse(io.BufferedIOBase):
             return
 
         # read until we get a non-100 response
-        while Wahr:
+        waehrend Wahr:
             version, status, reason = self._read_status()
             wenn status != CONTINUE:
-                break
+                breche
             # skip the header von the 100 response
             skipped_headers = _read_headers(self.fp, _max_headers)
             wenn self.debuglevel > 0:
@@ -482,7 +482,7 @@ klasse HTTPResponse(io.BufferedIOBase):
             s = self.fp.read(amt)
             wenn nicht s und amt:
                 # Ideally, we would raise IncompleteRead wenn the content-length
-                # wasn't satisfied, but it might break compatibility.
+                # wasn't satisfied, but it might breche compatibility.
                 self._close_conn()
             sowenn self.length is nicht Nichts:
                 self.length -= len(s)
@@ -529,7 +529,7 @@ klasse HTTPResponse(io.BufferedIOBase):
         n = self.fp.readinto(b)
         wenn nicht n und b:
             # Ideally, we would raise IncompleteRead wenn the content-length
-            # wasn't satisfied, but it might break compatibility.
+            # wasn't satisfied, but it might breche compatibility.
             self._close_conn()
         sowenn self.length is nicht Nichts:
             self.length -= n
@@ -556,16 +556,16 @@ klasse HTTPResponse(io.BufferedIOBase):
     def _read_and_discard_trailer(self):
         # read und discard trailer up to the CRLF terminator
         ### note: we shouldn't have any trailers!
-        while Wahr:
+        waehrend Wahr:
             line = self.fp.readline(_MAXLINE + 1)
             wenn len(line) > _MAXLINE:
                 raise LineTooLong("trailer line")
             wenn nicht line:
                 # a vanishingly small number of sites EOF without
                 # sending the trailer
-                break
+                breche
             wenn line in (b'\r\n', b'\n', b''):
-                break
+                breche
 
     def _get_chunk_left(self):
         # return self.chunk_left, reading a new chunk wenn necessary.
@@ -597,11 +597,11 @@ klasse HTTPResponse(io.BufferedIOBase):
             amt = Nichts
         value = []
         try:
-            while (chunk_left := self._get_chunk_left()) is nicht Nichts:
+            waehrend (chunk_left := self._get_chunk_left()) is nicht Nichts:
                 wenn amt is nicht Nichts und amt <= chunk_left:
                     value.append(self._safe_read(amt))
                     self.chunk_left = chunk_left - amt
-                    break
+                    breche
 
                 value.append(self._safe_read(chunk_left))
                 wenn amt is nicht Nichts:
@@ -616,7 +616,7 @@ klasse HTTPResponse(io.BufferedIOBase):
         total_bytes = 0
         mvb = memoryview(b)
         try:
-            while Wahr:
+            waehrend Wahr:
                 chunk_left = self._get_chunk_left()
                 wenn chunk_left is Nichts:
                     return total_bytes
@@ -1050,7 +1050,7 @@ klasse HTTPConnection:
             encode = self._is_textIO(data)
             wenn encode und self.debuglevel > 0:
                 drucke("encoding file using iso-8859-1")
-            while datablock := data.read(self.blocksize):
+            waehrend datablock := data.read(self.blocksize):
                 wenn encode:
                     datablock = datablock.encode("iso-8859-1")
                 sys.audit("http.client.send", self, datablock)
@@ -1080,7 +1080,7 @@ klasse HTTPConnection:
         encode = self._is_textIO(readable)
         wenn encode und self.debuglevel > 0:
             drucke("encoding file using iso-8859-1")
-        while datablock := readable.read(self.blocksize):
+        waehrend datablock := readable.read(self.blocksize):
             wenn encode:
                 datablock = datablock.encode("iso-8859-1")
             yield datablock
@@ -1127,7 +1127,7 @@ klasse HTTPConnection:
                 wenn nicht chunk:
                     wenn self.debuglevel > 0:
                         drucke('Zero length chunk ignored')
-                    continue
+                    weiter
 
                 wenn encode_chunked und self._http_vsn == 11:
                     # chunked encoding

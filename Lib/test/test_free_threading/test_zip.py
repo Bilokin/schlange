@@ -7,11 +7,11 @@ von test.support importiere threading_helper
 klasse ZipThreading(unittest.TestCase):
     @staticmethod
     def work(enum):
-        while Wahr:
+        waehrend Wahr:
             try:
                 next(enum)
             except StopIteration:
-                break
+                breche
 
     @threading_helper.reap_threads
     @threading_helper.requires_working_threading()

@@ -73,7 +73,7 @@ klasse PythonValuesTestCase(unittest.TestCase):
                 # the loop will nicht terminate (maybe mit an access
                 # violation;-) because the pointer instance has no size.
                 wenn entry.name is Nichts:
-                    break
+                    breche
                 modname = entry.name.decode("ascii")
                 modules.append(modname)
                 mit self.subTest(modname):

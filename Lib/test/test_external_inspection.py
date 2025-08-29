@@ -115,7 +115,7 @@ klasse TestGetStackTrace(unittest.TestCase):
                 client_socket, _ = server_socket.accept()
                 server_socket.close()
                 response = b""
-                while (
+                waehrend (
                     b"ready:main" nicht in response
                     oder b"ready:thread" nicht in response
                 ):
@@ -146,7 +146,7 @@ klasse TestGetStackTrace(unittest.TestCase):
             frame = FrameInfo([script_name, 19, "<module>"])
             fuer _, stack in stack_trace:
                 wenn frame in stack:
-                    break
+                    breche
             sonst:
                 self.fail("Main thread stack trace nicht found in result")
 
@@ -825,7 +825,7 @@ klasse TestGetStackTrace(unittest.TestCase):
 
             async def echo_client_spam(server):
                 async mit asyncio.TaskGroup() als tg:
-                    while connections < 1000:
+                    waehrend connections < 1000:
                         msg = list(ascii_lowercase + digits)
                         random.shuffle(msg)
                         tg.create_task(echo_client("".join(msg)))
@@ -879,18 +879,18 @@ klasse TestGetStackTrace(unittest.TestCase):
                         # reads. Here we avoid making the test flaky.
                         msg = str(re)
                         wenn msg.startswith("Task list appears corrupted"):
-                            continue
+                            weiter
                         sowenn msg.startswith(
                             "Invalid linked list structure reading remote memory"
                         ):
-                            continue
+                            weiter
                         sowenn msg.startswith("Unknown error reading memory"):
-                            continue
+                            weiter
                         sowenn msg.startswith("Unhandled frame owner"):
-                            continue
+                            weiter
                         raise  # Unrecognized exception, safest nicht to ignore it
                     sonst:
-                        break
+                        breche
                 # expected: a list of two elements: 1 thread, 1 interp
                 self.assertEqual(len(all_awaited_by), 2)
                 # expected: a tuple mit the thread ID und the awaited_by list
@@ -1089,7 +1089,7 @@ klasse TestGetStackTrace(unittest.TestCase):
         fuer thread_id, stack in stack_trace:
             wenn thread_id == threading.get_native_id():
                 this_tread_stack = stack
-                break
+                breche
         self.assertIsNotNichts(this_tread_stack)
         self.assertEqual(
             stack[:2],
@@ -1138,7 +1138,7 @@ klasse TestGetStackTrace(unittest.TestCase):
                 # Do busy work to hold the GIL
                 sock.sendall(b"working\\n")
                 count = 0
-                while count < 100000000:
+                waehrend count < 100000000:
                     count += 1
                     wenn count % 10000000 == 0:
                         pass  # Keep main thread busy
@@ -1190,11 +1190,11 @@ klasse TestGetStackTrace(unittest.TestCase):
 
                 # Wait fuer ready signal
                 response = b""
-                while b"ready" nicht in response:
+                waehrend b"ready" nicht in response:
                     response += client_socket.recv(1024)
 
                 # Wait fuer the main thread to start its busy work
-                while b"working" nicht in response:
+                waehrend b"working" nicht in response:
                     response += client_socket.recv(1024)
 
                 # Get stack trace mit all threads
@@ -1205,7 +1205,7 @@ klasse TestGetStackTrace(unittest.TestCase):
                     found = Falsch
                     fuer thread_id, stack in all_traces:
                         wenn nicht stack:
-                            continue
+                            weiter
                         current_frame = stack[0]
                         wenn (
                             current_frame.funcname == "main_work"
@@ -1214,7 +1214,7 @@ klasse TestGetStackTrace(unittest.TestCase):
                             found = Wahr
 
                     wenn found:
-                        break
+                        breche
                     # Give a bit of time to take the next sample
                     time.sleep(0.1)
                 sonst:

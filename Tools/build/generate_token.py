@@ -29,7 +29,7 @@ def load_tokens(path):
             wenn i >= 0:
                 line = line[:i].strip()
             wenn nicht line:
-                continue
+                weiter
             fields = line.split()
             name = fields[0]
             value = len(tok_names)

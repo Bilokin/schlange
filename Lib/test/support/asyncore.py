@@ -43,7 +43,7 @@ rarely CPU-bound, however.
 
 If your operating system supports the select() system call in its I/O
 library (and nearly all do), then you can use it to juggle multiple
-communication channels at once; doing other work while your I/O is taking
+communication channels at once; doing other work waehrend your I/O is taking
 place in the "background."  Although this strategy can seem strange und
 complex, especially at first, it is in many ways easier to understand und
 control than multi-threaded programming. The module documented here solves
@@ -152,19 +152,19 @@ def poll(timeout=0.0, map=Nichts):
         fuer fd in r:
             obj = map.get(fd)
             wenn obj is Nichts:
-                continue
+                weiter
             read(obj)
 
         fuer fd in w:
             obj = map.get(fd)
             wenn obj is Nichts:
-                continue
+                weiter
             write(obj)
 
         fuer fd in e:
             obj = map.get(fd)
             wenn obj is Nichts:
-                continue
+                weiter
             _exception(obj)
 
 def poll2(timeout=0.0, map=Nichts):
@@ -190,7 +190,7 @@ def poll2(timeout=0.0, map=Nichts):
         fuer fd, flags in r:
             obj = map.get(fd)
             wenn obj is Nichts:
-                continue
+                weiter
             readwrite(obj, flags)
 
 poll3 = poll2                           # Alias fuer backward compatibility
@@ -205,11 +205,11 @@ def loop(timeout=30.0, use_poll=Falsch, map=Nichts, count=Nichts):
         poll_fun = poll
 
     wenn count is Nichts:
-        while map:
+        waehrend map:
             poll_fun(timeout, map)
 
     sonst:
-        while map und count > 0:
+        waehrend map und count > 0:
             poll_fun(timeout, map)
             count = count - 1
 
@@ -542,7 +542,7 @@ def compact_traceback():
     wenn nicht tb: # Must have a traceback
         raise AssertionError("traceback does nicht exist")
     tbinfo = []
-    while tb:
+    waehrend tb:
         tbinfo.append((
             tb.tb_frame.f_code.co_filename,
             tb.tb_frame.f_code.co_name,

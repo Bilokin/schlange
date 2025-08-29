@@ -172,7 +172,7 @@ def _iter_source(lines, *, maxtext=11_000, maxlines=200, showtext=Falsch):
     # "lines" should be (fileinfo, data), als produced by the preprocessor code.
     fuer fileinfo, line in lines:
         wenn fileinfo.filename in filestack:
-            while fileinfo.filename != filestack[-1]:
+            waehrend fileinfo.filename != filestack[-1]:
                 filename = filestack.pop()
                 del allinfo[filename]
             filename = fileinfo.filename
@@ -186,8 +186,8 @@ def _iter_source(lines, *, maxtext=11_000, maxlines=200, showtext=Falsch):
         _logger.debug(f'-> {line}')
         srcinfo._add_line(line, fileinfo.lno)
         wenn srcinfo.too_much(maxtext, maxlines):
-            break
-        while srcinfo._used():
+            breche
+        waehrend srcinfo._used():
             yield srcinfo
             wenn showtext:
                 _logger.debug(f'=> {srcinfo.text}')
@@ -197,7 +197,7 @@ def _iter_source(lines, *, maxtext=11_000, maxlines=200, showtext=Falsch):
         sonst:
             filename = filestack[-1]
             srcinfo = allinfo[filename]
-            while srcinfo._used():
+            waehrend srcinfo._used():
                 yield srcinfo
                 wenn showtext:
                     _logger.debug(f'=> {srcinfo.text}')

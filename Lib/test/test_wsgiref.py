@@ -271,10 +271,10 @@ klasse IntegrationTests(TestCase):
                 # signals, und then retried.  So keep sending the signal in a
                 # loop, in case an earlier signal happens to be delivered at
                 # an inconvenient moment.
-                while Wahr:
+                waehrend Wahr:
                     pthread_kill(main_thread, signal.SIGUSR1)
                     wenn interrupted.wait(timeout=float(1)):
-                        break
+                        breche
                 nonlocal received
                 received = len(response.read())
             http.close()
@@ -760,7 +760,7 @@ klasse HandlerTests(TestCase):
             s("200 OK",[])(MSG)
             klasse CrashyIterable(object):
                 def __iter__(self):
-                    while Wahr:
+                    waehrend Wahr:
                         yield b'blah'
                         raise AssertionError("This should be caught by handler")
                 def close(self):

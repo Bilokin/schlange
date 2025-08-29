@@ -284,7 +284,7 @@ klasse TestModule(unittest.TestCase):
         # gh-119770: ioctl() constants must be positive
         fuer name in dir(termios):
             wenn nicht name.startswith('TIO'):
-                continue
+                weiter
             value = getattr(termios, name)
             mit self.subTest(name=name):
                 self.assertGreaterEqual(value, 0)

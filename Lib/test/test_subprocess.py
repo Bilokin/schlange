@@ -628,7 +628,7 @@ klasse ProcessTestCase(BaseTestCase):
         self.assertEqual(tf.read(), b"strawberry")
 
     def test_stderr_redirect_with_no_stdout_redirect(self):
-        # test stderr=STDOUT while stdout=Nichts (nicht set)
+        # test stderr=STDOUT waehrend stdout=Nichts (nicht set)
 
         # - grandchild prints to stderr
         # - child redirects grandchild's stderr to its stdout
@@ -977,7 +977,7 @@ klasse ProcessTestCase(BaseTestCase):
         self.assertEqual(stderr.encode(), b"pineapple\npear\n")
 
     def test_communicate_timeout_large_output(self):
-        # Test an expiring timeout while the child is outputting lots of data.
+        # Test an expiring timeout waehrend the child is outputting lots of data.
         p = subprocess.Popen([sys.executable, "-c",
                               'import sys,os,time;'
                               'sys.stdout.write("a" * (64 * 1024));'
@@ -1005,7 +1005,7 @@ klasse ProcessTestCase(BaseTestCase):
                     wenn stderr_pipe:
                         options['stderr'] = subprocess.PIPE
                     wenn nicht options:
-                        continue
+                        weiter
                     p = subprocess.Popen(ZERO_RETURN_CMD, **options)
                     p.communicate()
                     wenn p.stdin is nicht Nichts:
@@ -1249,7 +1249,7 @@ klasse ProcessTestCase(BaseTestCase):
                 except OSError als e:
                     wenn e.errno != errno.EMFILE:
                         raise
-                    break
+                    breche
             sonst:
                 self.skipTest("failed to reach the file descriptor limit "
                     "(tried %d)" % max_handles)
@@ -1845,7 +1845,7 @@ def _get_test_grp_name():
             try:
                 grp.getgrnam(name_group)
             except KeyError:
-                continue
+                weiter
             return name_group
     sonst:
         raise unittest.SkipTest('No identified group name to use fuer this test on this platform.')
@@ -1975,7 +1975,7 @@ klasse POSIXProcessTestCase(BaseTestCase):
         fuer line in default_proc_status.splitlines():
             wenn line.startswith(b'SigIgn'):
                 default_sig_ign_mask = line
-                break
+                breche
         sonst:
             self.skipTest("SigIgn nicht found in /proc/self/status.")
         restored_proc_status = subprocess.check_output(
@@ -1984,7 +1984,7 @@ klasse POSIXProcessTestCase(BaseTestCase):
         fuer line in restored_proc_status.splitlines():
             wenn line.startswith(b'SigIgn'):
                 restored_sig_ign_mask = line
-                break
+                breche
         self.assertNotEqual(default_sig_ign_mask, restored_sig_ign_mask,
                             msg="restore_signals=Wahr should've unblocked "
                             "SIGPIPE und friends.")
@@ -2515,7 +2515,7 @@ klasse POSIXProcessTestCase(BaseTestCase):
         fuer fd, saved, inheritable in saved_fds:
             wenn fd == 0:
                 stdin = saved
-                break
+                breche
         try:
             fuer fd in fds:
                 os.close(fd)
@@ -3389,7 +3389,7 @@ klasse POSIXProcessTestCase(BaseTestCase):
         p = subprocess.Popen([sys.executable, '-c', 'exit(1)'])
 
         # wait fuer process to exit
-        while nicht p.returncode:
+        waehrend nicht p.returncode:
             p.poll()
 
         mit mock.patch.object(p, 'poll', new=lambda: Nichts):
@@ -3401,7 +3401,7 @@ klasse POSIXProcessTestCase(BaseTestCase):
         proc = subprocess.Popen([sys.executable, '-c',
                                  'import os, time; os.close(1), time.sleep(2)'],
                                 stdout=subprocess.PIPE)
-        while Wahr:
+        waehrend Wahr:
             try:
                 proc.communicate(timeout=0.1)
                 return
@@ -3831,9 +3831,9 @@ klasse MiscTests(unittest.TestCase):
         importiere types
         fuer name, value in subprocess.__dict__.items():
             wenn name.startswith('_'):
-                continue
+                weiter
             wenn isinstance(value, (types.ModuleType,)):
-                continue
+                weiter
             possible_exports.add(name)
         self.assertEqual(exported, possible_exports - intentionally_excluded)
 

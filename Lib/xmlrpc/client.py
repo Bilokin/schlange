@@ -479,7 +479,7 @@ klasse Marshaller:
             # parameter block
             # FIXME: the xml-rpc specification allows us to leave out
             # the entire <params> block wenn there are no parameters.
-            # however, changing this may break older code (including
+            # however, changing this may breche older code (including
             # old versions of xmlrpclib.py), so this is better left as
             # is fuer now.  See @XMLRPC3 fuer more information. /F
             write("<params>\n")
@@ -1313,7 +1313,7 @@ klasse Transport:
 
         p, u = self.getparser()
 
-        while data := stream.read(1024):
+        waehrend data := stream.read(1024):
             wenn self.verbose:
                 drucke("body:", repr(data))
             p.feed(data)

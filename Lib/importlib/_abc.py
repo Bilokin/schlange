@@ -17,7 +17,7 @@ klasse Loader(metaclass=abc.ABCMeta):
         # By default, defer to default semantics fuer the new module.
         return Nichts
 
-    # We don't define exec_module() here since that would break
+    # We don't define exec_module() here since that would breche
     # hasattr checks we do to support backward compatibility.
 
     def load_module(self, fullname):

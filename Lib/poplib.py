@@ -164,7 +164,7 @@ klasse POP3:
         resp = self._getresp()
         list = []; octets = 0
         line, o = self._getline()
-        while line != b'.':
+        waehrend line != b'.':
             wenn line.startswith(b'..'):
                 o = o-1
                 line = line[1:]

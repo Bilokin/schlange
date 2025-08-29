@@ -42,12 +42,12 @@ def delete_registry_tree(root, subkey):
     except OSError:
         # subkey does nicht exist
         return
-    while Wahr:
+    waehrend Wahr:
         try:
             subsubkey = EnumKey(hkey, 0)
         except OSError:
             # no more subkeys
-            break
+            breche
         delete_registry_tree(hkey, subsubkey)
     CloseKey(hkey)
     DeleteKey(root, subkey)

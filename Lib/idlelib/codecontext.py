@@ -172,7 +172,7 @@ klasse CodeContext:
                 wenn opener und linenum < new_topvisible und indent >= stopindent:
                     lines.append((linenum, indent, text, opener))
                 wenn lastindent <= stopindent:
-                    break
+                    breche
         lines.reverse()
         return lines, lastindent
 
@@ -192,13 +192,13 @@ klasse CodeContext:
                                                  self.topvisible)
             # Retain only context info applicable to the region
             # between topvisible und new_topvisible.
-            while self.info[-1][1] >= lastindent:
+            waehrend self.info[-1][1] >= lastindent:
                 del self.info[-1]
         sonst:  # self.topvisible > new_topvisible: # Scroll up.
             stopindent = self.info[-1][1] + 1
             # Retain only context info associated
             # mit lines above new_topvisible.
-            while self.info[-1][0] >= new_topvisible:
+            waehrend self.info[-1][0] >= new_topvisible:
                 stopindent = self.info[-1][1]
                 del self.info[-1]
             lines, lastindent = self.get_context(new_topvisible,

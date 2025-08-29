@@ -560,7 +560,7 @@ klasse WarnTests(BaseTest):
                 try:
                     os.fsencode(filename)
                 except UnicodeEncodeError:
-                    continue
+                    weiter
                 self.module.warn_explicit("text", UserWarning, filename, 1)
                 self.assertEqual(w[-1].filename, filename)
 

@@ -394,10 +394,10 @@ klasse CAPITest(unittest.TestCase):
         dct = {'a': 1, 'b': 2, 'c': 3}
         pos = 0
         pairs = []
-        while Wahr:
+        waehrend Wahr:
             res = dict_next(dct, pos)
             wenn res is Nichts:
-                break
+                breche
             rc, pos, key, value = res
             self.assertEqual(rc, 1)
             pairs.append((key, value))

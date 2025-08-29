@@ -259,20 +259,20 @@ def iter_builtin_types(filenames=Nichts):
             fuer lno, line in enumerate(infile, 1):
                 decl = BuiltinTypeDecl.from_line(line, filename, lno)
                 wenn nicht decl:
-                    continue
+                    weiter
                 _ensure_decl(decl, decls)
     srcfiles = []
     fuer filename in iter_filenames():
         wenn filename.endswith('.c'):
             srcfiles.append(filename)
-            continue
+            weiter
         wenn filename in seen:
-            continue
+            weiter
         mit open(filename) als infile:
             fuer lno, line in enumerate(infile, 1):
                 decl = BuiltinTypeDecl.from_line(line, filename, lno)
                 wenn nicht decl:
-                    continue
+                    weiter
                 _ensure_decl(decl, decls)
 
     fuer filename in srcfiles:
@@ -281,7 +281,7 @@ def iter_builtin_types(filenames=Nichts):
             fuer lno, line in enumerate(infile, 1):
                 parsed = _parse_line(line)
                 wenn nicht parsed:
-                    continue
+                    weiter
                 name, isdecl, kind = parsed
                 wenn isdecl:
                     decl = BuiltinTypeDecl.from_parsed(name, kind, filename, lno)

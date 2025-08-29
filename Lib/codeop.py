@@ -52,7 +52,7 @@ def _maybe_compile(compiler, source, filename, symbol, flags):
     fuer line in source.split("\n"):
         line = line.strip()
         wenn line und line[0] != '#':
-            break               # Leave it alone.
+            breche               # Leave it alone.
     sonst:
         wenn symbol != "eval":
             source = "pass"     # Replace it mit a 'pass' statement

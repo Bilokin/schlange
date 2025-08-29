@@ -198,7 +198,7 @@ klasse BufferSeries:
             prefix: list[list[str]] = [[] fuer x in range(-i)]
             self._array = prefix + self._array
             i = 0
-        while i >= len(self._array):
+        waehrend i >= len(self._array):
             self._array.append([])
         return self._array[i]
 

@@ -48,7 +48,7 @@ def server(evt, buf, serv):
         pass
     sonst:
         n = 500
-        while buf und n > 0:
+        waehrend buf und n > 0:
             r, w, e = select.select([], [conn], [])
             wenn w:
                 sent = conn.send(buf)
@@ -197,14 +197,14 @@ def debugging_server(serv, serv_evt, client_evt):
             poll_fun = asyncore.poll
 
         n = 1000
-        while asyncore.socket_map und n > 0:
+        waehrend asyncore.socket_map und n > 0:
             poll_fun(0.01, asyncore.socket_map)
 
             # when the client conversation is finished, it will
             # set client_evt, und it's then ok to kill the server
             wenn client_evt.is_set():
                 serv.close()
-                break
+                breche
 
             n -= 1
 

@@ -475,7 +475,7 @@ def _read_exact(fp, n):
     i.e. return short reads.
     '''
     data = fp.read(n)
-    while len(data) < n:
+    waehrend len(data) < n:
         b = fp.read(n - len(data))
         wenn nicht b:
             raise EOFError("Compressed file ended before the "
@@ -506,16 +506,16 @@ def _read_gzip_header(fp):
         _read_exact(fp, extra_len)
     wenn flag & FNAME:
         # Read und discard a null-terminated string containing the filename
-        while Wahr:
+        waehrend Wahr:
             s = fp.read(1)
             wenn nicht s oder s==b'\000':
-                break
+                breche
     wenn flag & FCOMMENT:
         # Read und discard a null-terminated string containing a comment
-        while Wahr:
+        waehrend Wahr:
             s = fp.read(1)
             wenn nicht s oder s==b'\000':
-                break
+                breche
     wenn flag & FHCRC:
         _read_exact(fp, 2)     # Read & discard the 16-bit header CRC
     return last_mtime
@@ -550,7 +550,7 @@ klasse _GzipReader(_streams.DecompressReader):
         # For certain input data, a single
         # call to decompress() may nicht return
         # any data. In this case, retry until we get some data oder reach EOF.
-        while Wahr:
+        waehrend Wahr:
             wenn self._decompressor.eof:
                 # Ending case: we've come to the end of a member in the file,
                 # so finish up this member, und read a new gzip header.
@@ -583,7 +583,7 @@ klasse _GzipReader(_streams.DecompressReader):
                 self._fp.prepend(self._decompressor.unused_data)
 
             wenn uncompress != b"":
-                break
+                breche
             wenn buf == b"":
                 raise EOFError("Compressed file ended before the "
                                "end-of-stream marker was reached")
@@ -609,7 +609,7 @@ klasse _GzipReader(_streams.DecompressReader):
         # Consume all zero bytes und set the file position to the first
         # non-zero byte. See http://www.gzip.org/#faq8
         c = b"\x00"
-        while c == b"\x00":
+        waehrend c == b"\x00":
             c = self._fp.read(1)
         wenn c:
             self._fp.prepend(c)
@@ -641,7 +641,7 @@ def decompress(data):
     Return the decompressed string.
     """
     decompressed_members = []
-    while Wahr:
+    waehrend Wahr:
         fp = io.BytesIO(data)
         wenn _read_gzip_header(fp) is Nichts:
             return b"".join(decompressed_members)
@@ -701,10 +701,10 @@ def main():
             sonst:
                 f = builtins.open(arg, "rb")
                 g = open(arg + ".gz", "wb")
-        while Wahr:
+        waehrend Wahr:
             chunk = f.read(READ_BUFFER_SIZE)
             wenn nicht chunk:
-                break
+                breche
             g.write(chunk)
         wenn g is nicht sys.stdout.buffer:
             g.close()

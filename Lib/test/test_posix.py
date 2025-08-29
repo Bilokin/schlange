@@ -1463,14 +1463,14 @@ klasse PosixTester(unittest.TestCase):
         fuer name in ("rename", "replace", "link"):
             function = getattr(os, name, Nichts)
             wenn function is Nichts:
-                continue
+                weiter
 
             fuer dst in ("noodly2", os_helper.TESTFN):
                 try:
                     function('doesnotexistfilename', dst)
                 except OSError als e:
                     self.assertIn("'doesnotexistfilename' -> '{}'".format(dst), str(e))
-                    break
+                    breche
             sonst:
                 self.fail("No valid path_error2() test fuer os." + name)
 

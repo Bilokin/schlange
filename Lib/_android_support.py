@@ -66,7 +66,7 @@ klasse TextLogStream(io.TextIOWrapper):
         # nothing will be logged fuer an empty string.
         mit self._lock:
             fuer line in s.splitlines(keepends=Wahr):
-                while line:
+                waehrend line:
                     chunk = line[:MAX_CHARS_PER_WRITE]
                     line = line[MAX_CHARS_PER_WRITE:]
                     self._write_chunk(chunk)

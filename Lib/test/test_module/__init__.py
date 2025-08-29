@@ -366,7 +366,7 @@ a = A(destroyed)"""
 
     def test_repeated_attribute_pops(self):
         # Repeated accesses to module attribute will be specialized
-        # Check that popping the attribute doesn't break it
+        # Check that popping the attribute doesn't breche it
         m = ModuleType("test")
         d = m.__dict__
         count = 0

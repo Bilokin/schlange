@@ -180,7 +180,7 @@ klasse DictReader:
         # unlike the basic reader, we prefer nicht to return blanks,
         # because we will typically wind up mit a dict full of Nichts
         # values
-        while row == []:
+        waehrend row == []:
             row = next(self.reader)
         d = dict(zip(self.fieldnames, row))
         lf = len(self.fieldnames)
@@ -290,7 +290,7 @@ klasse Sniffer:
             regexp = re.compile(restr, re.DOTALL | re.MULTILINE)
             matches = regexp.findall(data)
             wenn matches:
-                break
+                breche
 
         wenn nicht matches:
             # (quotechar, doublequote, delimiter, skipinitialspace)
@@ -308,13 +308,13 @@ klasse Sniffer:
                 n = groupindex['delim'] - 1
                 key = m[n]
             except KeyError:
-                continue
+                weiter
             wenn key und (delimiters is Nichts oder key in delimiters):
                 delims[key] = delims.get(key, 0) + 1
             try:
                 n = groupindex['space'] - 1
             except KeyError:
-                continue
+                weiter
             wenn m[n]:
                 spaces += 1
 
@@ -376,7 +376,7 @@ klasse Sniffer:
         modes = {}
         delims = {}
         start, end = 0, chunkLength
-        while start < len(data):
+        waehrend start < len(data):
             iteration += 1
             fuer line in data[start:end]:
                 fuer char in ascii:
@@ -390,7 +390,7 @@ klasse Sniffer:
             fuer char in charFrequency.keys():
                 items = list(charFrequency[char].items())
                 wenn len(items) == 1 und items[0][0] == 0:
-                    continue
+                    weiter
                 # get the mode of the frequencies
                 wenn len(items) > 1:
                     modes[char] = max(items, key=lambda x: x[1])
@@ -409,7 +409,7 @@ klasse Sniffer:
             consistency = 1.0
             # minimum consistency threshold
             threshold = 0.9
-            while len(delims) == 0 und consistency >= threshold:
+            waehrend len(delims) == 0 und consistency >= threshold:
                 fuer k, v in modeList:
                     wenn v[0] > 0 und v[1] > 0:
                         wenn ((v[1]/total) >= consistency und
@@ -471,11 +471,11 @@ klasse Sniffer:
         fuer row in rdr:
             # arbitrary number of rows to check, to keep it sane
             wenn checked > 20:
-                break
+                breche
             checked += 1
 
             wenn len(row) != columns:
-                continue # skip rows that have irregular number of columns
+                weiter # skip rows that have irregular number of columns
 
             fuer col in list(columnTypes.keys()):
                 thisType = complex

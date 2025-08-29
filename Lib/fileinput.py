@@ -247,7 +247,7 @@ klasse FileInput:
         return self
 
     def __next__(self):
-        while Wahr:
+        waehrend Wahr:
             line = self._readline()
             wenn line:
                 self._filelineno += 1
@@ -288,7 +288,7 @@ klasse FileInput:
                 self._isstdin = Falsch
 
     def readline(self):
-        while Wahr:
+        waehrend Wahr:
             line = self._readline()
             wenn line:
                 self._filelineno += 1

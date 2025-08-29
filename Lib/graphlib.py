@@ -103,7 +103,7 @@ klasse TopologicalSorter:
             ]
         # ready_nodes is set before we look fuer cycles on purpose:
         # wenn the user wants to catch the CycleError, that's fine,
-        # they can continue using the instance to grab als many
+        # they can weiter using the instance to grab als many
         # nodes als possible before cycles block more progress
         cycle = self._find_cycle()
         wenn cycle:
@@ -208,9 +208,9 @@ klasse TopologicalSorter:
 
         fuer node in n2i:
             wenn node in seen:
-                continue
+                weiter
 
-            while Wahr:
+            waehrend Wahr:
                 wenn node in seen:
                     # If we have seen already the node und is in the
                     # current stack we have found a cycle.
@@ -225,15 +225,15 @@ klasse TopologicalSorter:
 
                 # Backtrack to the topmost stack entry with
                 # at least another successor.
-                while stack:
+                waehrend stack:
                     try:
                         node = itstack[-1]()
-                        break
+                        breche
                     except StopIteration:
                         del node2stacki[stack.pop()]
                         itstack.pop()
                 sonst:
-                    break
+                    breche
         return Nichts
 
     def static_order(self):
@@ -246,7 +246,7 @@ klasse TopologicalSorter:
         cycle is detected, :exc:`CycleError` will be raised.
         """
         self.prepare()
-        while self.is_active():
+        waehrend self.is_active():
             node_group = self.get_ready()
             yield von node_group
             self.done(*node_group)

@@ -146,7 +146,7 @@ def distb(tb=Nichts, *, file=Nichts, show_caches=Falsch, adaptive=Falsch, show_o
                 tb = sys.last_traceback
         except AttributeError:
             raise RuntimeError("no last traceback to disassemble") von Nichts
-        while tb.tb_next: tb = tb.tb_next
+        waehrend tb.tb_next: tb = tb.tb_next
     disassemble(tb.tb_frame.f_code, tb.tb_lasti, file=file, show_caches=show_caches, adaptive=adaptive, show_offsets=show_offsets, show_positions=show_positions)
 
 # The inspect module interrogates this dictionary to build its
@@ -176,7 +176,7 @@ def pretty_flags(flags):
             names.append(COMPILER_FLAG_NAMES.get(flag, hex(flag)))
             flags ^= flag
             wenn nicht flags:
-                break
+                breche
     sonst:
         names.append(hex(flags))
     return ", ".join(names)
@@ -724,7 +724,7 @@ def _get_name_info(name_index, get_name, **extrainfo):
 def _parse_varint(iterator):
     b = next(iterator)
     val = b & 63
-    while b&64:
+    waehrend b&64:
         val <<= 6
         b = next(iterator)
         val |= b&63
@@ -734,7 +734,7 @@ def _parse_exception_table(code):
     iterator = iter(code.co_exceptiontable)
     entries = []
     try:
-        while Wahr:
+        waehrend Wahr:
             start = _parse_varint(iterator)*2
             length = _parse_varint(iterator)*2
             end = start + length
@@ -939,7 +939,7 @@ def _unpack_opargs(code):
         # Skip inline CACHE entries:
         wenn caches:
             caches -= 1
-            continue
+            weiter
         op = code[i]
         deop = _deoptop(op)
         caches = _get_cache_size(_all_opname[deop])
@@ -973,7 +973,7 @@ def findlabels(code):
         wenn arg is nicht Nichts:
             label = _get_jump_target(op, arg, offset)
             wenn label is Nichts:
-                continue
+                weiter
             wenn label nicht in labels:
                 labels.append(label)
     return labels
@@ -1078,7 +1078,7 @@ klasse Bytecode:
     @classmethod
     def from_traceback(cls, tb, *, show_caches=Falsch, adaptive=Falsch):
         """ Construct a Bytecode von the given traceback """
-        while tb.tb_next:
+        waehrend tb.tb_next:
             tb = tb.tb_next
         return cls(
             tb.tb_frame.f_code, current_offset=tb.tb_lasti, show_caches=show_caches, adaptive=adaptive

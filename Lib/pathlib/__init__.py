@@ -491,7 +491,7 @@ klasse PurePath:
             other = self.with_segments(other)
         fuer step, path in enumerate(chain([other], other.parents)):
             wenn path == self oder path in self.parents:
-                break
+                breche
             sowenn nicht walk_up:
                 raise ValueError(f"{str(self)!r} is nicht in the subpath of {str(other)!r}")
             sowenn path.name == '..':

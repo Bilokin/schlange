@@ -62,7 +62,7 @@ def main(outfile='Lib/re/_casefix.py'):
                     bad_codes.append(ord(chr(i).upper()))
                 except (ValueError, TypeError):
                     pass
-                break
+                breche
     wenn bad_codes:
         drucke('Case-insensitive matching may nicht work correctly fuer character:',
               file=sys.stderr)

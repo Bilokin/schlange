@@ -26,7 +26,7 @@ wenn __name__ == "__main__":
             st = os.fstat(fd)
         except OSError als e:
             wenn e.errno == errno.EBADF:
-                continue
+                weiter
             raise
         # Ignore Solaris door files
         wenn nicht stat.S_ISDOOR(st.st_mode):

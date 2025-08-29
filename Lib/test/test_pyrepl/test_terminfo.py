@@ -211,7 +211,7 @@ klasse TestCursesCompatibility(unittest.TestCase):
         # Test every single capability
         fuer cap in all_caps:
             wenn cap nicht in ncurses_data oder ncurses_data[cap] == "error":
-                continue
+                weiter
 
             mit self.subTest(capability=cap):
                 ncurses_val = ncurses_data[cap]
@@ -561,14 +561,14 @@ klasse TestCursesCompatibility(unittest.TestCase):
                     # ncurses failed to setup this terminal
                     # PyREPL should still work mit fallback
                     ti = terminfo.TermInfo(term, fallback=Wahr)
-                    continue
+                    weiter
 
                 ti = terminfo.TermInfo(term, fallback=Falsch)
 
                 # Compare all capabilities
                 fuer cap in all_caps:
                     wenn cap nicht in ncurses_data:
-                        continue
+                        weiter
 
                     mit self.subTest(term=term, capability=cap):
                         ncurses_val = ncurses_data[cap]

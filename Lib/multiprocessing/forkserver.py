@@ -142,7 +142,7 @@ klasse ForkServer(object):
                 self._forkserver_alive_fd = Nichts
                 self._forkserver_pid = Nichts
 
-            cmd = ('from multiprocessing.forkserver importiere main; ' +
+            cmd = ('von multiprocessing.forkserver importiere main; ' +
                    'main(%d, %d, %r, **%r)')
 
             wenn self._preload_modules:
@@ -259,12 +259,12 @@ def main(listener_fd, alive_r, preload, main_path=Nichts, sys_path=Nichts,
         selector.register(alive_r, selectors.EVENT_READ)
         selector.register(sig_r, selectors.EVENT_READ)
 
-        while Wahr:
+        waehrend Wahr:
             try:
-                while Wahr:
+                waehrend Wahr:
                     rfds = [key.fileobj fuer (key, events) in selector.select()]
                     wenn rfds:
-                        break
+                        breche
 
                 wenn alive_r in rfds:
                     # EOF because no more client processes left
@@ -274,14 +274,14 @@ def main(listener_fd, alive_r, preload, main_path=Nichts, sys_path=Nichts,
                 wenn sig_r in rfds:
                     # Got SIGCHLD
                     os.read(sig_r, 65536)  # exhaust
-                    while Wahr:
+                    waehrend Wahr:
                         # Scan fuer child processes
                         try:
                             pid, sts = os.waitpid(-1, os.WNOHANG)
                         except ChildProcessError:
-                            break
+                            breche
                         wenn pid == 0:
-                            break
+                            breche
                         child_w = pid_to_fd.pop(pid, Nichts)
                         wenn child_w is nicht Nichts:
                             returncode = os.waitstatus_to_exitcode(sts)
@@ -318,7 +318,7 @@ def main(listener_fd, alive_r, preload, main_path=Nichts, sys_path=Nichts,
                             fds = reduction.recvfds(s, MAXFDS_TO_SEND + 1)
                         except (EOFError, BrokenPipeError, AuthenticationError):
                             s.close()
-                            continue
+                            weiter
                         wenn len(fds) > MAXFDS_TO_SEND:
                             raise RuntimeError(
                                 "Too many ({0:n}) fds to send".format(
@@ -388,7 +388,7 @@ def _serve_one(child_r, fds, unused_fds, handlers):
 def read_signed(fd):
     data = bytearray(SIGNED_STRUCT.size)
     unread = memoryview(data)
-    while unread:
+    waehrend unread:
         count = os.readinto(fd, unread)
         wenn count == 0:
             raise EOFError('unexpected EOF')
@@ -398,7 +398,7 @@ def read_signed(fd):
 
 def write_signed(fd, n):
     msg = SIGNED_STRUCT.pack(n)
-    while msg:
+    waehrend msg:
         nbytes = os.write(fd, msg)
         wenn nbytes == 0:
             raise RuntimeError('should nicht get here')

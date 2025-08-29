@@ -100,7 +100,7 @@ klasse TestContains(unittest.TestCase):
             doing so.
             """
             def __iter__(self):
-                while Falsch:
+                waehrend Falsch:
                     yield Nichts
             __contains__ = Nichts
         bc = BlockContains()

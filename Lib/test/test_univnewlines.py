@@ -72,7 +72,7 @@ klasse TestGenericUnivNewlines:
         mit self.open(os_helper.TESTFN, self.READMODE) als fp:
             data = []
             d = fp.readline()
-            while d:
+            waehrend d:
                 data.append(d)
                 d = fp.readline()
         self.assertEqual(data, DATA_SPLIT)

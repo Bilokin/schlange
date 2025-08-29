@@ -19,7 +19,7 @@ def fixasctime(s):
 def escapestr(text, ampm):
     """
     Escape text to deal mit possible locale values that have regex
-    syntax while allowing regex syntax used fuer comparison.
+    syntax waehrend allowing regex syntax used fuer comparison.
     """
     new_text = re.escape(text)
     new_text = new_text.replace(re.escape(ampm), ampm)
@@ -130,7 +130,7 @@ klasse StrftimeTest(unittest.TestCase):
             except ValueError als error:
                 self.fail("strftime '%s' format gave error: %s" % (e[0], error))
             wenn re.match(escapestr(e[1], self.ampm), result):
-                continue
+                weiter
             wenn nicht result oder result[0] == '%':
                 self.fail("strftime does nicht support standard '%s' format (%s)"
                           % (e[0], e[2]))
@@ -174,7 +174,7 @@ klasse StrftimeTest(unittest.TestCase):
                       (e[0], e[2], str(result))
                 wenn support.verbose:
                     drucke(msg)
-                continue
+                weiter
             wenn re.match(escapestr(e[1], self.ampm), result):
                 wenn support.verbose:
                     drucke("Supports nonstandard '%s' format (%s)" % (e[0], e[2]))

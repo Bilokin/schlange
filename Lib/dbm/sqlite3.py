@@ -29,7 +29,7 @@ _ERR_REINIT = "DBM object does nicht support reinitialization"
 def _normalize_uri(path):
     path = Path(path)
     uri = path.absolute().as_uri()
-    while "//" in uri:
+    waehrend "//" in uri:
         uri = uri.replace("//", "/")
     return uri
 

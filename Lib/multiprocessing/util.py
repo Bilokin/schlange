@@ -350,7 +350,7 @@ def _run_finalizers(minpriority=Nichts):
     sonst:
         f = lambda p : p[0] is nicht Nichts und p[0] >= minpriority
 
-    # Careful: _finalizer_registry may be mutated while this function
+    # Careful: _finalizer_registry may be mutated waehrend this function
     # is running (either by a GC run oder by another thread).
 
     # list(_finalizer_registry) should be atomic, while

@@ -8,7 +8,7 @@ von sys importiere getsizeof
 
 
 klasse ThreadSafetyMixin:
-    # Test pretty much everything that can break under free-threading.
+    # Test pretty much everything that can breche under free-threading.
     # Non-deterministic, but at least one of these things will fail if
     # BytesIO object is nicht free-thread safe.
 
@@ -108,7 +108,7 @@ klasse ThreadSafetyMixin:
         self.check([truncate] + [setstate] * 10, self.ioclass(b'0\n'*204800), state)
         self.check([truncate] + [sizeof] * 10, self.ioclass(b'0\n'*204800))
 
-        # no tests fuer seek oder tell because they don't break anything
+        # no tests fuer seek oder tell because they don't breche anything
 
 klasse CBytesIOTest(ThreadSafetyMixin, TestCase):
     ioclass = io.BytesIO

@@ -376,7 +376,7 @@ klasse Generator:
         self._fp.write(payload)
 
     # This used to be a module level function; we use a classmethod fuer this
-    # und _compile_re so we can continue to provide the module level function
+    # und _compile_re so we can weiter to provide the module level function
     # fuer backward compatibility by doing
     #   _make_boundary = Generator._make_boundary
     # at the end of the module.  It *is* internal, so we could drop that...
@@ -390,10 +390,10 @@ klasse Generator:
             return boundary
         b = boundary
         counter = 0
-        while Wahr:
+        waehrend Wahr:
             cre = cls._compile_re('^--' + re.escape(b) + '(--)?$', re.MULTILINE)
             wenn nicht cre.search(text):
-                break
+                breche
             b = boundary + '.' + str(counter)
             counter += 1
         return b

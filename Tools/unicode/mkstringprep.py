@@ -20,7 +20,7 @@ def compact_set(l):
         wenn prev is Nichts:
             prev = e
             span = 0
-            continue
+            weiter
         wenn prev+span+1 != e:
             wenn span > 2:
                 tuple.append((prev,prev+span+1))
@@ -55,10 +55,10 @@ curname = Nichts
 fuer l in data:
     l = l.strip()
     wenn nicht l:
-        continue
+        weiter
     # Skip RFC page breaks
     wenn l.startswith(("Hoffman & Blanchet", "RFC 3454")):
-        continue
+        weiter
     # Find start/end lines
     m = re.match("----- (Start|End) Table ([A-Z](.[0-9])+) -----", l)
     wenn m:
@@ -68,16 +68,16 @@ fuer l in data:
             curname = m.group(2)
             table = {}
             tables.append((curname, table))
-            continue
+            weiter
         sonst:
             wenn nicht curname:
                 raise RuntimeError("End without start", l)
             wenn curname != m.group(2):
                 raise RuntimeError("Unexpected end", l)
             curname = Nichts
-            continue
+            weiter
     wenn nicht curname:
-        continue
+        weiter
     # Now we are in a table
     fields = l.split(";")
     wenn len(fields) > 1:

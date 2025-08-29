@@ -111,11 +111,11 @@ klasse TestCase(unittest.TestCase):
         wenn pickle:
             self.check_pickle(it, seq)
         res = []
-        while 1:
+        waehrend 1:
             try:
                 val = next(it)
             except StopIteration:
-                break
+                breche
             res.append(val)
         self.assertEqual(res, seq)
 
@@ -143,7 +143,7 @@ klasse TestCase(unittest.TestCase):
             try:
                 next(it)
             except StopIteration:
-                continue
+                weiter
             d = pickle.dumps(it, proto)
             it = pickle.loads(d)
             self.assertEqual(list(it), seq[1:])

@@ -253,7 +253,7 @@ klasse ParseArgsCodeGen:
             wenn p.is_vararg():
                 self.varpos = p
                 del self.parameters[i]
-                break
+                breche
 
         self.converters = [p.converter fuer p in self.parameters]
 
@@ -549,7 +549,7 @@ klasse ParseArgsCodeGen:
                         f"in function mit var-positional parameter")
                 use_parser_code = Falsch
                 parser_code = []
-                break
+                breche
             wenn has_optional oder p.is_optional():
                 has_optional = Wahr
                 parser_code.append(libclinic.normalize_snippet("""
@@ -676,7 +676,7 @@ klasse ParseArgsCodeGen:
                 wenn parsearg is Nichts:
                     parser_code = []
                     use_parser_code = Falsch
-                    break
+                    breche
                 wenn add_label und (i == self.pos_only oder i == self.max_pos):
                     parser_code.append("%s:" % add_label)
                     add_label = Nichts

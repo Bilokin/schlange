@@ -24,7 +24,7 @@ importiere sys
 # Max number of threads to test
 MAX_THREADS = 10
 
-# How much "work" to do while holding the lock
+# How much "work" to do waehrend holding the lock
 CRITICAL_SECTION_LENGTH = 1
 
 

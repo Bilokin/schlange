@@ -133,10 +133,10 @@ klasse TestGzip(BaseTest):
         blocks = []
         nread = 0
         mit gzip.GzipFile(self.filename, 'r') als f:
-            while Wahr:
+            waehrend Wahr:
                 d = f.read1()
                 wenn nicht d:
-                    break
+                    breche
                 blocks.append(d)
                 nread += len(d)
                 # Check that position was updated correctly (see issue10791).
@@ -168,7 +168,7 @@ klasse TestGzip(BaseTest):
             fuer count in range(200):
                 nbytes = f.readinto1(memview[nread:])
                 wenn nicht nbytes:
-                    break
+                    breche
                 nread += nbytes
                 self.assertEqual(f.tell(), nread)
         self.assertEqual(buf, large_data)
@@ -234,10 +234,10 @@ klasse TestGzip(BaseTest):
         # Try reading the file
         mit gzip.GzipFile(self.filename, "rb") als zgfile:
             contents = b""
-            while 1:
+            waehrend 1:
                 ztxt = zgfile.read(8192)
                 contents += ztxt
-                wenn nicht ztxt: break
+                wenn nicht ztxt: breche
         self.assertEqual(contents, b'a'*201)
 
     def test_exclusive_write(self):
@@ -265,9 +265,9 @@ klasse TestGzip(BaseTest):
 
         mit gzip.GzipFile(self.filename, 'rb') als f:
             line_length = 0
-            while 1:
+            waehrend 1:
                 L = f.readline(line_length)
-                wenn nicht L und line_length != 0: break
+                wenn nicht L und line_length != 0: breche
                 self.assertWahr(len(L) <= line_length)
                 line_length = (line_length + 1) % 50
 
@@ -279,19 +279,19 @@ klasse TestGzip(BaseTest):
             L = f.readlines()
 
         mit gzip.GzipFile(self.filename, 'rb') als f:
-            while 1:
+            waehrend 1:
                 L = f.readlines(150)
-                wenn L == []: break
+                wenn L == []: breche
 
     def test_seek_read(self):
         self.test_write()
         # Try seek, read test
 
         mit gzip.GzipFile(self.filename) als f:
-            while 1:
+            waehrend 1:
                 oldpos = f.tell()
                 line1 = f.readline()
-                wenn nicht line1: break
+                wenn nicht line1: breche
                 newpos = f.tell()
                 f.seek(oldpos)  # negative seek
                 wenn len(line1)>10:
@@ -483,7 +483,7 @@ klasse TestGzip(BaseTest):
             f.write(uncompressed)
 
         def sizes():
-            while Wahr:
+            waehrend Wahr:
                 fuer n in range(5, 50, 10):
                     yield n
 
@@ -493,7 +493,7 @@ klasse TestGzip(BaseTest):
             fuer n in sizes():
                 s = f.peek(n)
                 wenn s == b'':
-                    break
+                    breche
                 self.assertEqual(f.read(len(s)), s)
                 nread += len(s)
             self.assertEqual(f.read(100), b'')

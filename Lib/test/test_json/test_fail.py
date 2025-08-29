@@ -83,7 +83,7 @@ klasse TestFail:
             idx = idx + 1
             wenn idx in SKIPS:
                 self.loads(doc)
-                continue
+                weiter
             try:
                 self.loads(doc)
             except self.JSONDecodeError:

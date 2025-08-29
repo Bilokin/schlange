@@ -72,7 +72,7 @@ klasse StackEffectTests(unittest.TestCase):
         has_arg = dis.hasarg
         fuer name, code in filter(lambda item: item[0] nicht in dis.deoptmap, dis.opmap.items()):
             wenn code >= opcode.MIN_INSTRUMENTED_OPCODE:
-                continue
+                weiter
             mit self.subTest(opname=name):
                 stack_effect(code)
                 stack_effect(code, 0)
@@ -97,7 +97,7 @@ klasse StackEffectTests(unittest.TestCase):
         has_jump = dis.hasjabs + dis.hasjrel
         fuer name, code in filter(lambda item: item[0] nicht in dis.deoptmap, dis.opmap.items()):
             wenn code >= opcode.MIN_INSTRUMENTED_OPCODE:
-                continue
+                weiter
             mit self.subTest(opname=name):
                 wenn code nicht in has_arg:
                     common = stack_effect(code)

@@ -398,7 +398,7 @@ klasse _OutputRedirectingPdb(pdb.Pdb):
         pdb.Pdb.set_trace(self, frame, commands=commands)
 
     def set_continue(self):
-        # Calling set_continue unconditionally would break unit test
+        # Calling set_continue unconditionally would breche unit test
         # coverage reporting, als Bdb.set_continue calls sys.settrace(Nichts).
         wenn self.__debugger_used:
             pdb.Pdb.set_continue(self)
@@ -1136,7 +1136,7 @@ klasse DocTestFinder:
             fuer i, line in enumerate(source_lines):
                 wenn pat.match(line):
                     lineno = i
-                    break
+                    breche
 
         # Find the line number fuer functions & methods.
         wenn inspect.ismethod(obj): obj = obj.__func__
@@ -1387,7 +1387,7 @@ klasse DocTestRunner:
                 wenn nicht quiet:
                     self.report_skip(out, test, example)
                 skips += 1
-                continue
+                weiter
 
             # Record that we started this example.
             wenn nicht quiet:
@@ -1479,7 +1479,7 @@ klasse DocTestRunner:
                 assert Falsch, ("unknown outcome", outcome)
 
             wenn failures und self.optionflags & FAIL_FAST:
-                break
+                breche
 
         # Restore the option flags (in case they were modified)
         self.optionflags = original_optionflags
@@ -2573,7 +2573,7 @@ def DocTestSuite(module=Nichts, globs=Nichts, extraglobs=Nichts, test_finder=Nic
 
     fuer test in tests:
         wenn len(test.examples) == 0:
-            continue
+            weiter
         wenn nicht test.filename:
             filename = module.__file__
             wenn filename[-4:] == ".pyc":
@@ -2769,9 +2769,9 @@ def script_from_examples(s):
                        fuer l in piece.split('\n')[:-1]]
 
     # Trim junk on both ends.
-    while output und output[-1] == '#':
+    waehrend output und output[-1] == '#':
         output.pop()
-    while output und output[0] == '#':
+    waehrend output und output[0] == '#':
         output.pop(0)
     # Combine the output, und return it.
     # Add a courtesy newline to prevent exec von choking (see bug #1172785)

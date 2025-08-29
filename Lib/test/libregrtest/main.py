@@ -248,7 +248,7 @@ klasse Regrtest:
             except ValueError:
                 drucke(f"warning: --prioritize={priority_test} used"
                         f" but test nicht actually selected")
-                continue
+                weiter
             sonst:
                 selected.insert(0, priority_test)
 
@@ -442,7 +442,7 @@ klasse Regrtest:
             self.logger.display_progress(test_index, text)
 
             wenn result.must_stop(self.fail_fast, self.fail_env_changed):
-                break
+                breche
 
     def get_state(self) -> str:
         state = self.results.get_state(self.fail_env_changed)
@@ -698,7 +698,7 @@ klasse Regrtest:
         except Exception als exc:
             print_warning(f"Failed to change Python options: {exc!r}\n"
                           f"Command: {cmd_text}")
-            # continue executing main()
+            # weiter executing main()
 
     def _add_python_opts(self) -> Nichts:
         python_opts: list[str] = []

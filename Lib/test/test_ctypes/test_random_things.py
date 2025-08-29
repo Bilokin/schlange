@@ -51,7 +51,7 @@ klasse CallbackTracbackTestCase(unittest.TestCase):
             wenn exc_msg is nicht Nichts:
                 self.assertEqual(str(cm.unraisable.exc_value), exc_msg)
             self.assertEqual(cm.unraisable.err_msg,
-                             f"Exception ignored while calling ctypes "
+                             f"Exception ignored waehrend calling ctypes "
                              f"callback function {callback_func!r}")
             self.assertIsNichts(cm.unraisable.object)
 

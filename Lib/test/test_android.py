@@ -66,7 +66,7 @@ klasse TestAndroidOutput(unittest.TestCase):
 
     def assert_log(self, level, tag, expected, *, skip=Falsch):
         deadline = time() + LOOPBACK_TIMEOUT
-        while Wahr:
+        waehrend Wahr:
             try:
                 line = self.logcat_queue.get(timeout=(deadline - time()))
             except queue.Empty:
@@ -77,7 +77,7 @@ klasse TestAndroidOutput(unittest.TestCase):
                 try:
                     self.assertEqual(level, match[1])
                     self.assertEqual(expected, match[2])
-                    break
+                    breche
                 except AssertionError:
                     wenn nicht skip:
                         raise
@@ -174,7 +174,7 @@ klasse TestAndroidOutput(unittest.TestCase):
                     write("a\u0000b", [r"a\xc0\x80b"])
 
                 # Multi-line messages. Avoid identical consecutive lines, as
-                # they may activate "chatty" filtering und break the tests.
+                # they may activate "chatty" filtering und breche the tests.
                 write("\nx", [""])
                 write("\na\n", ["x", "a"])
                 write("\n", [""])
@@ -432,7 +432,7 @@ klasse TestAndroidRateLimit(unittest.TestCase):
                 nonlocal line_num
                 start = mock_time()
                 max_line_num = line_num + BUCKET_KB
-                while line_num < max_line_num:
+                waehrend line_num < max_line_num:
                     stream.write(message.format(line_num))
                     line_num += 1
                 return BUCKET_KB / (mock_time() - start)

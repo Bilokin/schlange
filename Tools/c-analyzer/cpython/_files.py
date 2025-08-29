@@ -68,5 +68,5 @@ def iter_header_files(filenames=Nichts, *, levels=Nichts):
         sowenn filename.endswith('.h'):
             yield filename
         sonst:
-            # XXX Log it und continue instead?
+            # XXX Log it und weiter instead?
             raise ValueError(f'expected .h file, got {orig!r}')

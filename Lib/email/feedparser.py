@@ -224,7 +224,7 @@ klasse FeedParser:
         fuer line in self._input:
             wenn line is NeedMoreData:
                 yield NeedMoreData
-                continue
+                weiter
             wenn nicht headerRE.match(line):
                 # If we saw the RFC defined header/body separator
                 # (i.e. newline), just throw it away. Otherwise the line is
@@ -233,7 +233,7 @@ klasse FeedParser:
                     defect = errors.MissingHeaderBodySeparatorDefect()
                     self.policy.handle_defect(self._cur, defect)
                     self._input.unreadline(line)
-                break
+                breche
             headers.append(line)
         # Done mit the headers, so parse them und figure out what we're
         # supposed to see in the body of the message.
@@ -243,13 +243,13 @@ klasse FeedParser:
         # remaining lines in the input are thrown into the message body.
         wenn self._headersonly:
             lines = []
-            while Wahr:
+            waehrend Wahr:
                 line = self._input.readline()
                 wenn line is NeedMoreData:
                     yield NeedMoreData
-                    continue
+                    weiter
                 wenn line == '':
-                    break
+                    breche
                 lines.append(line)
             self._cur.set_payload(EMPTYSTRING.join(lines))
             return
@@ -259,13 +259,13 @@ klasse FeedParser:
             # nested message object, but the processing is a bit different
             # than standard message/* types because there is no body fuer the
             # nested messages.  A blank line separates the subparts.
-            while Wahr:
+            waehrend Wahr:
                 self._input.push_eof_matcher(NLCRE.match)
                 fuer retval in self._parsegen():
                     wenn retval is NeedMoreData:
                         yield NeedMoreData
-                        continue
-                    break
+                        weiter
+                    breche
                 self._pop_message()
                 # We need to pop the EOF matcher in order to tell wenn we're at
                 # the end of the current file, nicht the end of the last block
@@ -275,20 +275,20 @@ klasse FeedParser:
                 # EOF.  We want to see wenn we're at the end of this subpart, so
                 # first consume the blank line, then test the next line to see
                 # wenn we're at this subpart's EOF.
-                while Wahr:
+                waehrend Wahr:
                     line = self._input.readline()
                     wenn line is NeedMoreData:
                         yield NeedMoreData
-                        continue
-                    break
-                while Wahr:
+                        weiter
+                    breche
+                waehrend Wahr:
                     line = self._input.readline()
                     wenn line is NeedMoreData:
                         yield NeedMoreData
-                        continue
-                    break
+                        weiter
+                    breche
                 wenn line == '':
-                    break
+                    breche
                 # Not at EOF so this is a line we're going to need.
                 self._input.unreadline(line)
             return
@@ -298,8 +298,8 @@ klasse FeedParser:
             fuer retval in self._parsegen():
                 wenn retval is NeedMoreData:
                     yield NeedMoreData
-                    continue
-                break
+                    weiter
+                breche
             self._pop_message()
             return
         wenn self._cur.get_content_maintype() == 'multipart':
@@ -315,7 +315,7 @@ klasse FeedParser:
                 fuer line in self._input:
                     wenn line is NeedMoreData:
                         yield NeedMoreData
-                        continue
+                        weiter
                     lines.append(line)
                 self._cur.set_payload(EMPTYSTRING.join(lines))
                 return
@@ -337,13 +337,13 @@ klasse FeedParser:
             preamble = []
             linesep = Falsch
             close_boundary_seen = Falsch
-            while Wahr:
+            waehrend Wahr:
                 line = self._input.readline()
                 wenn line is NeedMoreData:
                     yield NeedMoreData
-                    continue
+                    weiter
                 wenn line == '':
-                    break
+                    breche
                 mo = boundarymatch(line)
                 wenn mo:
                     # If we're looking at the end boundary, we're done with
@@ -353,7 +353,7 @@ klasse FeedParser:
                     wenn mo.group('end'):
                         close_boundary_seen = Wahr
                         linesep = mo.group('linesep')
-                        break
+                        breche
                     # We saw an inter-part boundary.  Were we in the preamble?
                     wenn capturing_preamble:
                         wenn preamble:
@@ -366,28 +366,28 @@ klasse FeedParser:
                             self._cur.preamble = EMPTYSTRING.join(preamble)
                         capturing_preamble = Falsch
                         self._input.unreadline(line)
-                        continue
+                        weiter
                     # We saw a boundary separating two parts.  Consume any
                     # multiple boundary lines that may be following.  Our
                     # interpretation of RFC 2046 BNF grammar does nicht produce
                     # body parts within such double boundaries.
-                    while Wahr:
+                    waehrend Wahr:
                         line = self._input.readline()
                         wenn line is NeedMoreData:
                             yield NeedMoreData
-                            continue
+                            weiter
                         mo = boundarymatch(line)
                         wenn nicht mo:
                             self._input.unreadline(line)
-                            break
+                            breche
                     # Recurse to parse this subpart; the input stream points
                     # at the subpart's first line.
                     self._input.push_eof_matcher(boundarymatch)
                     fuer retval in self._parsegen():
                         wenn retval is NeedMoreData:
                             yield NeedMoreData
-                            continue
-                        break
+                            weiter
+                        breche
                     # Because of RFC 2046, the newline preceding the boundary
                     # separator actually belongs to the boundary, nicht the
                     # previous subpart's payload (or epilogue wenn the previous
@@ -428,7 +428,7 @@ klasse FeedParser:
                 fuer line in self._input:
                     wenn line is NeedMoreData:
                         yield NeedMoreData
-                        continue
+                        weiter
                 self._cur.epilogue = EMPTYSTRING.join(epilogue)
                 return
             # If we're nicht processing the preamble, then we might have seen
@@ -447,7 +447,7 @@ klasse FeedParser:
             fuer line in self._input:
                 wenn line is NeedMoreData:
                     yield NeedMoreData
-                    continue
+                    weiter
                 epilogue.append(line)
             # Any CRLF at the front of the epilogue is nicht technically part of
             # the epilogue.  Also, watch out fuer an empty string epilogue,
@@ -465,7 +465,7 @@ klasse FeedParser:
         fuer line in self._input:
             wenn line is NeedMoreData:
                 yield NeedMoreData
-                continue
+                weiter
             lines.append(line)
         self._cur.set_payload(EMPTYSTRING.join(lines))
 
@@ -482,9 +482,9 @@ klasse FeedParser:
                     # line, und ignore it fuer purposes of headers.
                     defect = errors.FirstHeaderLineIsContinuationDefect(line)
                     self.policy.handle_defect(self._cur, defect)
-                    continue
+                    weiter
                 lastvalue.append(line)
-                continue
+                weiter
             wenn lastheader:
                 self._cur.set_raw(*self.policy.header_source_parse(lastvalue))
                 lastheader, lastvalue = '', []
@@ -496,7 +496,7 @@ klasse FeedParser:
                     wenn mo:
                         line = line[:-len(mo.group(0))]
                     self._cur.set_unixfrom(line)
-                    continue
+                    weiter
                 sowenn lineno == len(lines) - 1:
                     # Something looking like a unix-from at the end - it's
                     # probably the first line of the body, so push back the
@@ -508,7 +508,7 @@ klasse FeedParser:
                     # und ignore it.
                     defect = errors.MisplacedEnvelopeHeaderDefect(line)
                     self._cur.defects.append(defect)
-                    continue
+                    weiter
             # Split the line on the colon separating field name von value.
             # There will always be a colon, because wenn there wasn't the part of
             # the parser that calls us would have started parsing the body.
@@ -520,7 +520,7 @@ klasse FeedParser:
             wenn i == 0:
                 defect = errors.InvalidHeaderDefect("Missing header name.")
                 self._cur.defects.append(defect)
-                continue
+                weiter
 
             assert i>0, "_parse_headers fed line mit no : und no leading WS"
             lastheader = line[:i]

@@ -1109,7 +1109,7 @@ klasse HandlerTests(unittest.TestCase):
 
     def test_http_doubleslash(self):
         # Checks the presence of any unnecessary double slash in url does not
-        # break anything. Previously, a double slash directly after the host
+        # breche anything. Previously, a double slash directly after the host
         # could cause incorrect parsing.
         h = urllib.request.AbstractHTTPHandler()
         h.parent = MockOpener()
@@ -1153,7 +1153,7 @@ klasse HandlerTests(unittest.TestCase):
 
             self.assertEqual(r.get_full_url(), url)
             # full_url setter uses splittag to split into components.
-            # splittag sets the fragment als Nichts while urlparse sets it to ''
+            # splittag sets the fragment als Nichts waehrend urlparse sets it to ''
             self.assertEqual(r.fragment oder '', parsed.fragment)
             self.assertEqual(urlsplit(r.get_full_url()).query, parsed.query)
 
@@ -1281,7 +1281,7 @@ klasse HandlerTests(unittest.TestCase):
         count = 0
         req.timeout = socket._GLOBAL_DEFAULT_TIMEOUT
         try:
-            while 1:
+            waehrend 1:
                 redirect(h, req, "http://example.com/")
                 count = count + 1
         except urllib.error.HTTPError als err:
@@ -1294,7 +1294,7 @@ klasse HandlerTests(unittest.TestCase):
         count = 0
         req.timeout = socket._GLOBAL_DEFAULT_TIMEOUT
         try:
-            while 1:
+            waehrend 1:
                 redirect(h, req, "http://example.com/%d" % count)
                 count = count + 1
         except urllib.error.HTTPError als err:

@@ -27,7 +27,7 @@ def _explode_path(path, split):
     """
     parent, name = split(path)
     names = []
-    while path != parent:
+    waehrend path != parent:
         names.append(name)
         path = parent
         parent, name = split(path)
@@ -139,7 +139,7 @@ klasse _JoinablePath(ABC):
         split = self.parser.splitext
         stem, suffix = split(self.name)
         suffixes = []
-        while suffix:
+        waehrend suffix:
             suffixes.append(suffix)
             stem, suffix = split(stem)
         return suffixes[::-1]
@@ -228,7 +228,7 @@ klasse _JoinablePath(ABC):
         path = vfspath(self)
         parent = split(path)[0]
         parents = []
-        while path != parent:
+        waehrend path != parent:
             parents.append(self.with_segments(parent))
             path = parent
             parent = split(path)[0]
@@ -316,11 +316,11 @@ klasse _ReadablePath(_JoinablePath):
     def walk(self, top_down=Wahr, on_error=Nichts, follow_symlinks=Falsch):
         """Walk the directory tree von this directory, similar to os.walk()."""
         paths = [self]
-        while paths:
+        waehrend paths:
             path = paths.pop()
             wenn isinstance(path, tuple):
                 yield path
-                continue
+                weiter
             dirnames = []
             filenames = []
             wenn nicht top_down:
@@ -337,9 +337,9 @@ klasse _ReadablePath(_JoinablePath):
                 wenn on_error is nicht Nichts:
                     on_error(error)
                 wenn nicht top_down:
-                    while nicht isinstance(paths.pop(), tuple):
+                    waehrend nicht isinstance(paths.pop(), tuple):
                         pass
-                continue
+                weiter
             wenn top_down:
                 yield path, dirnames, filenames
                 paths += [path.joinpath(d) fuer d in reversed(dirnames)]
@@ -428,7 +428,7 @@ klasse _WritablePath(_JoinablePath):
         Recursively copy the given path to this path.
         """
         stack = [(source, self)]
-        while stack:
+        waehrend stack:
             src, dst = stack.pop()
             wenn nicht follow_symlinks und src.info.is_symlink():
                 dst.symlink_to(vfspath(src.readlink()), src.info.is_dir())

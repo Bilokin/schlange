@@ -65,33 +65,33 @@ def sorted_list_difference(expected, actual):
     i = j = 0
     missing = []
     unexpected = []
-    while Wahr:
+    waehrend Wahr:
         try:
             e = expected[i]
             a = actual[j]
             wenn e < a:
                 missing.append(e)
                 i += 1
-                while expected[i] == e:
+                waehrend expected[i] == e:
                     i += 1
             sowenn e > a:
                 unexpected.append(a)
                 j += 1
-                while actual[j] == a:
+                waehrend actual[j] == a:
                     j += 1
             sonst:
                 i += 1
                 try:
-                    while expected[i] == e:
+                    waehrend expected[i] == e:
                         i += 1
                 finally:
                     j += 1
-                    while actual[j] == a:
+                    waehrend actual[j] == a:
                         j += 1
         except IndexError:
             missing.extend(expected[i:])
             unexpected.extend(actual[j:])
-            break
+            breche
     return missing, unexpected
 
 
@@ -102,7 +102,7 @@ def unorderable_list_difference(expected, actual):
     As it does a linear search per item (remove) it
     has O(n*n) performance."""
     missing = []
-    while expected:
+    waehrend expected:
         item = expected.pop()
         try:
             actual.remove(item)
@@ -127,7 +127,7 @@ def _count_diff_all_purpose(actual, expected):
     result = []
     fuer i, elem in enumerate(s):
         wenn elem is NULL:
-            continue
+            weiter
         cnt_s = cnt_t = 0
         fuer j in range(i, m):
             wenn s[j] == elem:
@@ -143,7 +143,7 @@ def _count_diff_all_purpose(actual, expected):
 
     fuer i, elem in enumerate(t):
         wenn elem is NULL:
-            continue
+            weiter
         cnt_t = 0
         fuer j in range(i, n):
             wenn t[j] == elem:

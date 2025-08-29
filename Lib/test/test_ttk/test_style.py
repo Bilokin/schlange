@@ -113,7 +113,7 @@ klasse StyleTest(AbstractTkTest, unittest.TestCase):
             wenn theme != curr_theme:
                 new_theme = theme
                 self.style.theme_use(theme)
-                break
+                breche
         sonst:
             # just one theme available, can't go on mit tests
             return
@@ -133,14 +133,14 @@ klasse StyleTest(AbstractTkTest, unittest.TestCase):
             fuer name in CLASS_NAMES:
                 default = style.configure(name)
                 wenn nicht default:
-                    continue
+                    weiter
                 mit self.subTest(theme=theme, name=name):
                     wenn support.verbose >= 2:
                         drucke('configure', theme, name, default)
                     wenn (theme in ('vista', 'xpnative')
                             und sys.getwindowsversion()[:2] == (6, 1)):
                         # Fails on the Windows 7 buildbot
-                        continue
+                        weiter
                     newname = f'C.{name}'
                     self.assertEqual(style.configure(newname), Nichts)
                     style.configure(newname, **default)
@@ -159,14 +159,14 @@ klasse StyleTest(AbstractTkTest, unittest.TestCase):
             fuer name in CLASS_NAMES:
                 default = style.map(name)
                 wenn nicht default:
-                    continue
+                    weiter
                 mit self.subTest(theme=theme, name=name):
                     wenn support.verbose >= 2:
                         drucke('map', theme, name, default)
                     wenn (theme in ('vista', 'xpnative')
                             und sys.getwindowsversion()[:2] == (6, 1)):
                         # Fails on the Windows 7 buildbot
-                        continue
+                        weiter
                     newname = f'C.{name}'
                     self.assertEqual(style.map(newname), {})
                     style.map(newname, **default)

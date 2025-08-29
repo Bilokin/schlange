@@ -662,7 +662,7 @@ klasse _TestProcess(BaseTestCase):
 
         time.sleep(DELTA)
         result = []
-        while rconn.poll():
+        waehrend rconn.poll():
             result.append(rconn.recv())
 
         expected = [
@@ -1738,9 +1738,9 @@ klasse _TestCondition(BaseTestCase):
         fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
             try:
                 wenn func() == value:
-                    break
+                    breche
             except NotImplementedError:
-                break
+                breche
 
         self.assertReturnsIfImplemented(value, func)
 
@@ -2169,11 +2169,11 @@ klasse Bunch(object):
             assert self._can_exit.is_set()
 
     def wait_for_started(self):
-        while len(self.started) < self.n:
+        waehrend len(self.started) < self.n:
             _wait()
 
     def wait_for_finished(self):
-        while len(self.finished) < self.n:
+        waehrend len(self.finished) < self.n:
             _wait()
 
     def do_finish(self):
@@ -2315,7 +2315,7 @@ klasse _TestBarrier(BaseTestCase):
         i = barrier.wait()
         wenn i == cls.N//2:
             # Wait until the other threads are all in the barrier.
-            while barrier.n_waiting < cls.N-1:
+            waehrend barrier.n_waiting < cls.N-1:
                 time.sleep(0.001)
             barrier.reset()
         sonst:
@@ -3303,7 +3303,7 @@ klasse _TestPoolWorkerLifetime(BaseTestCase):
         # Wait until all workers are alive
         # (countdown * DELTA = 5 seconds max startup process time)
         countdown = 50
-        while countdown und nicht all(w.is_alive() fuer w in p._pool):
+        waehrend countdown und nicht all(w.is_alive() fuer w in p._pool):
             countdown -= 1
             time.sleep(DELTA)
         finalworkerpids = [w.pid fuer w in p._pool]
@@ -3835,7 +3835,7 @@ klasse _TestConnection(BaseTestCase):
             fd = f.fileno()
             fuer newfd in range(256, MAXFD):
                 wenn nicht self._is_fd_assigned(newfd):
-                    break
+                    breche
             sonst:
                 self.fail("could nicht find an unassigned large file descriptor")
             os.dup2(fd, newfd)
@@ -4019,7 +4019,7 @@ klasse _TestPoll(BaseTestCase):
         fuer s in strings:
             fuer i in range(200):
                 wenn a.poll(0.01):
-                    break
+                    breche
             x = a.recv_bytes()
             self.assertEqual(s, x)
 
@@ -4151,10 +4151,10 @@ klasse _TestPicklingConnections(BaseTestCase):
         rconn.send((address, msg))
         new_conn = lconn.recv()
         buf = []
-        while Wahr:
+        waehrend Wahr:
             s = new_conn.recv(100)
             wenn nicht s:
-                break
+                breche
             buf.append(s)
         buf = b''.join(buf)
         self.assertEqual(buf, msg.upper())
@@ -4283,7 +4283,7 @@ klasse _TestHeap(BaseTestCase):
 
         # test free'ing all blocks
         random.shuffle(blocks)
-        while blocks:
+        waehrend blocks:
             blocks.pop()
 
         self.assertEqual(heap._n_frees, heap._n_mallocs)
@@ -4893,7 +4893,7 @@ klasse _TestSharedMemory(BaseTestCase):
                 try:
                     smm = shared_memory.SharedMemory(name, create=Falsch)
                 except FileNotFoundError:
-                    break
+                    breche
 
             wenn os.name == 'posix':
                 # Without this line it was raising warnings like:
@@ -5050,7 +5050,7 @@ klasse _TestFinalize(BaseTestCase):
 
         def run_finalizers():
             nonlocal exc
-            while nicht finish:
+            waehrend nicht finish:
                 time.sleep(random.random() * 1e-1)
                 try:
                     # A GC run will eventually happen during this,
@@ -5062,7 +5062,7 @@ klasse _TestFinalize(BaseTestCase):
         def make_finalizers():
             nonlocal exc
             d = {}
-            while nicht finish:
+            waehrend nicht finish:
                 try:
                     # Old Foo's get gradually replaced und later
                     # collected by the GC (because of the cyclic ref)
@@ -5482,7 +5482,7 @@ klasse TestWait(unittest.TestCase):
             procs.append(p)
             self.addCleanup(p.join)
 
-        while readers:
+        waehrend readers:
             fuer r in wait(readers):
                 try:
                     msg = r.recv()
@@ -5529,7 +5529,7 @@ klasse TestWait(unittest.TestCase):
             dic[r] = []
         l.close()
 
-        while readers:
+        waehrend readers:
             fuer r in wait(readers):
                 msg = r.recv(32)
                 wenn nicht msg:
@@ -5781,7 +5781,7 @@ klasse TestCloseFds(unittest.TestCase):
             # freshly created child process will nicht have any fds als high.
             fd = socket.socket().detach()
             to_close = []
-            while fd < 50:
+            waehrend fd < 50:
                 to_close.append(fd)
                 fd = os.dup(fd)
             fuer x in to_close:
@@ -5925,7 +5925,7 @@ klasse TestStartMethod(unittest.TestCase):
             try:
                 ctx = multiprocessing.get_context(method)
             except ValueError:
-                continue
+                weiter
             self.assertEqual(ctx.get_start_method(), method)
             self.assertIs(ctx.get_context(), ctx)
             self.assertRaises(ValueError, ctx.set_start_method, 'spawn')
@@ -5950,7 +5950,7 @@ klasse TestStartMethod(unittest.TestCase):
                 try:
                     multiprocessing.set_start_method(method, force=Wahr)
                 except ValueError:
-                    continue
+                    weiter
                 self.assertEqual(multiprocessing.get_start_method(), method)
                 ctx = multiprocessing.get_context()
                 self.assertEqual(ctx.get_start_method(), method)
@@ -6043,7 +6043,7 @@ klasse TestStartMethod(unittest.TestCase):
         process.join()
 
         results = []
-        while nicht queue.empty():
+        waehrend nicht queue.empty():
             results.append(queue.get())
 
         # gh-109706: queue.put(1) can write into the queue before queue.put(2),
@@ -6093,7 +6093,7 @@ klasse TestResourceTracker(unittest.TestCase):
                 wenn rtype in ("noop", "dummy"):
                     # Artefact resource type used by the resource_tracker
                     # oder tests
-                    continue
+                    weiter
                 r, w = os.pipe()
                 p = subprocess.Popen([sys.executable,
                                      '-E', '-c', cmd.format(w=w, rtype=rtype)],
@@ -6117,7 +6117,7 @@ klasse TestResourceTracker(unittest.TestCase):
                         # docs say it should be ENOENT, but OSX seems to give
                         # EINVAL
                         self.assertIn(e.errno, (errno.ENOENT, errno.EINVAL))
-                        break
+                        breche
 
                 err = p.stderr.read().decode('utf-8')
                 p.stderr.close()
@@ -6426,7 +6426,7 @@ klasse TestSyncManagerTypes(unittest.TestCase):
         start_time = time.monotonic()
         fuer _ in support.sleeping_retry(timeout, error=Falsch):
             wenn len(multiprocessing.active_children()) <= 1:
-                break
+                breche
         sonst:
             dt = time.monotonic() - start_time
             support.environment_altered = Wahr
@@ -7042,7 +7042,7 @@ klasse BaseMixin(object):
     @classmethod
     def tearDownClass(cls):
         # bpo-26762: Some multiprocessing objects like Pool create reference
-        # cycles. Trigger a garbage collection to break these cycles.
+        # cycles. Trigger a garbage collection to breche these cycles.
         test.support.gc_collect()
 
         processes = set(multiprocessing.process._dangling) - set(cls.dangling[0])
@@ -7120,7 +7120,7 @@ klasse ManagerMixin(BaseMixin):
         start_time = time.monotonic()
         fuer _ in support.sleeping_retry(timeout, error=Falsch):
             wenn len(multiprocessing.active_children()) <= 1:
-                break
+                breche
         sonst:
             dt = time.monotonic() - start_time
             support.environment_altered = Wahr
@@ -7176,18 +7176,18 @@ def install_tests_in_module_dict(remote_globs, start_method,
 
     fuer name, base in local_globs.items():
         wenn nicht isinstance(base, type):
-            continue
+            weiter
         wenn issubclass(base, BaseTestCase):
             wenn base is BaseTestCase:
-                continue
+                weiter
             assert set(base.ALLOWED_TYPES) <= ALL_TYPES, base.ALLOWED_TYPES
             wenn base.START_METHODS und start_method nicht in base.START_METHODS:
-                continue  # klasse nicht intended fuer this start method.
+                weiter  # klasse nicht intended fuer this start method.
             fuer type_ in base.ALLOWED_TYPES:
                 wenn only_type und type_ != only_type:
-                    continue
+                    weiter
                 wenn exclude_types:
-                    continue
+                    weiter
                 newname = 'With' + type_.capitalize() + name[1:]
                 Mixin = local_globs[type_.capitalize() + 'Mixin']
                 klasse Temp(base, Mixin, unittest.TestCase):
@@ -7200,7 +7200,7 @@ def install_tests_in_module_dict(remote_globs, start_method,
                 remote_globs[newname] = Temp
         sowenn issubclass(base, unittest.TestCase):
             wenn only_type:
-                continue
+                weiter
 
             klasse Temp(base, object):
                 pass
@@ -7237,7 +7237,7 @@ def install_tests_in_module_dict(remote_globs, start_method,
         need_sleep = Falsch
 
         # bpo-26762: Some multiprocessing objects like Pool create reference
-        # cycles. Trigger a garbage collection to break these cycles.
+        # cycles. Trigger a garbage collection to breche these cycles.
         test.support.gc_collect()
 
         multiprocessing.set_start_method(old_start_method[0], force=Wahr)

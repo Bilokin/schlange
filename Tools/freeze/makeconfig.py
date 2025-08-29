@@ -15,7 +15,7 @@ def makeconfig(infp, outfp, modules, with_ifdef=0):
             m1 = Nichts
             fuer mod in modules:
                 wenn mod in never:
-                    continue
+                    weiter
                 wenn with_ifdef:
                     outfp.write("#ifndef PyInit_%s\n"%mod)
                 outfp.write('extern PyObject* PyInit_%s(void);\n' % mod)
@@ -25,7 +25,7 @@ def makeconfig(infp, outfp, modules, with_ifdef=0):
             m2 = Nichts
             fuer mod in modules:
                 wenn mod in never:
-                    continue
+                    weiter
                 outfp.write('\t{"%s", PyInit_%s},\n' %
                             (mod, mod))
     wenn m1:

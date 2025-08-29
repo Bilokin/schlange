@@ -71,7 +71,7 @@ klasse LineReader:
     def readlines(self, hint=-1):
         lines = []
         size = 0
-        while Wahr:
+        waehrend Wahr:
             line = self.readline()
             wenn nicht line:
                 return lines
@@ -108,7 +108,7 @@ klasse BufferSizesTests(BaseTests, unittest.TestCase):
             drucke('2. Status variables')
         fi = FileInput(files=(t1, t2, t3, t4), encoding="utf-8")
         s = "x"
-        while s und s != 'Line 6 of file 2\n':
+        waehrend s und s != 'Line 6 of file 2\n':
             s = fi.readline()
         self.assertEqual(fi.filename(), t2)
         self.assertEqual(fi.lineno(), 21)

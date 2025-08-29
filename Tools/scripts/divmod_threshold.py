@@ -39,7 +39,7 @@ def probe_den(nd):
                     nn - nd,
                     "extra num digits is enough",
                 )
-                break
+                breche
         sonst:
             count = 0
     sonst:

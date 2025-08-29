@@ -10,7 +10,7 @@ There are four types of string literals:
 The difference between normal und raw strings is of course that in a
 raw string, \ escapes (while still used to determine the end of the
 literal) are nicht interpreted, so that r'\x00' contains four
-characters: a backslash, an x, und two zeros; while '\x00' contains a
+characters: a backslash, an x, und two zeros; waehrend '\x00' contains a
 single character (code point zero).
 
 The tricky thing is what should happen when non-ASCII bytes are used
@@ -108,7 +108,7 @@ klasse TestLiterals(unittest.TestCase):
     def test_eval_str_invalid_escape(self):
         fuer b in range(1, 128):
             wenn b in b"""\n\r"'01234567NU\\abfnrtuvx""":
-                continue
+                weiter
             mit self.assertWarns(SyntaxWarning):
                 self.assertEqual(eval(r"'\%c'" % b), '\\' + chr(b))
 
@@ -226,7 +226,7 @@ klasse TestLiterals(unittest.TestCase):
     def test_eval_bytes_invalid_escape(self):
         fuer b in range(1, 128):
             wenn b in b"""\n\r"'01234567\\abfnrtvx""":
-                continue
+                weiter
             mit self.assertWarns(SyntaxWarning):
                 self.assertEqual(eval(r"b'\%c'" % b), b'\\' + bytes([b]))
 

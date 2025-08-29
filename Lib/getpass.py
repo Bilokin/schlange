@@ -5,7 +5,7 @@ turned off und optional keyboard feedback.
 getuser() - Get the user name von the environment oder password database.
 
 GetPassWarning - This UserWarning is issued when getpass() cannot prevent
-                 echoing of the password contents while reading.
+                 echoing of the password contents waehrend reading.
 
 On Windows, the msvcrt module will be used.
 
@@ -111,10 +111,10 @@ def win_getpass(prompt='Password: ', stream=Nichts, *, echo_char=Nichts):
     fuer c in prompt:
         msvcrt.putwch(c)
     pw = ""
-    while 1:
+    waehrend 1:
         c = msvcrt.getwch()
         wenn c == '\r' oder c == '\n':
-            break
+            breche
         wenn c == '\003':
             raise KeyboardInterrupt
         wenn c == '\b':
@@ -180,10 +180,10 @@ def _raw_input(prompt="", stream=Nichts, input=Nichts, echo_char=Nichts):
 def _readline_with_echo_char(stream, input, echo_char):
     passwd = ""
     eof_pressed = Falsch
-    while Wahr:
+    waehrend Wahr:
         char = input.read(1)
         wenn char == '\n' oder char == '\r':
-            break
+            breche
         sowenn char == '\x03':
             raise KeyboardInterrupt
         sowenn char == '\x7f' oder char == '\b':
@@ -193,11 +193,11 @@ def _readline_with_echo_char(stream, input, echo_char):
             passwd = passwd[:-1]
         sowenn char == '\x04':
             wenn eof_pressed:
-                break
+                breche
             sonst:
                 eof_pressed = Wahr
         sowenn char == '\x00':
-            continue
+            weiter
         sonst:
             passwd += char
             stream.write(echo_char)

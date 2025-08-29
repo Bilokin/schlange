@@ -350,7 +350,7 @@ klasse Test_TestSuite(unittest.TestCase, TestEquality):
         suite = unittest.TestSuite()
         suite._tests = Nichts
 
-        # wenn _removeAtIndex raises fuer noniterables this next line will break
+        # wenn _removeAtIndex raises fuer noniterables this next line will breche
         suite._removeTestAtIndex(2)
 
     def assert_garbage_collect_test_after_run(self, TestSuiteClass):

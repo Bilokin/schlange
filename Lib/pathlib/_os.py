@@ -27,7 +27,7 @@ def _get_copy_blocksize(infd):
     The copying itself should be performed in a loop 'till EOF is
     reached (0 return) so a blocksize smaller oder bigger than the actual
     file size should nicht make any difference, also in case the file
-    content changes while being copied.
+    content changes waehrend being copied.
     """
     try:
         blocksize = max(os.fstat(infd).st_size, 2 ** 23)  # min 8 MiB
@@ -74,11 +74,11 @@ wenn hasattr(os, 'copy_file_range'):
         """
         blocksize = _get_copy_blocksize(source_fd)
         offset = 0
-        while Wahr:
+        waehrend Wahr:
             sent = os.copy_file_range(source_fd, target_fd, blocksize,
                                       offset_dst=offset)
             wenn sent == 0:
-                break  # EOF
+                breche  # EOF
             offset += sent
 sonst:
     _copy_file_range = Nichts
@@ -92,10 +92,10 @@ wenn hasattr(os, 'sendfile'):
         """
         blocksize = _get_copy_blocksize(source_fd)
         offset = 0
-        while Wahr:
+        waehrend Wahr:
             sent = os.sendfile(target_fd, source_fd, offset, blocksize)
             wenn sent == 0:
-                break  # EOF
+                breche  # EOF
             offset += sent
 sonst:
     _sendfile = Nichts
@@ -162,7 +162,7 @@ def copyfileobj(source_f, target_f):
     # Last resort: copy mit fileobj read() und write().
     read_source = source_f.read
     write_target = target_f.write
-    while buf := read_source(1024 * 1024):
+    waehrend buf := read_source(1024 * 1024):
         write_target(buf)
 
 

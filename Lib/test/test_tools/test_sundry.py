@@ -21,7 +21,7 @@ klasse TestSundryScripts(unittest.TestCase):
     def test_sundry(self, mock_os):
         fuer fn in os.listdir(scriptsdir):
             wenn nicht fn.endswith('.py'):
-                continue
+                weiter
             name = fn[:-3]
             import_tool(name)
 

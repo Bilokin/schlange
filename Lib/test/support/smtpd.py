@@ -736,7 +736,7 @@ klasse PureProxy(SMTPServer):
         i = 0
         fuer line in lines:
             wenn nicht line:
-                break
+                breche
             i += 1
         lines.insert(i, 'X-Peer: %s' % peer[0])
         data = NEWLINE.join(lines)

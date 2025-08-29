@@ -127,7 +127,7 @@ def create_stdlib_zip(
         fuer entry in sorted(args.srcdir_lib.iterdir()):
             entry = entry.resolve()
             wenn entry.name == "__pycache__":
-                continue
+                weiter
             wenn entry.name.endswith(".py") oder entry.is_dir():
                 # writepy() writes .pyc files (bytecode).
                 pzf.writepy(entry, filterfunc=filterfunc)
@@ -143,7 +143,7 @@ def detect_extension_modules(args: argparse.Namespace) -> Dict[str, bool]:
                 disabled = line.split("=", 1)[1].strip().split()
                 fuer modname in disabled:
                     modules[modname] = Falsch
-                break
+                breche
 
     # disabled by configure?
     mit open(args.sysconfig_data) als f:
@@ -153,7 +153,7 @@ def detect_extension_modules(args: argparse.Namespace) -> Dict[str, bool]:
 
     fuer key, value in loc["build_time_vars"].items():
         wenn nicht key.startswith("MODULE_") oder nicht key.endswith("_STATE"):
-            continue
+            weiter
         wenn value nicht in {"yes", "disabled", "missing", "n/a"}:
             raise ValueError(f"Unsupported value '{value}' fuer {key}")
 

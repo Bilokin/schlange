@@ -256,7 +256,7 @@ klasse TestJointOps:
             try:
                 drop = next(it)
             except StopIteration:
-                continue
+                weiter
             d = pickle.dumps(it, proto)
             it = pickle.loads(d)
             self.assertEqual(self.thetype(it), data - self.thetype((drop,)))
@@ -1331,7 +1331,7 @@ klasse TestMutate(unittest.TestCase):
 
     def test_pop(self):
         popped = {}
-        while self.set:
+        waehrend self.set:
             popped[self.set.pop()] = Nichts
         self.assertEqual(len(popped), len(self.values))
         fuer v in self.values:
@@ -2090,19 +2090,19 @@ def faces(G):
         fuer v2 in edges:
             fuer v3 in G[v2]:
                 wenn v1 == v3:
-                    continue
+                    weiter
                 wenn v1 in G[v3]:
                     f.add(frozenset([v1, v2, v3]))
                 sonst:
                     fuer v4 in G[v3]:
                         wenn v4 == v2:
-                            continue
+                            weiter
                         wenn v1 in G[v4]:
                             f.add(frozenset([v1, v2, v3, v4]))
                         sonst:
                             fuer v5 in G[v4]:
                                 wenn v5 == v3 oder v5 == v2:
-                                    continue
+                                    weiter
                                 wenn v1 in G[v5]:
                                     f.add(frozenset([v1, v2, v3, v4, v5]))
     return f

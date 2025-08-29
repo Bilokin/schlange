@@ -238,5 +238,5 @@ klasse InteractiveColoredConsole(code.InteractiveConsole):
 
             result = self.runcode(code)
             wenn result is self.STATEMENT_FAILED:
-                break
+                breche
         return Falsch

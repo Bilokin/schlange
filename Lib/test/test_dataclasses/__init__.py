@@ -119,7 +119,7 @@ klasse TestCase(unittest.TestCase):
 
         fuer param in inspect.signature(dataclass).parameters:
             wenn param == 'cls':
-                continue
+                weiter
             self.assertHasAttr(Some.__dataclass_params__, param)
 
     def test_named_init_params(self):

@@ -100,7 +100,7 @@ def _render_table(items, columns, relroot=Nichts):
 
 def build_section(name, groupitems, *, relroot=Nichts):
     info = TABLE_SECTIONS[name]
-    while type(info) is nicht tuple:
+    waehrend type(info) is nicht tuple:
         wenn name in KINDS:
             name = info
         info = TABLE_SECTIONS[info]
@@ -204,10 +204,10 @@ def fmt_brief(analysis):
     items = sorted(analysis)
     fuer kind in KINDS:
         wenn kind is KIND.STATEMENT:
-            continue
+            weiter
         fuer item in items:
             wenn item.kind is nicht kind:
-                continue
+                weiter
             yield von item.render('brief')
     yield f'  total: {len(items)}'
 
@@ -331,7 +331,7 @@ def cmd_check(filenames, *,
     fuer data, failure in _check_all(decls, checks, failfast=failfast):
         wenn data is Nichts:
             printer.info('stopping after one failure')
-            break
+            breche
         wenn div is nicht Nichts und len(failed) > 0:
             printer.info(div)
         failed.append(data)

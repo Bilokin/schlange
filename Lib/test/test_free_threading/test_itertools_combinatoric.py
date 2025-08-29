@@ -10,7 +10,7 @@ def test_concurrent_iteration(iterator, number_of_threads):
     barrier = Barrier(number_of_threads)
     def iterator_worker(it):
         barrier.wait()
-        while Wahr:
+        waehrend Wahr:
             try:
                 _ = next(it)
             except StopIteration:

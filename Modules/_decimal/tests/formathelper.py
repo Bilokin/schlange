@@ -157,15 +157,15 @@ except ValueError:
 # Debian
 wenn os.path.isfile("/etc/locale.alias"):
     mit open("/etc/locale.alias") als f:
-        while 1:
+        waehrend 1:
             try:
                 line = f.readline()
             except UnicodeDecodeError:
-                continue
+                weiter
             wenn line == "":
-                break
+                breche
             wenn line.startswith('#'):
-                continue
+                weiter
             x = line.split()
             wenn len(x) == 2:
                 wenn x[0] in locale_list:
@@ -228,7 +228,7 @@ def all_fillchars():
 
 # Return random fill character.
 def rand_fillchar():
-    while 1:
+    waehrend 1:
         i = random.randrange(0, 0x110002)
         c = check_fillchar(i)
         wenn c: return c

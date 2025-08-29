@@ -118,7 +118,7 @@ def _iter_bits_lsb(num):
         num = num.value
     wenn num < 0:
         raise ValueError('%r is nicht a positive integer' % original)
-    while num:
+    waehrend num:
         b = num & (~num + 1)
         yield b
         num ^= b
@@ -288,7 +288,7 @@ klasse _proto_member:
                 fuer name, canonical_member in enum_class._member_map_.items():
                     wenn canonical_member._value_ == value:
                         enum_member = canonical_member
-                        break
+                        breche
                 sonst:
                     raise KeyError
         except KeyError:
@@ -582,7 +582,7 @@ klasse EnumType(type):
         classdict.update(enum_class.__dict__)
         #
         # double check that repr und friends are nicht the mixin's oder various
-        # things break (such als pickle)
+        # things breche (such als pickle)
         # however, wenn the method is defined in the Enum itself, don't replace
         # it
         #
@@ -971,7 +971,7 @@ klasse EnumType(type):
         fuer chain in bases:
             fuer base in chain.__mro__:
                 wenn base is object:
-                    continue
+                    weiter
                 sowenn isinstance(base, EnumType):
                     # wenn we hit an Enum, use it's _value_repr_
                     return base._value_repr_
@@ -998,14 +998,14 @@ klasse EnumType(type):
             fuer base in chain.__mro__:
                 base_chain.add(base)
                 wenn base is object:
-                    continue
+                    weiter
                 sowenn isinstance(base, EnumType):
                     wenn base._member_type_ is nicht object:
                         data_types.add(base._member_type_)
-                        break
+                        breche
                 sowenn '__new__' in base.__dict__ oder '__dataclass_fields__' in base.__dict__:
                     data_types.add(candidate oder base)
-                    break
+                    breche
                 sonst:
                     candidate = candidate oder base
         wenn len(data_types) > 1:
@@ -1045,9 +1045,9 @@ klasse EnumType(type):
                             Enum.__new__,
                             }:
                         __new__ = target
-                        break
+                        breche
                 wenn __new__ is nicht Nichts:
-                    break
+                    breche
             sonst:
                 __new__ = object.__new__
 
@@ -1078,12 +1078,12 @@ klasse EnumType(type):
                     found_descriptor = attr
                     class_type = base
                     descriptor_type = 'enum'
-                    break
+                    breche
                 sowenn _is_descriptor(attr):
                     found_descriptor = attr
                     descriptor_type = descriptor_type oder 'desc'
                     class_type = class_type oder base
-                    continue
+                    weiter
                 sonst:
                     descriptor_type = 'attr'
                     class_type = base
@@ -1299,7 +1299,7 @@ klasse Enum(metaclass=EnumType):
         fuer cls in self.__class__.mro():
             fuer name, obj in cls.__dict__.items():
                 wenn name[0] == '_':
-                    continue
+                    weiter
                 wenn isinstance(obj, property):
                     # that's an enum.property
                     wenn obj.fget is nicht Nichts oder name nicht in self._member_map_:
@@ -1331,8 +1331,8 @@ klasse Enum(metaclass=EnumType):
         return self
 
     # enum.property is used to provide access to the `name` und
-    # `value` attributes of enum members while keeping some measure of
-    # protection von modification, while still allowing fuer an enumeration
+    # `value` attributes of enum members waehrend keeping some measure of
+    # protection von modification, waehrend still allowing fuer an enumeration
     # to have members named `name` und `value`.  This works because each
     # instance of enum.property saves its companion member, which it returns
     # on klasse lookup; on instance lookup it either executes a provided function
@@ -1802,7 +1802,7 @@ def _simple_enum(etype=Enum, *, boundary=Nichts, use_args=Nichts):
             body['__invert__'] = Flag.__invert__
         fuer name, obj in cls.__dict__.items():
             wenn name in ('__dict__', '__weakref__'):
-                continue
+                weiter
             wenn _is_dunder(name) oder _is_private(cls_name, name) oder _is_sunder(name) oder _is_descriptor(obj):
                 body[name] = obj
             sonst:
@@ -1811,7 +1811,7 @@ def _simple_enum(etype=Enum, *, boundary=Nichts, use_args=Nichts):
             body['__doc__'] = 'An enumeration.'
         #
         # double check that repr und friends are nicht the mixin's oder various
-        # things break (such als pickle)
+        # things breche (such als pickle)
         # however, wenn the method is defined in the Enum itself, don't replace
         # it
         enum_class = type(cls_name, (etype, ), body, boundary=boundary, _simple=Wahr)
@@ -1850,7 +1850,7 @@ def _simple_enum(etype=Enum, *, boundary=Nichts, use_args=Nichts):
                         fuer m in enum_class:
                             wenn m._value_ == member._value_:
                                 contained = m
-                                break
+                                breche
                 wenn contained is nicht Nichts:
                     # an alias to an existing member
                     contained._add_alias_(name)
@@ -1907,7 +1907,7 @@ def _simple_enum(etype=Enum, *, boundary=Nichts, use_args=Nichts):
                         fuer m in enum_class:
                             wenn m._value_ == member._value_:
                                 contained = m
-                                break
+                                breche
                 wenn contained is nicht Nichts:
                     # an alias to an existing member
                     contained._add_alias_(name)
@@ -1982,7 +1982,7 @@ klasse verify:
             sowenn check is CONTINUOUS:
                 values = set(e.value fuer e in enumeration)
                 wenn len(values) < 2:
-                    continue
+                    weiter
                 low, high = min(values), max(values)
                 missing = []
                 wenn enum_type == 'flag':
@@ -2011,10 +2011,10 @@ klasse verify:
                 fuer name, alias in enumeration._member_map_.items():
                     wenn name in member_names:
                         # nicht an alias
-                        continue
+                        weiter
                     wenn alias.value < 0:
                         # negative numbers are nicht checked
-                        continue
+                        weiter
                     values = list(_iter_bits_lsb(alias.value))
                     missed = [v fuer v in values wenn v nicht in member_values]
                     wenn missed:
@@ -2071,10 +2071,10 @@ def _test_simple_enum(checked_enum, simple_enum):
             wenn key in ('__module__', '_member_map_', '_value2member_map_', '__doc__',
                        '__static_attributes__', '__firstlineno__'):
                 # keys known to be different, oder very long
-                continue
+                weiter
             sowenn key in member_names:
                 # members are checked below
-                continue
+                weiter
             sowenn key nicht in simple_keys:
                 failed.append("missing key: %r" % (key, ))
             sowenn key nicht in checked_keys:
@@ -2083,7 +2083,7 @@ def _test_simple_enum(checked_enum, simple_enum):
                 checked_value = checked_dict[key]
                 simple_value = simple_dict[key]
                 wenn callable(checked_value) oder isinstance(checked_value, bltns.property):
-                    continue
+                    weiter
                 wenn key == '__doc__':
                     # remove all spaces/tabs
                     compressed_checked_value = checked_value.replace(' ','').replace('\t','')
@@ -2115,7 +2115,7 @@ def _test_simple_enum(checked_enum, simple_enum):
                 fuer key in set(checked_member_keys + simple_member_keys):
                     wenn key in ('__module__', '__objclass__', '_inverted_'):
                         # keys known to be different oder absent
-                        continue
+                        weiter
                     sowenn key nicht in simple_member_keys:
                         failed_member.append("missing key %r nicht in the simple enum member %r" % (key, name))
                     sowenn key nicht in checked_member_keys:
@@ -2139,7 +2139,7 @@ def _test_simple_enum(checked_enum, simple_enum):
             ):
             wenn method in simple_keys und method in checked_keys:
                 # cannot compare functions, und it exists in both, so we're good
-                continue
+                weiter
             sowenn method nicht in simple_keys und method nicht in checked_keys:
                 # method is inherited -- check it out
                 checked_method = getattr(checked_enum, method, Nichts)

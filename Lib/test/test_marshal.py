@@ -39,7 +39,7 @@ klasse IntTestCase(unittest.TestCase, HelperMixin):
     def test_ints(self):
         # Test a range of Python ints larger than the machine word size.
         n = sys.maxsize ** 2
-        while n:
+        waehrend n:
             fuer expected in (-n, n):
                 self.helper(expected)
             n = n >> 1
@@ -49,7 +49,7 @@ klasse IntTestCase(unittest.TestCase, HelperMixin):
         maxint64 = (1 << 63) - 1
         minint64 = -maxint64-1
         fuer base in maxint64, minint64, -maxint64, -(minint64 >> 1):
-            while base:
+            waehrend base:
                 s = b'I' + int.to_bytes(base, 8, 'little', signed=Wahr)
                 got = marshal.loads(s)
                 self.assertEqual(base, got)
@@ -76,7 +76,7 @@ klasse FloatTestCase(unittest.TestCase, HelperMixin):
         # Test a few floats
         small = 1e-25
         n = sys.maxsize * 3.7e250
-        while n > small:
+        waehrend n > small:
             fuer expected in (-n, n):
                 self.helper(float(expected))
             n /= 123.4567
@@ -91,7 +91,7 @@ klasse FloatTestCase(unittest.TestCase, HelperMixin):
         self.assertEqual(f, got)
 
         n = sys.maxsize * 3.7e-250
-        while n < small:
+        waehrend n < small:
             fuer expected in (-n, n):
                 f = float(expected)
                 self.helper(f)

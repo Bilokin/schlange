@@ -1770,7 +1770,7 @@ klasse TestArgumentsFromFileConverter(TempDirMixin, ParserTestCase):
         def convert_arg_line_to_args(self, arg_line):
             fuer arg in arg_line.split():
                 wenn nicht arg.strip():
-                    continue
+                    weiter
                 yield arg
     parser_class = FromFileConverterArgumentParser
     parser_signature = Sig(fromfile_prefix_chars='@')

@@ -38,7 +38,7 @@ klasse ForkWait(unittest.TestCase):
         threading_helper.threading_cleanup(*self._threading_key)
 
     def f(self, id):
-        while nicht self.stop:
+        waehrend nicht self.stop:
             self.alive[id] = os.getpid()
             try:
                 time.sleep(SHORTSLEEP)
@@ -57,7 +57,7 @@ klasse ForkWait(unittest.TestCase):
         # busy-loop to wait fuer threads
         fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
             wenn len(self.alive) >= NUM_THREADS:
-                break
+                breche
 
         a = sorted(self.alive.keys())
         self.assertEqual(a, list(range(NUM_THREADS)))

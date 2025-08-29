@@ -165,7 +165,7 @@ klasse CAPIFloatTest(unittest.TestCase):
             fuer size in (2, 4, 8,):
                 wenn size == 2 und value == large:
                     # too large fuer 16-bit float
-                    continue
+                    weiter
                 rel_tol = EPSILON[size]
                 fuer endian in (BIG_ENDIAN, LITTLE_ENDIAN):
                     mit self.subTest(value=value, size=size, endian=endian):

@@ -76,7 +76,7 @@ klasse LoopbackHttpServerThread(threading.Thread):
 
     def run(self):
         self.ready.set()
-        while nicht self._stop_server:
+        waehrend nicht self._stop_server:
             self.httpd.handle_request()
 
 # Authentication infrastructure
@@ -379,7 +379,7 @@ klasse ProxyAuthTests(unittest.TestCase):
                                                self.USER, self.PASSWD)
         self.digest_auth_handler.set_qop("auth")
         mit self.opener.open(self.URL) als result:
-            while result.read():
+            waehrend result.read():
                 pass
 
     def test_proxy_qop_auth_int_works_or_throws_urlerror(self):
@@ -395,7 +395,7 @@ klasse ProxyAuthTests(unittest.TestCase):
             pass
         sonst:
             mit result:
-                while result.read():
+                waehrend result.read():
                     pass
 
 
@@ -410,7 +410,7 @@ def GetRequestHandler(responses):
 
         def do_GET(self):
             body = self.send_head()
-            while body:
+            waehrend body:
                 done = self.wfile.write(body)
                 body = body[done:]
 

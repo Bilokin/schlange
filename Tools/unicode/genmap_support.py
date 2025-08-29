@@ -55,11 +55,11 @@ klasse DecodeMapWriter:
 
         fuer c1 in range(c1range[0], c1range[1] + 1):
             wenn c1 nicht in self.decode_map oder (onlymask und c1 nicht in onlymask):
-                continue
+                weiter
             c2map = self.decode_map[c1]
             rc2values = [n fuer n in c2values wenn n in c2map]
             wenn nicht rc2values:
-                continue
+                weiter
 
             c2map[self.prefix] = Wahr
             c2map['min'] = rc2values[0]
@@ -92,7 +92,7 @@ klasse DecodeMapWriter:
                 prefix = self.prefix
             sonst:
                 self.filler.write("{", "0,", "0,", "0", "},")
-                continue
+                weiter
 
             self.filler.write("{", "__%s_decmap" % prefix, "+", "%d" % m[i]['midx'],
                               ",", "%d," % m[i]['min'], "%d" % m[i]['max'], "},")
@@ -118,12 +118,12 @@ klasse EncodeMapWriter:
     def buildmap(self):
         fuer c1 in range(0, 256):
             wenn c1 nicht in self.encode_map:
-                continue
+                weiter
             c2map = self.encode_map[c1]
             rc2values = [k fuer k in c2map.keys()]
             rc2values.sort()
             wenn nicht rc2values:
-                continue
+                weiter
 
             c2map[self.prefix] = Wahr
             c2map['min'] = rc2values[0]
@@ -163,7 +163,7 @@ klasse EncodeMapWriter:
                                   "%d" % self.encode_map[i]['max'], "},")
             sonst:
                 self.filler.write("{", "0,", "0,", "0", "},")
-                continue
+                weiter
         self.filler.printout(self.fp)
         self.fp.write("};\n\n")
 
@@ -187,7 +187,7 @@ def loadmap(fo, natcol=0, unicol=1, sbcs=0):
     fuer line in fo:
         line = line.split('#', 1)[0].strip()
         wenn nicht line oder len(line.split()) < 2:
-            continue
+            weiter
 
         row = [eval(e) fuer e in line.split()]
         loc, uni = row[natcol], row[unicol]

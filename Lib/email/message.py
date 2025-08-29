@@ -74,10 +74,10 @@ def _parseparam(s):
     # RDM This might be a Header, so fuer now stringify it.
     s = ';' + str(s)
     plist = []
-    while s[:1] == ';':
+    waehrend s[:1] == ';':
         s = s[1:]
         end = s.find(';')
-        while end > 0 und (s.count('"', 0, end) - s.count('\\"', 0, end)) % 2:
+        waehrend end > 0 und (s.count('"', 0, end) - s.count('\\"', 0, end)) % 2:
             end = s.find(';', end + 1)
         wenn end < 0:
             end = len(s)
@@ -111,16 +111,16 @@ def _decode_uu(encoded):
             try:
                 int(mode, base=8)
             except ValueError:
-                continue
+                weiter
             sonst:
-                break
+                breche
     sonst:
         raise ValueError("`begin` line nicht found")
     fuer line in encoded_lines_iter:
         wenn nicht line:
             raise ValueError("Truncated input")
         sowenn line.strip(b' \t\r\n\f') == b'end':
-            break
+            breche
         try:
             decoded_line = binascii.a2b_uu(line)
         except binascii.Error:
@@ -591,7 +591,7 @@ klasse Message:
         fuer i, (k, v) in zip(range(len(self._headers)), self._headers):
             wenn k.lower() == _name:
                 self._headers[i] = self.policy.header_store_parse(k, _value)
-                break
+                breche
         sonst:
             raise KeyError(_name)
 
@@ -685,7 +685,7 @@ klasse Message:
 
         The elements of the returned list are 2-tuples of key/value pairs, as
         split on the '=' sign.  The left hand side of the '=' is the key,
-        while the right hand side is the value.  If there is no '=' sign in
+        waehrend the right hand side is the value.  If there is no '=' sign in
         the parameter the value is the empty string.  The value is as
         described in the get_param() method.
 
@@ -1034,7 +1034,7 @@ klasse MIMEPart(Message):
             fuer subpart in part.iter_parts():
                 wenn subpart['content-id'] == start:
                     candidate = subpart
-                    break
+                    breche
         wenn candidate is Nichts:
             subparts = part.get_payload()
             candidate = subparts[0] wenn subparts sonst Nichts
@@ -1058,7 +1058,7 @@ klasse MIMEPart(Message):
                 best_prio = prio
                 body = part
                 wenn prio == 0:
-                    break
+                    breche
         return body
 
     _body_types = {('text', 'plain'),
@@ -1117,7 +1117,7 @@ klasse MIMEPart(Message):
             wenn ((maintype, subtype) in self._body_types und
                     nicht part.is_attachment() und subtype nicht in seen):
                 seen.append(subtype)
-                continue
+                weiter
             yield part
 
     def iter_parts(self):

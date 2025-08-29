@@ -247,10 +247,10 @@ klasse Reader:
             return retval
         sowenn type == Type.DICT:
             retval = R_REF({})
-            while Wahr:
+            waehrend Wahr:
                 key = self.r_object()
                 wenn key == NULL:
-                    break
+                    breche
                 val = self.r_object()
                 retval[key] = val
             return retval

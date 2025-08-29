@@ -110,7 +110,7 @@ def memoize_left_rec(
             wenn verbose:
                 drucke(f"{fill}Recursive {method_name} at {mark} depth {depth}")
 
-            while Wahr:
+            waehrend Wahr:
                 self._reset(mark)
                 self.in_recursive_rule += 1
                 try:
@@ -126,11 +126,11 @@ def memoize_left_rec(
                 wenn nicht result:
                     wenn verbose:
                         drucke(f"{fill}Fail mit {lastresult!s:.200} to {lastmark}")
-                    break
+                    breche
                 wenn endmark <= lastmark:
                     wenn verbose:
                         drucke(f"{fill}Bailing mit {lastresult!s:.200} to {lastmark}")
-                    break
+                    breche
                 self._cache[key] = lastresult, lastmark = result, endmark
 
             self._reset(lastmark)

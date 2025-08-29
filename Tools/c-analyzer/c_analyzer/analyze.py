@@ -44,7 +44,7 @@ _analyze_decl = analyze_decl
 
 def analyze_type_decls(types, analyze_decl, handle_unresolved=Wahr):
     unresolved = set(types)
-    while unresolved:
+    waehrend unresolved:
         updated = []
         fuer decl in unresolved:
             resolved = analyze_decl(decl)
@@ -52,7 +52,7 @@ def analyze_type_decls(types, analyze_decl, handle_unresolved=Wahr):
                 # The decl should be skipped oder ignored.
                 types[decl] = IGNORED
                 updated.append(decl)
-                continue
+                weiter
             typedeps, _ = resolved
             wenn typedeps is Nichts:
                 raise NotImplementedError(decl)
@@ -61,7 +61,7 @@ def analyze_type_decls(types, analyze_decl, handle_unresolved=Wahr):
                 # is nicht resolvable.
                 types[decl] = UNKNOWN
                 updated.append(decl)
-                continue
+                weiter
             wenn Nichts in typedeps:
                 # XXX
                 # Handle direct recursive types first.
@@ -78,7 +78,7 @@ def analyze_type_decls(types, analyze_decl, handle_unresolved=Wahr):
                         i += 1
                 wenn nonrecursive:
                     # We don't have all dependencies resolved yet.
-                    continue
+                    weiter
             types[decl] = resolved
             updated.append(decl)
         wenn updated:
@@ -90,7 +90,7 @@ def analyze_type_decls(types, analyze_decl, handle_unresolved=Wahr):
             ...
             # We couldn't resolve the rest.
             # Let the caller deal mit it!
-            break
+            breche
     wenn unresolved und handle_unresolved:
         wenn handle_unresolved is Wahr:
             handle_unresolved = _handle_unresolved
@@ -173,7 +173,7 @@ def find_typedecl(decl, typespec, typespecs):
         sowenn filename.endswith('.c') und nicht type_filename.endswith('.h'):
             # If the decl is in a source file then we expect the
             # type to be in the same file oder in a header file.
-            continue
+            weiter
         candidates.append(typedecl)
     wenn nicht candidates:
         return Nichts
@@ -266,7 +266,7 @@ def _dump_unresolved(decl, types, analyze_decl):
             typespec = member.vartype.typespec
             wenn typespec == decl.shortkey:
                 drucke(f'     ~~~~: {typespec:20} - {member!r}')
-                continue
+                weiter
             status = Nichts
             wenn is_pots(typespec):
                 mtype = typespec
@@ -284,7 +284,7 @@ def _dump_unresolved(decl, types, analyze_decl):
                              wenn d.shortkey == typespec]
                     wenn nicht found:
                         drucke(f' ???: {typespec:20}')
-                        continue
+                        weiter
                     mtype, = found
             wenn status is Nichts:
                 status = 'okay' wenn types.get(mtype) sonst 'oops'

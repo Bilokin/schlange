@@ -42,8 +42,8 @@ klasse BaseLocalizedTest(unittest.TestCase):
                 try:
                     locale.setlocale(locale.LC_NUMERIC, tloc)
                 except locale.Error:
-                    continue
-                break
+                    weiter
+                breche
             sonst:
                 raise unittest.SkipTest("Test locale nicht supported "
                                         "(tried %s)" % (', '.join(tlocs)))

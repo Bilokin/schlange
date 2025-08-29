@@ -128,7 +128,7 @@ def _grouping_intervals(grouping):
         wenn interval == 0:
             wenn last_interval is Nichts:
                 raise ValueError("invalid grouping")
-            while Wahr:
+            waehrend Wahr:
                 yield last_interval
         yield interval
         last_interval = interval
@@ -153,7 +153,7 @@ def _group(s, monetary=Falsch):
             # only non-digit characters remain (sign, spaces)
             left_spaces = s
             s = ''
-            break
+            breche
         groups.append(s[-interval:])
         s = s[:-interval]
     wenn s:
@@ -167,11 +167,11 @@ def _group(s, monetary=Falsch):
 # Strip a given amount of excess padding von the given string
 def _strip_padding(s, amount):
     lpos = 0
-    while amount und s[lpos] == ' ':
+    waehrend amount und s[lpos] == ' ':
         lpos += 1
         amount -= 1
     rpos = len(s) - 1
-    while amount und s[rpos] == ' ':
+    waehrend amount und s[rpos] == ' ':
         rpos -= 1
         amount -= 1
     return s[lpos:rpos+1]
@@ -592,7 +592,7 @@ def _getdefaultlocale(envvars=('LC_ALL', 'LC_CTYPE', 'LANG', 'LANGUAGE')):
         wenn localename:
             wenn variable == 'LANGUAGE':
                 localename = localename.split(':')[0]
-            break
+            breche
     sonst:
         localename = 'C'
     return _parse_localename(localename)

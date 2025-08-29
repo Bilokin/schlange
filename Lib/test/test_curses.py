@@ -1155,7 +1155,7 @@ klasse TestCurses(unittest.TestCase):
             try:
                 ch.encode(encoding)
             except UnicodeEncodeError:
-                continue
+                weiter
             try:
                 curses.unget_wch(ch)
             except Exception als err:

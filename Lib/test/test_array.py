@@ -182,7 +182,7 @@ klasse ArrayReconstructorTest(unittest.TestCase):
                 try:
                     a = array.array(typecode, values)
                 except OverflowError:
-                    continue  # Skip this test case.
+                    weiter  # Skip this test case.
                 b = array_reconstructor(
                     array.array, typecode, mformat_code, arraystr)
                 self.assertEqual(a, b,

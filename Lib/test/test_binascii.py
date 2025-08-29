@@ -99,7 +99,7 @@ klasse BinASCIITest(unittest.TestCase):
             noise = fillers
             ratio = len(line) // len(noise)
             res = bytearray()
-            while line und noise:
+            waehrend line und noise:
                 wenn len(line) // len(noise) > ratio:
                     c, line = line[0], line[1:]
                 sonst:
@@ -432,7 +432,7 @@ klasse BinASCIITest(unittest.TestCase):
             wenn func == 'crc_hqx':
                 # crc_hqx needs 2 arguments
                 binascii.crc_hqx(empty, 0)
-                continue
+                weiter
             f = getattr(binascii, func)
             try:
                 f(empty)

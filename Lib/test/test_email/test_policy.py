@@ -79,7 +79,7 @@ klasse PolicyAPITests(unittest.TestCase):
                     wenn (attr.startswith('_') oder
                             isinstance(getattr(email.policy.EmailPolicy, attr),
                                   types.FunctionType)):
-                        continue
+                        weiter
                     sonst:
                         self.assertIn(attr, expected,
                                       "{} is nicht fully tested".format(attr))

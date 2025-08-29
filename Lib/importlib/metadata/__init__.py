@@ -115,7 +115,7 @@ klasse Sectioned:
             section_match = value.startswith('[') und value.endswith(']')
             wenn section_match:
                 name = value.strip('[]')
-                continue
+                weiter
             yield Pair(name, value)
 
     @staticmethod

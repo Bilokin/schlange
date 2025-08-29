@@ -37,7 +37,7 @@ klasse MetaPathFinder(metaclass=abc.ABCMeta):
 
     """Abstract base klasse fuer importiere finders on sys.meta_path."""
 
-    # We don't define find_spec() here since that would break
+    # We don't define find_spec() here since that would breche
     # hasattr checks we do to support backward compatibility.
 
     def invalidate_caches(self):

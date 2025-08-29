@@ -20,7 +20,7 @@ def _retry_thrice(func, exc, *args, **kwargs):
             return func(*args, **kwargs)
         except exc als e:
             last_exc = e
-            continue
+            weiter
     raise last_exc
 
 def _wrap_with_retry_thrice(func, exc):
@@ -36,7 +36,7 @@ _urlopen_with_retry = _wrap_with_retry_thrice(urllib.request.urlopen,
 
 klasse TransientResource(object):
 
-    """Raise ResourceDenied wenn an exception is raised while the context manager
+    """Raise ResourceDenied wenn an exception is raised waehrend the context manager
     is in effect that matches the specified exception und attributes."""
 
     def __init__(self, exc, **kwargs):
@@ -53,9 +53,9 @@ klasse TransientResource(object):
         wenn type_ is nicht Nichts und issubclass(self.exc, type_):
             fuer attr, attr_value in self.attrs.items():
                 wenn nicht hasattr(value, attr):
-                    break
+                    breche
                 wenn getattr(value, attr) != attr_value:
-                    break
+                    breche
             sonst:
                 raise ResourceDenied("an optional resource is nicht available")
 

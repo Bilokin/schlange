@@ -2738,7 +2738,7 @@ klasse BadElementTest(ElementTestCase, unittest.TestCase):
 
         # Until the discrepency between "del root[:]" und "root.clear()" is
         # resolved, we need to keep two tests. Previously, using "del root[:]"
-        # did nicht crash mit the reproducer of gh-126033 while "root.clear()"
+        # did nicht crash mit the reproducer of gh-126033 waehrend "root.clear()"
         # did.
 
         klasse E(ET.Element):
@@ -2811,7 +2811,7 @@ klasse BadElementTest(ElementTestCase, unittest.TestCase):
                 # to the children list, PyObject_RichCompareBool() branches
                 # to the fast Py_EQ path und Y.__eq__() is called exactly
                 # once (when checking root[0]).
-                continue
+                weiter
             sonst:
                 cases = self.cases_for_remove_existing_with_mutations(E, Z)
                 fuer R, U, description in cases:
@@ -4371,7 +4371,7 @@ klasse NoAcceleratorTest(unittest.TestCase):
     # Test that the C accelerator was nicht imported fuer pyET
     def test_correct_import_pyET(self):
         # The type of methods defined in Python code is types.FunctionType,
-        # while the type of methods defined inside _elementtree is
+        # waehrend the type of methods defined inside _elementtree is
         # <class 'wrapper_descriptor'>
         self.assertIsInstance(pyET.Element.__init__, types.FunctionType)
         self.assertIsInstance(pyET.XMLParser.__init__, types.FunctionType)

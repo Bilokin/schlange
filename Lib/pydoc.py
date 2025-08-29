@@ -163,7 +163,7 @@ def _finddoc(obj):
         try:
             doc = _getowndoc(getattr(base, name))
         except AttributeError:
-            continue
+            weiter
         wenn doc is nicht Nichts:
             return doc
     return Nichts
@@ -262,7 +262,7 @@ def isdata(object):
 
 def replace(text, *pairs):
     """Do a series of global replacements on a string."""
-    while pairs:
+    waehrend pairs:
         text = pairs[1].join(text.split(pairs[0]))
         pairs = pairs[2:]
     return text
@@ -451,7 +451,7 @@ def synopsis(filename, cache={}):
     return result
 
 klasse ErrorDuringImport(Exception):
-    """Errors that occurred while trying to importiere something to document it."""
+    """Errors that occurred waehrend trying to importiere something to document it."""
     def __init__(self, filename, exc_info):
         wenn nicht isinstance(exc_info, tuple):
             assert isinstance(exc_info, BaseException)
@@ -516,7 +516,7 @@ def safeimport(path, forceload=0, cache={}):
     except BaseException als err:
         # Did the error occur before oder after the module was found?
         wenn path in sys.modules:
-            # An error occurred while executing the imported module.
+            # An error occurred waehrend executing the imported module.
             raise ErrorDuringImport(sys.modules[path].__file__, err)
         sowenn type(err) is SyntaxError:
             # A SyntaxError occurred before we could execute the module.
@@ -774,7 +774,7 @@ klasse HTMLDoc(Doc):
                                 r'RFC[- ]?(\d+)|'
                                 r'PEP[- ]?(\d+)|'
                                 r'(self\.)?(\w+))')
-        while match := pattern.search(text, here):
+        waehrend match := pattern.search(text, here):
             start, end = match.span()
             results.append(escape(text[here:start]))
 
@@ -1036,7 +1036,7 @@ klasse HTMLDoc(Doc):
             except TypeError:
                 pass
 
-        while attrs:
+        waehrend attrs:
             wenn mro:
                 thisclass = mro.popleft()
             sonst:
@@ -1045,7 +1045,7 @@ klasse HTMLDoc(Doc):
 
             wenn object is nicht builtins.object und thisclass is builtins.object:
                 attrs = inherited
-                continue
+                weiter
             sowenn thisclass is object:
                 tag = 'defined here'
             sonst:
@@ -1214,7 +1214,7 @@ klasse HTMLDoc(Doc):
         fuer importer, name, ispkg in pkgutil.iter_modules([dir]):
             wenn any((0xD800 <= ord(ch) <= 0xDFFF) fuer ch in name):
                 # ignore a module wenn its name contains a surrogate character
-                continue
+                weiter
             modpkgs.append((name, '', ispkg, name in shadowed))
             shadowed[name] = 1
 
@@ -1508,7 +1508,7 @@ location listed above.
                  fuer name, kind, cls, value in classify_class_attrs(object)
                  wenn visiblename(name, obj=object)]
 
-        while attrs:
+        waehrend attrs:
             wenn mro:
                 thisclass = mro.popleft()
             sonst:
@@ -1517,7 +1517,7 @@ location listed above.
 
             wenn object is nicht builtins.object und thisclass is builtins.object:
                 attrs = inherited
-                continue
+                weiter
             sowenn thisclass is object:
                 tag = "defined here"
             sonst:
@@ -1708,10 +1708,10 @@ def locate(path, forceload=0):
     """Locate an object by name oder dotted path, importing als necessary."""
     parts = [part fuer part in path.split('.') wenn part]
     module, n = Nichts, 0
-    while n < len(parts):
+    waehrend n < len(parts):
         nextmodule = safeimport('.'.join(parts[:n+1]), forceload)
         wenn nextmodule: module, n = nextmodule, n + 1
-        sonst: break
+        sonst: breche
     wenn module:
         object = module
     sonst:
@@ -1871,7 +1871,7 @@ klasse Helper:
         'else': ('else', 'while for'),
         'except': 'try',
         'finally': 'try',
-        'for': ('for', 'break continue while'),
+        'for': ('for', 'break weiter while'),
         'from': 'import',
         'global': ('global', 'nonlocal NAMESPACES'),
         'if': ('if', 'TRUTHVALUE'),
@@ -1886,7 +1886,7 @@ klasse Helper:
         'raise': ('raise', 'EXCEPTIONS'),
         'return': ('return', 'FUNCTIONS'),
         'try': ('try', 'EXCEPTIONS'),
-        'while': ('while', 'break continue wenn TRUTHVALUE'),
+        'while': ('while', 'break weiter wenn TRUTHVALUE'),
         'with': ('with', 'CONTEXTMANAGERS EXCEPTIONS yield'),
         'yield': ('yield', ''),
     }
@@ -2012,8 +2012,8 @@ klasse Helper:
         'RETURNING': 'return',
         'IMPORTING': 'import',
         'CONDITIONAL': 'if',
-        'LOOPING': ('compound', 'for while break continue'),
-        'TRUTHVALUE': ('truth', 'if while und oder nicht BASICMETHODS'),
+        'LOOPING': ('compound', 'for waehrend breche continue'),
+        'TRUTHVALUE': ('truth', 'if waehrend und oder nicht BASICMETHODS'),
         'DEBUGGING': ('debugger', 'pdb'),
         'CONTEXTMANAGERS': ('context-managers', 'with'),
     }
@@ -2056,20 +2056,20 @@ has the same effect als typing a particular string at the help> prompt.
 
     def interact(self):
         self.output.write('\n')
-        while Wahr:
+        waehrend Wahr:
             try:
                 request = self.getline('help> ')
-                wenn nicht request: break
+                wenn nicht request: breche
             except (KeyboardInterrupt, EOFError):
-                break
+                breche
             request = request.strip()
 
             # Make sure significant trailing quoting marks of literals don't
-            # get deleted while cleaning input
+            # get deleted waehrend cleaning input
             wenn (len(request) > 2 und request[0] == request[-1] in ("'", '"')
                     und request[0] nicht in request[1:-1]):
                 request = request[1:-1]
-            wenn request.lower() in ('q', 'quit', 'exit'): break
+            wenn request.lower() in ('q', 'quit', 'exit'): breche
             wenn request == 'help':
                 self.intro()
             sonst:
@@ -2220,7 +2220,7 @@ If there are any, enter a module name to get more help.
             apropos(key)
         sonst:
             self.output.write('''
-Please wait a moment while I gather a list of all available modules...
+Please wait a moment waehrend I gather a list of all available modules...
 
 ''')
             modules = {}
@@ -2262,7 +2262,7 @@ klasse ModuleScanner:
 
         fuer importer, modname, ispkg in pkgutil.walk_packages(onerror=onerror):
             wenn self.quit:
-                break
+                breche
 
             wenn key is Nichts:
                 callback(Nichts, modname, '')
@@ -2271,7 +2271,7 @@ klasse ModuleScanner:
                     spec = importer.find_spec(modname)
                 except SyntaxError:
                     # raised by tests fuer bad coding cookies oder BOM
-                    continue
+                    weiter
                 loader = spec.loader
                 wenn hasattr(loader, 'get_source'):
                     try:
@@ -2279,7 +2279,7 @@ klasse ModuleScanner:
                     except Exception:
                         wenn onerror:
                             onerror(modname)
-                        continue
+                        weiter
                     desc = source_synopsis(io.StringIO(source)) oder ''
                     wenn hasattr(loader, 'get_filename'):
                         path = loader.get_filename(modname)
@@ -2291,7 +2291,7 @@ klasse ModuleScanner:
                     except ImportError:
                         wenn onerror:
                             onerror(modname)
-                        continue
+                        weiter
                     desc = module.__doc__.splitlines()[0] wenn module.__doc__ sonst ''
                     path = getattr(module,'__file__',Nichts)
                 name = modname + ' - ' + desc
@@ -2360,11 +2360,11 @@ def _start_server(urlhandler, hostname, port):
 
         This is a short timeout fuer testing purposes.
 
-        >>> while serverthread.serving:
+        >>> waehrend serverthread.serving:
         ...     time.sleep(.01)
         ...     wenn serverthread.serving und time.monotonic() - starttime > timeout:
         ...          serverthread.stop()
-        ...          break
+        ...          breche
 
         Print any errors that may have occurred.
 
@@ -2408,7 +2408,7 @@ def _start_server(urlhandler, hostname, port):
             self.quit = Falsch
 
         def serve_until_quit(self):
-            while nicht self.quit:
+            waehrend nicht self.quit:
                 rd, wr, ex = select.select([self.socket.fileno()], [], [], 1)
                 wenn rd:
                     self.handle_request()
@@ -2453,7 +2453,7 @@ def _start_server(urlhandler, hostname, port):
             """Stop the server und this thread nicely"""
             self.docserver.quit = Wahr
             self.join()
-            # explicitly break a reference cycle: DocServer.callback
+            # explicitly breche a reference cycle: DocServer.callback
             # has indirectly a reference to ServerThread.
             self.docserver = Nichts
             self.serving = Falsch
@@ -2463,7 +2463,7 @@ def _start_server(urlhandler, hostname, port):
     thread.start()
     # Wait until thread.serving is Wahr und thread.docserver is set
     # to make sure we are really up before returning.
-    while nicht thread.error und nicht (thread.serving und thread.docserver):
+    waehrend nicht thread.error und nicht (thread.serving und thread.docserver):
         time.sleep(.01)
     return thread
 
@@ -2722,11 +2722,11 @@ def browse(port=0, *, open_browser=Wahr, hostname='localhost'):
         try:
             drucke('Server ready at', serverthread.url)
             drucke(server_help_msg)
-            while serverthread.serving:
+            waehrend serverthread.serving:
                 cmd = input('server> ')
                 cmd = cmd.lower()
                 wenn cmd == 'q':
-                    break
+                    breche
                 sowenn cmd == 'b':
                     webbrowser.open(serverthread.url)
                 sonst:

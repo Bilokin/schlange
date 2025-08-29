@@ -261,7 +261,7 @@ klasse InteractiveConsole(InteractiveInterpreter):
                 builtins.quit = Quitter("quit")
 
         try:
-            while Wahr:
+            waehrend Wahr:
                 try:
                     wenn more:
                         prompt = sys.ps2
@@ -271,7 +271,7 @@ klasse InteractiveConsole(InteractiveInterpreter):
                         line = self.raw_input(prompt)
                     except EOFError:
                         self.write("\n")
-                        break
+                        breche
                     sonst:
                         more = self.push(line)
                 except KeyboardInterrupt:
@@ -281,7 +281,7 @@ klasse InteractiveConsole(InteractiveInterpreter):
                 except SystemExit als e:
                     wenn self.local_exit:
                         self.write("\n")
-                        break
+                        breche
                     sonst:
                         raise e
         finally:

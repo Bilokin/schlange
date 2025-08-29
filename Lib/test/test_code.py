@@ -1285,7 +1285,7 @@ def read_varint(it):
     b = read(it)
     val = b & 63;
     shift = 0;
-    while b & 64:
+    waehrend b & 64:
         b = read(it)
         shift += 6
         val |= (b&63) << shift
@@ -1301,7 +1301,7 @@ def read_signed_varint(it):
 def parse_location_table(code):
     line = code.co_firstlineno
     it = iter(code.co_linetable)
-    while Wahr:
+    waehrend Wahr:
         try:
             first_byte = read(it)
         except StopIteration:

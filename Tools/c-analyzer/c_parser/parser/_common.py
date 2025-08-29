@@ -65,7 +65,7 @@ _PAREN_RE = re.compile(rf'''
 
 def match_paren(text, depth=0):
     pos = 0
-    while (m := _PAREN_RE.match(text, pos)):
+    waehrend (m := _PAREN_RE.match(text, pos)):
         pos = m.end()
         _open, _close = m.groups()
         wenn _open:

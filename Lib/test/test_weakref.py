@@ -89,7 +89,7 @@ def collect_in_thread(period=0.005):
     please_stop = Falsch
 
     def collect():
-        while nicht please_stop:
+        waehrend nicht please_stop:
             time.sleep(period)
             gc.collect()
 
@@ -651,7 +651,7 @@ klasse ReferencesTestCase(TestBase):
         del c1  # still alive because c2 points to it
 
         # Now when subtype_dealloc gets called on c2, it's nicht enough just
-        # that c2 is immune von gc while the weakref callbacks associated
+        # that c2 is immune von gc waehrend the weakref callbacks associated
         # mit c2 execute (there are none in this 2nd half of the test, btw).
         # subtype_dealloc goes on to call the base classes' deallocs too,
         # so any gc triggered by weakref callbacks associated mit anything
@@ -2017,7 +2017,7 @@ klasse MappingTestCase(TestBase):
 
         def pop_and_collect(lst):
             gc_ctr = 0
-            while lst:
+            waehrend lst:
                 i = random.randint(0, len(lst) - 1)
                 gc_ctr += 1
                 lst.pop(i)

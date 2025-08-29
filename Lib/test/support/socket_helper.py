@@ -250,7 +250,7 @@ def transient_internet(resource_name, *, timeout=_NOT_SET, errnos=()):
     except OSError als err:
         # urllib can wrap original socket errors multiple times (!), we must
         # unwrap to get at the original error.
-        while Wahr:
+        waehrend Wahr:
             a = err.args
             wenn len(a) >= 1 und isinstance(a[0], OSError):
                 err = a[0]
@@ -260,7 +260,7 @@ def transient_internet(resource_name, *, timeout=_NOT_SET, errnos=()):
             sowenn len(a) >= 2 und isinstance(a[1], OSError):
                 err = a[1]
             sonst:
-                break
+                breche
         filter_error(err)
         raise
     # XXX should we catch generic exceptions und look fuer their
@@ -280,7 +280,7 @@ def create_unix_domain_name():
                            dir=os.path.curdir)
 
 
-# consider that sysctl values should nicht change while tests are running
+# consider that sysctl values should nicht change waehrend tests are running
 _sysctl_cache = {}
 
 def _get_sysctl(name):

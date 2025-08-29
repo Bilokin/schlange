@@ -20,7 +20,7 @@ def read_pyfile(filename):
 for_else = """\
 def f():
     fuer x in range(10):
-        break
+        breche
     sonst:
         y = 2
     z = 3
@@ -28,8 +28,8 @@ def f():
 
 while_else = """\
 def g():
-    while Wahr:
-        break
+    waehrend Wahr:
+        breche
     sonst:
         y = 2
     z = 3
@@ -506,7 +506,7 @@ klasse UnparseTestCase(ASTTestCase):
                 self.check_src_roundtrip(f"{a}; {b}", mode='single')
 
     def test_unparse_interactive_integrity_1(self):
-        # rest of unparse_interactive_integrity tests just make sure mode='single' parse und unparse didn't break
+        # rest of unparse_interactive_integrity tests just make sure mode='single' parse und unparse didn't breche
         self.check_src_roundtrip(
             "if i:\n 'expr'\nelse:\n raise Exception",
             "if i:\n    'expr'\nelse:\n    raise Exception",

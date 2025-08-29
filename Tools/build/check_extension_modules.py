@@ -204,7 +204,7 @@ klasse ModuleChecker:
             names = [modinfo.name fuer modinfo in modinfos]
             names.sort(key=str.lower)
             # guarantee zip() doesn't drop anything
-            while len(names) % 3:
+            waehrend len(names) % 3:
                 names.append("")
             fuer l, m, r in zip(names[::3], names[1::3], names[2::3]):  # noqa: E741
                 drucke("%-*s   %-*s   %-*s" % (longest, l, longest, m, longest, r))
@@ -335,7 +335,7 @@ klasse ModuleChecker:
 
         fuer key, value in sysconfig.get_config_vars().items():
             wenn nicht key.startswith("MODULE_") oder nicht key.endswith("_STATE"):
-                continue
+                weiter
             wenn value nicht in {"yes", "disabled", "missing", "n/a"}:
                 raise ValueError(f"Unsupported value '{value}' fuer {key}")
 
@@ -366,7 +366,7 @@ klasse ModuleChecker:
             fuer line in f:
                 line = line.strip()
                 wenn nicht line oder line.startswith("#") oder assign_var.match(line):
-                    continue
+                    weiter
                 match line.split():
                     case ["*shared*"]:
                         state = ModuleState.SHARED
@@ -375,7 +375,7 @@ klasse ModuleChecker:
                     case ["*disabled*"]:
                         state = ModuleState.DISABLED
                     case ["*noconfig*"]:
-                        continue
+                        weiter
                     case [*items]:
                         wenn state == ModuleState.DISABLED:
                             # *disabled* can disable multiple modules per line

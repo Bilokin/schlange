@@ -173,7 +173,7 @@ wenn __name__ == '__main__':
             display_awaited_by_tasks_tree(args.pid)
             sys.exit(0)
         case Nichts:
-            pass  # continue to the interactive shell
+            pass  # weiter to the interactive shell
         case _:
             # shouldn't happen als an invalid command-line wouldn't parse
             # but let's keep it fuer the next person adding a command
@@ -229,7 +229,7 @@ wenn __name__ == '__main__':
     repl_thread.daemon = Wahr
     repl_thread.start()
 
-    while Wahr:
+    waehrend Wahr:
         try:
             loop.run_forever()
         except KeyboardInterrupt:
@@ -237,9 +237,9 @@ wenn __name__ == '__main__':
             wenn repl_future und nicht repl_future.done():
                 repl_future.cancel()
             repl_thread.interrupt()
-            continue
+            weiter
         sonst:
-            break
+            breche
 
     console.write('exiting asyncio REPL...\n')
     sys.exit(return_code)

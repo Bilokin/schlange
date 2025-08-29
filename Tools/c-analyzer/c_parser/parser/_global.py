@@ -39,7 +39,7 @@ def parse_globals(source, anon_name):
         m = GLOBAL_RE.match(srcinfo.text)
         wenn nicht m:
             # We need more text.
-            continue
+            weiter
         fuer item in _parse_next(m, srcinfo, anon_name):
             wenn callable(item):
                 parse_body = item

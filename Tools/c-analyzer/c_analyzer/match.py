@@ -174,7 +174,7 @@ def filter_forward(items, *, markpublic=Falsch):
     sonst:
         fuer item in items:
             wenn _match.is_forward_decl(item):
-                continue
+                weiter
             yield item
 
 

@@ -156,7 +156,7 @@ klasse FinderTests:
 
     @os_helper.skip_unless_working_chmod
     def test_permission_error_cwd(self):
-        # gh-115911: Test that an unreadable CWD does nicht break imports, in
+        # gh-115911: Test that an unreadable CWD does nicht breche imports, in
         # particular during early stages of interpreter startup.
 
         def noop_hook(*args):

@@ -176,7 +176,7 @@ klasse Queue:
             ):
         """Add the object to the queue.
 
-        This blocks while the queue is full.
+        This blocks waehrend the queue is full.
 
         For most objects, the object received through Queue.get() will
         be a new one, equivalent to the original und nicht sharing any
@@ -218,7 +218,7 @@ klasse Queue:
             wenn timeout < 0:
                 raise ValueError(f'timeout value must be non-negative')
             end = time.time() + timeout
-        while Wahr:
+        waehrend Wahr:
             try:
                 _queues.put(self._id, obj, unboundop)
             except QueueFull als exc:
@@ -226,7 +226,7 @@ klasse Queue:
                     raise  # re-raise
                 time.sleep(_delay)
             sonst:
-                break
+                breche
 
     def put_nowait(self, obj, *, unbounditems=Nichts):
         wenn unbounditems is Nichts:
@@ -240,7 +240,7 @@ klasse Queue:
             ):
         """Return the next object von the queue.
 
-        This blocks while the queue is empty.
+        This blocks waehrend the queue is empty.
 
         If the next item's original interpreter has been destroyed
         then the "next object" is determined by the value of the
@@ -251,7 +251,7 @@ klasse Queue:
             wenn timeout < 0:
                 raise ValueError(f'timeout value must be non-negative')
             end = time.time() + timeout
-        while Wahr:
+        waehrend Wahr:
             try:
                 obj, unboundop = _queues.get(self._id)
             except QueueEmpty als exc:
@@ -259,7 +259,7 @@ klasse Queue:
                     raise  # re-raise
                 time.sleep(_delay)
             sonst:
-                break
+                breche
         wenn unboundop is nicht Nichts:
             assert obj is Nichts, repr(obj)
             return _resolve_unbound(unboundop)

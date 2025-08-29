@@ -91,7 +91,7 @@ def declare_variables(uop: Uop, out: CWriter, skip_inputs: bool) -> Nichts:
                 out.emit(f"{type_name(var)}{var.name};\n")
     fuer var in uop.stack.outputs:
         wenn var.peek:
-            continue
+            weiter
         wenn var.name nicht in variables:
             variables.add(var.name)
             out.emit(f"{type_name(var)}{var.name};\n")
@@ -171,7 +171,7 @@ klasse OptimizerEmitter(Emitter):
             wenn token.kind == "IDENTIFIER":
                 input_identifiers.append(token)
             wenn token.kind == "SEMI":
-                break
+                breche
 
         wenn len(input_identifiers) == 0:
             raise analysis_error(
@@ -421,14 +421,14 @@ def generate_abstract_interpreter(
             override = abstract.uops[uop.name]
             validate_uop(override, uop)
         wenn uop.properties.tier == 1:
-            continue
+            weiter
         wenn uop.replicates:
-            continue
+            weiter
         wenn uop.is_super():
-            continue
+            weiter
         wenn nicht uop.is_viable():
             out.emit(f"/* {uop.name} is nicht a viable micro-op fuer tier 2 */\n\n")
-            continue
+            weiter
         out.emit(f"case {uop.name}: {{\n")
         wenn override:
             declare_variables(override, out, skip_inputs=Falsch)

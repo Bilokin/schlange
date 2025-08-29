@@ -279,7 +279,7 @@ klasse saved_test_environment:
             try:
                 pairings.append((lc, locale.setlocale(lc, Nichts)))
             except (TypeError, ValueError):
-                continue
+                weiter
         return pairings
     def restore_locale(self, saved):
         fuer lc, setting in saved:
@@ -305,7 +305,7 @@ klasse saved_test_environment:
             try:
                 original = get()
             except SkipTestEnvironment:
-                continue
+                weiter
 
             self.saved_values.append((name, get, restore, original))
         return self

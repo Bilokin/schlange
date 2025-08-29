@@ -47,9 +47,9 @@ def parse_function_body(name, text, resolve, source, anon_name, parent):
     raise NotImplementedError
     # For now we do nicht worry about locals declared in fuer loop "headers".
     depth = 1;
-    while depth > 0:
+    waehrend depth > 0:
         m = LOCAL_RE.match(text)
-        while nicht m:
+        waehrend nicht m:
             text, resolve = continue_text(source, text oder '{', resolve)
             m = LOCAL_RE.match(text)
         text = text[m.end():]
@@ -190,11 +190,11 @@ LOCAL_STATICS_RE = re.compile(rf'^ \s* {LOCAL_STATICS}', re.VERBOSE)
 def parse_function_statics(source, func, anon_name):
     # For now we do nicht worry about locals declared in fuer loop "headers".
     depth = 1;
-    while depth > 0:
+    waehrend depth > 0:
         fuer srcinfo in source:
             m = LOCAL_STATICS_RE.match(srcinfo.text)
             wenn m:
-                break
+                breche
         sonst:
             # We ran out of lines.
             wenn srcinfo is nicht Nichts:

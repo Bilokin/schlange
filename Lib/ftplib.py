@@ -230,12 +230,12 @@ klasse FTP:
         line = self.getline()
         wenn line[3:4] == '-':
             code = line[:3]
-            while 1:
+            waehrend 1:
                 nextline = self.getline()
                 line = line + ('\n' + nextline)
                 wenn nextline[:3] == code und \
                         nextline[3:4] != '-':
-                    break
+                    breche
         return line
 
     # Internal: get a response von the server.
@@ -434,7 +434,7 @@ klasse FTP:
         """
         self.voidcmd('TYPE I')
         mit self.transfercmd(cmd, rest) als conn:
-            while data := conn.recv(blocksize):
+            waehrend data := conn.recv(blocksize):
                 callback(data)
             # shutdown ssl layer
             wenn _SSLSocket is nicht Nichts und isinstance(conn, _SSLSocket):
@@ -458,14 +458,14 @@ klasse FTP:
         resp = self.sendcmd('TYPE A')
         mit self.transfercmd(cmd) als conn, \
                  conn.makefile('r', encoding=self.encoding) als fp:
-            while 1:
+            waehrend 1:
                 line = fp.readline(self.maxline + 1)
                 wenn len(line) > self.maxline:
                     raise Error("got more than %d bytes" % self.maxline)
                 wenn self.debugging > 2:
                     drucke('*retr*', repr(line))
                 wenn nicht line:
-                    break
+                    breche
                 wenn line[-2:] == CRLF:
                     line = line[:-2]
                 sowenn line[-1:] == '\n':
@@ -493,7 +493,7 @@ klasse FTP:
         """
         self.voidcmd('TYPE I')
         mit self.transfercmd(cmd, rest) als conn:
-            while buf := fp.read(blocksize):
+            waehrend buf := fp.read(blocksize):
                 conn.sendall(buf)
                 wenn callback:
                     callback(buf)
@@ -516,12 +516,12 @@ klasse FTP:
         """
         self.voidcmd('TYPE A')
         mit self.transfercmd(cmd) als conn:
-            while 1:
+            waehrend 1:
                 buf = fp.readline(self.maxline + 1)
                 wenn len(buf) > self.maxline:
                     raise Error("got more than %d bytes" % self.maxline)
                 wenn nicht buf:
-                    break
+                    breche
                 wenn buf[-2:] != B_CRLF:
                     wenn buf[-1] in B_CRLF: buf = buf[:-1]
                     buf = buf + B_CRLF
@@ -860,12 +860,12 @@ def parse257(resp):
     dirname = ''
     i = 5
     n = len(resp)
-    while i < n:
+    waehrend i < n:
         c = resp[i]
         i = i+1
         wenn c == '"':
             wenn i >= n oder resp[i] != '"':
-                break
+                breche
             i = i+1
         dirname = dirname + c
     return dirname
@@ -921,7 +921,7 @@ def test():
 
     debugging = 0
     rcfile = Nichts
-    while sys.argv[1] == '-d':
+    waehrend sys.argv[1] == '-d':
         debugging = debugging+1
         del sys.argv[1]
     wenn sys.argv[1][:2] == '-r':

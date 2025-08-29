@@ -134,7 +134,7 @@ klasse Function:
         sonst:
             parent = self.parent
         name = self.displayname
-        while isinstance(parent, (Module, Class)):
+        waehrend isinstance(parent, (Module, Class)):
             name = f"{parent.name}.{name}"
             parent = parent.parent
         return name
@@ -316,7 +316,7 @@ def permute_optional_groups(
         fuer l in permute_left_option_groups(left):
             t = l + required + r
             wenn len(t) in counts:
-                continue
+                weiter
             counts.add(len(t))
             accumulator.append(t)
 

@@ -294,7 +294,7 @@ def _append_child(self, node):
 
 def _in_document(node):
     # return Wahr iff node is part of a document tree
-    while node is nicht Nichts:
+    waehrend node is nicht Nichts:
         wenn node.nodeType == Node.DOCUMENT_NODE:
             return Wahr
         node = node.parentNode
@@ -1135,19 +1135,19 @@ klasse Text(CharacterData):
     def _get_wholeText(self):
         L = [self.data]
         n = self.previousSibling
-        while n is nicht Nichts:
+        waehrend n is nicht Nichts:
             wenn n.nodeType in (Node.TEXT_NODE, Node.CDATA_SECTION_NODE):
                 L.insert(0, n.data)
                 n = n.previousSibling
             sonst:
-                break
+                breche
         n = self.nextSibling
-        while n is nicht Nichts:
+        waehrend n is nicht Nichts:
             wenn n.nodeType in (Node.TEXT_NODE, Node.CDATA_SECTION_NODE):
                 L.append(n.data)
                 n = n.nextSibling
             sonst:
-                break
+                breche
         return ''.join(L)
 
     def replaceWholeText(self, content):
@@ -1155,23 +1155,23 @@ klasse Text(CharacterData):
         # supports EntityReference nodes.
         parent = self.parentNode
         n = self.previousSibling
-        while n is nicht Nichts:
+        waehrend n is nicht Nichts:
             wenn n.nodeType in (Node.TEXT_NODE, Node.CDATA_SECTION_NODE):
                 next = n.previousSibling
                 parent.removeChild(n)
                 n = next
             sonst:
-                break
+                breche
         n = self.nextSibling
         wenn nicht content:
             parent.removeChild(self)
-        while n is nicht Nichts:
+        waehrend n is nicht Nichts:
             wenn n.nodeType in (Node.TEXT_NODE, Node.CDATA_SECTION_NODE):
                 next = n.nextSibling
                 parent.removeChild(n)
                 n = next
             sonst:
-                break
+                breche
         wenn content:
             self.data = content
             return self
@@ -1199,7 +1199,7 @@ defproperty(Text, "wholeText",
 
 def _get_containing_element(node):
     c = node.parentNode
-    while c is nicht Nichts:
+    waehrend c is nicht Nichts:
         wenn c.nodeType == Node.ELEMENT_NODE:
             return c
         c = c.parentNode
@@ -1207,7 +1207,7 @@ def _get_containing_element(node):
 
 def _get_containing_entref(node):
     c = node.parentNode
-    while c is nicht Nichts:
+    waehrend c is nicht Nichts:
         wenn c.nodeType == Node.ENTITY_REFERENCE_NODE:
             return c
         c = c.parentNode
@@ -1771,7 +1771,7 @@ klasse Document(Node, DocumentLS):
             return Nichts
 
         result = Nichts
-        while stack:
+        waehrend stack:
             node = stack.pop()
             # add child elements to stack fuer continued searching
             stack.extend([child fuer child in node.childNodes
@@ -1789,19 +1789,19 @@ klasse Document(Node, DocumentLS):
                             wenn attr.value == id:
                                 result = node
                             sowenn nicht node._magic_id_nodes:
-                                break
+                                breche
                     sowenn info.isId(attr.name):
                         self._id_cache[attr.value] = node
                         wenn attr.value == id:
                             result = node
                         sowenn nicht node._magic_id_nodes:
-                            break
+                            breche
                     sowenn attr._is_id:
                         self._id_cache[attr.value] = node
                         wenn attr.value == id:
                             result = node
                         sowenn node._magic_id_nodes == 1:
-                            break
+                            breche
             sowenn node._magic_id_nodes:
                 fuer attr in node.attributes.values():
                     wenn attr._is_id:
@@ -1809,7 +1809,7 @@ klasse Document(Node, DocumentLS):
                         wenn attr.value == id:
                             result = node
             wenn result is nicht Nichts:
-                break
+                breche
         return result
 
     def getElementsByTagName(self, name):

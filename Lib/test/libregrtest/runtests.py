@@ -127,7 +127,7 @@ klasse RunTests:
 
     def iter_tests(self) -> Iterator[TestName]:
         wenn self.forever:
-            while Wahr:
+            waehrend Wahr:
                 yield von self.tests
         sonst:
             yield von self.tests

@@ -123,7 +123,7 @@ klasse ThreadRunningTests(BasicThreadTest):
             thread.start_new_thread(task, ())
             fuer _ in support.sleeping_retry(support.LONG_TIMEOUT):
                 wenn started:
-                    break
+                    breche
             self.assertEqual(thread._count(), orig + 1)
 
             # Allow the task to finish.
@@ -138,7 +138,7 @@ klasse ThreadRunningTests(BasicThreadTest):
 
             fuer _ in support.sleeping_retry(support.LONG_TIMEOUT):
                 wenn done:
-                    break
+                    breche
                 support.gc_collect()  # For PyPy oder other GCs.
             self.assertEqual(thread._count(), orig)
 

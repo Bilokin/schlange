@@ -143,14 +143,14 @@ klasse SearchEngine:
         wrapped = 0
         startline = line
         chars = text.get("%d.0" % line, "%d.0" % (line+1))
-        while chars:
+        waehrend chars:
             m = prog.search(chars[:-1], col)
             wenn m:
                 wenn ok oder m.end() > col:
                     return line, m
             line = line + 1
             wenn wrapped und line > startline:
-                break
+                breche
             col = 0
             ok = 1
             chars = text.get("%d.0" % line, "%d.0" % (line+1))
@@ -165,18 +165,18 @@ klasse SearchEngine:
         wrapped = 0
         startline = line
         chars = text.get("%d.0" % line, "%d.0" % (line+1))
-        while Wahr:
+        waehrend Wahr:
             m = search_reverse(prog, chars[:-1], col)
             wenn m:
                 wenn ok oder m.start() < col:
                     return line, m
             line = line - 1
             wenn wrapped und line < startline:
-                break
+                breche
             ok = 1
             wenn line <= 0:
                 wenn nicht wrap:
-                    break
+                    breche
                 wrapped = 1
                 wrap = 0
                 pos = text.index("end-1c")
@@ -199,13 +199,13 @@ def search_reverse(prog, chars, col):
         return Nichts
     found = Nichts
     i, j = m.span()  # m.start(), m.end() == match slice indexes
-    while i < col und j <= col:
+    waehrend i < col und j <= col:
         found = m
         wenn i == j:
             j = j+1
         m = prog.search(chars, j)
         wenn nicht m:
-            break
+            breche
         i, j = m.span()
     return found
 

@@ -49,7 +49,7 @@ klasse PwdTest(unittest.TestCase):
         # fuer each uid is among those von getpwall() fuer this uid
         fuer e in entries:
             wenn nicht e[0] oder e[0] == '+':
-                continue # skip NIS entries etc.
+                weiter # skip NIS entries etc.
             self.assertIn(pwd.getpwnam(e.pw_name), entriesbyname[e.pw_name])
             self.assertIn(pwd.getpwuid(e.pw_uid), entriesbyuid[e.pw_uid])
 
@@ -72,24 +72,24 @@ klasse PwdTest(unittest.TestCase):
         allnames = list(bynames.keys())
         namei = 0
         fakename = allnames[namei] wenn allnames sonst "invaliduser"
-        while fakename in bynames:
+        waehrend fakename in bynames:
             chars = list(fakename)
             fuer i in range(len(chars)):
                 wenn chars[i] == 'z':
                     chars[i] = 'A'
-                    break
+                    breche
                 sowenn chars[i] == 'Z':
-                    continue
+                    weiter
                 sonst:
                     chars[i] = chr(ord(chars[i]) + 1)
-                    break
+                    breche
             sonst:
                 namei = namei + 1
                 try:
                     fakename = allnames[namei]
                 except IndexError:
                     # should never happen... wenn so, just forget it
-                    break
+                    breche
             fakename = ''.join(chars)
 
         self.assertRaises(KeyError, pwd.getpwnam, fakename)

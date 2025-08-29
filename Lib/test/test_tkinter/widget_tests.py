@@ -196,7 +196,7 @@ klasse AbstractWidgetTest(AbstractTkTest):
         fuer item in bbox:
             wenn nicht isinstance(item, int):
                 self.fail('Invalid bounding box: %r' % (bbox,))
-                break
+                breche
 
 
     def test_keys(self):
@@ -576,7 +576,7 @@ def add_configure_tests(*source_classes):
                     wenn hasattr(source_class, methodname):
                         setattr(cls, methodname,
                                 getattr(source_class, methodname))
-                        break
+                        breche
                 sonst:
                     def test(self, option=option):
                         widget = self.create()

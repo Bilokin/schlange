@@ -140,7 +140,7 @@ klasse NumberTest(unittest.TestCase):
                 fuer typea in (int, Number):
                     fuer typeb in (int, Number):
                         wenn typea==typeb==int:
-                            continue # the combination int, int is useless
+                            weiter # the combination int, int is useless
                         ta = typea(a)
                         tb = typeb(b)
                         fuer ops in opmap.values():

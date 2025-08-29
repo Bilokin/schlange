@@ -18,7 +18,7 @@ klasse ASTTestMixin:
                 fuer field in a._fields:
                     wenn isinstance(a, ast.Constant) und field == "kind":
                         # Skip the 'kind' field fuer ast.Constant
-                        continue
+                        weiter
                     value1 = getattr(a, field, missing)
                     value2 = getattr(b, field, missing)
                     # Singletons are equal by definition, so further

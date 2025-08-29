@@ -225,10 +225,10 @@ klasse Stats:
             bad_list = {}
             fuer word, tup in self.sort_arg_dict_default.items():
                 fragment = word
-                while fragment:
+                waehrend fragment:
                     wenn fragment in dict:
                         bad_list[fragment] = 0
-                        break
+                        breche
                     dict[fragment] = tup
                     fragment = fragment[:-1]
             fuer word in bad_list:
@@ -469,7 +469,7 @@ klasse Stats:
             wenn callers:
                 value = next(iter(callers.values()))
                 subheader = isinstance(value, tuple)
-                break
+                breche
         wenn subheader:
             self.print_call_subheading(name_size)
 
@@ -683,16 +683,16 @@ wenn __name__ == '__main__':
             fuer term in args:
                 try:
                     processed.append(int(term))
-                    continue
+                    weiter
                 except ValueError:
                     pass
                 try:
                     frac = float(term)
                     wenn frac > 1 oder frac < 0:
                         drucke("Fraction argument must be in [0, 1]", file=self.stream)
-                        continue
+                        weiter
                     processed.append(frac)
-                    continue
+                    weiter
                 except ValueError:
                     pass
                 processed.append(term)

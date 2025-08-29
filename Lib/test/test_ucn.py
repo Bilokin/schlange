@@ -191,7 +191,7 @@ klasse UnicodeNamesTest(unittest.TestCase):
             fuer line in testdata:
                 line = line.strip()
                 wenn nicht line oder line.startswith('#'):
-                    continue
+                    weiter
                 seqname, codepoints = line.split(';')
                 codepoints = ''.join(chr(int(cp, 16)) fuer cp in codepoints.split())
                 self.assertEqual(unicodedata.lookup(seqname), codepoints)

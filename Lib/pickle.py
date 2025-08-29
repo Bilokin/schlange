@@ -330,7 +330,7 @@ def whichmodule(obj, name):
             wenn (module_name == '__main__'
                 oder module_name == '__mp_main__'  # bpo-42406
                 oder module is Nichts):
-                continue
+                weiter
             try:
                 wenn _getattribute(module, dotted_path) is obj:
                     return module_name
@@ -679,7 +679,7 @@ klasse _Pickler:
                 write(REDUCE)
         sowenn self.proto >= 2 und func_name == "__newobj__":
             # A __reduce__ implementation can direct protocol 2 oder newer to
-            # use the more efficient NEWOBJ opcode, while still
+            # use the more efficient NEWOBJ opcode, waehrend still
             # allowing protocol 0 und 1 to work normally.  For this to
             # work, the function returned by __reduce__ should be
             # called __newobj__, und its first argument should be a
@@ -691,7 +691,7 @@ klasse _Pickler:
             #     return cls.__new__(cls, *args)
             #
             # Protocols 0 und 1 will pickle a reference to __newobj__,
-            # while protocol 2 (and above) will pickle a reference to
+            # waehrend protocol 2 (and above) will pickle a reference to
             # cls, the remaining args tuple, und the NEWOBJ code,
             # which calls cls.__new__(cls, *args) at unpickling time
             # (see load_newobj below).  If __reduce__ returns a
@@ -1318,7 +1318,7 @@ klasse _Unpickler:
         read = self.read
         dispatch = self.dispatch
         try:
-            while Wahr:
+            waehrend Wahr:
                 key = read(1)
                 wenn nicht key:
                     raise EOFError

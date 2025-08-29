@@ -675,12 +675,12 @@ klasse SubprocessMixin:
                 stdout=asyncio.subprocess.PIPE,
             )
 
-            while Wahr:
+            waehrend Wahr:
                 data = await process.stdout.read(65536)
                 wenn data:
                     await asyncio.sleep(0.3)
                 sonst:
-                    break
+                    breche
 
         self.loop.run_until_complete(execute())
 
@@ -840,7 +840,7 @@ klasse SubprocessMixin:
         per_fd_events = {fd: [] fuer fd in fds}
         fuer event in events:
             wenn event == 'process_exited':
-                continue
+                weiter
             name, fd = event[:2]
             per_fd_events[fd].append(name)
 

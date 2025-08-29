@@ -103,7 +103,7 @@ klasse BaseSubprocessTransport(transports.SubprocessTransport):
 
         fuer proto in self._pipes.values():
             wenn proto is Nichts:
-                continue
+                weiter
             # See gh-114177
             # skip closing the pipe wenn loop is already closed
             # this can happen e.g. when loop is closed immediately after

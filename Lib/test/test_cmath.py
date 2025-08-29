@@ -307,7 +307,7 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
             # Skip certain tests on OS X 10.4.
             wenn osx_version is nicht Nichts und osx_version < (10, 5):
                 wenn id in SKIP_ON_TIGER:
-                    continue
+                    weiter
 
             wenn fn == 'rect':
                 function = rect_complex
@@ -319,7 +319,7 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
                 try:
                     actual = function(arg)
                 except ValueError:
-                    continue
+                    weiter
                 sonst:
                     self.fail('ValueError nicht raised in test '
                           '{}: {}(complex({!r}, {!r}))'.format(id, fn, ar, ai))
@@ -328,7 +328,7 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
                 try:
                     actual = function(arg)
                 except OverflowError:
-                    continue
+                    weiter
                 sonst:
                     self.fail('OverflowError nicht raised in test '
                           '{}: {}(complex({!r}, {!r}))'.format(id, fn, ar, ai))

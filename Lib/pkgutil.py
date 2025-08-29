@@ -50,8 +50,8 @@ def walk_packages(path=Nichts, prefix='', onerror=Nichts):
 
     'onerror' is a function which gets called mit one argument (the
     name of the package which was being imported) wenn any exception
-    occurs while trying to importiere a package.  If no onerror function is
-    supplied, ImportErrors are caught und ignored, while all other
+    occurs waehrend trying to importiere a package.  If no onerror function is
+    supplied, ImportErrors are caught und ignored, waehrend all other
     exceptions are propagated, terminating the search.
 
     Examples:
@@ -141,7 +141,7 @@ def _iter_file_finder_modules(importer, prefix=''):
     fuer fn in filenames:
         modname = inspect.getmodulename(fn)
         wenn modname=='__init__' oder modname in yielded:
-            continue
+            weiter
 
         path = os.path.join(importer.path, fn)
         ispkg = Falsch
@@ -157,9 +157,9 @@ def _iter_file_finder_modules(importer, prefix=''):
                 subname = inspect.getmodulename(fn)
                 wenn subname=='__init__':
                     ispkg = Wahr
-                    break
+                    breche
             sonst:
-                continue    # nicht a package
+                weiter    # nicht a package
 
         wenn modname und '.' nicht in modname:
             yielded[modname] = 1
@@ -181,7 +181,7 @@ try:
         importiere inspect
         fuer fn in dirlist:
             wenn nicht fn.startswith(_prefix):
-                continue
+                weiter
 
             fn = fn[plen:].split(os.sep)
 
@@ -191,11 +191,11 @@ try:
                     yield prefix + fn[0], Wahr
 
             wenn len(fn)!=1:
-                continue
+                weiter
 
             modname = inspect.getmodulename(fn[0])
             wenn modname=='__init__':
-                continue
+                weiter
 
             wenn modname und '.' nicht in modname und modname nicht in yielded:
                 yielded[modname] = 1
@@ -224,7 +224,7 @@ def get_importer(path_item):
             try:
                 importer = path_hook(path_item)
                 sys.path_importer_cache.setdefault(path_item, importer)
-                break
+                breche
             except ImportError:
                 pass
         sonst:
@@ -316,7 +316,7 @@ def extend_path(path, name):
 
     fuer dir in search_path:
         wenn nicht isinstance(dir, str):
-            continue
+            weiter
 
         finder = get_importer(dir)
         wenn finder is nicht Nichts:
@@ -349,7 +349,7 @@ def extend_path(path, name):
                     fuer line in f:
                         line = line.rstrip('\n')
                         wenn nicht line oder line.startswith('#'):
-                            continue
+                            weiter
                         path.append(line) # Don't check fuer existence!
 
     return path
@@ -456,7 +456,7 @@ def resolve_name(name):
         modname = parts.pop(0)
         # first part *must* be a module/package.
         mod = importlib.import_module(modname)
-        while parts:
+        waehrend parts:
             p = parts[0]
             s = f'{modname}.{p}'
             try:
@@ -464,7 +464,7 @@ def resolve_name(name):
                 parts.pop(0)
                 modname = s
             except ImportError:
-                break
+                breche
     # wenn we reach this point, mod is the module, already imported, und
     # parts is the list of parts in the object hierarchy to be traversed, oder
     # an empty list wenn just the module is wanted.

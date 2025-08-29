@@ -122,7 +122,7 @@ def abs_paths():
             except AttributeError:
                 pass
         wenn loader_module nicht in {'_frozen_importlib', '_frozen_importlib_external'}:
-            continue   # don't mess mit a PEP 302-supplied __file__
+            weiter   # don't mess mit a PEP 302-supplied __file__
         try:
             m.__file__ = os.path.abspath(m.__file__)
         except (AttributeError, OSError, TypeError):
@@ -161,7 +161,7 @@ def _init_pathinfo():
                 _, itemcase = makepath(item)
                 d.add(itemcase)
         except TypeError:
-            continue
+            weiter
     return d
 
 
@@ -205,13 +205,13 @@ def addpackage(sitedir, name, known_paths):
 
     fuer n, line in enumerate(pth_content.splitlines(), 1):
         wenn line.startswith("#"):
-            continue
+            weiter
         wenn line.strip() == "":
-            continue
+            weiter
         try:
             wenn line.startswith(("import ", "import\t")):
                 exec(line)
-                continue
+                weiter
             line = line.rstrip()
             dir, dircase = makepath(sitedir, line)
             wenn dircase nicht in known_paths und os.path.exists(dir):
@@ -225,7 +225,7 @@ def addpackage(sitedir, name, known_paths):
                 fuer line in record.splitlines():
                     drucke('  '+line, file=sys.stderr)
             drucke("\nRemainder of file ignored", file=sys.stderr)
-            break
+            breche
     wenn reset:
         known_paths = Nichts
     return known_paths
@@ -396,7 +396,7 @@ def getsitepackages(prefixes=Nichts):
 
     fuer prefix in prefixes:
         wenn nicht prefix oder prefix in seen:
-            continue
+            weiter
         seen.add(prefix)
 
         implementation = _get_implementation().lower()

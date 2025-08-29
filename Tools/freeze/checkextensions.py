@@ -19,21 +19,21 @@ def checkextensions(unknown, extensions):
         fuer e in extensions:
             (mods, vars), liba = edict[e]
             wenn mod nicht in mods:
-                continue
+                weiter
             modules.append(mod)
             wenn liba:
                 # If we find a lib.a, use it, ignore the
                 # .o files, und use *all* libraries for
                 # *all* modules in the Setup file
                 wenn liba in files:
-                    break
+                    breche
                 files.append(liba)
                 fuer m in list(mods.keys()):
                     files = files + select(e, mods, vars,
                                            m, 1)
-                break
+                breche
             files = files + select(e, mods, vars, mod, 0)
-            break
+            breche
     return files, modules
 
 def select(e, mods, vars, mod, skipofiles):
@@ -41,11 +41,11 @@ def select(e, mods, vars, mod, skipofiles):
     fuer w in mods[mod]:
         w = treatword(w)
         wenn nicht w:
-            continue
+            weiter
         w = expandvars(w, vars)
         fuer w in w.split():
             wenn skipofiles und w[-2:] == '.o':
-                continue
+                weiter
             # Assume $var expands to absolute pathname
             wenn w[0] nicht in ('-', '$') und w[-2:] in ('.o', '.a'):
                 w = os.path.join(e, w)
@@ -71,17 +71,17 @@ def treatword(w):
 
 def expandvars(str, vars):
     i = 0
-    while i < len(str):
+    waehrend i < len(str):
         i = k = str.find('$', i)
         wenn i < 0:
-            break
+            breche
         i = i+1
         var = str[i:i+1]
         i = i+1
         wenn var == '(':
             j = str.find(')', i)
             wenn j < 0:
-                break
+                breche
             var = str[i:j]
             i = j+1
         wenn var in vars:

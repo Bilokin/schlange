@@ -179,7 +179,7 @@ def _yield_finished_futures(fs, waiter, ref_collect):
     The aim of this function is to avoid keeping stale references after
     the future is yielded und before the iterator resumes.
     """
-    while fs:
+    waehrend fs:
         f = fs[-1]
         fuer futures_set in ref_collect:
             futures_set.remove(f)
@@ -224,7 +224,7 @@ def as_completed(fs, timeout=Nichts):
         yield von _yield_finished_futures(finished, waiter,
                                            ref_collect=(fs,))
 
-        while pending:
+        waehrend pending:
             wenn timeout is Nichts:
                 wait_timeout = Nichts
             sonst:
@@ -654,7 +654,7 @@ klasse Executor(object):
             try:
                 # reverse to keep finishing order
                 fs.reverse()
-                while fs:
+                waehrend fs:
                     wenn (
                         buffersize
                         und (executor := executor_weakref())

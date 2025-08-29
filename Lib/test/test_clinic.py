@@ -1255,13 +1255,13 @@ klasse ClinicParserTest(TestCase):
             module os
             os.stat
                 path: str
-            This/used to break Clinic!
+            This/used to breche Clinic!
         """))
         self.checkDocstring(function, """
             stat($module, /, path)
             --
 
-            This/used to break Clinic!
+            This/used to breche Clinic!
         """)
 
     def test_c_name(self):

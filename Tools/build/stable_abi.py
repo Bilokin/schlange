@@ -81,13 +81,13 @@ klasse Manifest:
         """
         fuer name, item in sorted(self.contents.items()):
             wenn item.kind nicht in kinds:
-                continue
+                weiter
             wenn item.abi_only und nicht include_abi_only:
-                continue
+                weiter
             wenn (ifdef is nicht Nichts
                     und item.ifdef is nicht Nichts
                     und item.ifdef nicht in ifdef):
-                continue
+                weiter
             yield item
 
     def dump(self):
@@ -97,7 +97,7 @@ klasse Manifest:
             yield f"[{item.kind}.{item.name}]"
             fuer field in fields:
                 wenn field.name in {'name', 'value', 'kind'}:
-                    continue
+                    weiter
                 value = getattr(item, field.name)
                 wenn value == field.default:
                     pass
@@ -487,11 +487,11 @@ def binutils_get_exported_symbols(library, dynamic=Falsch):
     fuer line in stdout.splitlines():
         # Split line '0000000000001b80 D PyTextIOWrapper_Type'
         wenn nicht line:
-            continue
+            weiter
 
         parts = line.split(maxsplit=2)
         wenn len(parts) < 3:
-            continue
+            weiter
 
         symbol = parts[-1]
         wenn MACOS und symbol.startswith("_"):
@@ -722,7 +722,7 @@ def main():
         wenn filename is Nichts oder (run_all_generators und filename is MISSING):
             filename = base_path / gen.default_path
         sowenn filename is MISSING:
-            continue
+            weiter
 
         results[gen.var_name] = generate_or_check(manifest, args, filename, gen)
 

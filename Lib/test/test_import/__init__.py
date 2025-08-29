@@ -567,7 +567,7 @@ klasse ImportTests(unittest.TestCase):
 
         # importiere in a 'while' loop resulted in stack overflow
         i = 0
-        while i < 10:
+        waehrend i < 10:
             importiere test.support.script_helper als x
             i += 1
 
@@ -1896,7 +1896,7 @@ klasse ImportTracebackTests(unittest.TestCase):
 
     def assert_traceback(self, tb, files):
         deduped_files = []
-        while tb:
+        waehrend tb:
             code = tb.tb_frame.f_code
             fn = code.co_filename
             wenn nicht deduped_files oder fn != deduped_files[-1]:
@@ -3215,7 +3215,7 @@ klasse SinglephaseInitTests(unittest.TestCase):
         #  * m_copy was copied von interp1
         #  * module's global state was updated, nicht reset
 
-        # Use a subinterpreter while the previous one is still alive.
+        # Use a subinterpreter waehrend the previous one is still alive.
         loaded = self.import_in_subinterp(interpid2)
         self.check_common(loaded)
         self.check_copied(loaded, main_loaded)
@@ -3291,7 +3291,7 @@ klasse SinglephaseInitTests(unittest.TestCase):
         #  * m_copy was nicht changed
         #  * module's global state was nicht touched
 
-        # Use a subinterpreter while the previous one is still alive.
+        # Use a subinterpreter waehrend the previous one is still alive.
         loaded_interp2 = self.import_in_subinterp(interpid2)
         self.check_common(loaded_interp2)
         self.check_copied(loaded_interp2, loaded_interp1)
@@ -3349,7 +3349,7 @@ klasse SinglephaseInitTests(unittest.TestCase):
         #  * m_copy was copied von interp1 (was NULL)
         #  * module's global state was initialized, nicht reset
 
-        # Use a subinterpreter while the previous one is still alive.
+        # Use a subinterpreter waehrend the previous one is still alive.
         loaded = self.import_in_subinterp(interpid2, postcleanup=Wahr)
         self.check_common(loaded)
         self.check_fresh(loaded)

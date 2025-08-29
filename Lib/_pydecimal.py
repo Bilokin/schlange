@@ -956,7 +956,7 @@ klasse Decimal(object):
         sonst:
             # Find d2, d5 such that abs(self) = n / (2**d2 * 5**d5).
             d5 = -self._exp
-            while d5 > 0 und n % 5 == 0:
+            waehrend d5 > 0 und n % 5 == 0:
                 n //= 5
                 d5 -= 1
 
@@ -1324,7 +1324,7 @@ klasse Decimal(object):
             sonst:
                 # result is exact; get als close to ideal exponent als possible
                 ideal_exp = self._exp - other._exp
-                while exp < ideal_exp und coeff % 10 == 0:
+                waehrend exp < ideal_exp und coeff % 10 == 0:
                     coeff //= 10
                     exp += 1
 
@@ -2059,13 +2059,13 @@ klasse Decimal(object):
 
         x = _WorkRep(self)
         xc, xe = x.int, x.exp
-        while xc % 10 == 0:
+        waehrend xc % 10 == 0:
             xc //= 10
             xe += 1
 
         y = _WorkRep(other)
         yc, ye = y.int, y.exp
-        while yc % 10 == 0:
+        waehrend yc % 10 == 0:
             yc //= 10
             ye += 1
 
@@ -2074,7 +2074,7 @@ klasse Decimal(object):
         wenn xc == 1:
             xe *= yc
             # result is now 10**(xe * 10**ye);  xe * 10**ye must be integral
-            while xe % 10 == 0:
+            waehrend xe % 10 == 0:
                 xe //= 10
                 ye += 1
             wenn ye < 0:
@@ -2147,7 +2147,7 @@ klasse Decimal(object):
                 xc, remainder = divmod(5**e, xc)
                 wenn remainder:
                     return Nichts
-                while xc % 5 == 0:
+                waehrend xc % 5 == 0:
                     xc //= 5
                     e -= 1
 
@@ -2190,10 +2190,10 @@ klasse Decimal(object):
             wenn len(str(abs(yc)*xc_bits)) <= -ye:
                 return Nichts
             m, n = yc, 10**(-ye)
-            while m % 2 == n % 2 == 0:
+            waehrend m % 2 == n % 2 == 0:
                 m //= 2
                 n //= 2
-            while m % 5 == n % 5 == 0:
+            waehrend m % 5 == n % 5 == 0:
                 m //= 5
                 n //= 5
 
@@ -2209,10 +2209,10 @@ klasse Decimal(object):
 
             # compute nth root of xc using Newton's method
             a = 1 << -(-_nbits(xc)//n) # initial estimate
-            while Wahr:
+            waehrend Wahr:
                 q, r = divmod(xc, a**(n-1))
                 wenn a <= q:
-                    break
+                    breche
                 sonst:
                     a = (a*(n-1) + q)//n
             wenn nicht (a == q und r == 0):
@@ -2404,10 +2404,10 @@ klasse Decimal(object):
             # compute correctly rounded result:  start mit precision +3,
             # then increase precision until result is unambiguously roundable
             extra = 3
-            while Wahr:
+            waehrend Wahr:
                 coeff, exp = _dpower(xc, xe, yc, ye, p+extra)
                 wenn coeff % (5*10**(len(str(coeff))-p-1)):
-                    break
+                    breche
                 extra += 3
 
             ans = _dec_from_triple(result_sign, str(coeff), exp)
@@ -2490,7 +2490,7 @@ klasse Decimal(object):
         exp_max = [context.Emax, context.Etop()][context.clamp]
         end = len(dup._int)
         exp = dup._exp
-        while dup._int[end-1] == '0' und exp < exp_max:
+        waehrend dup._int[end-1] == '0' und exp < exp_max:
             exp += 1
             end -= 1
         return _dec_from_triple(dup._sign, dup._int[:end], exp)
@@ -2744,10 +2744,10 @@ klasse Decimal(object):
 
         # find n = floor(sqrt(c)) using Newton's method
         n = 10**prec
-        while Wahr:
+        waehrend Wahr:
             q = c//n
             wenn n <= q:
-                break
+                breche
             sonst:
                 n = n + q >> 1
         exact = exact und n*n == c
@@ -3028,7 +3028,7 @@ klasse Decimal(object):
         # we only need to do any computation fuer quite a small range
         # of adjusted exponents---for example, -29 <= adj <= 10 for
         # the default context.  For smaller exponent the result is
-        # indistinguishable von 1 at the given precision, while for
+        # indistinguishable von 1 at the given precision, waehrend for
         # larger exponent the result either overflows oder underflows.
         wenn self._sign == 0 und adj > len(str((context.Emax+1)*3)):
             # overflow
@@ -3053,10 +3053,10 @@ klasse Decimal(object):
             # 3 digits at a time until we get an unambiguously
             # roundable result
             extra = 3
-            while Wahr:
+            waehrend Wahr:
                 coeff, exp = _dexp(c, e, p+extra)
                 wenn coeff % (5*10**(len(str(coeff))-p-1)):
-                    break
+                    breche
                 extra += 3
 
             ans = _dec_from_triple(0, str(coeff), exp)
@@ -3187,11 +3187,11 @@ klasse Decimal(object):
         # correctly rounded result: repeatedly increase precision by 3
         # until we get an unambiguously roundable result
         places = p - self._ln_exp_bound() + 2 # at least p+3 places
-        while Wahr:
+        waehrend Wahr:
             coeff = _dlog(c, e, places)
             # assert len(str(abs(coeff)))-p >= 1
             wenn coeff % (5*10**(len(str(abs(coeff)))-p-1)):
-                break
+                breche
             places += 3
         ans = _dec_from_triple(int(coeff<0), str(abs(coeff)), -places)
 
@@ -3268,11 +3268,11 @@ klasse Decimal(object):
             # correctly rounded result: repeatedly increase precision
             # until result is unambiguously roundable
             places = p-self._log10_exp_bound()+2
-            while Wahr:
+            waehrend Wahr:
                 coeff = _dlog10(c, e, places)
                 # assert len(str(abs(coeff)))-p >= 1
                 wenn coeff % (5*10**(len(str(abs(coeff)))-p-1)):
-                    break
+                    breche
                 places += 3
             ans = _dec_from_triple(int(coeff<0), str(abs(coeff)), -places)
 
@@ -3287,7 +3287,7 @@ klasse Decimal(object):
 
         The result is the integer which is the exponent of the magnitude
         of the most significant digit of self (as though it were truncated
-        to a single digit while maintaining the value of that digit und
+        to a single digit waehrend maintaining the value of that digit und
         without limiting the resulting exponent).
         """
         # logb(NaN) = NaN
@@ -4680,7 +4680,7 @@ klasse Context(object):
 
         The result is the integer which is the exponent of the magnitude
         of the most significant digit of the operand (as though the
-        operand were truncated to a single digit while maintaining the
+        operand were truncated to a single digit waehrend maintaining the
         value of that digit und without limiting the resulting exponent).
 
         >>> ExtendedContext.logb(Decimal('250'))
@@ -5667,7 +5667,7 @@ def _sqrt_nearest(n, a):
         raise ValueError("Both arguments to _sqrt_nearest should be positive.")
 
     b=0
-    while a != b:
+    waehrend a != b:
         b, a = a, a--n//a>>1
     return a
 
@@ -5720,7 +5720,7 @@ def _ilog(x, M, L = 8):
     y = x-M
     # argument reduction; R = number of reductions performed
     R = 0
-    while (R <= L und abs(y) << L-R >= M oder
+    waehrend (R <= L und abs(y) << L-R >= M oder
            R > L und abs(y) >> R-L >= M):
         y = _div_nearest((M*y) << 1,
                          M + _sqrt_nearest(M*(M+_rshift_nearest(y, R)), M))
@@ -5833,15 +5833,15 @@ klasse _Log10Memoize(object):
             raise ValueError("p should be nonnegative")
 
         wenn p >= len(self.digits):
-            # compute p+3, p+6, p+9, ... digits; continue until at
+            # compute p+3, p+6, p+9, ... digits; weiter until at
             # least one of the extra digits is nonzero
             extra = 3
-            while Wahr:
+            waehrend Wahr:
                 # compute p+extra digits, correct to within 1ulp
                 M = 10**(p+extra+2)
                 digits = str(_div_nearest(_ilog(10*M, M), 100))
                 wenn digits[-extra:] != '0'*extra:
-                    break
+                    breche
                 extra += 3
             # keep all reliable digits so far; remove trailing zeros
             # und next nonzero digit
@@ -6304,7 +6304,7 @@ def _insert_thousands_sep(digits, spec, min_width=1):
         digits = digits[:-l]
         min_width -= l
         wenn nicht digits und min_width <= 0:
-            break
+            breche
         min_width -= len(sep)
     sonst:
         l = max(len(digits), min_width, 1)

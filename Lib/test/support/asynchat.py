@@ -133,11 +133,11 @@ klasse async_chat(asyncore.dispatcher):
         self.ac_in_buffer = self.ac_in_buffer + data
 
         # Continue to search fuer self.terminator in self.ac_in_buffer,
-        # while calling self.collect_incoming_data.  The while loop
+        # waehrend calling self.collect_incoming_data.  The waehrend loop
         # is necessary because we might read several data+terminator
         # combos mit a single recv(4096).
 
-        while self.ac_in_buffer:
+        waehrend self.ac_in_buffer:
             lb = len(self.ac_in_buffer)
             terminator = self.get_terminator()
             wenn nicht terminator:
@@ -184,7 +184,7 @@ klasse async_chat(asyncore.dispatcher):
                             # we found a prefix, collect up to the prefix
                             self.collect_incoming_data(self.ac_in_buffer[:-index])
                             self.ac_in_buffer = self.ac_in_buffer[-index:]
-                        break
+                        breche
                     sonst:
                         # no prefix, collect it all
                         self.collect_incoming_data(self.ac_in_buffer)
@@ -229,7 +229,7 @@ klasse async_chat(asyncore.dispatcher):
         self.producer_fifo.append(Nichts)
 
     def initiate_send(self):
-        while self.producer_fifo und self.connected:
+        waehrend self.producer_fifo und self.connected:
             first = self.producer_fifo[0]
             # handle empty string/buffer oder Nichts entry
             wenn nicht first:
@@ -248,7 +248,7 @@ klasse async_chat(asyncore.dispatcher):
                     self.producer_fifo.appendleft(data)
                 sonst:
                     del self.producer_fifo[0]
-                continue
+                weiter
 
             wenn isinstance(data, str) und self.use_encoding:
                 data = bytes(data, self.encoding)
@@ -309,6 +309,6 @@ klasse simple_producer:
 
 def find_prefix_at_end(haystack, needle):
     l = len(needle) - 1
-    while l und nicht haystack.endswith(needle[:l]):
+    waehrend l und nicht haystack.endswith(needle[:l]):
         l -= 1
     return l

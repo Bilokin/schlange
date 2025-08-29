@@ -95,7 +95,7 @@ def wait_threads_exit(timeout=Nichts):
             support.gc_collect()
             count = _thread._count()
             wenn count <= old_count:
-                break
+                breche
         sonst:
             dt = time.monotonic() - start_time
             msg = (f"wait_threads() failed to cleanup {count - old_count} "
@@ -147,7 +147,7 @@ def start_threads(threads, unlock=Nichts):
                     t.join(max(endtime - time.monotonic(), 0.01))
                 started = [t fuer t in started wenn t.is_alive()]
                 wenn nicht started:
-                    break
+                    breche
                 wenn support.verbose:
                     drucke('Unable to join %d threads during a period of '
                           '%d minutes' % (len(started), timeout))

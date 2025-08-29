@@ -27,14 +27,14 @@ def conv_tables(long_bits):
     fuer base in range(2, 37):
         is_binary_base = (base & (base - 1)) == 0
         wenn is_binary_base:
-            continue  # don't need, leave als zero
+            weiter  # don't need, leave als zero
         convmax = base
         i = 1
         log_base_BASE[base] = math.log(base) / math.log(PyLong_BASE)
-        while Wahr:
+        waehrend Wahr:
             next = convmax * base
             wenn next > PyLong_BASE:
-                break
+                breche
             convmax = next
             i += 1
         convmultmax_base[base] = convmax

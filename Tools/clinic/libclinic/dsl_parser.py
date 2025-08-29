@@ -217,7 +217,7 @@ klasse IndentStack:
         wenn indent nicht in self.indents:
             fail("Illegal outdent.")
         outdent_count = 0
-        while indent != current:
+        waehrend indent != current:
             self.indents.pop()
             current = self.indents[-1]
             outdent_count -= 1
@@ -635,7 +635,7 @@ klasse DSLParser:
 
         fuer existing_function in parent.functions:
             wenn existing_function.name == function_name:
-                break
+                breche
         sonst:
             drucke(f"{cls=}, {module=}, {existing=}", file=sys.stderr)
             drucke(f"{(cls oder module).functions=}", file=sys.stderr)
@@ -1013,7 +1013,7 @@ klasse DSLParser:
                 sowenn isinstance(expr, ast.Attribute):
                     a = []
                     n: ast.expr | ast.Attribute = expr
-                    while isinstance(n, ast.Attribute):
+                    waehrend isinstance(n, ast.Attribute):
                         a.append(n.attr)
                         n = n.value
                     wenn nicht isinstance(n, ast.Name):
@@ -1242,7 +1242,7 @@ klasse DSLParser:
             found = Falsch
             fuer p in reversed(function.parameters.values()):
                 found = p.kind is inspect.Parameter.POSITIONAL_OR_KEYWORD
-                break
+                breche
             wenn nicht found:
                 fail(f"Function {function.name!r} specifies '/ [from ...]' "
                      f"without preceding parameters.")
@@ -1360,10 +1360,10 @@ klasse DSLParser:
             def fix_right_bracket_count(desired: int) -> str:
                 nonlocal right_bracket_count
                 s = ''
-                while right_bracket_count < desired:
+                waehrend right_bracket_count < desired:
                     s += '['
                     right_bracket_count += 1
-                while right_bracket_count > desired:
+                waehrend right_bracket_count > desired:
                     s += ']'
                     right_bracket_count -= 1
                 return s
@@ -1379,10 +1379,10 @@ klasse DSLParser:
             wenn nicht f.docstring_only:
                 fuer p in reversed(parameters):
                     wenn nicht p.converter.show_in_signature:
-                        continue
+                        weiter
                     wenn p.is_positional_only():
                         need_a_trailing_slash = Wahr
-                    break
+                    breche
 
 
             added_star = Falsch
@@ -1408,14 +1408,14 @@ klasse DSLParser:
 
             fuer p in parameters:
                 wenn nicht p.converter.show_in_signature:
-                    continue
+                    weiter
                 assert p.name
 
                 is_self = isinstance(p.converter, self_converter)
                 wenn is_self und f.docstring_only:
                     # this isn't a real machine-parsable signature,
                     # so let's nicht print the "self" parameter
-                    continue
+                    weiter
 
                 wenn p.is_positional_only():
                     need_slash = nicht f.docstring_only
@@ -1589,7 +1589,7 @@ klasse DSLParser:
             sowenn self.deprecated_positional:
                 wenn p.deprecated_positional == self.deprecated_positional:
                     return
-            break
+            breche
 
         fail(f"Function {self.function.name!r} specifies {symbol!r} "
              f"without following parameters.", line_number=lineno)

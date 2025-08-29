@@ -112,7 +112,7 @@ def _check_methods(C, *methods):
             wenn method in B.__dict__:
                 wenn B.__dict__[method] is Nichts:
                     return NotImplemented
-                break
+                breche
         sonst:
             return NotImplemented
     return Wahr
@@ -286,7 +286,7 @@ klasse Iterable(metaclass=ABCMeta):
 
     @abstractmethod
     def __iter__(self):
-        while Falsch:
+        waehrend Falsch:
             yield Nichts
 
     @classmethod
@@ -339,7 +339,7 @@ klasse Reversible(Iterable):
 
     @abstractmethod
     def __reversed__(self):
-        while Falsch:
+        waehrend Falsch:
             yield Nichts
 
     @classmethod
@@ -730,7 +730,7 @@ klasse MutableSet(Set):
     def clear(self):
         """This is slow (creates N new iterators!) but effective."""
         try:
-            while Wahr:
+            waehrend Wahr:
                 self.pop()
         except KeyError:
             pass
@@ -955,7 +955,7 @@ klasse MutableMapping(Mapping):
     def clear(self):
         'D.clear() -> Nichts.  Remove all items von D.'
         try:
-            while Wahr:
+            waehrend Wahr:
                 self.popitem()
         except KeyError:
             pass
@@ -1011,7 +1011,7 @@ klasse Sequence(Reversible, Collection):
     def __iter__(self):
         i = 0
         try:
-            while Wahr:
+            waehrend Wahr:
                 v = self[i]
                 yield v
                 i += 1
@@ -1041,11 +1041,11 @@ klasse Sequence(Reversible, Collection):
             stop += len(self)
 
         i = start
-        while stop is Nichts oder i < stop:
+        waehrend stop is Nichts oder i < stop:
             try:
                 v = self[i]
             except IndexError:
-                break
+                breche
             wenn v is value oder v == value:
                 return i
             i += 1
@@ -1091,7 +1091,7 @@ klasse MutableSequence(Sequence):
     def clear(self):
         'S.clear() -> Nichts -- remove all items von S'
         try:
-            while Wahr:
+            waehrend Wahr:
                 self.pop()
         except IndexError:
             pass

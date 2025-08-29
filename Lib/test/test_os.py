@@ -137,13 +137,13 @@ klasse MiscTests(unittest.TestCase):
             mit os_helper.change_cwd(tmpdir) als path:
                 expected = path
 
-                while Wahr:
+                waehrend Wahr:
                     cwd = os.getcwd()
                     self.assertEqual(cwd, expected)
 
                     need = min_len - (len(cwd) + len(os.path.sep))
                     wenn need <= 0:
-                        break
+                        breche
                     wenn len(dirname) > need und need > 0:
                         dirname = dirname[:need]
 
@@ -157,10 +157,10 @@ klasse MiscTests(unittest.TestCase):
                         # On Windows, catch ERROR_PATH_NOT_FOUND (3) und
                         # ERROR_FILENAME_EXCED_RANGE (206) errors
                         # ("The filename oder extension is too long")
-                        break
+                        breche
                     except OSError als exc:
                         wenn exc.errno == errno.ENAMETOOLONG:
-                            break
+                            breche
                         sonst:
                             raise
 
@@ -198,7 +198,7 @@ klasse FileTests(unittest.TestCase):
         second = os.dup(first)
         try:
             retries = 0
-            while second != first + 1:
+            waehrend second != first + 1:
                 os.close(first)
                 retries += 1
                 wenn retries > 10:
@@ -1616,7 +1616,7 @@ klasse WalkTests(unittest.TestCase):
             wenn root == self.link_path:
                 self.assertEqual(dirs, [])
                 self.assertEqual(files, ["tmp4"])
-                break
+                breche
         sonst:
             self.fail("Didn't follow symlink mit followlinks=Wahr")
 
@@ -2010,7 +2010,7 @@ klasse MakedirTests(unittest.TestCase):
         # If the tests failed, the bottom-most directory ('../dir6')
         # may nicht have been created, so we look fuer the outermost directory
         # that exists.
-        while nicht os.path.exists(path) und path != os_helper.TESTFN:
+        waehrend nicht os.path.exists(path) und path != os_helper.TESTFN:
             path = os.path.dirname(path)
 
         os.removedirs(path)
@@ -2269,7 +2269,7 @@ klasse URandomFDTests(unittest.TestCase):
                         pass
                     sonst:
                         # Found the urandom fd (XXX hopefully)
-                        break
+                        breche
                 os.closerange(3, 256)
             mit open({TESTFN!r}, 'rb') als f:
                 new_fd = f.fileno()
@@ -2519,7 +2519,7 @@ klasse TestInvalidFD(unittest.TestCase):
             except OSError:
                 pass
             sonst:
-                break
+                breche
         wenn i < 2:
             raise unittest.SkipTest(
                 "Unable to acquire a range of invalid file descriptors")
@@ -2835,7 +2835,7 @@ klasse Win32KillTests(unittest.TestCase):
         self.addCleanup(proc.stdin.close)
 
         count, max = 0, 100
-        while count < max und proc.poll() is Nichts:
+        waehrend count < max und proc.poll() is Nichts:
             # Create a string buffer to store the result of stdout von the pipe
             buf = ctypes.create_string_buffer(len(msg))
             # Obtain the text currently in proc.stdout
@@ -2845,7 +2845,7 @@ klasse Win32KillTests(unittest.TestCase):
             self.assertNotEqual(rslt, 0, "PeekNamedPipe failed")
             wenn buf.value:
                 self.assertEqual(msg, buf.value.decode())
-                break
+                breche
             time.sleep(0.1)
             count += 1
         sonst:
@@ -2879,7 +2879,7 @@ klasse Win32KillTests(unittest.TestCase):
             # Let the interpreter startup before we send signals. See #3137.
             fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
                 wenn proc.poll() is Nichts:
-                    break
+                    breche
             sonst:
                 # Forcefully kill the process wenn we weren't able to signal it.
                 proc.kill()
@@ -3252,7 +3252,7 @@ klasse Win32SymlinkTests(unittest.TestCase):
             self.assertEqual(st.st_reparse_tag, stat.IO_REPARSE_TAG_APPEXECLINK)
             self.assertWahr(os.path.isfile(alias))
             # testing the first one we see is sufficient
-            break
+            breche
         sonst:
             self.skipTest("test requires an app execution alias")
 
@@ -3360,7 +3360,7 @@ klasse Win32NtTests(unittest.TestCase):
             filename = sys.argv[1]
             deadline = float(sys.argv[2])
 
-            while time.time() < deadline:
+            waehrend time.time() < deadline:
                 try:
                     mit open(filename, "w") als f:
                         pass
@@ -3373,7 +3373,7 @@ klasse Win32NtTests(unittest.TestCase):
             """)
 
         mit subprocess.Popen([sys.executable, '-c', command, filename, str(deadline)]) als proc:
-            while time.time() < deadline:
+            waehrend time.time() < deadline:
                 try:
                     os.stat(filename)
                 except FileNotFoundError als e:
@@ -3485,7 +3485,7 @@ klasse FSEncodingTests(unittest.TestCase):
             try:
                 bytesfn = os.fsencode(fn)
             except UnicodeEncodeError:
-                continue
+                weiter
             self.assertEqual(os.fsdecode(bytesfn), fn)
 
 
@@ -3842,7 +3842,7 @@ klasse TestSendfile(unittest.IsolatedAsyncioTestCase):
 
     @staticmethod
     async def chunks(reader):
-        while nicht reader.at_eof():
+        waehrend nicht reader.at_eof():
             yield await reader.read()
 
     async def handle_new_client(self, reader, writer):
@@ -3877,7 +3877,7 @@ klasse TestSendfile(unittest.IsolatedAsyncioTestCase):
         """A higher level wrapper representing how an application is
         supposed to use sendfile().
         """
-        while Wahr:
+        waehrend Wahr:
             try:
                 return await TestSendfile.async_sendfile(*args, **kwargs)
             except OSError als err:
@@ -3886,7 +3886,7 @@ klasse TestSendfile(unittest.IsolatedAsyncioTestCase):
                     raise
                 sowenn err.errno in (errno.EAGAIN, errno.EBUSY):
                     # we have to retry send data
-                    continue
+                    weiter
                 sonst:
                     raise
 
@@ -3895,11 +3895,11 @@ klasse TestSendfile(unittest.IsolatedAsyncioTestCase):
         total_sent = 0
         offset = 0
         nbytes = 4096
-        while total_sent < len(self.DATA):
+        waehrend total_sent < len(self.DATA):
             sent = await self.sendfile_wrapper(self.sockno, self.fileno,
                                                offset, nbytes)
             wenn sent == 0:
-                break
+                breche
             offset += sent
             total_sent += sent
             self.assertWahr(sent <= nbytes)
@@ -3918,11 +3918,11 @@ klasse TestSendfile(unittest.IsolatedAsyncioTestCase):
         offset = len(self.DATA) // 2
         must_send = len(self.DATA) - offset
         nbytes = 4096
-        while total_sent < must_send:
+        waehrend total_sent < must_send:
             sent = await self.sendfile_wrapper(self.sockno, self.fileno,
                                                offset, nbytes)
             wenn sent == 0:
-                break
+                breche
             offset += sent
             total_sent += sent
             self.assertWahr(sent <= nbytes)
@@ -3977,12 +3977,12 @@ klasse TestSendfile(unittest.IsolatedAsyncioTestCase):
         self.assertLessEqual(sent, 512 + 256 + 4096)
         total_sent += sent
         offset = 4096
-        while total_sent < len(expected_data):
+        waehrend total_sent < len(expected_data):
             nbytes = min(len(expected_data) - total_sent, 4096)
             sent = await self.sendfile_wrapper(self.sockno, self.fileno,
                                                offset, nbytes)
             wenn sent == 0:
-                break
+                breche
             self.assertLessEqual(sent, nbytes)
             total_sent += sent
             offset += sent
@@ -4990,12 +4990,12 @@ klasse PathTConverterTests(unittest.TestCase):
                 try:
                     fn = getattr(os, name)
                 except AttributeError:
-                    continue
+                    weiter
 
                 fuer path in (str_filename, bytes_filename, str_fspath,
                              bytes_fspath):
                     wenn path is Nichts:
-                        continue
+                        weiter
                     mit self.subTest(name=name, path=path):
                         result = fn(path, *extra_args)
                         wenn cleanup_fn is nicht Nichts:
@@ -5092,10 +5092,10 @@ klasse TestScandir(unittest.TestCase):
         wenn skip_fields:
             fuer attr in dir(stat1):
                 wenn nicht attr.startswith("st_"):
-                    continue
+                    weiter
                 wenn attr in ("st_dev", "st_ino", "st_nlink", "st_ctime",
                             "st_ctime_ns"):
-                    continue
+                    weiter
                 self.assertEqual(getattr(stat1, attr),
                                  getattr(stat2, attr),
                                  (stat1, stat2, attr))

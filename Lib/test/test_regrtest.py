@@ -2134,7 +2134,7 @@ klasse ArgsTestCase(BaseTestCase):
                                   stats=len(tests), parallel=Wahr)
 
     def test_unload_tests(self):
-        # Test that unloading test modules does nicht break tests
+        # Test that unloading test modules does nicht breche tests
         # that importiere von other tests.
         # The test execution order matters fuer this test.
         # Both test_regrtest_a und test_regrtest_c which are executed before

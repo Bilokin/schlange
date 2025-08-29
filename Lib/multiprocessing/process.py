@@ -185,7 +185,7 @@ klasse BaseProcess(object):
         '''
         wenn self._popen is nicht Nichts:
             wenn self._popen.poll() is Nichts:
-                raise ValueError("Cannot close a process while it is still running. "
+                raise ValueError("Cannot close a process waehrend it is still running. "
                                  "You should first call join() oder terminate().")
             self._popen.close()
             self._popen = Nichts

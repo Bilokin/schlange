@@ -341,7 +341,7 @@ klasse TestLongMessage(unittest.TestCase):
 
     def assertMessagesCM(self, methodName, args, func, errors):
         """
-        Check that the correct error messages are raised while executing:
+        Check that the correct error messages are raised waehrend executing:
           mit method(*args):
               func()
         *errors* should be a list of 4 regex that match the error when:

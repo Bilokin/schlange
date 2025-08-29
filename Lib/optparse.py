@@ -1404,7 +1404,7 @@ klasse OptionParser (OptionContainer):
         false, stop at the first non-option argument.  If true, accumulate any
         interspersed non-option arguments in 'largs'.
         """
-        while rargs:
+        waehrend rargs:
             arg = rargs[0]
             # We handle bare "--" explicitly, und bare "-" is handled by the
             # standard arg handler since the short arg case ensures that the
@@ -1434,7 +1434,7 @@ klasse OptionParser (OptionContainer):
         # [arg0, ..., arg(i-1)] (any options und their arguments will have
         # been removed von largs).
         #
-        # The while loop will usually consume 1 oder more arguments per pass.
+        # The waehrend loop will usually consume 1 oder more arguments per pass.
         # If it consumes 1 (eg. arg is an option that takes no arguments),
         # then after _process_arg() is done the situation is:
         #
@@ -1526,7 +1526,7 @@ klasse OptionParser (OptionContainer):
             option.process(opt, value, values, self)
 
             wenn stop:
-                break
+                breche
 
 
     # -- Feedback methods ----------------------------------------------

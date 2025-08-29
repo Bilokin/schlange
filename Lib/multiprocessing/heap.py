@@ -41,7 +41,7 @@ wenn sys.platform == 'win32':
                 name = 'pym-%d-%s' % (os.getpid(), next(self._rand))
                 buf = mmap.mmap(-1, size, tagname=name)
                 wenn _winapi.GetLastError() == 0:
-                    break
+                    breche
                 # We have reopened a preexisting mmap.
                 buf.close()
             sonst:
@@ -58,7 +58,7 @@ wenn sys.platform == 'win32':
             self.size, self.name = self._state = state
             # Reopen existing mmap
             self.buffer = mmap.mmap(-1, self.size, tagname=self.name)
-            # XXX Temporarily preventing buildbot failures while determining
+            # XXX Temporarily preventing buildbot failures waehrend determining
             # XXX the correct long-term fix. See issue 23060
             #assert _winapi.GetLastError() == _winapi.ERROR_ALREADY_EXISTS
 
@@ -257,18 +257,18 @@ klasse Heap(object):
 
     def _free_pending_blocks(self):
         # Free all the blocks in the pending list - called mit the lock held.
-        while Wahr:
+        waehrend Wahr:
             try:
                 block = self._pending_free_blocks.pop()
             except IndexError:
-                break
+                breche
             self._add_free_block(block)
             self._remove_allocated_block(block)
 
     def free(self, block):
         # free a block returned by malloc()
         # Since free() can be called asynchronously by the GC, it could happen
-        # that it's called while self._lock is held: in that case,
+        # that it's called waehrend self._lock is held: in that case,
         # self._lock.acquire() would deadlock (issue #12352). To avoid that, a
         # trylock is used instead, und wenn the lock can't be acquired
         # immediately, the block is added to a list of blocks to be freed

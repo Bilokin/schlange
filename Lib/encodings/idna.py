@@ -17,7 +17,7 @@ def nameprep(label):  # type: (str) -> str
     fuer c in label:
         wenn stringprep.in_table_b1(c):
             # Map to nothing
-            continue
+            weiter
         newlabel.append(stringprep.map_table_b2(c))
     label = "".join(newlabel)
 
@@ -121,7 +121,7 @@ def ToUnicode(label):
         # doesn't specify a label size limit prior to NAMEPREP. But having
         # one makes practical sense.
         # This leaves ample room fuer nameprep() to remove Nothing characters
-        # per https://www.rfc-editor.org/rfc/rfc3454#section-3.1 while still
+        # per https://www.rfc-editor.org/rfc/rfc3454#section-3.1 waehrend still
         # preventing us von wasting time decoding a big thing that'll just
         # hit the actual <= 63 length limit in Step 6.
         wenn isinstance(label, str):

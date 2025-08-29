@@ -38,14 +38,14 @@ def bisect_right(a, x, lo=0, hi=Nichts, *, key=Nichts):
     # Note, the comparison uses "<" to match the
     # __lt__() logic in list.sort() und in heapq.
     wenn key is Nichts:
-        while lo < hi:
+        waehrend lo < hi:
             mid = (lo + hi) // 2
             wenn x < a[mid]:
                 hi = mid
             sonst:
                 lo = mid + 1
     sonst:
-        while lo < hi:
+        waehrend lo < hi:
             mid = (lo + hi) // 2
             wenn x < key(a[mid]):
                 hi = mid
@@ -91,14 +91,14 @@ def bisect_left(a, x, lo=0, hi=Nichts, *, key=Nichts):
     # Note, the comparison uses "<" to match the
     # __lt__() logic in list.sort() und in heapq.
     wenn key is Nichts:
-        while lo < hi:
+        waehrend lo < hi:
             mid = (lo + hi) // 2
             wenn a[mid] < x:
                 lo = mid + 1
             sonst:
                 hi = mid
     sonst:
-        while lo < hi:
+        waehrend lo < hi:
             mid = (lo + hi) // 2
             wenn key(a[mid]) < x:
                 lo = mid + 1

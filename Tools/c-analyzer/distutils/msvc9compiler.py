@@ -74,11 +74,11 @@ klasse Reg:
             return Nichts
         L = []
         i = 0
-        while Wahr:
+        waehrend Wahr:
             try:
                 k = RegEnumKey(handle, i)
             except RegError:
-                break
+                breche
             L.append(k)
             i += 1
         return L
@@ -95,11 +95,11 @@ klasse Reg:
             return Nichts
         d = {}
         i = 0
-        while Wahr:
+        waehrend Wahr:
             try:
                 name, value, type = RegEnumValue(handle, i)
             except RegError:
-                break
+                breche
             name = name.lower()
             d[cls.convert_mbcs(name)] = cls.convert_mbcs(value)
             i += 1
@@ -152,7 +152,7 @@ you can try compiling mit MingW32, by passing "-c mingw32" to setup.py.""")
                 try:
                     h = RegOpenKeyEx(base, p)
                 except RegError:
-                    continue
+                    weiter
                 key = RegEnumKey(h, 0)
                 d = Reg.get_value(base, r"%s\%s" % (p, key))
                 self.macros["$(FrameworkVersion)"] = d["version"]
@@ -269,7 +269,7 @@ def query_vcvarsall(version, arch="x86"):
         fuer line in stdout.split("\n"):
             line = Reg.convert_mbcs(line)
             wenn '=' nicht in line:
-                continue
+                weiter
             line = line.strip()
             key, value = line.split('=', 1)
             key = key.lower()
@@ -356,7 +356,7 @@ klasse MSVCCompiler(CCompiler) :
         fuer arg in ld_args:
             wenn arg.startswith("/MANIFESTFILE:"):
                 temp_manifest = arg.split(":", 1)[1]
-                break
+                breche
         sonst:
             # no /MANIFESTFILE so nothing to do.
             return Nichts

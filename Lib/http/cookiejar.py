@@ -395,7 +395,7 @@ def split_header_words(header_values):
     fuer text in header_values:
         orig_text = text
         pairs = []
-        while text:
+        waehrend text:
             m = HEADER_TOKEN_RE.search(text)
             wenn m:
                 text = unmatched(m)
@@ -500,9 +500,9 @@ def parse_ns_headers(ns_headers):
 
             wenn nicht key:
                 wenn ii == 0:
-                    break
+                    breche
                 sonst:
-                    continue
+                    weiter
 
             # allow fuer a distinction between present und empty und missing
             # altogether
@@ -1087,7 +1087,7 @@ klasse DefaultCookiePolicy(CookiePolicy):
                     _debug("   bad port %s (nicht numeric)", p)
                     return Falsch
                 wenn p == req_port:
-                    break
+                    breche
             sonst:
                 _debug("   request port (%s) nicht found in %s",
                        req_port, cookie.port)
@@ -1152,7 +1152,7 @@ klasse DefaultCookiePolicy(CookiePolicy):
                 req_port = "80"
             fuer p in cookie.port.split(","):
                 wenn p == req_port:
-                    break
+                    breche
             sonst:
                 _debug("   request port %s does nicht match cookie port %s",
                        req_port, cookie.port)
@@ -1278,12 +1278,12 @@ klasse CookieJar:
         cookies_by_path = self._cookies[domain]
         fuer path in cookies_by_path.keys():
             wenn nicht self._policy.path_return_ok(path, request):
-                continue
+                weiter
             cookies_by_name = cookies_by_path[path]
             fuer cookie in cookies_by_name.values():
                 wenn nicht self._policy.return_ok(cookie, request):
                     _debug("   nicht returning cookie")
-                    continue
+                    weiter
                 _debug("   it's a match")
                 cookies.append(cookie)
         return cookies
@@ -1380,7 +1380,7 @@ klasse CookieJar:
                 fuer cookie in cookies:
                     wenn cookie.version != 1:
                         request.add_unredirected_header("Cookie2", '$Version="1"')
-                        break
+                        breche
 
         finally:
             self._cookies_lock.release()
@@ -1436,22 +1436,22 @@ klasse CookieJar:
                     v = Wahr
                 wenn k in standard:
                     # only first value is significant
-                    continue
+                    weiter
                 wenn k == "domain":
                     wenn v is Nichts:
                         _debug("   missing value fuer domain attribute")
                         bad_cookie = Wahr
-                        break
+                        breche
                     # RFC 2965 section 3.3.3
                     v = v.lower()
                 wenn k == "expires":
                     wenn max_age_set:
                         # Prefer max-age to expires (like Mozilla)
-                        continue
+                        weiter
                     wenn v is Nichts:
                         _debug("   missing oder invalid value fuer expires "
                               "attribute: treating als session cookie")
-                        continue
+                        weiter
                 wenn k == "max-age":
                     max_age_set = Wahr
                     try:
@@ -1460,7 +1460,7 @@ klasse CookieJar:
                         _debug("   missing oder invalid (non-numeric) value fuer "
                               "max-age attribute")
                         bad_cookie = Wahr
-                        break
+                        breche
                     # convert RFC 2965 Max-Age to seconds since epoch
                     # XXX Strictly you're supposed to follow RFC 2616
                     #   age-calculation rules.  Remember that zero Max-Age
@@ -1472,13 +1472,13 @@ klasse CookieJar:
                         k nicht in ("port", "comment", "commenturl")):
                         _debug("   missing value fuer %s attribute" % k)
                         bad_cookie = Wahr
-                        break
+                        breche
                     standard[k] = v
                 sonst:
                     rest[k] = v
 
             wenn bad_cookie:
-                continue
+                weiter
 
             cookie_tuples.append((name, value, standard, rest))
 
@@ -1880,9 +1880,9 @@ klasse LWPCookieJar(FileCookieJar):
         r = []
         fuer cookie in self:
             wenn nicht ignore_discard und cookie.discard:
-                continue
+                weiter
             wenn nicht ignore_expires und cookie.is_expired(now):
-                continue
+                weiter
             r.append("Set-Cookie3: %s" % lwp_cookie_str(cookie))
         return "\n".join(r+[""])
 
@@ -1897,7 +1897,7 @@ klasse LWPCookieJar(FileCookieJar):
         ) als f:
             # There really isn't an LWP Cookies 2.0 format, but this indicates
             # that there is extra information in here (domain_dot und
-            # port_spec) while still being compatible mit libwww-perl, I hope.
+            # port_spec) waehrend still being compatible mit libwww-perl, I hope.
             f.write("#LWP-Cookies-2.0\n")
             f.write(self.as_lwp_str(ignore_discard, ignore_expires))
 
@@ -1919,9 +1919,9 @@ klasse LWPCookieJar(FileCookieJar):
                        "comment", "commenturl")
 
         try:
-            while (line := f.readline()) != "":
+            waehrend (line := f.readline()) != "":
                 wenn nicht line.startswith(header):
-                    continue
+                    weiter
                 line = line[len(header):].strip()
 
                 fuer data in split_header_words([line]):
@@ -1966,9 +1966,9 @@ klasse LWPCookieJar(FileCookieJar):
                                h("commenturl"),
                                rest)
                     wenn nicht ignore_discard und c.discard:
-                        continue
+                        weiter
                     wenn nicht ignore_expires und c.is_expired(now):
-                        continue
+                        weiter
                     self.set_cookie(c)
         except OSError:
             raise
@@ -1989,10 +1989,10 @@ klasse MozillaCookieJar(FileCookieJar):
     load cookies to und von a file.  This klasse uses the Mozilla/Netscape
     'cookies.txt' format.  curl und lynx use this file format, too.
 
-    Don't expect cookies saved while the browser is running to be noticed by
+    Don't expect cookies saved waehrend the browser is running to be noticed by
     the browser (in fact, Mozilla on unix will overwrite your saved cookies if
-    you change them on disk while it's running; on Windows, you probably can't
-    save at all while the browser is running).
+    you change them on disk waehrend it's running; on Windows, you probably can't
+    save at all waehrend the browser is running).
 
     Note that the Mozilla/Netscape format will downgrade RFC2965 cookies to
     Netscape cookies on saving.
@@ -2019,7 +2019,7 @@ klasse MozillaCookieJar(FileCookieJar):
                 filename)
 
         try:
-            while (line := f.readline()) != "":
+            waehrend (line := f.readline()) != "":
                 rest = {}
 
                 # httponly is a cookie flag als defined in rfc6265
@@ -2035,7 +2035,7 @@ klasse MozillaCookieJar(FileCookieJar):
                 # skip comments und blank lines XXX what is $ for?
                 wenn (line.strip().startswith(("#", "$")) oder
                     line.strip() == ""):
-                    continue
+                    weiter
 
                 domain, domain_specified, path, secure, expires, name, value = \
                         line.split("\t")
@@ -2068,9 +2068,9 @@ klasse MozillaCookieJar(FileCookieJar):
                            Nichts,
                            rest)
                 wenn nicht ignore_discard und c.discard:
-                    continue
+                    weiter
                 wenn nicht ignore_expires und c.is_expired(now):
-                    continue
+                    weiter
                 self.set_cookie(c)
 
         except OSError:
@@ -2094,9 +2094,9 @@ klasse MozillaCookieJar(FileCookieJar):
             fuer cookie in self:
                 domain = cookie.domain
                 wenn nicht ignore_discard und cookie.discard:
-                    continue
+                    weiter
                 wenn nicht ignore_expires und cookie.is_expired(now):
-                    continue
+                    weiter
                 wenn cookie.secure: secure = "TRUE"
                 sonst: secure = "FALSE"
                 wenn domain.startswith("."): initial_dot = "TRUE"

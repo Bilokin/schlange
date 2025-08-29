@@ -736,7 +736,7 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                 self.assertEqual(complex(lit), complex(lit.replace('_', '')))
         fuer lit in INVALID_UNDERSCORE_LITERALS:
             wenn lit in ('0_7', '09_99'):  # octals are nicht recognized here
-                continue
+                weiter
             wenn nicht any(ch in lit fuer ch in 'xXoObB'):
                 self.assertRaises(ValueError, complex, lit)
 

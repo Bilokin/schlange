@@ -97,12 +97,12 @@ wenn __name__ == '__main__':
                 wenn line.startswith(HTML5_SECTION_START):
                     write_items(new_html5, file=f2)
                     skip = Wahr
-                    continue
+                    weiter
                 wenn skip:
                     # skip the old items until the }
                     wenn line.startswith('}'):
                         skip = Falsch
-                    continue
+                    weiter
                 f2.write(line)
         os.remove(fname)
         os.rename(temp_fname, fname)

@@ -256,7 +256,7 @@ klasse CAPIFileTest(unittest.TestCase):
                     # TESTFN_UNDECODABLE cannot be used to create a file
                     # on macOS/WASI.
                     filename = Nichts
-                    continue
+                    weiter
                 try:
                     data = py_fopen(filename, "rb")
                     self.assertEqual(data, source[:256])

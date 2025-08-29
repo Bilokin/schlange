@@ -1229,7 +1229,7 @@ klasse TestFork(unittest.IsolatedAsyncioTestCase):
 
             signal.signal(signal.SIGTERM, on_sigterm)
             child_started.set()
-            while Wahr:
+            waehrend Wahr:
                 time.sleep(1)
 
         async def main():

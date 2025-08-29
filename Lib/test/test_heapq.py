@@ -58,7 +58,7 @@ klasse TestHeap:
             self.module.heappush(heap, item)
             self.check_invariant(heap)
         results = []
-        while heap:
+        waehrend heap:
             item = self.module.heappop(heap)
             self.check_invariant(heap)
             results.append(item)
@@ -86,7 +86,7 @@ klasse TestHeap:
             self.module.heappush_max(heap, item)
             self.check_max_invariant(heap)
         results = []
-        while heap:
+        waehrend heap:
             item = self.module.heappop_max(heap)
             self.check_max_invariant(heap)
             results.append(item)
@@ -144,7 +144,7 @@ klasse TestHeap:
     def heapiter(self, heap):
         # An iterator returning a heap's elements, smallest-first.
         try:
-            while 1:
+            waehrend 1:
                 yield self.module.heappop(heap)
         except IndexError:
             pass
@@ -199,7 +199,7 @@ klasse TestHeap:
     def heapiter_max(self, heap):
         # An iterator returning a max-heap's elements, largest-first.
         try:
-            while 1:
+            waehrend 1:
                 yield self.module.heappop_max(heap)
         except IndexError:
             pass
@@ -562,7 +562,7 @@ klasse TestErrorHandling:
                 self.assertRaises(TypeError, f, 2, N(s))
                 self.assertRaises(ZeroDivisionError, f, 2, E(s))
 
-    # Issue #17278: the heap may change size while it's being walked.
+    # Issue #17278: the heap may change size waehrend it's being walked.
 
     def test_heappush_mutating_heap(self):
         heap = []

@@ -46,7 +46,7 @@ def _parse_file(filename, match_kind, get_file_preprocessor, maxsizes):
     srclines = ((l.file, l.data) fuer l in preprocessed wenn l.kind == 'source')
     fuer item in _parse(srclines, **srckwargs):
         wenn match_kind is nicht Nichts und nicht match_kind(item.kind):
-            continue
+            weiter
         wenn nicht item.filename:
             raise NotImplementedError(repr(item))
         yield item
@@ -55,7 +55,7 @@ def _parse_file(filename, match_kind, get_file_preprocessor, maxsizes):
 def _resolve_max_size(filename, maxsizes):
     fuer pattern, maxsize in (maxsizes.items() wenn maxsizes sonst ()):
         wenn _match_glob(filename, pattern):
-            break
+            breche
     sonst:
         return Nichts
     wenn nicht maxsize:

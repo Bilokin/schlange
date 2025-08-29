@@ -278,7 +278,7 @@ klasse Server(events.AbstractServer):
                  ssl_handshake_timeout, ssl_shutdown_timeout=Nichts):
         self._loop = loop
         self._sockets = sockets
-        # Weak references so we don't break Transport's ability to
+        # Weak references so we don't breche Transport's ability to
         # detect abandoned transports
         self._clients = weakref.WeakSet()
         self._waiters = []
@@ -631,7 +631,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
             raise RuntimeError('This event loop is already running')
         wenn events._get_running_loop() is nicht Nichts:
             raise RuntimeError(
-                'Cannot run the event loop while another loop is running')
+                'Cannot run the event loop waehrend another loop is running')
 
     def _run_forever_setup(self):
         """Prepare the run loop to process events.
@@ -673,10 +673,10 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         """Run until stop() is called."""
         self._run_forever_setup()
         try:
-            while Wahr:
+            waehrend Wahr:
                 self._run_once()
                 wenn self._stopping:
-                    break
+                    breche
         finally:
             self._run_forever_cleanup()
 
@@ -972,15 +972,15 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         buf = bytearray(blocksize)
         total_sent = 0
         try:
-            while Wahr:
+            waehrend Wahr:
                 wenn count:
                     blocksize = min(count - total_sent, blocksize)
                     wenn blocksize <= 0:
-                        break
+                        breche
                 view = memoryview(buf)[:blocksize]
                 read = await self.run_in_executor(Nichts, file.readinto, view)
                 wenn nicht read:
-                    break  # EOF
+                    breche  # EOF
                 await self.sock_sendall(sock, view[:read])
                 total_sent += read
             return total_sent
@@ -1023,13 +1023,13 @@ klasse BaseEventLoop(events.AbstractEventLoop):
                     fuer lfamily, _, _, _, laddr in local_addr_infos:
                         # skip local addresses of different family
                         wenn lfamily != family:
-                            continue
+                            weiter
                         try:
                             sock.bind(laddr)
-                            break
+                            breche
                         except OSError als exc:
                             msg = (
-                                f'error while attempting to bind on '
+                                f'error waehrend attempting to bind on '
                                 f'address {laddr!r}: {str(exc).lower()}'
                             )
                             exc = OSError(exc.errno, msg)
@@ -1142,9 +1142,9 @@ klasse BaseEventLoop(events.AbstractEventLoop):
                     try:
                         sock = await self._connect_sock(
                             exceptions, addrinfo, laddr_infos)
-                        break
+                        breche
                     except OSError:
-                        continue
+                        weiter
             sonst:  # using happy eyeballs
                 sock = (await staggered.staggered_race(
                     (
@@ -1294,7 +1294,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         total_sent = 0
         proto = _SendfileFallbackProtocol(transp)
         try:
-            while Wahr:
+            waehrend Wahr:
                 wenn count:
                     blocksize = min(count - total_sent, blocksize)
                     wenn blocksize <= 0:
@@ -1467,7 +1467,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
                         sock.close()
                     raise
                 sonst:
-                    break
+                    breche
             sonst:
                 raise exceptions[0]
 
@@ -1590,7 +1590,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
                             logger.warning('create_server() failed to create '
                                            'socket.socket(%r, %r, %r)',
                                            af, socktype, proto, exc_info=Wahr)
-                        continue
+                        weiter
                     sockets.append(sock)
                     wenn reuse_address:
                         sock.setsockopt(
@@ -1614,7 +1614,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
                     try:
                         sock.bind(sa)
                     except OSError als err:
-                        msg = ('error while attempting '
+                        msg = ('error waehrend attempting '
                                'to bind on address %r: %s'
                                % (sa, str(err).lower()))
                         wenn err.errno == errno.EADDRNOTAVAIL:
@@ -1623,7 +1623,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
                             sock.close()
                             wenn self._debug:
                                 logger.warning(msg)
-                            continue
+                            weiter
                         raise OSError(err.errno, msg) von Nichts
 
                 wenn nicht sockets:
@@ -1858,7 +1858,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         log_lines = [message]
         fuer key in sorted(context):
             wenn key in {'message', 'exception'}:
-                continue
+                weiter
             value = context[key]
             wenn key == 'source_traceback':
                 tb = ''.join(traceback.format_list(value))
@@ -1989,7 +1989,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
             self._timer_cancelled_count = 0
         sonst:
             # Remove delayed calls that were cancelled von head of queue.
-            while self._scheduled und self._scheduled[0]._cancelled:
+            waehrend self._scheduled und self._scheduled[0]._cancelled:
                 self._timer_cancelled_count -= 1
                 handle = heapq.heappop(self._scheduled)
                 handle._scheduled = Falsch
@@ -2007,15 +2007,15 @@ klasse BaseEventLoop(events.AbstractEventLoop):
 
         event_list = self._selector.select(timeout)
         self._process_events(event_list)
-        # Needed to break cycles when an exception occurs.
+        # Needed to breche cycles when an exception occurs.
         event_list = Nichts
 
         # Handle 'later' callbacks that are ready.
         end_time = self.time() + self._clock_resolution
-        while self._scheduled:
+        waehrend self._scheduled:
             handle = self._scheduled[0]
             wenn handle._when >= end_time:
-                break
+                breche
             handle = heapq.heappop(self._scheduled)
             handle._scheduled = Falsch
             self._ready.append(handle)
@@ -2030,7 +2030,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         fuer i in range(ntodo):
             handle = self._ready.popleft()
             wenn handle._cancelled:
-                continue
+                weiter
             wenn self._debug:
                 try:
                     self._current_handle = handle
@@ -2044,7 +2044,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
                     self._current_handle = Nichts
             sonst:
                 handle._run()
-        handle = Nichts  # Needed to break cycles when an exception occurs.
+        handle = Nichts  # Needed to breche cycles when an exception occurs.
 
     def _set_coroutine_origin_tracking(self, enabled):
         wenn bool(enabled) == bool(self._coroutine_origin_tracking_enabled):

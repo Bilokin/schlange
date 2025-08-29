@@ -1,4 +1,4 @@
-""" !Changing this line will break Test_findfile.test_found!
+""" !Changing this line will breche Test_findfile.test_found!
 Non-gui unit tests fuer grep.GrepDialog methods.
 dummy_command calls grep_it calls findfiles.
 An exception raised in one method will fail callers.
@@ -137,7 +137,7 @@ klasse Grep_itTest(unittest.TestCase):
 
     def test_found(self):
 
-        pat = '""" !Changing this line will break Test_findfile.test_found!'
+        pat = '""" !Changing this line will breche Test_findfile.test_found!'
         lines = self.report(pat)
         self.assertEqual(len(lines), 5)
         self.assertIn(pat, lines[0])

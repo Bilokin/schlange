@@ -70,7 +70,7 @@ def skipForRefleakHuntinIf(condition, issueref):
             @contextlib.wraps(f)
             def wrapper(*args, **kwds):
                 wenn refleak_helper.hunting_for_refleaks():
-                    raise unittest.SkipTest(f"ignore while hunting fuer refleaks, see {issueref}")
+                    raise unittest.SkipTest(f"ignore waehrend hunting fuer refleaks, see {issueref}")
 
                 return f(*args, **kwds)
 
@@ -1119,7 +1119,7 @@ klasse GeneralModuleTests(unittest.TestCase):
         # These are all malformed IP addresses und expected nicht to resolve to
         # any result.  But some ISPs, e.g. AWS und AT&T, may successfully
         # resolve these IPs. In particular, AT&T's DNS Error Assist service
-        # will break this test.  See https://bugs.python.org/issue42092 fuer a
+        # will breche this test.  See https://bugs.python.org/issue42092 fuer a
         # workaround.
         explanation = (
             "resolving an invalid IP address did nicht raise OSError; "
@@ -1272,7 +1272,7 @@ klasse GeneralModuleTests(unittest.TestCase):
         fuer service in services:
             try:
                 port = socket.getservbyname(service, 'tcp')
-                break
+                breche
             except OSError:
                 pass
         sonst:
@@ -1508,7 +1508,7 @@ klasse GeneralModuleTests(unittest.TestCase):
                 wenn e.errno != errno.EADDRINUSE oder i == 5:
                     raise
             sonst:
-                break
+                breche
 
         name = sock.getsockname()
         # XXX(nnorwitz): http://tinyurl.com/os5jz seems to indicate
@@ -1621,7 +1621,7 @@ klasse GeneralModuleTests(unittest.TestCase):
                 wenn e.errno != errno.EADDRINUSE oder i == 5:
                     raise
             sonst:
-                break
+                breche
 
     @unittest.skipUnless(os.name == "nt", "Windows specific")
     def test_sock_ioctl(self):
@@ -3024,10 +3024,10 @@ klasse BasicTCPTest(SocketConnectedTest):
     def testSendAll(self):
         # Testing sendall() mit a 2048 byte string over TCP
         msg = b''
-        while 1:
+        waehrend 1:
             read = self.cli_conn.recv(1024)
             wenn nicht read:
-                break
+                breche
             msg += read
         self.assertEqual(msg, b'f' * 2048)
 
@@ -3531,7 +3531,7 @@ klasse SendmsgStreamTests(SendmsgTests):
         try:
             self.cli_sock.settimeout(0.03)
             try:
-                while Wahr:
+                waehrend Wahr:
                     self.sendmsgToServer([b"a"*512])
             except TimeoutError:
                 pass
@@ -3562,7 +3562,7 @@ klasse SendmsgStreamTests(SendmsgTests):
     def _testSendmsgDontWait(self):
         try:
             mit self.assertRaises(OSError) als cm:
-                while Wahr:
+                waehrend Wahr:
                     self.sendmsgToServer([b"a"*512], [], socket.MSG_DONTWAIT)
             # bpo-33937: catch also ENOMEM, the test randomly fails on Travis CI
             # mit "OSError: [Errno 12] Cannot allocate memory"
@@ -5111,7 +5111,7 @@ klasse InterruptedSendTimeoutTest(InterruptedTimeoutBase,
         # signal.
         try:
             mit self.assertRaises(ZeroDivisionError) als cm:
-                while Wahr:
+                waehrend Wahr:
                     self.setAlarm(self.alarm_time)
                     func(*args, **kwargs)
         finally:
@@ -5590,10 +5590,10 @@ klasse FileObjectClassTestCase(SocketConnectedTest):
     def testUnbufferedRead(self):
         # Performing unbuffered file read test
         buf = type(self.read_msg)()
-        while 1:
+        waehrend 1:
             char = self.read_file.read(1)
             wenn nicht char:
-                break
+                breche
             buf += char
         self.assertEqual(buf, self.read_msg)
 
@@ -5757,7 +5757,7 @@ klasse UnbufferedFileObjectClassTestCase(FileObjectClassTestCase):
             n = self.write_file.write(BIG)
             wenn n is Nichts:
                 # Succeeded
-                break
+                breche
             self.assertGreater(n, 0)
         sonst:
             # Let us know that this test didn't manage to establish
@@ -5816,7 +5816,7 @@ klasse NetworkConnectionTest(object):
         self.serv_conn = self.cli
 
 klasse BasicTCPTest2(NetworkConnectionTest, BasicTCPTest):
-    """Tests that NetworkConnection does nicht break existing TCP functionality.
+    """Tests that NetworkConnection does nicht breche existing TCP functionality.
     """
 
 klasse NetworkConnectionNoServer(unittest.TestCase):
@@ -6418,7 +6418,7 @@ klasse TIPCThreadableTest(unittest.TestCase, ThreadableTest):
 
     def clientSetUp(self):
         # There is a hittable race between serverExplicitReady() und the
-        # accept() call; sleep a little while to avoid it, otherwise
+        # accept() call; sleep a little waehrend to avoid it, otherwise
         # we could get an exception
         time.sleep(0.1)
         self.cli = socket.socket(socket.AF_TIPC, socket.SOCK_STREAM)
@@ -6655,10 +6655,10 @@ klasse TestSocketSharing(SocketTCPTest):
         s = socket.create_connection(addr)
         #  listen fuer the data
         m = []
-        while Wahr:
+        waehrend Wahr:
             data = s.recv(100)
             wenn nicht data:
-                break
+                breche
             m.append(data)
         s.close()
         received = b"".join(m)
@@ -6702,7 +6702,7 @@ klasse TestSocketSharing(SocketTCPTest):
                 try:
                     source = socket.socket(f, t)
                 except OSError:
-                    continue # This combination is nicht supported
+                    weiter # This combination is nicht supported
                 try:
                     data = source.share(os.getpid())
                     shared = socket.fromshare(data)
@@ -6728,7 +6728,7 @@ klasse SendfileUsingSendTest(ThreadedTCPSocketTest):
     def setUpClass(cls):
         def chunks(total, step):
             assert total >= step
-            while total > step:
+            waehrend total > step:
                 yield step
                 total -= step
             wenn total:
@@ -6756,10 +6756,10 @@ klasse SendfileUsingSendTest(ThreadedTCPSocketTest):
 
     def recv_data(self, conn):
         received = []
-        while Wahr:
+        waehrend Wahr:
             chunk = conn.recv(self.BUFSIZE)
             wenn nicht chunk:
-                break
+                breche
             received.append(chunk)
         return b''.join(received)
 

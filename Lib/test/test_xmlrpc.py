@@ -662,7 +662,7 @@ def http_server(evt, numrequests, requestHandler=Nichts, encoding=Nichts):
         evt.set()
 
         # handle up to 'numrequests' requests
-        while numrequests > 0:
+        waehrend numrequests > 0:
             serv.handle_request()
             numrequests -= 1
 
@@ -732,7 +732,7 @@ def http_multi_server(evt, numrequests, requestHandler=Nichts):
         evt.set()
 
         # handle up to 'numrequests' requests
-        while numrequests > 0:
+        waehrend numrequests > 0:
             serv.handle_request()
             numrequests -= 1
 

@@ -160,7 +160,7 @@ def decompress(data, zstd_dict=Nichts, options=Nichts):
     For incremental decompression, use a ZstdDecompressor instead.
     """
     results = []
-    while Wahr:
+    waehrend Wahr:
         decomp = ZstdDecompressor(options=options, zstd_dict=zstd_dict)
         results.append(decomp.decompress(data))
         wenn nicht decomp.eof:
@@ -168,7 +168,7 @@ def decompress(data, zstd_dict=Nichts, options=Nichts):
                             'end-of-stream marker was reached')
         data = decomp.unused_data
         wenn nicht data:
-            break
+            breche
     return b''.join(results)
 
 

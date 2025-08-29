@@ -286,7 +286,7 @@ klasse ListTest(list_tests.CommonTest):
 
     def test_count_index_remove_crashes(self):
         # bpo-38610: The count(), index(), und remove() methods were not
-        # holding strong references to list elements while calling
+        # holding strong references to list elements waehrend calling
         # PyObject_RichCompareBool().
         klasse X:
             def __eq__(self, other):
@@ -310,7 +310,7 @@ klasse ListTest(list_tests.CommonTest):
             lst.remove(lst)
 
         # bpo-39453: list.__contains__ was nicht holding strong references
-        # to list elements while calling PyObject_RichCompareBool().
+        # to list elements waehrend calling PyObject_RichCompareBool().
         lst = [X(), X()]
         3 in lst
         lst = [X(), X()]

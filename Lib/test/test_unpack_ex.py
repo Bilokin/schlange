@@ -311,7 +311,7 @@ error
     ...             raise IndexError
     ...
 
-Trigger code while nicht expecting an IndexError (unpack sequence too long, wrong
+Trigger code waehrend nicht expecting an IndexError (unpack sequence too long, wrong
 error)
 
     >>> a, *b, c, d, e = BadSeq()

@@ -225,7 +225,7 @@ def _wrap_strftime(object, format, timetuple):
     newformat = []
     push = newformat.append
     i, n = 0, len(format)
-    while i < n:
+    waehrend i < n:
         ch = format[i]
         i += 1
         wenn ch == '%':
@@ -337,9 +337,9 @@ def _find_isoformat_datetime_separator(dtstr):
         wenn dtstr[4] == week_indicator:
             # YYYYWww (7) oder YYYYWwwd (8)
             idx = 7
-            while idx < len_dtstr:
+            waehrend idx < len_dtstr:
                 wenn nicht _is_ascii_digit(dtstr[idx]):
-                    break
+                    breche
                 idx += 1
 
             wenn idx < 9:
@@ -413,7 +413,7 @@ def _parse_hh_mm_ss_ff(tstr):
             has_sep = next_char == ':'
 
         wenn nicht next_char oder comp >= 2:
-            break
+            breche
 
         wenn has_sep und next_char != ':':
             raise ValueError("Invalid time separator: %c" % next_char)

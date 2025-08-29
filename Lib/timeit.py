@@ -217,7 +217,7 @@ klasse Timer:
         each trial mit two arguments: ``callback(number, time_taken)``.
         """
         i = 1
-        while Wahr:
+        waehrend Wahr:
             fuer j in 1, 2, 5:
                 number = i * j
                 time_taken = self.timeit(number)
@@ -348,7 +348,7 @@ def main(args=Nichts, *, _wrap_timer=Nichts):
             scales.sort(reverse=Wahr)
             fuer scale, unit in scales:
                 wenn dt >= scale:
-                    break
+                    breche
 
         return "%.*g %s" % (precision, dt / scale, unit)
 

@@ -990,12 +990,12 @@ deque(['a', 'b', 'd', 'e', 'f'])
 
 >>> def roundrobin(*iterables):
 ...     pending = deque(iter(i) fuer i in iterables)
-...     while pending:
+...     waehrend pending:
 ...         task = pending.popleft()
 ...         try:
 ...             yield next(task)
 ...         except StopIteration:
-...             continue
+...             weiter
 ...         pending.append(task)
 ...
 
@@ -1014,7 +1014,7 @@ h
 
 >>> def maketree(iterable):
 ...     d = deque(iterable)
-...     while len(d) > 1:
+...     waehrend len(d) > 1:
 ...         pair = [d.popleft(), d.popleft()]
 ...         d.append(pair)
 ...     return list(d)

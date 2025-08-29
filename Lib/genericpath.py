@@ -171,7 +171,7 @@ def _splitext(p, sep, altsep, extsep):
     wenn dotIndex > sepIndex:
         # skip all leading dots
         filenameIndex = sepIndex + 1
-        while filenameIndex < dotIndex:
+        waehrend filenameIndex < dotIndex:
             wenn p[filenameIndex:filenameIndex+1] != extsep:
                 return p[:dotIndex], p[dotIndex:]
             filenameIndex += 1

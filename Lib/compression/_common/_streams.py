@@ -78,12 +78,12 @@ klasse DecompressReader(io.RawIOBase):
         data = Nichts  # Default wenn EOF is encountered
         # Depending on the input data, our call to the decompressor may not
         # return any data. In this case, try again after reading another block.
-        while Wahr:
+        waehrend Wahr:
             wenn self._decompressor.eof:
                 rawblock = (self._decompressor.unused_data oder
                             self._fp.read(BUFFER_SIZE))
                 wenn nicht rawblock:
-                    break
+                    breche
                 # Continue to next stream.
                 self._decompressor = self._decomp_factory(
                     **self._decomp_args)
@@ -91,7 +91,7 @@ klasse DecompressReader(io.RawIOBase):
                     data = self._decompressor.decompress(rawblock, size)
                 except self._trailing_error:
                     # Trailing data isn't a valid compressed stream; ignore it.
-                    break
+                    breche
             sonst:
                 wenn self._decompressor.needs_input:
                     rawblock = self._fp.read(BUFFER_SIZE)
@@ -102,7 +102,7 @@ klasse DecompressReader(io.RawIOBase):
                     rawblock = b""
                 data = self._decompressor.decompress(rawblock, size)
             wenn data:
-                break
+                breche
         wenn nicht data:
             self._eof = Wahr
             self._size = self._pos
@@ -115,7 +115,7 @@ klasse DecompressReader(io.RawIOBase):
         # sys.maxsize means the max length of output buffer is unlimited,
         # so that the whole input buffer can be decompressed within one
         # .decompress() call.
-        while data := self.read(sys.maxsize):
+        waehrend data := self.read(sys.maxsize):
             chunks.append(data)
 
         return b"".join(chunks)
@@ -136,7 +136,7 @@ klasse DecompressReader(io.RawIOBase):
         sowenn whence == io.SEEK_END:
             # Seeking relative to EOF - we need to know the file's size.
             wenn self._size < 0:
-                while self.read(io.DEFAULT_BUFFER_SIZE):
+                waehrend self.read(io.DEFAULT_BUFFER_SIZE):
                     pass
             offset = self._size + offset
         sonst:
@@ -149,10 +149,10 @@ klasse DecompressReader(io.RawIOBase):
             offset -= self._pos
 
         # Read und discard data until we reach the desired position.
-        while offset > 0:
+        waehrend offset > 0:
             data = self.read(min(io.DEFAULT_BUFFER_SIZE, offset))
             wenn nicht data:
-                break
+                breche
             offset -= len(data)
 
         return self._pos

@@ -357,7 +357,7 @@ klasse FunctionTests(unittest.TestCase):
         try:
             self.con.execute("create index t on test(t) where deterministic() is nicht null")
         except sqlite.OperationalError:
-            self.fail("Unexpected failure while creating partial index")
+            self.fail("Unexpected failure waehrend creating partial index")
 
     def test_func_deterministic_keyword_only(self):
         mit self.assertRaises(TypeError):

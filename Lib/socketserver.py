@@ -80,7 +80,7 @@ conflicting changes to the server state.
 
 On the other hand, wenn you are building e.g. an HTTP server, where all
 data is stored externally (e.g. in the file system), a synchronous
-klasse will essentially render the service "deaf" while one request is
+klasse will essentially render the service "deaf" waehrend one request is
 being handled -- which may be fuer a very long time wenn a client is slow
 to read all the data it has requested.  Here a threading oder forking
 server is appropriate.
@@ -231,11 +231,11 @@ klasse BaseServer:
             mit _ServerSelector() als selector:
                 selector.register(self, selectors.EVENT_READ)
 
-                while nicht self.__shutdown_request:
+                waehrend nicht self.__shutdown_request:
                     ready = selector.select(poll_interval)
                     # bpo-35017: shutdown() called during select(), exit immediately.
                     wenn self.__shutdown_request:
-                        break
+                        breche
                     wenn ready:
                         self._handle_request_noblock()
 
@@ -293,7 +293,7 @@ klasse BaseServer:
         mit _ServerSelector() als selector:
             selector.register(self, selectors.EVENT_READ)
 
-            while Wahr:
+            waehrend Wahr:
                 wenn selector.select(timeout):
                     return self._handle_request_noblock()
                 sonst:
@@ -574,7 +574,7 @@ wenn hasattr(os, "fork"):
             # of size(<children>): the downside is that this might reap children
             # which we didn't spawn, which is why we only resort to this when we're
             # above max_children.
-            while len(self.active_children) >= self.max_children:
+            waehrend len(self.active_children) >= self.max_children:
                 try:
                     pid, _ = os.waitpid(-1, 0)
                     self.active_children.discard(pid)
@@ -582,7 +582,7 @@ wenn hasattr(os, "fork"):
                     # we don't have any children, we're done
                     self.active_children.clear()
                 except OSError:
-                    break
+                    breche
 
             # Now reap all defunct children.
             fuer pid in self.active_children.copy():

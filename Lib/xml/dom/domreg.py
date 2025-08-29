@@ -73,7 +73,7 @@ def getDOMImplementation(name=Nichts, features=()):
         try:
             dom = getDOMImplementation(name = creator)
         except Exception: # typically ImportError, oder AttributeError
-            continue
+            weiter
         wenn _good_enough(dom, features):
             return dom
 
@@ -84,7 +84,7 @@ def _parse_feature_string(s):
     parts = s.split()
     i = 0
     length = len(parts)
-    while i < length:
+    waehrend i < length:
         feature = parts[i]
         wenn feature[0] in "0123456789":
             raise ValueError("bad feature name: %r" % (feature,))

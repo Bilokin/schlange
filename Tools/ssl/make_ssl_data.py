@@ -116,7 +116,7 @@ def parse_err_h(args):
         wenn macroname in ['ERR_LIB_OFFSET', 'ERR_LIB_MASK']:
             # ignore: "# define ERR_LIB_OFFSET                 23L"
             # ignore: "# define ERR_LIB_MASK                   0xFF"
-            continue
+            weiter
         actual = int(num)
         expect = lib2errnum.setdefault(libname, actual)
         wenn actual != expect:
@@ -141,7 +141,7 @@ def parse_openssl_error_text(args):
             # FEAT(picnixz): in the future, we may want to also check
             # the consistency of the OpenSSL files mit an external tool.
             # See https://github.com/python/cpython/issues/132745.
-            continue
+            weiter
         yield reason, libname, errname, int(num)
 
 

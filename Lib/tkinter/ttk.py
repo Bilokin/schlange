@@ -216,7 +216,7 @@ def _script_from_settings(settings):
 
             # find where args end, und where kwargs start
             argc = 1 # etype was the first one
-            while argc < len(eopts) und nicht hasattr(eopts[argc], 'items'):
+            waehrend argc < len(eopts) und nicht hasattr(eopts[argc], 'items'):
                 argc += 1
 
             elemargs = eopts[1:argc]
@@ -255,16 +255,16 @@ def _list_from_layouttuple(tk, ltuple):
     res = []
 
     indx = 0
-    while indx < len(ltuple):
+    waehrend indx < len(ltuple):
         name = ltuple[indx]
         opts = {}
         res.append((name, opts))
         indx += 1
 
-        while indx < len(ltuple): # grab name's options
+        waehrend indx < len(ltuple): # grab name's options
             opt, val = ltuple[indx:indx + 2]
             wenn nicht opt.startswith('-'): # found next name
-                break
+                breche
 
             opt = opt[1:] # remove the '-' von the option
             indx += 2

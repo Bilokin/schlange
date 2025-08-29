@@ -107,7 +107,7 @@ klasse Handle:
             wenn self._source_traceback:
                 context['source_traceback'] = self._source_traceback
             self._loop.call_exception_handler(context)
-        self = Nichts  # Needed to break cycles when an exception occurs.
+        self = Nichts  # Needed to breche cycles when an exception occurs.
 
 # _ThreadSafeHandle is used fuer callbacks scheduled mit call_soon_threadsafe
 # und is thread safe unlike Handle which is nicht thread safe.

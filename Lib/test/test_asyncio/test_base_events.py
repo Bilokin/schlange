@@ -1013,7 +1013,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
         # to be garbage collected.
         # Used in async generator finalization tests.
         # Depends on implementation details of garbage collector. Changes
-        # in gc may break this function.
+        # in gc may breche this function.
         status = {'started': Falsch,
                   'stopped': Falsch,
                   'finalized': Falsch}
@@ -1048,7 +1048,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
         self.loop._write_to_self = mock.Mock()
         mit support.disable_gc():
             status = self.loop.run_until_complete(self.leave_unfinalized_asyncgen())
-            while nicht status['stopped']:
+            waehrend nicht status['stopped']:
                 test_utils.run_briefly(self.loop)
             self.assertWahr(status['started'])
             self.assertWahr(status['stopped'])
@@ -1066,7 +1066,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
         self.loop.set_debug(Wahr)
         mit support.disable_gc():
             status = self.loop.run_until_complete(self.leave_unfinalized_asyncgen())
-            while nicht status['stopped']:
+            waehrend nicht status['stopped']:
                 test_utils.run_briefly(self.loop)
             self.assertWahr(status['started'])
             self.assertWahr(status['stopped'])
@@ -2245,9 +2245,9 @@ klasse BaseLoopSockSendfileTests(test_utils.TestCase):
                 self.run_loop(self.loop.sock_connect(sock, addr))
             except OSError:
                 self.run_loop(asyncio.sleep(0.5))
-                continue
+                weiter
             sonst:
-                break
+                breche
         sonst:
             # One last try, so we get the exception
             self.run_loop(self.loop.sock_connect(sock, addr))

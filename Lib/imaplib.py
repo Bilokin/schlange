@@ -265,7 +265,7 @@ klasse IMAP4:
 
         fuer version in AllowedVersions:
             wenn nicht version in self.capabilities:
-                continue
+                weiter
             self.PROTOCOL_VERSION = version
             return
 
@@ -338,7 +338,7 @@ klasse IMAP4:
 
     def read(self, size):
         """Read 'size' bytes von remote."""
-        # We need buffered read() to continue working after socket timeouts,
+        # We need buffered read() to weiter working after socket timeouts,
         # since we use them during IDLE. Unfortunately, the standard library's
         # SocketIO implementation makes this impossible, by setting a permanent
         # error condition instead of letting the caller decide how to handle a
@@ -353,7 +353,7 @@ klasse IMAP4:
 
         parts = []
 
-        while size > 0:
+        waehrend size > 0:
 
             wenn len(parts) < len(self._readbuf):
                 buf = self._readbuf[len(parts)]
@@ -361,15 +361,15 @@ klasse IMAP4:
                 try:
                     buf = self.sock.recv(DEFAULT_BUFFER_SIZE)
                 except ConnectionError:
-                    break
+                    breche
                 wenn nicht buf:
-                    break
+                    breche
                 self._readbuf.append(buf)
 
             wenn len(buf) >= size:
                 parts.append(buf[:size])
                 self._readbuf = [buf[size:]] + self._readbuf[len(parts):]
-                break
+                breche
             parts.append(buf)
             size -= len(buf)
 
@@ -384,7 +384,7 @@ klasse IMAP4:
         parts = []
         length = 0
 
-        while length < _MAXLINE:
+        waehrend length < _MAXLINE:
 
             wenn len(parts) < len(self._readbuf):
                 buf = self._readbuf[len(parts)]
@@ -392,9 +392,9 @@ klasse IMAP4:
                 try:
                     buf = self.sock.recv(DEFAULT_BUFFER_SIZE)
                 except ConnectionError:
-                    break
+                    breche
                 wenn nicht buf:
-                    break
+                    breche
                 self._readbuf.append(buf)
 
             pos = buf.find(LF)
@@ -402,7 +402,7 @@ klasse IMAP4:
                 pos += 1
                 parts.append(buf[:pos])
                 self._readbuf = [buf[pos:]] + self._readbuf[len(parts):]
-                break
+                breche
             parts.append(buf)
             length += len(buf)
 
@@ -1055,7 +1055,7 @@ klasse IMAP4:
         # During idle, queue untagged responses fuer delivery via iteration
         wenn self._idle_capture:
             # Responses containing literal strings are passed to us one data
-            # fragment at a time, while others arrive in a single call.
+            # fragment at a time, waehrend others arrive in a single call.
             wenn (nicht self._idle_responses oder
                 isinstance(self._idle_responses[-1][1][-1], bytes)):
                 # We are nicht continuing a fragmented response; start a new one
@@ -1107,7 +1107,7 @@ klasse IMAP4:
         name = bytes(name, self._encoding)
         data = tag + b' ' + name
         fuer arg in args:
-            wenn arg is Nichts: continue
+            wenn arg is Nichts: weiter
             wenn isinstance(arg, str):
                 arg = bytes(arg, self._encoding)
             data = data + b' ' + arg
@@ -1135,10 +1135,10 @@ klasse IMAP4:
         wenn literal is Nichts:
             return tag
 
-        while 1:
+        waehrend 1:
             # Wait fuer continuation response
 
-            while self._get_response():
+            waehrend self._get_response():
                 wenn self.tagged_commands[tag]:   # BAD/NO?
                     return tag
 
@@ -1158,7 +1158,7 @@ klasse IMAP4:
                 raise self.abort('socket error: %s' % val)
 
             wenn nicht literator:
-                break
+                breche
 
         return tag
 
@@ -1198,7 +1198,7 @@ klasse IMAP4:
         # otherwise first response line received.
         #
         # If start_timeout is given, temporarily uses it als a socket
-        # timeout while waiting fuer the start of a response, raising
+        # timeout waehrend waiting fuer the start of a response, raising
         # _responsetimeout wenn one doesn't arrive. (Used by Idler.)
 
         wenn start_timeout is nicht Falsch und self.sock:
@@ -1251,7 +1251,7 @@ klasse IMAP4:
 
             # Is there a literal to come?
 
-            while self._match(self.Literal, dat):
+            waehrend self._match(self.Literal, dat):
 
                 # Read literal direct von connection.
 
@@ -1287,7 +1287,7 @@ klasse IMAP4:
 
     def _get_tagged_response(self, tag, expect_bye=Falsch):
 
-        while 1:
+        waehrend 1:
             result = self.tagged_commands[tag]
             wenn result is nicht Nichts:
                 del self.tagged_commands[tag]
@@ -1408,7 +1408,7 @@ klasse IMAP4:
         def print_log(self):
             self._mesg('last %d IMAP4 interactions:' % len(self._cmd_log))
             i, n = self._cmd_log_idx, self._cmd_log_len
-            while n:
+            waehrend n:
                 try:
                     self._mesg(*self._cmd_log[i])
                 except:
@@ -1460,7 +1460,7 @@ klasse Idler:
             # send an IDLE continuation request, indicated by _get_response()
             # returning Nichts.  We therefore process responses in a loop until
             # this occurs.
-            while resp := imap._get_response():
+            waehrend resp := imap._get_response():
                 wenn imap.tagged_commands[self._tag]:
                     typ, data = imap.tagged_commands.pop(self._tag)
                     wenn typ == 'NO':
@@ -1493,7 +1493,7 @@ klasse Idler:
         # since we can no longer deliver them via iteration.
         imap._idle_capture = Falsch
 
-        # If we captured untagged responses while the IDLE command
+        # If we captured untagged responses waehrend the IDLE command
         # continuation request was still pending, but the user did not
         # iterate over them before exiting IDLE, we must put them
         # someplace where the user can retrieve them.  The only
@@ -1503,7 +1503,7 @@ klasse Idler:
         wenn leftovers := len(imap._idle_responses):
             wenn __debug__ und imap.debug >= 4:
                 imap._mesg(f'idle quit mit {leftovers} leftover responses')
-            while imap._idle_responses:
+            waehrend imap._idle_responses:
                 typ, data = imap._idle_responses.pop(0)
                 # Append one fragment at a time, just als _get_response() does
                 fuer datum in data:
@@ -1608,7 +1608,7 @@ klasse Idler:
         except StopIteration:
             return
 
-        while response := self._pop(interval, Nichts):
+        waehrend response := self._pop(interval, Nichts):
             yield response
 
 
@@ -1738,7 +1738,7 @@ klasse _Authenticator:
         oup = b''
         wenn isinstance(inp, str):
             inp = inp.encode('utf-8')
-        while inp:
+        waehrend inp:
             wenn len(inp) > 48:
                 t = inp[:48]
                 inp = inp[48:]
@@ -1799,7 +1799,7 @@ def Int2AP(num):
 
     val = b''; AP = b'ABCDEFGHIJKLMNOP'
     num = int(abs(num))
-    while num:
+    waehrend num:
         num, mod = divmod(num, 16)
         val = AP[mod:mod+1] + val
     return val
@@ -1944,10 +1944,10 @@ wenn __name__ == '__main__':
             dat = run(cmd, args)
 
             wenn (cmd,args) != ('uid', ('SEARCH', 'ALL')):
-                continue
+                weiter
 
             uid = dat[-1].split()
-            wenn nicht uid: continue
+            wenn nicht uid: weiter
             run('uid', ('FETCH', '%s' % uid[-1],
                     '(FLAGS INTERNALDATE RFC822.SIZE RFC822.HEADER RFC822.TEXT)'))
 

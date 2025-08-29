@@ -46,7 +46,7 @@ klasse CAPITest(unittest.TestCase):
             values.add(ns + 1)
         fuer ns in list(values):
             wenn (-ns) > PyTime_MAX:
-                continue
+                weiter
             values.add(-ns)
         fuer ns in sorted(values):
             mit self.subTest(ns=ns):

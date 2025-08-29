@@ -94,7 +94,7 @@ def dispatch(c, id, methodname, args=(), kwds={}):
     try:
         raise convert_to_error(kind, result)
     finally:
-        del result  # break reference cycle
+        del result  # breche reference cycle
 
 def convert_to_error(kind, result):
     wenn kind == '#ERROR':
@@ -176,7 +176,7 @@ klasse Server(object):
             accepter.daemon = Wahr
             accepter.start()
             try:
-                while nicht self.stop_event.is_set():
+                waehrend nicht self.stop_event.is_set():
                     self.stop_event.wait(1)
             except (KeyboardInterrupt, SystemExit):
                 pass
@@ -188,11 +188,11 @@ klasse Server(object):
             sys.exit(0)
 
     def accepter(self):
-        while Wahr:
+        waehrend Wahr:
             try:
                 c = self.listener.accept()
             except OSError:
-                continue
+                weiter
             t = threading.Thread(target=self.handle_request, args=(c,))
             t.daemon = Wahr
             t.start()
@@ -250,7 +250,7 @@ klasse Server(object):
         send = conn.send
         id_to_obj = self.id_to_obj
 
-        while nicht self.stop_event.is_set():
+        waehrend nicht self.stop_event.is_set():
 
             try:
                 methodname = obj = Nichts
@@ -847,7 +847,7 @@ klasse BaseProxy(object):
         try:
             raise convert_to_error(kind, result)
         finally:
-            del result   # break reference cycle
+            del result   # breche reference cycle
 
     def _getvalue(self):
         '''
@@ -1090,11 +1090,11 @@ klasse ConditionProxy(AcquirerProxy):
         sonst:
             endtime = Nichts
             waittime = Nichts
-        while nicht result:
+        waehrend nicht result:
             wenn endtime is nicht Nichts:
                 waittime = endtime - time.monotonic()
                 wenn waittime <= 0:
-                    break
+                    breche
             self.wait(waittime)
             result = predicate()
         return result

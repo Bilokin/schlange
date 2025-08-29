@@ -142,7 +142,7 @@ klasse SampleProfiler:
         realtime_update_interval = 1.0  # Update every second
         last_realtime_update = start_time
 
-        while running_time < duration_sec:
+        waehrend running_time < duration_sec:
             current_time = time.perf_counter()
             wenn next_time < current_time:
                 try:
@@ -150,12 +150,12 @@ klasse SampleProfiler:
                     collector.collect(stack_frames)
                 except ProcessLookupError:
                     duration_sec = current_time - start_time
-                    break
+                    breche
                 except (RuntimeError, UnicodeDecodeError, MemoryError, OSError):
                     errors += 1
                 except Exception als e:
                     wenn nicht self._is_process_running():
-                        break
+                        breche
                     raise e von Nichts
 
                 # Track actual sampling intervals fuer real-time stats

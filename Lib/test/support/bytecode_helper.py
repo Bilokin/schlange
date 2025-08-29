@@ -83,7 +83,7 @@ klasse CompilationStepTestCase(unittest.TestCase):
         fuer act, exp in zip(actual, expected):
             wenn isinstance(act, int):
                 self.assertEqual(exp, act)
-                continue
+                weiter
             self.assertIsInstance(exp, tuple)
             self.assertIsInstance(act, tuple)
             idx = max([p[0] fuer p in enumerate(exp) wenn p[1] != -1])
@@ -125,7 +125,7 @@ klasse CompilationStepTestCase(unittest.TestCase):
     def check_instructions(self, insts):
         fuer inst in insts:
             wenn isinstance(inst, self.Label):
-                continue
+                weiter
             op, arg, *loc = inst
             wenn isinstance(op, str):
                 op = opcode.opmap[op]

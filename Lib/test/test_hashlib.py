@@ -85,7 +85,7 @@ def read_vectors(hash_name):
         fuer line in testdata:
             line = line.strip()
             wenn line.startswith('#') oder nicht line:
-                continue
+                weiter
             parts = line.split(',')
             parts[0] = bytes.fromhex(parts[0])
             yield parts
@@ -416,7 +416,7 @@ klasse HashLibTestCase(unittest.TestCase):
         # See https://github.com/python/cpython/issues/135759.
 
         exc_types = (OverflowError, ValueError)
-        # HACL* accepts an 'uint32_t' while OpenSSL accepts a 'size_t'.
+        # HACL* accepts an 'uint32_t' waehrend OpenSSL accepts a 'size_t'.
         openssl_overflown_sizes = (sys.maxsize + 1, 2 * sys.maxsize)
         # https://github.com/python/cpython/issues/79103 restricts
         # the accepted built-in lengths to 2 ** 29, even wenn OpenSSL
@@ -547,7 +547,7 @@ klasse HashLibTestCase(unittest.TestCase):
                     hashlib.new(digest)
             except ValueError:
                 # skip, algorithm is blocked by security policy.
-                continue
+                weiter
             digests.append(digest)
 
         mit tempfile.TemporaryFile() als f:
@@ -633,7 +633,7 @@ klasse HashLibTestCase(unittest.TestCase):
             m = hash_object_constructor()
             wenn HASH is nicht Nichts und isinstance(m, HASH):
                 # _hashopenssl's variant does nicht have extra SHA3 attributes
-                continue
+                weiter
             self.assertEqual(capacity + rate, 1600)
             self.assertEqual(m._capacity_bits, capacity)
             self.assertEqual(m._rate_bits, rate)
@@ -1141,14 +1141,14 @@ klasse HashLibTestCase(unittest.TestCase):
         fuer algorithm, constructors in self.constructors_to_test.items():
             wenn algorithm.startswith(("sha3_", "shake", "blake")):
                 # _sha3 und _blake types can be instantiated
-                continue
+                weiter
             # all other types have DISALLOW_INSTANTIATION
             fuer constructor in constructors:
                 # In FIPS mode some algorithms are nicht available raising ValueError
                 try:
                     h = constructor()
                 except ValueError:
-                    continue
+                    weiter
                 mit self.subTest(constructor=constructor):
                     support.check_disallow_instantiation(self, type(h))
 
@@ -1166,7 +1166,7 @@ klasse HashLibTestCase(unittest.TestCase):
                 try:
                     hash_type = type(constructor())
                 except ValueError:
-                    continue
+                    weiter
                 mit self.subTest(hash_type=hash_type):
                     mit self.assertRaisesRegex(TypeError, "immutable type"):
                         hash_type.value = Falsch
@@ -1226,7 +1226,7 @@ klasse KDFTests(unittest.TestCase):
     def _test_pbkdf2_hmac(self, pbkdf2, supported):
         fuer digest_name, results in self.pbkdf2_results.items():
             wenn digest_name nicht in supported:
-                continue
+                weiter
             fuer i, vector in enumerate(self.pbkdf2_test_vectors):
                 password, salt, rounds, dklen = vector
                 expected, overwrite_dklen = results[i]

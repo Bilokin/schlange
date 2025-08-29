@@ -485,7 +485,7 @@ klasse PrettyPrinter:
         except StopIteration:
             return
         last = Falsch
-        while nicht last:
+        waehrend nicht last:
             ent = next_ent
             try:
                 next_ent = next(it)
@@ -505,7 +505,7 @@ klasse PrettyPrinter:
                     write(delim)
                     delim = ', '
                     write(rep)
-                    continue
+                    weiter
             write(delim)
             delim = delimnl
             self._format(ent, stream, indent,

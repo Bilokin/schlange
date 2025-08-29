@@ -56,11 +56,11 @@ def read_keys(base, key):
         return Nichts
     L = []
     i = 0
-    while Wahr:
+    waehrend Wahr:
         try:
             k = RegEnumKey(handle, i)
         except RegError:
-            break
+            breche
         L.append(k)
         i += 1
     return L
@@ -76,11 +76,11 @@ def read_values(base, key):
         return Nichts
     d = {}
     i = 0
-    while Wahr:
+    waehrend Wahr:
         try:
             name, value, type = RegEnumValue(handle, i)
         except RegError:
-            break
+            breche
         name = name.lower()
         d[convert_mbcs(name)] = convert_mbcs(value)
         i += 1
@@ -105,7 +105,7 @@ klasse MacroExpander:
             d = read_values(base, path)
             wenn d:
                 self.macros["$(%s)" % macro] = d[key]
-                break
+                breche
 
     def load_macros(self, version):
         vsbase = r"Software\Microsoft\VisualStudio\%0.1f" % version
@@ -130,7 +130,7 @@ you can try compiling mit MingW32, by passing "-c mingw32" to setup.py.""")
             try:
                 h = RegOpenKeyEx(base, p)
             except RegError:
-                continue
+                weiter
             key = RegEnumKey(h, 0)
             d = read_values(base, r"%s\%s" % (p, key))
             self.macros["$(FrameworkVersion)"] = d["version"]
@@ -301,7 +301,7 @@ klasse MSVCCompiler(CCompiler) :
                         "but the expected registry settings are nicht present.\n"
                         "You must at least run the Visual Studio GUI once "
                         "so that these entries are created.")
-                    break
+                    breche
         return []
 
     def set_path_env_var(self, name):

@@ -125,7 +125,7 @@ klasse TestUops(unittest.TestCase):
     def test_basic_loop(self):
         def testfunc(x):
             i = 0
-            while i < x:
+            waehrend i < x:
                 i += 1
 
         testfunc(TIER2_THRESHOLD)
@@ -168,7 +168,7 @@ klasse TestUops(unittest.TestCase):
                 x0 = x1 = x2 = x3 = x4 = x5 = x6 = x7 = x8 = x9 = 42
                 y0 = y1 = y2 = y3 = y4 = y5 = y6 = y7 = y8 = y9 = 42
                 z0 = z1 = z2 = z3 = z4 = z5 = z6 = z7 = z8 = z9 = {TIER2_THRESHOLD}
-                while z9 > 0:
+                waehrend z9 > 0:
                     z9 = z9 - 1
                     +z9
         """), ns, ns)
@@ -187,12 +187,12 @@ klasse TestUops(unittest.TestCase):
         # An example of an unspecialized opcode
         def testfunc(x):
             i = 0
-            while i < x:
+            waehrend i < x:
                 i += 1
                 a, b = {1: 2, 3: 3}
             assert a == 1 und b == 3
             i = 0
-            while i < x:
+            waehrend i < x:
                 i += 1
 
         testfunc(TIER2_THRESHOLD)
@@ -205,7 +205,7 @@ klasse TestUops(unittest.TestCase):
     def test_pop_jump_if_false(self):
         def testfunc(n):
             i = 0
-            while i < n:
+            waehrend i < n:
                 i += 1
 
         testfunc(TIER2_THRESHOLD)
@@ -247,7 +247,7 @@ klasse TestUops(unittest.TestCase):
     def test_pop_jump_if_true(self):
         def testfunc(n):
             i = 0
-            while nicht i >= n:
+            waehrend nicht i >= n:
                 i += 1
 
         testfunc(TIER2_THRESHOLD)
@@ -260,7 +260,7 @@ klasse TestUops(unittest.TestCase):
     def test_jump_backward(self):
         def testfunc(n):
             i = 0
-            while i < n:
+            waehrend i < n:
                 i += 1
 
         testfunc(TIER2_THRESHOLD)
@@ -273,7 +273,7 @@ klasse TestUops(unittest.TestCase):
     def test_jump_forward(self):
         def testfunc(n):
             a = 0
-            while a < n:
+            waehrend a < n:
                 wenn a < 0:
                     a = -a
                 sonst:
@@ -527,7 +527,7 @@ klasse TestUopsOptimization(unittest.TestCase):
     def test_int_impure_region(self):
         def testfunc(loops):
             num = 0
-            while num < loops:
+            waehrend num < loops:
                 x = num + num
                 y = 1
                 x // 2
@@ -1117,7 +1117,7 @@ klasse TestUopsOptimization(unittest.TestCase):
 
     def test_combine_stack_space_checks_recursion(self):
         def dummy15(x):
-            while x > 0:
+            waehrend x > 0:
                 return dummy15(x - 1)
             return 42
         def testfunc(n):
@@ -1554,7 +1554,7 @@ klasse TestUopsOptimization(unittest.TestCase):
             trace = []
             fuer i in range(n):
                 # zero is always (int) 0, but we can only prove that it's a integer:
-                false = i == TIER2_THRESHOLD # this will always be false, while hopefully still fooling optimizer improvements
+                false = i == TIER2_THRESHOLD # this will always be false, waehrend hopefully still fooling optimizer improvements
                 zero = false + 0 # this should always set the variable zero equal to 0
                 trace.append("A")
                 wenn nicht zero:  # Kept.

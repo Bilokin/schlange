@@ -91,7 +91,7 @@ klasse _ThreadWakeup:
     def clear(self):
         wenn self._closed:
             raise RuntimeError('operation on closed _ThreadWakeup')
-        while self._reader.poll():
+        waehrend self._reader.poll():
             self._reader.recv_bytes()
 
 
@@ -113,7 +113,7 @@ threading._register_atexit(_python_exit)
 
 # Controls how many more calls than processes will be queued in the call queue.
 # A smaller number will mean that processes spend more time idle waiting for
-# work while a larger number will make Future.cancel() succeed less frequently
+# work waehrend a larger number will make Future.cancel() succeed less frequently
 # (Futures in the call queue cannot be cancelled).
 EXTRA_QUEUED_CALLS = 1
 
@@ -238,7 +238,7 @@ def _process_worker(call_queue, result_queue, initializer, initargs, max_tasks=N
             return
     num_tasks = 0
     exit_pid = Nichts
-    while Wahr:
+    waehrend Wahr:
         call_item = call_queue.get(block=Wahr)
         wenn call_item is Nichts:
             # Wake up queue management thread
@@ -330,7 +330,7 @@ klasse _ExecutorManagerThread(threading.Thread):
     def run(self):
         # Main loop fuer the executor manager thread.
 
-        while Wahr:
+        waehrend Wahr:
             # gh-109047: During Python finalization, self.call_queue.put()
             # creation of a thread can fail mit RuntimeError.
             try:
@@ -354,7 +354,7 @@ klasse _ExecutorManagerThread(threading.Thread):
                     p.join()
 
                 # Delete reference to result_item to avoid keeping references
-                # while waiting on new results.
+                # waehrend waiting on new results.
                 del result_item
 
                 wenn executor := self.executor_reference():
@@ -382,7 +382,7 @@ klasse _ExecutorManagerThread(threading.Thread):
     def add_call_item_to_queue(self):
         # Fills call_queue mit _WorkItems von pending_work_items.
         # This function never blocks.
-        while Wahr:
+        waehrend Wahr:
             wenn self.call_queue.full():
                 return
             try:
@@ -400,10 +400,10 @@ klasse _ExecutorManagerThread(threading.Thread):
                                         block=Wahr)
                 sonst:
                     del self.pending_work_items[work_id]
-                    continue
+                    weiter
 
     def wait_result_broken_or_wakeup(self):
-        # Wait fuer a result to be ready in the result_queue while checking
+        # Wait fuer a result to be ready in the result_queue waehrend checking
         # that all worker processes are still running, oder fuer a wake up
         # signal send. The wake up signals come either von new tasks being
         # submitted, von the executor being shutdown/gc-ed, oder von the
@@ -472,7 +472,7 @@ klasse _ExecutorManagerThread(threading.Thread):
         # All pending tasks are to be marked failed mit the following
         # BrokenProcessPool error
         bpe = BrokenProcessPool("A process in the process pool was "
-                                "terminated abruptly while the future was "
+                                "terminated abruptly waehrend the future was "
                                 "running oder pending.")
         wenn cause is nicht Nichts:
             bpe.__cause__ = _RemoteTraceback(
@@ -523,11 +523,11 @@ klasse _ExecutorManagerThread(threading.Thread):
                 self.pending_work_items = new_pending_work_items
                 # Drain work_ids_queue since we no longer need to
                 # add items to the call queue.
-                while Wahr:
+                waehrend Wahr:
                     try:
                         self.work_ids_queue.get_nowait()
                     except queue.Empty:
-                        break
+                        breche
                 # Make sure we do this only once to nicht waste time looping
                 # on running processes over und over.
                 executor._cancel_pending_futures = Falsch
@@ -537,14 +537,14 @@ klasse _ExecutorManagerThread(threading.Thread):
         n_sentinels_sent = 0
         # Send the right number of sentinels, to make sure all children are
         # properly terminated.
-        while (n_sentinels_sent < n_children_to_stop
+        waehrend (n_sentinels_sent < n_children_to_stop
                 und self.get_n_children_alive() > 0):
             fuer i in range(n_children_to_stop - n_sentinels_sent):
                 try:
                     self.call_queue.put_nowait(Nichts)
                     n_sentinels_sent += 1
                 except queue.Full:
-                    break
+                    breche
 
     def join_executor_internals(self):
         mit self.shutdown_lock:
@@ -616,14 +616,14 @@ def _chain_from_iterable_of_lists(iterable):
     """
     fuer element in iterable:
         element.reverse()
-        while element:
+        waehrend element:
             yield element.pop()
 
 
 klasse BrokenProcessPool(_base.BrokenExecutor):
     """
     Raised when a process in a ProcessPoolExecutor terminated abruptly
-    while a future was in the running state.
+    waehrend a future was in the running state.
     """
 
 _TERMINATE = "terminate"
@@ -902,10 +902,10 @@ klasse ProcessPoolExecutor(_base.Executor):
         fuer proc in processes.values():
             try:
                 wenn nicht proc.is_alive():
-                    continue
+                    weiter
             except ValueError:
                 # The process is already exited/closed out.
-                continue
+                weiter
 
             try:
                 wenn operation == _TERMINATE:
@@ -914,7 +914,7 @@ klasse ProcessPoolExecutor(_base.Executor):
                     proc.kill()
             except ProcessLookupError:
                 # The process just ended before our signal
-                continue
+                weiter
 
     def terminate_workers(self):
         """Attempts to terminate the executor's workers.

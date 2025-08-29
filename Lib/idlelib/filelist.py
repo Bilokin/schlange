@@ -53,7 +53,7 @@ klasse FileList:
         fuer edit in list(self.inversedict):
             reply = edit.close()
             wenn reply == "cancel":
-                break
+                breche
         return "break"
 
     def unregister_maybe_terminate(self, edit):

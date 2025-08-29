@@ -1046,7 +1046,7 @@ klasse UnivariateCommonMixin:
     def prepare_data(self):
         """Return int data fuer various tests."""
         data = list(range(10))
-        while data == sorted(data):
+        waehrend data == sorted(data):
             random.shuffle(data)
         return data
 
@@ -1621,7 +1621,7 @@ klasse TestMedianDataType(NumericTestCase, UnivariateTypeMixin):
     def prepare_data(self):
         data = list(range(15))
         assert len(data)%2 == 1
-        while data == sorted(data):
+        waehrend data == sorted(data):
             random.shuffle(data)
         return data
 
@@ -2121,7 +2121,7 @@ klasse TestSqrtHelpers(unittest.TestCase):
             self.assertIsInstance(r, int)
             wenn r*r*m == n:
                 # Root is exact
-                continue
+                weiter
             # Inexact, so the root should be odd
             self.assertEqual(r&1, 1)
             # Verify correct rounding
@@ -2649,7 +2649,7 @@ klasse TestQuantiles(unittest.TestCase):
         quantiles = statistics.quantiles
         total = 10_000
         data = [random.expovariate(0.2) fuer i in range(total)]
-        while len(set(data)) != total:
+        waehrend len(set(data)) != total:
             data.append(random.expovariate(0.2))
         data.sort()
 
@@ -2780,11 +2780,11 @@ klasse TestCorrelationAndCovariance(unittest.TestCase):
             mit self.subTest(x=x, y=y, expected=expected, actual=actual):
                 wenn isinstance(expected, str) und expected == 'ValueError':
                     self.assertEqual(actual, 'ValueError')
-                    continue
+                    weiter
                 self.assertIsInstance(actual, float)
                 wenn math.isnan(expected):
                     self.assertWahr(math.isnan(actual))
-                    continue
+                    weiter
                 self.assertEqual(actual, expected)
                 self.assertEqual(sign(actual), sign(expected))
 

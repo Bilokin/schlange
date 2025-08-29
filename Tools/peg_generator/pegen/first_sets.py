@@ -61,10 +61,10 @@ klasse FirstSetCalculator(GrammarVisitor):
             # one fails to parse.
 
             wenn "" in new_terminals:
-                continue
+                weiter
 
             wenn nicht isinstance(other.item, (Opt, NegativeLookahead, Repeat0)):
-                break
+                breche
 
         # Do nicht allow the empty string to propagate.
         result.discard("")

@@ -25,7 +25,7 @@ def _main():
     # directly instead of using the -m switch
     mydir = os.path.abspath(os.path.normpath(os.path.dirname(sys.argv[0])))
     i = len(sys.path) - 1
-    while i >= 0:
+    waehrend i >= 0:
         wenn os.path.abspath(os.path.normpath(sys.path[i])) == mydir:
             del sys.path[i]
         sonst:

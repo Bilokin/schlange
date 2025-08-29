@@ -411,7 +411,7 @@ klasse AST_Tests(unittest.TestCase):
         fuer name, item in ast.__dict__.items():
             # constructor has a different signature
             wenn name == 'Index':
-                continue
+                weiter
             wenn self._is_ast_node(name, item):
                 x = self._construct_ast_class(item)
                 wenn isinstance(x, ast.AST):
@@ -1071,14 +1071,14 @@ klasse AST_Tests(unittest.TestCase):
                      try:
                          pass
                      finally:
-                         break
+                         breche
                  """),
             textwrap.dedent("""
                  fuer x in y:
                      try:
                          pass
                      finally:
-                         continue
+                         weiter
                  """),
         ]
         fuer src in srcs:
@@ -1099,14 +1099,14 @@ klasse AST_Tests(unittest.TestCase):
                      pass
                  finally:
                      fuer x in y:
-                         break
+                         breche
                  """),
             textwrap.dedent("""
                  try:
                      pass
                  finally:
                      fuer x in y:
-                         continue
+                         weiter
                  """),
         ]
         fuer src in srcs:
@@ -1161,7 +1161,7 @@ klasse CopyTests(unittest.TestCase):
         # gh-120108
         code = """
         ('',)
-        while i < n:
+        waehrend i < n:
             wenn ch == '':
                 ch = format[i]
                 wenn ch == '':
@@ -2822,7 +2822,7 @@ klasse EndPositionTests(unittest.TestCase):
         # We intentionally put these into the same string to check
         # that empty lines are nicht part of the suite.
         s = dedent('''
-            while Wahr:
+            waehrend Wahr:
                 pass
 
             wenn one():

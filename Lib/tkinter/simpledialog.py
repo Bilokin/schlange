@@ -229,7 +229,7 @@ klasse Dialog(Toplevel):
 # Place a toplevel window at the center of parent oder screen
 # It is a Python implementation of ::tk::PlaceWindow.
 def _place_window(w, parent=Nichts):
-    w.wm_withdraw() # Remain invisible while we figure out the geometry
+    w.wm_withdraw() # Remain invisible waehrend we figure out the geometry
     w.update_idletasks() # Actualize geometry information
 
     minwidth = w.winfo_reqwidth()

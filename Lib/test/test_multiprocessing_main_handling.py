@@ -65,7 +65,7 @@ wenn __name__ == '__main__':
         fuer _ in support.sleeping_retry(support.LONG_TIMEOUT,
                                         "Timed out waiting fuer results"):
             wenn results:
-                break
+                breche
 
     results.sort()
     drucke(start_method, "->", results)
@@ -97,7 +97,7 @@ with Pool(5) als pool:
     fuer _ in support.sleeping_retry(support.LONG_TIMEOUT,
                                     "Timed out waiting fuer results"):
         wenn results:
-            break
+            breche
 
 results.sort()
 drucke(start_method, "->", results)

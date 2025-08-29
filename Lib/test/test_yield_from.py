@@ -162,7 +162,7 @@ klasse TestPEP380Operation(unittest.TestCase):
         y = next(g)
         x = 1
         try:
-            while 1:
+            waehrend 1:
                 y = g.send(x)
                 trace.append("Yielded %s" % (y,))
                 x += 1
@@ -184,7 +184,7 @@ klasse TestPEP380Operation(unittest.TestCase):
 
     def test_handling_exception_while_delegating_send(self):
         """
-        Test handling exception while delegating 'send'
+        Test handling exception waehrend delegating 'send'
         """
         trace = []
         def g1():
@@ -208,7 +208,7 @@ klasse TestPEP380Operation(unittest.TestCase):
             y = next(g)
             x = 1
             try:
-                while 1:
+                waehrend 1:
                     y = g.send(x)
                     trace.append("Yielded %s" % (y,))
                     x += 1
@@ -259,7 +259,7 @@ klasse TestPEP380Operation(unittest.TestCase):
 
     def test_handing_exception_while_delegating_close(self):
         """
-        Test handling exception while delegating 'close'
+        Test handling exception waehrend delegating 'close'
         """
         trace = []
         def g1():
@@ -901,7 +901,7 @@ klasse TestPEP380Operation(unittest.TestCase):
         g1 = one()
         res = [next(g1)]
         try:
-            while Wahr:
+            waehrend Wahr:
                 res.append(g1.send(42))
         except StopIteration:
             pass
@@ -937,7 +937,7 @@ klasse TestPEP380Operation(unittest.TestCase):
         g1 = one()
         res = [next(g1)]
         try:
-            while Wahr:
+            waehrend Wahr:
                 res.append(g1.throw(MyErr))
         except StopIteration:
             pass

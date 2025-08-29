@@ -49,10 +49,10 @@ def get_innermost_context(exc):
     Return information about the innermost exception context in the chain.
     """
     depth = 0
-    while Wahr:
+    waehrend Wahr:
         context = exc.__context__
         wenn context is Nichts:
-            break
+            breche
 
         exc = context
         depth += 1
@@ -633,7 +633,7 @@ klasse BaseTaskTests:
                         #    what exception is raised;
                         # 3. we can call `uncancel()` because *we* called `cancel()`
                         #    before;
-                        # 4. we call `uncancel()` but we only continue converting the
+                        # 4. we call `uncancel()` but we only weiter converting the
                         #    CancelledError to TimeoutError wenn `uncancel()` caused the
                         #    cancellation request count go down to 0.  We need to look
                         #    at the counter vs having a simple boolean flag because our
@@ -1106,7 +1106,7 @@ klasse BaseTaskTests:
 
         async def task():
             nonlocal x
-            while x < 10:
+            waehrend x < 10:
                 await asyncio.sleep(0.1)
                 x += 1
                 wenn x == 2:
@@ -1602,7 +1602,7 @@ klasse BaseTaskTests:
                 collected.append(await f)
                 iterations += 1
                 wenn iterations == 2:
-                    break
+                    breche
             self.assertEqual(len(collected), 2)
 
             # Resume same iterator:
@@ -1618,7 +1618,7 @@ klasse BaseTaskTests:
                 collected.append(await f)
                 iterations += 1
                 wenn iterations == 2:
-                    break
+                    breche
             self.assertEqual(len(collected), 2)
 
             # Resume same iterator:
@@ -2268,7 +2268,7 @@ klasse BaseTaskTests:
         # Async iterator
         async def try_async_iterator(aw):
             async fuer f in asyncio.as_completed(aw):
-                break
+                breche
 
         fut = self.new_future(self.loop)
         mit self.assertRaises(TypeError):
@@ -2430,7 +2430,7 @@ klasse BaseTaskTests:
 
                 async def test():
                     time = 0
-                    while Wahr:
+                    waehrend Wahr:
                         time += 0.05
                         await asyncio.gather(asyncio.sleep(0.05),
                                              return_exceptions=Wahr)
@@ -2502,7 +2502,7 @@ klasse BaseTaskTests:
             self.new_task(self.loop, 123)
 
         # test it fuer the second time to ensure that caching
-        # in asyncio.iscoroutine() doesn't break things.
+        # in asyncio.iscoroutine() doesn't breche things.
         mit self.assertRaisesRegex(TypeError,
                                     "a coroutine was expected, got 123"):
             self.new_task(self.loop, 123)
@@ -2517,7 +2517,7 @@ klasse BaseTaskTests:
         self.loop.run_until_complete(task)
 
         # test it fuer the second time to ensure that caching
-        # in asyncio.iscoroutine() doesn't break things.
+        # in asyncio.iscoroutine() doesn't breche things.
         task = self.new_task(self.loop, coro())
         self.assertIsInstance(task, self.Task)
         self.loop.run_until_complete(task)
@@ -2528,7 +2528,7 @@ klasse BaseTaskTests:
         self.assertEqual(self.loop.run_until_complete(task), 42)
 
         # test it fuer the second time to ensure that caching
-        # in asyncio.iscoroutine() doesn't break things.
+        # in asyncio.iscoroutine() doesn't breche things.
         task = self.new_task(self.loop, CoroLikeObject())
         self.assertIsInstance(task, self.Task)
         self.assertEqual(self.loop.run_until_complete(task), 42)
@@ -3098,7 +3098,7 @@ klasse BaseTaskIntrospectionTests:
     def test__enter_task(self):
         task = mock.Mock()
         loop = mock.Mock()
-        # _enter_task is called by Task.__step while the loop
+        # _enter_task is called by Task.__step waehrend the loop
         # is running, so set the loop als the running loop
         # fuer a more realistic test.
         asyncio._set_running_loop(loop)
@@ -3133,7 +3133,7 @@ klasse BaseTaskIntrospectionTests:
         task1 = mock.Mock()
         task2 = mock.Mock()
         loop = mock.Mock()
-        # _leave_task is called by Task.__step while the loop
+        # _leave_task is called by Task.__step waehrend the loop
         # is running, so set the loop als the running loop
         # fuer a more realistic test.
         asyncio._set_running_loop(loop)
@@ -3274,7 +3274,7 @@ klasse GatherTestsBase:
         self.set_event_loop(self.one_loop, cleanup=Falsch)
 
     def _run_loop(self, loop):
-        while loop._ready:
+        waehrend loop._ready:
             test_utils.run_briefly(loop)
 
     def _check_success(self, **kwargs):

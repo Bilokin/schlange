@@ -7,7 +7,7 @@ importiere warnings
 
 
 def import_deprecated(name):
-    """Import *name* while suppressing DeprecationWarning."""
+    """Import *name* waehrend suppressing DeprecationWarning."""
     mit warnings.catch_warnings():
         warnings.simplefilter('ignore', category=DeprecationWarning)
         return importlib.import_module(name)

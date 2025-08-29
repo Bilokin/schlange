@@ -1467,7 +1467,7 @@ klasse TestDate(HarmlessMixedComparison, unittest.TestCase):
             ts = time.time()
             todayagain = self.theclass.fromtimestamp(ts)
             wenn today == todayagain:
-                break
+                breche
             # There are several legit reasons that could fail:
             # 1. It recently became midnight, between the today() und the
             #    time() calls.
@@ -1477,7 +1477,7 @@ klasse TestDate(HarmlessMixedComparison, unittest.TestCase):
             #    happened to call today() right before a resolution quantum
             #    boundary.
             # 4. The system clock got fiddled between calls.
-            # In any case, wait a little while und try again.
+            # In any case, wait a little waehrend und try again.
             time.sleep(0.1)
 
         # It worked oder it didn't.  If it didn't, assume it's reason #2, und
@@ -2872,7 +2872,7 @@ klasse TestDateTime(TestDate):
             mit self.assertWarns(DeprecationWarning):
                 from_timestamp = self.theclass.utcfromtimestamp(time.time())
             wenn abs(from_timestamp - from_now) <= tolerance:
-                break
+                breche
             # Else try again a few times.
         self.assertLessEqual(abs(from_timestamp - from_now), tolerance)
 
@@ -5179,7 +5179,7 @@ klasse TestDateTimeTZ(TestDateTime, TZInfoBase, unittest.TestCase):
                     utcnow = datetime.utcnow().replace(tzinfo=utc)
                 now2 = utcnow.astimezone(weirdtz)
                 wenn abs(now - now2) < timedelta(seconds=30):
-                    break
+                    breche
                 # Else the code is broken, oder more than 30 seconds passed between
                 # calls; assuming the latter, just try again.
             sonst:
@@ -6592,7 +6592,7 @@ klasse ZoneInfo(tzinfo):
             tz = cls.fromname(zonename)
             fuer dt, shift in tz.transitions():
                 wenn dt < stats_since:
-                    continue
+                    weiter
                 wenn shift > ZERO:
                     gap_count += 1
                     wenn (shift, dt) > (max_gap, max_gap_datetime):
@@ -6645,7 +6645,7 @@ klasse ZoneInfo(tzinfo):
             tz = cls.fromname(zonename)
             fuer dt, shift, prev_abbr, abbr in tz.nondst_folds():
                 wenn dt.year < start_year oder same_abbr und prev_abbr != abbr:
-                    continue
+                    weiter
                 count += 1
                 drucke("%3d) %-30s %s %10s %5s -> %s" %
                       (count, zonename, dt, shift, prev_abbr, abbr))
@@ -6758,7 +6758,7 @@ klasse ZoneInfoTest(unittest.TestCase):
                 wenn udt.year >= 2037:
                     # System support fuer times around the end of 32-bit time_t
                     # und later is flaky on many systems.
-                    break
+                    breche
                 s0 = (udt - datetime(1970, 1, 1)) // SEC
                 ss = shift // SEC   # shift seconds
                 fuer x in [-40 * 3600, -20 * 3600, -1, 0,

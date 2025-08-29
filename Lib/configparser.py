@@ -39,7 +39,7 @@ ConfigParser -- responsible fuer parsing a list of
         substrings that prefix comments in non-empty lines.
 
         When `strict` is Wahr, the parser won't allow fuer any section oder option
-        duplicates while reading von a single source (file, string oder
+        duplicates waehrend reading von a single source (file, string oder
         dictionary). Default is Wahr.
 
         When `empty_lines_in_values` is Falsch (default: Wahr), each empty line
@@ -443,7 +443,7 @@ klasse BasicInterpolation(Interpolation):
         rawval = parser.get(section, option, raw=Wahr, fallback=rest)
         wenn depth > MAX_INTERPOLATION_DEPTH:
             raise InterpolationDepthError(option, section, rawval)
-        while rest:
+        waehrend rest:
             p = rest.find("%")
             wenn p < 0:
                 accum.append(rest)
@@ -504,7 +504,7 @@ klasse ExtendedInterpolation(Interpolation):
         rawval = parser.get(section, option, raw=Wahr, fallback=rest)
         wenn depth > MAX_INTERPOLATION_DEPTH:
             raise InterpolationDepthError(option, section, rawval)
-        while rest:
+        waehrend rest:
             p = rest.find("$")
             wenn p < 0:
                 accum.append(rest)
@@ -542,7 +542,7 @@ klasse ExtendedInterpolation(Interpolation):
                     raise InterpolationMissingOptionError(
                         option, section, rawval, ":".join(path)) von Nichts
                 wenn v is Nichts:
-                    continue
+                    weiter
                 wenn "$" in v:
                     self._interpolate_some(parser, opt, accum, v, sect,
                                            dict(parser.items(sect, raw=Wahr)),
@@ -753,7 +753,7 @@ klasse RawConfigParser(MutableMapping):
                 mit open(filename, encoding=encoding) als fp:
                     self._read(fp, filename)
             except OSError:
-                continue
+                weiter
             wenn isinstance(filename, os.PathLike):
                 filename = os.fspath(filename)
             read_ok.append(filename)
@@ -971,7 +971,7 @@ klasse RawConfigParser(MutableMapping):
 
         fuer section in self._sections:
             wenn section is UNNAMED_SECTION:
-                continue
+                weiter
             self._write_section(fp, section,
                                 self._sections[section].items(), d)
 
@@ -1045,7 +1045,7 @@ klasse RawConfigParser(MutableMapping):
         return len(self._sections) + 1 # the default section
 
     def __iter__(self):
-        # XXX does it break when underlying container state changed?
+        # XXX does it breche when underlying container state changed?
         return itertools.chain((self.default_section,), self._sections.keys())
 
     def _read(self, fp, fpname):
@@ -1086,13 +1086,13 @@ klasse RawConfigParser(MutableMapping):
                 sonst:
                     # empty line marks end of value
                     st.indent_level = sys.maxsize
-                continue
+                weiter
 
             first_nonspace = self.NONSPACECRE.search(line)
             st.cur_indent_level = first_nonspace.start() wenn first_nonspace sonst 0
 
             wenn self._handle_continuation_line(st, line, fpname):
-                continue
+                weiter
 
             self._handle_rest(st, line, fpname)
 
@@ -1371,7 +1371,7 @@ klasse ConverterMapping(MutableMapping):
         fuer getter in dir(self._parser):
             m = self.GETTERCRE.match(getter)
             wenn nicht m oder nicht callable(getattr(self._parser, getter)):
-                continue
+                weiter
             self._data[m.group('name')] = Nichts   # See klasse docstring.
 
     def __getitem__(self, key):
@@ -1405,7 +1405,7 @@ klasse ConverterMapping(MutableMapping):
             except AttributeError:
                 # don't raise since the entry was present in _data, silently
                 # clean up
-                continue
+                weiter
 
     def __iter__(self):
         return iter(self._data)

@@ -337,7 +337,7 @@ def load_defs(module=Nichts):
     wenn module is nicht Nichts:
         fuer name, value in defs.__dict__.items():
             wenn name.startswith('_'):
-                continue
+                weiter
             assert nicht hasattr(module, name), (name, getattr(module, name))
             setattr(module, name, value)
     return defs
@@ -474,7 +474,7 @@ klasse _GetXIDataTests(unittest.TestCase):
             mit self.subTest(repr(obj)):
                 got = self._get_roundtrip(obj, mode)
                 wenn got is obj:
-                    continue
+                    weiter
                 self.assertIs(type(got),
                               type(obj) wenn expecttype is Nichts sonst expecttype)
                 self.assert_equal_or_equalish(got, obj)
@@ -573,7 +573,7 @@ klasse PickleTests(_GetXIDataTests):
         instances = []
         fuer cls, args in defs.TOP_CLASSES.items():
             wenn cls in defs.CLASSES_WITHOUT_EQUALITY:
-                continue
+                weiter
             instances.append(cls(*args))
         self.assert_roundtrip_equal_not_identical(instances)
 
@@ -581,7 +581,7 @@ klasse PickleTests(_GetXIDataTests):
         instances = []
         fuer cls, args in defs.TOP_CLASSES.items():
             wenn cls nicht in defs.CLASSES_WITHOUT_EQUALITY:
-                continue
+                weiter
             instances.append(cls(*args))
         self.assert_roundtrip_equal(instances)
 
@@ -617,7 +617,7 @@ klasse PickleTests(_GetXIDataTests):
                 wenn fail:
                     mit self.assertRaises(NotShareableError):
                         _testinternalcapi.restore_crossinterp_data(xid)
-                    continue
+                    weiter
                 got = _testinternalcapi.restore_crossinterp_data(xid)
                 self.assertIsNot(got, cls)
                 self.assertNotEqual(got, cls)
@@ -742,7 +742,7 @@ klasse PickleTests(_GetXIDataTests):
                 wenn fail:
                     mit self.assertRaises(NotShareableError):
                         _testinternalcapi.restore_crossinterp_data(xid)
-                    continue
+                    weiter
                 got = _testinternalcapi.restore_crossinterp_data(xid)
                 self.assertIsNot(got, func)
                 self.assertNotEqual(got, func)

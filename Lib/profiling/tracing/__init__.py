@@ -90,7 +90,7 @@ klasse Profile(_lsprof.Profiler):
                     try:
                         callers = callersdicts[id(subentry.code)]
                     except KeyError:
-                        continue
+                        weiter
                     nc = subentry.callcount
                     cc = nc - subentry.reccallcount
                     tt = subentry.inlinetime

@@ -769,7 +769,7 @@ klasse TestPrintSampledStats(unittest.TestCase):
         main_section_lines = []
         fuer line in lines:
             wenn "Summary of Interesting Functions:" in line:
-                break
+                breche
             main_section_lines.append(line)
 
         # Count function entries only in main section
@@ -1424,7 +1424,7 @@ def main_loop():
     """Main test loop mit different execution paths."""
     iteration = 0
 
-    while Wahr:
+    waehrend Wahr:
         iteration += 1
 
         # Different execution paths - focus on CPU intensive work

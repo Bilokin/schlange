@@ -701,7 +701,7 @@ klasse SSLProtocol(protocols.BufferedProtocol):
 
     def _do_write(self):
         try:
-            while self._write_backlog:
+            waehrend self._write_backlog:
                 data = self._write_backlog[0]
                 count = self._sslobj.write(data)
                 data_len = len(data)
@@ -758,12 +758,12 @@ klasse SSLProtocol(protocols.BufferedProtocol):
 
             wenn count > 0:
                 offset = count
-                while offset < wants:
+                waehrend offset < wants:
                     count = self._sslobj.read(wants - offset, buf[offset:])
                     wenn count > 0:
                         offset += count
                     sonst:
-                        break
+                        breche
                 sonst:
                     self._loop.call_soon(self._do_read)
         except SSLAgainErrors:
@@ -781,10 +781,10 @@ klasse SSLProtocol(protocols.BufferedProtocol):
         one = Falsch
 
         try:
-            while Wahr:
+            waehrend Wahr:
                 chunk = self._sslobj.read(self.max_size)
                 wenn nicht chunk:
-                    break
+                    breche
                 wenn zero:
                     zero = Falsch
                     one = Wahr

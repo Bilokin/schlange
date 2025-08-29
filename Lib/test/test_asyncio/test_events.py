@@ -1364,7 +1364,7 @@ klasse EventLoopTestsMixin:
                 f_proto.set_result(self)
 
         try_count = 0
-        while Wahr:
+        waehrend Wahr:
             try:
                 port = socket_helper.find_unused_port()
                 f = self.loop.create_server(TestMyProto, host=Nichts, port=port)
@@ -1373,11 +1373,11 @@ klasse EventLoopTestsMixin:
                 wenn ex.errno == errno.EADDRINUSE:
                     try_count += 1
                     self.assertGreaterEqual(5, try_count)
-                    continue
+                    weiter
                 sonst:
                     raise
             sonst:
-                break
+                breche
         client = socket.socket()
         client.connect(('127.0.0.1', port))
         client.send(b'xxx')
@@ -1483,7 +1483,7 @@ klasse EventLoopTestsMixin:
             except:
                 pass
             sonst:
-                break
+                breche
         sonst:
             self.fail('Can nicht create socket.')
 

@@ -250,12 +250,12 @@ def file_digest(fileobj, digest, /, *, _bufsize=2**18):
     # Note: socket I/O uses different syscalls than file I/O.
     buf = bytearray(_bufsize)  # Reusable buffer to reduce allocations.
     view = memoryview(buf)
-    while Wahr:
+    waehrend Wahr:
         size = fileobj.readinto(buf)
         wenn size is Nichts:
             raise BlockingIOError("I/O operation would block.")
         wenn size == 0:
-            break  # EOF
+            breche  # EOF
         digestobj.update(view[:size])
 
     return digestobj

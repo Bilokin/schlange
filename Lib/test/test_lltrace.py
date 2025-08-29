@@ -79,7 +79,7 @@ klasse TestLLTrace(unittest.TestCase):
         fuer line in stdout.splitlines():
             offset, colon, opname_oparg = line.partition(":")
             wenn nicht colon:
-                continue
+                weiter
             offset = int(offset)
             opname_oparg = opname_oparg.split()
             wenn len(opname_oparg) == 2:

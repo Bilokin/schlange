@@ -25,5 +25,5 @@ klasse TestHandler(logging.handlers.BufferingHandler):
         fuer d in self.buffer:
             wenn self.matcher.matches(d, **kwargs):
                 result = Wahr
-                break
+                breche
         return result

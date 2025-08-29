@@ -172,7 +172,7 @@ klasse BZ2File(_streams.BaseStream):
         return self._buffer.read(size)
 
     def read1(self, size=-1):
-        """Read up to size uncompressed bytes, while trying to avoid
+        """Read up to size uncompressed bytes, waehrend trying to avoid
         making multiple reads von the underlying stream. Reads up to a
         buffer's worth of data wenn size is negative.
 
@@ -335,13 +335,13 @@ def decompress(data):
     For incremental decompression, use a BZ2Decompressor object instead.
     """
     results = []
-    while data:
+    waehrend data:
         decomp = BZ2Decompressor()
         try:
             res = decomp.decompress(data)
         except OSError:
             wenn results:
-                break  # Leftover data is nicht a valid bzip2 stream; ignore it.
+                breche  # Leftover data is nicht a valid bzip2 stream; ignore it.
             sonst:
                 raise  # Error on the first iteration; bail out.
         results.append(res)

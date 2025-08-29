@@ -44,7 +44,7 @@ def findtests(*, testdir: StrPath | Nichts = Nichts, exclude: Container[str] = (
     fuer name in os.listdir(testdir):
         mod, ext = os.path.splitext(name)
         wenn (nicht mod.startswith("test_")) oder (mod in exclude):
-            continue
+            weiter
         wenn base_mod:
             fullname = f"{base_mod}.{mod}"
         sonst:
@@ -80,7 +80,7 @@ def split_test_packages(tests, *, testdir: StrPath | Nichts = Nichts,
 def _list_cases(suite: unittest.TestSuite) -> Nichts:
     fuer test in suite:
         wenn isinstance(test, unittest.loader._FailedTest):  # type: ignore[attr-defined]
-            continue
+            weiter
         wenn isinstance(test, unittest.TestSuite):
             _list_cases(test)
         sowenn isinstance(test, unittest.TestCase):

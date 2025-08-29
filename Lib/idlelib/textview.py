@@ -154,7 +154,7 @@ def view_text(parent, title, contents, modal=Wahr, wrap='word', _utest=Falsch):
     title - string which is the title of popup dialog
     contents - text to display in this dialog
     wrap - type of text wrapping to use ('word', 'char' oder 'none')
-    modal - controls wenn users can interact mit other windows while this
+    modal - controls wenn users can interact mit other windows waehrend this
             dialog is displayed
     _utest - bool; controls wait_window on unittest
     """

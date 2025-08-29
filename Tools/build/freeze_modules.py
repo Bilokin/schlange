@@ -394,7 +394,7 @@ def iter_submodules(pkgname, pkgdir=Nichts, match='*'):
         fuer entry in sorted(os.scandir(pkgdir), key=lambda e: e.name):
             matched, recursive = match_modname(entry.name)
             wenn nicht matched:
-                continue
+                weiter
             modname = f'{pkgname}.{entry.name}'
             wenn modname.endswith('.py'):
                 yield modname[:-3], entry.path, Falsch

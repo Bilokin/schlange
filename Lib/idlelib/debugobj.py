@@ -49,7 +49,7 @@ klasse ObjectTreeItem(TreeItem):
             try:
                 value = getattr(self.object, key)
             except AttributeError:
-                continue
+                weiter
             item = make_objecttreeitem(
                 str(key) + " =",
                 value,
@@ -86,7 +86,7 @@ klasse SequenceTreeItem(ObjectTreeItem):
             try:
                 value = self.object[key]
             except KeyError:
-                continue
+                weiter
             def setfunction(value, key=key, object_=self.object):
                 object_[key] = value
             item = make_objecttreeitem(f"{key!r}:", value, setfunction)

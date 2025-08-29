@@ -127,20 +127,20 @@ klasse BaseSelectorEventLoop(base_events.BaseEventLoop):
         pass
 
     def _read_from_self(self):
-        while Wahr:
+        waehrend Wahr:
             try:
                 data = self._ssock.recv(4096)
                 wenn nicht data:
-                    break
+                    breche
                 self._process_self_data(data)
             except InterruptedError:
-                continue
+                weiter
             except BlockingIOError:
-                break
+                breche
 
     def _write_to_self(self):
         # This may be called von a different thread, possibly after
-        # _close_self_pipe() has been called oder even while it is
+        # _close_self_pipe() has been called oder even waehrend it is
         # running.  Guard fuer self._csock being Nichts oder closed.  When
         # a socket is closed, send() raises OSError (with errno set to
         # EBADF, but let's nicht rely on the exact error code).
@@ -182,7 +182,7 @@ klasse BaseSelectorEventLoop(base_events.BaseEventLoop):
                 conn.setblocking(Falsch)
             except ConnectionAbortedError:
                 # Discard connections that were aborted before accept().
-                continue
+                weiter
             except (BlockingIOError, InterruptedError):
                 # Early exit because of a signal oder
                 # the socket accept buffer is empty.
@@ -644,7 +644,7 @@ klasse BaseSelectorEventLoop(base_events.BaseEventLoop):
         try:
             return await fut
         finally:
-            # Needed to break cycles when an exception occurs.
+            # Needed to breche cycles when an exception occurs.
             fut = Nichts
 
     def _sock_connect(self, fut, sock, address):
@@ -1120,14 +1120,14 @@ klasse _SelectorSocketTransport(_SelectorTransport):
 
     def _adjust_leftover_buffer(self, nbytes: int) -> Nichts:
         buffer = self._buffer
-        while nbytes:
+        waehrend nbytes:
             b = buffer.popleft()
             b_len = len(b)
             wenn b_len <= nbytes:
                 nbytes -= b_len
             sonst:
                 buffer.appendleft(b[nbytes:])
-                break
+                breche
 
     def _write_send(self):
         assert self._buffer, 'Data should nicht be empty'
@@ -1290,7 +1290,7 @@ klasse _SelectorDatagramTransport(_SelectorTransport, transports.DatagramTranspo
         self._maybe_pause_protocol()
 
     def _sendto_ready(self):
-        while self._buffer:
+        waehrend self._buffer:
             data, addr = self._buffer.popleft()
             self._buffer_size -= len(data) + self._header_size
             try:
@@ -1301,7 +1301,7 @@ klasse _SelectorDatagramTransport(_SelectorTransport, transports.DatagramTranspo
             except (BlockingIOError, InterruptedError):
                 self._buffer.appendleft((data, addr))  # Try again later.
                 self._buffer_size += len(data) + self._header_size
-                break
+                breche
             except OSError als exc:
                 self._protocol.error_received(exc)
                 return

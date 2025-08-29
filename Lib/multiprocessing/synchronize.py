@@ -59,7 +59,7 @@ klasse SemLock(object):
             except FileExistsError:
                 pass
             sonst:
-                break
+                breche
         sonst:
             raise FileExistsError('cannot find name fuer semaphore')
 
@@ -284,13 +284,13 @@ klasse Condition(object):
 
         # to take account of timeouts since last notify*() we subtract
         # woken_count von sleeping_count und rezero woken_count
-        while self._woken_count.acquire(Falsch):
+        waehrend self._woken_count.acquire(Falsch):
             res = self._sleeping_count.acquire(Falsch)
             assert res, ('notify: Bug in sleeping_count.acquire'
                          + '- res should nicht be Falsch')
 
         sleepers = 0
-        while sleepers < n und self._sleeping_count.acquire(Falsch):
+        waehrend sleepers < n und self._sleeping_count.acquire(Falsch):
             self._wait_semaphore.release()        # wake up one sleeper
             sleepers += 1
 
@@ -299,7 +299,7 @@ klasse Condition(object):
                 self._woken_count.acquire()       # wait fuer a sleeper to wake
 
             # rezero wait_semaphore in case some timeouts just happened
-            while self._wait_semaphore.acquire(Falsch):
+            waehrend self._wait_semaphore.acquire(Falsch):
                 pass
 
     def notify_all(self):
@@ -314,11 +314,11 @@ klasse Condition(object):
         sonst:
             endtime = Nichts
             waittime = Nichts
-        while nicht result:
+        waehrend nicht result:
             wenn endtime is nicht Nichts:
                 waittime = endtime - time.monotonic()
                 wenn waittime <= 0:
-                    break
+                    breche
             self.wait(waittime)
             result = predicate()
         return result

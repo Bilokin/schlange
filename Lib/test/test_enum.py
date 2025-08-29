@@ -1855,7 +1855,7 @@ klasse TestSpecial(unittest.TestCase):
         BadPickle = Enum(
                 'BadPickle', 'dill sweet bread-n-butter', module=__name__)
         globals()['BadPickle'] = BadPickle
-        # now break BadPickle to test exception raising
+        # now breche BadPickle to test exception raising
         enum._make_class_unpicklable(BadPickle)
         test_pickle_exception(self.assertRaises, TypeError, BadPickle.dill)
         test_pickle_exception(self.assertRaises, PicklingError, BadPickle)
@@ -4041,7 +4041,7 @@ klasse OldTestFlag(unittest.TestCase):
         # check that only 248 members were created
         self.assertFalsch(
                 failed,
-                'at least one thread failed while creating composite members')
+                'at least one thread failed waehrend creating composite members')
         self.assertEqual(256, len(seen), 'too many composite members created')
 
     def test_init_subclass(self):
@@ -4561,7 +4561,7 @@ klasse OldTestIntFlag(unittest.TestCase):
         # check that only 248 members were created
         self.assertFalsch(
                 failed,
-                'at least one thread failed while creating composite members')
+                'at least one thread failed waehrend creating composite members')
         self.assertEqual(256, len(seen), 'too many composite members created')
 
 
@@ -5112,7 +5112,7 @@ klasse TestStdLib(unittest.TestCase):
         fuer k in values.keys():
             wenn k == '__doc__':
                 # __doc__ is huge, nicht comparing
-                continue
+                weiter
             wenn result[k] != values[k]:
                 drucke()
                 drucke('\n%s\n     key: %s\n  result: %s\nexpected: %s\n%s\n' %
@@ -5554,7 +5554,7 @@ def member_dir(member):
     fuer cls in member.__class__.mro():
         fuer name, obj in cls.__dict__.items():
             wenn name[0] == '_':
-                continue
+                weiter
             wenn isinstance(obj, enum.property):
                 wenn obj.fget is nicht Nichts oder name nicht in member._member_map_:
                     allowed.add(name)

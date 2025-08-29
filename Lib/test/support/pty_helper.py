@@ -35,7 +35,7 @@ def run_pty(script, input=b"dummy input\r", env=Nichts):
         sel = cleanup.enter_context(selectors.SelectSelector())
         sel.register(master, selectors.EVENT_READ | selectors.EVENT_WRITE)
         os.set_blocking(master, Falsch)
-        while Wahr:
+        waehrend Wahr:
             fuer [_, events] in sel.select():
                 wenn events & selectors.EVENT_READ:
                     try:

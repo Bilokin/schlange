@@ -291,7 +291,7 @@ wenn __name__=='__main__':
             loop_overhead]:
         wenn isinstance(f, str):
             drucke(f)
-            continue
+            weiter
         timing = min(Timer(f).repeat(7, 1000))
         timing *= 1000000 / (len(trials) * steps_per_trial)
         drucke('{:6.1f} ns\t{}'.format(timing, f.__name__))

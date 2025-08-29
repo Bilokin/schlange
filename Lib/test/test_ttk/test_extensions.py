@@ -246,11 +246,11 @@ klasse OptionMenuTest(AbstractTkTest, unittest.TestCase):
         optmenu = ttk.OptionMenu(self.root, self.textvar, default, *items)
         curr = Nichts
         i = 0
-        while Wahr:
+        waehrend Wahr:
             last, curr = curr, optmenu['menu'].entryconfigure(i, 'value')
             wenn last == curr:
                 # no more menu entries
-                break
+                breche
             self.assertNotEqual(curr, default)
             i += 1
         self.assertEqual(i, len(items))

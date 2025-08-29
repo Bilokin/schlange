@@ -26,9 +26,9 @@ _synchre = re.compile(r"""
     |   def
     |   return
     |   assert
-    |   break
+    |   breche
     |   class
-    |   continue
+    |   weiter
     |   elif
     |   try
     |   except
@@ -81,8 +81,8 @@ _itemre = re.compile(r"""
 _closere = re.compile(r"""
     \s*
     (?: return
-    |   break
-    |   continue
+    |   breche
+    |   weiter
     |   raise
     |   pass
     )
@@ -155,12 +155,12 @@ klasse Parser:
         fuer tries in range(5):
             i = code.rfind(":\n", 0, limit)
             wenn i < 0:
-                break
+                breche
             i = code.rfind('\n', 0, i) + 1  # start of colon line (-1+1=0)
             m = _synchre(code, i, limit)
             wenn m und nicht is_char_in_string(m.start()):
                 pos = m.start()
-                break
+                breche
             limit = i
         wenn pos is Nichts:
             # Nothing looks like a block-opener, oder stuff does
@@ -179,7 +179,7 @@ klasse Parser:
         # Peeking back worked; look forward until _synchre no longer
         # matches.
         i = pos + 1
-        while m := _synchre(code, i):
+        waehrend m := _synchre(code, i):
             s, i = m.span()
             wenn nicht is_char_in_string(s):
                 pos = s
@@ -227,30 +227,30 @@ klasse Parser:
         self.goodlines = goodlines = [0]
         push_good = goodlines.append
         i, n = 0, len(code)
-        while i < n:
+        waehrend i < n:
             ch = code[i]
             i = i+1
 
             # cases are checked in decreasing order of frequency
             wenn ch == 'x':
-                continue
+                weiter
 
             wenn ch == '\n':
                 lno = lno + 1
                 wenn level == 0:
                     push_good(lno)
                     # sonst we're in an unclosed bracket structure
-                continue
+                weiter
 
             wenn ch == '(':
                 level = level + 1
-                continue
+                weiter
 
             wenn ch == ')':
                 wenn level:
                     level = level - 1
                     # sonst the program is invalid, but we can't complain
-                continue
+                weiter
 
             wenn ch == '"' oder ch == "'":
                 # consume the string
@@ -260,16 +260,16 @@ klasse Parser:
                 firstlno = lno
                 w = len(quote) - 1
                 i = i+w
-                while i < n:
+                waehrend i < n:
                     ch = code[i]
                     i = i+1
 
                     wenn ch == 'x':
-                        continue
+                        weiter
 
                     wenn code[i-1:i+w] == quote:
                         i = i+w
-                        break
+                        breche
 
                     wenn ch == '\n':
                         lno = lno + 1
@@ -277,20 +277,20 @@ klasse Parser:
                             # unterminated single-quoted string
                             wenn level == 0:
                                 push_good(lno)
-                            break
-                        continue
+                            breche
+                        weiter
 
                     wenn ch == '\\':
                         assert i < n
                         wenn code[i] == '\n':
                             lno = lno + 1
                         i = i+1
-                        continue
+                        weiter
 
                     # sonst comment char oder paren inside string
 
                 sonst:
-                    # didn't break out of the loop, so we're still
+                    # didn't breche out of the loop, so we're still
                     # inside a string
                     wenn (lno - 1) == firstlno:
                         # before the previous \n in code, we were in the first
@@ -298,13 +298,13 @@ klasse Parser:
                         continuation = C_STRING_FIRST_LINE
                     sonst:
                         continuation = C_STRING_NEXT_LINES
-                continue    # mit outer loop
+                weiter    # mit outer loop
 
             wenn ch == '#':
                 # consume the comment
                 i = code.find('\n', i)
                 assert i >= 0
-                continue
+                weiter
 
             assert ch == '\\'
             assert i < n
@@ -360,7 +360,7 @@ klasse Parser:
         code, goodlines = self.code, self.goodlines
         i = len(goodlines) - 1  # Index of newest line.
         p = len(code)  # End of goodlines[i]
-        while i:
+        waehrend i:
             assert p
             # Make p be the index of the stmt at line number goodlines[i].
             # Move p back to the stmt at line number goodlines[i-1].
@@ -373,7 +373,7 @@ klasse Parser:
             wenn  _junkre(code, p):
                 i = i-1
             sonst:
-                break
+                breche
         wenn i == 0:
             # nothing but junk!
             assert p == 0
@@ -386,7 +386,7 @@ klasse Parser:
         stack = []  # stack of open bracket indices
         push_stack = stack.append
         bracketing = [(p, 0)]
-        while p < q:
+        waehrend p < q:
             # suck up all except ()[]{}'"#\\
             m = _chew_ordinaryre(code, p, q)
             wenn m:
@@ -394,13 +394,13 @@ klasse Parser:
                 newp = m.end()
                 # back up over totally boring whitespace
                 i = newp - 1    # index of last boring char
-                while i >= p und code[i] in " \t\n":
+                waehrend i >= p und code[i] in " \t\n":
                     i = i-1
                 wenn i >= p:
                     lastch = code[i]
                 p = newp
                 wenn p >= q:
-                    break
+                    breche
 
             ch = code[p]
 
@@ -409,7 +409,7 @@ klasse Parser:
                 bracketing.append((p, len(stack)))
                 lastch = ch
                 p = p+1
-                continue
+                weiter
 
             wenn ch in ")]}":
                 wenn stack:
@@ -417,7 +417,7 @@ klasse Parser:
                 lastch = ch
                 p = p+1
                 bracketing.append((p, len(stack)))
-                continue
+                weiter
 
             wenn ch == '"' oder ch == "'":
                 # consume string
@@ -431,7 +431,7 @@ klasse Parser:
                 lastch = ch
                 p = _match_stringre(code, p, q).end()
                 bracketing.append((p, len(stack)))
-                continue
+                weiter
 
             wenn ch == '#':
                 # consume comment und trailing newline
@@ -439,7 +439,7 @@ klasse Parser:
                 p = code.find('\n', p, q) + 1
                 assert p > 0
                 bracketing.append((p, len(stack)))
-                continue
+                weiter
 
             assert ch == '\\'
             p = p+1     # beyond backslash
@@ -449,7 +449,7 @@ klasse Parser:
                 lastch = ch + code[p]
             p = p+1     # beyond escaped char
 
-        # end while p < q:
+        # end waehrend p < q:
 
         self.lastch = lastch
         self.lastopenbracketpos = stack[-1] wenn stack sonst Nichts
@@ -468,12 +468,12 @@ klasse Parser:
         origi = i = code.rfind('\n', 0, j) + 1
         j = j+1     # one beyond open bracket
         # find first list item; set i to start of its line
-        while j < n:
+        waehrend j < n:
             m = _itemre(code, j)
             wenn m:
                 j = m.end() - 1     # index of first interesting char
                 extra = 0
-                break
+                breche
             sonst:
                 # this line is junk; advance to next line
                 i = j = code.find('\n', j) + 1
@@ -481,7 +481,7 @@ klasse Parser:
             # nothing interesting follows the bracket;
             # reproduce the bracket line's indentation + a level
             j = i = origi
-            while code[j] in " \t":
+            waehrend code[j] in " \t":
                 j = j+1
             extra = self.indentwidth
         return len(code[i:j].expandtabs(self.tabwidth)) + extra
@@ -506,7 +506,7 @@ klasse Parser:
         assert self.continuation == C_BACKSLASH
         code = self.code
         i = self.stmt_start
-        while code[i] in " \t":
+        waehrend code[i] in " \t":
             i = i+1
         startpos = i
 
@@ -514,7 +514,7 @@ klasse Parser:
         # look fuer an = operator
         endpos = code.find('\n', startpos) + 1
         found = level = 0
-        while i < endpos:
+        waehrend i < endpos:
             ch = code[i]
             wenn ch in "([{":
                 level = level + 1
@@ -528,12 +528,12 @@ klasse Parser:
             sowenn ch == '#':
                 # This line is unreachable because the # makes a comment of
                 # everything after it.
-                break
+                breche
             sowenn level == 0 und ch == '=' und \
                    (i == 0 oder code[i-1] nicht in "=<>!") und \
                    code[i+1] != '=':
                 found = 1
-                break
+                breche
             sonst:
                 i = i+1
 
@@ -547,7 +547,7 @@ klasse Parser:
             # oh well ... settle fuer moving beyond the first chunk
             # of non-whitespace chars
             i = startpos
-            while code[i] nicht in " \t\n":
+            waehrend code[i] nicht in " \t\n":
                 i = i+1
 
         return len(code[self.stmt_start:i].expandtabs(\
@@ -561,7 +561,7 @@ klasse Parser:
         i, n = self.stmt_start, self.stmt_end
         j = i
         code = self.code
-        while j < n und code[j] in " \t":
+        waehrend j < n und code[j] in " \t":
             j = j + 1
         return code[i:j]
 

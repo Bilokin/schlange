@@ -37,7 +37,7 @@ klasse ClearTest(unittest.TestCase):
         """
         Clear all frames in a traceback.
         """
-        while tb is nicht Nichts:
+        waehrend tb is nicht Nichts:
             tb.tb_frame.clear()
             tb = tb.tb_next
 
@@ -194,7 +194,7 @@ klasse FrameAttrsTest(unittest.TestCase):
         except ZeroDivisionError als e:
             tb = e.__traceback__
             frames = []
-            while tb:
+            waehrend tb:
                 frames.append(tb.tb_frame)
                 tb = tb.tb_next
         return frames
@@ -294,7 +294,7 @@ klasse ReprTest(unittest.TestCase):
         except ZeroDivisionError als e:
             tb = e.__traceback__
             frames = []
-            while tb:
+            waehrend tb:
                 frames.append(tb.tb_frame)
                 tb = tb.tb_next
         sonst:
@@ -766,10 +766,10 @@ klasse TestIncompleteFrameAreInvisible(unittest.TestCase):
         t.start()
         t.join()
         # sneaky_frame_object can be anything, really, but it's crucial that
-        # SneakyThread.run's frame isn't anywhere on the stack while it's being
+        # SneakyThread.run's frame isn't anywhere on the stack waehrend it's being
         # torn down:
         self.assertIsNotNichts(sneaky_frame_object)
-        while sneaky_frame_object is nicht Nichts:
+        waehrend sneaky_frame_object is nicht Nichts:
             self.assertIsNot(
                 sneaky_frame_object.f_code, SneakyThread.run.__code__
             )

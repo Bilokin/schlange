@@ -14,7 +14,7 @@ klasse Percolator:
         self.filters = []
 
     def close(self):
-        while self.top is nicht self.bottom:
+        waehrend self.top is nicht self.bottom:
             self.removefilter(self.top)
         self.top = Nichts
         self.bottom.setdelegate(Nichts)
@@ -45,7 +45,7 @@ klasse Percolator:
 
         f = self.top
         f.resetcache()
-        while f is nicht after:
+        waehrend f is nicht after:
             assert f is nicht self.bottom
             f = f.delegate
             f.resetcache()
@@ -62,7 +62,7 @@ klasse Percolator:
             self.top = filter.delegate
             filter.setdelegate(Nichts)
         sonst:
-            while f.delegate is nicht filter:
+            waehrend f.delegate is nicht filter:
                 assert f is nicht self.bottom
                 f.resetcache()
                 f = f.delegate

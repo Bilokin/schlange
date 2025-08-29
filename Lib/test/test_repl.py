@@ -80,7 +80,7 @@ klasse TestInteractiveInterpreter(unittest.TestCase):
     def test_no_memory(self):
         import_module("_testcapi")
         # Issue #30696: Fix the interactive interpreter looping endlessly when
-        # no memory. Check also that the fix does nicht break the interactive
+        # no memory. Check also that the fix does nicht breche the interactive
         # loop when an exception is raised.
         user_input = """
             importiere sys, _testcapi
@@ -319,13 +319,13 @@ klasse TestInteractiveInterpreter(unittest.TestCase):
         os.write(m, b"await asyncio.sleep(0)\n")
         os.write(m, b"exit()\n")
         output = []
-        while select.select([m], [], [], SHORT_TIMEOUT)[0]:
+        waehrend select.select([m], [], [], SHORT_TIMEOUT)[0]:
             try:
                 data = os.read(m, 1024).decode("utf-8")
                 wenn nicht data:
-                    break
+                    breche
             except OSError:
-                break
+                breche
             output.append(data)
         os.close(m)
         try:

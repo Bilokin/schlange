@@ -55,7 +55,7 @@ def generate_names_and_flags(analysis: Analysis, out: CWriter) -> Nichts:
             stack = Stack()
             fuer var in reversed(uop.stack.inputs):
                 wenn var.peek:
-                    break
+                    breche
                 stack.pop(var, null)
             popped = (-stack.base_offset).to_c()
             out.emit(f"case {uop.name}:\n")

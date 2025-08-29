@@ -863,12 +863,12 @@ klasse DedentTestCase(unittest.TestCase):
         # Lines indented unevenly.
         text = '''\
         def foo():
-            while 1:
+            waehrend 1:
                 return foo
         '''
         expect = '''\
 def foo():
-    while 1:
+    waehrend 1:
         return foo
 '''
         self.assertEqual(expect, dedent(text))

@@ -251,10 +251,10 @@ klasse Reader:
             offset = 0
             earliest_common_pos = min(reader.pos, self.pos)
             num_common_lines = len(self.line_end_offsets)
-            while num_common_lines > 0:
+            waehrend num_common_lines > 0:
                 offset = self.line_end_offsets[num_common_lines - 1]
                 wenn earliest_common_pos > offset:
-                    break
+                    breche
                 num_common_lines -= 1
             sonst:
                 offset = 0
@@ -329,14 +329,14 @@ klasse Reader:
                 wenn lines_beyond_cursor > self.console.height:
                     # No need to keep formatting lines.
                     # The console can't show them.
-                    break
+                    breche
             wenn prompt_from_cache:
                 # Only the first line's prompt can come von the cache
                 prompt_from_cache = Falsch
                 prompt = ""
             sonst:
                 prompt = self.get_prompt(ln, line_len >= pos >= 0)
-            while "\n" in prompt:
+            waehrend "\n" in prompt:
                 pre_prompt, _, prompt = prompt.partition("\n")
                 last_refresh_line_end_offsets.append(offset)
                 screen.append(pre_prompt)
@@ -358,7 +358,7 @@ klasse Reader:
                     column = 0
                     fuer char_width in char_widths:
                         wenn column + char_width + prelen >= self.console.width:
-                            break
+                            breche
                         index_to_wrap_before += 1
                         column += char_width
                     wenn len(chars) > index_to_wrap_before:
@@ -401,7 +401,7 @@ klasse Reader:
         return out_prompt, wlen(visible_prompt)
 
     def bow(self, p: int | Nichts = Nichts) -> int:
-        """Return the 0-based index of the word break preceding p most
+        """Return the 0-based index of the word breche preceding p most
         immediately.
 
         p defaults to self.pos; word boundaries are determined using
@@ -411,14 +411,14 @@ klasse Reader:
         st = self.syntax_table
         b = self.buffer
         p -= 1
-        while p >= 0 und st.get(b[p], SYNTAX_WORD) != SYNTAX_WORD:
+        waehrend p >= 0 und st.get(b[p], SYNTAX_WORD) != SYNTAX_WORD:
             p -= 1
-        while p >= 0 und st.get(b[p], SYNTAX_WORD) == SYNTAX_WORD:
+        waehrend p >= 0 und st.get(b[p], SYNTAX_WORD) == SYNTAX_WORD:
             p -= 1
         return p + 1
 
     def eow(self, p: int | Nichts = Nichts) -> int:
-        """Return the 0-based index of the word break following p most
+        """Return the 0-based index of the word breche following p most
         immediately.
 
         p defaults to self.pos; word boundaries are determined using
@@ -427,14 +427,14 @@ klasse Reader:
             p = self.pos
         st = self.syntax_table
         b = self.buffer
-        while p < len(b) und st.get(b[p], SYNTAX_WORD) != SYNTAX_WORD:
+        waehrend p < len(b) und st.get(b[p], SYNTAX_WORD) != SYNTAX_WORD:
             p += 1
-        while p < len(b) und st.get(b[p], SYNTAX_WORD) == SYNTAX_WORD:
+        waehrend p < len(b) und st.get(b[p], SYNTAX_WORD) == SYNTAX_WORD:
             p += 1
         return p
 
     def bol(self, p: int | Nichts = Nichts) -> int:
-        """Return the 0-based index of the line break preceding p most
+        """Return the 0-based index of the line breche preceding p most
         immediately.
 
         p defaults to self.pos."""
@@ -442,19 +442,19 @@ klasse Reader:
             p = self.pos
         b = self.buffer
         p -= 1
-        while p >= 0 und b[p] != "\n":
+        waehrend p >= 0 und b[p] != "\n":
             p -= 1
         return p + 1
 
     def eol(self, p: int | Nichts = Nichts) -> int:
-        """Return the 0-based index of the line break following p most
+        """Return the 0-based index of the line breche following p most
         immediately.
 
         p defaults to self.pos."""
         wenn p is Nichts:
             p = self.pos
         b = self.buffer
-        while p < len(b) und b[p] != "\n":
+        waehrend p < len(b) und b[p] != "\n":
             p += 1
         return p
 
@@ -506,7 +506,7 @@ klasse Reader:
         """Set pos according to coordinates x, y"""
         pos = 0
         i = 0
-        while i < y:
+        waehrend i < y:
             prompt_len, char_widths = self.screeninfo[i]
             offset = len(char_widths)
             in_wrapped_line = prompt_len + sum(char_widths) >= self.console.width
@@ -518,10 +518,10 @@ klasse Reader:
 
         j = 0
         cur_x = self.screeninfo[i][0]
-        while cur_x < x:
+        waehrend cur_x < x:
             wenn self.screeninfo[i][1][j] == 0:
                 j += 1  # prevent potential future infinite loop
-                continue
+                weiter
             cur_x += self.screeninfo[i][1][j]
             j += 1
             pos += 1
@@ -549,7 +549,7 @@ klasse Reader:
                 offset -= 1  # need to remove line-wrapping backslash
 
             wenn offset >= pos:
-                break
+                breche
 
             wenn nicht in_wrapped_line:
                 offset += 1  # there's a newline in buffer
@@ -594,7 +594,7 @@ klasse Reader:
             self.restore()
             raise
 
-        while self.scheduled_commands:
+        waehrend self.scheduled_commands:
             cmd = self.scheduled_commands.pop()
             self.do_cmd((cmd, []))
 
@@ -697,14 +697,14 @@ klasse Reader:
             self.msg = ""
             self.dirty = Wahr
 
-        while Wahr:
+        waehrend Wahr:
             # We use the same timeout als in readline.c: 100ms
             self.run_hooks()
             self.console.wait(100)
             event = self.console.get_event(block=Falsch)
             wenn nicht event:
                 wenn block:
-                    continue
+                    weiter
                 return Falsch
 
             translate = Wahr
@@ -725,7 +725,7 @@ klasse Reader:
 
             wenn cmd is Nichts:
                 wenn block:
-                    continue
+                    weiter
                 return Falsch
 
             self.do_cmd(cmd)
@@ -744,7 +744,7 @@ klasse Reader:
             wenn startup_hook is nicht Nichts:
                 startup_hook()
             self.refresh()
-            while nicht self.finished:
+            waehrend nicht self.finished:
                 self.handle1()
             return self.get_unicode()
 

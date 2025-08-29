@@ -121,7 +121,7 @@ klasse NullPyObjectPtr(RuntimeError):
 def safety_limit(val):
     # Given an integer value von the process being debugged, limit it to some
     # safety threshold so that arbitrary breakage within said process doesn't
-    # break the gdb process too much (e.g. sizes of iterations, sizes of lists)
+    # breche the gdb process too much (e.g. sizes of iterations, sizes of lists)
     return min(val, 1000)
 
 
@@ -322,7 +322,7 @@ klasse PyObjectPtr(object):
           Traceback (most recent call last):
             File "<string>", line 1, in <module>
           NotImplementedError: Symbol type nicht yet supported in Python scripts.
-          Error while executing Python code.
+          Error waehrend executing Python code.
 
         For now, we use tp_flags, after doing some string comparisons on the
         tp_name fuer some special-cases that don't seem to be visible through
@@ -652,7 +652,7 @@ def read_varint(it):
     b = read(it)
     val = b & 63;
     shift = 0;
-    while b & 64:
+    waehrend b & 64:
         b = read(it)
         shift += 6
         val |= (b&63) << shift
@@ -669,7 +669,7 @@ def parse_location_table(firstlineno, linetable):
     line = firstlineno
     addr = 0
     it = iter(linetable)
-    while Wahr:
+    waehrend Wahr:
         try:
             first_byte = read(it)
         except StopIteration:
@@ -680,7 +680,7 @@ def parse_location_table(firstlineno, linetable):
         wenn code == 15:
             yield addr, end_addr, Nichts
             addr = end_addr
-            continue
+            weiter
         sowenn code == 14: # Long form
             line_delta = read_signed_varint(it)
             line += line_delta
@@ -1078,7 +1078,7 @@ klasse PyFramePtr:
         fuer i in safe_range(self.co_nlocals):
             pyop_value = PyObjectPtr.from_pyobject_ptr(localsplus[i])
             wenn pyop_value.is_null():
-                continue
+                weiter
             pyop_name = PyObjectPtr.from_pyobject_ptr(self.co_localsplusnames[i])
             yield (pyop_name, pyop_value)
 
@@ -1458,7 +1458,7 @@ klasse PyUnicodeObjectPtr(PyObjectPtr):
         out.write(quote)
 
         i = 0
-        while i < len(proxy):
+        waehrend i < len(proxy):
             ch = proxy[i]
             i += 1
 
@@ -1692,7 +1692,7 @@ klasse Frame(object):
         index = 0
         # Go down until you reach the newest frame:
         iter_frame = self
-        while iter_frame.newer():
+        waehrend iter_frame.newer():
             index += 1
             iter_frame = iter_frame.newer()
         return index
@@ -1830,7 +1830,7 @@ klasse Frame(object):
             # No frame: Python didn't start yet
             return Nichts
 
-        while frame:
+        waehrend frame:
             wenn frame.is_python_frame():
                 return frame
             frame = frame.older()
@@ -1844,7 +1844,7 @@ klasse Frame(object):
         selected GDB frame, oder Nichts'''
         frame = cls.get_selected_frame()
 
-        while frame:
+        waehrend frame:
             wenn frame.is_evalframe():
                 return frame
             frame = frame.older()
@@ -1855,10 +1855,10 @@ klasse Frame(object):
     def print_summary(self):
         wenn self.is_evalframe():
             interp_frame = self.get_pyop()
-            while Wahr:
+            waehrend Wahr:
                 wenn interp_frame:
                     wenn interp_frame.is_shim():
-                        break
+                        breche
                     line = interp_frame.get_truncated_repr(MAX_OUTPUT_LEN)
                     sys.stdout.write('#%i %s\n' % (self.get_index(), line))
                     wenn nicht interp_frame.is_optimized_out():
@@ -1867,7 +1867,7 @@ klasse Frame(object):
                             sys.stdout.write('    %s\n' % line.strip())
                 sonst:
                     sys.stdout.write('#%i (unable to read python frame information)\n' % self.get_index())
-                    break
+                    breche
                 interp_frame = interp_frame.previous()
         sonst:
             info = self.is_other_python_frame()
@@ -1879,10 +1879,10 @@ klasse Frame(object):
     def print_traceback(self):
         wenn self.is_evalframe():
             interp_frame = self.get_pyop()
-            while Wahr:
+            waehrend Wahr:
                 wenn interp_frame:
                     wenn interp_frame.is_shim():
-                        break
+                        breche
                     interp_frame.print_traceback()
                     wenn nicht interp_frame.is_optimized_out():
                         line = interp_frame.current_line()
@@ -1890,7 +1890,7 @@ klasse Frame(object):
                             sys.stdout.write('    %s\n' % line.strip())
                 sonst:
                     sys.stdout.write('  (unable to read python frame information)\n')
-                    break
+                    breche
                 interp_frame = interp_frame.previous()
         sonst:
             info = self.is_other_python_frame()
@@ -1990,14 +1990,14 @@ def move_in_stack(move_up):
     wenn nicht frame:
         drucke('Unable to locate python frame')
         return
-    while frame:
+    waehrend frame:
         wenn move_up:
             iter_frame = frame.older()
         sonst:
             iter_frame = frame.newer()
 
         wenn nicht iter_frame:
-            break
+            breche
 
         wenn iter_frame.is_python_frame():
             # Result:
@@ -2057,7 +2057,7 @@ klasse PyBacktraceFull(gdb.Command):
             drucke('Unable to locate python frame')
             return
 
-        while frame:
+        waehrend frame:
             wenn frame.is_python_frame():
                 frame.print_summary()
             frame = frame.older()
@@ -2080,7 +2080,7 @@ klasse PyBacktrace(gdb.Command):
             return
 
         sys.stdout.write('Traceback (most recent call first):\n')
-        while frame:
+        waehrend frame:
             wenn frame.is_python_frame():
                 frame.print_traceback()
             frame = frame.older()
@@ -2139,12 +2139,12 @@ klasse PyLocals(gdb.Command):
             return
 
         pyop_frame = frame.get_pyop()
-        while Wahr:
+        waehrend Wahr:
             wenn nicht pyop_frame:
                 drucke(UNABLE_READ_INFO_PYTHON_FRAME)
-                break
+                breche
             wenn pyop_frame.is_shim():
-                break
+                breche
 
             sys.stdout.write('Locals fuer %s\n' % (pyop_frame.co_name.proxyval(set())))
 

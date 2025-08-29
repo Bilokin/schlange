@@ -216,7 +216,7 @@ def _cancel_all_tasks(loop):
 
     fuer task in to_cancel:
         wenn task.cancelled():
-            continue
+            weiter
         wenn task.exception() is nicht Nichts:
             loop.call_exception_handler({
                 'message': 'unhandled exception during asyncio.run() shutdown',

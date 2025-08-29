@@ -55,11 +55,11 @@ klasse PullDOMTestCase(unittest.TestCase):
         self.assertEqual(node.attributes.getNamedItem("xmlns:xdc").value,
               "http://www.xml.com/books")
         evt, node = next(items)
-        self.assertEqual(pulldom.CHARACTERS, evt) # Line break
+        self.assertEqual(pulldom.CHARACTERS, evt) # Line breche
         evt, node = next(items)
         # XXX - A comment should be reported here!
         # self.assertEqual(pulldom.COMMENT, evt)
-        # Line break after swallowed comment:
+        # Line breche after swallowed comment:
         self.assertEqual(pulldom.CHARACTERS, evt)
         evt, node = next(items)
         self.assertEqual("title", node.tagName)
@@ -110,13 +110,13 @@ klasse PullDOMTestCase(unittest.TestCase):
             wenn evt == pulldom.START_ELEMENT und item.tagName == "title":
                 items.expandNode(item)
                 self.assertEqual(1, len(item.childNodes))
-                break
+                breche
         sonst:
             self.fail("No \"title\" element detected in SMALL_SAMPLE!")
         # Loop until we get to the next start-element:
         fuer evt, node in items:
             wenn evt == pulldom.START_ELEMENT:
-                break
+                breche
         self.assertEqual("hr", node.tagName,
             "expandNode did nicht leave DOMEventStream in the correct state.")
         # Attempt to expand a standalone element:
@@ -140,7 +140,7 @@ klasse PullDOMTestCase(unittest.TestCase):
         items = pulldom.parseString(SMALL_SAMPLE)
         fuer evt, _ in items:
             wenn evt == pulldom.COMMENT:
-                break
+                breche
         sonst:
             self.fail("No comment was encountered")
 
@@ -151,7 +151,7 @@ klasse PullDOMTestCase(unittest.TestCase):
         # Read all of the nodes up to und including </html>:
         fuer evt, node in items:
             wenn evt == pulldom.END_ELEMENT und node.tagName == "html":
-                break
+                breche
         try:
             # Assert that the next node is END_DOCUMENT:
             evt, node = next(items)
@@ -305,7 +305,7 @@ klasse SAX2DOMTestCase(unittest.TestCase):
                                    len(SMALL_SAMPLE))
             fuer evt, node in sd:
                 wenn evt == pulldom.START_ELEMENT und node.tagName == "html":
-                    break
+                    breche
             # Because the buffer is the same length als the XML, all the
             # nodes should have been parsed und added:
             self.assertGreater(len(node.childNodes), 0)

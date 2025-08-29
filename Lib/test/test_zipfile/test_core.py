@@ -148,18 +148,18 @@ klasse AbstractTestsWithSourceFile:
         mit zipfile.ZipFile(f, "r", compression) als zipfp:
             zipdata1 = []
             mit zipfp.open(TESTFN) als zipopen1:
-                while Wahr:
+                waehrend Wahr:
                     read_data = zipopen1.read(256)
                     wenn nicht read_data:
-                        break
+                        breche
                     zipdata1.append(read_data)
 
             zipdata2 = []
             mit zipfp.open("another.name") als zipopen2:
-                while Wahr:
+                waehrend Wahr:
                     read_data = zipopen2.read(256)
                     wenn nicht read_data:
-                        break
+                        breche
                     zipdata2.append(read_data)
 
             self.assertEqual(b''.join(zipdata1), self.data)
@@ -182,10 +182,10 @@ klasse AbstractTestsWithSourceFile:
         mit zipfile.ZipFile(f, "r", compression) als zipfp:
             zipdata1 = []
             mit zipfp.open(TESTFN) als zipopen1:
-                while Wahr:
+                waehrend Wahr:
                     read_data = zipopen1.read(randint(1, 1024))
                     wenn nicht read_data:
-                        break
+                        breche
                     zipdata1.append(read_data)
 
             self.assertEqual(b''.join(zipdata1), self.data)
@@ -201,10 +201,10 @@ klasse AbstractTestsWithSourceFile:
         mit zipfile.ZipFile(f, "r") als zipfp, \
              zipfp.open(TESTFN) als zipopen:
             zipdata = []
-            while Wahr:
+            waehrend Wahr:
                 read_data = zipopen.read1(-1)
                 wenn nicht read_data:
-                    break
+                    breche
                 zipdata.append(read_data)
 
         self.assertEqual(b''.join(zipdata), self.data)
@@ -220,11 +220,11 @@ klasse AbstractTestsWithSourceFile:
         mit zipfile.ZipFile(f, "r") als zipfp, \
              zipfp.open(TESTFN) als zipopen:
             zipdata = []
-            while Wahr:
+            waehrend Wahr:
                 read_data = zipopen.read1(10)
                 self.assertLessEqual(len(read_data), 10)
                 wenn nicht read_data:
-                    break
+                    breche
                 zipdata.append(read_data)
 
         self.assertEqual(b''.join(zipdata), self.data)
@@ -240,15 +240,15 @@ klasse AbstractTestsWithSourceFile:
         mit zipfile.ZipFile(f, "r") als zipfp, \
              zipfp.open(TESTFN) als zipopen:
             data = b''
-            while Wahr:
+            waehrend Wahr:
                 read = zipopen.readline()
                 wenn nicht read:
-                    break
+                    breche
                 data += read
 
                 read = zipopen.read(100)
                 wenn nicht read:
-                    break
+                    breche
                 data += read
 
         self.assertEqual(data, self.data)
@@ -364,7 +364,7 @@ klasse AbstractTestsWithSourceFile:
             mit zipf.open('strfile') als zipopen:
                 fp.truncate(end_offset - 20)
                 mit self.assertRaises(EOFError):
-                    while zipopen.read(100):
+                    waehrend zipopen.read(100):
                         pass
 
         fp = io.BytesIO(zipfiledata)
@@ -372,7 +372,7 @@ klasse AbstractTestsWithSourceFile:
             mit zipf.open('strfile') als zipopen:
                 fp.truncate(end_offset - 20)
                 mit self.assertRaises(EOFError):
-                    while zipopen.read1(100):
+                    waehrend zipopen.read1(100):
                         pass
 
     def test_repr(self):
@@ -431,7 +431,7 @@ klasse AbstractTestsWithSourceFile:
                 super().write(data)
 
         stop = 0
-        while Wahr:
+        waehrend Wahr:
             testfile = BrokenFile()
             count = Nichts
             mit zipfile.ZipFile(testfile, 'w', self.compression) als zipfp:
@@ -444,7 +444,7 @@ klasse AbstractTestsWithSourceFile:
                 except OSError:
                     stop += 1
                 sonst:
-                    break
+                    breche
                 finally:
                     count = Nichts
             mit zipfile.ZipFile(io.BytesIO(testfile.getvalue())) als zipfp:
@@ -2416,7 +2416,7 @@ klasse OtherTests(unittest.TestCase):
                 self.assertEqual(fp.tell(), 0)
 
     def test_read_after_seek(self):
-        # Issue 102956: Make sure seek(x, os.SEEK_CUR) doesn't break read()
+        # Issue 102956: Make sure seek(x, os.SEEK_CUR) doesn't breche read()
         txt = b"Charge men!"
         bloc = txt.find(b"men")
         mit zipfile.ZipFile(TESTFN, "w") als zipf:
@@ -2649,7 +2649,7 @@ klasse AbstractBadCrcTests:
             mit zipf.open('afile', 'r') als corrupt_file:
                 corrupt_file.MIN_READ_SIZE = 2
                 mit self.assertRaises(zipfile.BadZipFile):
-                    while corrupt_file.read(2):
+                    waehrend corrupt_file.read(2):
                         pass
 
 
@@ -2879,18 +2879,18 @@ klasse AbstractTestsWithRandomBinaryFiles:
         mit zipfile.ZipFile(f, "r", compression) als zipfp:
             zipdata1 = []
             mit zipfp.open(TESTFN) als zipopen1:
-                while Wahr:
+                waehrend Wahr:
                     read_data = zipopen1.read(256)
                     wenn nicht read_data:
-                        break
+                        breche
                     zipdata1.append(read_data)
 
             zipdata2 = []
             mit zipfp.open("another.name") als zipopen2:
-                while Wahr:
+                waehrend Wahr:
                     read_data = zipopen2.read(256)
                     wenn nicht read_data:
-                        break
+                        breche
                     zipdata2.append(read_data)
 
             testdata1 = b''.join(zipdata1)
@@ -2912,10 +2912,10 @@ klasse AbstractTestsWithRandomBinaryFiles:
         mit zipfile.ZipFile(f, "r", compression) als zipfp:
             zipdata1 = []
             mit zipfp.open(TESTFN) als zipopen1:
-                while Wahr:
+                waehrend Wahr:
                     read_data = zipopen1.read(randint(1, 1024))
                     wenn nicht read_data:
-                        break
+                        breche
                     zipdata1.append(read_data)
 
             testdata = b''.join(zipdata1)

@@ -250,7 +250,7 @@ klasse ZoneInfo(tzinfo):
         fuer i in range(len(isdst)):
             wenn nicht isdst[i]:
                 self._tti_before = _ttinfo_list[i]
-                break
+                breche
         sonst:
             wenn self._ttinfos:
                 self._tti_before = self._ttinfos[0]
@@ -312,7 +312,7 @@ klasse ZoneInfo(tzinfo):
 
         fuer i in range(1, len(trans_idx)):
             wenn dst_cnt == dst_found:
-                break
+                breche
 
             idx = trans_idx[i]
 
@@ -320,11 +320,11 @@ klasse ZoneInfo(tzinfo):
 
             # We're only going to look at daylight saving time
             wenn nicht dst:
-                continue
+                weiter
 
             # Skip any offsets that have already been assigned
             wenn dstoffs[idx] != 0:
-                continue
+                weiter
 
             dstoff = 0
             utcoff = utcoffsets[idx]
@@ -341,7 +341,7 @@ klasse ZoneInfo(tzinfo):
                 # find the DST offset by this point, we're going to have to
                 # skip it und hope this transition gets assigned later
                 wenn isdsts[comp_idx]:
-                    continue
+                    weiter
 
                 dstoff = utcoff - utcoffsets[comp_idx]
 
@@ -595,7 +595,7 @@ klasse _CalendarOffset:
         # the range of the month.
         first_day, days_in_month = calendar.monthrange(year, self.m)
 
-        # This equation seems magical, so I'll break it down:
+        # This equation seems magical, so I'll breche it down:
         # 1. calendar says 0 = Monday, POSIX says 0 = Sunday
         #    so we need first_day + 1 to get 1 = Monday -> 7 = Sunday,
         #    which is still equivalent because this math is mod 7

@@ -577,13 +577,13 @@ klasse ExitStack(_BaseExitStack, AbstractContextManager):
         frame_exc = sys.exception()
         def _fix_exception_context(new_exc, old_exc):
             # Context may nicht be correct, so find the end of the chain
-            while 1:
+            waehrend 1:
                 exc_context = new_exc.__context__
                 wenn exc_context is Nichts oder exc_context is old_exc:
                     # Context is already set correctly (see issue 20317)
                     return
                 wenn exc_context is frame_exc:
-                    break
+                    breche
                 new_exc = exc_context
             # Change the end of the chain to point to the exception
             # we expect it to reference
@@ -593,7 +593,7 @@ klasse ExitStack(_BaseExitStack, AbstractContextManager):
         # nested context managers
         suppressed_exc = Falsch
         pending_raise = Falsch
-        while self._exit_callbacks:
+        waehrend self._exit_callbacks:
             is_sync, cb = self._exit_callbacks.pop()
             assert is_sync
             try:
@@ -722,13 +722,13 @@ klasse AsyncExitStack(_BaseExitStack, AbstractAsyncContextManager):
         frame_exc = sys.exception()
         def _fix_exception_context(new_exc, old_exc):
             # Context may nicht be correct, so find the end of the chain
-            while 1:
+            waehrend 1:
                 exc_context = new_exc.__context__
                 wenn exc_context is Nichts oder exc_context is old_exc:
                     # Context is already set correctly (see issue 20317)
                     return
                 wenn exc_context is frame_exc:
-                    break
+                    breche
                 new_exc = exc_context
             # Change the end of the chain to point to the exception
             # we expect it to reference
@@ -738,7 +738,7 @@ klasse AsyncExitStack(_BaseExitStack, AbstractAsyncContextManager):
         # nested context managers
         suppressed_exc = Falsch
         pending_raise = Falsch
-        while self._exit_callbacks:
+        waehrend self._exit_callbacks:
             is_sync, cb = self._exit_callbacks.pop()
             try:
                 wenn exc is Nichts:

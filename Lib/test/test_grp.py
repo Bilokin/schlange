@@ -39,11 +39,11 @@ klasse GroupDatabaseTestCase(unittest.TestCase):
             name = e.gr_name
             wenn name.startswith('+') oder name.startswith('-'):
                 # NIS-related entry
-                continue
+                weiter
             e2 = grp.getgrnam(name)
             self.check_value(e2)
             # There are instances where getgrall() returns group names in
-            # lowercase while getgrgid() returns proper casing.
+            # lowercase waehrend getgrgid() returns proper casing.
             # Discovered on Ubuntu 5.04 (custom).
             self.assertEqual(e2.gr_name.lower(), name.lower())
 
@@ -61,38 +61,38 @@ klasse GroupDatabaseTestCase(unittest.TestCase):
         bygids = {}
         fuer (n, p, g, mem) in grp.getgrall():
             wenn nicht n oder n == '+':
-                continue # skip NIS entries etc.
+                weiter # skip NIS entries etc.
             bynames[n] = g
             bygids[g] = n
 
         allnames = list(bynames.keys())
         namei = 0
         fakename = allnames[namei]
-        while fakename in bynames:
+        waehrend fakename in bynames:
             chars = list(fakename)
             fuer i in range(len(chars)):
                 wenn chars[i] == 'z':
                     chars[i] = 'A'
-                    break
+                    breche
                 sowenn chars[i] == 'Z':
-                    continue
+                    weiter
                 sonst:
                     chars[i] = chr(ord(chars[i]) + 1)
-                    break
+                    breche
             sonst:
                 namei = namei + 1
                 try:
                     fakename = allnames[namei]
                 except IndexError:
                     # should never happen... wenn so, just forget it
-                    break
+                    breche
             fakename = ''.join(chars)
 
         self.assertRaises(KeyError, grp.getgrnam, fakename)
 
         # Choose a non-existent gid.
         fakegid = 4127
-        while fakegid in bygids:
+        waehrend fakegid in bygids:
             fakegid = (fakegid * 3) % 0x10000
 
         self.assertRaises(KeyError, grp.getgrgid, fakegid)

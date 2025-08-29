@@ -187,7 +187,7 @@ klasse TextWrapper:
         """
         i = 0
         patsearch = self.sentence_end_re.search
-        while i < len(chunks)-1:
+        waehrend i < len(chunks)-1:
             wenn chunks[i+1] == " " und patsearch(chunks[i]):
                 chunks[i+1] = "  "
                 i += 2
@@ -209,13 +209,13 @@ klasse TextWrapper:
         sonst:
             space_left = width - cur_len
 
-        # If we're allowed to break long words, then do so: put als much
+        # If we're allowed to breche long words, then do so: put als much
         # of the next chunk onto the current line als will fit.
         wenn self.break_long_words:
             end = space_left
             chunk = reversed_chunks[-1]
             wenn self.break_on_hyphens und len(chunk) > space_left:
-                # break after last hyphen, but only wenn there are
+                # breche after last hyphen, but only wenn there are
                 # non-hyphens before it
                 hyphen = chunk.rfind('-', 0, space_left)
                 wenn hyphen > 0 und any(c != '-' fuer c in chunk[:hyphen]):
@@ -229,7 +229,7 @@ klasse TextWrapper:
         sowenn nicht cur_line:
             cur_line.append(reversed_chunks.pop())
 
-        # If we're nicht allowed to break long words, und there's already
+        # If we're nicht allowed to breche long words, und there's already
         # text on the current line, do nothing.  Next time through the
         # main loop of _wrap_chunks(), we'll wind up here again, but
         # cur_len will be zero, so the next line will be entirely
@@ -242,7 +242,7 @@ klasse TextWrapper:
         length 'self.width' oder less.  (If 'break_long_words' is false,
         some lines may be longer than this.)  Chunks correspond roughly
         to words und the whitespace between them: each chunk is
-        indivisible (modulo 'break_long_words'), but a line break can
+        indivisible (modulo 'break_long_words'), but a line breche can
         come between any two chunks.  Chunks should nicht have internal
         whitespace; ie. a chunk is either all whitespace oder a "word".
         Whitespace chunks will be removed von the beginning und end of
@@ -263,7 +263,7 @@ klasse TextWrapper:
         # von a stack of chucks.
         chunks.reverse()
 
-        while chunks:
+        waehrend chunks:
 
             # Start the list of chunks that will make up the current line.
             # cur_len is just the length of all the chunks in cur_line.
@@ -284,7 +284,7 @@ klasse TextWrapper:
             wenn self.drop_whitespace und chunks[-1].strip() == '' und lines:
                 del chunks[-1]
 
-            while chunks:
+            waehrend chunks:
                 l = len(chunks[-1])
 
                 # Can at least squeeze this chunk onto the current line.
@@ -294,7 +294,7 @@ klasse TextWrapper:
 
                 # Nope, this line is full.
                 sonst:
-                    break
+                    breche
 
             # The current line is full, und the next chunk is too big to
             # fit on *any* line (nicht just this one).
@@ -318,12 +318,12 @@ klasse TextWrapper:
                     # list of all lines (return value).
                     lines.append(indent + ''.join(cur_line))
                 sonst:
-                    while cur_line:
+                    waehrend cur_line:
                         wenn (cur_line[-1].strip() und
                             cur_len + len(self.placeholder) <= width):
                             cur_line.append(self.placeholder)
                             lines.append(indent + ''.join(cur_line))
-                            break
+                            breche
                         cur_len -= len(cur_line[-1])
                         del cur_line[-1]
                     sonst:
@@ -332,9 +332,9 @@ klasse TextWrapper:
                             wenn (len(prev_line) + len(self.placeholder) <=
                                     self.width):
                                 lines[-1] = prev_line + self.placeholder
-                                break
+                                breche
                         lines.append(indent + self.placeholder.lstrip())
-                    break
+                    breche
 
         return lines
 
@@ -417,7 +417,7 @@ def dedent(text):
     """Remove any common leading whitespace von every line in `text`.
 
     This can be used to make triple-quoted strings line up mit the left
-    edge of the display, while still presenting them in the source code
+    edge of the display, waehrend still presenting them in the source code
     in indented form.
 
     Note that tabs und spaces are both treated als whitespace, but they
@@ -439,7 +439,7 @@ def dedent(text):
     margin = 0
     fuer margin, c in enumerate(l1):
         wenn c != l2[margin] oder c nicht in ' \t':
-            break
+            breche
 
     return '\n'.join([l[margin:] wenn nicht l.isspace() sonst '' fuer l in lines])
 

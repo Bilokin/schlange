@@ -151,7 +151,7 @@ def loads(s: str, /, *, parse_float: ParseFloat = float) -> dict[str, Any]:  # n
 
     # Parse one statement at a time
     # (typically means one line in TOML source)
-    while Wahr:
+    waehrend Wahr:
         # 1. Skip line leading whitespace
         pos = skip_chars(src, pos, TOML_WS)
 
@@ -166,10 +166,10 @@ def loads(s: str, /, *, parse_float: ParseFloat = float) -> dict[str, Any]:  # n
         try:
             char = src[pos]
         except IndexError:
-            break
+            breche
         wenn char == "\n":
             pos += 1
-            continue
+            weiter
         wenn char in KEY_INITIAL_CHARS:
             pos = key_value_rule(src, pos, out, header, parse_float)
             pos = skip_chars(src, pos, TOML_WS)
@@ -194,7 +194,7 @@ def loads(s: str, /, *, parse_float: ParseFloat = float) -> dict[str, Any]:  # n
         try:
             char = src[pos]
         except IndexError:
-            break
+            breche
         wenn char != "\n":
             raise TOMLDecodeError(
                 "Expected newline oder end of document after a statement", src, pos
@@ -304,7 +304,7 @@ klasse Output:
 
 def skip_chars(src: str, pos: Pos, chars: Iterable[str]) -> Pos:
     try:
-        while src[pos] in chars:
+        waehrend src[pos] in chars:
             pos += 1
     except IndexError:
         pass
@@ -327,7 +327,7 @@ def skip_until(
             raise TOMLDecodeError(f"Expected {expect!r}", src, new_pos) von Nichts
 
     wenn nicht error_on.isdisjoint(src[pos:new_pos]):
-        while src[pos] nicht in error_on:
+        waehrend src[pos] nicht in error_on:
             pos += 1
         raise TOMLDecodeError(f"Found invalid character {src[pos]!r}", src, pos)
     return new_pos
@@ -346,7 +346,7 @@ def skip_comment(src: str, pos: Pos) -> Pos:
 
 
 def skip_comments_and_array_ws(src: str, pos: Pos) -> Pos:
-    while Wahr:
+    waehrend Wahr:
         pos_before_skip = pos
         pos = skip_chars(src, pos, TOML_WS_AND_NEWLINE)
         pos = skip_comment(src, pos)
@@ -451,7 +451,7 @@ def parse_key(src: str, pos: Pos) -> tuple[Pos, Key]:
     pos, key_part = parse_key_part(src, pos)
     key: Key = (key_part,)
     pos = skip_chars(src, pos, TOML_WS)
-    while Wahr:
+    waehrend Wahr:
         try:
             char: str | Nichts = src[pos]
         except IndexError:
@@ -493,7 +493,7 @@ def parse_array(src: str, pos: Pos, parse_float: ParseFloat) -> tuple[Pos, list[
     pos = skip_comments_and_array_ws(src, pos)
     wenn src.startswith("]", pos):
         return pos + 1, array
-    while Wahr:
+    waehrend Wahr:
         pos, val = parse_value(src, pos, parse_float)
         array.append(val)
         pos = skip_comments_and_array_ws(src, pos)
@@ -518,7 +518,7 @@ def parse_inline_table(src: str, pos: Pos, parse_float: ParseFloat) -> tuple[Pos
     pos = skip_chars(src, pos, TOML_WS)
     wenn src.startswith("}", pos):
         return pos + 1, nested_dict.dict
-    while Wahr:
+    waehrend Wahr:
         pos, key, value = parse_key_value_pair(src, pos, parse_float)
         key_parent, key_stem = key[:-1], key[-1]
         wenn flags.is_(key, Flags.FROZEN):
@@ -637,7 +637,7 @@ def parse_basic_str(src: str, pos: Pos, *, multiline: bool) -> tuple[Pos, str]:
         parse_escapes = parse_basic_str_escape
     result = ""
     start_pos = pos
-    while Wahr:
+    waehrend Wahr:
         try:
             char = src[pos]
         except IndexError:
@@ -648,13 +648,13 @@ def parse_basic_str(src: str, pos: Pos, *, multiline: bool) -> tuple[Pos, str]:
             wenn src.startswith('"""', pos):
                 return pos + 3, result + src[start_pos:pos]
             pos += 1
-            continue
+            weiter
         wenn char == "\\":
             result += src[start_pos:pos]
             pos, parsed_escape = parse_escapes(src, pos)
             result += parsed_escape
             start_pos = pos
-            continue
+            weiter
         wenn char in error_on:
             raise TOMLDecodeError(f"Illegal character {char!r}", src, pos)
         pos += 1

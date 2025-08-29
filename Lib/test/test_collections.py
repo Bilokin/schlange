@@ -775,7 +775,7 @@ klasse ABCTestCase(unittest.TestCase):
 
         fuer name, op in operators.items():
             wenn nicht hasattr(instance, name):
-                continue
+                weiter
             other = Other()
             op(instance, other)
             self.assertWahr(other.right_side,'Right side nicht called fuer %s.%s'
@@ -1289,12 +1289,12 @@ klasse TestOneTrickPonyABCs(ABCTestCase):
 
         def run_async(coro):
             result = Nichts
-            while Wahr:
+            waehrend Wahr:
                 try:
                     coro.send(Nichts)
                 except StopIteration als ex:
                     result = ex.args[0] wenn ex.args sonst Nichts
-                    break
+                    breche
             return result
 
         # mixin tests

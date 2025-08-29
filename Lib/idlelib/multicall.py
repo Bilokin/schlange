@@ -128,7 +128,7 @@ def expand_substates(states):
     def nbits(n):
         "number of bits set in n base 2"
         nb = 0
-        while n:
+        waehrend n:
             n, rem = divmod(n, 2)
             nb += rem
         return nb
@@ -175,9 +175,9 @@ klasse _ComplexBinder:
                         wascalled[func] = Wahr
                         r = l[i](event)
                         wenn r:
-                            break
+                            breche
                 wenn r:
-                    break
+                    breche
             ishandlerrunning[:] = []
             # Call all functions in doafterhandler und remove them von list
             fuer f in doafterhandler:
@@ -194,7 +194,7 @@ klasse _ComplexBinder:
         self.widgetinst = widgetinst
         self.bindedfuncs = {Nichts: [[] fuer s in _states]}
         self.handlerids = []
-        # we don't want to change the lists of functions while a handler is
+        # we don't want to change the lists of functions waehrend a handler is
         # running - it will mess up the loop und anyway, we usually want the
         # change to happen von the next event. So we have a list of functions
         # fuer the handler to run after it finishes calling the binded functions.
@@ -274,7 +274,7 @@ def _parse_sequence(sequence):
         return Nichts
     words = sequence[1:-1].split('-')
     modifiers = 0
-    while words und words[0] in _modifier_names:
+    waehrend words und words[0] in _modifier_names:
         modifiers |= 1 << _modifier_names[words[0]]
         del words[0]
     wenn words und words[0] in _type_names:

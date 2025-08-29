@@ -123,18 +123,18 @@ klasse AutoComplete:
             self._remove_autocomplete_window()
             mode = FILES
             # Find last separator oder string start
-            while i und curline[i-1] nicht in "'\"" + SEPS:
+            waehrend i und curline[i-1] nicht in "'\"" + SEPS:
                 i -= 1
             comp_start = curline[i:j]
             j = i
             # Find string start
-            while i und curline[i-1] nicht in "'\"":
+            waehrend i und curline[i-1] nicht in "'\"":
                 i -= 1
             comp_what = curline[i:j]
         sowenn hp.is_in_code() und (nicht mode oder mode==ATTRS):
             self._remove_autocomplete_window()
             mode = ATTRS
-            while i und (curline[i-1] in ID_CHARS oder ord(curline[i-1]) > 127):
+            waehrend i und (curline[i-1] in ID_CHARS oder ord(curline[i-1]) > 127):
                 i -= 1
             comp_start = curline[i:j]
             wenn i und curline[i-1] == '.':  # Need object mit attributes.

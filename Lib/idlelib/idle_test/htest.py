@@ -94,7 +94,7 @@ _color_delegator_spec = {
     'kwds': {},
     'msg': "The text is sample Python code.\n"
            "Ensure components like comments, keywords, builtins,\n"
-           "string, definitions, und break are correctly colored.\n"
+           "string, definitions, und breche are correctly colored.\n"
            "The default color scheme is in idlelib/config-highlight.def"
     }
 

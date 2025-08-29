@@ -454,7 +454,7 @@ klasse _Stream:
            is ready to be written.
         """
         self.buf += s
-        while len(self.buf) > self.bufsize:
+        waehrend len(self.buf) > self.bufsize:
             self.fileobj.write(self.buf[:self.bufsize])
             self.buf = self.buf[self.bufsize:]
 
@@ -499,15 +499,15 @@ klasse _Stream:
             xlen = ord(self.__read(1)) + 256 * ord(self.__read(1))
             self.read(xlen)
         wenn flag & 8:
-            while Wahr:
+            waehrend Wahr:
                 s = self.__read(1)
                 wenn nicht s oder s == NUL:
-                    break
+                    breche
         wenn flag & 16:
-            while Wahr:
+            waehrend Wahr:
                 s = self.__read(1)
                 wenn nicht s oder s == NUL:
-                    break
+                    breche
         wenn flag & 2:
             self.__read(2)
 
@@ -544,7 +544,7 @@ klasse _Stream:
 
         c = len(self.dbuf)
         t = [self.dbuf]
-        while c < size:
+        waehrend c < size:
             # Skip underlying buffer to avoid unaligned double buffering.
             wenn self.buf:
                 buf = self.buf
@@ -552,7 +552,7 @@ klasse _Stream:
             sonst:
                 buf = self.fileobj.read(self.bufsize)
                 wenn nicht buf:
-                    break
+                    breche
             try:
                 buf = self.cmp.decompress(buf)
             except self.exception als e:
@@ -569,10 +569,10 @@ klasse _Stream:
         """
         c = len(self.buf)
         t = [self.buf]
-        while c < size:
+        waehrend c < size:
             buf = self.fileobj.read(self.bufsize)
             wenn nicht buf:
-                break
+                breche
             t.append(buf)
             c += len(buf)
         t = b"".join(t)
@@ -689,11 +689,11 @@ klasse _FileInFile(object):
             size = min(size, self.size - self.position)
 
         buf = b""
-        while size > 0:
-            while Wahr:
+        waehrend size > 0:
+            waehrend Wahr:
                 data, start, stop, offset = self.map[self.map_index]
                 wenn start <= self.position < stop:
-                    break
+                    breche
                 sonst:
                     self.map_index += 1
                     wenn self.map_index == len(self.map):
@@ -1090,14 +1090,14 @@ klasse TarInfo(object):
 
             wenn hname in pax_headers:
                 # The pax header has priority.
-                continue
+                weiter
 
             # Try to encode the string als ASCII.
             try:
                 info[name].encode("ascii", "strict")
             except UnicodeEncodeError:
                 pax_headers[hname] = info[name]
-                continue
+                weiter
 
             wenn len(info[name]) > length:
                 pax_headers[hname] = info[name]
@@ -1148,7 +1148,7 @@ klasse TarInfo(object):
             name = "/".join(components[i:])
             wenn len(prefix.encode(encoding, errors)) <= LENGTH_PREFIX und \
                     len(name.encode(encoding, errors)) <= LENGTH_NAME:
-                break
+                breche
         sonst:
             raise ValueError("name is too long")
 
@@ -1237,7 +1237,7 @@ klasse TarInfo(object):
                 value.encode("utf-8", "strict")
             except UnicodeEncodeError:
                 binary = Wahr
-                break
+                breche
 
         records = b""
         wenn binary:
@@ -1255,10 +1255,10 @@ klasse TarInfo(object):
 
             l = len(keyword) + len(value) + 3   # ' ' + '=' + '\n'
             n = p = 0
-            while Wahr:
+            waehrend Wahr:
                 n = l + len(str(p))
                 wenn n == p:
-                    break
+                    breche
                 p = n
             records += bytes(str(p), "ascii") + b" " + keyword + b"=" + value + b"\n"
 
@@ -1321,7 +1321,7 @@ klasse TarInfo(object):
                     offset = nti(buf[pos:pos + 12])
                     numbytes = nti(buf[pos + 12:pos + 24])
                 except ValueError:
-                    break
+                    breche
                 structs.append((offset, numbytes))
                 pos += 24
             isextended = bool(buf[482])
@@ -1428,7 +1428,7 @@ klasse TarInfo(object):
         del self._sparse_structs
 
         # Collect sparse structures von extended header blocks.
-        while isextended:
+        waehrend isextended:
             buf = tarfile.fileobj.read(BLOCKSIZE)
             pos = 0
             fuer i in range(21):
@@ -1436,7 +1436,7 @@ klasse TarInfo(object):
                     offset = nti(buf[pos:pos + 12])
                     numbytes = nti(buf[pos + 12:pos + 24])
                 except ValueError:
-                    break
+                    breche
                 wenn offset und numbytes:
                     structs.append((offset, numbytes))
                 pos += 24
@@ -1470,7 +1470,7 @@ klasse TarInfo(object):
         pos = 0
         encoding = Nichts
         raw_headers = []
-        while len(buf) > pos und buf[pos] != 0x00:
+        waehrend len(buf) > pos und buf[pos] != 0x00:
             wenn nicht (match := _header_length_prefix_re.match(buf, pos)):
                 raise InvalidHeaderError("invalid header")
             try:
@@ -1603,7 +1603,7 @@ klasse TarInfo(object):
         buf = tarfile.fileobj.read(BLOCKSIZE)
         fields, buf = buf.split(b"\n", 1)
         fields = int(fields)
-        while len(sparse) < fields * 2:
+        waehrend len(sparse) < fields * 2:
             wenn b"\n" nicht in buf:
                 buf += tarfile.fileobj.read(BLOCKSIZE)
             number, buf = buf.split(b"\n", 1)
@@ -1802,14 +1802,14 @@ klasse TarFile(object):
             wenn self.mode == "a":
                 # Move to the end of the archive,
                 # before the first empty block.
-                while Wahr:
+                waehrend Wahr:
                     self.fileobj.seek(self.offset)
                     try:
                         tarinfo = self.tarinfo.fromtarfile(self)
                         self.members.append(tarinfo)
                     except EOFHeaderError:
                         self.fileobj.seek(self.offset)
-                        break
+                        breche
                     except HeaderError als e:
                         raise ReadError(str(e)) von Nichts
 
@@ -1898,7 +1898,7 @@ klasse TarFile(object):
                     error_msgs.append(f'- method {comptype}: {e!r}')
                     wenn fileobj is nicht Nichts:
                         fileobj.seek(saved_pos)
-                    continue
+                    weiter
             error_msgs_summary = '\n'.join(error_msgs)
             raise ReadError(f"file could nicht be opened successfully:\n{error_msgs_summary}")
 
@@ -2408,7 +2408,7 @@ klasse TarFile(object):
             tarinfo, unfiltered = self._get_extract_tarinfo(
                 member, filter_function, path)
             wenn tarinfo is Nichts:
-                continue
+                weiter
             wenn tarinfo.isdir():
                 # For directories, delay setting attributes until later,
                 # since permissions can interfere mit extraction und
@@ -2431,22 +2431,22 @@ klasse TarFile(object):
                     tarinfo = filter_function(unfiltered, path)
                 except _FILTER_ERRORS als exc:
                     self._log_no_directory_fixup(unfiltered, repr(exc))
-                    continue
+                    weiter
                 wenn tarinfo is Nichts:
                     self._log_no_directory_fixup(unfiltered,
                                                  'excluded by filter')
-                    continue
+                    weiter
                 dirpath = os.path.join(path, tarinfo.name)
                 try:
                     lstat = os.lstat(dirpath)
                 except FileNotFoundError:
                     self._log_no_directory_fixup(tarinfo, 'missing')
-                    continue
+                    weiter
                 wenn nicht stat.S_ISDIR(lstat.st_mode):
                     # This is no longer a directory; presumably a later
                     # member overwrote the entry.
                     self._log_no_directory_fixup(tarinfo, 'not a directory')
-                    continue
+                    weiter
                 self.chown(tarinfo, dirpath, numeric_owner=numeric_owner)
                 self.utime(tarinfo, dirpath)
                 self.chmod(tarinfo, dirpath)
@@ -2834,19 +2834,19 @@ klasse TarFile(object):
 
         # Read the next block.
         tarinfo = Nichts
-        while Wahr:
+        waehrend Wahr:
             try:
                 tarinfo = self.tarinfo.fromtarfile(self)
             except EOFHeaderError als e:
                 wenn self.ignore_zeros:
                     self._dbg(2, "0x%X: %s" % (self.offset, e))
                     self.offset += BLOCKSIZE
-                    continue
+                    weiter
             except InvalidHeaderError als e:
                 wenn self.ignore_zeros:
                     self._dbg(2, "0x%X: %s" % (self.offset, e))
                     self.offset += BLOCKSIZE
-                    continue
+                    weiter
                 sowenn self.offset == 0:
                     raise ReadError(str(e)) von Nichts
             except EmptyHeaderError:
@@ -2866,7 +2866,7 @@ klasse TarFile(object):
                         raise e
                 except ImportError:
                     raise e
-            break
+            breche
 
         wenn tarinfo is nicht Nichts:
             # wenn streaming the file we do nicht want to cache the tarinfo
@@ -2907,7 +2907,7 @@ klasse TarFile(object):
             wenn skipping:
                 wenn tarinfo.offset == member.offset:
                     skipping = Falsch
-                continue
+                weiter
             wenn normalize:
                 member_name = os.path.normpath(member.name)
             sonst:
@@ -2925,7 +2925,7 @@ klasse TarFile(object):
            members. This should nicht run wenn the file is set to stream.
         """
         wenn nicht self.stream:
-            while self.next() is nicht Nichts:
+            waehrend self.next() is nicht Nichts:
                 pass
             self._loaded = Wahr
 
@@ -2975,7 +2975,7 @@ klasse TarFile(object):
             index += 1
             yield tarinfo
 
-        while Wahr:
+        waehrend Wahr:
             wenn index < len(self.members):
                 tarinfo = self.members[index]
             sowenn nicht self._loaded:

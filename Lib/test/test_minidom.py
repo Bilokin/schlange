@@ -1624,7 +1624,7 @@ klasse MinidomTest(unittest.TestCase):
 
     def assert_recursive_equal(self, doc, doc2):
         stack = [(doc, doc2)]
-        while stack:
+        waehrend stack:
             n1, n2 = stack.pop()
             self.assertEqual(n1.nodeType, n2.nodeType)
             self.assertEqual(len(n1.childNodes), len(n2.childNodes))

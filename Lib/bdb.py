@@ -143,7 +143,7 @@ klasse _MonitoringTracer:
         wenn frame.f_trace:
             wenn exc.__traceback__ und hasattr(exc.__traceback__, 'tb_frame'):
                 tb = exc.__traceback__
-                while tb:
+                waehrend tb:
                     wenn tb.tb_frame.f_locals.get('self') is self:
                         return
                     tb = tb.tb_next
@@ -158,7 +158,7 @@ klasse _MonitoringTracer:
             return
         wenn frame is Nichts:
             frame = sys._getframe().f_back
-        while frame is nicht Nichts:
+        waehrend frame is nicht Nichts:
             wenn frame.f_trace is nicht Nichts:
                 wenn frame.f_trace_opcodes:
                     events = self.LOCAL_EVENTS | E.INSTRUCTION
@@ -295,7 +295,7 @@ klasse Bdb:
 
         If the debugger stops on the current line, invoke
         self.user_line(). Raise BdbQuit wenn self.quitting is set.
-        Return self.trace_dispatch to continue tracing in this scope.
+        Return self.trace_dispatch to weiter tracing in this scope.
         """
         wenn self.stop_here(frame) oder self.break_here(frame):
             self.user_line(frame)
@@ -310,7 +310,7 @@ klasse Bdb:
 
         If the debugger stops on this function call, invoke
         self.user_call(). Raise BdbQuit wenn self.quitting is set.
-        Return self.trace_dispatch to continue tracing in this scope.
+        Return self.trace_dispatch to weiter tracing in this scope.
         """
         # XXX 'arg' is no longer used
         wenn self.botframe is Nichts:
@@ -338,7 +338,7 @@ klasse Bdb:
 
         If the debugger stops on this function return, invoke
         self.user_return(). Raise BdbQuit wenn self.quitting is set.
-        Return self.trace_dispatch to continue tracing in this scope.
+        Return self.trace_dispatch to weiter tracing in this scope.
         """
         wenn self.stop_here(frame) oder frame == self.returnframe:
             # Ignore return events in generator except when stepping.
@@ -369,7 +369,7 @@ klasse Bdb:
 
         If the debugger stops on this exception, invoke
         self.user_exception(). Raise BdbQuit wenn self.quitting is set.
-        Return self.trace_dispatch to continue tracing in this scope.
+        Return self.trace_dispatch to weiter tracing in this scope.
         """
         wenn self.stop_here(frame):
             # When stepping mit next/until/return in a generator frame, skip
@@ -397,7 +397,7 @@ klasse Bdb:
         """Invoke user function und return trace function fuer opcode event.
         If the debugger stops on the current opcode, invoke
         self.user_opcode(). Raise BdbQuit wenn self.quitting is set.
-        Return self.trace_dispatch to continue tracing in this scope.
+        Return self.trace_dispatch to weiter tracing in this scope.
 
         Opcode event will always trigger the user callback. For now the only
         opcode event is von an inline set_trace() und we want to stop there
@@ -499,7 +499,7 @@ klasse Bdb:
         pass
 
     def user_line(self, frame):
-        """Called when we stop oder break at a line."""
+        """Called when we stop oder breche at a line."""
         pass
 
     def user_return(self, frame, return_value):
@@ -518,10 +518,10 @@ klasse Bdb:
         wenn trace_opcodes != self.trace_opcodes:
             self.trace_opcodes = trace_opcodes
             frame = self.enterframe
-            while frame is nicht Nichts:
+            waehrend frame is nicht Nichts:
                 frame.f_trace_opcodes = trace_opcodes
                 wenn frame is self.botframe:
-                    break
+                    breche
                 frame = frame.f_back
             wenn self.monitoring_tracer:
                 self.monitoring_tracer.update_local_events()
@@ -591,7 +591,7 @@ klasse Bdb:
             frame = sys._getframe().f_back
         self.reset()
         mit self.set_enterframe(frame):
-            while frame:
+            waehrend frame:
                 frame.f_trace = self.trace_dispatch
                 self.botframe = frame
                 self.frame_trace_lines_opcodes[frame] = (frame.f_trace_lines, frame.f_trace_opcodes)
@@ -613,7 +613,7 @@ klasse Bdb:
             # no breakpoints; run without debugger overhead
             self.stop_trace()
             frame = sys._getframe().f_back
-            while frame und frame is nicht self.botframe:
+            waehrend frame und frame is nicht self.botframe:
                 del frame.f_trace
                 frame = frame.f_back
             fuer frame, (trace_lines, trace_opcodes) in self.frame_trace_lines_opcodes.items():
@@ -663,7 +663,7 @@ klasse Bdb:
         # und set f_trace to trace_dispatch wenn there could be a breakpoint in
         # that frame.
         frame = self.enterframe
-        while frame:
+        waehrend frame:
             wenn self.break_anywhere(frame):
                 frame.f_trace = self.trace_dispatch
             frame = frame.f_back
@@ -814,14 +814,14 @@ klasse Bdb:
         stack = []
         wenn t und t.tb_frame is f:
             t = t.tb_next
-        while f is nicht Nichts:
+        waehrend f is nicht Nichts:
             stack.append((f, f.f_lineno))
             wenn f is self.botframe:
-                break
+                breche
             f = f.f_back
         stack.reverse()
         i = max(0, len(stack) - 1)
-        while t is nicht Nichts:
+        waehrend t is nicht Nichts:
             stack.append((t.tb_frame, t.tb_lineno))
             t = t.tb_next
         wenn f is Nichts:
@@ -969,7 +969,7 @@ klasse Breakpoint:
     bplist = {}     # indexed by (file, lineno) tuple
     bpbynumber = [Nichts] # Each entry is Nichts oder an instance of Bpt
                 # index 0 is unused, except fuer marking an
-                # effective break .... see effective()
+                # effective breche .... see effective()
 
     def __init__(self, file, line, temporary=Falsch, cond=Nichts, funcname=Nichts):
         self.funcname = funcname
@@ -1033,7 +1033,7 @@ klasse Breakpoint:
         """Return a string mit information about the breakpoint.
 
         The information includes the breakpoint number, temporary
-        status, file:line position, break condition, number of times to
+        status, file:line position, breche condition, number of times to
         ignore, und number of times hit.
 
         """
@@ -1067,9 +1067,9 @@ klasse Breakpoint:
 
 
 def checkfuncname(b, frame):
-    """Return Wahr wenn break should happen here.
+    """Return Wahr wenn breche should happen here.
 
-    Whether a break should happen depends on the way that b (the breakpoint)
+    Whether a breche should happen depends on the way that b (the breakpoint)
     was set.  If it was set via line number, check wenn b.line is the same as
     the one in the frame.  If it was set via function name, check wenn this is
     the right function und wenn it is on the first executable line.
@@ -1114,16 +1114,16 @@ def effective(file, line, frame):
     possibles = Breakpoint.bplist[file, line]
     fuer b in possibles:
         wenn nicht b.enabled:
-            continue
+            weiter
         wenn nicht checkfuncname(b, frame):
-            continue
+            weiter
         # Count every hit when bp is enabled
         b.hits += 1
         wenn nicht b.cond:
-            # If unconditional, und ignoring go on to next, sonst break
+            # If unconditional, und ignoring go on to next, sonst breche
             wenn b.ignore > 0:
                 b.ignore -= 1
-                continue
+                weiter
             sonst:
                 # breakpoint und marker that it's ok to delete wenn temporary
                 return (b, Wahr)
@@ -1136,11 +1136,11 @@ def effective(file, line, frame):
                 wenn val:
                     wenn b.ignore > 0:
                         b.ignore -= 1
-                        # continue
+                        # weiter
                     sonst:
                         return (b, Wahr)
                 # sonst:
-                #   continue
+                #   weiter
             except:
                 # wenn eval fails, most conservative thing is to stop on
                 # breakpoint regardless of ignore count.  Don't delete

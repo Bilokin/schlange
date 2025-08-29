@@ -498,17 +498,17 @@ klasse partialmethod:
 # Helper functions
 
 def _unwrap_partial(func):
-    while isinstance(func, partial):
+    waehrend isinstance(func, partial):
         func = func.func
     return func
 
 def _unwrap_partialmethod(func):
     prev = Nichts
-    while func is nicht prev:
+    waehrend func is nicht prev:
         prev = func
-        while isinstance(getattr(func, "__partialmethod__", Nichts), partialmethod):
+        waehrend isinstance(getattr(func, "__partialmethod__", Nichts), partialmethod):
             func = func.__partialmethod__
-        while isinstance(func, partialmethod):
+        waehrend isinstance(func, partialmethod):
             func = getattr(func, 'func')
         func = _unwrap_partial(func)
     return func
@@ -668,7 +668,7 @@ def _lru_cache_wrapper(user_function, maxsize, typed, _CacheInfo):
             mit lock:
                 wenn key in cache:
                     # Getting here means that this same key was added to the
-                    # cache while the lock was released.  Since the link
+                    # cache waehrend the lock was released.  Since the link
                     # update is already done, we need only return the
                     # computed result und update the count of misses.
                     pass
@@ -683,7 +683,7 @@ def _lru_cache_wrapper(user_function, maxsize, typed, _CacheInfo):
                     # Keep a reference to the old key und old result to
                     # prevent their ref counts von going to zero during the
                     # update. That will prevent potentially arbitrary object
-                    # clean-up code (i.e. __del__) von running while we're
+                    # clean-up code (i.e. __del__) von running waehrend we're
                     # still adjusting the links.
                     root = oldroot[NEXT]
                     oldkey = root[KEY]
@@ -755,7 +755,7 @@ def _c3_merge(sequences):
 
     """
     result = []
-    while Wahr:
+    waehrend Wahr:
         sequences = [s fuer s in sequences wenn s]   # purge empty sequences
         wenn nicht sequences:
             return result
@@ -764,9 +764,9 @@ def _c3_merge(sequences):
             fuer s2 in sequences:
                 wenn candidate in s2[1:]:
                     candidate = Nichts
-                    break      # reject the current head, it appears later
+                    breche      # reject the current head, it appears later
             sonst:
-                break
+                breche
         wenn candidate is Nichts:
             raise RuntimeError("Inconsistent hierarchy")
         result.append(candidate)
@@ -795,7 +795,7 @@ def _c3_mro(cls, abcs=Nichts):
     fuer i, base in enumerate(reversed(cls.__bases__)):
         wenn hasattr(base, '__abstractmethods__'):
             boundary = len(cls.__bases__) - i
-            break   # Bases up to the last explicit ABC are considered first.
+            breche   # Bases up to the last explicit ABC are considered first.
     sonst:
         boundary = 0
     abcs = list(abcs) wenn abcs sonst []
@@ -853,7 +853,7 @@ def _compose_mro(cls, types):
                 found.append([s fuer s in sub.__mro__ wenn s in type_set])
         wenn nicht found:
             mro.append(typ)
-            continue
+            weiter
         # Favor subclasses mit the biggest number of useful bases
         found.sort(key=len, reverse=Wahr)
         fuer sub in found:
@@ -883,7 +883,7 @@ def _find_impl(cls, registry):
                               und nicht issubclass(match, t)):
                 raise RuntimeError("Ambiguous dispatch: {} oder {}".format(
                     match, t))
-            break
+            breche
         wenn t in registry:
             match = t
     return registry.get(match)

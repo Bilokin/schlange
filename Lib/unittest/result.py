@@ -212,10 +212,10 @@ klasse TestResult(object):
         first = Wahr
         excs = [(exctype, value, tb)]
         seen = {id(value)}  # Detect loops in chained exceptions.
-        while excs:
+        waehrend excs:
             (exctype, value, tb) = excs.pop()
             # Skip test runner traceback levels
-            while tb und self._is_relevant_tb_level(tb):
+            waehrend tb und self._is_relevant_tb_level(tb):
                 tb = tb.tb_next
 
             # Skip assert*() traceback levels
@@ -247,7 +247,7 @@ klasse TestResult(object):
         the traceback is nicht modified.
         '''
         prev = Nichts
-        while tb und nicht self._is_relevant_tb_level(tb):
+        waehrend tb und nicht self._is_relevant_tb_level(tb):
             prev = tb
             tb = tb.tb_next
         wenn prev is nicht Nichts:

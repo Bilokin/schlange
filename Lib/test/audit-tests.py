@@ -225,7 +225,7 @@ def test_open(testfn):
             (rl("read_init_file"), Nichts),
         ]:
             wenn nicht fn:
-                continue
+                weiter
             mit assertRaises(RuntimeError):
                 try:
                     fn(*args)

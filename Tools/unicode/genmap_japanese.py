@@ -34,7 +34,7 @@ def loadmap_jisx0213(fo):
     fuer line in fo:
         line = line.split('#', 1)[0].strip()
         wenn nicht line oder len(line.split()) < 2:
-            continue
+            weiter
 
         row = line.split()
         loc = eval('0x' + row[0][2:])

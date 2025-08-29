@@ -12,7 +12,7 @@ def pyrange(start, stop, step):
         # replace stop mit next element in the sequence of integers
         # that are congruent to start modulo step.
         stop += (start - stop) % step
-        while start != stop:
+        waehrend start != stop:
             yield start
             start += step
 
@@ -32,7 +32,7 @@ klasse RangeTest(unittest.TestCase):
         pairs = itertools.zip_longest(xs, ys, fillvalue=sentinel)
         fuer i, (x, y) in enumerate(pairs):
             wenn x == y:
-                continue
+                weiter
             sowenn x == sentinel:
                 self.fail('{}: iterator ended unexpectedly '
                           'at position {}; expected {}'.format(test_id, i, y))
@@ -398,7 +398,7 @@ klasse RangeTest(unittest.TestCase):
                     try:
                         next(it)
                     except StopIteration:
-                        continue
+                        weiter
                     d = pickle.dumps(it, proto)
                     it = pickle.loads(d)
                     self.assertEqual(list(it), data[1:])
@@ -416,10 +416,10 @@ klasse RangeTest(unittest.TestCase):
         fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             r = range(2**65, 2**65+2)
             i = iter(r)
-            while Wahr:
+            waehrend Wahr:
                 r = next(i)
                 wenn r == 2**65+1:
-                    break
+                    breche
             d = pickle.dumps(i, proto)
             i2 = pickle.loads(d)
             self.assertEqual(list(i), [])
@@ -429,10 +429,10 @@ klasse RangeTest(unittest.TestCase):
         fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             r = range(20)
             i = iter(r)
-            while Wahr:
+            waehrend Wahr:
                 r = next(i)
                 wenn r == 19:
-                    break
+                    breche
             d = pickle.dumps(i, proto)
             i2 = pickle.loads(d)
             self.assertEqual(list(i), [])

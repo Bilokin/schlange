@@ -181,10 +181,10 @@ klasse CmdLineTest(unittest.TestCase):
             stderr = p.stdout
         try:
             # Drain stderr until prompt
-            while Wahr:
+            waehrend Wahr:
                 data = stderr.read(4)
                 wenn data == b">>> ":
-                    break
+                    breche
                 stderr.readline()
             yield p
         finally:
@@ -475,9 +475,9 @@ klasse CmdLineTest(unittest.TestCase):
         # Exercise error reporting fuer various invalid package executions
         tests = (
             ('builtins', br'No code object available'),
-            ('builtins.x', br'Error while finding module specification.*'
+            ('builtins.x', br'Error waehrend finding module specification.*'
                 br'ModuleNotFoundError'),
-            ('builtins.x.y', br'Error while finding module specification.*'
+            ('builtins.x.y', br'Error waehrend finding module specification.*'
                 br'ModuleNotFoundError.*No module named.*not a package'),
             ('importlib', br'No module named.*'
                 br'is a package und cannot be directly executed'),
@@ -500,7 +500,7 @@ klasse CmdLineTest(unittest.TestCase):
                 pass
             err = self.check_dash_m_failure('test_pkg')
             self.assertRegex(err,
-                br'Error while finding module specification.*'
+                br'Error waehrend finding module specification.*'
                 br'ImportError.*bad magic number')
             self.assertNotIn(b'is a package', err)
             self.assertNotIn(b'Traceback', err)

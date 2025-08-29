@@ -609,30 +609,30 @@ klasse NonLocalFlowControlTestCase(unittest.TestCase):
 
     def testWithBreak(self):
         counter = 0
-        while Wahr:
+        waehrend Wahr:
             counter += 1
             mit mock_contextmanager_generator():
                 counter += 10
-                break
+                breche
             counter += 100 # Not reached
         self.assertEqual(counter, 11)
 
     def testWithContinue(self):
         counter = 0
-        while Wahr:
+        waehrend Wahr:
             counter += 1
             wenn counter > 2:
-                break
+                breche
             mit mock_contextmanager_generator():
                 counter += 10
-                continue
+                weiter
             counter += 100 # Not reached
         self.assertEqual(counter, 12)
 
     def testWithReturn(self):
         def foo():
             counter = 0
-            while Wahr:
+            waehrend Wahr:
                 counter += 1
                 mit mock_contextmanager_generator():
                     counter += 10

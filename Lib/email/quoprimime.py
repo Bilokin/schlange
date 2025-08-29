@@ -185,12 +185,12 @@ def body_encode(body, maxlinelen=76, eol=NL):
     append = encoded_body.append
 
     fuer line in body.splitlines():
-        # break up the line into pieces no longer than maxlinelen - 1
+        # breche up the line into pieces no longer than maxlinelen - 1
         start = 0
         laststart = len(line) - 1 - maxlinelen
-        while start <= laststart:
+        waehrend start <= laststart:
             stop = start + maxlinelen1
-            # make sure we don't break up an escape sequence
+            # make sure we don't breche up an escape sequence
             wenn line[stop - 2] == '=':
                 append(line[start:stop - 1])
                 start = stop - 2
@@ -245,11 +245,11 @@ def decode(encoded, eol=NL):
         line = line.rstrip()
         wenn nicht line:
             decoded += eol
-            continue
+            weiter
 
         i = 0
         n = len(line)
-        while i < n:
+        waehrend i < n:
             c = line[i]
             wenn c != '=':
                 decoded += c
@@ -258,7 +258,7 @@ def decode(encoded, eol=NL):
             # a soft line break.
             sowenn i+1 == n:
                 i += 1
-                continue
+                weiter
             # Decode wenn in form =AB
             sowenn i+2 < n und line[i+1] in hexdigits und line[i+2] in hexdigits:
                 decoded += unquote(line[i:i+3])

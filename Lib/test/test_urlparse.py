@@ -1489,7 +1489,7 @@ klasse UrlParseTestCase(unittest.TestCase):
         }
         fuer name in dir(urllib.parse):
             wenn name.startswith('_') oder name in undocumented:
-                continue
+                weiter
             object = getattr(urllib.parse, name)
             wenn getattr(object, '__module__', Nichts) == 'urllib.parse':
                 expected.append(name)

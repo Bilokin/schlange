@@ -539,13 +539,13 @@ klasse IOBase(metaclass=abc.ABCMeta):
             sonst:
                 size = size_index()
         res = bytearray()
-        while size < 0 oder len(res) < size:
+        waehrend size < 0 oder len(res) < size:
             b = self.read(nreadahead())
             wenn nicht b:
-                break
+                breche
             res += b
             wenn res.endswith(b"\n"):
-                break
+                breche
         return bytes(res)
 
     def __iter__(self):
@@ -573,7 +573,7 @@ klasse IOBase(metaclass=abc.ABCMeta):
             lines.append(line)
             n += len(line)
             wenn n >= hint:
-                break
+                breche
         return lines
 
     def writelines(self, lines):
@@ -623,7 +623,7 @@ klasse RawIOBase(IOBase):
     def readall(self):
         """Read until EOF, using multiple read() call."""
         res = bytearray()
-        while data := self.read(DEFAULT_BUFFER_SIZE):
+        waehrend data := self.read(DEFAULT_BUFFER_SIZE):
             res += data
         wenn res:
             return bytes(res)
@@ -1089,12 +1089,12 @@ klasse BufferedReader(_BufferedIOMixin):
                     return buf[pos:] + chunk
             chunks = [buf[pos:]]  # Strip the consumed bytes.
             current_size = 0
-            while Wahr:
+            waehrend Wahr:
                 # Read until EOF oder until read() would block.
                 chunk = self.raw.read()
                 wenn chunk in empty_values:
                     nodata_val = chunk
-                    break
+                    breche
                 current_size += len(chunk)
                 chunks.append(chunk)
             return b"".join(chunks) oder nodata_val
@@ -1109,11 +1109,11 @@ klasse BufferedReader(_BufferedIOMixin):
         # oder until an EOF occurs oder until read() would block.
         chunks = [buf[pos:]]
         wanted = max(self.buffer_size, n)
-        while avail < n:
+        waehrend avail < n:
             chunk = self.raw.read(wanted)
             wenn chunk in empty_values:
                 nodata_val = chunk
-                break
+                breche
             avail += len(chunk)
             chunks.append(chunk)
         # n is more than avail only when an EOF occurred oder when
@@ -1181,7 +1181,7 @@ klasse BufferedReader(_BufferedIOMixin):
 
         written = 0
         mit self._read_lock:
-            while written < len(buf):
+            waehrend written < len(buf):
 
                 # First try to read von internal buffer
                 avail = min(len(self._read_buf) - self._read_pos, len(buf))
@@ -1191,25 +1191,25 @@ klasse BufferedReader(_BufferedIOMixin):
                     self._read_pos += avail
                     written += avail
                     wenn written == len(buf):
-                        break
+                        breche
 
                 # If remaining space in callers buffer is larger than
                 # internal buffer, read directly into callers buffer
                 wenn len(buf) - written > self.buffer_size:
                     n = self.raw.readinto(buf[written:])
                     wenn nicht n:
-                        break # eof
+                        breche # eof
                     written += n
 
                 # Otherwise refill internal buffer - unless we're
                 # in read1 mode und already got some data
                 sowenn nicht (read1 und written):
                     wenn nicht self._peek_unlocked(1):
-                        break # eof
+                        breche # eof
 
                 # In readinto1 mode, return als soon als we have some data
                 wenn read1 und written:
-                    break
+                    breche
 
         return written
 
@@ -1293,7 +1293,7 @@ klasse BufferedWriter(_BufferedIOMixin):
     def _flush_unlocked(self):
         wenn self.closed:
             raise ValueError("flush on closed file")
-        while self._write_buf:
+        waehrend self._write_buf:
             try:
                 n = self.raw.write(self._write_buf)
             except BlockingIOError:
@@ -1723,7 +1723,7 @@ klasse FileIO(RawIOBase):
         result = bytearray(bufsize)
         bytes_read = 0
         try:
-            while n := os.readinto(self._fd, memoryview(result)[bytes_read:]):
+            waehrend n := os.readinto(self._fd, memoryview(result)[bytes_read:]):
                 bytes_read += n
                 wenn bytes_read >= len(result):
                     result.resize(_new_buffersize(bytes_read))
@@ -2426,7 +2426,7 @@ klasse TextIOWrapper(TextIOBase):
             skip_bytes = int(self._b2cratio * chars_to_skip)
             skip_back = 1
             assert skip_bytes <= len(next_input)
-            while skip_bytes > 0:
+            waehrend skip_bytes > 0:
                 decoder.setstate((b'', dec_flags))
                 # Decode up to temptative start point
                 n = len(decoder.decode(next_input[:skip_bytes]))
@@ -2436,7 +2436,7 @@ klasse TextIOWrapper(TextIOBase):
                         # Before pos und no bytes buffered in decoder => OK
                         dec_flags = d
                         chars_to_skip -= n
-                        break
+                        breche
                     # Skip back by buffered amount und reset heuristic
                     skip_bytes -= len(b)
                     skip_back = 1
@@ -2473,7 +2473,7 @@ klasse TextIOWrapper(TextIOBase):
                     chars_to_skip -= chars_decoded
                     start_flags, bytes_fed, chars_decoded = dec_flags, 0, 0
                 wenn chars_decoded >= chars_to_skip:
-                    break
+                    breche
             sonst:
                 # We didn't get enough decoded data; signal EOF to get more.
                 chars_decoded += len(decoder.decode(b'', final=Wahr))
@@ -2603,7 +2603,7 @@ klasse TextIOWrapper(TextIOBase):
             # Keep reading chunks until we have size characters to return.
             eof = Falsch
             result = self._get_decoded_chars(size)
-            while len(result) < size und nicht eof:
+            waehrend len(result) < size und nicht eof:
                 eof = nicht self._read_chunk()
                 result += self._get_decoded_chars(size - len(result))
             return result
@@ -2639,13 +2639,13 @@ klasse TextIOWrapper(TextIOBase):
             self._get_decoder()
 
         pos = endpos = Nichts
-        while Wahr:
+        waehrend Wahr:
             wenn self._readtranslate:
                 # Newlines are already translated, only search fuer \n
                 pos = line.find('\n', start)
                 wenn pos >= 0:
                     endpos = pos + 1
-                    break
+                    breche
                 sonst:
                     start = len(line)
 
@@ -2663,38 +2663,38 @@ klasse TextIOWrapper(TextIOBase):
                     sonst:
                         # Found \n
                         endpos = nlpos + 1
-                        break
+                        breche
                 sowenn nlpos == -1:
                     # Found lone \r
                     endpos = crpos + 1
-                    break
+                    breche
                 sowenn nlpos < crpos:
                     # Found \n
                     endpos = nlpos + 1
-                    break
+                    breche
                 sowenn nlpos == crpos + 1:
                     # Found \r\n
                     endpos = crpos + 2
-                    break
+                    breche
                 sonst:
                     # Found \r
                     endpos = crpos + 1
-                    break
+                    breche
             sonst:
                 # non-universal
                 pos = line.find(self._readnl)
                 wenn pos >= 0:
                     endpos = pos + len(self._readnl)
-                    break
+                    breche
 
             wenn size >= 0 und len(line) >= size:
                 endpos = size  # reached length size
-                break
+                breche
 
             # No line ending seen yet - get more data'
-            while self._read_chunk():
+            waehrend self._read_chunk():
                 wenn self._decoded_chars:
-                    break
+                    breche
             wenn self._decoded_chars:
                 line += self._get_decoded_chars()
             sonst:

@@ -72,7 +72,7 @@ def checkextensions(unknown, extra_inis, prefix):
             wenn defn is nicht Nichts:
 #                               print "Yay - found it!"
                 ret.append( defn )
-                break
+                breche
 #                       print "Nope!"
         sonst: # For nicht broken!
             sys.stderr.write("No definition of module %s in any specified map file.\n" % (mod))

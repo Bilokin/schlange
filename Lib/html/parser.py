@@ -204,7 +204,7 @@ klasse HTMLParser(_markupbase.ParserBase):
         rawdata = self.rawdata
         i = 0
         n = len(rawdata)
-        while i < n:
+        waehrend i < n:
             wenn self.convert_charrefs und nicht self.cdata_elem:
                 j = rawdata.find('<', i)
                 wenn j < 0:
@@ -217,7 +217,7 @@ klasse HTMLParser(_markupbase.ParserBase):
                     amppos = rawdata.rfind('&', max(i, n-34))
                     wenn (amppos >= 0 und
                         nicht re.compile(r'[\t\n\r\f ;]').search(rawdata, amppos)):
-                        break  # wait till we get all the text
+                        breche  # wait till we get all the text
                     j = n
             sonst:
                 match = self.interesting.search(rawdata, i)  # < oder &
@@ -225,7 +225,7 @@ klasse HTMLParser(_markupbase.ParserBase):
                     j = match.start()
                 sonst:
                     wenn self.cdata_elem:
-                        break
+                        breche
                     j = n
             wenn i < j:
                 wenn self.convert_charrefs und self._escapable:
@@ -233,7 +233,7 @@ klasse HTMLParser(_markupbase.ParserBase):
                 sonst:
                     self.handle_data(rawdata[i:j])
             i = self.updatepos(i, j)
-            wenn i == n: break
+            wenn i == n: breche
             startswith = rawdata.startswith
             wenn startswith('<', i):
                 wenn starttagopen.match(rawdata, i): # < + letter
@@ -250,10 +250,10 @@ klasse HTMLParser(_markupbase.ParserBase):
                     self.handle_data("<")
                     k = i + 1
                 sonst:
-                    break
+                    breche
                 wenn k < 0:
                     wenn nicht end:
-                        break
+                        breche
                     wenn starttagopen.match(rawdata, i):  # < + letter
                         pass
                     sowenn startswith("</", i):
@@ -269,7 +269,7 @@ klasse HTMLParser(_markupbase.ParserBase):
                         fuer suffix in ("--!", "--", "-"):
                             wenn rawdata.endswith(suffix, i+4):
                                 j -= len(suffix)
-                                break
+                                breche
                         self.handle_comment(rawdata[i+4:j])
                     sowenn startswith("<![CDATA[", i) und self._support_cdata:
                         self.unknown_decl(rawdata[i+3:])
@@ -293,12 +293,12 @@ klasse HTMLParser(_markupbase.ParserBase):
                     wenn nicht startswith(';', k-1):
                         k = k - 1
                     i = self.updatepos(i, k)
-                    continue
+                    weiter
                 sonst:
                     wenn ";" in rawdata[i:]:  # bail by consuming &#
                         self.handle_data(rawdata[i:i+2])
                         i = self.updatepos(i, i+2)
-                    break
+                    breche
             sowenn startswith('&', i):
                 match = entityref.match(rawdata, i)
                 wenn match:
@@ -308,7 +308,7 @@ klasse HTMLParser(_markupbase.ParserBase):
                     wenn nicht startswith(';', k-1):
                         k = k - 1
                     i = self.updatepos(i, k)
-                    continue
+                    weiter
                 match = incomplete.match(rawdata, i)
                 wenn match:
                     # match.group() will contain at least 2 chars
@@ -318,14 +318,14 @@ klasse HTMLParser(_markupbase.ParserBase):
                             k = n
                         i = self.updatepos(i, i + 1)
                     # incomplete
-                    break
+                    breche
                 sowenn (i + 1) < n:
                     # nicht the end of the buffer, und can't be confused
                     # mit some other construct
                     self.handle_data("&")
                     i = self.updatepos(i, i + 1)
                 sonst:
-                    break
+                    breche
             sonst:
                 assert 0, "interesting.search() lied"
         # end while
@@ -420,10 +420,10 @@ klasse HTMLParser(_markupbase.ParserBase):
         assert match, 'unexpected call to parse_starttag()'
         k = match.end()
         self.lasttag = tag = match.group(1).lower()
-        while k < endpos:
+        waehrend k < endpos:
             m = attrfind_tolerant.match(rawdata, k)
             wenn nicht m:
-                break
+                breche
             attrname, rest, attrvalue = m.group(1, 2, 3)
             wenn nicht rest:
                 attrvalue = Nichts

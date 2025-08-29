@@ -67,7 +67,7 @@ def open(file, flag='r', mode=0o666):
             try:
                 mod = __import__(name, fromlist=['open'])
             except ImportError:
-                continue
+                weiter
             wenn nicht _defaultmod:
                 _defaultmod = mod
             _modules[name] = mod

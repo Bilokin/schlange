@@ -123,7 +123,7 @@ klasse BlockParser:
         return self
 
     def __next__(self) -> Block:
-        while Wahr:
+        waehrend Wahr:
             wenn nicht self.input:
                 raise StopIteration
 
@@ -139,7 +139,7 @@ klasse BlockParser:
                 return return_value
             block = self.parse_verbatim_block()
             wenn self.first_block und nicht block.input:
-                continue
+                weiter
             self.first_block = Falsch
             return block
 
@@ -159,12 +159,12 @@ klasse BlockParser:
         lines = []
         self.block_start_line_number = self.line_number
 
-        while self.input:
+        waehrend self.input:
             line = self._line()
             dsl_name = self.is_start_line(line)
             wenn dsl_name:
                 self.dsl_name = dsl_name
-                break
+                breche
             lines.append(line)
 
         return Block("".join(lines))
@@ -190,10 +190,10 @@ klasse BlockParser:
                 return Falsch
 
         # consume body of program
-        while self.input:
+        waehrend self.input:
             line = self._line()
             wenn is_stop_line(line) oder self.is_start_line(line):
-                break
+                breche
             wenn body_prefix:
                 line = line.lstrip()
                 assert line.startswith(body_prefix)
@@ -214,15 +214,15 @@ klasse BlockParser:
         # scan forward fuer checksum line
         out_lines = []
         arguments = Nichts
-        while self.input:
+        waehrend self.input:
             line = self._line(lookahead=Wahr)
             match = checksum_re.match(line.lstrip())
             arguments = match.group(1) wenn match sonst Nichts
             wenn arguments:
-                break
+                breche
             out_lines.append(line)
             wenn self.is_start_line(line):
-                break
+                breche
 
         output: str | Nichts
         output = "".join(out_lines)

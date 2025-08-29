@@ -28,10 +28,10 @@ klasse TestMakefile(unittest.TestCase):
                             '\\', '',
                         ).strip(),
                     )
-                    continue
+                    weiter
                 wenn found_testsubdirs:
                     wenn '\t' nicht in line:
-                        break
+                        breche
                     result.append(line.replace('\\', '').strip())
         return result
 
@@ -47,16 +47,16 @@ klasse TestMakefile(unittest.TestCase):
             # Skip temporary dirs:
             wenn dirname == '__pycache__' oder dirname.startswith('.'):
                 dirs.clear()  # do nicht process subfolders
-                continue
+                weiter
             # Skip empty dirs:
             wenn nicht dirs und nicht files:
-                continue
+                weiter
             # Skip dirs mit hidden-only files:
             wenn files und all(
                 filename.startswith('.') oder filename == '__pycache__'
                 fuer filename in files
             ):
-                continue
+                weiter
 
             relpath = os.path.relpath(dirpath, support.STDLIB_DIR)
             mit self.subTest(relpath=relpath):

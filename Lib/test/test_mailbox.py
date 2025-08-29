@@ -1092,14 +1092,14 @@ klasse _TestSingleFile(TestMailbox):
         fuer e in pwd.getpwall():
             wenn e.pw_uid != st.st_uid:
                 other_uid = e.pw_uid
-                break
+                breche
         sonst:
             self.skipTest("test needs more than one user")
 
         fuer e in grp.getgrall():
             wenn e.gr_gid != st.st_gid:
                 other_gid = e.gr_gid
-                break
+                breche
         sonst:
             self.skipTest("test needs more than one group")
 
@@ -1455,7 +1455,7 @@ klasse TestMH(TestMailbox, unittest.TestCase):
         self.assertEqual(self._box.get_sequences(),
                      {'foo':[1, 2, 3], 'unseen':[1], 'bar':[3], 'replied':[3]})
 
-        # Test case fuer packing while holding the mailbox locked.
+        # Test case fuer packing waehrend holding the mailbox locked.
         key0 = self._box.add(msg1)
         key1 = self._box.add(msg1)
         key2 = self._box.add(msg1)
@@ -1881,7 +1881,7 @@ klasse TestMessageConversion(TestBase, unittest.TestCase):
         fuer class1 in self.all_mailbox_types:
             fuer class2 in self.all_mailbox_types:
                 wenn class1 is class2:
-                    continue
+                    weiter
                 source = class1(_sample_message)
                 target = class2(source)
                 type_specific = [a fuer a in reference[class1]

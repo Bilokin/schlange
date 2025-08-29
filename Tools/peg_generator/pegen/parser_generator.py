@@ -165,11 +165,11 @@ klasse ParserGenerator:
 
         rule_collector = RuleCollectorVisitor(self.rules, self.callmakervisitor)
         done: Set[str] = set()
-        while Wahr:
+        waehrend Wahr:
             computed_rules = list(self.all_rules)
             todo = [i fuer i in computed_rules wenn i nicht in done]
             wenn nicht todo:
-                break
+                breche
             done = set(self.all_rules)
             fuer rulename in todo:
                 rule_collector.visit(self.all_rules[rulename])
@@ -221,7 +221,7 @@ klasse ParserGenerator:
     def dedupe(self, name: str) -> str:
         origname = name
         counter = 0
-        while name in self.local_variable_names:
+        waehrend name in self.local_variable_names:
             counter += 1
             name = f"{origname}_{counter}"
         self.local_variable_names.append(name)
@@ -325,7 +325,7 @@ klasse InitialNamesVisitor(GrammarVisitor):
         fuer item in alt.items:
             names |= self.visit(item)
             wenn item nicht in self.nullables:
-                break
+                breche
         return names
 
     def visit_Forced(self, force: Forced) -> Set[Any]:

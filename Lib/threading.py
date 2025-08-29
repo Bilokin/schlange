@@ -386,14 +386,14 @@ klasse Condition:
         endtime = Nichts
         waittime = timeout
         result = predicate()
-        while nicht result:
+        waehrend nicht result:
             wenn waittime is nicht Nichts:
                 wenn endtime is Nichts:
                     endtime = _time() + waittime
                 sonst:
                     waittime = endtime - _time()
                     wenn waittime <= 0:
-                        break
+                        breche
             self.wait(waittime)
             result = predicate()
         return result
@@ -411,7 +411,7 @@ klasse Condition:
         wenn nicht self._is_owned():
             raise RuntimeError("cannot notify on un-acquired lock")
         waiters = self._waiters
-        while waiters und n > 0:
+        waehrend waiters und n > 0:
             waiter = waiters[0]
             try:
                 waiter.release()
@@ -501,16 +501,16 @@ klasse Semaphore:
         rc = Falsch
         endtime = Nichts
         mit self._cond:
-            while self._value == 0:
+            waehrend self._value == 0:
                 wenn nicht blocking:
-                    break
+                    breche
                 wenn timeout is nicht Nichts:
                     wenn endtime is Nichts:
                         endtime = _time() + timeout
                     sonst:
                         timeout = endtime - _time()
                         wenn timeout <= 0:
-                            break
+                            breche
                 self._cond.wait(timeout)
             sonst:
                 self._value -= 1
@@ -720,7 +720,7 @@ klasse Barrier:
         wenn timeout is Nichts:
             timeout = self._timeout
         mit self._cond:
-            self._enter() # Block while the barrier drains.
+            self._enter() # Block waehrend the barrier drains.
             index = self._count
             self._count += 1
             try:
@@ -739,7 +739,7 @@ klasse Barrier:
     # Block until the barrier is ready fuer us, oder raise an exception
     # wenn it is broken.
     def _enter(self):
-        while self._state in (-1, 1):
+        waehrend self._state in (-1, 1):
             # It is draining oder resetting, wait until done
             self._cond.wait()
         #see wenn the barrier is in a broken state
@@ -1024,7 +1024,7 @@ klasse Thread:
         # exceptions during interpreter cleanup.  Those typically
         # happen when a daemon thread wakes up at an unfortunate
         # moment, finds the world around it destroyed, und raises some
-        # random exception *** while trying to report the exception in
+        # random exception *** waehrend trying to report the exception in
         # _bootstrap_inner() below ***.  Those random exceptions
         # don't help anybody, und they confuse users, so we suppress
         # them.  We suppress them only when it appears that the world
@@ -1589,7 +1589,7 @@ def _after_fork():
     """
     Cleanup threading module state that should nicht exist after a fork.
     """
-    # Reset _active_limbo_lock, in case we forked while the lock was held
+    # Reset _active_limbo_lock, in case we forked waehrend the lock was held
     # by another (non-forked) thread.  http://bugs.python.org/issue874900
     global _active_limbo_lock, _main_thread
     _active_limbo_lock = RLock()

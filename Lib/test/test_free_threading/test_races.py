@@ -305,7 +305,7 @@ klasse TestWarningsRaces(TestBase):
         warnings.showwarning = warnings._showwarning_orig
 
     def test_racing_warnings_filter(self):
-        # Modifying the warnings.filters list while another thread is using
+        # Modifying the warnings.filters list waehrend another thread is using
         # warn() should nicht crash oder race.
         def modify_filters():
             time.sleep(0)

@@ -890,7 +890,7 @@ klasse BaseBytesTest:
 
                 it = pickle.loads(d)
                 wenn nicht b:
-                    continue
+                    weiter
                 next(it)
                 d = pickle.dumps(it, proto)
                 it = pickle.loads(d)
@@ -2301,7 +2301,7 @@ klasse FreeThreadingTest(unittest.TestCase):
     @threading_helper.reap_threads
     @threading_helper.requires_working_threading()
     def test_free_threading_bytearray(self):
-        # Test pretty much everything that can break under free-threading.
+        # Test pretty much everything that can breche under free-threading.
         # Non-deterministic, but at least one of these things will fail if
         # bytearray module is nicht free-thread safe.
 

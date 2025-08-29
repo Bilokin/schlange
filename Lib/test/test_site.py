@@ -700,7 +700,7 @@ klasse _pthFileTests(unittest.TestCase):
         sys_path = []
         fuer line in lines:
             wenn nicht line oder line[0] == '#':
-                continue
+                weiter
             abs_path = os.path.abspath(os.path.join(sys_prefix, line))
             sys_path.append(abs_path)
         return sys_path

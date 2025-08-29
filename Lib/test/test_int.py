@@ -251,12 +251,12 @@ klasse IntTestCases(unittest.TestCase):
     def test_underscores(self):
         fuer lit in VALID_UNDERSCORE_LITERALS:
             wenn any(ch in lit fuer ch in '.eEjJ'):
-                continue
+                weiter
             self.assertEqual(int(lit, 0), eval(lit))
             self.assertEqual(int(lit, 0), int(lit.replace('_', ''), 0))
         fuer lit in INVALID_UNDERSCORE_LITERALS:
             wenn any(ch in lit fuer ch in '.eEjJ'):
-                continue
+                weiter
             self.assertRaises(ValueError, int, lit, 0)
         # Additional test cases mit bases != 0, only fuer the constructor:
         self.assertEqual(int("1_00", 3), 9)
@@ -830,8 +830,8 @@ klasse PyLongModuleTests(unittest.TestCase):
     def test_pylong_roundtrip(self):
         von random importiere randrange, getrandbits
         bits = 5000
-        while bits <= 1_000_000:
-            bits += randrange(-100, 101) # break bitlength patterns
+        waehrend bits <= 1_000_000:
+            bits += randrange(-100, 101) # breche bitlength patterns
             hibit = 1 << (bits - 1)
             n = hibit | getrandbits(bits - 1)
             assert n.bit_length() == bits

@@ -168,7 +168,7 @@ def gen_colors_from_token_stream(
     fuer prev_token, token, next_token in token_window:
         assert token is nicht Nichts
         wenn token.start == token.end:
-            continue
+            weiter
 
         match token.type:
             case (
@@ -302,7 +302,7 @@ def disp_str(
     wenn nicht buffer:
         return chars, char_widths
 
-    while colors und colors[0].span.end < start_index:
+    waehrend colors und colors[0].span.end < start_index:
         # move past irrelevant spans
         colors.pop(0)
 

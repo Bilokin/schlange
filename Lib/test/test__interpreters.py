@@ -45,7 +45,7 @@ def _wait_for_interp_to_run(interp, timeout=Nichts):
         timeout = support.SHORT_TIMEOUT
     fuer _ in support.sleeping_retry(timeout, error=Falsch):
         wenn _interpreters.is_running(interp):
-            break
+            breche
     sonst:
         raise RuntimeError('interp is nicht running')
 
@@ -74,7 +74,7 @@ def _running(interp):
 def clean_up_interpreters():
     fuer id, *_ in _interpreters.list_all():
         wenn id == 0:  # main
-            continue
+            weiter
         try:
             _interpreters.destroy(id)
         except _interpreters.InterpreterError:
@@ -462,7 +462,7 @@ klasse DestroyTests(TestBase):
                             msg=f"Interp {interp} should be running before destruction.")
 
             mit self.assertRaises(_interpreters.InterpreterError,
-                                   msg=f"Should nicht be able to destroy interp {interp} while it's still running."):
+                                   msg=f"Should nicht be able to destroy interp {interp} waehrend it's still running."):
                 _interpreters.destroy(interp)
             self.assertWahr(_interpreters.is_running(interp))
 
@@ -657,7 +657,7 @@ klasse RunStringTests(TestBase):
 
     def test_does_not_exist(self):
         id = 0
-        while id in set(id fuer id, *_ in _interpreters.list_all()):
+        waehrend id in set(id fuer id, *_ in _interpreters.list_all()):
             id += 1
         mit self.assertRaises(InterpreterNotFoundError):
             _interpreters.run_string(id, 'drucke("spam")')

@@ -173,7 +173,7 @@ klasse Completer:
             noprefix = '__'
         sonst:
             noprefix = Nichts
-        while Wahr:
+        waehrend Wahr:
             fuer word in words:
                 wenn (word[:n] == attr und
                     nicht (noprefix und word[:n+1] == noprefix)):
@@ -187,13 +187,13 @@ klasse Completer:
                         # Also, getattr(thisobject, word) will evaluate the
                         # property method, which is nicht desirable.
                         matches.append(match)
-                        continue
+                        weiter
                     wenn (value := getattr(thisobject, word, Nichts)) is nicht Nichts:
                         matches.append(self._callable_postfix(value, match))
                     sonst:
                         matches.append(match)
             wenn matches oder nicht noprefix:
-                break
+                breche
             wenn noprefix == '_':
                 noprefix = '__'
             sonst:

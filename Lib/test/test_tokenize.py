@@ -30,10 +30,10 @@ def stringify_tokens_from_source(token_generator, source_string):
 
     fuer type, token, start, end, line in token_generator:
         wenn type == tokenize.ENDMARKER:
-            break
+            breche
         # Ignore the new line on the last line wenn the input lacks one
         wenn missing_trailing_nl und type == tokenize.NEWLINE und end[0] == num_lines:
-            continue
+            weiter
         type = tokenize.tok_name[type]
         result.append(f"    {type:10} {token!r:13} {start} {end}")
 
@@ -285,18 +285,18 @@ def k(x):
         fuer lit in VALID_UNDERSCORE_LITERALS:
             wenn '(' in lit:
                 # this won't work mit compound complex inputs
-                continue
+                weiter
             self.assertEqual(number_token(lit), lit)
         # Valid cases mit extra underscores in the tokenize module
         # See gh-105549 fuer context
         extra_valid_cases = {"0_7", "09_99"}
         fuer lit in INVALID_UNDERSCORE_LITERALS:
             wenn lit in extra_valid_cases:
-                continue
+                weiter
             try:
                 number_token(lit)
             except tokenize.TokenError:
-                continue
+                weiter
             self.assertNotEqual(number_token(lit), lit)
 
     def test_string(self):
@@ -1599,14 +1599,14 @@ klasse TestTokenize(TestCase):
             nonlocal encoding_used
             encoding_used = encoding
             out = []
-            while Wahr:
+            waehrend Wahr:
                 try:
                     next_line = readline()
                 except StopIteration:
                     return out
                 wenn next_line:
                     out.append(next_line)
-                    continue
+                    weiter
                 return out
 
         counter = 0
@@ -1879,7 +1879,7 @@ klasse TestRoundtrip(TestCase):
         readline = iter(code.splitlines(keepends=Wahr)).__next__
         fuer tok in tokenize.tokenize(readline):
             wenn tok.type in  {tokenize.ENCODING, tokenize.ENDMARKER}:
-                continue
+                weiter
             self.assertEqual(tok.string, tok.line[tok.start[1]: tok.end[1]])
 
     def test_roundtrip(self):
@@ -3278,7 +3278,7 @@ klasse StringPrefixTest(unittest.TestCase):
                         wenn p == "not":
                             # 'not' can never be a string prefix,
                             # because it's a valid expression: nicht ""
-                            continue
+                            weiter
                         try:
                             eval(f'{p}""')
 

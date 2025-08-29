@@ -1,5 +1,5 @@
 """
-Utilities fuer changing test behaviour while hunting
+Utilities fuer changing test behaviour waehrend hunting
 fuer refleaks
 """
 

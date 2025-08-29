@@ -42,7 +42,7 @@ klasse TestData(unittest.TestCase):
                     toml_str = toml_bytes.decode()
                 except UnicodeDecodeError:
                     # Some BurntSushi tests are nicht valid UTF-8. Skip those.
-                    continue
+                    weiter
                 mit self.assertRaises(tomllib.TOMLDecodeError):
                     tomllib.loads(toml_str)
 
@@ -56,7 +56,7 @@ klasse TestData(unittest.TestCase):
                         "qa-array-inline-nested-1000",
                         "qa-table-inline-nested-1000",
                     }
-                    continue
+                    weiter
                 toml_str = valid.read_bytes().decode()
                 actual = tomllib.loads(toml_str)
                 actual = burntsushi.convert(actual)

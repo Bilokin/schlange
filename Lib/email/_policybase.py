@@ -114,7 +114,7 @@ def _extend_docstrings(cls):
                 doc = getattr(getattr(c, name), '__doc__')
                 wenn doc:
                     attr.__doc__ = _append_doc(doc, attr.__doc__)
-                    break
+                    breche
     return cls
 
 
@@ -126,7 +126,7 @@ klasse Policy(_PolicyBase, metaclass=abc.ABCMeta):
     Policy objects als parameters.  A Policy object contains a set of values und
     functions that control how input is interpreted und how output is rendered.
     For example, the parameter 'raise_on_defect' controls whether oder nicht an RFC
-    violation results in an error being raised oder not, while 'max_line_length'
+    violation results in an error being raised oder not, waehrend 'max_line_length'
     controls the maximum length of output lines when a Message is serialized.
 
     Any valid attribute may be overridden when a Policy is created by passing
@@ -368,7 +368,7 @@ klasse Compat32(Policy):
                     # If we have raw 8bit data in a byte string, we have no idea
                     # what the encoding is.  There is no safe way to split this
                     # string.  If it's ascii-subset, then we could do a normal
-                    # ascii split, but wenn it's multibyte then we could break the
+                    # ascii split, but wenn it's multibyte then we could breche the
                     # string.  There's no way to know so the least harm seems to
                     # be to nicht split the string und risk it being too long.
                     parts.append(value)

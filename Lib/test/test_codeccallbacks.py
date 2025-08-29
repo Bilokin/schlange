@@ -312,7 +312,7 @@ klasse CodecCallbackTest(unittest.TestCase):
         fuer i in range(len(args)):
             fuer wrongarg in wrongargs:
                 wenn type(wrongarg) is type(args[i]):
-                    continue
+                    weiter
                 # build argument array
                 callargs = []
                 fuer j in range(len(args)):

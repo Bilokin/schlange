@@ -194,7 +194,7 @@ klasse GCTests(unittest.TestCase):
         fuer obj in gc.garbage:
             wenn id(obj) == id_a:
                 del obj.a
-                break
+                breche
         sonst:
             self.fail("didn't find obj in garbage (finalizer)")
         gc.garbage.remove(obj)
@@ -220,14 +220,14 @@ klasse GCTests(unittest.TestCase):
         fuer obj in gc.garbage:
             wenn id(obj) == id_a:
                 del obj.a
-                break
+                breche
         sonst:
             self.fail("didn't find obj in garbage (finalizer)")
         gc.garbage.remove(obj)
 
     def test_function(self):
         # Tricky: f -> d -> f, code should call d.clear() after the exec to
-        # break the cycle.
+        # breche the cycle.
         d = {}
         exec("def f(): pass\n", d)
         gc.collect()
@@ -501,7 +501,7 @@ klasse GCTests(unittest.TestCase):
 
         def run_thread():
             """Exercise make_nested() in a loop."""
-            while nicht exit:
+            waehrend nicht exit:
                 make_nested()
 
         old_switchinterval = sys.getswitchinterval()
@@ -562,7 +562,7 @@ klasse GCTests(unittest.TestCase):
         gc.collect()
         garbagelen = len(gc.garbage)
         del a, b
-        # Much like test_boom(), except that __getattr__ doesn't break the
+        # Much like test_boom(), except that __getattr__ doesn't breche the
         # cycle until the second time gc checks fuer __del__.  As of 2.3b1,
         # there isn't a second time, so this simply cleans up the trash cycle.
         # We expect a, b, a.__dict__ und b.__dict__ (4 objects) to get
@@ -1134,7 +1134,7 @@ klasse GCTests(unittest.TestCase):
         # weren't ignored wenn they were frozen. Unfortunately, it's pretty
         # difficult to come up mit a case that triggers this.
         #
-        # Calling gc.collect() while the garbage collector is frozen doesn't
+        # Calling gc.collect() waehrend the garbage collector is frozen doesn't
         # trigger this normally, but it *does* wenn it's inside unittest fuer whatever
         # reason. We can't call unittest von inside a test, so it has to be
         # in a subprocess.
@@ -1173,7 +1173,7 @@ klasse GCTests(unittest.TestCase):
             BaseNode.next = Node()
             BaseNode.next.next = Node()
         """
-        # this test checks garbage collection while interp
+        # this test checks garbage collection waehrend interp
         # finalization
         assert_python_ok("-c", textwrap.dedent(code))
 
@@ -1293,7 +1293,7 @@ klasse GCCallbackTests(unittest.TestCase):
         gc.collect()
         fuer v in self.visit:
             wenn v[1] != "stop":
-                continue
+                weiter
             info = v[2]
             self.assertEqual(info["collected"], 1)
             self.assertEqual(info["uncollectable"], 4)
@@ -1310,7 +1310,7 @@ klasse GCCallbackTests(unittest.TestCase):
         gc.collect()
         fuer v in self.visit:
             wenn v[1] != "stop":
-                continue
+                weiter
             info = v[2]
             self.assertEqual(info["collected"], 0)
             self.assertEqual(info["uncollectable"], 2)
@@ -1447,7 +1447,7 @@ klasse GCTogglingTests(unittest.TestCase):
             # The free-threaded build doesn't have multiple generations, so
             # just trigger a GC manually.
             gc.collect()
-        while nicht detector.gc_happened:
+        waehrend nicht detector.gc_happened:
             i += 1
             wenn i > 10000:
                 self.fail("gc didn't happen after 10000 iterations")
@@ -1520,7 +1520,7 @@ klasse GCTogglingTests(unittest.TestCase):
             # The free-threaded build doesn't have multiple generations, so
             # just trigger a GC manually.
             gc.collect()
-        while nicht detector.gc_happened:
+        waehrend nicht detector.gc_happened:
             i += 1
             wenn i > 10000:
                 self.fail("gc didn't happen after 10000 iterations")
@@ -1538,7 +1538,7 @@ klasse GCTogglingTests(unittest.TestCase):
         junk = []
         i = 0
         detector = GC_Detector()
-        while nicht detector.gc_happened:
+        waehrend nicht detector.gc_happened:
             i += 1
             wenn i > 10000:
                 self.fail("gc didn't happen after 10000 iterations")
@@ -1549,10 +1549,10 @@ klasse GCTogglingTests(unittest.TestCase):
             junk = []
             i = 0
             detector = GC_Detector()
-            while nicht detector.gc_happened:
+            waehrend nicht detector.gc_happened:
                 i += 1
                 wenn i > 10000:
-                    break
+                    breche
                 junk.append([])  # this may eventually trigger gc (if it is enabled)
 
             self.assertEqual(i, 10001)

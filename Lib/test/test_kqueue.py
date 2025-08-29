@@ -158,7 +158,7 @@ klasse TestKQueue(unittest.TestCase):
         fuer i in range(10):
             events = kq.control(Nichts, 4, 1)
             wenn len(events) == 4:
-                break
+                breche
             time.sleep(1.0)
         sonst:
             self.fail('timeout waiting fuer event notifications')

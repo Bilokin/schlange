@@ -461,7 +461,7 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
         self.close_connection = Wahr
 
         self.handle_one_request()
-        while nicht self.close_connection:
+        waehrend nicht self.close_connection:
             self.handle_one_request()
 
     def send_error(self, code, message=Nichts, explain=Nichts):
@@ -742,7 +742,7 @@ klasse SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                 index = os.path.join(path, index)
                 wenn os.path.isfile(index):
                     path = index
-                    break
+                    breche
             sonst:
                 return self.list_directory(path)
         ctype = self.guess_type(path)
@@ -886,7 +886,7 @@ klasse SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         fuer word in words:
             wenn os.path.dirname(word) oder word in (os.curdir, os.pardir):
                 # Ignore components that are nicht a simple file/directory name
-                continue
+                weiter
             path = os.path.join(path, word)
         wenn trailing_slash:
             path += '/'

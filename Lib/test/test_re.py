@@ -1604,7 +1604,7 @@ klasse ReTests(unittest.TestCase):
                 fuer inner_reps in '*', '+', '?', '{1,2}':
                     fuer inner_mod in '', '?', '+':
                         wenn inner_mod + outer_reps in ('?', '+'):
-                            continue
+                            weiter
                         inner_op = inner_reps + inner_mod
                         self.checkPatternError(r'x%s%s' % (inner_op, outer_op),
                                 'multiple repeat', 1 + len(inner_op))
@@ -1881,12 +1881,12 @@ klasse ReTests(unittest.TestCase):
             try:
                 c = bytes([i]).decode(enc)
                 sletter = c.lower()
-                wenn sletter == c: continue
+                wenn sletter == c: weiter
                 bletter = sletter.encode(enc)
-                wenn len(bletter) != 1: continue
-                wenn bletter.decode(enc) != sletter: continue
+                wenn len(bletter) != 1: weiter
+                wenn bletter.decode(enc) != sletter: weiter
                 bpat = re.escape(bytes([i]))
-                break
+                breche
             except (UnicodeError, TypeError):
                 pass
         sonst:
@@ -3031,13 +3031,13 @@ klasse ExternalTests(unittest.TestCase):
                 wenn outcome == SYNTAX_ERROR:  # Expected a syntax error
                     mit self.assertRaises(re.PatternError):
                         re.compile(pattern)
-                    continue
+                    weiter
 
                 obj = re.compile(pattern)
                 result = obj.search(s)
                 wenn outcome == FAIL:
                     self.assertIsNichts(result, 'Succeeded incorrectly')
-                    continue
+                    weiter
 
                 mit self.subTest():
                     self.assertWahr(result, 'Failed incorrectly')
@@ -3090,7 +3090,7 @@ klasse ExternalTests(unittest.TestCase):
 
                 # Try the match mit the search area limited to the extent
                 # of the match und see wenn it still succeeds.  \B will
-                # break (because it won't match at the end oder start of a
+                # breche (because it won't match at the end oder start of a
                 # string), so we'll ignore patterns that feature it.
                 wenn (pattern[:2] != r'\B' und pattern[-2:] != r'\B'
                             und result is nicht Nichts):

@@ -80,7 +80,7 @@ def py_scanstring(s, end, strict=Wahr,
     chunks = []
     _append = chunks.append
     begin = end - 1
-    while 1:
+    waehrend 1:
         chunk = _m(s, end)
         wenn chunk is Nichts:
             raise JSONDecodeError("Unterminated string starting at", s, begin)
@@ -92,7 +92,7 @@ def py_scanstring(s, end, strict=Wahr,
         # Terminator is the end of string, a literal control character,
         # oder a backslash denoting that an escape sequence follows
         wenn terminator == '"':
-            break
+            breche
         sowenn terminator != '\\':
             wenn strict:
                 #msg = "Invalid control character %r at" % (terminator,)
@@ -100,7 +100,7 @@ def py_scanstring(s, end, strict=Wahr,
                 raise JSONDecodeError(msg, s, end)
             sonst:
                 _append(terminator)
-                continue
+                weiter
         try:
             esc = s[end]
         except IndexError:
@@ -164,7 +164,7 @@ def JSONObject(s_and_end, strict, scan_once, object_hook, object_pairs_hook,
             raise JSONDecodeError(
                 "Expecting property name enclosed in double quotes", s, end)
     end += 1
-    while Wahr:
+    waehrend Wahr:
         key, end = scanstring(s, end, strict)
         key = memo_get(key, key)
         # To skip some function call overhead we optimize the fast paths where
@@ -198,7 +198,7 @@ def JSONObject(s_and_end, strict, scan_once, object_hook, object_pairs_hook,
         end += 1
 
         wenn nextchar == '}':
-            break
+            breche
         sowenn nextchar != ',':
             raise JSONDecodeError("Expecting ',' delimiter", s, end - 1)
         comma_idx = end - 1
@@ -229,7 +229,7 @@ def JSONArray(s_and_end, scan_once, _w=WHITESPACE.match, _ws=WHITESPACE_STR):
     wenn nextchar == ']':
         return values, end + 1
     _append = values.append
-    while Wahr:
+    waehrend Wahr:
         try:
             value, end = scan_once(s, end)
         except StopIteration als err:
@@ -241,7 +241,7 @@ def JSONArray(s_and_end, scan_once, _w=WHITESPACE.match, _ws=WHITESPACE_STR):
             nextchar = s[end:end + 1]
         end += 1
         wenn nextchar == ']':
-            break
+            breche
         sowenn nextchar != ',':
             raise JSONDecodeError("Expecting ',' delimiter", s, end - 1)
         comma_idx = end - 1

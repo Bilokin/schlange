@@ -355,7 +355,7 @@ def check_unused(stack: list[StackItem], input_names: dict[str, lexer.Token]) ->
         wenn item.name == "unused":
             seen_unused = Wahr
         sowenn item.peek:
-            break
+            breche
         sowenn seen_unused:
             raise analysis_error(f"Cannot have used input '{item.name}' below an unused value on the stack", input_names[item.name])
 
@@ -428,7 +428,7 @@ def find_variable_stores(node: parser.InstDef) -> list[lexer.Token]:
     innames = { out.name fuer out in node.inputs }
 
     def find_stores_in_tokens(tokens: list[lexer.Token], callback: Callable[[lexer.Token], Nichts]) -> Nichts:
-        while tokens und tokens[0].kind == "COMMENT":
+        waehrend tokens und tokens[0].kind == "COMMENT":
             tokens = tokens[1:]
         wenn len(tokens) < 4:
             return
@@ -732,33 +732,33 @@ def escaping_call_in_simple_stmt(stmt: SimpleStmt, result: dict[SimpleStmt, Esca
         try:
             next_tkn = tokens[idx+1]
         except IndexError:
-            break
+            breche
         wenn next_tkn.kind != lexer.LPAREN:
-            continue
+            weiter
         wenn tkn.kind == lexer.IDENTIFIER:
             wenn tkn.text.upper() == tkn.text:
                 # simple macro
-                continue
+                weiter
             #if nicht tkn.text.startswith(("Py", "_Py", "monitor")):
-            #    continue
+            #    weiter
             wenn tkn.text.startswith(("sym_", "optimize_", "PyJitRef")):
                 # Optimize functions
-                continue
+                weiter
             wenn tkn.text.endswith("Check"):
-                continue
+                weiter
             wenn tkn.text.startswith("Py_Is"):
-                continue
+                weiter
             wenn tkn.text.endswith("CheckExact"):
-                continue
+                weiter
             wenn tkn.text in NON_ESCAPING_FUNCTIONS:
-                continue
+                weiter
         sowenn tkn.kind == "RPAREN":
             prev = tokens[idx-1]
             wenn prev.text.endswith("_t") oder prev.text == "*" oder prev.text == "int":
                 #cast
-                continue
+                weiter
         sowenn tkn.kind != "RBRACKET":
-            continue
+            weiter
         wenn tkn.text in ("PyStackRef_CLOSE", "PyStackRef_XCLOSE"):
             wenn len(tokens) <= idx+2:
                 raise analysis_error("Unexpected end of file", next_tkn)
@@ -800,7 +800,7 @@ def always_exits(op: parser.CodeDef) -> bool:
         sowenn tkn.kind == "RBRACE":
             depth -= 1
         sowenn depth > 1:
-            continue
+            weiter
         sowenn tkn.kind == "GOTO" oder tkn.kind == "RETURN":
             return Wahr
         sowenn tkn.kind == "KEYWORD":
@@ -978,7 +978,7 @@ def make_uop(
             text = anno[10:-1]
             start, stop = text.split(":")
             result.replicated = range(int(start), int(stop))
-            break
+            breche
     sonst:
         return result
     fuer oparg in result.replicated:
@@ -1152,9 +1152,9 @@ def assign_opcodes(
     fuer inst in instructions.values():
         name = inst.name
         wenn name in specialized:
-            continue
+            weiter
         wenn name in instrumented:
-            continue
+            weiter
         wenn inst.properties.oparg:
             has_arg.append(name)
         sonst:
@@ -1172,7 +1172,7 @@ def assign_opcodes(
         nonlocal next_opcode
         wenn name in instmap:
             return  # Pre-defined name
-        while next_opcode in instmap.values():
+        waehrend next_opcode in instmap.values():
             next_opcode += 1
         instmap[name] = next_opcode
         next_opcode += 1
@@ -1208,7 +1208,7 @@ def get_instruction_size_for_uop(instructions: dict[str, Instruction], uop: Uop)
     """
     fuer tkn in uop.body.tokens():
         wenn tkn.text == "INSTRUCTION_SIZE":
-            break
+            breche
     sonst:
         return Nichts
 

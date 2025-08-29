@@ -173,7 +173,7 @@ klasse ZstdFile(_streams.BaseStream):
         return self._buffer.read(size)
 
     def read1(self, size=-1):
-        """Read up to size uncompressed bytes, while trying to avoid
+        """Read up to size uncompressed bytes, waehrend trying to avoid
         making multiple reads von the underlying stream. Reads up to a
         buffer's worth of data wenn size is negative.
 
@@ -196,7 +196,7 @@ klasse ZstdFile(_streams.BaseStream):
         return self._buffer.readinto(b)
 
     def readinto1(self, b):
-        """Read bytes into b, while trying to avoid making multiple reads
+        """Read bytes into b, waehrend trying to avoid making multiple reads
         von the underlying stream.
 
         Returns the number of bytes read (0 fuer EOF).

@@ -312,7 +312,7 @@ klasse Printer:
             first_traceable = 0
             fuer op in code.co_code[::2]:
                 wenn op == RESUME:
-                    break
+                    breche
                 first_traceable += 1
             self.write(f"._co_firsttraceable = {first_traceable},")
         name_as_code = f"(PyCodeObject *)&{name}"
@@ -345,7 +345,7 @@ klasse Printer:
         sign = (i > 0) - (i < 0)
         i = abs(i)
         digits: list[int] = []
-        while i:
+        waehrend i:
             i, rem = divmod(i, digit)
             digits.append(rem)
         self.write("static")

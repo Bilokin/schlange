@@ -449,7 +449,7 @@ klasse IocpProactor:
         try:
             return tmp
         finally:
-            # Needed to break cycles when an exception occurs.
+            # Needed to breche cycles when an exception occurs.
             tmp = Nichts
 
     def _result(self, value):
@@ -636,13 +636,13 @@ klasse IocpProactor:
 
     async def connect_pipe(self, address):
         delay = CONNECT_PIPE_INIT_DELAY
-        while Wahr:
+        waehrend Wahr:
             # Unfortunately there is no way to do an overlapped connect to
             # a pipe.  Call CreateFile() in a loop until it doesn't fail with
             # ERROR_PIPE_BUSY.
             try:
                 handle = _overlapped.ConnectPipe(address)
-                break
+                breche
             except OSError als exc:
                 wenn exc.winerror != _overlapped.ERROR_PIPE_BUSY:
                     raise
@@ -664,7 +664,7 @@ klasse IocpProactor:
     def _wait_cancel(self, event, done_callback):
         fut = self._wait_for_handle(event, Nichts, Wahr)
         # add_done_callback() cannot be used because the wait may only complete
-        # in IocpProactor.close(), while the event loop is nicht running.
+        # in IocpProactor.close(), waehrend the event loop is nicht running.
         fut._done_callback = done_callback
         return fut
 
@@ -771,10 +771,10 @@ klasse IocpProactor:
             wenn ms >= INFINITE:
                 raise ValueError("timeout too big")
 
-        while Wahr:
+        waehrend Wahr:
             status = _overlapped.GetQueuedCompletionStatus(self._iocp, ms)
             wenn status is Nichts:
-                break
+                breche
             ms = 0
 
             err, transferred, key, address = status
@@ -793,7 +793,7 @@ klasse IocpProactor:
                 # handle which should be closed to avoid a leak.
                 wenn key nicht in (0, _overlapped.INVALID_HANDLE_VALUE):
                     _winapi.CloseHandle(key)
-                continue
+                weiter
 
             wenn obj in self._stopped_serving:
                 f.cancel()
@@ -855,7 +855,7 @@ klasse IocpProactor:
         msg_update = 1.0
         start_time = time.monotonic()
         next_msg = start_time + msg_update
-        while self._cache:
+        waehrend self._cache:
             wenn next_msg <= time.monotonic():
                 logger.debug('%r is running after closing fuer %.1f seconds',
                              self, time.monotonic() - start_time)

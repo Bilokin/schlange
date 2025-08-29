@@ -455,7 +455,7 @@ klasse CompressorTestCase(unittest.TestCase):
 
         chunks = []
         posi = 0
-        while posi < len(DAT):
+        waehrend posi < len(DAT):
             dat = c.compress(DAT[posi:posi+CHUNK_SIZE])
             posi += CHUNK_SIZE
             chunks.append(dat)
@@ -748,18 +748,18 @@ klasse DecompressorTestCase(unittest.TestCase):
 
         bi = io.BytesIO(DAT)
         lst = []
-        while Wahr:
+        waehrend Wahr:
             wenn d.needs_input:
                 dat = bi.read(300)
                 wenn nicht dat:
-                    break
+                    breche
             sonst:
                 raise Exception('should nicht get here')
 
             ret = d.decompress(dat)
             lst.append(ret)
             wenn d.eof:
-                break
+                breche
 
         ret = b''.join(lst)
 
@@ -775,18 +775,18 @@ klasse DecompressorTestCase(unittest.TestCase):
 
         bi = io.BytesIO(DAT)
         lst = []
-        while Wahr:
+        waehrend Wahr:
             wenn d.needs_input:
                 dat = bi.read(3)
                 wenn nicht dat:
-                    break
+                    breche
             sonst:
                 dat = b''
 
             ret = d.decompress(dat, 1)
             lst.append(ret)
             wenn d.eof:
-                break
+                breche
 
         ret = b''.join(lst)
 
@@ -1897,10 +1897,10 @@ klasse FileTestCase(unittest.TestCase):
     def test_read_10(self):
         mit ZstdFile(io.BytesIO(COMPRESSED_100_PLUS_32KB)) als f:
             chunks = []
-            while Wahr:
+            waehrend Wahr:
                 result = f.read(10)
                 wenn nicht result:
-                    break
+                    breche
                 self.assertLessEqual(len(result), 10)
                 chunks.append(result)
             self.assertEqual(b"".join(chunks), DECOMPRESSED_100_PLUS_32KB)
@@ -1967,10 +1967,10 @@ klasse FileTestCase(unittest.TestCase):
     def test_read1(self):
         mit ZstdFile(io.BytesIO(DAT_130K_C)) als f:
             blocks = []
-            while Wahr:
+            waehrend Wahr:
                 result = f.read1()
                 wenn nicht result:
-                    break
+                    breche
                 blocks.append(result)
             self.assertEqual(b"".join(blocks), DAT_130K_D)
             self.assertEqual(f.read1(), b"")
@@ -1982,10 +1982,10 @@ klasse FileTestCase(unittest.TestCase):
     def test_read1_10(self):
         mit ZstdFile(io.BytesIO(COMPRESSED_DAT)) als f:
             blocks = []
-            while Wahr:
+            waehrend Wahr:
                 result = f.read1(10)
                 wenn nicht result:
-                    break
+                    breche
                 blocks.append(result)
             self.assertEqual(b"".join(blocks), DECOMPRESSED_DAT)
             self.assertEqual(f.read1(), b"")
@@ -1993,10 +1993,10 @@ klasse FileTestCase(unittest.TestCase):
     def test_read1_multistream(self):
         mit ZstdFile(io.BytesIO(COMPRESSED_100_PLUS_32KB * 5)) als f:
             blocks = []
-            while Wahr:
+            waehrend Wahr:
                 result = f.read1()
                 wenn nicht result:
-                    break
+                    breche
                 blocks.append(result)
             self.assertEqual(b"".join(blocks), DECOMPRESSED_100_PLUS_32KB * 5)
             self.assertEqual(f.read1(), b"")
@@ -2306,11 +2306,11 @@ klasse FileTestCase(unittest.TestCase):
     def test_tell(self):
         mit ZstdFile(io.BytesIO(DAT_130K_C)) als f:
             pos = 0
-            while Wahr:
+            waehrend Wahr:
                 self.assertEqual(f.tell(), pos)
                 result = f.read(random.randint(171, 189))
                 wenn nicht result:
-                    break
+                    breche
                 pos += len(result)
             self.assertEqual(f.tell(), len(DAT_130K_D))
         mit ZstdFile(io.BytesIO(), "w") als f:
@@ -2384,26 +2384,26 @@ klasse FileTestCase(unittest.TestCase):
     def test_read_readinto_readinto1(self):
         lst = []
         mit ZstdFile(io.BytesIO(COMPRESSED_THIS_FILE*5)) als f:
-            while Wahr:
+            waehrend Wahr:
                 method = random.randint(0, 2)
                 size = random.randint(0, 300)
 
                 wenn method == 0:
                     dat = f.read(size)
                     wenn nicht dat und size:
-                        break
+                        breche
                     lst.append(dat)
                 sowenn method == 1:
                     ba = bytearray(size)
                     read_size = f.readinto(ba)
                     wenn read_size == 0 und size:
-                        break
+                        breche
                     lst.append(bytes(ba[:read_size]))
                 sowenn method == 2:
                     ba = bytearray(size)
                     read_size = f.readinto1(ba)
                     wenn read_size == 0 und size:
-                        break
+                        breche
                     lst.append(bytes(ba[:read_size]))
         self.assertEqual(b''.join(lst), THIS_FILE_BYTES*5)
 

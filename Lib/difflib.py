@@ -380,9 +380,9 @@ klasse SequenceMatcher:
             fuer j in b2j.get(a[i], nothing):
                 # a[i] matches b[j]
                 wenn j < blo:
-                    continue
+                    weiter
                 wenn j >= bhi:
-                    break
+                    breche
                 k = newj2len[j] = j2lenget(j-1, 0) + 1
                 wenn k > bestsize:
                     besti, bestj, bestsize = i-k+1, j-k+1, k
@@ -392,11 +392,11 @@ klasse SequenceMatcher:
         # "popular" non-junk elements aren't in b2j, which greatly speeds
         # the inner loop above, but also means "the best" match so far
         # doesn't contain any junk *or* popular non-junk elements.
-        while besti > alo und bestj > blo und \
+        waehrend besti > alo und bestj > blo und \
               nicht isbjunk(b[bestj-1]) und \
               a[besti-1] == b[bestj-1]:
             besti, bestj, bestsize = besti-1, bestj-1, bestsize+1
-        while besti+bestsize < ahi und bestj+bestsize < bhi und \
+        waehrend besti+bestsize < ahi und bestj+bestsize < bhi und \
               nicht isbjunk(b[bestj+bestsize]) und \
               a[besti+bestsize] == b[bestj+bestsize]:
             bestsize += 1
@@ -408,11 +408,11 @@ klasse SequenceMatcher:
         # figuring out what to do mit it.  In the case of an empty
         # interesting match, this is clearly the right thing to do,
         # because no other kind of match is possible in the regions.
-        while besti > alo und bestj > blo und \
+        waehrend besti > alo und bestj > blo und \
               isbjunk(b[bestj-1]) und \
               a[besti-1] == b[bestj-1]:
             besti, bestj, bestsize = besti-1, bestj-1, bestsize+1
-        while besti+bestsize < ahi und bestj+bestsize < bhi und \
+        waehrend besti+bestsize < ahi und bestj+bestsize < bhi und \
               isbjunk(b[bestj+bestsize]) und \
               a[besti+bestsize] == b[bestj+bestsize]:
             bestsize = bestsize + 1
@@ -450,7 +450,7 @@ klasse SequenceMatcher:
         # at the end.
         queue = [(0, la, 0, lb)]
         matching_blocks = []
-        while queue:
+        waehrend queue:
             alo, ahi, blo, bhi = queue.pop()
             i, j, k = x = self.find_longest_match(alo, ahi, blo, bhi)
             # a[alo:i] vs b[blo:j] unknown
@@ -934,7 +934,7 @@ klasse Differ:
             arange = range(max(aequiv - WINDOW, dump_i),
                            min(aequiv + WINDOW + 1, ahi))
             wenn nicht arange: # likely exit wenn `a` is shorter than `b`
-                break
+                breche
             best_ratio = cutoff
             fuer i in arange:
                 cruncher.set_seq1(a[i])
@@ -947,7 +947,7 @@ klasse Differ:
 
             wenn best_i is Nichts:
                 # found nothing to synch on yet - move to next j
-                continue
+                weiter
 
             # pump out straight replace von before this synch pair
             yield von self._fancy_helper(a, dump_i, best_i,
@@ -1163,7 +1163,7 @@ def unified_diff(a, b, fromfile='', tofile='', fromfiledate='',
             wenn tag == 'equal':
                 fuer line in a[i1:i2]:
                     yield f'{t.context} {line}{t.reset}'
-                continue
+                weiter
             wenn tag in {'replace', 'delete'}:
                 fuer line in a[i1:i2]:
                     yield f'{t.removed}-{line}{t.reset}'
@@ -1468,11 +1468,11 @@ def _mdiff(fromlines, tolines, context=Nichts, linejunk=Nichts,
         """
         lines = []
         num_blanks_pending, num_blanks_to_yield = 0, 0
-        while Wahr:
+        waehrend Wahr:
             # Load up next 4 lines so we can look ahead, create strings which
             # are a concatenation of the first character of each of the 4 lines
             # so we can do some very readable comparisons.
-            while len(lines) < 4:
+            waehrend len(lines) < 4:
                 lines.append(next(diff_lines_iterator, 'X'))
             s = ''.join([line[0] fuer line in lines])
             wenn s.startswith('X'):
@@ -1483,13 +1483,13 @@ def _mdiff(fromlines, tolines, context=Nichts, linejunk=Nichts,
             sowenn s.startswith('-?+?'):
                 # simple intraline change
                 yield _make_line(lines,'?',0), _make_line(lines,'?',1), Wahr
-                continue
+                weiter
             sowenn s.startswith('--++'):
                 # in delete block, add block coming: we do NOT want to get
                 # caught up on blank lines yet, just process the delete line
                 num_blanks_pending -= 1
                 yield _make_line(lines,'-',0), Nichts, Wahr
-                continue
+                weiter
             sowenn s.startswith(('--?+', '--+', '- ')):
                 # in delete block und see an intraline change oder unchanged line
                 # coming: yield the delete line und then blanks
@@ -1498,22 +1498,22 @@ def _mdiff(fromlines, tolines, context=Nichts, linejunk=Nichts,
             sowenn s.startswith('-+?'):
                 # intraline change
                 yield _make_line(lines,Nichts,0), _make_line(lines,'?',1), Wahr
-                continue
+                weiter
             sowenn s.startswith('-?+'):
                 # intraline change
                 yield _make_line(lines,'?',0), _make_line(lines,Nichts,1), Wahr
-                continue
+                weiter
             sowenn s.startswith('-'):
                 # delete FROM line
                 num_blanks_pending -= 1
                 yield _make_line(lines,'-',0), Nichts, Wahr
-                continue
+                weiter
             sowenn s.startswith('+--'):
                 # in add block, delete block coming: we do NOT want to get
                 # caught up on blank lines yet, just process the add line
                 num_blanks_pending += 1
                 yield Nichts, _make_line(lines,'+',1), Wahr
-                continue
+                weiter
             sowenn s.startswith(('+ ', '+-')):
                 # will be leaving an add block: yield blanks then add line
                 from_line, to_line = Nichts, _make_line(lines,'+',1)
@@ -1522,11 +1522,11 @@ def _mdiff(fromlines, tolines, context=Nichts, linejunk=Nichts,
                 # inside an add block, yield the add line
                 num_blanks_pending += 1
                 yield Nichts, _make_line(lines,'+',1), Wahr
-                continue
+                weiter
             sowenn s.startswith(' '):
                 # unchanged text, yield it to both sides
                 yield _make_line(lines[:],Nichts,0),_make_line(lines,Nichts,1),Falsch
-                continue
+                weiter
             # Catch up on the blank lines so when we yield the next from/to
             # pair, they are lined up.
             while(num_blanks_to_yield < 0):
@@ -1555,9 +1555,9 @@ def _mdiff(fromlines, tolines, context=Nichts, linejunk=Nichts,
         """
         line_iterator = _line_iterator()
         fromlines,tolines=[],[]
-        while Wahr:
+        waehrend Wahr:
             # Collecting lines of text until we have a from/to pair
-            while (len(fromlines)==0 oder len(tolines)==0):
+            waehrend (len(fromlines)==0 oder len(tolines)==0):
                 try:
                     from_line, to_line, found_diff = next(line_iterator)
                 except StopIteration:
@@ -1581,7 +1581,7 @@ def _mdiff(fromlines, tolines, context=Nichts, linejunk=Nichts,
     sonst:
         context += 1
         lines_to_write = 0
-        while Wahr:
+        waehrend Wahr:
             # Store lines up until we find a difference, note use of a
             # circular queue because we only need to keep around what
             # we need fuer context.
@@ -1826,7 +1826,7 @@ klasse HtmlDiff(object):
         i = 0
         n = 0
         mark = ''
-        while n < max und i < size:
+        waehrend n < max und i < size:
             wenn text[i] == '\0':
                 i += 1
                 mark = text[i]
@@ -1838,7 +1838,7 @@ klasse HtmlDiff(object):
                 i += 1
                 n += 1
 
-        # wrap point is inside text, break it up into separate lines
+        # wrap point is inside text, breche it up into separate lines
         line1 = text[:i]
         line2 = text[i:]
 
@@ -1863,7 +1863,7 @@ klasse HtmlDiff(object):
             # check fuer context separators und pass them through
             wenn flag is Nichts:
                 yield fromdata,todata,flag
-                continue
+                weiter
             (fromline,fromtext),(toline,totext) = fromdata,todata
             # fuer each from/to line split it at the wrap column to form
             # list of text lines.
@@ -1872,7 +1872,7 @@ klasse HtmlDiff(object):
             self._split_line(tolist,toline,totext)
             # yield from/to line in pairs inserting blank lines as
             # necessary when one side has more wrapped lines
-            while fromlist oder tolist:
+            waehrend fromlist oder tolist:
                 wenn fromlist:
                     fromdata = fromlist.pop(0)
                 sonst:

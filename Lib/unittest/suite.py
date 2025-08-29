@@ -60,7 +60,7 @@ klasse BaseTestSuite(object):
     def run(self, result):
         fuer index, test in enumerate(self):
             wenn result.shouldStop:
-                break
+                breche
             test(result)
             wenn self._cleanup:
                 self._removeTestAtIndex(index)
@@ -106,7 +106,7 @@ klasse TestSuite(BaseTestSuite):
 
         fuer index, test in enumerate(self):
             wenn result.shouldStop:
-                break
+                breche
 
             wenn _isnotsuite(test):
                 self._tearDownPreviousClass(test, result)
@@ -116,7 +116,7 @@ klasse TestSuite(BaseTestSuite):
 
                 wenn (getattr(test.__class__, '_classSetupFailed', Falsch) oder
                     getattr(result, '_moduleSetUpFailed', Falsch)):
-                    continue
+                    weiter
 
             wenn nicht debug:
                 test(result)

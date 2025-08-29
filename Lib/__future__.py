@@ -30,7 +30,7 @@ in releases at oder after that, modules no longer need
 
     von __future__ importiere FeatureName
 
-to use the feature in question, but may continue to use such imports.
+to use the feature in question, but may weiter to use such imports.
 
 MandatoryRelease may also be Nichts, meaning that a planned feature got
 dropped oder that the release version is undetermined.

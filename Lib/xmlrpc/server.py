@@ -483,11 +483,11 @@ klasse SimpleXMLRPCRequestHandler(BaseHTTPRequestHandler):
             max_chunk_size = 10*1024*1024
             size_remaining = int(self.headers["content-length"])
             L = []
-            while size_remaining:
+            waehrend size_remaining:
                 chunk_size = min(size_remaining, max_chunk_size)
                 chunk = self.rfile.read(chunk_size)
                 wenn nicht chunk:
-                    break
+                    breche
                 L.append(chunk)
                 size_remaining -= len(L[-1])
             data = b''.join(L)
@@ -721,7 +721,7 @@ klasse ServerHTMLDoc(pydoc.HTMLDoc):
                                 r'RFC[- ]?(\d+)|'
                                 r'PEP[- ]?(\d+)|'
                                 r'(self\.)?((?:\w|\.)+))\b')
-        while match := pattern.search(text, here):
+        waehrend match := pattern.search(text, here):
             start, end = match.span()
             results.append(escape(text[here:start]))
 

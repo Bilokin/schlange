@@ -45,5 +45,5 @@ wenn __name__ == "__main__":
     m[0] = 1
 
     # Do nothing but wait fuer the signal
-    while Wahr:
+    waehrend Wahr:
         pass

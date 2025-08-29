@@ -71,7 +71,7 @@ Roughly it has the following features added:
   (mouse-, key-, timer-events). Especially useful fuer programming games.
 
 - A scrollable Canvas class. The default scrollable Canvas can be
-  extended interactively als needed while playing around mit the turtle(s).
+  extended interactively als needed waehrend playing around mit the turtle(s).
 
 - A TurtleScreen klasse mit methods controlling background color oder
   background image, window und canvas size und other properties of the
@@ -173,12 +173,12 @@ def config_dict(filename):
     fuer line in cfglines:
         line = line.strip()
         wenn nicht line oder line.startswith("#"):
-            continue
+            weiter
         try:
             key, value = line.split("=")
         except ValueError:
             drucke("Bad line in config-file %s:\n%s" % (filename,line))
-            continue
+            weiter
         key = key.strip()
         value = value.strip()
         wenn value in ["Wahr", "Falsch", "Nichts", "''", '""']:
@@ -756,7 +756,7 @@ klasse TurtleScreenBase(object):
         fuer item in items:
             coordinates = list(self.cv.coords(item))
             newcoordlist = []
-            while coordinates:
+            waehrend coordinates:
                 x, y = coordinates[:2]
                 newcoordlist.append(x * xscalefactor)
                 newcoordlist.append(y * yscalefactor)
@@ -2373,7 +2373,7 @@ klasse TPen(object):
 
         No argument.
 
-        It's a good idea to do this while you're in the
+        It's a good idea to do this waehrend you're in the
         middle of a complicated drawing, because hiding
         the turtle speeds up the drawing observably.
 
@@ -2591,7 +2591,7 @@ klasse RawTurtle(TPen, TNavigator):
             fuer screen in RawTurtle.screens:
                 wenn screen.cv == canvas:
                     self.screen = screen
-                    break
+                    breche
             sonst:
                 self.screen = TurtleScreen(canvas)
                 RawTurtle.screens.append(self.screen)
@@ -2667,7 +2667,7 @@ klasse RawTurtle(TPen, TNavigator):
         No argument.
 
         Example (for a Turtle instance named turtle):
-        >>> while undobufferentries():
+        >>> waehrend undobufferentries():
         ...     undo()
         """
         wenn self.undobuffer is Nichts:
@@ -3771,7 +3771,7 @@ klasse RawTurtle(TPen, TNavigator):
         action = item[0]
         data = item[1:]
         wenn action == "seq":
-            while data:
+            waehrend data:
                 item = data.pop()
                 self._undo(item[0], item[1:])
         sonst:
@@ -4090,7 +4090,7 @@ def _make_global_funcs(functions, cls, obj, init, docrevise):
         pl1, pl2 = getmethparlist(method)
         wenn pl1 == "":
             drucke(">>>>>>", pl1, pl2)
-            continue
+            weiter
         defstr = __func_body.format(obj=obj, init=init, name=methodname,
                                     paramslist=pl1, argslist=pl2)
         exec(defstr, globals())
@@ -4176,7 +4176,7 @@ wenn __name__ == "__main__":
             switchpen()
             circle(radius, 10)
         write("wait a moment...")
-        while undobufferentries():
+        waehrend undobufferentries():
             undo()
         reset()
         lt(90)
@@ -4236,7 +4236,7 @@ wenn __name__ == "__main__":
         tri.speed(6)
         setheading(towards(turtle))
         count = 1
-        while tri.distance(turtle) > 4:
+        waehrend tri.distance(turtle) > 4:
             turtle.fd(3.5)
             turtle.lt(0.6)
             tri.setheading(tri.towards(turtle))
@@ -4256,7 +4256,7 @@ wenn __name__ == "__main__":
 
         time.sleep(2)
 
-        while undobufferentries():
+        waehrend undobufferentries():
             tri.undo()
             turtle.undo()
         tri.fd(50)

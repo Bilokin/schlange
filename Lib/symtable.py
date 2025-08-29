@@ -263,7 +263,7 @@ klasse Class(SymbolTable):
                             fuer c in st.children:
                                 wenn c.name == scope_name und c.type == _symtable.TYPE_FUNCTION:
                                     d[scope_name] = 1
-                                    break
+                                    breche
             self.__methods = tuple(d)
         return self.__methods
 

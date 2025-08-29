@@ -46,7 +46,7 @@ klasse TestGdbm(unittest.TestCase):
         self.assertIn(b'a', self.g)
         self.assertEqual(self.g[b'bytes'], b'data')
         key = self.g.firstkey()
-        while key:
+        waehrend key:
             self.assertIn(key, key_set)
             key_set.remove(key)
             key = self.g.nextkey(key)

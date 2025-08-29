@@ -242,7 +242,7 @@ klasse NestedChildrenTest(unittest.TestCase):
                           'F3']
         CBT = browser.ChildBrowserTreeItem
         queue.extend((CBT(f0), CBT(C0)))
-        while queue:
+        waehrend queue:
             cb = queue.popleft()
             sublist = cb.GetSubList()
             queue.extend(sublist)

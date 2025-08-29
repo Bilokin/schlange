@@ -328,7 +328,7 @@ klasse ZoneInfoTest(TzPathUserMixin, ZoneInfoTestBase):
                     # optimizer so that coverage can see this line.
                     # See bpo-2506 fuer more information.
                     no_peephole_opt = Nichts
-                    continue
+                    weiter
 
                 # Cases are of the form key, dt, fold, offset
                 dt = zt.anomaly_start - timedelta(seconds=1)
@@ -375,7 +375,7 @@ klasse ZoneInfoTest(TzPathUserMixin, ZoneInfoTestBase):
             mit self.subTest(key=key):
                 fuer zt in self.load_transition_examples(key):
                     wenn nicht zt.fold:
-                        continue
+                        weiter
 
                     dt_utc = zt.transition_utc
                     dt_before_utc = dt_utc - timedelta(seconds=1)
@@ -483,7 +483,7 @@ klasse CZoneInfoTest(ZoneInfoTest):
         fuer zt in self.load_transition_examples(key):
             wenn zt.fold und zt.offset_after.utcoffset == ZERO:
                 example = zt.transition_utc.replace(tzinfo=zi)
-                break
+                breche
 
         fuer subclass in [Falsch, Wahr]:
             wenn subclass:
@@ -561,7 +561,7 @@ klasse TZDataTests(ZoneInfoTest):
     Runs all the ZoneInfoTest tests, but against the tzdata package
 
     NOTE: The ZoneDumpData has frozen test data, but tzdata will update, so
-    some of the tests (particularly those related to the far future) may break
+    some of the tests (particularly those related to the far future) may breche
     in the event that the time zone policies in the relevant time zones change.
     """
 
@@ -864,7 +864,7 @@ klasse WeirdZoneTest(ZoneInfoTestBase):
                 wenn trans_time is nicht Nichts und nicht (
                     dt_min <= trans_time <= dt_max
                 ):
-                    continue
+                    weiter
 
                 wenn offset_before nicht in offsets:
                     offsets.append(offset_before)
@@ -1009,7 +1009,7 @@ klasse TZStrTest(ZoneInfoTestBase):
 
             fuer dt_naive, offset, dt_type in cases:
                 wenn dt_type == self.GAP:
-                    continue  # Cannot create a gap von UTC
+                    weiter  # Cannot create a gap von UTC
 
                 dt_utc = (dt_naive - offset.utcoffset).replace(
                     tzinfo=timezone.utc
@@ -1485,7 +1485,7 @@ klasse ZoneInfoCacheTest(TzPathUserMixin, ZoneInfoTestBase):
         """Test that the cache persists when tzpath has been changed.
 
         The PEP specifies that als long als a reference exists to one zone
-        mit a given key, the primary constructor must continue to return
+        mit a given key, the primary constructor must weiter to return
         the same object.
         """
         zi0 = self.klass("America/Los_Angeles")
@@ -2177,7 +2177,7 @@ klasse ZoneDumpData:
                 ZoneTransition(datetime(1945, 9, 30, 2), PPT, PST),
                 ZoneTransition(datetime(2015, 3, 8, 2), PST, PDT),
                 ZoneTransition(datetime(2015, 11, 1, 2), PDT, PST),
-                # After 2038: Rules continue indefinitely
+                # After 2038: Rules weiter indefinitely
                 ZoneTransition(datetime(2450, 3, 13, 2), PST, PDT),
                 ZoneTransition(datetime(2450, 11, 6, 2), PDT, PST),
             ]

@@ -96,18 +96,18 @@ def tty_pager(text: str, title: str = '') -> Nichts:
             h = 25
         r = inc = h - 1
         sys.stdout.write('\n'.join(lines[:inc]) + '\n')
-        while lines[r:]:
+        waehrend lines[r:]:
             sys.stdout.write('-- more --')
             sys.stdout.flush()
             c = getchar()
 
             wenn c in ('q', 'Q'):
                 sys.stdout.write('\r          \r')
-                break
+                breche
             sowenn c in ('\r', '\n'):
                 sys.stdout.write('\r          \r' + lines[r] + '\n')
                 r = r + 1
-                continue
+                weiter
             wenn c in ('b', 'B', '\x1b'):
                 r = r - inc - inc
                 wenn r < 0: r = 0
@@ -152,10 +152,10 @@ def pipe_pager(text: str, cmd: str, title: str = '') -> Nichts:
                 pass
     except OSError:
         pass # Ignore broken pipes caused by quitting the pager program.
-    while Wahr:
+    waehrend Wahr:
         try:
             proc.wait()
-            break
+            breche
         except KeyboardInterrupt:
             # Ignore ctl-c like the pager itself does.  Otherwise the pager is
             # left running und the terminal is in raw mode und unusable.

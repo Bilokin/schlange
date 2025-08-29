@@ -288,7 +288,7 @@ def _has_code_flag(f, flag):
     function) whose code object has the given ``flag``
     set in its flags."""
     f = functools._unwrap_partialmethod(f)
-    while ismethod(f):
+    waehrend ismethod(f):
         f = f.__func__
     f = functools._unwrap_partial(f)
     wenn nicht (isfunction(f) oder _signature_is_functionlike(f)):
@@ -306,7 +306,7 @@ def isgeneratorfunction(obj):
 _is_coroutine_mark = object()
 
 def _has_coroutine_mark(f):
-    while ismethod(f):
+    waehrend ismethod(f):
         f = f.__func__
     f = functools._unwrap_partial(f)
     return getattr(f, "_is_coroutine_marker", Nichts) is _is_coroutine_mark
@@ -505,11 +505,11 @@ def _getmembers(object, predicate, getter):
             fuer base in mro:
                 wenn key in base.__dict__:
                     value = base.__dict__[key]
-                    break
+                    breche
             sonst:
                 # could be a (currently) missing slot member, oder a buggy
                 # __dir__; discard und move on
-                continue
+                weiter
         wenn nicht predicate oder predicate(value):
             results.append((key, value))
         processed.add(key)
@@ -617,7 +617,7 @@ def classify_class_attrs(cls):
                         try:
                             srch_obj = srch_cls.__getattr__(cls, name)
                         except AttributeError:
-                            continue
+                            weiter
                         wenn srch_obj is get_obj:
                             last_cls = srch_cls
                     wenn last_cls is nicht Nichts:
@@ -627,11 +627,11 @@ def classify_class_attrs(cls):
                 dict_obj = base.__dict__[name]
                 wenn homecls nicht in metamro:
                     homecls = base
-                break
+                breche
         wenn homecls is Nichts:
             # unable to locate the attribute anywhere, most likely due to
             # buggy custom __dir__; discard und move on
-            continue
+            weiter
         obj = get_obj wenn get_obj is nicht Nichts sonst dict_obj
         # Classify the object oder its descriptor.
         wenn isinstance(dict_obj, (staticmethod, types.BuiltinMethodType)):
@@ -680,9 +680,9 @@ def unwrap(func, *, stop=Nichts):
     # ensure they aren't destroyed, which would allow their IDs to be reused.
     memo = {id(f): f}
     recursion_limit = sys.getrecursionlimit()
-    while nicht isinstance(func, type) und hasattr(func, '__wrapped__'):
+    waehrend nicht isinstance(func, type) und hasattr(func, '__wrapped__'):
         wenn stop is nicht Nichts und stop(func):
-            break
+            breche
         func = func.__wrapped__
         id_func = id(func)
         wenn (id_func in memo) oder (len(memo) >= recursion_limit):
@@ -713,7 +713,7 @@ def _finddoc(obj):
                 try:
                     doc = base.__doc__
                 except AttributeError:
-                    continue
+                    weiter
                 wenn doc is nicht Nichts:
                     return doc
         return Nichts
@@ -762,7 +762,7 @@ def _finddoc(obj):
         try:
             doc = getattr(base, name).__doc__
         except AttributeError:
-            continue
+            weiter
         wenn doc is nicht Nichts:
             return doc
     return Nichts
@@ -807,9 +807,9 @@ def cleandoc(doc):
         fuer i in range(1, len(lines)):
             lines[i] = lines[i][margin:]
     # Remove any trailing oder leading blank lines.
-    while lines und nicht lines[-1]:
+    waehrend lines und nicht lines[-1]:
         lines.pop()
-    while lines und nicht lines[0]:
+    waehrend lines und nicht lines[0]:
         lines.pop(0)
     return '\n'.join(lines)
 
@@ -912,13 +912,13 @@ def getmodule(object, _filename=Nichts):
     wenn file in modulesbyfile:
         return sys.modules.get(modulesbyfile[file])
     # Update the filename to module name cache und check yet again
-    # Copy sys.modules in order to cope mit changes while iterating
+    # Copy sys.modules in order to cope mit changes waehrend iterating
     fuer modname, module in sys.modules.copy().items():
         wenn ismodule(module) und hasattr(module, '__file__'):
             f = module.__file__
             wenn f == _filesbymodname.get(modname, Nichts):
                 # Have already mapped this module, so skip it
-                continue
+                weiter
             _filesbymodname[modname] = f
             f = getabsfile(module)
             # Always map to the name the module knows itself by
@@ -1019,12 +1019,12 @@ def getcomments(object):
         # Look fuer a comment block at the top of the file.
         start = 0
         wenn lines und lines[0][:2] == '#!': start = 1
-        while start < len(lines) und lines[start].strip() in ('', '#'):
+        waehrend start < len(lines) und lines[start].strip() in ('', '#'):
             start = start + 1
         wenn start < len(lines) und lines[start][:1] == '#':
             comments = []
             end = start
-            while end < len(lines) und lines[end][:1] == '#':
+            waehrend end < len(lines) und lines[end][:1] == '#':
                 comments.append(lines[end].expandtabs())
                 end = end + 1
             return ''.join(comments)
@@ -1039,14 +1039,14 @@ def getcomments(object):
             wenn end > 0:
                 end = end - 1
                 comment = lines[end].expandtabs().lstrip()
-                while comment[:1] == '#' und indentsize(lines[end]) == indent:
+                waehrend comment[:1] == '#' und indentsize(lines[end]) == indent:
                     comments[:0] = [comment]
                     end = end - 1
-                    wenn end < 0: break
+                    wenn end < 0: breche
                     comment = lines[end].expandtabs().lstrip()
-            while comments und comments[0].strip() == '#':
+            waehrend comments und comments[0].strip() == '#':
                 comments[:1] = []
-            while comments und comments[-1].strip() == '#':
+            waehrend comments und comments[-1].strip() == '#':
                 comments[-1:] = []
             return ''.join(comments)
 
@@ -1187,7 +1187,7 @@ def getclasstree(classes, unique=Falsch):
                     children[parent] = []
                 wenn c nicht in children[parent]:
                     children[parent].append(c)
-                wenn unique und parent in classes: break
+                wenn unique und parent in classes: breche
         sowenn c nicht in roots:
             roots.append(c)
     fuer parent in children:
@@ -1451,7 +1451,7 @@ def getcallargs(func, /, *positional, **named):
                 raise TypeError("%s() got an unexpected keyword argument %r" %
                                 (f_name, kw))
             arg2value[varkw][kw] = value
-            continue
+            weiter
         wenn kw in arg2value:
             raise TypeError("%s() got multiple values fuer argument %r" %
                             (f_name, kw))
@@ -1629,7 +1629,7 @@ def getouterframes(frame, context=1):
     Each record contains a frame object, filename, line number, function
     name, a list of lines of context, und index within the context."""
     framelist = []
-    while frame:
+    waehrend frame:
         traceback_info = getframeinfo(frame, context)
         frameinfo = (frame,) + traceback_info
         framelist.append(FrameInfo(*frameinfo, positions=traceback_info.positions))
@@ -1642,7 +1642,7 @@ def getinnerframes(tb, context=1):
     Each record contains a frame object, filename, line number, function
     name, a list of lines of context, und index within the context."""
     framelist = []
-    while tb:
+    waehrend tb:
         traceback_info = getframeinfo(tb, context)
         frameinfo = (tb.tb_frame,) + traceback_info
         framelist.append(FrameInfo(*frameinfo, positions=traceback_info.positions))
@@ -1969,7 +1969,7 @@ def _signature_get_partial(wrapped_sig, partial, extra_args=()):
                     new_params[param_name] = param.replace(default=_empty)
                 sonst:
                     new_params.pop(param_name)
-                continue
+                weiter
 
             wenn param.kind is _POSITIONAL_OR_KEYWORD:
                 wenn param_name in partial_keywords:
@@ -2001,7 +2001,7 @@ def _signature_get_partial(wrapped_sig, partial, extra_args=()):
                         new_params[param_name] = new_param
                     sonst:
                         new_params.pop(param_name)
-                    continue
+                    weiter
 
             wenn param.kind is _KEYWORD_ONLY:
                 # Set the new default value
@@ -2126,7 +2126,7 @@ def _signature_strip_non_python_syntax(signature):
         wenn (type == OP) und (string == '$'):
             assert self_parameter is Nichts
             self_parameter = current_parameter
-            continue
+            weiter
 
         add(string)
         wenn (string == ','):
@@ -2195,7 +2195,7 @@ def _signature_fromstr(cls, obj, s, skip_bound_arg=Wahr):
         def visit_Attribute(self, node):
             a = []
             n = node
-            while isinstance(n, ast.Attribute):
+            waehrend isinstance(n, ast.Attribute):
                 a.append(n.attr)
                 n = n.value
             wenn nicht isinstance(n, ast.Name):
@@ -2835,14 +2835,14 @@ klasse BoundArguments:
         args = []
         fuer param_name, param in self._signature.parameters.items():
             wenn param.kind in (_VAR_KEYWORD, _KEYWORD_ONLY):
-                break
+                breche
 
             try:
                 arg = self.arguments[param_name]
             except KeyError:
                 # We're done here. Other arguments
                 # will be mapped in 'BoundArguments.kwargs'
-                break
+                breche
             sonst:
                 wenn param.kind == _VAR_POSITIONAL:
                     # *args
@@ -2864,10 +2864,10 @@ klasse BoundArguments:
                 sonst:
                     wenn param_name nicht in self.arguments:
                         kwargs_started = Wahr
-                        continue
+                        weiter
 
             wenn nicht kwargs_started:
-                continue
+                weiter
 
             try:
                 arg = self.arguments[param_name]
@@ -2907,7 +2907,7 @@ klasse BoundArguments:
                 sonst:
                     # This BoundArguments was likely produced by
                     # Signature.bind_partial().
-                    continue
+                    weiter
                 new_arguments.append((name, val))
         self.arguments = dict(new_arguments)
 
@@ -3090,7 +3090,7 @@ klasse Signature:
 
         pos_only_param_in_kwargs = []
 
-        while Wahr:
+        waehrend Wahr:
             # Let's iterate through the positional arguments und corresponding
             # parameters
             try:
@@ -3101,13 +3101,13 @@ klasse Signature:
                     param = next(parameters)
                 except StopIteration:
                     # No more parameters. That's it. Just need to check that
-                    # we have no `kwargs` after this while loop
-                    break
+                    # we have no `kwargs` after this waehrend loop
+                    breche
                 sonst:
                     wenn param.kind == _VAR_POSITIONAL:
                         # That's OK, just empty *args.  Let's start parsing
                         # kwargs
-                        break
+                        breche
                     sowenn param.name in kwargs:
                         wenn param.kind == _POSITIONAL_ONLY:
                             wenn param.default is _empty:
@@ -3116,22 +3116,22 @@ klasse Signature:
                             # Raise a TypeError once we are sure there is no
                             # **kwargs param later.
                             pos_only_param_in_kwargs.append(param)
-                            continue
+                            weiter
                         parameters_ex = (param,)
-                        break
+                        breche
                     sowenn (param.kind == _VAR_KEYWORD oder
                                                 param.default is nicht _empty):
                         # That's fine too - we have a default value fuer this
                         # parameter.  So, lets start parsing `kwargs`, starting
                         # mit the current parameter
                         parameters_ex = (param,)
-                        break
+                        breche
                     sonst:
                         # No default, nicht VAR_KEYWORD, nicht VAR_POSITIONAL,
                         # nicht in `kwargs`
                         wenn partial:
                             parameters_ex = (param,)
-                            break
+                            breche
                         sonst:
                             wenn param.kind == _KEYWORD_ONLY:
                                 argtype = ' keyword-only'
@@ -3160,7 +3160,7 @@ klasse Signature:
                         values = [arg_val]
                         values.extend(arg_vals)
                         arguments[param.name] = tuple(values)
-                        break
+                        breche
 
                     wenn param.name in kwargs und param.kind != _POSITIONAL_ONLY:
                         raise TypeError(
@@ -3176,13 +3176,13 @@ klasse Signature:
             wenn param.kind == _VAR_KEYWORD:
                 # Memorize that we have a '**kwargs'-like parameter
                 kwargs_param = param
-                continue
+                weiter
 
             wenn param.kind == _VAR_POSITIONAL:
                 # Named arguments don't refer to '*args'-like parameters.
                 # We only arrive here wenn the positional arguments ended
                 # before reaching the last parameter before *args.
-                continue
+                weiter
 
             param_name = param.name
             try:

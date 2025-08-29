@@ -420,10 +420,10 @@ klasse NormalizationTest(unittest.TestCase):
                 line = line.split('#')[0]
             line = line.strip()
             wenn nicht line:
-                continue
+                weiter
             wenn line.startswith("@Part"):
                 part = line.split()[0]
-                continue
+                weiter
             c1,c2,c3,c4,c5 = [self.unistr(x) fuer x in line.split(';')[:-1]]
 
             # Perform tests
@@ -455,7 +455,7 @@ klasse NormalizationTest(unittest.TestCase):
         fuer c in range(sys.maxunicode+1):
             X = chr(c)
             wenn X in part1_data:
-                continue
+                weiter
             self.assertWahr(X == NFC(X) == NFD(X) == NFKC(X) == NFKD(X), c)
 
     def test_edge_cases(self):

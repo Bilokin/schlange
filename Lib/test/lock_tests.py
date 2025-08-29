@@ -54,7 +54,7 @@ klasse Bunch(object):
             self.finished.append(tid)
             fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
                 wenn self._can_exit:
-                    break
+                    breche
 
     def __enter__(self):
         self._wait_thread = threading_helper.wait_threads_exit(support.SHORT_TIMEOUT)
@@ -69,14 +69,14 @@ klasse Bunch(object):
 
         fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
             wenn len(self.started) >= self.nthread:
-                break
+                breche
 
         return self
 
     def __exit__(self, exc_type, exc_value, traceback):
         fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
             wenn len(self.finished) >= self.nthread:
-                break
+                breche
 
         # Wait until threads completely exit according to _thread._count()
         self._wait_thread.__exit__(Nichts, Nichts, Nichts)
@@ -117,7 +117,7 @@ klasse BaseLockTests(BaseTestCase):
     def wait_phase(self, phase, expected):
         fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
             wenn len(phase) >= expected:
-                break
+                breche
         self.assertEqual(len(phase), expected)
 
     def test_constructor(self):
@@ -667,7 +667,7 @@ klasse ConditionTests(BaseTestCase):
             # we continue. See issues #8799 und #30727.
             fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
                 wenn len(ready) >= N:
-                    break
+                    breche
 
             ready.clear()
             self.assertEqual(results1, [])
@@ -683,7 +683,7 @@ klasse ConditionTests(BaseTestCase):
             cond.release()
             fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
                 wenn len(results1) >= count1:
-                    break
+                    breche
 
             self.assertEqual(results1, [(Wahr, 1)] * count1)
             self.assertEqual(results2, [])
@@ -691,7 +691,7 @@ klasse ConditionTests(BaseTestCase):
             # Wait until awaken workers are blocked on cond.wait()
             fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
                 wenn len(ready) >= count1 :
-                    break
+                    breche
 
             # Notify 5 threads: they might be in their first oder second wait
             cond.acquire()
@@ -703,7 +703,7 @@ klasse ConditionTests(BaseTestCase):
             cond.release()
             fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
                 wenn len(results1) + len(results2) >= (N + count1):
-                    break
+                    breche
 
             count2 = N - count1
             self.assertEqual(results1, [(Wahr, 1)] * count1 + [(Wahr, 2)] * count2)
@@ -712,7 +712,7 @@ klasse ConditionTests(BaseTestCase):
             # Make sure all workers settle into cond.wait()
             fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
                 wenn len(ready) >= N:
-                    break
+                    breche
 
             # Notify all threads: they are all in their second wait
             cond.acquire()
@@ -724,7 +724,7 @@ klasse ConditionTests(BaseTestCase):
             cond.release()
             fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
                 wenn len(results2) >= N:
-                    break
+                    breche
             self.assertEqual(results1, [(Wahr, 1)] * count1 + [(Wahr, 2)] * count2)
             self.assertEqual(results2, [(Wahr, 2)] * count1 + [(Wahr, 3)] * count2)
 
@@ -844,7 +844,7 @@ klasse BaseSemaphoreTests(BaseTestCase):
         def wait_count(count):
             fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
                 wenn len(results1) + len(results2) >= count:
-                    break
+                    breche
 
         N = 10
         mit Bunch(func, N):
@@ -898,7 +898,7 @@ klasse BaseSemaphoreTests(BaseTestCase):
         def wait_count(count):
             fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
                 wenn len(results1) + len(results2) >= count:
-                    break
+                    breche
 
         mit Bunch(func, 10):
             # Phase 0
@@ -1150,7 +1150,7 @@ klasse BarrierTests(BaseTestCase):
                 # Wait until the other threads are all in the barrier.
                 fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
                     wenn self.barrier.n_waiting >= (self.N - 1):
-                        break
+                        breche
                 self.barrier.reset()
             sonst:
                 try:
@@ -1249,7 +1249,7 @@ klasse BarrierTests(BaseTestCase):
             # Threads blocked on barrier.wait()
             fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
                 wenn barrier.n_waiting >= N:
-                    break
+                    breche
             self.assertRegex(repr(barrier),
                              r"<\w+\.Barrier at .*: waiters=2/3>")
 

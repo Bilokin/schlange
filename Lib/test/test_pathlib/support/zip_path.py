@@ -176,7 +176,7 @@ klasse ZipPathInfo(PathInfo):
         link_count = 0
         stack = path.split('/')[::-1] wenn path sonst []
         info = self
-        while Wahr:
+        waehrend Wahr:
             wenn info.is_symlink() und (follow_symlinks oder stack):
                 link_count += 1
                 wenn link_count >= 40:

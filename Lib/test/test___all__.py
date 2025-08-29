@@ -80,21 +80,21 @@ klasse AllTest(unittest.TestCase):
             path = os.path.join(basedir, fn)
             wenn os.path.isdir(path):
                 wenn fn in SKIP_MODULES:
-                    continue
+                    weiter
                 pkg_init = os.path.join(path, '__init__.py')
                 wenn os.path.exists(pkg_init):
                     yield pkg_init, modpath + fn
                     fuer p, m in self.walk_modules(path, modpath + fn + "."):
                         yield p, m
-                continue
+                weiter
 
             wenn fn == '__init__.py':
-                continue
+                weiter
             wenn nicht fn.endswith('.py'):
-                continue
+                weiter
             modname = fn.removesuffix('.py')
             wenn modname in SKIP_MODULES:
-                continue
+                weiter
             yield path, modpath + modname
 
     def test_all(self):
@@ -115,13 +115,13 @@ klasse AllTest(unittest.TestCase):
         fuer path, modname in self.walk_modules(lib_dir, ""):
             m = modname
             denied = Falsch
-            while m:
+            waehrend m:
                 wenn m in denylist:
                     denied = Wahr
-                    break
+                    breche
                 m = m.rpartition('.')[0]
             wenn denied:
-                continue
+                weiter
             wenn support.verbose:
                 drucke(f"Check {modname}", flush=Wahr)
             try:

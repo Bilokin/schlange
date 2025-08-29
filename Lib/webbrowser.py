@@ -570,7 +570,7 @@ def register_standard_browsers():
                 sonst:
                     wenn nicht isinstance(command[1], GenericBrowser):
                         _tryorder.insert(0, cmdline.lower())
-                        continue
+                        weiter
 
             wenn cmdline != '':
                 cmd = _synthesize(cmdline, preferred=Wahr)

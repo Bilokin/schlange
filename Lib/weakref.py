@@ -202,7 +202,7 @@ klasse WeakValueDictionary(_collections_abc.MutableMapping):
                 yield obj
 
     def popitem(self):
-        while Wahr:
+        waehrend Wahr:
             key, wr = self.data.popitem()
             o = wr()
             wenn o is nicht Nichts:
@@ -395,7 +395,7 @@ klasse WeakKeyDictionary(_collections_abc.MutableMapping):
         return list(self.data)
 
     def popitem(self):
-        while Wahr:
+        waehrend Wahr:
             key, value = self.data.popitem()
             o = key()
             wenn o is nicht Nichts:
@@ -551,12 +551,12 @@ klasse finalize:
                     reenable_gc = Wahr
                     gc.disable()
                 pending = Nichts
-                while Wahr:
+                waehrend Wahr:
                     wenn pending is Nichts oder finalize._dirty:
                         pending = cls._select_for_exit()
                         finalize._dirty = Falsch
                     wenn nicht pending:
-                        break
+                        breche
                     f = pending.pop()
                     try:
                         # gc is disabled, so (assuming no daemonic

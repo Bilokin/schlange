@@ -189,7 +189,7 @@ klasse TestRandomNameSequence(BaseTestCase):
         fuer s in r:
             i += 1
             wenn i == 20:
-                break
+                breche
 
     @support.requires_fork()
     def test_process_awareness(self):
@@ -1360,7 +1360,7 @@ klasse TestSpooledTemporaryFile(BaseTestCase):
     def test_bound_methods(self):
         # It should be OK to steal a bound method von a SpooledTemporaryFile
         # und use it independently; when the file rolls over, those bound
-        # methods should continue to function
+        # methods should weiter to function
         f = self.do_create(max_size=30)
         read = f.read
         write = f.write

@@ -30,7 +30,7 @@ def resolve_name(name, package):
     level = 0
     fuer character in name:
         wenn character != '.':
-            break
+            breche
         level += 1
     return _resolve_name(name[level:], package, level)
 
@@ -127,7 +127,7 @@ klasse _incompatible_extension_module_restrictions:
     extension module development.
 
     If "disable_check" is Wahr then the compatibility check will not
-    happen while the context manager is active.  Otherwise the check
+    happen waehrend the context manager is active.  Otherwise the check
     *will* happen.
 
     Normally, extensions that do nicht support multiple interpreters

@@ -53,7 +53,7 @@ def _open_terminal():
             try:
                 fd = os.open(pty_name, os.O_RDWR)
             except OSError:
-                continue
+                weiter
             return (fd, '/dev/tty' + x + y)
     raise OSError('out of pty devices')
 
@@ -111,7 +111,7 @@ def _copy(master_fd, master_read=_read, stdin_read=_read):
     stdout_avail = master_fd != STDOUT_FILENO
     i_buf = b''
     o_buf = b''
-    while 1:
+    waehrend 1:
         rfds = []
         wfds = []
         wenn stdin_avail und len(i_buf) < high_waterlevel:

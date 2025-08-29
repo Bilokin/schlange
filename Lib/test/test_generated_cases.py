@@ -47,7 +47,7 @@ def handle_stderr():
 def parse_src(src):
     p = parser.Parser(src, "test.c")
     nodes = []
-    while node := p.definition():
+    waehrend node := p.definition():
         nodes.append(node)
     return nodes
 
@@ -1934,9 +1934,9 @@ klasse TestGeneratedAbstractCases(unittest.TestCase):
 
         mit open(self.temp_output_filename) als temp_output:
             lines = temp_output.readlines()
-            while lines und lines[0].startswith(("// ", "#", "    #", "\n")):
+            waehrend lines und lines[0].startswith(("// ", "#", "    #", "\n")):
                 lines.pop(0)
-            while lines und lines[-1].startswith(("#", "\n")):
+            waehrend lines und lines[-1].startswith(("#", "\n")):
                 lines.pop(-1)
         actual = "".join(lines)
         self.assertEqual(actual.strip(), expected.strip())

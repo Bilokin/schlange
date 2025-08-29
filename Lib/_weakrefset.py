@@ -52,7 +52,7 @@ klasse WeakSet:
         return self.__class__(self)
 
     def pop(self):
-        while Wahr:
+        waehrend Wahr:
             try:
                 itemref = self.data.pop()
             except KeyError:

@@ -506,7 +506,7 @@ klasse CAPITest(unittest.TestCase):
         # Test that setting __class__ modified the reference counts of the types
         wenn support.Py_DEBUG:
             # gh-89373: In debug mode, _Py_Dealloc() keeps a strong reference
-            # to the type while calling tp_dealloc()
+            # to the type waehrend calling tp_dealloc()
             self.assertEqual(type_refcnt, B.refcnt_in_del)
         sonst:
             self.assertEqual(type_refcnt - 1, B.refcnt_in_del)
@@ -640,7 +640,7 @@ klasse CAPITest(unittest.TestCase):
 
         # Test that setting __class__ modified the reference counts of the types
         #
-        # This is highly sensitive to implementation details und may break in the future.
+        # This is highly sensitive to implementation details und may breche in the future.
         #
         # We expect the refcount on the old type, HeapCTypeSubclassWithFinalizer, to
         # remain the same: the finalizer gets a strong reference (+1) when it gets the
@@ -668,7 +668,7 @@ klasse CAPITest(unittest.TestCase):
 
         wenn support.Py_DEBUG:
             # gh-89373: In debug mode, _Py_Dealloc() keeps a strong reference
-            # to the type while calling tp_dealloc()
+            # to the type waehrend calling tp_dealloc()
             expected_type_refcnt += 1
 
         self.assertEqual(expected_type_refcnt, HeapCTypeSubclassWithFinalizer.refcnt_in_del)
@@ -1135,9 +1135,9 @@ klasse TestPendingCalls(unittest.TestCase):
             #try submitting callback until successful.
             #rely on regular interrupt to flush queue wenn we are
             #unsuccessful.
-            while Wahr:
+            waehrend Wahr:
                 wenn _testcapi._pending_threadfunc(callback):
-                    break
+                    breche
 
     def pendingcalls_submit(self, l, n, *, main=Wahr, ensure=Falsch):
         def callback():
@@ -1157,7 +1157,7 @@ klasse TestPendingCalls(unittest.TestCase):
     def pendingcalls_wait(self, l, numadded, context = Nichts):
         #now, stick around until l[0] has grown to 10
         count = 0
-        while len(l) != numadded:
+        waehrend len(l) != numadded:
             #this busy loop is where we expect to be interrupted to
             #run our callbacks.  Note that some callbacks are only run on the
             #main thread
@@ -1166,7 +1166,7 @@ klasse TestPendingCalls(unittest.TestCase):
             fuer i in range(1000):
                 a = i*i
             wenn context und nicht context.event.is_set():
-                continue
+                weiter
             count += 1
             self.assertWahr(count < 10000,
                 "timeout waiting fuer %i callbacks, got %i"%(numadded, len(l)))
@@ -1300,7 +1300,7 @@ klasse TestPendingCalls(unittest.TestCase):
             )
 
         def wait_for_result(self):
-            while self.result is Nichts:
+            waehrend self.result is Nichts:
                 time.sleep(0.01)
 
     @threading_helper.requires_working_threading()
@@ -1364,23 +1364,23 @@ klasse TestPendingCalls(unittest.TestCase):
         _done_lock.acquire()
 
         def add_tasks(worker_tids):
-            while Wahr:
+            waehrend Wahr:
                 wenn done:
                     return
                 try:
                     task = queue_get()
                 except queue.Empty:
-                    break
+                    breche
                 task.run_in_pending_call(worker_tids)
 
         done = Falsch
         def run_tasks():
-            while nicht queue_empty():
+            waehrend nicht queue_empty():
                 wenn done:
                     return
                 time.sleep(0.01)
             # Give the worker a chance to handle any remaining pending calls.
-            while nicht done:
+            waehrend nicht done:
                 time.sleep(0.01)
 
         # Start the workers und wait fuer them to finish.
@@ -1459,11 +1459,11 @@ klasse TestPendingCalls(unittest.TestCase):
                         done = Wahr
                     t = threading.Thread(target=wait)
                     mit threading_helper.start_threads([t]):
-                        while nicht waiting:
+                        waehrend nicht waiting:
                             pass
                         os.write({w_ready}, b'\\0')
                         # Loop to trigger the eval breaker.
-                        while nicht done:
+                        waehrend nicht done:
                             time.sleep(0.01)
                             wenn time.time() > {timeout}:
                                 raise Exception('timed out!')
@@ -1488,11 +1488,11 @@ klasse TestPendingCalls(unittest.TestCase):
                     waiting = Falsch
                     done = Falsch
                     def subthread():
-                        while nicht waiting:
+                        waehrend nicht waiting:
                             pass
                         os.write({w_ready}, b'\\0')
                         # Loop to trigger the eval breaker.
-                        while nicht done:
+                        waehrend nicht done:
                             time.sleep(0.01)
                             wenn time.time() > {timeout}:
                                 raise Exception('timed out!')
@@ -1539,11 +1539,11 @@ klasse TestPendingCalls(unittest.TestCase):
             t1 = threading.Thread(target=add_job)
             t2 = threading.Thread(target=wait)
             mit threading_helper.start_threads([t1, t2]):
-                while nicht waiting:
+                waehrend nicht waiting:
                     pass
                 os.write(w_ready, b'\0')
                 # Loop to trigger the eval breaker.
-                while nicht done:
+                waehrend nicht done:
                     time.sleep(0.01)
                     wenn time.time() > timeout:
                         raise Exception('timed out!')
@@ -1576,11 +1576,11 @@ klasse TestPendingCalls(unittest.TestCase):
                 os_read(r_done, 1)
                 done = Wahr
             def subthread():
-                while nicht waiting:
+                waehrend nicht waiting:
                     pass
                 os.write(w_ready, b'\0')
                 # Loop to trigger the eval breaker.
-                while nicht done:
+                waehrend nicht done:
                     time.sleep(0.01)
                     wenn time.time() > timeout:
                         raise Exception('timed out!')
@@ -1608,11 +1608,11 @@ klasse TestPendingCalls(unittest.TestCase):
                     waiting = Falsch
                     done = Falsch
                     def subthread():
-                        while nicht waiting:
+                        waehrend nicht waiting:
                             pass
                         os.write({w_ready}, b'\\0')
                         # Loop to trigger the eval breaker.
-                        while nicht done:
+                        waehrend nicht done:
                             time.sleep(0.01)
                             wenn time.time() > {timeout}:
                                 raise Exception('timed out!')
@@ -2052,7 +2052,7 @@ klasse InterpreterConfigTests(unittest.TestCase):
                 overrides = {k: nicht v fuer k, v in vars(vanilla).items()}
                 fuer gil in self.gil_supported:
                     wenn vanilla.gil == gil:
-                        continue
+                        weiter
                     overrides['gil'] = gil
                     expected = types.SimpleNamespace(**overrides)
                     config = _interpreters.new_config(
@@ -2083,7 +2083,7 @@ klasse InterpreterConfigTests(unittest.TestCase):
         # Bad values fuer bool fields.
         fuer field, value in vars(self.supported['empty']).items():
             wenn field == 'gil':
-                continue
+                weiter
             assert isinstance(value, bool)
             fuer value in [1, '', 'spam', 1.0, Nichts, object()]:
                 mit self.subTest(f'unsupported value ({field}={value!r})'):
@@ -2148,7 +2148,7 @@ klasse InterpreterConfigTests(unittest.TestCase):
 
         fuer config in self.iter_all_configs():
             wenn config.gil == 'default':
-                continue
+                weiter
             wenn match(config, invalid):
                 mit self.subTest(f'invalid: {config}'):
                     mit self.assertRaises(_interpreters.InterpreterError):
@@ -2558,9 +2558,9 @@ def get_test_funcs(mod, exclude_prefix=Nichts):
     funcs = {}
     fuer name in dir(mod):
         wenn nicht name.startswith('test_'):
-            continue
+            weiter
         wenn exclude_prefix is nicht Nichts und name.startswith(exclude_prefix):
-            continue
+            weiter
         funcs[name] = getattr(mod, name)
     return funcs
 

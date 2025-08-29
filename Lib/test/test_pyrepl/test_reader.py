@@ -257,7 +257,7 @@ klasse TestReader(ScreenEqualMixin, TestCase):
             # we're nicht using handle_all_events() here to be able to
             # follow the KeyboardInterrupt sequence of events. Normally this
             # happens in simple_interact.run_multiline_interactive_console.
-            while Wahr:
+            waehrend Wahr:
                 reader.handle1()
         except KeyboardInterrupt:
             # at this point the completions are still visible

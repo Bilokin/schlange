@@ -1045,7 +1045,7 @@ klasse NotebookTest(AbstractWidgetTest, unittest.TestCase):
         fuer i in range(5, 100, 5):
             try:
                 wenn self.nb.tab('@%d, 5' % i, text=Nichts) == 'a':
-                    break
+                    breche
             except tkinter.TclError:
                 pass
 
@@ -1927,7 +1927,7 @@ klasse TreeviewTest(AbstractWidgetTest, unittest.TestCase):
         found = set()
         fuer i in range(0, 100, 10):
             wenn len(found) == 2: # item1 und item2 already found
-                break
+                breche
             item_id = self.tv.identify_row(i)
             wenn item_id und item_id nicht in found:
                 pos_y.add(i)

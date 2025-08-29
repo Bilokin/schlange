@@ -410,7 +410,7 @@ def resources_list(string):
     u = [x.lower() fuer x in string.split(',')]
     fuer r in u:
         wenn r == 'all' oder r == 'none':
-            continue
+            weiter
         wenn r[0] == '-':
             r = r[1:]
         wenn r nicht in RESOURCE_NAMES:
@@ -524,10 +524,10 @@ def _parse_args(args, **kwargs):
             fuer r in a:
                 wenn r == 'all':
                     ns.use_resources[:] = ALL_RESOURCES
-                    continue
+                    weiter
                 wenn r == 'none':
                     del ns.use_resources[:]
-                    continue
+                    weiter
                 remove = Falsch
                 wenn r[0] == '-':
                     remove = Wahr

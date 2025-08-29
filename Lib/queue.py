@@ -101,7 +101,7 @@ klasse Queue:
         When the count of unfinished tasks drops to zero, join() unblocks.
         '''
         mit self.all_tasks_done:
-            while self.unfinished_tasks:
+            waehrend self.unfinished_tasks:
                 self.all_tasks_done.wait()
 
     def qsize(self):
@@ -155,7 +155,7 @@ klasse Queue:
                     wenn self._qsize() >= self.maxsize:
                         raise Full
                 sowenn timeout is Nichts:
-                    while self._qsize() >= self.maxsize:
+                    waehrend self._qsize() >= self.maxsize:
                         self.not_full.wait()
                         wenn self.is_shutdown:
                             raise ShutDown
@@ -163,7 +163,7 @@ klasse Queue:
                     raise ValueError("'timeout' must be a non-negative number")
                 sonst:
                     endtime = time() + timeout
-                    while self._qsize() >= self.maxsize:
+                    waehrend self._qsize() >= self.maxsize:
                         remaining = endtime - time()
                         wenn remaining <= 0.0:
                             raise Full
@@ -195,7 +195,7 @@ klasse Queue:
                 wenn nicht self._qsize():
                     raise Empty
             sowenn timeout is Nichts:
-                while nicht self._qsize():
+                waehrend nicht self._qsize():
                     self.not_empty.wait()
                     wenn self.is_shutdown und nicht self._qsize():
                         raise ShutDown
@@ -203,7 +203,7 @@ klasse Queue:
                 raise ValueError("'timeout' must be a non-negative number")
             sonst:
                 endtime = time() + timeout
-                while nicht self._qsize():
+                waehrend nicht self._qsize():
                     remaining = endtime - time()
                     wenn remaining <= 0.0:
                         raise Empty
@@ -245,7 +245,7 @@ klasse Queue:
         mit self.mutex:
             self.is_shutdown = Wahr
             wenn immediate:
-                while self._qsize():
+                waehrend self._qsize():
                     self._get()
                     wenn self.unfinished_tasks > 0:
                         self.unfinished_tasks -= 1
@@ -317,7 +317,7 @@ klasse _PySimpleQueue:
 
     This pure Python implementation is nicht reentrant.
     '''
-    # Note: while this pure Python version provides fairness
+    # Note: waehrend this pure Python version provides fairness
     # (by using a threading.Semaphore which is itself fair, being based
     #  on threading.Condition), fairness is nicht part of the API contract.
     # This allows the C version to use a different implementation.

@@ -173,13 +173,13 @@ klasse CompressorDecompressorTestCase(unittest.TestCase):
         self.assertFalsch(lzd.needs_input)
         self.assertEqual(len(out[-1]), max_length)
 
-        # Retrieve more data while providing more input
+        # Retrieve more data waehrend providing more input
         out.append(lzd.decompress(COMPRESSED_XZ[len_:],
                                   max_length=max_length))
         self.assertLessEqual(len(out[-1]), max_length)
 
         # Retrieve remaining uncompressed data
-        while nicht lzd.eof:
+        waehrend nicht lzd.eof:
             out.append(lzd.decompress(b'', max_length=max_length))
             self.assertLessEqual(len(out[-1]), max_length)
 
@@ -846,7 +846,7 @@ klasse FileTestCase(unittest.TestCase):
     def test_read_10(self):
         mit LZMAFile(BytesIO(COMPRESSED_XZ)) als f:
             chunks = []
-            while result := f.read(10):
+            waehrend result := f.read(10):
                 self.assertLessEqual(len(result), 10)
                 chunks.append(result)
             self.assertEqual(b"".join(chunks), INPUT)
@@ -987,7 +987,7 @@ klasse FileTestCase(unittest.TestCase):
     def test_read1(self):
         mit LZMAFile(BytesIO(COMPRESSED_XZ)) als f:
             blocks = []
-            while result := f.read1():
+            waehrend result := f.read1():
                 blocks.append(result)
             self.assertEqual(b"".join(blocks), INPUT)
             self.assertEqual(f.read1(), b"")
@@ -999,7 +999,7 @@ klasse FileTestCase(unittest.TestCase):
     def test_read1_10(self):
         mit LZMAFile(BytesIO(COMPRESSED_XZ)) als f:
             blocks = []
-            while result := f.read1(10):
+            waehrend result := f.read1(10):
                 blocks.append(result)
             self.assertEqual(b"".join(blocks), INPUT)
             self.assertEqual(f.read1(), b"")
@@ -1007,7 +1007,7 @@ klasse FileTestCase(unittest.TestCase):
     def test_read1_multistream(self):
         mit LZMAFile(BytesIO(COMPRESSED_XZ * 5)) als f:
             blocks = []
-            while result := f.read1():
+            waehrend result := f.read1():
                 blocks.append(result)
             self.assertEqual(b"".join(blocks), INPUT * 5)
             self.assertEqual(f.read1(), b"")
@@ -1326,11 +1326,11 @@ klasse FileTestCase(unittest.TestCase):
     def test_tell(self):
         mit LZMAFile(BytesIO(COMPRESSED_XZ)) als f:
             pos = 0
-            while Wahr:
+            waehrend Wahr:
                 self.assertEqual(f.tell(), pos)
                 result = f.read(183)
                 wenn nicht result:
-                    break
+                    breche
                 pos += len(result)
             self.assertEqual(f.tell(), len(INPUT))
         mit LZMAFile(BytesIO(), "w") als f:

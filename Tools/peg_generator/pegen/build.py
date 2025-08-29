@@ -263,7 +263,7 @@ def generate_token_definitions(tokens: IO[str]) -> TokenDefinitions:
         line = line.strip()
 
         wenn nicht line oder line.startswith("#"):
-            continue
+            weiter
 
         pieces = line.split()
         index = next(numbers)

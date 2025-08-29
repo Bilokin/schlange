@@ -61,7 +61,7 @@ klasse TestThread(Thread):
     # debugger
     def run(self):
         i = 0
-        while 1:
+        waehrend 1:
              i += 1
 
 t = {}
@@ -117,7 +117,7 @@ id(42)
                 def __init__(self):
                     super(*[]).__init__()   # wrapper_call()
 
-            id("first break point")
+            id("first breche point")
             l = MyList()
         ''')
         cmds_after_breakpoint = ['break wrapper_call', 'continue']

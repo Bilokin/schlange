@@ -183,7 +183,7 @@ klasse PkgutilTests(unittest.TestCase):
 
         fuer pkg in expected:
             wenn pkg.endswith('mod'):
-                continue
+                weiter
             del sys.modules[pkg]
 
     def test_walkpackages_zipfile(self):
@@ -218,7 +218,7 @@ klasse PkgutilTests(unittest.TestCase):
 
         fuer pkg in expected:
             wenn pkg.endswith('mod'):
-                continue
+                weiter
             del sys.modules[pkg]
 
     def test_walk_packages_raises_on_string_or_bytes_input(self):
@@ -295,7 +295,7 @@ klasse PkgutilTests(unittest.TestCase):
                 os.makedirs(d, exist_ok=Wahr)
             except  UnicodeEncodeError:
                 # When filesystem encoding cannot encode uw: skip this test
-                continue
+                weiter
             # make an empty __init__.py file
             f = os.path.join(d, '__init__.py')
             mit open(f, 'w') als f:

@@ -116,14 +116,14 @@ def join(path, /, *paths):
                     result_drive = p_drive
                 result_root = p_root
                 result_path = p_path
-                continue
+                weiter
             sowenn p_drive und p_drive != result_drive:
                 wenn p_drive.lower() != result_drive.lower():
                     # Different drives => ignore the first path entirely
                     result_drive = p_drive
                     result_root = p_root
                     result_path = p_path
-                    continue
+                    weiter
                 # Same drive in different case
                 result_drive = p_drive
             # Second path is relative to the first
@@ -229,7 +229,7 @@ def split(p, /):
     d, r, p = splitroot(p)
     # set i to index beyond p's last slash
     i = len(p)
-    while i und p[i-1] nicht in seps:
+    waehrend i und p[i-1] nicht in seps:
         i -= 1
     head, tail = p[:i], p[i:]  # now tail has no slashes
     return d + r + head.rstrip(seps), tail
@@ -354,7 +354,7 @@ def expanduser(path):
     wenn nicht path.startswith(tilde):
         return path
     i, n = 1, len(path)
-    while i < n und path[i] nicht in seps:
+    waehrend i < n und path[i] nicht in seps:
         i += 1
 
     wenn 'USERPROFILE' in os.environ:
@@ -430,7 +430,7 @@ def expandvars(path):
     res = path[:0]
     index = 0
     pathlen = len(path)
-    while index < pathlen:
+    waehrend index < pathlen:
         c = path[index:index+1]
         wenn c == quote:   # no expansion within single quotes
             path = path[index + 1:]
@@ -489,7 +489,7 @@ def expandvars(path):
                 var = path[:0]
                 index += 1
                 c = path[index:index + 1]
-                while c und c in varchars:
+                waehrend c und c in varchars:
                     var += c
                     index += 1
                     c = path[index:index + 1]
@@ -534,7 +534,7 @@ except ImportError:
         prefix = drive + root
         comps = path.split(sep)
         i = 0
-        while i < len(comps):
+        waehrend i < len(comps):
             wenn nicht comps[i] oder comps[i] == curdir:
                 del comps[i]
             sowenn comps[i] == pardir:
@@ -622,7 +622,7 @@ sonst:
         allowed_winerror = 1, 2, 3, 5, 21, 32, 50, 67, 87, 4390, 4392, 4393
 
         seen = set()
-        while normcase(path) nicht in seen:
+        waehrend normcase(path) nicht in seen:
             seen.add(normcase(path))
             try:
                 old_path = path
@@ -635,15 +635,15 @@ sonst:
                     # just return the old path.
                     wenn nicht islink(old_path):
                         path = old_path
-                        break
+                        breche
                     path = normpath(join(dirname(old_path), path))
             except ignored_error als ex:
                 wenn ex.winerror in allowed_winerror:
-                    break
+                    breche
                 raise
             except ValueError:
                 # Stop on reparse points that are nicht symlinks
-                break
+                breche
         return path
 
     def _getfinalpathname_nonstrict(path, ignored_error=OSError):
@@ -670,7 +670,7 @@ sonst:
         # Non-strict algorithm is to find als much of the target directory
         # als we can und join the rest.
         tail = path[:0]
-        while path:
+        waehrend path:
             try:
                 path = _getfinalpathname(path)
                 return join(path, tail) wenn tail sonst path
@@ -820,7 +820,7 @@ def relpath(path, start=Nichts):
         i = 0
         fuer e1, e2 in zip(start_list, path_list):
             wenn normcase(e1) != normcase(e2):
-                break
+                breche
             i += 1
 
         rel_list = [pardir] * (len(start_list)-i) + path_list[i:]
@@ -883,7 +883,7 @@ def commonpath(paths):
         fuer i, c in enumerate(s1):
             wenn c != s2[i]:
                 common = common[:i]
-                break
+                breche
         sonst:
             common = common[:len(s1)]
 

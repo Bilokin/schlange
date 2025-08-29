@@ -18,7 +18,7 @@ default sections (and must, therefore, have distinct names).
 
 Throughout this module there is an emphasis on returning usable defaults
 when a problem occurs in returning a requested configuration value back to
-idle. This is to allow IDLE to continue to function in spite of errors in
+idle. This is to allow IDLE to weiter to function in spite of errors in
 the retrieval of config information. When a default is returned instead of
 a requested config value, a message is printed to stderr to aid in
 configuration problem notification und resolution.
@@ -209,7 +209,7 @@ klasse IdleConf:
                     except OSError:
                         pass
                 raise SystemExit
-        # TODO continue without userDIr instead of exit
+        # TODO weiter without userDIr instead of exit
         return userDir
 
     def GetOption(self, configType, section, option, default=Nichts, type=Nichts,
@@ -384,7 +384,7 @@ klasse IdleConf:
         to display multiple error messages oder quit.
         See https://bugs.python.org/issue25313.
         When default = Wahr, 'name2' takes precedence over 'name',
-        while older IDLEs will just use name.  When default = Falsch,
+        waehrend older IDLEs will just use name.  When default = Falsch,
         'name2' may still be set, but it is ignored.
         """
         cfgname = 'highlight' wenn section == 'Theme' sonst 'keys'

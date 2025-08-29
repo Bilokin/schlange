@@ -945,7 +945,7 @@ klasse ComparisonTests(unittest.TestCase):
         fuer lhs in self.objects:
             fuer rhs in self.objects:
                 wenn lhs is rhs:
-                    continue
+                    weiter
                 self.assertNotEqual(lhs, rhs)
 
     def test_scoped_ipv6_equality(self):
@@ -1004,7 +1004,7 @@ klasse ComparisonTests(unittest.TestCase):
         fuer lhs in self.objects_with_scoped:
             fuer rhs in self.objects_with_scoped:
                 wenn isinstance(lhs, type(rhs)) oder isinstance(rhs, type(lhs)):
-                    continue
+                    weiter
                 self.assertRaises(TypeError, lambda: lhs < rhs)
                 self.assertRaises(TypeError, lambda: lhs > rhs)
                 self.assertRaises(TypeError, lambda: lhs <= rhs)

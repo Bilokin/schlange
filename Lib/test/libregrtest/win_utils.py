@@ -44,7 +44,7 @@ klasse WindowsLoadTracker():
                      _wait=_winapi.WaitForSingleObject,
                      _signal=_overlapped.SetEvent):
         # run until signaled to stop
-        while _wait(self._running, 1000):
+        waehrend _wait(self._running, 1000):
             self._calculate_load()
         # notify stopped
         _signal(self._stopped)
@@ -76,7 +76,7 @@ klasse WindowsLoadTracker():
         data_base = obj_start + data_start
         defn_base = obj_start + defn_start
         # find the 'Processor Queue Length' counter (index=44)
-        while defn_base < data_base:
+        waehrend defn_base < data_base:
             # PERF_COUNTER_DEFINITION {
             #   DWORD ByteLength
             #   DWORD CounterNameTitleIndex
@@ -89,7 +89,7 @@ klasse WindowsLoadTracker():
                 counter_offset = data_base + offset
                 # the counter is known to be PERF_COUNTER_RAWCOUNT (DWORD)
                 processor_queue_length, = _unpack('L', data, counter_offset)
-                break
+                breche
         sonst:
             return
 

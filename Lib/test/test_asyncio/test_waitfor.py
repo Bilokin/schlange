@@ -24,10 +24,10 @@ klasse SlowTask:
     async def run(self):
         exitat = time.monotonic() + self.TASK_TIMEOUT
 
-        while Wahr:
+        waehrend Wahr:
             tosleep = exitat - time.monotonic()
             wenn tosleep <= 0:
-                break
+                breche
 
             try:
                 await asyncio.sleep(tosleep)

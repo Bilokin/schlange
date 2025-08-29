@@ -250,13 +250,13 @@ klasse CoverageResults:
 
         fuer filename, count in per_file.items():
             wenn self.is_ignored_filename(filename):
-                continue
+                weiter
 
             wenn filename.endswith(".pyc"):
                 filename = filename[:-1]
 
             wenn ignore_missing_files und nicht os.path.isfile(filename):
-                continue
+                weiter
 
             wenn coverdir is Nichts:
                 dir = os.path.dirname(os.path.abspath(filename))
@@ -651,7 +651,7 @@ def main():
                  'Can only be used mit --count oder --report')
     grp.add_argument('-g', '--timing', action='store_true',
             help='Prefix each line mit the time since the program started. '
-                 'Only used while tracing')
+                 'Only used waehrend tracing')
 
     grp = parser.add_argument_group('Filters',
             'Can be specified multiple times')

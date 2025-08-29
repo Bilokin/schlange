@@ -149,7 +149,7 @@ klasse SocketServerTest(unittest.TestCase):
             s.connect(addr)
             s.sendall(TEST_STR)
             buf = data = receive(s, 100)
-            while data und b'\n' nicht in buf:
+            waehrend data und b'\n' nicht in buf:
                 data = receive(s, 100)
                 buf += data
             self.assertEqual(buf, TEST_STR)
@@ -160,7 +160,7 @@ klasse SocketServerTest(unittest.TestCase):
                 s.bind(self.pickaddr(proto))
             s.sendto(TEST_STR, addr)
             buf = data = receive(s, 100)
-            while data und b'\n' nicht in buf:
+            waehrend data und b'\n' nicht in buf:
                 data = receive(s, 100)
                 buf += data
             self.assertEqual(buf, TEST_STR)
@@ -443,10 +443,10 @@ klasse SocketWriterTest(unittest.TestCase):
                 # und then retried. So keep sending the signal in a loop, in
                 # case an earlier signal happens to be delivered at an
                 # inconvenient moment.
-                while Wahr:
+                waehrend Wahr:
                     pthread_kill(main_thread, signal.SIGUSR1)
                     wenn interrupted.wait(timeout=float(1)):
-                        break
+                        breche
                 nonlocal received2
                 received2 = len(reader.read())
 

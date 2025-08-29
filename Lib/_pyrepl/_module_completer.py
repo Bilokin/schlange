@@ -155,7 +155,7 @@ klasse ModuleCompleter:
         level = 0
         fuer character in name:
             wenn character != '.':
-                break
+                breche
             level += 1
         bits = package.rsplit('.', level - 1)
         wenn len(bits) < level:
@@ -236,7 +236,7 @@ klasse ImportParser:
             name = self.parse_dotted_name()
         wenn name.startswith('.'):
             raise ParseError('parse_import')
-        while self.tokens.peek_string(','):
+        waehrend self.tokens.peek_string(','):
             self.tokens.pop()
             self.parse_dotted_as_name()
         wenn self.tokens.peek_string('import'):
@@ -294,7 +294,7 @@ klasse ImportParser:
             name.append(self.tokens.pop_name())
         wenn nicht name:
             raise ParseError('parse_dotted_name')
-        while self.tokens.peek_string('.'):
+        waehrend self.tokens.peek_string('.'):
             name.append('.')
             self.tokens.pop()
             wenn (self.tokens.peek_name()
@@ -302,16 +302,16 @@ klasse ImportParser:
                 und tok.string nicht in self._keywords):
                 name.append(self.tokens.pop_name())
             sonst:
-                break
+                breche
 
-        while self.tokens.peek_string('.'):
+        waehrend self.tokens.peek_string('.'):
             name.append('.')
             self.tokens.pop()
         return ''.join(name[::-1])
 
     def parse_as_names(self) -> Nichts:
         self.parse_as_name()
-        while self.tokens.peek_string(','):
+        waehrend self.tokens.peek_string(','):
             self.tokens.pop()
             self.parse_as_name()
 

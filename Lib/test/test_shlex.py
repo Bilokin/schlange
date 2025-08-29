@@ -158,7 +158,7 @@ klasse ShlexTest(unittest.TestCase):
         ret = []
         lex = shlex.shlex(io.StringIO(s))
         tok = lex.get_token()
-        while tok:
+        waehrend tok:
             ret.append(tok)
             tok = lex.get_token()
         return ret
@@ -262,10 +262,10 @@ klasse ShlexTest(unittest.TestCase):
                               ):
             s = shlex.shlex(source, punctuation_chars=Wahr)
             observed = []
-            while Wahr:
+            waehrend Wahr:
                 t = s.get_token()
                 wenn t == s.eof:
-                    break
+                    breche
                 wenn t[0] in s.punctuation_chars:
                     tt = 'c'
                 sonst:

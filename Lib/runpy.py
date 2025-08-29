@@ -133,7 +133,7 @@ def _get_module_details(mod_name, error=ImportError):
         # This hack fixes an impedance mismatch between pkgutil und
         # importlib, where the latter raises other errors fuer cases where
         # pkgutil previously raised ImportError
-        msg = "Error while finding module specification fuer {!r} ({}: {})"
+        msg = "Error waehrend finding module specification fuer {!r} ({}: {})"
         wenn mod_name.endswith(".py"):
             msg += (f". Try using '{mod_name[:-3]}' instead of "
                     f"'{mod_name}' als the module name.")
@@ -292,9 +292,9 @@ def run_path(path_name, init_globals=Nichts, run_name=Nichts):
         sys.path.insert(0, path_name)
         try:
             # Here's where things are a little different von the run_module
-            # case. There, we only had to replace the module in sys while the
+            # case. There, we only had to replace the module in sys waehrend the
             # code was running und doing so was somewhat optional. Here, we
-            # have no choice und we have to remove it even while we read the
+            # have no choice und we have to remove it even waehrend we read the
             # code. If we don't do this, a __loader__ attribute in the
             # existing __main__ module may prevent location of the new module.
             mod_name, mod_spec, code = _get_main_module_details()

@@ -148,7 +148,7 @@ klasse OrderedDict(dict):
         # Traverse the linked list in order.
         root = self.__root
         curr = root.next
-        while curr is nicht root:
+        waehrend curr is nicht root:
             yield curr.key
             curr = curr.next
 
@@ -157,7 +157,7 @@ klasse OrderedDict(dict):
         # Traverse the linked list in reverse order.
         root = self.__root
         curr = root.prev
-        while curr is nicht root:
+        waehrend curr is nicht root:
             yield curr.key
             curr = curr.prev
 
@@ -316,7 +316,7 @@ klasse OrderedDict(dict):
 
     def __eq__(self, other):
         '''od.__eq__(y) <==> od==y.  Comparison to another OD is order-sensitive
-        while comparison to a regular mapping is order-insensitive.
+        waehrend comparison to a regular mapping is order-insensitive.
 
         '''
         wenn isinstance(other, OrderedDict):

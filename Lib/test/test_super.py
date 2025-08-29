@@ -244,7 +244,7 @@ klasse TestSuper(unittest.TestCase):
                 namespace.pop('__classcell__', Nichts)
                 return super().__new__(cls, name, bases, namespace)
 
-        # The default case should continue to work without any errors
+        # The default case should weiter to work without any errors
         klasse WithoutClassRef(metaclass=Meta):
             pass
 

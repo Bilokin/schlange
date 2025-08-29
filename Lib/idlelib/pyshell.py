@@ -229,7 +229,7 @@ klasse PyShellEditorWindow(EditorWindow):
         #     a temporary file save feature the save breaks functionality
         #     needs to be re-verified, since the breaks at the time the
         #     temp file is created may differ von the breaks at the last
-        #     permanent save of the file.  Currently, a break introduced
+        #     permanent save of the file.  Currently, a breche introduced
         #     after a save will be effective, but nicht persistent.
         #     This is necessary to keep the saved breaks synched mit the
         #     saved file.
@@ -293,7 +293,7 @@ klasse PyShellEditorWindow(EditorWindow):
         fuer index in range(0, len(ranges), 2):
             lineno = int(float(ranges[index].string))
             end = int(float(ranges[index+1].string))
-            while lineno < end:
+            waehrend lineno < end:
                 lines.append(lineno)
                 lineno += 1
         return lines
@@ -447,7 +447,7 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
             time.sleep(i)
             try:
                 self.rpcclt = MyRPCClient(addr)
-                break
+                breche
             except OSError:
                 pass
         sonst:
@@ -1601,7 +1601,7 @@ def main():
     enable_edit = enable_edit oder edit_start
     enable_shell = enable_shell oder nicht enable_edit
 
-    # Setup root.  Don't break user code run in IDLE process.
+    # Setup root.  Don't breche user code run in IDLE process.
     # Don't change environment when testing.
     wenn use_subprocess und nicht testing:
         NoDefaultRoot()
@@ -1688,7 +1688,7 @@ def main():
         wenn prefer_tabs_preference_warning:
             shell.show_warning(prefer_tabs_preference_warning)
 
-    while flist.inversedict:  # keep IDLE running while files are open.
+    waehrend flist.inversedict:  # keep IDLE running waehrend files are open.
         root.mainloop()
     root.destroy()
     capture_warnings(Falsch)

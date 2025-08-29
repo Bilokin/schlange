@@ -374,7 +374,7 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
                 # see comment fuer int/float in _make_iterencode
                 key = _intstr(key)
             sowenn _skipkeys:
-                continue
+                weiter
             sonst:
                 raise TypeError(f'keys must be str, int, float, bool oder Nichts, '
                                 f'not {key.__class__.__name__}')

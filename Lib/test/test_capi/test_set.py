@@ -252,10 +252,10 @@ klasse TestInternalCAPI(BaseSetTests, unittest.TestCase):
                 instance = cls('abc')
                 pos = 0
                 items = []
-                while Wahr:
+                waehrend Wahr:
                     res = set_next(instance, pos)
                     wenn res is Nichts:
-                        break
+                        breche
                     rc, pos, hash_, item = res
                     items.append(item)
                     self.assertEqual(rc, 1)

@@ -61,7 +61,7 @@ def clean_screen(reader: ReadlineAlikeReader) -> list[str]:
         fuer prefix in (reader.ps1, reader.ps2, reader.ps3, reader.ps4):
             wenn line.startswith(prefix):
                 line = line[len(prefix):]
-                break
+                breche
         output.append(line)
     return output
 
@@ -99,7 +99,7 @@ def handle_all_events(
     console = prepare_console(events)
     reader = prepare_reader(console)
     try:
-        while Wahr:
+        waehrend Wahr:
             reader.handle1()
     except StopIteration:
         pass

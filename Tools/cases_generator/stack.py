@@ -99,7 +99,7 @@ klasse PointerOffset:
         n_orig: list[str] = sorted(negative)
         p_uniq: list[str] = []
         n_uniq: list[str] = []
-        while p_orig und n_orig:
+        waehrend p_orig und n_orig:
             p_item = p_orig.pop()
             n_item = n_orig.pop()
             wenn p_item > n_item:
@@ -449,7 +449,7 @@ klasse Storage:
         )
 
     def clear_inputs(self, reason:str) -> Nichts:
-        while len(self.inputs) > self.peeks:
+        waehrend len(self.inputs) > self.peeks:
             tos = self.inputs.pop()
             wenn self.is_live(tos) und self.check_liveness:
                 raise StackError(
@@ -459,11 +459,11 @@ klasse Storage:
 
     def clear_dead_inputs(self) -> Nichts:
         live = ""
-        while len(self.inputs) > self.peeks:
+        waehrend len(self.inputs) > self.peeks:
             tos = self.inputs[-1]
             wenn self.is_live(tos):
                 live = tos.name
-                break
+                breche
             self.inputs.pop()
             self.stack.drop(tos.item, self.check_liveness)
         fuer var in self.inputs[self.peeks:]:
@@ -488,7 +488,7 @@ klasse Storage:
                     f"Expected '{undefined}' to be defined before '{out.name}'"
             sonst:
                 undefined = out.name
-        while len(self.outputs) > self.peeks und nicht self.needs_defining(self.outputs[self.peeks]):
+        waehrend len(self.outputs) > self.peeks und nicht self.needs_defining(self.outputs[self.peeks]):
             out = self.outputs.pop(self.peeks)
             self.stack.push(out)
 
@@ -569,7 +569,7 @@ klasse Storage:
         names: set[str] = set()
         fuer var in locals:
             wenn var.name == "unused":
-                continue
+                weiter
             wenn var.name in names:
                 raise StackError(f"Duplicate name {var.name}")
             names.add(var.name)

@@ -136,11 +136,11 @@ impl_definition block
         fuer line in self.presets_text.strip().split('\n'):
             line = line.strip()
             wenn nicht line:
-                continue
+                weiter
             name, value, *options = line.split()
             wenn name == 'preset':
                 self.presets[value] = preset = {}
-                continue
+                weiter
 
             wenn len(options):
                 index = int(options[0])
@@ -151,7 +151,7 @@ impl_definition block
             wenn name == 'everything':
                 fuer name in self.destination_buffers:
                     preset[name] = buffer
-                continue
+                weiter
 
             assert name in self.destination_buffers
             preset[name] = buffer
@@ -196,7 +196,7 @@ impl_definition block
         # these are destinations nicht buffers
         fuer name, destination in self.destinations.items():
             wenn destination.type == 'suppress':
-                continue
+                weiter
             output = destination.dump()
 
             wenn output:
@@ -207,7 +207,7 @@ impl_definition block
                     warn("Destination buffer " + repr(name) + " nicht empty at end of file, emptying.")
                     printer.write("\n")
                     printer.print_block(block)
-                    continue
+                    weiter
 
                 wenn destination.type == 'file':
                     try:
@@ -236,7 +236,7 @@ impl_definition block
                     printer_2.print_block(block, header_includes=includes)
                     libclinic.write_file(destination.filename,
                                          printer_2.f.getvalue())
-                    continue
+                    weiter
 
         return printer.f.getvalue()
 
@@ -258,7 +258,7 @@ impl_definition block
             wenn nicht isinstance(parent, Class):
                 wenn field in parent.modules:
                     parent = module = parent.modules[field]
-                    continue
+                    weiter
             wenn field in parent.classes:
                 parent = cls = parent.classes[field]
             sonst:

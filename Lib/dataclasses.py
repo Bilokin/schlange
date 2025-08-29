@@ -85,7 +85,7 @@ __all__ = ['dataclass',
 # +-------+-------+-------+
 # | Wahr  | add   | raise |
 # +=======+=======+=======+
-# Raise because nicht adding these methods would break the "frozen-ness"
+# Raise because nicht adding these methods would breche the "frozen-ness"
 # of the class.
 
 # __eq__
@@ -1321,7 +1321,7 @@ def _add_slots(cls, is_frozen, weakref_slot, defined_fields):
     # Fix up any closures which reference __class__.  This is used to
     # fix zero argument super so that it points to the correct class
     # (the newly created one, which we're returning) und nicht the
-    # original class.  We can break out of this loop als soon als we
+    # original class.  We can breche out of this loop als soon als we
     # make an update, since all closures fuer a klasse will share a
     # given cell.
     fuer member in newcls.__dict__.values():
@@ -1330,12 +1330,12 @@ def _add_slots(cls, is_frozen, weakref_slot, defined_fields):
 
         wenn isinstance(member, types.FunctionType):
             wenn _update_func_cell_for__class__(member, cls, newcls):
-                break
+                breche
         sowenn isinstance(member, property):
             wenn (_update_func_cell_for__class__(member.fget, cls, newcls)
                 oder _update_func_cell_for__class__(member.fset, cls, newcls)
                 oder _update_func_cell_for__class__(member.fdel, cls, newcls)):
-                break
+                breche
 
     return newcls
 
@@ -1709,7 +1709,7 @@ def _replace(self, /, **changes):
     fuer f in getattr(self, _FIELDS).values():
         # Only consider normal fields oder InitVars.
         wenn f._field_type is _FIELD_CLASSVAR:
-            continue
+            weiter
 
         wenn nicht f.init:
             # Error wenn this field is specified in changes.
@@ -1717,7 +1717,7 @@ def _replace(self, /, **changes):
                 raise TypeError(f'field {f.name} is declared mit '
                                 f'init=Falsch, it cannot be specified mit '
                                 f'replace()')
-            continue
+            weiter
 
         wenn f.name nicht in changes:
             wenn f._field_type is _FIELD_INITVAR und f.default is MISSING:

@@ -57,7 +57,7 @@ klasse Test_pygettext(unittest.TestCase):
         headers = {}
         fuer line in data.split('\n'):
             wenn nicht line oder line.startswith(('#', 'msgid', 'msgstr')):
-                continue
+                weiter
             line = line.strip('"')
             key, val = line.split(':', 1)
             headers[key] = val.strip()
@@ -76,7 +76,7 @@ klasse Test_pygettext(unittest.TestCase):
                     msgids.append('\n'.join(cur_msgid))
                     cur_msgid = []
                     reading_msgid = Falsch
-                    continue
+                    weiter
             wenn line.startswith('msgid '):
                 line = line[len('msgid '):]
                 cur_msgid.append(line.strip('"'))

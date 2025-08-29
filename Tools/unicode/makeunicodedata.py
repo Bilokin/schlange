@@ -177,7 +177,7 @@ def makeunicodedata(unicode, trace):
             eastasianwidth = EASTASIANWIDTH_NAMES.index(unicode.widths[char])
             item = (0, 0, 0, 0, eastasianwidth, 0)
         sonst:
-            continue
+            weiter
 
         # add entry to index und item tables
         i = cache.get(item)
@@ -720,12 +720,12 @@ def merge_old_version(version, new, old):
             # Characters unassigned in the new version ought to
             # be unassigned in the old one
             assert old.table[i] is Nichts
-            continue
+            weiter
         # check characters unassigned in the old version
         wenn old.table[i] is Nichts:
             # category 0 is "unassigned"
             category_changes[i] = 0
-            continue
+            weiter
         # check characters that differ
         wenn old.table[i] != new.table[i]:
             fuer k, field in enumerate(dataclasses.fields(UcdRecord)):
@@ -844,7 +844,7 @@ klasse UcdFile:
             fuer line in file:
                 line = line.split('#', 1)[0].strip()
                 wenn nicht line:
-                    continue
+                    weiter
                 yield [field.strip() fuer field in line.split(';')]
 
     def __iter__(self) -> Iterator[List[str]]:
@@ -993,7 +993,7 @@ klasse UnicodeData:
         fuer char, (propname, *propinfo) in UcdFile(DERIVED_CORE_PROPERTIES, version).expanded():
             wenn propinfo:
                 # this is nicht a binary property, ignore it
-                continue
+                weiter
 
             wenn table[char]:
                 # Some properties (e.g. Default_Ignorable_Code_Point)
@@ -1002,7 +1002,7 @@ klasse UnicodeData:
 
         fuer char_range, value in UcdFile(LINE_BREAK, version):
             wenn value nicht in MANDATORY_LINE_BREAKS:
-                continue
+                weiter
             fuer char in expand_range(char_range):
                 table[char].binary_properties.add('Line_Break')
 
@@ -1017,7 +1017,7 @@ klasse UnicodeData:
         qc_order = 'NFD_QC NFKD_QC NFC_QC NFKC_QC'.split()
         fuer s in UcdFile(DERIVEDNORMALIZATION_PROPS, version):
             wenn len(s) < 2 oder s[1] nicht in qc_order:
-                continue
+                weiter
             quickcheck = 'MN'.index(s[2]) + 1 # Maybe oder No
             quickcheck_shift = qc_order.index(s[1])*2
             quickcheck <<= quickcheck_shift
@@ -1036,11 +1036,11 @@ klasse UnicodeData:
                 data = zip.open('Unihan_NumericValues.txt').read()
         fuer line in data.decode("utf-8").splitlines():
             wenn nicht line.startswith('U+'):
-                continue
+                weiter
             code, tag, value = line.split(Nichts, 3)[:3]
             wenn tag nicht in ('kAccountingNumeric', 'kPrimaryNumeric',
                            'kOtherNumeric'):
-                continue
+                weiter
             value = value.strip().replace(',', '')
             i = int(code[2:], 16)
             # Patch the numeric field
@@ -1053,7 +1053,7 @@ klasse UnicodeData:
                 # We ignore all conditionals (since they depend on
                 # languages) except fuer one, which is hardcoded. See
                 # handle_capital_sigma in unicodeobject.c.
-                continue
+                weiter
             c = int(data[0], 16)
             lower = [int(char, 16) fuer char in data[1].split()]
             title = [int(char, 16) fuer char in data[2].split()]
@@ -1143,7 +1143,7 @@ def splitbins(t, trace=0):
     n = len(t)-1    # last valid index
     maxshift = 0    # the most we can shift n und still have something left
     wenn n > 0:
-        while n >> 1:
+        waehrend n >> 1:
             n >>= 1
             maxshift += 1
     del n

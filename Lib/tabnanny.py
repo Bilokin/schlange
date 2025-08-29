@@ -172,7 +172,7 @@ klasse Whitespace:
                 count[b] = count[b] + 1
                 b = 0
             sonst:
-                break
+                breche
         self.n    = n
         self.nt   = nt
         self.norm = tuple(count), b

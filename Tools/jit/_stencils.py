@@ -300,7 +300,7 @@ klasse StencilGroup:
         trampoline_mask: list[str] = []
         fuer ordinal in self._trampolines:
             bitmask |= 1 << ordinal
-        while bitmask:
+        waehrend bitmask:
             word = bitmask & ((1 << 32) - 1)
             trampoline_mask.append(f"{word:#04x}")
             bitmask >>= 32

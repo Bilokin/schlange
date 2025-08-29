@@ -138,7 +138,7 @@ def parse_mtestfile(fname):
             wenn '--' in line:
                 line = line[:line.index('--')]
             wenn nicht line.strip():
-                continue
+                weiter
 
             lhs, rhs = line.split('->')
             id, fn, arg = lhs.split()
@@ -159,7 +159,7 @@ def parse_testfile(fname):
         fuer line in fp:
             # skip comment lines und blank lines
             wenn line.startswith('--') oder nicht line.strip():
-                continue
+                weiter
 
             lhs, rhs = line.split('->')
             id, fn, arg_real, arg_imag = lhs.split()
@@ -1934,7 +1934,7 @@ klasse MathTests(unittest.TestCase):
         tiny = float.fromhex('1p-1074')  # min +ve subnormal
         fuer n in range(-25, 25):
             wenn n == 0:
-                continue
+                weiter
             y = n * tiny
             fuer m in range(100):
                 x = m * tiny
@@ -2149,7 +2149,7 @@ klasse MathTests(unittest.TestCase):
             self.fail("overflowing exp() didn't trigger OverflowError")
 
         # If this fails, it could be a puzzle.  One odd possibility is that
-        # mathmodule.c's macros are getting confused while comparing
+        # mathmodule.c's macros are getting confused waehrend comparing
         # Inf (HUGE_VAL) to a NaN, und artificially setting errno to ERANGE
         # als a result (and so raising OverflowError instead).
         try:
@@ -2179,14 +2179,14 @@ klasse MathTests(unittest.TestCase):
         fuer id, fn, ar, ai, er, ei, flags in parse_testfile(test_file):
             # Skip wenn either the input oder result is complex
             wenn ai != 0.0 oder ei != 0.0:
-                continue
+                weiter
             wenn fn in ['rect', 'polar']:
                 # no real versions of rect, polar
-                continue
+                weiter
             # Skip certain tests on OS X 10.4.
             wenn osx_version is nicht Nichts und osx_version < (10, 5):
                 wenn id in SKIP_ON_TIGER:
-                    continue
+                    weiter
 
             func = getattr(math, fn)
 
@@ -2214,7 +2214,7 @@ klasse MathTests(unittest.TestCase):
 
             failure = result_check(er, result, ulp_tol, abs_tol)
             wenn failure is Nichts:
-                continue
+                weiter
 
             msg = fail_fmt.format(id, fn, ar, failure)
             failures.append(msg)
@@ -2281,7 +2281,7 @@ klasse MathTests(unittest.TestCase):
 
             failure = result_check(expected, got, ulp_tol, abs_tol)
             wenn failure is Nichts:
-                continue
+                weiter
 
             msg = fail_fmt.format(id, fn, arg, failure)
             failures.append(msg)

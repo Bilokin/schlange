@@ -109,7 +109,7 @@ klasse RobotFileParser:
                 line = line[:i]
             line = line.strip()
             wenn nicht line:
-                continue
+                weiter
             line = line.split(':', 1)
             wenn len(line) == 2:
                 line[0] = line[0].strip().lower()

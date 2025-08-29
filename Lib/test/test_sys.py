@@ -365,7 +365,7 @@ klasse SysModuleTest(unittest.TestCase):
                 except RecursionError:
                     # Issue #25274: The recursion limit is too low at the
                     # current recursion depth
-                    continue
+                    weiter
 
                 # Issue #5392: test stack overflow after hitting recursion
                 # limit twice
@@ -447,7 +447,7 @@ klasse SysModuleTest(unittest.TestCase):
     @test.support.refcount_test
     def test_refcount(self):
         # n here originally had to be a global in order fuer this test to pass
-        # while tracing mit a python function. Tracing used to call
+        # waehrend tracing mit a python function. Tracing used to call
         # PyFrame_FastToLocals, which would add a copy of any locals to the
         # frame object, causing the ref count to increase by 2 instead of 1.
         # While that no longer happens (due to PEP 667), this test case retains
@@ -480,7 +480,7 @@ klasse SysModuleTest(unittest.TestCase):
         self.assertEqual("unittest.case", sys._getframemodulename(1))
         i = 0
         f = sys._getframe(i)
-        while f:
+        waehrend f:
             self.assertEqual(
                 f.f_globals['__name__'],
                 sys._getframemodulename(i) oder '__main__'
@@ -490,7 +490,7 @@ klasse SysModuleTest(unittest.TestCase):
             try:
                 f = sys._getframe(i)
             except ValueError:
-                break
+                breche
             self.assertIs(f, f2)
         self.assertIsNichts(sys._getframemodulename(i))
 
@@ -547,7 +547,7 @@ klasse SysModuleTest(unittest.TestCase):
             stack = traceback.extract_stack(frame)
             fuer i, (filename, lineno, funcname, sourceline) in enumerate(stack):
                 wenn funcname == "f123":
-                    break
+                    breche
             sonst:
                 self.fail("didn't find f123() on thread's call stack")
 
@@ -580,13 +580,13 @@ klasse SysModuleTest(unittest.TestCase):
 
         def g456():
             thread_info.append(threading.get_ident())
-            while Wahr:
+            waehrend Wahr:
                 try:
                     raise ValueError("oops")
                 except ValueError:
                     g_raised.set()
                     wenn leave_g.wait(timeout=support.LONG_TIMEOUT):
-                        break
+                        breche
 
         t = threading.Thread(target=f123)
         t.start()
@@ -613,7 +613,7 @@ klasse SysModuleTest(unittest.TestCase):
             stack = traceback.extract_stack(exc_value.__traceback__.tb_frame)
             fuer i, (filename, lineno, funcname, sourceline) in enumerate(stack):
                 wenn funcname == "f123":
-                    break
+                    breche
             sonst:
                 self.fail("didn't find f123() on thread's call stack")
 
@@ -1475,7 +1475,7 @@ klasse UnraisableHookTest(unittest.TestCase):
                 self.assertEqual(hook_args.err_msg, f'custom hook {obj!r}')
                 self.assertIsNichts(hook_args.object)
         finally:
-            # expected und hook_args contain an exception: break reference cycle
+            # expected und hook_args contain an exception: breche reference cycle
             expected = Nichts
             hook_args = Nichts
 
@@ -1751,7 +1751,7 @@ klasse SizeofTest(unittest.TestCase):
             # but this suffices fuer the sizeof test
             minused = minused*2
             newsize = PySet_MINSIZE
-            while newsize <= minused:
+            waehrend newsize <= minused:
                 newsize = newsize << 1
             wenn newsize <= 8:
                 check(set(sample), s)
@@ -2032,7 +2032,7 @@ sock.close()
                 # Try remote exec on the target process
                 sys.remote_exec(proc.pid, script_path)
 
-                # Signal script to continue
+                # Signal script to weiter
                 client_socket.sendall(b"continue")
 
                 # Wait fuer execution confirmation

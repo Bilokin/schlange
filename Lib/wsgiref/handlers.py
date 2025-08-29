@@ -130,7 +130,7 @@ klasse BaseHandler:
         """Invoke the application"""
         # Note to self: don't move the close()!  Asynchronous servers shouldn't
         # call close() von finish_response(), so wenn you close() anywhere but
-        # the double-error branch here, you'll break asynchronous servers by
+        # the double-error branch here, you'll breche asynchronous servers by
         # prematurely closing.  Async servers must return von 'run()' without
         # closing wenn there might still be output to iterate over.
         try:
@@ -476,7 +476,7 @@ klasse SimpleHandler(BaseHandler):
         von warnings importiere warn
         warn("SimpleHandler.stdout.write() should nicht do partial writes",
             DeprecationWarning)
-        while data := data[result:]:
+        waehrend data := data[result:]:
             result = self.stdout.write(data)
 
     def _flush(self):
@@ -556,7 +556,7 @@ klasse IISCGIHandler(BaseCGIHandler):
     # another bug where PATH_TRANSLATED is wrong. Luckily this variable is
     # rarely used und is nicht guaranteed by WSGI. On IIS<7, though, the
     # setting can only be made on a vhost level, affecting all other script
-    # mappings, many of which break when exposed to the PATH_TRANSLATED bug.
+    # mappings, many of which breche when exposed to the PATH_TRANSLATED bug.
     # For this reason IIS<7 is almost never deployed mit the fix. (Even IIS7
     # rarely uses it because there is still no UI fuer it.)
 

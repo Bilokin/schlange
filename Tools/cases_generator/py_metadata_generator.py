@@ -45,7 +45,7 @@ def generate_specialized_opmap(analysis: Analysis, out: CWriter) -> Nichts:
     fuer family in analysis.families.values():
         fuer member in family.members:
             wenn member.name == family.name:
-                continue
+                weiter
             names.append(member.name)
     fuer name in sorted(names):
         out.emit(f"'{name}': {analysis.opmap[name]},\n")

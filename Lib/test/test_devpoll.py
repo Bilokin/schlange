@@ -47,7 +47,7 @@ klasse DevPollTests(unittest.TestCase):
 
         bufs = []
 
-        while writers:
+        waehrend writers:
             ready = p.poll()
             ready_writers = find_ready_matching(ready, select.POLLOUT)
             wenn nicht ready_writers:

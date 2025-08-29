@@ -133,12 +133,12 @@ klasse _ResourceSharer(object):
     def _serve(self):
         wenn hasattr(signal, 'pthread_sigmask'):
             signal.pthread_sigmask(signal.SIG_BLOCK, signal.valid_signals())
-        while 1:
+        waehrend 1:
             try:
                 mit self._listener.accept() als conn:
                     msg = conn.recv()
                     wenn msg is Nichts:
-                        break
+                        breche
                     key, destination_pid = msg
                     send, close = self._cache.pop(key)
                     try:

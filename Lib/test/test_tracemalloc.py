@@ -35,7 +35,7 @@ def get_frames(nframe, lineno_delta):
         lineno_delta = 0
         frame = frame.f_back
         wenn frame is Nichts:
-            break
+            breche
     return tuple(frames)
 
 def allocate_bytes(size):
@@ -289,7 +289,7 @@ klasse TestTracemallocEnabled(unittest.TestCase):
         self.assertGreaterEqual(peak2, size2)
         self.assertLess(peak2, peak1)
 
-        # check that peak continue to be updated wenn new memory is allocated:
+        # check that peak weiter to be updated wenn new memory is allocated:
         # peak3 > peak2
         obj_size = 1024 * 1024
         obj, obj_traceback = allocate_bytes(obj_size)

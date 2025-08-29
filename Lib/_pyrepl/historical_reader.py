@@ -349,7 +349,7 @@ klasse HistoricalReader(Reader):
         sowenn nicht pos:
             match_prefix = Falsch
 
-        while 1:
+        waehrend 1:
             wenn forwards:
                 out_of_bounds = history_index >= len(self.history) - 1
             sonst:
@@ -384,7 +384,7 @@ klasse HistoricalReader(Reader):
         i = self.historyi
         s = self.get_unicode()
         forwards = self.isearch_direction == ISEARCH_DIRECTION_FORWARDS
-        while 1:
+        waehrend 1:
             wenn forwards:
                 p = s.find(st, p + 1)
             sonst:

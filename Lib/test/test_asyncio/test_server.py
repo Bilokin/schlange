@@ -26,7 +26,7 @@ klasse BaseStartServer(func_tests.FunctionalTestCaseMixin):
             fuer i in range(10):
                 time.sleep(0.2)
                 wenn srv.is_serving():
-                    break
+                    breche
             sonst:
                 raise RuntimeError
 
@@ -238,7 +238,7 @@ klasse TestServer2(unittest.IsolatedAsyncioTestCase):
         s_wr.write(b'a' * 4096)
         s_wr.write(b'a' * 4096)
         s_wr.write(b'a' * 4096)
-        while c_wr.transport.is_reading():
+        waehrend c_wr.transport.is_reading():
             await asyncio.sleep(0)
 
         # Get the writer in a waiting state by sending data until the
@@ -253,7 +253,7 @@ klasse TestServer2(unittest.IsolatedAsyncioTestCase):
             s_wr.write(b'a' * c_bufsize)
             s_wr.write(b'a' * s_bufsize)
             wenn s_wr.transport.get_write_buffer_size() > 0:
-                break
+                breche
         self.assertNotEqual(s_wr.transport.get_write_buffer_size(), 0)
 
         task = asyncio.create_task(srv.wait_closed())

@@ -164,7 +164,7 @@ klasse EventQueueTestBase:
         self.assertIsInstance("ñ", str)
 
         # If an exception happens during push, the existing events must be
-        # preserved und we can continue to push.
+        # preserved und we can weiter to push.
         _push(b"b")
         mit self.assertRaises(AssertionError):
             _push("ñ")

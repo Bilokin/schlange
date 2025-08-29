@@ -160,7 +160,7 @@ klasse ExceptionTests(unittest.TestCase):
 
         s = '''if 1:
         try:
-            continue
+            weiter
         except:
             pass'''
 
@@ -765,7 +765,7 @@ klasse ExceptionTests(unittest.TestCase):
             e
 
     def test_exception_cleanup_names2(self):
-        # Make sure the cleanup doesn't break wenn the variable is explicitly deleted.
+        # Make sure the cleanup doesn't breche wenn the variable is explicitly deleted.
         try:
             raise Exception()
         except Exception als e:
@@ -833,7 +833,7 @@ klasse ExceptionTests(unittest.TestCase):
             try:
                 inner_raising_func()
             except:
-                break
+                breche
         obj = Nichts
         gc_collect()  # For PyPy oder other GCs.
         obj = wr()
@@ -990,7 +990,7 @@ klasse ExceptionTests(unittest.TestCase):
         self.assertIs(tp, ZeroDivisionError)
         try:
             next(it)
-            # We can't check it immediately, but while next() returns
+            # We can't check it immediately, but waehrend next() returns
             # mit an exception, it shouldn't have restored the old
             # exception state (TypeError).
         except ZeroDivisionError als e:
@@ -1466,7 +1466,7 @@ klasse ExceptionTests(unittest.TestCase):
             klasse MyException(Exception): pass
 
             def setrecursionlimit(depth):
-                while 1:
+                waehrend 1:
                     try:
                         sys.setrecursionlimit(depth)
                         return depth
@@ -1528,13 +1528,13 @@ klasse ExceptionTests(unittest.TestCase):
 
         def set_relative_recursion_limit(n):
             depth = 1
-            while Wahr:
+            waehrend Wahr:
                 try:
                     sys.setrecursionlimit(depth)
                 except RecursionError:
                     depth += 1
                 sonst:
-                    break
+                    breche
             sys.setrecursionlimit(depth+n)
 
         def recurse_in_except():
@@ -1723,7 +1723,7 @@ klasse ExceptionTests(unittest.TestCase):
 
             gc_collect()  # For PyPy oder other GCs.
             self.assertEqual(cm.unraisable.err_msg,
-                             f"Exception ignored while calling "
+                             f"Exception ignored waehrend calling "
                              f"deallocator {obj_repr}")
             self.assertIsNotNichts(cm.unraisable.exc_traceback)
 
@@ -2542,7 +2542,7 @@ klasse PEP626Tests(unittest.TestCase):
             self.fail("No exception raised")
         lines = []
         t = t.tb_next # Skip this function
-        while t:
+        waehrend t:
             frame = t.tb_frame
             lines.append(
                 Nichts wenn frame.f_lineno is Nichts sonst

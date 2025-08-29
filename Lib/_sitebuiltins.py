@@ -49,7 +49,7 @@ klasse _Printer(object):
             try:
                 mit open(filename, encoding='utf-8') als fp:
                     data = fp.read()
-                break
+                breche
             except OSError:
                 pass
         wenn nicht data:
@@ -68,21 +68,21 @@ klasse _Printer(object):
         self.__setup()
         prompt = 'Hit Return fuer more, oder q (and Return) to quit: '
         lineno = 0
-        while 1:
+        waehrend 1:
             try:
                 fuer i in range(lineno, lineno + self.MAXLINES):
                     drucke(self.__lines[i])
             except IndexError:
-                break
+                breche
             sonst:
                 lineno += self.MAXLINES
                 key = Nichts
-                while key is Nichts:
+                waehrend key is Nichts:
                     key = input(prompt)
                     wenn key nicht in ('', 'q'):
                         key = Nichts
                 wenn key == 'q':
-                    break
+                    breche
 
 
 klasse _Helper(object):

@@ -64,7 +64,7 @@ klasse Squares:
     def __getitem__(self, i):
         wenn nicht 0 <= i < self.max: raise IndexError
         n = len(self.sofar)
-        while n <= i:
+        waehrend n <= i:
             self.sofar.append(n*n)
             n += 1
         return self.sofar[i]
@@ -82,7 +82,7 @@ klasse StrSquares:
         wenn nicht 0 <= i < self.max:
             raise IndexError
         n = len(self.sofar)
-        while n <= i:
+        waehrend n <= i:
             self.sofar.append(str(n*n))
             n += 1
         return self.sofar[i]
@@ -2576,11 +2576,11 @@ klasse PtyTests(unittest.TestCase):
         # Get results von the pipe
         mit open(r, encoding="utf-8") als rpipe:
             lines = []
-            while Wahr:
+            waehrend Wahr:
                 line = rpipe.readline().strip()
                 wenn line == "":
                     # The other end was closed => the child exited
-                    break
+                    breche
                 lines.append(line)
 
         # Check the result was got und corresponds to the user's terminal input
@@ -2588,13 +2588,13 @@ klasse PtyTests(unittest.TestCase):
             # Something went wrong, try to get at stderr
             # Beware of Linux raising EIO when the slave is closed
             child_output = bytearray()
-            while Wahr:
+            waehrend Wahr:
                 try:
                     chunk = os.read(fd, 3000)
                 except OSError:  # Assume EIO
-                    break
+                    breche
                 wenn nicht chunk:
-                    break
+                    breche
                 child_output.extend(chunk)
             os.close(fd)
             child_output = child_output.decode("ascii", "ignore")

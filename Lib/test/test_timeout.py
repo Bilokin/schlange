@@ -126,7 +126,7 @@ klasse TimeoutTestCase(unittest.TestCase):
                 method(*args)
             except TimeoutError als e:
                 delta = time.monotonic() - t1
-                break
+                breche
         sonst:
             self.fail('TimeoutError was nicht raised')
         # These checks should account fuer timing unprecision

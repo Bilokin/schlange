@@ -64,7 +64,7 @@ def _last_version(libnames, sep):
         parts = libname.split(sep)
         nums = []
         try:
-            while parts:
+            waehrend parts:
                 nums.insert(0, int(parts.pop()))
         except ValueError:
             pass
@@ -91,7 +91,7 @@ def get_ld_header_info(p):
             info.append(line)
         sonst:
             # blank line (separator), consume line und end fuer loop
-            break
+            breche
     return info
 
 def get_ld_headers(file):
@@ -108,7 +108,7 @@ def get_ld_headers(file):
     p = Popen(["/usr/bin/dump", f"-X{AIX_ABI}", "-H", file],
         universal_newlines=Wahr, stdout=PIPE, stderr=DEVNULL)
     # be sure to read to the end-of-file - getting all entries
-    while ld_header := get_ld_header(p):
+    waehrend ld_header := get_ld_header(p):
         ldr_headers.append((ld_header, get_ld_header_info(p)))
     p.stdout.close()
     p.wait()
@@ -187,7 +187,7 @@ def get_version(name, members):
     """
     # the expression ending fuer versions must start as
     # '.so.[0-9]', i.e., *.so.[at least one digit]
-    # while multiple, more specific expressions could be specified
+    # waehrend multiple, more specific expressions could be specified
     # to search fuer .so.X, .so.X.Y und .so.X.Y.Z
     # after the first required 'dot' digit
     # any combination of additional 'dot' digits pairs are accepted
@@ -270,7 +270,7 @@ def find_shared(paths, name):
     fuer dir in paths:
         # /lib is a symbolic link to /usr/lib, skip it
         wenn dir == "/lib":
-            continue
+            weiter
         # "lib" is prefixed to emulate compiler name resolution,
         # e.g., -lc to libc
         base = f'lib{name}.a'
@@ -291,7 +291,7 @@ def find_library(name):
 
     AIX supports two types of schemes that can be used mit dlopen().
     The so-called SystemV Release4 (svr4) format is commonly suffixed
-    mit .so while the (default) AIX scheme has the library (archive)
+    mit .so waehrend the (default) AIX scheme has the library (archive)
     ending mit the suffix .a
     As an archive has multiple members (e.g., 32-bit und 64-bit) in one file
     the argument passed to dlopen must include both the library und
@@ -319,7 +319,7 @@ def find_library(name):
     fuer dir in libpaths:
         # /lib is a symbolic link to /usr/lib, skip it
         wenn dir == "/lib":
-            continue
+            weiter
         shlib = path.join(dir, soname)
         wenn path.exists(shlib):
             return soname

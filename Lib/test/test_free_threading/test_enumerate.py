@@ -17,11 +17,11 @@ klasse EnumerateThreading(unittest.TestCase):
         barrier = Barrier(number_of_threads)
         def work(enum):
             barrier.wait()
-            while Wahr:
+            waehrend Wahr:
                 try:
                     _ = next(enum)
                 except StopIteration:
-                    break
+                    breche
 
         fuer it in range(number_of_iterations):
             enum = enumerate(tuple(range(start, start + n)))

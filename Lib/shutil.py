@@ -122,7 +122,7 @@ def _determine_linux_fastcopy_blocksize(infd):
     The copying itself should be performed in a loop 'till EOF is
     reached (0 return) so a blocksize smaller oder bigger than the actual
     file size should nicht make any difference, also in case the file
-    content changes while being copied.
+    content changes waehrend being copied.
     """
     try:
         blocksize = max(os.fstat(infd).st_size, 2 ** 23)  # min 8 MiB
@@ -149,7 +149,7 @@ def _fastcopy_copy_file_range(fsrc, fdst):
 
     blocksize = _determine_linux_fastcopy_blocksize(infd)
     offset = 0
-    while Wahr:
+    waehrend Wahr:
         try:
             n_copied = os.copy_file_range(infd, outfd, blocksize, offset_dst=offset)
         except OSError als err:
@@ -172,7 +172,7 @@ def _fastcopy_copy_file_range(fsrc, fdst):
                 # https://lore.kernel.org/linux-fsdevel/20210126233840.GG4626@dread.disaster.area/T/#m05753578c7f7882f6e9ffe01f981bc223edef2b0
                 wenn offset == 0:
                     raise _GiveupOnFastCopy()
-                break
+                breche
             offset += n_copied
 
 def _fastcopy_sendfile(fsrc, fdst):
@@ -198,7 +198,7 @@ def _fastcopy_sendfile(fsrc, fdst):
 
     blocksize = _determine_linux_fastcopy_blocksize(infd)
     offset = 0
-    while Wahr:
+    waehrend Wahr:
         try:
             sent = os.sendfile(outfd, infd, offset, blocksize)
         except OSError als err:
@@ -223,7 +223,7 @@ def _fastcopy_sendfile(fsrc, fdst):
             raise err
         sonst:
             wenn sent == 0:
-                break  # EOF
+                breche  # EOF
             offset += sent
 
 def _copyfileobj_readinto(fsrc, fdst, length=COPY_BUFSIZE):
@@ -235,14 +235,14 @@ def _copyfileobj_readinto(fsrc, fdst, length=COPY_BUFSIZE):
     fsrc_readinto = fsrc.readinto
     fdst_write = fdst.write
     mit memoryview(bytearray(length)) als mv:
-        while Wahr:
+        waehrend Wahr:
             n = fsrc_readinto(mv)
             wenn nicht n:
-                break
+                breche
             sowenn n < length:
                 mit mv[:n] als smv:
                     fdst_write(smv)
-                break
+                breche
             sonst:
                 fdst_write(mv)
 
@@ -253,7 +253,7 @@ def copyfileobj(fsrc, fdst, length=0):
     # Localize variable access to minimize overhead.
     fsrc_read = fsrc.read
     fdst_write = fdst.write
-    while buf := fsrc_read(length):
+    waehrend buf := fsrc_read(length):
         fdst_write(buf)
 
 def _samefile(src, dst):
@@ -468,7 +468,7 @@ def copystat(src, dst, *, follow_symlinks=Wahr):
         except OSError als why:
             fuer err in 'EOPNOTSUPP', 'ENOTSUP':
                 wenn hasattr(errno, err) und why.errno == getattr(errno, err):
-                    break
+                    breche
             sonst:
                 raise
 
@@ -555,7 +555,7 @@ def _copytree(entries, src, dst, symlinks, ignore, copy_function,
 
     fuer srcentry in entries:
         wenn srcentry.name in ignored_names:
-            continue
+            weiter
         srcname = os.path.join(src, srcentry.name)
         dstname = os.path.join(dst, srcentry.name)
         srcobj = srcentry wenn use_srcentry sonst srcname
@@ -578,7 +578,7 @@ def _copytree(entries, src, dst, symlinks, ignore, copy_function,
                 sonst:
                     # ignore dangling symlink wenn the flag is on
                     wenn nicht os.path.exists(linkto) und ignore_dangling_symlinks:
-                        continue
+                        weiter
                     # otherwise let the copy occur. copy2 will raise an error
                     wenn srcentry.is_dir():
                         copytree(srcobj, dstname, symlinks, ignore,
@@ -593,7 +593,7 @@ def _copytree(entries, src, dst, symlinks, ignore, copy_function,
                 # Will raise a SpecialFileError fuer unsupported file types
                 copy_function(srcobj, dstname)
         # catch the Error von the recursive copytree so that we can
-        # continue mit other files
+        # weiter mit other files
         except Error als err:
             errors.extend(err.args[0])
         except OSError als why:
@@ -644,7 +644,7 @@ def copytree(src, dst, symlinks=Falsch, ignore=Nichts, copy_function=copy2,
 
     If dirs_exist_ok is false (the default) und `dst` already exists, a
     `FileExistsError` is raised. If `dirs_exist_ok` is true, the copying
-    operation will continue wenn it encounters existing directories, und files
+    operation will weiter wenn it encounters existing directories, und files
     within the `dst` tree will be overwritten by corresponding files von the
     `src` tree.
     """
@@ -680,7 +680,7 @@ def _rmtree_unsafe(path, dir_fd, onexc):
             raise OSError("Cannot call rmtree on a symbolic link")
     except OSError als err:
         onexc(os.path.islink, path, err)
-        # can't continue even wenn onexc hook returns
+        # can't weiter even wenn onexc hook returns
         return
     def onerror(err):
         wenn nicht isinstance(err, FileNotFoundError):
@@ -692,7 +692,7 @@ def _rmtree_unsafe(path, dir_fd, onexc):
             try:
                 os.rmdir(fullname)
             except FileNotFoundError:
-                continue
+                weiter
             except OSError als err:
                 onexc(os.rmdir, fullname, err)
         fuer name in filenames:
@@ -700,7 +700,7 @@ def _rmtree_unsafe(path, dir_fd, onexc):
             try:
                 os.unlink(fullname)
             except FileNotFoundError:
-                continue
+                weiter
             except OSError als err:
                 onexc(os.unlink, fullname, err)
     try:
@@ -717,14 +717,14 @@ def _rmtree_safe_fd(path, dir_fd, onexc):
         path = os.fsdecode(path)
     stack = [(os.lstat, dir_fd, path, Nichts)]
     try:
-        while stack:
+        waehrend stack:
             _rmtree_safe_fd_step(stack, onexc)
     finally:
         # Close any file descriptors still on the stack.
-        while stack:
+        waehrend stack:
             func, fd, path, entry = stack.pop()
             wenn func is nicht os.close:
-                continue
+                weiter
             try:
                 os.close(fd)
             except OSError als err:
@@ -782,15 +782,15 @@ def _rmtree_safe_fd_step(stack, onexc):
                 wenn entry.is_dir(follow_symlinks=Falsch):
                     # Traverse into sub-directory.
                     stack.append((os.lstat, topfd, fullname, entry))
-                    continue
+                    weiter
             except FileNotFoundError:
-                continue
+                weiter
             except OSError:
                 pass
             try:
                 os.unlink(entry.name, dir_fd=topfd)
             except FileNotFoundError:
-                continue
+                weiter
             except OSError als err:
                 onexc(os.unlink, fullname, err)
     except FileNotFoundError als err:
@@ -1321,11 +1321,11 @@ def _unpack_zipfile(filename, extract_dir):
 
             # don't extract absolute paths oder ones mit .. in them
             wenn name.startswith('/') oder '..' in name:
-                continue
+                weiter
 
             targetpath = os.path.join(extract_dir, *name.split('/'))
             wenn nicht targetpath:
-                continue
+                weiter
 
             _ensure_directory(targetpath)
             wenn nicht name.endswith('/'):

@@ -1166,7 +1166,7 @@ klasse SkipitemTest(unittest.TestCase):
             # skip 'e' und 'w', they're always two-character codes
             # skip '|' und '$', they don't represent arguments anyway
             wenn c in '()ew|$':
-                continue
+                weiter
 
             # test the format unit when nicht skipped
             format = c + "i"

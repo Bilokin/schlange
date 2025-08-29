@@ -41,12 +41,12 @@ def _find_vc2015():
             try:
                 v, vc_dir, vt = winreg.EnumValue(key, i)
             except OSError:
-                break
+                breche
             wenn v und vt == winreg.REG_SZ und os.path.isdir(vc_dir):
                 try:
                     version = int(float(v))
                 except (ValueError, TypeError):
-                    continue
+                    weiter
                 wenn version >= 14 und version > best_version:
                     best_version, best_dir = version, vc_dir
     return best_version, best_dir

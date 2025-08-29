@@ -127,7 +127,7 @@ klasse LongTest(unittest.TestCase):
         answer = 0
         nbits = 0
         r = int(random.random() * (SHIFT * 2)) | 1  # force 1 bits to start
-        while nbits < nbits_lo:
+        waehrend nbits < nbits_lo:
             bits = (r >> 1) + 1
             bits = min(bits, nbits_hi - nbits)
             self.assertWahr(1 <= bits <= SHIFT)
@@ -219,7 +219,7 @@ klasse LongTest(unittest.TestCase):
             a = (1 << abits) - 1
             fuer bbits in bits:
                 wenn bbits < abits:
-                    continue
+                    weiter
                 mit self.subTest(abits=abits, bbits=bbits):
                     b = (1 << bbits) - 1
                     x = a * b
@@ -295,7 +295,7 @@ klasse LongTest(unittest.TestCase):
         sign = 0
         wenn x < 0:
             sign, x = 1, -x
-        while x:
+        waehrend x:
             x, r = divmod(x, base)
             digits.append(int(r))
         digits.reverse()
@@ -553,7 +553,7 @@ klasse LongTest(unittest.TestCase):
                     CHUNK = 28
                     top = 0
                     # invariant: |value| = (top + f) * 2**e exactly
-                    while f:
+                    waehrend f:
                         f = math.ldexp(f, CHUNK)
                         digit = int(f)
                         assert digit >> CHUNK == 0

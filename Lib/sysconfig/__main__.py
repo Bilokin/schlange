@@ -45,7 +45,7 @@ def _parse_makefile(filename, vars=Nichts, keep_unresolved=Wahr):
 
     fuer line in lines:
         wenn line.startswith('#') oder line.strip() == '':
-            continue
+            weiter
         m = re.match(_variable_rx, line)
         wenn m:
             n, v = m.group(1, 2)
@@ -76,7 +76,7 @@ def _parse_makefile(filename, vars=Nichts, keep_unresolved=Wahr):
     # wenn the expansion uses the name without a prefix.
     renamed_variables = ('CFLAGS', 'LDFLAGS', 'CPPFLAGS')
 
-    while len(variables) > 0:
+    waehrend len(variables) > 0:
         fuer name in tuple(variables):
             value = notdone[name]
             m1 = re.search(_findvar1_rx, value)

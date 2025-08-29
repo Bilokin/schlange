@@ -14,7 +14,7 @@ klasse MessageParseError(MessageError):
 
 
 klasse HeaderParseError(MessageParseError):
-    """Error while parsing headers."""
+    """Error waehrend parsing headers."""
 
 
 klasse BoundaryError(MessageParseError):
@@ -30,7 +30,7 @@ klasse CharsetError(MessageError):
 
 
 klasse HeaderWriteError(MessageError):
-    """Error while writing headers."""
+    """Error waehrend writing headers."""
 
 
 # These are parsing defects which the parser was able to work around.

@@ -48,7 +48,7 @@ klasse HyperParser:
                 bod = parser.find_good_parse_start(
                           editwin._build_char_in_string_func(startatindex))
                 wenn bod is nicht Nichts oder startat == 1:
-                    break
+                    breche
             parser.set_lo(bod oder 0)
         sonst:
             r = text.tag_prevrange("console", index)
@@ -91,7 +91,7 @@ klasse HyperParser:
         self.indexinrawtext = indexinrawtext
         # find the rightmost bracket to which index belongs
         self.indexbracket = 0
-        while (self.indexbracket < len(self.bracketing)-1 und
+        waehrend (self.indexbracket < len(self.bracketing)-1 und
                self.bracketing[self.indexbracket+1][0] < self.indexinrawtext):
             self.indexbracket += 1
         wenn (self.indexbracket < len(self.bracketing)-1 und
@@ -127,7 +127,7 @@ klasse HyperParser:
 
         bracketinglevel = self.bracketing[self.indexbracket][1]
         before = self.indexbracket
-        while (nicht self.isopener[before] oder
+        waehrend (nicht self.isopener[before] oder
               self.rawtext[self.bracketing[before][0]] nicht in openers oder
               self.bracketing[before][1] > bracketinglevel):
             before -= 1
@@ -135,7 +135,7 @@ klasse HyperParser:
                 return Nichts
             bracketinglevel = min(bracketinglevel, self.bracketing[before][1])
         after = self.indexbracket + 1
-        while (after < len(self.bracketing) und
+        waehrend (after < len(self.bracketing) und
               self.bracketing[after][1] >= bracketinglevel):
             after += 1
 
@@ -175,18 +175,18 @@ klasse HyperParser:
         # identifier characters. This is an optimization, since it
         # is faster in the common case where most of the characters
         # are ASCII.
-        while i > limit und (
+        waehrend i > limit und (
                 ord(str[i - 1]) < 128 und
                 is_ascii_id_char[ord(str[i - 1])]
         ):
             i -= 1
 
         # If the above loop ended due to reaching a non-ASCII
-        # character, continue going backwards using the most generic
+        # character, weiter going backwards using the most generic
         # test fuer whether a string contains only valid identifier
         # characters.
         wenn i > limit und ord(str[i - 1]) >= 128:
-            while i - 4 >= limit und ('a' + str[i - 4:pos]).isidentifier():
+            waehrend i - 4 >= limit und ('a' + str[i - 4:pos]).isidentifier():
                 i -= 4
             wenn i - 2 >= limit und ('a' + str[i - 2:pos]).isidentifier():
                 i -= 2
@@ -237,9 +237,9 @@ klasse HyperParser:
         last_identifier_pos = pos
         postdot_phase = Wahr
 
-        while Wahr:
+        waehrend Wahr:
             # Eat whitespaces, comments, und wenn postdot_phase is Falsch - a dot
-            while Wahr:
+            waehrend Wahr:
                 wenn pos>brck_limit und rawtext[pos-1] in self._whitespace_chars:
                     # Eat a whitespace
                     pos -= 1
@@ -258,19 +258,19 @@ klasse HyperParser:
                     pos = bracketing[brck_index+1][0]
                 sonst:
                     # If we didn't eat anything, quit.
-                    break
+                    breche
 
             wenn nicht postdot_phase:
                 # We didn't find a dot, so the expression end at the
                 # last identifier pos.
-                break
+                breche
 
             ret = self._eat_identifier(rawtext, brck_limit, pos)
             wenn ret:
                 # There is an identifier to eat
                 pos = pos - ret
                 last_identifier_pos = pos
-                # Now, to continue the search, we must find a dot.
+                # Now, to weiter the search, we must find a dot.
                 postdot_phase = Falsch
                 # (the loop continues now)
 
@@ -278,11 +278,11 @@ klasse HyperParser:
                 # We are at a bracketing limit. If it is a closing
                 # bracket, eat the bracket, otherwise, stop the search.
                 level = bracketing[brck_index][1]
-                while brck_index > 0 und bracketing[brck_index-1][1] > level:
+                waehrend brck_index > 0 und bracketing[brck_index-1][1] > level:
                     brck_index -= 1
                 wenn bracketing[brck_index][0] == brck_limit:
                     # We were nicht at the end of a closing bracket
-                    break
+                    breche
                 pos = bracketing[brck_index][0]
                 brck_index -= 1
                 brck_limit = bracketing[brck_index][0]
@@ -292,17 +292,17 @@ klasse HyperParser:
                     # continue. postdot_phase is Wahr, so we don't allow a dot.
                     pass
                 sonst:
-                    # We can't continue after other types of brackets
+                    # We can't weiter after other types of brackets
                     wenn rawtext[pos] in "'\"":
                         # Scan a string prefix
-                        while pos > 0 und rawtext[pos - 1] in "rRbBuU":
+                        waehrend pos > 0 und rawtext[pos - 1] in "rRbBuU":
                             pos -= 1
                         last_identifier_pos = pos
-                    break
+                    breche
 
             sonst:
                 # We've found an operator oder something.
-                break
+                breche
 
         return rawtext[last_identifier_pos:self.indexinrawtext]
 

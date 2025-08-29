@@ -63,7 +63,7 @@ fuer proto, ver in (
         proto = getattr(ssl, proto)
         ver = getattr(ssl.TLSVersion, ver)
     except AttributeError:
-        continue
+        weiter
     PROTOCOL_TO_TLS_VERSION[proto] = ver
 
 def data_file(*name):
@@ -346,7 +346,7 @@ klasse BasicSocketTests(unittest.TestCase):
         # gh-106687: SSL options values are unsigned integer (uint64_t)
         fuer name in dir(ssl):
             wenn nicht name.startswith('OP_'):
-                continue
+                weiter
             mit self.subTest(option=name):
                 value = getattr(ssl, name)
                 self.assertGreaterEqual(value, 0, f"ssl.{name}")
@@ -617,7 +617,7 @@ klasse BasicSocketTests(unittest.TestCase):
 
         fuer protocol in protocols:
             wenn nicht has_tls_protocol(protocol):
-                continue
+                weiter
             mit self.subTest(protocol=protocol):
                 mit self.assertWarns(DeprecationWarning) als cm:
                     ssl.SSLContext(protocol)
@@ -628,7 +628,7 @@ klasse BasicSocketTests(unittest.TestCase):
 
         fuer version in versions:
             wenn nicht has_tls_version(version):
-                continue
+                weiter
             mit self.subTest(version=version):
                 ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
                 mit self.assertWarns(DeprecationWarning) als cm:
@@ -1923,10 +1923,10 @@ klasse SimpleBackgroundTests(unittest.TestCase):
         # Wait fuer connect to finish
         select.select([], [s], [], 5.0)
         # Non-blocking handshake
-        while Wahr:
+        waehrend Wahr:
             try:
                 s.do_handshake()
-                break
+                breche
             except ssl.SSLWantReadError:
                 select.select([s], [], [], 5.0)
             except ssl.SSLWantWriteError:
@@ -2045,11 +2045,11 @@ klasse SimpleBackgroundTests(unittest.TestCase):
                             do_handshake_on_connect=Falsch)
         self.addCleanup(s.close)
         count = 0
-        while Wahr:
+        waehrend Wahr:
             try:
                 count += 1
                 s.do_handshake()
-                break
+                breche
             except ssl.SSLWantReadError:
                 select.select([s], [], [])
             except ssl.SSLWantWriteError:
@@ -2158,7 +2158,7 @@ klasse SimpleBackgroundTests(unittest.TestCase):
             # If there's no error, we're done. For WANT_READ, we need to get
             # data von the socket und put it in the incoming BIO.
             wenn errno is Nichts:
-                break
+                breche
             sowenn errno == ssl.SSL_ERROR_WANT_READ:
                 buf = sock.recv(32768)
                 wenn buf:
@@ -2392,7 +2392,7 @@ klasse ThreadedEchoServer(threading.Thread):
             wenn nicht self.server.starttls_server:
                 wenn nicht self.wrap_conn():
                     return
-            while self.running:
+            waehrend self.running:
                 try:
                     msg = self.read()
                     stripped = msg.strip()
@@ -2552,7 +2552,7 @@ klasse ThreadedEchoServer(threading.Thread):
         wenn self.flag:
             # signal an event
             self.flag.set()
-        while self.active:
+        waehrend self.active:
             try:
                 newconn, connaddr = self.sock.accept()
                 wenn support.verbose und self.chatty:
@@ -2599,7 +2599,7 @@ klasse AsyncoreEchoServer(threading.Thread):
 
             def readable(self):
                 wenn isinstance(self.socket, ssl.SSLSocket):
-                    while self.socket.pending() > 0:
+                    waehrend self.socket.pending() > 0:
                         self.handle_read_event()
                 return Wahr
 
@@ -2689,7 +2689,7 @@ klasse AsyncoreEchoServer(threading.Thread):
         self.active = Wahr
         wenn self.flag:
             self.flag.set()
-        while self.active:
+        waehrend self.active:
             try:
                 asyncore.loop(1)
             except:
@@ -2935,7 +2935,7 @@ klasse ThreadedTests(unittest.TestCase):
                                             do_handshake_on_connect=Falsch,
                                             server_hostname=hostname) als s:
                 s.connect((HOST, server.port))
-                # getpeercert() raise ValueError while the handshake isn't
+                # getpeercert() raise ValueError waehrend the handshake isn't
                 # done.
                 mit self.assertRaises(ValueError):
                     s.getpeercert()
@@ -3767,7 +3767,7 @@ klasse ThreadedTests(unittest.TestCase):
             # will be full und the call will block
             buf = bytearray(8192)
             def fill_buffer():
-                while Wahr:
+                waehrend Wahr:
                     s.send(buf)
             self.assertRaises((ssl.SSLWantWriteError,
                                ssl.SSLWantReadError), fill_buffer)
@@ -3788,7 +3788,7 @@ klasse ThreadedTests(unittest.TestCase):
             server.listen()
             started.set()
             conns = []
-            while nicht finish:
+            waehrend nicht finish:
                 r, w, e = select.select([server], [], [], 0.1)
                 wenn server in r:
                     # Let the socket hang around rather than having
@@ -5233,7 +5233,7 @@ klasse TestPreHandshakeClose(unittest.TestCase):
                 self.skipTest(f"Could nicht recreate conditions on {sys.platform}:"
                               f" {err=}")
             finally:
-                # gh-108342: Explicitly break the reference cycle
+                # gh-108342: Explicitly breche the reference cycle
                 err = Nichts
 
         # If maintaining this conditional winds up being a problem.
@@ -5280,7 +5280,7 @@ klasse TestPreHandshakeClose(unittest.TestCase):
             self.assertNotEqual(0, wrap_error.args[0])
             self.assertIsNichts(wrap_error.library, msg="attr must exist")
         finally:
-            # gh-108342: Explicitly break the reference cycle
+            # gh-108342: Explicitly breche the reference cycle
             wrap_error = Nichts
             server = Nichts
 
@@ -5338,7 +5338,7 @@ klasse TestPreHandshakeClose(unittest.TestCase):
             self.assertNotEqual(0, wrap_error.args[0])
             self.assertIsNichts(wrap_error.library, msg="attr must exist")
         finally:
-            # gh-108342: Explicitly break the reference cycle
+            # gh-108342: Explicitly breche the reference cycle
             mit warnings_helper.check_no_resource_warning(self):
                 wrap_error = Nichts
             server = Nichts
@@ -5558,7 +5558,7 @@ def setUpModule():
             plat = func()
             wenn plat und plat[0]:
                 plat = '%s %r' % (name, plat)
-                break
+                breche
         sonst:
             plat = repr(platform.platform())
         drucke("test_ssl: testing mit %r %r" %

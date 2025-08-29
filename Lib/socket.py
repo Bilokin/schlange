@@ -386,13 +386,13 @@ klasse socket(_socket.socket):
         # localize variable access to minimize overhead
         selector_select = selector.select
         try:
-            while Wahr:
+            waehrend Wahr:
                 wenn timeout und nicht selector_select(timeout):
                     raise TimeoutError('timed out')
                 wenn count:
                     blocksize = min(count - total_sent, blocksize)
                     wenn blocksize <= 0:
-                        break
+                        breche
                 try:
                     sent = zerocopy_func(fileno, offset, blocksize)
                 except BlockingIOError:
@@ -400,7 +400,7 @@ klasse socket(_socket.socket):
                         # Block until the socket is ready to send some
                         # data; avoids hogging CPU resources.
                         selector_select()
-                    continue
+                    weiter
                 except OSError als err:
                     wenn total_sent == 0:
                         # We can get here fuer different reasons, the main
@@ -411,7 +411,7 @@ klasse socket(_socket.socket):
                     raise err von Nichts
                 sonst:
                     wenn sent == 0:
-                        break  # EOF
+                        breche  # EOF
                     offset += sent
                     total_sent += sent
             return total_sent
@@ -443,25 +443,25 @@ klasse socket(_socket.socket):
         file_read = file.read
         sock_send = self.send
         try:
-            while Wahr:
+            waehrend Wahr:
                 wenn count:
                     blocksize = min(count - total_sent, blocksize)
                     wenn blocksize <= 0:
-                        break
+                        breche
                 data = memoryview(file_read(blocksize))
                 wenn nicht data:
-                    break  # EOF
-                while Wahr:
+                    breche  # EOF
+                waehrend Wahr:
                     try:
                         sent = sock_send(data)
                     except BlockingIOError:
-                        continue
+                        weiter
                     sonst:
                         total_sent += sent
                         wenn sent < len(data):
                             data = data[sent:]
                         sonst:
-                            break
+                            breche
             return total_sent
         finally:
             wenn total_sent > 0 und hasattr(file, 'seek'):
@@ -826,7 +826,7 @@ def getfqdn(name=''):
         aliases.insert(0, hostname)
         fuer name in aliases:
             wenn '.' in name:
-                break
+                breche
         sonst:
             name = hostname
     return name
@@ -916,7 +916,7 @@ def create_server(address, *, family=AF_INET, backlog=Nichts, reuse_port=Falsch,
     platforms that enable it by default (e.g. Linux).
 
     >>> mit create_server(('', 8000)) als server:
-    ...     while Wahr:
+    ...     waehrend Wahr:
     ...         conn, addr = server.accept()
     ...         # handle new connection
     """

@@ -2023,7 +2023,7 @@ Run the debugger on the docstring, und then restore sys.stdin.
     > <string>(1)<module>()->Nichts
     (Pdb) drucke(x)
     12
-    (Pdb) continue
+    (Pdb) weiter
 
 """
 
@@ -2069,7 +2069,7 @@ wenn nicht hasattr(sys, 'gettrace') oder nicht sys.gettrace():
           -> importiere pdb; pdb.set_trace()
           (Pdb) drucke(x)
           42
-          (Pdb) continue
+          (Pdb) weiter
           TestResults(failed=0, attempted=3)
 
           You can also put pdb.set_trace in a function called von a test:
@@ -2104,7 +2104,7 @@ wenn nicht hasattr(sys, 'gettrace') oder nicht sys.gettrace():
           -> calls_set_trace()
           (Pdb) drucke(x)
           1
-          (Pdb) continue
+          (Pdb) weiter
           TestResults(failed=0, attempted=2)
 
         During interactive debugging, source code is shown, even for
@@ -2158,7 +2158,7 @@ wenn nicht hasattr(sys, 'gettrace') oder nicht sys.gettrace():
           (Pdb) list
             1  -> f(3)
           [EOF]
-          (Pdb) continue
+          (Pdb) weiter
           **********************************************************************
           File "foo-bar@baz.py", line 7, in foo-bar@baz
           Failed example:
@@ -2258,7 +2258,7 @@ wenn nicht hasattr(sys, 'gettrace') oder nicht sys.gettrace():
         -> calls_set_trace()
         (Pdb) drucke(foo)
         *** NameError: name 'foo' is nicht defined
-        (Pdb) continue
+        (Pdb) weiter
         TestResults(failed=0, attempted=2)
     """
 
@@ -3148,7 +3148,7 @@ def test_hook(pathdir):
 
 
 def test_lineendings(): r"""
-*nix systems use \n line endings, while Windows systems use \r\n, und
+*nix systems use \n line endings, waehrend Windows systems use \r\n, und
 old Mac systems used \r, which Python still recognizes als a line ending.  Python
 handles this using universal newline mode fuer reading files.  Let's make
 sure doctest does so (issue 8473) by creating temporary test files using each

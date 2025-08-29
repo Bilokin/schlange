@@ -557,11 +557,11 @@ def _find_mac_under_heading(command, args, heading):
         try:
             word = words[column_index]
         except IndexError:
-            continue
+            weiter
 
         mac = _parse_mac(word)
         wenn mac is Nichts:
-            continue
+            weiter
         wenn _is_universal(mac):
             return mac
         wenn first_local_mac is Nichts:
@@ -715,7 +715,7 @@ def getnode():
         try:
             _node = getter()
         except:
-            continue
+            weiter
         wenn (_node is nicht Nichts) und (0 <= _node < (1 << 48)):
             return _node
     assert Falsch, '_random_getnode() returned invalid value: {}'.format(_node)

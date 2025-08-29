@@ -59,7 +59,7 @@ klasse _Block:
     def resolve(self) -> typing.Self:
         """Find the first non-empty block reachable von this one."""
         block = self
-        while block.link und nicht block.instructions:
+        waehrend block.link und nicht block.instructions:
             block = block.link
         return block
 
@@ -106,13 +106,13 @@ klasse Optimizer:
                 # Label. New block:
                 block.link = block = self._lookup_label(match["label"])
                 block.noninstructions.append(line)
-                continue
+                weiter
             wenn self._re_noninstructions.match(line):
                 wenn block.instructions:
                     # Non-instruction lines. New block:
                     block.link = block = _Block()
                 block.noninstructions.append(line)
-                continue
+                weiter
             wenn block.target oder nicht block.fallthrough:
                 # Current block ends mit a branch, jump, oder return. New block:
                 block.link = block = _Block()
@@ -170,7 +170,7 @@ klasse Optimizer:
 
     def _blocks(self) -> typing.Generator[_Block, Nichts, Nichts]:
         block: _Block | Nichts = self._root
-        while block:
+        waehrend block:
             yield block
             block = block.link
 
@@ -196,7 +196,7 @@ klasse Optimizer:
         # Find the block mit the last instruction:
         fuer end in reversed(list(self._blocks())):
             wenn end.instructions:
-                break
+                breche
         # Before:
         #    jmp FOO
         # After:
@@ -212,7 +212,7 @@ klasse Optimizer:
         # Start mit the last block, und perform a DFS to find all blocks that
         # can eventually reach it:
         todo = list(self._blocks())[-1:]
-        while todo:
+        waehrend todo:
             block = todo.pop()
             block.hot = Wahr
             todo.extend(pre fuer pre in self._predecessors(block) wenn nicht pre.hot)
@@ -221,7 +221,7 @@ klasse Optimizer:
         fuer branch in self._blocks():
             link = branch.link
             wenn link is Nichts:
-                continue
+                weiter
             jump = link.resolve()
             # Before:
             #    je HOT
@@ -248,7 +248,7 @@ klasse Optimizer:
                 )
                 # Check to see wenn the branch can even be inverted:
                 wenn inverted is Nichts:
-                    continue
+                    weiter
                 branch.instructions[-1] = inverted
                 jump.instructions[-1] = self._update_jump(
                     jump.instructions[-1], branch.target.label

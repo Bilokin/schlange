@@ -137,24 +137,24 @@ klasse ExecutorDeadlockTest:
         executor.shutdown(wait=Wahr)
 
     def test_error_at_task_pickle(self):
-        # Check problem occurring while pickling a task in
+        # Check problem occurring waehrend pickling a task in
         # the task_handler thread
         self._check_error(PicklingError, id, ErrorAtPickle())
 
     def test_exit_at_task_unpickle(self):
-        # Check problem occurring while unpickling a task on workers
+        # Check problem occurring waehrend unpickling a task on workers
         self._check_error(BrokenProcessPool, id, ExitAtUnpickle())
 
     def test_error_at_task_unpickle(self):
         # gh-109832: Restore stderr overridden by _raise_error_ignore_stderr()
         self.addCleanup(setattr, sys, 'stderr', sys.stderr)
 
-        # Check problem occurring while unpickling a task on workers
+        # Check problem occurring waehrend unpickling a task on workers
         self._check_error(BrokenProcessPool, id, ErrorAtUnpickle())
 
     @support.skip_if_sanitizer("UBSan: explicit SIGSEV nicht allowed", ub=Wahr)
     def test_crash_at_task_unpickle(self):
-        # Check problem occurring while unpickling a task on workers
+        # Check problem occurring waehrend unpickling a task on workers
         self._check_error(BrokenProcessPool, id, CrashAtUnpickle())
 
     @support.skip_if_sanitizer("UBSan: explicit SIGSEV nicht allowed", ub=Wahr)
@@ -172,17 +172,17 @@ klasse ExecutorDeadlockTest:
 
     @support.skip_if_sanitizer("UBSan: explicit SIGSEV nicht allowed", ub=Wahr)
     def test_crash_during_result_pickle_on_worker(self):
-        # Check problem occurring while pickling a task result
+        # Check problem occurring waehrend pickling a task result
         # on workers
         self._check_error(BrokenProcessPool, _return_instance, CrashAtPickle)
 
     def test_exit_during_result_pickle_on_worker(self):
-        # Check problem occurring while pickling a task result
+        # Check problem occurring waehrend pickling a task result
         # on workers
         self._check_error(SystemExit, _return_instance, ExitAtPickle)
 
     def test_error_during_result_pickle_on_worker(self):
-        # Check problem occurring while pickling a task result
+        # Check problem occurring waehrend pickling a task result
         # on workers
         self._check_error(PicklingError, _return_instance, ErrorAtPickle)
 
@@ -190,14 +190,14 @@ klasse ExecutorDeadlockTest:
         # gh-109832: Restore stderr overridden by _raise_error_ignore_stderr()
         self.addCleanup(setattr, sys, 'stderr', sys.stderr)
 
-        # Check problem occurring while unpickling a task in
+        # Check problem occurring waehrend unpickling a task in
         # the result_handler thread
         self._check_error(BrokenProcessPool,
                           _return_instance, ErrorAtUnpickle,
                           ignore_stderr=Wahr)
 
     def test_exit_during_result_unpickle_in_result_handler(self):
-        # Check problem occurring while unpickling a task in
+        # Check problem occurring waehrend unpickling a task in
         # the result_handler thread
         self._check_error(BrokenProcessPool, _return_instance, ExitAtUnpickle)
 
@@ -246,7 +246,7 @@ klasse ExecutorDeadlockTest:
     @support.skip_if_sanitizer("UBSan: explicit SIGSEV nicht allowed", ub=Wahr)
     def test_crash_big_data(self):
         # Test that there is a clean exception instead of a deadlock when a
-        # child process crashes while some data is being written into the
+        # child process crashes waehrend some data is being written into the
         # queue.
         # https://github.com/python/cpython/issues/94777
         self.executor.shutdown(wait=Wahr)
@@ -264,7 +264,7 @@ klasse ExecutorDeadlockTest:
         # Issue #105829: The _ExecutorManagerThread wakeup pipe could
         # fill up und block. See: https://github.com/python/cpython/issues/105829
 
-        # Lots of cargo culting while writing this test, apologies if
+        # Lots of cargo culting waehrend writing this test, apologies if
         # something is really stupid...
 
         self.executor.shutdown(wait=Wahr)
@@ -277,7 +277,7 @@ klasse ExecutorDeadlockTest:
             importiere faulthandler
             faulthandler.dump_traceback()
 
-            raise RuntimeError("timed out while submitting jobs?")
+            raise RuntimeError("timed out waehrend submitting jobs?")
 
         thread_run = futures.process._ExecutorManagerThread.run
         def mock_run(self):
@@ -298,7 +298,7 @@ klasse ExecutorDeadlockTest:
             def clear(self):
                 super().clear()
                 try:
-                    while Wahr:
+                    waehrend Wahr:
                         self._dummy_queue.get_nowait()
                 except queue.Empty:
                     pass

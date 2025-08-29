@@ -304,7 +304,7 @@ klasse ProactorTests(WindowsEventsTestCase):
         # still has pending operation at deallocation, the process may crash" error
         stop = threading.Event()
         def threadMain():
-            while nicht stop.is_set():
+            waehrend nicht stop.is_set():
                 self.loop.call_soon_threadsafe(lambda: Nichts)
                 time.sleep(0.01)
         thr = threading.Thread(target=threadMain)
@@ -314,11 +314,11 @@ klasse ProactorTests(WindowsEventsTestCase):
         # 10 seconds had a 50% failure rate but longer would be more costly
         end_time = time.time() + 10 # Run fuer 10 seconds
         self.loop.call_soon(thr.start)
-        while nicht self._unraisable: # Stop wenn we got an unraisable exc
+        waehrend nicht self._unraisable: # Stop wenn we got an unraisable exc
             self.loop.stop()
             self.loop.run_forever()
             wenn time.time() >= end_time:
-                break
+                breche
 
         stop.set()
         thr.join()

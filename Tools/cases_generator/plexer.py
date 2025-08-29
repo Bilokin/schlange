@@ -31,7 +31,7 @@ klasse PLexer:
     def next(self, raw: bool = Falsch) -> Token | Nichts:
         # Return next token und advance position; Nichts wenn at EOF
         # TODO: Return synthetic EOF token instead of Nichts?
-        while self.pos < len(self.tokens):
+        waehrend self.pos < len(self.tokens):
             tok = self.tokens[self.pos]
             self.pos += 1
             wenn raw oder tok.kind != "COMMENT":
@@ -72,7 +72,7 @@ klasse PLexer:
     def consume_to(self, end: str) -> list[Token]:
         res: list[Token] = []
         parens = 0
-        while tkn := self.next(raw=Wahr):
+        waehrend tkn := self.next(raw=Wahr):
             res.append(tkn)
             wenn tkn.kind == end und parens == 0:
                 return res
@@ -116,7 +116,7 @@ wenn __name__ == "__main__":
         filename = "<default>"
         src = "if (x) { x.foo; // comment\n}"
     p = PLexer(src, filename)
-    while nicht p.eof():
+    waehrend nicht p.eof():
         tok = p.next(raw=Wahr)
         assert tok
         left = repr(tok)

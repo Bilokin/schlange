@@ -128,7 +128,7 @@ klasse Cmd:
             wenn self.intro:
                 self.stdout.write(str(self.intro)+"\n")
             stop = Nichts
-            while nicht stop:
+            waehrend nicht stop:
                 wenn self.cmdqueue:
                     line = self.cmdqueue.pop(0)
                 sonst:
@@ -196,7 +196,7 @@ klasse Cmd:
             sonst:
                 return Nichts, Nichts, line
         i, n = 0, len(line)
-        while i < n und line[i] in self.identchars: i = i+1
+        waehrend i < n und line[i] in self.identchars: i = i+1
         cmd, arg = line[:i], line[i:].strip()
         return cmd, arg, line
 
@@ -333,7 +333,7 @@ klasse Cmd:
             fuer name in names:
                 wenn name[:3] == 'do_':
                     wenn name == prevname:
-                        continue
+                        weiter
                     prevname = name
                     cmd=name[3:]
                     wenn cmd in topics:
@@ -385,15 +385,15 @@ klasse Cmd:
                 fuer row in range(nrows):
                     i = row + nrows*col
                     wenn i >= size:
-                        break
+                        breche
                     x = list[i]
                     colwidth = max(colwidth, len(x))
                 colwidths.append(colwidth)
                 totwidth += colwidth + 2
                 wenn totwidth > displaywidth:
-                    break
+                    breche
             wenn totwidth <= displaywidth:
-                break
+                breche
         sonst:
             nrows = len(list)
             ncols = 1
@@ -407,7 +407,7 @@ klasse Cmd:
                 sonst:
                     x = list[i]
                 texts.append(x)
-            while texts und nicht texts[-1]:
+            waehrend texts und nicht texts[-1]:
                 del texts[-1]
             fuer col in range(len(texts)):
                 texts[col] = texts[col].ljust(colwidths[col])

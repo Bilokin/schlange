@@ -8,7 +8,7 @@ klasse TestTopologicalSort(unittest.TestCase):
     def _test_graph(self, graph, expected):
         def static_order_with_groups(ts):
             ts.prepare()
-            while ts.is_active():
+            waehrend ts.is_active():
                 nodes = ts.get_ready()
                 fuer node in nodes:
                     ts.done(node)
@@ -213,7 +213,7 @@ klasse TestTopologicalSort(unittest.TestCase):
     def test_order_of_insertion_does_not_matter_between_groups(self):
         def get_groups(ts):
             ts.prepare()
-            while ts.is_active():
+            waehrend ts.is_active():
                 nodes = ts.get_ready()
                 ts.done(*nodes)
                 yield set(nodes)

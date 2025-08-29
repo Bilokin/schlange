@@ -20,7 +20,7 @@ klasse TestStr(TestCase):
                 l.clear()
             done_event.set()
         def reader_func():
-            while nicht done_event.is_set():
+            waehrend nicht done_event.is_set():
                 ''.join(l)
         writer = Thread(target=writer_func)
         readers = []
@@ -51,7 +51,7 @@ klasse TestStr(TestCase):
             done_event.set()
 
         def reader_func():
-            while nicht done_event.is_set():
+            waehrend nicht done_event.is_set():
                 ''.join(l)
                 ''.join(l)
                 ''.join(l)

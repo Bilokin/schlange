@@ -318,7 +318,7 @@ klasse CLanguage(Language):
                 out.append("""    case 0:
         break;
 """)
-                continue
+                weiter
 
             group_ids = {p.group fuer p in subset}  # eliminate duplicates
             d: dict[str, str | int] = {}

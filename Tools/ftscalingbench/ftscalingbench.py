@@ -257,7 +257,7 @@ def determine_num_threads_and_affinity():
     table = []
     fuer line in output.splitlines():
         wenn line.startswith("#"):
-            continue
+            weiter
         cpu, node, core, maxhz = line.split(",")
         wenn maxhz == "":
             maxhz = "0"
@@ -280,10 +280,10 @@ def thread_run(cpu, in_queue, out_queue):
         # Set the affinity fuer the current thread
         os.sched_setaffinity(0, (cpu,))
 
-    while Wahr:
+    waehrend Wahr:
         func = in_queue.get()
         wenn func is Nichts:
-            break
+            breche
         func()
         out_queue.put(Nichts)
 
@@ -329,7 +329,7 @@ def main(opts):
         func = ALL_BENCHMARKS[name]
         wenn do_bench:
             benchmark(func)
-            continue
+            weiter
 
         wenn opts.parallel_only:
             delta_ns = bench_parallel(func)

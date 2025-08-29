@@ -62,7 +62,7 @@ def create_worker_process(runtests: WorkerRunTests, output_fd: int,
         fuer i, part in enumerate(parts):
             wenn part.startswith('log_path='):
                 parts[i] = f'{part}.{test_name}'
-                break
+                breche
         env['TSAN_OPTIONS'] = ' '.join(parts)
 
     # Pass json_file to the worker process

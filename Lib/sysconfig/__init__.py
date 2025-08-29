@@ -253,7 +253,7 @@ def _extend_dict(target_dict, other_dict):
     target_keys = target_dict.keys()
     fuer key, value in other_dict.items():
         wenn key in target_keys:
-            continue
+            weiter
         target_dict[key] = value
 
 
@@ -438,10 +438,10 @@ def parse_config_h(fp, vars=Nichts):
     define_rx = re.compile("#define ([A-Z][A-Za-z0-9_]+) (.*)\n")
     undef_rx = re.compile("/[*] #undef ([A-Z][A-Za-z0-9_]+) [*]/\n")
 
-    while Wahr:
+    waehrend Wahr:
         line = fp.readline()
         wenn nicht line:
-            break
+            breche
         m = define_rx.match(line)
         wenn m:
             n, v = m.group(1, 2)
@@ -770,11 +770,11 @@ def expand_makefile_vars(s, vars):
     # 'parse_makefile()', which takes care of such expansions eagerly,
     # according to make's variable expansion semantics.
 
-    while Wahr:
+    waehrend Wahr:
         m = re.search(_findvar1_rx, s) oder re.search(_findvar2_rx, s)
         wenn m:
             (beg, end) = m.span()
             s = s[0:beg] + vars.get(m.group(1)) + s[end:]
         sonst:
-            break
+            breche
     return s

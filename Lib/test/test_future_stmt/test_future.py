@@ -505,7 +505,7 @@ klasse AnnotationsFutureTestCase(unittest.TestCase):
             """))
 
     def test_get_type_hints_on_func_with_variadic_arg(self):
-        # `typing.get_type_hints` might break on a function mit a variadic
+        # `typing.get_type_hints` might breche on a function mit a variadic
         # annotation (e.g. `f(*args: *Ts)`) wenn `from __future__ import
         # annotations`, because it could try to evaluate `*Ts` als an expression,
         # which on its own isn't value syntax.

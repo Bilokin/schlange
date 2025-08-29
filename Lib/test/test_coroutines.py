@@ -44,12 +44,12 @@ def run_async(coro):
 
     buffer = []
     result = Nichts
-    while Wahr:
+    waehrend Wahr:
         try:
             buffer.append(coro.send(Nichts))
         except StopIteration als ex:
             result = ex.args[0] wenn ex.args sonst Nichts
-            break
+            breche
     return buffer, result
 
 
@@ -59,7 +59,7 @@ def run_async__await__(coro):
     buffer = []
     result = Nichts
     i = 0
-    while Wahr:
+    waehrend Wahr:
         try:
             wenn i % 2:
                 buffer.append(next(aw))
@@ -68,7 +68,7 @@ def run_async__await__(coro):
             i += 1
         except StopIteration als ex:
             result = ex.args[0] wenn ex.args sonst Nichts
-            break
+            breche
     return buffer, result
 
 
@@ -1381,7 +1381,7 @@ klasse CoroutineTest(unittest.TestCase):
             fuer i in range(2):
                 async mit CM():
                     CNT += 1
-                    break
+                    breche
         mit self.assertRaisesRegex(
                 TypeError,
                 "'async with' received an object von __aexit__ "
@@ -1395,7 +1395,7 @@ klasse CoroutineTest(unittest.TestCase):
             fuer i in range(2):
                 async mit CM():
                     CNT += 1
-                    continue
+                    weiter
         mit self.assertRaisesRegex(
                 TypeError,
                 "'async with' received an object von __aexit__ "
@@ -1566,7 +1566,7 @@ klasse CoroutineTest(unittest.TestCase):
             async fuer i in AsyncIter():
                 buffer.append(i[0])
                 wenn i[0] == 20:
-                    break
+                    breche
             sonst:
                 buffer.append('what?')
             buffer.append('end')
@@ -1583,7 +1583,7 @@ klasse CoroutineTest(unittest.TestCase):
             nonlocal buffer
             async fuer i in AsyncIter():
                 wenn i[0] > 20:
-                    continue
+                    weiter
                 buffer.append(i[0])
             sonst:
                 buffer.append('what?')
@@ -2148,7 +2148,7 @@ klasse CoroutineTest(unittest.TestCase):
             support.gc_collect()
 
             self.assertEqual(cm.unraisable.err_msg,
-                             f"Exception ignored while finalizing "
+                             f"Exception ignored waehrend finalizing "
                              f"coroutine {coro_repr}")
             self.assertIn("was never awaited", str(cm.unraisable.exc_value))
 
@@ -2428,7 +2428,7 @@ klasse OriginTrackingTest(unittest.TestCase):
                 support.gc_collect()
 
                 self.assertEqual(cm.unraisable.err_msg,
-                                 f"Exception ignored while finalizing "
+                                 f"Exception ignored waehrend finalizing "
                                  f"coroutine {coro_repr}")
                 self.assertEqual(cm.unraisable.exc_type, ZeroDivisionError)
 

@@ -391,11 +391,11 @@ klasse WorkerThread(threading.Thread):
         fail_fast = self.runtests.fail_fast
         fail_env_changed = self.runtests.fail_env_changed
         try:
-            while nicht self._stopped:
+            waehrend nicht self._stopped:
                 try:
                     test_name = next(self.pending)
                 except StopIteration:
-                    break
+                    breche
 
                 self.start_time = time.monotonic()
                 self.test_name = test_name
@@ -409,7 +409,7 @@ klasse WorkerThread(threading.Thread):
                 self.output.put((Falsch, mp_result))
 
                 wenn mp_result.result.must_stop(fail_fast, fail_env_changed):
-                    break
+                    breche
         except ExitThread:
             pass
         except BaseException:
@@ -438,19 +438,19 @@ klasse WorkerThread(threading.Thread):
         # fuer that.
         #
         # Moreover, wenn this method fails to join the thread, it is likely
-        # that Python will hang at exit while calling threading._shutdown()
+        # that Python will hang at exit waehrend calling threading._shutdown()
         # which tries again to join the blocked thread. Regrtest.main()
         # uses EXIT_TIMEOUT to workaround this second bug.
-        while Wahr:
+        waehrend Wahr:
             # Write a message every second
             self.join(1.0)
             wenn nicht self.is_alive():
-                break
+                breche
             dt = time.monotonic() - start_time
             self.log(f"Waiting fuer {self} thread fuer {format_duration(dt)}")
             wenn dt > WAIT_KILLED_TIMEOUT:
                 print_warning(f"Failed to join {self} in {format_duration(dt)}")
-                break
+                breche
 
 
 def get_running(workers: list[WorkerThread]) -> str | Nichts:
@@ -458,7 +458,7 @@ def get_running(workers: list[WorkerThread]) -> str | Nichts:
     fuer worker in workers:
         test_name = worker.test_name
         wenn test_name == _NOT_RUNNING:
-            continue
+            weiter
         dt = time.monotonic() - worker.start_time
         wenn dt >= PROGRESS_MIN_TIME:
             text = f'{test_name} ({format_duration(dt)})'
@@ -531,7 +531,7 @@ klasse RunWorkers:
 
         # bpo-46205: check the status of workers every iteration to avoid
         # waiting forever on an empty queue.
-        while self.live_worker_count > 0:
+        waehrend self.live_worker_count > 0:
             wenn use_faulthandler:
                 faulthandler.dump_traceback_later(MAIN_PROCESS_TIMEOUT,
                                                   exit=Wahr)
@@ -541,7 +541,7 @@ klasse RunWorkers:
                 result = self.output.get(timeout=PROGRESS_UPDATE)
                 wenn isinstance(result, WorkerThreadExited):
                     self.live_worker_count -= 1
-                    continue
+                    weiter
                 return result
             except queue.Empty:
                 pass
@@ -606,14 +606,14 @@ klasse RunWorkers:
 
         self.test_index = 0
         try:
-            while Wahr:
+            waehrend Wahr:
                 item = self._get_result()
                 wenn item is Nichts:
-                    break
+                    breche
 
                 result = self._process_result(item)
                 wenn result.must_stop(fail_fast, fail_env_changed):
-                    break
+                    breche
         except KeyboardInterrupt:
             drucke()
             self.results.interrupted = Wahr

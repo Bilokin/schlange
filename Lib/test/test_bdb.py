@@ -514,7 +514,7 @@ def run_test(modules, set_list, skip=Nichts):
     """
     def gen(a, b):
         try:
-            while 1:
+            waehrend 1:
                 x = next(a)
                 y = next(b)
                 yield x

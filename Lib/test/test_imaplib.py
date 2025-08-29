@@ -139,12 +139,12 @@ klasse SimpleIMAPHandler(socketserver.StreamRequestHandler):
     def handle(self):
         # Send a welcome message.
         self._send_textline('* OK IMAP4rev1')
-        while 1:
+        waehrend 1:
             # Gather up input until we receive a line terminator oder we timeout.
             # Accumulate read(1) because it's simpler to handle the differences
             # between naked sockets und SSL sockets.
             line = b''
-            while 1:
+            waehrend 1:
                 try:
                     part = self.rfile.read(1)
                     wenn part == b'':
@@ -155,7 +155,7 @@ klasse SimpleIMAPHandler(socketserver.StreamRequestHandler):
                     # ..but SSLSockets raise exceptions.
                     return
                 wenn line.endswith(b'\r\n'):
-                    break
+                    breche
 
             wenn verbose:
                 drucke('GOT: %r' % line.strip())
@@ -164,7 +164,7 @@ klasse SimpleIMAPHandler(socketserver.StreamRequestHandler):
                     self.continuation.send(line)
                 except StopIteration:
                     self.continuation = Nichts
-                continue
+                weiter
             splitline = line.decode('ASCII').split()
             tag = splitline[0]
             cmd = splitline[1]

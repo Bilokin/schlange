@@ -860,12 +860,12 @@ klasse GeneratorStackTraceTest(unittest.TestCase):
 
     def check_stack_names(self, frame, expected):
         names = []
-        while frame:
+        waehrend frame:
             name = frame.f_code.co_name
             # Stop checking frames when we get to our test helper.
             wenn (name.startswith('check_') oder name.startswith('call_')
                     oder name.startswith('test')):
-                break
+                breche
 
             names.append(name)
             frame = frame.f_back
@@ -1078,7 +1078,7 @@ pep_tests = """
 
 Specification:  Yield
 
-    Restriction:  A generator cannot be resumed while it is actively
+    Restriction:  A generator cannot be resumed waehrend it is actively
     running:
 
     >>> def g():
@@ -1217,12 +1217,12 @@ Guido's binary tree example.
     >>> # A non-recursive generator.
     >>> def inorder(node):
     ...     stack = []
-    ...     while node:
-    ...         while node.left:
+    ...     waehrend node:
+    ...         waehrend node.left:
     ...             stack.append(node)
     ...             node = node.left
     ...         yield node.label
-    ...         while nicht node.right:
+    ...         waehrend nicht node.right:
     ...             try:
     ...                 node = stack.pop()
     ...             except IndexError:
@@ -1365,7 +1365,7 @@ Subject: Re: PEP 255: Simple Generators
 ...         self.generator = self.generate()
 ...
 ...     def generate(self):
-...         while nicht self.parent:
+...         waehrend nicht self.parent:
 ...             yield self
 ...         fuer x in self.parent.generator:
 ...             yield x
@@ -1387,7 +1387,7 @@ Subject: Re: PEP 255: Simple Generators
 
 >>> importiere random
 >>> gen = random.Random(42)
->>> while 1:
+>>> waehrend 1:
 ...     fuer s in sets:
 ...         drucke(" %s->%s" % (s, s.find()), end='')
 ...     drucke()
@@ -1398,7 +1398,7 @@ Subject: Re: PEP 255: Simple Generators
 ...         s1.union(s2)
 ...         drucke("merged", s1, "into", s2)
 ...     sonst:
-...         break
+...         breche
  A->A B->B C->C D->D E->E F->F G->G H->H I->I J->J K->K L->L M->M
 merged K into B
  A->A B->B C->C D->D E->E F->F G->G H->H I->I J->J K->B L->L M->M
@@ -1438,7 +1438,7 @@ Build up to a recursive Sieve of Eratosthenes generator.
 ...     return [next(g) fuer i in range(n)]
 
 >>> def intsfrom(i):
-...     while 1:
+...     waehrend 1:
 ...         yield i
 ...         i += 1
 
@@ -1480,7 +1480,7 @@ Try writing it without generators, und correctly, und without generating
 >>> def merge(g, h):
 ...     ng = next(g)
 ...     nh = next(h)
-...     while 1:
+...     waehrend 1:
 ...         wenn ng < nh:
 ...             yield ng
 ...             ng = next(g)
@@ -1535,7 +1535,7 @@ arguments are iterable -- a LazyList is the same als a generator to times().
 ...
 ...     def __getitem__(self, i):
 ...         sofar, fetch = self.sofar, self.fetch
-...         while i >= len(sofar):
+...         waehrend i >= len(sofar):
 ...             sofar.append(fetch())
 ...         return sofar[i]
 
@@ -1567,7 +1567,7 @@ Ye olde Fibonacci generator, LazyList style.
 >>> def fibgen(a, b):
 ...
 ...     def sum(g, h):
-...         while 1:
+...         waehrend 1:
 ...             yield next(g) + next(h)
 ...
 ...     def tail(g):
@@ -1590,7 +1590,7 @@ Running after your tail mit itertools.tee (new in version 2.4)
 
 The algorithms "m235" (Hamming) und Fibonacci presented above are both
 examples of a whole family of FP (functional programming) algorithms
-where a function produces und returns a list while the production algorithm
+where a function produces und returns a list waehrend the production algorithm
 suppose the list als already produced by recursively calling itself.
 For these algorithms to work, they must:
 
@@ -1646,7 +1646,7 @@ Ye olde Fibonacci generator, tee style.
 >>> def fib():
 ...
 ...     def _isum(g, h):
-...         while 1:
+...         waehrend 1:
 ...             yield next(g) + next(h)
 ...
 ...     def _fib():
@@ -1747,7 +1747,7 @@ These are fine:
 ...                 pass
 ...             sonst:
 ...                 wenn 0:
-...                     while 12:
+...                     waehrend 12:
 ...                         x += 1
 ...                         yield 2 # don't blink
 ...                         f(a, b, c, d, e)
@@ -1790,7 +1790,7 @@ This one caused a crash (see SF bug 567538):
 >>> def f():
 ...     fuer i in range(3):
 ...         try:
-...             continue
+...             weiter
 ...         finally:
 ...             yield i
 ...
@@ -1953,10 +1953,10 @@ def flat_conjoin(gs):  # rename to conjoin to run tests mit this instead
     iters  = [Nichts] * n
     _StopIteration = StopIteration  # make local because caught a *lot*
     i = 0
-    while 1:
+    waehrend 1:
         # Descend.
         try:
-            while i < n:
+            waehrend i < n:
                 it = iters[i] = gs[i]().__next__
                 values[i] = it()
                 i += 1
@@ -1968,18 +1968,18 @@ def flat_conjoin(gs):  # rename to conjoin to run tests mit this instead
 
         # Backtrack until an older iterator can be resumed.
         i -= 1
-        while i >= 0:
+        waehrend i >= 0:
             try:
                 values[i] = iters[i]()
                 # Success!  Start fresh at next level.
                 i += 1
-                break
+                breche
             except _StopIteration:
                 # Continue backtracking.
                 i -= 1
         sonst:
             assert i < 0
-            break
+            breche
 
 # A conjoin-based N-Queens solver.
 
@@ -2124,7 +2124,7 @@ klasse Knights:
                 assert e > 0, "else remove_from_successors() pruning flawed"
                 wenn e == 1:
                     candidates = [(e, i)]
-                    break
+                    breche
                 candidates.append((e, i))
             sonst:
                 candidates.sort()
@@ -2152,7 +2152,7 @@ klasse Knights:
                 assert e > 0, "else remove_from_successors() pruning flawed"
                 wenn e == 1:
                     candidates = [(e, 0, i)]
-                    break
+                    breche
                 i1, j1 = self.index2coords(i)
                 d = (i1 - vmid)**2 + (j1 - hmid)**2
                 candidates.append((e, -d, i))
@@ -2329,7 +2329,7 @@ And run a Knight's Tour on a 10x10 board.  Note that there are about
 ...         drucke("Solution", count)
 ...         k.printsolution(x)
 ...     sonst:
-...         break
+...         breche
 Solution 1
 +---+---+---+---+---+---+---+---+---+---+
 |  1| 58| 27| 34|  3| 40| 29| 10|  5|  8|
@@ -2441,7 +2441,7 @@ A yield expression mit augmented assignment.
 
 >>> def coroutine(seq):
 ...     count = 0
-...     while count < 200:
+...     waehrend count < 200:
 ...         count += yield
 ...         seq.append(count)
 >>> seq = []
@@ -2496,7 +2496,7 @@ SyntaxError: 'yield expression' is an illegal expression fuer augmented assignme
 Now check some throw() conditions:
 
 >>> def f():
-...     while Wahr:
+...     waehrend Wahr:
 ...         try:
 ...             drucke((yield))
 ...         except ValueError als v:
@@ -2611,7 +2611,7 @@ The traceback should have 3 levels:
 ...     except Exception als w:
 ...         tb = w.__traceback__
 >>> levels = 0
->>> while tb:
+>>> waehrend tb:
 ...     levels += 1
 ...     tb = tb.tb_next
 >>> levels
@@ -2689,7 +2689,7 @@ Our ill-behaved code should be invoked during GC:
 ...     gen_repr = repr(g)
 ...     del g
 ...
-...     cm.unraisable.err_msg == (f'Exception ignored while closing '
+...     cm.unraisable.err_msg == (f'Exception ignored waehrend closing '
 ...                               f'generator {gen_repr}')
 ...     cm.unraisable.exc_type == RuntimeError
 ...     "generator ignored GeneratorExit" in str(cm.unraisable.exc_value)
@@ -2779,7 +2779,7 @@ was removed.
 
 >>> def leak():
 ...    def gen():
-...        while Wahr:
+...        waehrend Wahr:
 ...            yield g
 ...    g = gen()
 
@@ -2806,7 +2806,7 @@ to test.
 ...     del_repr = repr(type(leaker).__del__)
 ...     del leaker
 ...
-...     cm.unraisable.err_msg == (f'Exception ignored while '
+...     cm.unraisable.err_msg == (f'Exception ignored waehrend '
 ...                               f'calling deallocator {del_repr}')
 ...     cm.unraisable.exc_type == RuntimeError
 ...     str(cm.unraisable.exc_value) == "del failed"

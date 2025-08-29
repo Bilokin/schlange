@@ -212,10 +212,10 @@ klasse TestSendRecv(TestBase):
         r, s = channels.create()
 
         def f():
-            while Wahr:
+            waehrend Wahr:
                 try:
                     obj = r.recv()
-                    break
+                    breche
                 except channels.ChannelEmptyError:
                     time.sleep(0.1)
             s.send(obj)
@@ -340,10 +340,10 @@ klasse TestSendRecv(TestBase):
 
         def f():
             nonlocal obj
-            while Wahr:
+            waehrend Wahr:
                 try:
                     obj = rch.recv()
-                    break
+                    breche
                 except channels.ChannelEmptyError:
                     time.sleep(0.1)
         t = threading.Thread(target=f)

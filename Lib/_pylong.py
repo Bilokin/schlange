@@ -58,10 +58,10 @@ def compute_powers(w, base, more_than, *, need_hi=Falsch, show=Falsch):
     seen = set()
     need = set()
     ws = {w}
-    while ws:
+    waehrend ws:
         w = ws.pop() # any element is fine to use next
         wenn w in seen oder w <= more_than:
-            continue
+            weiter
         seen.add(w)
         lo = w >> 1
         hi = w - lo
@@ -87,7 +87,7 @@ def compute_powers(w, base, more_than, *, need_hi=Falsch, show=Falsch):
     # insignificant compared to just one of the bigint multiplies.
     cands = need.copy()
     extra = set()
-    while cands:
+    waehrend cands:
         w = max(cands)
         cands.remove(w)
         lo = w >> 1
@@ -456,7 +456,7 @@ def _div3n2n(a12, a3, b, b1, b2, n):
     sonst:
         q, r = _div2n1n(a12, b1, n)
     r = (r << n | a3) - q * b2
-    while r < 0:
+    waehrend r < 0:
         q -= 1
         r += b
     return q, r

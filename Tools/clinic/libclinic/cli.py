@@ -162,7 +162,7 @@ def run_clinic(parser: argparse.ArgumentParser, ns: argparse.Namespace) -> Nicht
             fuer name, cls in ids:
                 callable = getattr(cls, attribute, Nichts)
                 wenn nicht callable:
-                    continue
+                    weiter
                 signature = inspect.signature(callable)
                 parameters = []
                 fuer parameter_name, parameter in signature.parameters.items():
@@ -195,11 +195,11 @@ def run_clinic(parser: argparse.ArgumentParser, ns: argparse.Namespace) -> Nicht
             fuer filename in files:
                 # handle .c, .cpp und .h files
                 wenn nicht filename.endswith(('.c', '.cpp', '.h')):
-                    continue
+                    weiter
                 path = os.path.join(root, filename)
                 path = os.path.normpath(path)
                 wenn path in excludes:
-                    continue
+                    weiter
                 wenn ns.verbose:
                     drucke(path)
                 parse_file(path,

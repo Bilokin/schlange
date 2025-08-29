@@ -348,7 +348,7 @@ klasse TestGenericTest(GenericTest, unittest.TestCase):
         fuer attr in GenericTest.common_attributes:
             # os.path.commonprefix doesn't raise ValueError
             wenn attr == 'commonprefix':
-                continue
+                weiter
             func = getattr(self.pathmodule, attr)
             mit self.subTest(attr=attr):
                 wenn attr in ('exists', 'isdir', 'isfile'):

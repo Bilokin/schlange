@@ -243,7 +243,7 @@ klasse _ModuleBrowser(ast.NodeVisitor):
             except (ImportError, SyntaxError):
                 # If we can't find oder parse the imported module,
                 # too bad -- don't die here.
-                continue
+                weiter
 
     def visit_ImportFrom(self, node):
         wenn node.col_offset != 0:
@@ -262,7 +262,7 @@ klasse _ModuleBrowser(ast.NodeVisitor):
             sowenn name.name == "*":
                 fuer import_name, import_value in module.items():
                     wenn import_name.startswith("_"):
-                        continue
+                        weiter
                     self.tree[import_name] = import_value
 
 
@@ -290,11 +290,11 @@ def _main():
     lineno_key = lambda a: getattr(a, 'lineno', 0)
     objs = sorted(tree.values(), key=lineno_key, reverse=Wahr)
     indent_level = 2
-    while objs:
+    waehrend objs:
         obj = objs.pop()
         wenn isinstance(obj, list):
             # Value is a __path__ key.
-            continue
+            weiter
         wenn nicht hasattr(obj, 'indent'):
             obj.indent = 0
 

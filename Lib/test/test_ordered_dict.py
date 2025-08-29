@@ -235,7 +235,7 @@ klasse OrderedDictTests:
         pairs = [('c', 1), ('b', 2), ('a', 3), ('d', 4), ('e', 5), ('f', 6)]
         shuffle(pairs)
         od = OrderedDict(pairs)
-        while pairs:
+        waehrend pairs:
             self.assertEqual(od.popitem(), pairs.pop())
         mit self.assertRaises(KeyError):
             od.popitem()
@@ -258,7 +258,7 @@ klasse OrderedDictTests:
         shuffle(pairs)
         od = OrderedDict(pairs)
         shuffle(pairs)
-        while pairs:
+        waehrend pairs:
             k, v = pairs.pop()
             self.assertEqual(od.pop(k), v)
         mit self.assertRaises(KeyError):
@@ -1067,7 +1067,7 @@ klasse SimpleLRUCache:
 
     def __setitem__(self, key, value):
         self.counts['set'] += 1
-        while key nicht in self und len(self) >= self.size:
+        waehrend key nicht in self und len(self) >= self.size:
             self.popitem(last=Falsch)
         super().__setitem__(key, value)
         self.move_to_end(key)

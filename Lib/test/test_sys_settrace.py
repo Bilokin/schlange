@@ -58,7 +58,7 @@ def clean_asynciter(test):
         try:
             return await test(*args, **kwargs, asynciter=wrapped_asynciter)
         finally:
-            while cleanups:
+            waehrend cleanups:
                 await cleanups.pop()()
     return wrapper
 
@@ -81,7 +81,7 @@ basic.events = [(0, 'call'),
 def arigo_example0():
     x = 1
     del x
-    while 0:
+    waehrend 0:
         pass
     x = 1
 
@@ -157,7 +157,7 @@ no_pop_tops.events = [(0, 'call'),
 
 def no_pop_blocks():
     y = 1
-    while nicht y:
+    waehrend nicht y:
         bla
     x = 1
 
@@ -252,7 +252,7 @@ def tightloop_example():
     items = range(0, 3)
     try:
         i = 0
-        while 1:
+        waehrend 1:
             b = items[i]; i+=1
     except IndexError:
         pass
@@ -278,7 +278,7 @@ def tighterloop_example():
     items = range(1, 4)
     try:
         i = 0
-        while 1: i = items[i]
+        waehrend 1: i = items[i]
     except IndexError:
         pass
 
@@ -486,7 +486,7 @@ klasse TraceTestCase(unittest.TestCase):
         def while_example():
             # While expression should be traced on every loop
             x = 2
-            while x > 0:
+            waehrend x > 0:
                 x -= 1
         self.run_and_compare(
             while_example,
@@ -645,7 +645,7 @@ klasse TraceTestCase(unittest.TestCase):
         async def f():
             async fuer i in arange(3):
                 wenn i > 100:
-                    break # should never be traced
+                    breche # should never be traced
 
         tracer = self.make_tracer()
         coro = f()
@@ -809,10 +809,10 @@ klasse TraceTestCase(unittest.TestCase):
 
         def func():
             seq = [1, 0]
-            while seq:
+            waehrend seq:
                 n = seq.pop()
                 wenn n:
-                    break   # line 5
+                    breche   # line 5
             sonst:
                 n = 99
             return n        # line 8
@@ -839,7 +839,7 @@ klasse TraceTestCase(unittest.TestCase):
                     try:
                         a = 5
                         wenn i > 0:
-                            break                   # line 7
+                            breche                   # line 7
                         a = 8
                     finally:
                         c = 10
@@ -874,7 +874,7 @@ klasse TraceTestCase(unittest.TestCase):
                     try:
                         a = 5
                         wenn i > 0:
-                            continue                # line 7
+                            weiter                # line 7
                         b = 8
                     finally:
                         c = 10
@@ -977,11 +977,11 @@ klasse TraceTestCase(unittest.TestCase):
         def func():
             TRUE = 1
             x = [1]
-            while x:
+            waehrend x:
                 x.pop()
-                while TRUE:
-                    break
-                continue
+                waehrend TRUE:
+                    breche
+                weiter
 
         self.run_and_compare(func,
             [(0, 'call'),
@@ -1000,12 +1000,12 @@ klasse TraceTestCase(unittest.TestCase):
         def func():
             TRUE = 1
             x = [1]
-            while x:
+            waehrend x:
                 x.pop()
-                while TRUE:
-                    break
+                waehrend TRUE:
+                    breche
                 sonst:
-                    continue
+                    weiter
 
         self.run_and_compare(func,
             [(0, 'call'),
@@ -1022,10 +1022,10 @@ klasse TraceTestCase(unittest.TestCase):
 
         def func():
             TRUE = 1
-            while TRUE:
-                while TRUE:
-                    break
-                break
+            waehrend TRUE:
+                waehrend TRUE:
+                    breche
+                breche
 
         self.run_and_compare(func,
             [(0, 'call'),
@@ -1247,7 +1247,7 @@ klasse TraceTestCase(unittest.TestCase):
         def func_break():
             fuer i in (1,2):
                 mit C():
-                    break
+                    breche
             pass
 
         def func_return():
@@ -1719,7 +1719,7 @@ klasse TraceTestCase(unittest.TestCase):
         except Exception als ex:
             count = 0
             tb = ex.__traceback__
-            while tb:
+            waehrend tb:
                 wenn tb.tb_frame.f_code.co_name == "test_settrace_error":
                     count += 1
                 tb = tb.tb_next
@@ -1744,7 +1744,7 @@ klasse TraceTestCase(unittest.TestCase):
         except Exception als ex:
             count = 0
             tb = ex.__traceback__
-            while tb:
+            waehrend tb:
                 wenn tb.tb_frame.f_code.co_name == "test_testcapi_settrace_error":
                     count += 1
                 tb = tb.tb_next
@@ -1986,7 +1986,7 @@ klasse JumpTracer:
         wenn (event == self.event und self.firstLine is nicht Nichts und
                 frame.f_lineno == self.firstLine + self.jumpFrom):
             f = frame
-            while f is nicht Nichts und f.f_code != self.code:
+            waehrend f is nicht Nichts und f.f_code != self.code:
                 f = f.f_back
             wenn f is nicht Nichts:
                 # Cope mit non-integer self.jumpTo (because of
@@ -2037,7 +2037,7 @@ klasse JumpTestCase(unittest.TestCase):
     def run_test(self, func, jumpFrom, jumpTo, expected, error=Nichts,
                  event='line', decorated=Falsch, warning=Nichts):
         wrapped = func
-        while hasattr(wrapped, '__wrapped__'):
+        waehrend hasattr(wrapped, '__wrapped__'):
             wrapped = wrapped.__wrapped__
 
         tracer = JumpTracer(wrapped, jumpFrom, jumpTo, event, decorated)
@@ -2060,7 +2060,7 @@ klasse JumpTestCase(unittest.TestCase):
     def run_async_test(self, func, jumpFrom, jumpTo, expected, error=Nichts,
                  event='line', decorated=Falsch, warning=Nichts):
         wrapped = func
-        while hasattr(wrapped, '__wrapped__'):
+        waehrend hasattr(wrapped, '__wrapped__'):
             wrapped = wrapped.__wrapped__
 
         tracer = JumpTracer(wrapped, jumpFrom, jumpTo, event, decorated)
@@ -2239,7 +2239,7 @@ klasse JumpTestCase(unittest.TestCase):
     @jump_test(3, 4, [1], (ValueError, 'after'))
     def test_no_jump_infinite_while_loop(output):
         output.append(1)
-        while Wahr:
+        waehrend Wahr:
             output.append(3)
         output.append(4)
 
@@ -2247,14 +2247,14 @@ klasse JumpTestCase(unittest.TestCase):
     def test_jump_forwards_into_while_block(output):
         i = 1
         output.append(2)
-        while i <= 2:
+        waehrend i <= 2:
             output.append(4)
             i += 1
 
     @jump_test(5, 3, [3, 3, 3, 5])
     def test_jump_backwards_into_while_block(output):
         i = 1
-        while i <= 2:
+        waehrend i <= 2:
             output.append(3)
             i += 1
         output.append(5)
@@ -2476,17 +2476,17 @@ klasse JumpTestCase(unittest.TestCase):
     @jump_test(5, 8, [1, 3, 8, 10, 11, 13])
     def test_jump_over_break_in_try_finally_block(output):
         output.append(1)
-        while Wahr:
+        waehrend Wahr:
             output.append(3)
             try:
                 output.append(5)
                 wenn nicht output: # always false
-                    break
+                    breche
                 output.append(8)
             finally:
                 output.append(10)
             output.append(11)
-            break
+            breche
         output.append(13)
 
     @jump_test(1, 7, [7, 8], warning=(RuntimeWarning, unbound_locals))

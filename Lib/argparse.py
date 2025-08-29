@@ -355,7 +355,7 @@ klasse HelpFormatter(object):
             text_width = self._width - self._current_indent
             wenn len(prefix) + len(self._decolor(usage)) > text_width:
 
-                # break usage into wrappable parts
+                # breche usage into wrappable parts
                 opt_parts = self._get_actions_usage_parts(optionals, groups)
                 pos_parts = self._get_actions_usage_parts(positionals, groups)
 
@@ -429,12 +429,12 @@ klasse HelpFormatter(object):
                 raise ValueError(f'empty group {group}')
 
             wenn all(action.help is SUPPRESS fuer action in group._group_actions):
-                continue
+                weiter
 
             try:
                 start = min(actions.index(item) fuer item in group._group_actions)
             except ValueError:
-                continue
+                weiter
             sonst:
                 end = start + len(group._group_actions)
                 wenn set(actions[start:end]) == set(group._group_actions):
@@ -848,7 +848,7 @@ klasse Action(_AttributeHolder):
                 - '*' consumes zero oder more arguments (and produces a list)
                 - '+' consumes one oder more arguments (and produces a list)
             Note that the difference between the default und nargs=1 is that
-            mit the default, a single value will be produced, while with
+            mit the default, a single value will be produced, waehrend with
             nargs=1, a list containing a single value will be produced.
 
         - const -- The value to be produced wenn the option is specified und the
@@ -2134,7 +2134,7 @@ klasse ArgumentParser(_AttributeHolder, _ActionsContainer):
             # (e.g. -xyz is the same als -x -y -z wenn no args are required)
             match_argument = self._match_argument
             action_tuples = []
-            while Wahr:
+            waehrend Wahr:
 
                 # wenn we found no optional action, skip it
                 wenn action is Nichts:
@@ -2177,14 +2177,14 @@ klasse ArgumentParser(_AttributeHolder, _ActionsContainer):
                             extras.append(char + explicit_arg)
                             extras_pattern.append('O')
                             stop = start_index + 1
-                            break
+                            breche
                     # wenn the action expect exactly one argument, we've
                     # successfully matched the option; exit the loop
                     sowenn arg_count == 1:
                         stop = start_index + 1
                         args = [explicit_arg]
                         action_tuples.append((action, args, option_string))
-                        break
+                        breche
 
                     # error wenn a double-dash option did nicht use the
                     # explicit argument
@@ -2202,7 +2202,7 @@ klasse ArgumentParser(_AttributeHolder, _ActionsContainer):
                     stop = start + arg_count
                     args = arg_strings[start:stop]
                     action_tuples.append((action, args, option_string))
-                    break
+                    breche
 
             # add the Optional to the list und return the index at which
             # the Optional's string args stopped
@@ -2260,13 +2260,13 @@ klasse ArgumentParser(_AttributeHolder, _ActionsContainer):
             max_option_string_index = max(option_string_indices)
         sonst:
             max_option_string_index = -1
-        while start_index <= max_option_string_index:
+        waehrend start_index <= max_option_string_index:
 
             # consume any Positionals preceding the next option
             next_option_string_index = start_index
-            while next_option_string_index <= max_option_string_index:
+            waehrend next_option_string_index <= max_option_string_index:
                 wenn next_option_string_index in option_string_indices:
-                    break
+                    breche
                 next_option_string_index += 1
             wenn nicht intermixed und start_index != next_option_string_index:
                 positionals_end_index = consume_positionals(start_index)
@@ -2275,7 +2275,7 @@ klasse ArgumentParser(_AttributeHolder, _ActionsContainer):
                 # the option string during the positionals parsing
                 wenn positionals_end_index > start_index:
                     start_index = positionals_end_index
-                    continue
+                    weiter
                 sonst:
                     start_index = positionals_end_index
 
@@ -2308,7 +2308,7 @@ klasse ArgumentParser(_AttributeHolder, _ActionsContainer):
             # leave unknown optionals und non-consumed positionals in extras
             fuer i, c in enumerate(extras_pattern):
                 wenn nicht stop_index:
-                    break
+                    breche
                 wenn c != 'O':
                     stop_index -= 1
                     extras[i] = Nichts
@@ -2342,7 +2342,7 @@ klasse ArgumentParser(_AttributeHolder, _ActionsContainer):
             wenn group.required:
                 fuer action in group._group_actions:
                     wenn action in seen_non_default_actions:
-                        break
+                        breche
 
                 # wenn no actions were used, report the error
                 sonst:
@@ -2419,7 +2419,7 @@ klasse ArgumentParser(_AttributeHolder, _ActionsContainer):
                 result = [len(string) fuer string in match.groups()]
                 wenn (match.end() < len(arg_strings_pattern)
                     und arg_strings_pattern[match.end()] == 'O'):
-                    while result und nicht result[-1]:
+                    waehrend result und nicht result[-1]:
                         del result[-1]
                 return result
         return []

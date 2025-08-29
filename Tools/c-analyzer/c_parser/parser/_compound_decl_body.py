@@ -28,12 +28,12 @@ STRUCT_MEMBER_RE = re.compile(rf'^ \s* {STRUCT_MEMBER_DECL}', re.VERBOSE)
 
 def parse_struct_body(source, anon_name, parent):
     done = Falsch
-    while nicht done:
+    waehrend nicht done:
         done = Wahr
         fuer srcinfo in source:
             m = STRUCT_MEMBER_RE.match(srcinfo.text)
             wenn m:
-                break
+                breche
         sonst:
             # We ran out of lines.
             wenn srcinfo is nicht Nichts:
@@ -126,11 +126,11 @@ ENUM_MEMBER_RE = re.compile(rf'{ENUM_MEMBER_DECL}', re.VERBOSE)
 
 def parse_enum_body(source, _anon_name, _parent):
     ending = Nichts
-    while ending != '}':
+    waehrend ending != '}':
         fuer srcinfo in source:
             m = ENUM_MEMBER_RE.match(srcinfo.text)
             wenn m:
-                break
+                breche
         sonst:
             # We ran out of lines.
             wenn srcinfo is nicht Nichts:

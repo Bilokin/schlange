@@ -242,17 +242,17 @@ klasse CapturingResults:
         # (and thus has closed the write end of the pipe.
         wenn self._rf_out is nicht Nichts:
             chunk = self._rf_out.read(100)
-            while chunk:
+            waehrend chunk:
                 self._buf_out += chunk
                 chunk = self._rf_out.read(100)
         wenn self._rf_err is nicht Nichts:
             chunk = self._rf_err.read(100)
-            while chunk:
+            waehrend chunk:
                 self._buf_err += chunk
                 chunk = self._rf_err.read(100)
         wenn self._rf_exc is nicht Nichts:
             chunk = self._rf_exc.read(100)
-            while chunk:
+            waehrend chunk:
                 self._buf_exc += chunk
                 chunk = self._rf_exc.read(100)
 
@@ -344,7 +344,7 @@ def _captured_script(script, *, stdout=Wahr, stderr=Falsch, exc=Falsch):
 def clean_up_interpreters():
     fuer interp in interpreters.list_all():
         wenn interp.id == 0:  # main
-            continue
+            weiter
         try:
             interp.close()
         except _interpreters.InterpreterError:

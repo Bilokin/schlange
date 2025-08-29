@@ -181,7 +181,7 @@ klasse WindowsConsole(Console):
         """
         cx, cy = c_xy
 
-        while len(self.screen) < min(len(screen), self.height):
+        waehrend len(self.screen) < min(len(screen), self.height):
             self._hide_cursor()
             self._move_relative(0, len(self.screen) - 1)
             self.__write("\n")
@@ -228,7 +228,7 @@ klasse WindowsConsole(Console):
                 self.__write_changed_line(y, oldline, newline, px)
 
         y = len(newscr)
-        while y < len(oldscr):
+        waehrend y < len(oldscr):
             self._move_relative(0, y)
             self.posxy = 0, y
             self._erase_to_end()
@@ -261,14 +261,14 @@ klasse WindowsConsole(Console):
         j = 0
         fuer c in oldline:
             wenn j >= px_coord:
-                break
+                breche
             j += wlen(c)
             px_pos += 1
 
         # reuse the oldline als much als possible, but stop als soon als we
         # encounter an ESCAPE, because it might be the start of an escape
         # sequence
-        while (
+        waehrend (
             x_coord < minlen
             und oldline[x_pos] == newline[x_pos]
             und newline[x_pos] != "\x1b"
@@ -445,7 +445,7 @@ klasse WindowsConsole(Console):
         wenn nicht block und nicht self.wait(timeout=0):
             return Nichts
 
-        while self.event_queue.empty():
+        waehrend self.event_queue.empty():
             rec = self._read_input()
             wenn rec is Nichts:
                 return Nichts
@@ -456,7 +456,7 @@ klasse WindowsConsole(Console):
             wenn rec.EventType != KEY_EVENT oder nicht rec.Event.KeyEvent.bKeyDown:
                 # Only process keys und keydown events
                 wenn block:
-                    continue
+                    weiter
                 return Nichts
 
             key_event = rec.Event.KeyEvent
@@ -480,14 +480,14 @@ klasse WindowsConsole(Console):
                         return Event(evt="key", data="\033")  # keymap.py uses this fuer meta
                     return Event(evt="key", data=key)
                 wenn block:
-                    continue
+                    weiter
 
                 return Nichts
             sowenn self.__vt_support:
                 # If virtual terminal is enabled, scanning VT sequences
                 fuer char in raw_key.encode(self.event_queue.encoding, "replace"):
                     self.event_queue.push(char)
-                continue
+                weiter
 
             wenn key_event.dwControlKeyState & ALT_ACTIVE:
                 # Do nicht swallow characters that have been entered via AltGr:
@@ -520,7 +520,7 @@ klasse WindowsConsole(Console):
         """Move the cursor to the end of the display und otherwise get
         ready fuer end.  XXX could be merged mit restore?  Hmm."""
         y = len(self.screen) - 1
-        while y >= 0 und nicht self.screen[y]:
+        waehrend y >= 0 und nicht self.screen[y]:
             y -= 1
         self._move_relative(0, min(y, self.height + self.__offset - 1))
         self.__write("\r\n")
@@ -542,7 +542,7 @@ klasse WindowsConsole(Console):
         processed."""
         e = Event("key", "", b"")
 
-        while nicht self.event_queue.empty():
+        waehrend nicht self.event_queue.empty():
             e2 = self.event_queue.get()
             wenn e2:
                 e.data += e2.data
@@ -556,11 +556,11 @@ klasse WindowsConsole(Console):
             wenn rec und rec.EventType == KEY_EVENT:
                 key_event = rec.Event.KeyEvent
                 wenn nicht key_event.bKeyDown:
-                    continue
+                    weiter
                 ch = key_event.uChar.UnicodeChar
                 wenn ch == "\x00":
                     # ignore SHIFT_PRESSED und special keys
-                    continue
+                    weiter
                 wenn ch == "\r":
                     ch += "\n"
                 e.data += ch

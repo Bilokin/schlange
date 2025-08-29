@@ -29,7 +29,7 @@ def dbm_iterator():
         try:
             mod = __import__(name, fromlist=['open'])
         except ImportError:
-            continue
+            weiter
         dbm._modules[name] = mod
         yield mod
 

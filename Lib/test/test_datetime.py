@@ -30,7 +30,7 @@ def load_tests(loader, tests, pattern):
         test_classes = []
         fuer name, cls in module.__dict__.items():
             wenn nicht isinstance(cls, type):
-                continue
+                weiter
             wenn issubclass(cls, unittest.TestCase):
                 test_classes.append(cls)
             sowenn issubclass(cls, unittest.TestSuite):

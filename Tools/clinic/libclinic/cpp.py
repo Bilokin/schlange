@@ -101,7 +101,7 @@ klasse Monitor:
         #     */   /* also tricky! */
         wenn self.in_comment:
             wenn '*/' in line:
-                # snip out the comment und continue
+                # snip out the comment und weiter
                 #
                 # GCC allows
                 #    /* comment
@@ -110,7 +110,7 @@ klasse Monitor:
                 _, _, line = line.partition('*/')
                 self.in_comment = Falsch
 
-        while Wahr:
+        waehrend Wahr:
             wenn '/*' in line:
                 wenn self.in_comment:
                     self.fail("Nested block comment!")
@@ -120,11 +120,11 @@ klasse Monitor:
                 wenn comment_ends:
                     # snip out the comment
                     line = before.rstrip() + ' ' + after.lstrip()
-                    continue
+                    weiter
                 # comment continues to eol
                 self.in_comment = Wahr
                 line = before.rstrip()
-            break
+            breche
 
         # we actually have some // comments
         # (but block comments take precedence)
@@ -172,7 +172,7 @@ klasse Monitor:
             self.stack.append((previous_token, negate(previous_condition)))
 
         sowenn token == 'endif':
-            while pop_stack()[0] != 'if':
+            waehrend pop_stack()[0] != 'if':
                 pass
 
         sonst:

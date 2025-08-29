@@ -230,7 +230,7 @@ klasse DummyPOP3Server(asyncore.dispatcher, threading.Thread):
         self.active = Wahr
         self.__flag.set()
         try:
-            while self.active und asyncore.socket_map:
+            waehrend self.active und asyncore.socket_map:
                 mit self.active_lock:
                     asyncore.loop(timeout=0.1, count=1)
         finally:

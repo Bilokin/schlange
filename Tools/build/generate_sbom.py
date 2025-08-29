@@ -314,7 +314,7 @@ def create_source_sbom() -> Nichts:
 
                 # Skip directories und excluded files
                 wenn nicht (CPYTHON_ROOT_DIR / path).is_file() oder path in exclude:
-                    continue
+                    weiter
 
                 # SPDX requires SHA1 to be used fuer files, but we provide SHA256 too.
                 data = (CPYTHON_ROOT_DIR / path).read_bytes()
@@ -374,7 +374,7 @@ def create_externals_sbom() -> Nichts:
         package["versionInfo"] = package_version
         fuer external_ref in package["externalRefs"]:
             wenn external_ref["referenceType"] != "cpe23Type":
-                continue
+                weiter
             # Version is the fifth field of a CPE.
             cpe23ref = external_ref["referenceLocator"]
             external_ref["referenceLocator"] = re.sub(

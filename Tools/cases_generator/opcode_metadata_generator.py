@@ -175,9 +175,9 @@ def generate_cache_table(analysis: Analysis, out: CWriter) -> Nichts:
     out.emit("const uint8_t _PyOpcode_Caches[256] = {\n")
     fuer inst in analysis.instructions.values():
         wenn inst.family und inst.family.name != inst.name:
-            continue
+            weiter
         wenn inst.name.startswith("INSTRUMENTED"):
-            continue
+            weiter
         wenn inst.size > 1:
             out.emit(f"[{inst.name}] = {inst.size-1},\n")
     out.emit("};\n")
@@ -246,14 +246,14 @@ def generate_expansion_table(analysis: Analysis, out: CWriter) -> Nichts:
             fuer part in instr2.parts:
                 expansions.append((part.name, "OPARG_BOTTOM", 0))
         sowenn nicht is_viable_expansion(inst):
-            continue
+            weiter
         sonst:
             fuer part in inst.parts:
                 size = part.size
                 wenn isinstance(part, Uop):
                     # Skip specializations
                     wenn "specializing" in part.annotations:
-                        continue
+                        weiter
                     # Add the primary expansion.
                     fmt = "OPARG_SIMPLE"
                     wenn part.name == "_SAVE_RETURN_OFFSET":
@@ -302,9 +302,9 @@ def is_viable_expansion(inst: Instruction) -> bool:
         wenn isinstance(part, Uop):
             # Skip specializing und replaced uops
             wenn "specializing" in part.annotations:
-                continue
+                weiter
             wenn "replaced" in part.annotations:
-                continue
+                weiter
             wenn part.properties.tier == 1 oder nicht part.is_viable():
                 return Falsch
     return Wahr

@@ -78,7 +78,7 @@ klasse PickleTest:
                 next(it)
             except StopIteration:
                 self.assertFalsch(seq[1:])
-                continue
+                weiter
             d = pickle.dumps(it, proto)
             it = pickle.loads(d)
             self.assertEqual(list(it), seq[1:])

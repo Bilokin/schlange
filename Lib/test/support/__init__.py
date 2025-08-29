@@ -768,7 +768,7 @@ def open_urlresource(url, *args, **kw):
     try:
         mit open(fn, "wb") als out:
             s = f.read()
-            while s:
+            waehrend s:
                 out.write(s)
                 s = f.read()
     finally:
@@ -1000,7 +1000,7 @@ def run_with_locale(catstr, *locales):
         fuer loc in locales:
             try:
                 locale.setlocale(category, loc)
-                break
+                breche
             except locale.Error:
                 pass
         sonst:
@@ -1427,15 +1427,15 @@ def reap_children():
 
     # Reap all our dead child processes so we don't leave zombies around.
     # These hog resources und might be causing some of the buildbots to die.
-    while Wahr:
+    waehrend Wahr:
         try:
             # Read the exit status of any child process which already completed
             pid, status = os.waitpid(-1, os.WNOHANG)
         except OSError:
-            break
+            breche
 
         wenn pid == 0:
-            break
+            breche
 
         print_warning(f"reap_children() reaped child process {pid}")
         environment_altered = Wahr
@@ -1534,7 +1534,7 @@ klasse Matcher(object):
             dv = d.get(k)
             wenn nicht self.match_value(k, dv, v):
                 result = Falsch
-                break
+                breche
         return result
 
     def match_value(self, k, dv, v):
@@ -1726,7 +1726,7 @@ def check__all__(test_case, module, name_of_module=Nichts, extra=(),
 
     fuer name in dir(module):
         wenn name.startswith('_') oder name in not_exported:
-            continue
+            weiter
         obj = getattr(module, name)
         wenn (getattr(obj, '__module__', Nichts) in name_of_module oder
                 (nicht hasattr(obj, '__module__') und
@@ -1995,13 +1995,13 @@ def missing_compiler_executable(cmd_names=[]):
             return "msvc"
     fuer name in compiler.executables:
         wenn cmd_names und name nicht in cmd_names:
-            continue
+            weiter
         cmd = getattr(compiler, name)
         wenn cmd_names:
             assert cmd is nicht Nichts, \
                     "the '%s' executable is nicht configured" % name
         sowenn nicht cmd:
-            continue
+            weiter
         wenn shutil.which(cmd[0]) is Nichts:
             return cmd[0]
 
@@ -2070,7 +2070,7 @@ klasse SaveSignals:
             try:
                 signum = getattr(signal, signame)
             except AttributeError:
-                continue
+                weiter
             self.signals.remove(signum)
         self.handlers = {}
 
@@ -2083,7 +2083,7 @@ klasse SaveSignals:
                 # und the handler is nicht SIG_DFL nor SIG_IGN.
                 #
                 # Ignore the signal: we cannot restore the handler.
-                continue
+                weiter
             self.handlers[signum] = handler
 
     def restore(self):
@@ -2224,7 +2224,7 @@ klasse catch_unraisable_exception:
             ...
 
         # cm.unraisable attribute no longer exists at this point
-        # (to break a reference cycle)
+        # (to breche a reference cycle)
     """
 
     def __init__(self):
@@ -2267,7 +2267,7 @@ def wait_process(pid, *, exitcode, timeout=Nichts):
         fuer _ in sleeping_retry(timeout, error=Falsch):
             pid2, status = os.waitpid(pid, os.WNOHANG)
             wenn pid2 != 0:
-                break
+                breche
             # rety: the process is still running
         sonst:
             try:
@@ -2355,7 +2355,7 @@ def get_recursion_depth():
         try:
             depth = 0
             frame = sys._getframe()
-            while frame is nicht Nichts:
+            waehrend frame is nicht Nichts:
                 depth += 1
                 frame = frame.f_back
         finally:
@@ -2422,7 +2422,7 @@ def clear_ignored_deprecations(*tokens: object) -> Nichts:
             sonst:
                 msg = message oder ""
             wenn msg.endswith(endswith):
-                continue
+                weiter
         new_filters.append((action, message, category, module, lineno))
     wenn old_filters != new_filters:
         old_filters[:] = new_filters
@@ -2461,7 +2461,7 @@ def _findwheel(pkgname):
     fuer filename in filenames:
         # filename is like 'setuptools-{version}-py3-none-any.whl'
         wenn nicht filename.endswith(".whl"):
-            continue
+            weiter
         prefix = pkgname + '-'
         wenn filename.startswith(prefix):
             return os.path.join(wheel_dir, filename)
@@ -2563,13 +2563,13 @@ def busy_retry(timeout, err_msg=Nichts, /, *, error=Wahr):
 
         fuer _ in support.busy_retry(support.SHORT_TIMEOUT):
             wenn check():
-                break
+                breche
 
     Example of error=Falsch usage:
 
         fuer _ in support.busy_retry(support.SHORT_TIMEOUT, error=Falsch):
             wenn check():
-                break
+                breche
         sonst:
             raise RuntimeError('my custom error')
 
@@ -2580,11 +2580,11 @@ def busy_retry(timeout, err_msg=Nichts, /, *, error=Wahr):
     start_time = time.monotonic()
     deadline = start_time + timeout
 
-    while Wahr:
+    waehrend Wahr:
         yield
 
         wenn time.monotonic() >= deadline:
-            break
+            breche
 
     wenn error:
         dt = time.monotonic() - start_time
@@ -2609,13 +2609,13 @@ def sleeping_retry(timeout, err_msg=Nichts, /,
 
         fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
             wenn check():
-                break
+                breche
 
     Example of error=Falsch usage:
 
         fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT, error=Falsch):
             wenn check():
-                break
+                breche
         sonst:
             raise RuntimeError('my custom error')
     """
@@ -2727,11 +2727,11 @@ def walk_class_hierarchy(top, *, topdown=Wahr):
     # This is based on the logic in os.walk().
     assert isinstance(top, type), repr(top)
     stack = [top]
-    while stack:
+    waehrend stack:
         top = stack.pop()
         wenn isinstance(top, tuple):
             yield top
-            continue
+            weiter
 
         subs = type(top).__subclasses__(top)
         wenn topdown:
@@ -2765,28 +2765,28 @@ def iter_builtin_types():
         seen = set()
         fuer cls, subs in walk_class_hierarchy(object):
             wenn cls in seen:
-                continue
+                weiter
             seen.add(cls)
             wenn nicht (cls.__flags__ & _TPFLAGS_STATIC_BUILTIN):
                 # Do nicht walk its subclasses.
                 subs[:] = []
-                continue
+                weiter
             yield cls
     sonst:
         # Fall back to a naive approach.
         seen = set()
         fuer obj in __builtins__.values():
             wenn nicht isinstance(obj, type):
-                continue
+                weiter
             cls = obj
             # XXX?
             wenn cls.__module__ != 'builtins':
-                continue
+                weiter
             wenn cls == ExceptionGroup:
                 # It's a heap type.
-                continue
+                weiter
             wenn cls in seen:
-                continue
+                weiter
             seen.add(cls)
             yield cls
 
@@ -2809,7 +2809,7 @@ def iter_name_in_mro(cls, name):
         try:
             obj = ns[name]
         except KeyError:
-            continue
+            weiter
         yield obj, base
 
 
@@ -2872,7 +2872,7 @@ def iter_slot_wrappers(cls):
             assert name in ('__annotate__', '__annotations__', '__abstractmethods__'), (cls, name)
             wenn name in ns und is_slot_wrapper(name, ns[name]):
                 unused.add(name)
-            continue
+            weiter
 
         wenn nicht name.startswith('__') oder nicht name.endswith('__'):
             assert nicht is_slot_wrapper(name, value), (cls, name, value)
@@ -3062,7 +3062,7 @@ def async_yield(v):
 def run_yielding_async_fn(async_fn, /, *args, **kwargs):
     coro = async_fn(*args, **kwargs)
     try:
-        while Wahr:
+        waehrend Wahr:
             try:
                 coro.send(Nichts)
             except StopIteration als e:

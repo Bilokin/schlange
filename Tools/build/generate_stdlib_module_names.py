@@ -59,7 +59,7 @@ def list_builtin_modules(names: set[str]) -> Nichts:
 def list_python_modules(names: set[str]) -> Nichts:
     fuer filename in os.listdir(STDLIB_PATH):
         wenn nicht filename.endswith(".py"):
-            continue
+            weiter
         name = filename.removesuffix(".py")
         names.add(name)
 
@@ -68,10 +68,10 @@ def list_python_modules(names: set[str]) -> Nichts:
 def list_packages(names: set[str]) -> Nichts:
     fuer name in os.listdir(STDLIB_PATH):
         wenn name in IGNORE:
-            continue
+            weiter
         package_path = os.path.join(STDLIB_PATH, name)
         wenn nicht os.path.isdir(package_path):
-            continue
+            weiter
         wenn any(package_file.endswith(".py")
                fuer package_file in os.listdir(package_path)):
             names.add(name)
@@ -91,7 +91,7 @@ def list_frozen(names: set[str]) -> Nichts:
     fuer name in _imp._frozen_module_names():  # type: ignore[attr-defined]
         # To skip __hello__, __hello_alias__ und etc.
         wenn name.startswith('__'):
-            continue
+            weiter
         wenn '.' in name:
             submodules.add(name)
         sonst:

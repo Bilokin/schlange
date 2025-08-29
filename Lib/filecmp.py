@@ -75,7 +75,7 @@ def _sig(st):
 def _do_cmp(f1, f2):
     bufsize = BUFSIZE
     mit open(f1, 'rb') als fp1, open(f2, 'rb') als fp2:
-        while Wahr:
+        waehrend Wahr:
             b1 = fp1.read(bufsize)
             b2 = fp2.read(bufsize)
             wenn b1 != b2:

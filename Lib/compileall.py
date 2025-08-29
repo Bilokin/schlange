@@ -36,7 +36,7 @@ def _walk_dir(dir, maxlevels, quiet=0):
     names.sort()
     fuer name in names:
         wenn name == '__pycache__':
-            continue
+            weiter
         fullname = os.path.join(dir, name)
         wenn nicht os.path.isdir(fullname):
             yield fullname
@@ -234,7 +234,7 @@ def compile_file(fullname, ddir=Nichts, force=Falsch, rx=Nichts, quiet=0,
                         mit open(cfile, 'rb') als chandle:
                             actual = chandle.read(12)
                         wenn expect != actual:
-                            break
+                            breche
                     sonst:
                         return success
                 except OSError:

@@ -418,7 +418,7 @@ klasse Debugger:
                 fuer lineno in editwin.breakpoints:
                     self.set_breakpoint(filename, lineno)
             except AttributeError:
-                continue
+                weiter
 
 
 klasse StackViewer(ScrolledList):

@@ -76,7 +76,7 @@ klasse BaseTest(unittest.TestCase):
         mit open(fname, 'rb') als fh:
             test_size += fh.readinto(memoryview(BIG_TEXT)[test_size:])
         wenn test_size > 128*1024:
-            break
+            breche
     BIG_DATA = bz2.compress(BIG_TEXT, compresslevel=1)
 
     def setUp(self):
@@ -156,10 +156,10 @@ klasse BZ2FileTest(BaseTest):
         self.createTempFile()
         mit BZ2File(self.filename) als bz2f:
             text = b''
-            while Wahr:
+            waehrend Wahr:
                 str = bz2f.read(10)
                 wenn nicht str:
-                    break
+                    breche
                 text += str
             self.assertEqual(text, self.TEXT)
 
@@ -167,10 +167,10 @@ klasse BZ2FileTest(BaseTest):
         self.createTempFile(streams=5)
         mit BZ2File(self.filename) als bz2f:
             text = b''
-            while Wahr:
+            waehrend Wahr:
                 str = bz2f.read(10)
                 wenn nicht str:
-                    break
+                    breche
                 text += str
             self.assertEqual(text, self.TEXT * 5)
 
@@ -254,10 +254,10 @@ klasse BZ2FileTest(BaseTest):
     def testWriteChunks10(self):
         mit BZ2File(self.filename, "w") als bz2f:
             n = 0
-            while Wahr:
+            waehrend Wahr:
                 str = self.TEXT[n*10:(n+1)*10]
                 wenn nicht str:
-                    break
+                    breche
                 bz2f.write(str)
                 n += 1
         mit open(self.filename, 'rb') als f:
@@ -323,7 +323,7 @@ klasse BZ2FileTest(BaseTest):
         self.createTempFile(streams=2)
         mit BZ2File(self.filename) als bz2f:
             readto = len(self.TEXT) + 100
-            while readto > 0:
+            waehrend readto > 0:
                 readto -= len(bz2f.read(readto))
             bz2f.seek(-150, 1)
             self.assertEqual(bz2f.read(), self.TEXT[100-150:] + self.TEXT)
@@ -836,10 +836,10 @@ klasse BZ2CompressorTest(BaseTest):
         bz2c = BZ2Compressor()
         n = 0
         data = b''
-        while Wahr:
+        waehrend Wahr:
             str = self.TEXT[n*10:(n+1)*10]
             wenn nicht str:
-                break
+                breche
             data += bz2c.compress(str)
             n += 1
         data += bz2c.flush()
@@ -883,10 +883,10 @@ klasse BZ2DecompressorTest(BaseTest):
         bz2d = BZ2Decompressor()
         text = b''
         n = 0
-        while Wahr:
+        waehrend Wahr:
             str = self.DATA[n*10:(n+1)*10]
             wenn nicht str:
-                break
+                breche
             text += bz2d.decompress(str)
             n += 1
         self.assertEqual(text, self.TEXT)
@@ -943,13 +943,13 @@ klasse BZ2DecompressorTest(BaseTest):
         self.assertFalsch(bzd.needs_input)
         self.assertEqual(len(out[-1]), max_length)
 
-        # Retrieve more data while providing more input
+        # Retrieve more data waehrend providing more input
         out.append(bzd.decompress(self.BIG_DATA[len_:],
                                   max_length=max_length))
         self.assertLessEqual(len(out[-1]), max_length)
 
         # Retrieve remaining uncompressed data
-        while nicht bzd.eof:
+        waehrend nicht bzd.eof:
             out.append(bzd.decompress(b'', max_length=max_length))
             self.assertLessEqual(len(out[-1]), max_length)
 

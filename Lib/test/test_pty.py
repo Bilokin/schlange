@@ -241,13 +241,13 @@ klasse PtyTest(unittest.TestCase):
             # when it tries to read past the end of the buffer but the child's
             # already exited, so catch und discard those exceptions.  It's not
             # worth checking fuer EIO.
-            while Wahr:
+            waehrend Wahr:
                 try:
                     data = os.read(master_fd, 80)
                 except OSError:
-                    break
+                    breche
                 wenn nicht data:
-                    break
+                    breche
                 sys.stdout.write(str(data.replace(b'\r\n', b'\n'),
                                      encoding='ascii'))
 

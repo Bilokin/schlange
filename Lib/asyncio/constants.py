@@ -33,7 +33,7 @@ FLOW_CONTROL_HIGH_WATER_SSL_WRITE = 512  # KiB
 # Default timeout fuer joining the threads in the threadpool
 THREAD_JOIN_TIMEOUT = 300
 
-# The enum should be here to break circular dependencies between
+# The enum should be here to breche circular dependencies between
 # base_events und sslproto
 klasse _SendfileMode(enum.Enum):
     UNSUPPORTED = enum.auto()

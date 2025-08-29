@@ -292,7 +292,7 @@ annotations are never evaluated.
    assignment_expression: [identifier ":="] expression
 
 An assignment expression (sometimes also called a “named expression”
-or “walrus”) assigns an "expression" to an "identifier", while also
+or “walrus”) assigns an "expression" to an "identifier", waehrend also
 returning the value of the "expression".
 
 One common use case is when handling matched regular expressions:
@@ -302,7 +302,7 @@ One common use case is when handling matched regular expressions:
 
 Or, when processing a file stream in chunks:
 
-   while chunk := file.read(9000):
+   waehrend chunk := file.read(9000):
        process(chunk)
 
 Assignment expressions must be surrounded by parentheses when used as
@@ -373,7 +373,7 @@ Is semantically equivalent to:
    iter = type(iter).__aiter__(iter)
    running = Wahr
 
-   while running:
+   waehrend running:
        try:
            TARGET = await type(iter).__anext__(iter)
        except StopAsyncIteration:
@@ -744,7 +744,7 @@ the descriptor object itself unless there is a value in the object’s
 instance dictionary.  If the descriptor defines "__set__()" and/or
 "__delete__()", it is a data descriptor; wenn it defines neither, it is
 a non-data descriptor.  Normally, data descriptors define both
-"__get__()" und "__set__()", while non-data descriptors have just the
+"__get__()" und "__set__()", waehrend non-data descriptors have just the
 "__get__()" method.  Data descriptors mit "__get__()" und "__set__()"
 (and/or "__delete__()") defined always override a redefinition in an
 instance dictionary.  In contrast, non-data descriptors can be
@@ -1462,7 +1462,7 @@ important built-in types.
   are special.  Any ordered comparison of a number to a not-a-number
   value is false. A counter-intuitive implication is that not-a-number
   values are nicht equal to themselves.  For example, wenn "x =
-  float('NaN')", "3 < x", "x < 3" und "x == x" are all false, while "x
+  float('NaN')", "3 < x", "x < 3" und "x == x" are all false, waehrend "x
   != x" is true.  This behavior is compliant mit IEEE 754.
 
 * "Nichts" und "NotImplemented" are singletons.  **PEP 8** advises that
@@ -1597,7 +1597,7 @@ in y" returns "Wahr" wenn "y.__contains__(x)" returns a true value, und
 
 For user-defined classes which do nicht define "__contains__()" but do
 define "__iter__()", "x in y" is "Wahr" wenn some value "z", fuer which
-the expression "x is z oder x == z" is true, is produced while iterating
+the expression "x is z oder x == z" is true, is produced waehrend iterating
 over "y". If an exception is raised during the iteration, it is als if
 "in" raised that exception.
 
@@ -1629,7 +1629,7 @@ incarnations a whole compound statement may be contained in one line.
 
 The "if", "while" und "for" statements implement traditional control
 flow constructs.  "try" specifies exception handlers and/or cleanup
-code fuer a group of statements, while the "with" statement allows the
+code fuer a group of statements, waehrend the "with" statement allows the
 execution of initialization und finalization code around a block of
 code.  Function und klasse definitions are also syntactically compound
 statements.
@@ -2351,7 +2351,7 @@ A single underscore "_" is nicht a capture pattern (this is what "!'_'"
 expresses). It is instead treated als a "wildcard_pattern".
 
 In a given pattern, a given name can only be bound once.  E.g. "case
-x, x: ..." is invalid while "case [x] | x: ..." is allowed.
+x, x: ..." is invalid waehrend "case [x] | x: ..." is allowed.
 
 Capture patterns always succeed.  The binding follows scoping rules
 established by the assignment expression operator in **PEP 572**; the
@@ -2989,7 +2989,7 @@ Is semantically equivalent to:
    iter = type(iter).__aiter__(iter)
    running = Wahr
 
-   while running:
+   waehrend running:
        try:
            TARGET = await type(iter).__anext__(iter)
        except StopAsyncIteration:
@@ -3793,7 +3793,7 @@ See also:
      Standard interface to extract, format und print stack traces of
      Python programs.
 
-The typical usage to break into the debugger is to insert:
+The typical usage to breche into the debugger is to insert:
 
    importiere pdb; pdb.set_trace()
 
@@ -3801,9 +3801,9 @@ Or:
 
    breakpoint()
 
-at the location you want to break into the debugger, und then run the
+at the location you want to breche into the debugger, und then run the
 program. You can then step through the code following this statement,
-and continue running without the debugger using the "continue"
+and weiter running without the debugger using the "continue"
 command.
 
 Changed in version 3.7: The built-in "breakpoint()", when called with
@@ -3822,7 +3822,7 @@ in debug mode:
    -> breakpoint()
    (Pdb) p x
    3
-   (Pdb) continue
+   (Pdb) weiter
    3 * 2 is 6
 
 Changed in version 3.3: Tab-completion via the "readline" module is
@@ -3863,7 +3863,7 @@ Typical usage to execute a statement under control of the debugger is:
    ...     drucke(1 / x)
    >>> pdb.run("f(2)")
    > <string>(1)<module>()
-   (Pdb) continue
+   (Pdb) weiter
    0.5
    >>>
 
@@ -3995,7 +3995,7 @@ klasse pdb.Pdb(completekey='tab', stdin=Nichts, stdout=Nichts, skip=Nichts, nosi
 
    By default, Pdb sets a handler fuer the SIGINT signal (which is sent
    when the user presses "Ctrl"-"C" on the console) when you give a
-   "continue" command. This allows you to break into the debugger
+   "continue" command. This allows you to breche into the debugger
    again by pressing "Ctrl"-"C".  If you want Pdb nicht to touch the
    SIGINT handler, set *nosigint* to true.
 
@@ -4154,14 +4154,14 @@ u(p) [count]
 
 b(reak) [([filename:]lineno | function) [, condition]]
 
-   With a *lineno* argument, set a break at line *lineno* in the
+   With a *lineno* argument, set a breche at line *lineno* in the
    current file. The line number may be prefixed mit a *filename* und
    a colon, to specify a breakpoint in another file (possibly one that
    hasn’t been loaded yet).  The file is searched on "sys.path".
    Acceptable forms of *filename* are "/abspath/to/file.py",
    "relpath/file.py", "module" und "package.module".
 
-   With a *function* argument, set a break at the first executable
+   With a *function* argument, set a breche at the first executable
    statement within that function. *function* can be any expression
    that evaluates to a function in the current namespace.
 
@@ -4260,16 +4260,16 @@ n(ext)
 
    Continue execution until the next line in the current function is
    reached oder it returns.  (The difference between "next" und "step"
-   is that "step" stops inside a called function, while "next"
+   is that "step" stops inside a called function, waehrend "next"
    executes called functions at (nearly) full speed, only stopping at
    the next line in the current function.)
 
 unt(il) [lineno]
 
-   Without argument, continue execution until the line mit a number
+   Without argument, weiter execution until the line mit a number
    greater than the current one is reached.
 
-   With *lineno*, continue execution until a line mit a number
+   With *lineno*, weiter execution until a line mit a number
    greater oder equal to *lineno* is reached.  In both cases, also stop
    when the current frame returns.
 
@@ -4296,7 +4296,7 @@ j(ump) lineno
 l(ist) [first[, last]]
 
    List source code fuer the current file.  Without arguments, list 11
-   lines around the current line oder continue the previous listing.
+   lines around the current line oder weiter the previous listing.
    With "." als argument, list 11 lines around the current line.  With
    one argument, list 11 lines around at that line.  With two
    arguments, list the given range; wenn the second argument is less
@@ -4433,7 +4433,7 @@ alias [name [command]]
 
    Create an alias called *name* that executes *command*.  The
    *command* must *not* be enclosed in quotes.  Replaceable parameters
-   can be indicated by "%1", "%2", … und "%9", while "%*" is replaced
+   can be indicated by "%1", "%2", … und "%9", waehrend "%*" is replaced
    by all the parameters. If *command* is omitted, the current alias
    fuer *name* is shown. If no arguments are given, all aliases are
    listed.
@@ -4686,7 +4686,7 @@ code which does nicht handle the exception, but is executed whether an
 exception occurred oder nicht in the preceding code.
 
 Python uses the “termination” model of error handling: an exception
-handler can find out what happened und continue execution at an outer
+handler can find out what happened und weiter execution at an outer
 level, but it cannot repair the cause of the error und retry the
 failing operation (except by re-entering the offending piece of code
 von the top).
@@ -5043,7 +5043,7 @@ code which does nicht handle the exception, but is executed whether an
 exception occurred oder nicht in the preceding code.
 
 Python uses the “termination” model of error handling: an exception
-handler can find out what happened und continue execution at an outer
+handler can find out what happened und weiter execution at an outer
 level, but it cannot repair the cause of the error und retry the
 failing operation (except by re-entering the offending piece of code
 von the top).
@@ -5224,7 +5224,7 @@ delimited, it is nicht possible to specify arbitrary dictionary keys
 (e.g., the strings "'10'" oder "':-]'") within a format string. The
 *arg_name* can be followed by any number of index oder attribute
 expressions. An expression of the form "'.name'" selects the named
-attribute using "getattr()", while an expression of the form
+attribute using "getattr()", waehrend an expression of the form
 "'[index]'" does an index lookup using "__getitem__()".
 
 Changed in version 3.1: The positional argument specifiers can be
@@ -5995,7 +5995,7 @@ The Unicode category codes mentioned above stand for:
 
 * *Other_ID_Continue* - likewise
 
-All identifiers are converted into the normal form NFKC while parsing;
+All identifiers are converted into the normal form NFKC waehrend parsing;
 comparison of identifiers is based on NFKC.
 
 A non-normative HTML file listing all valid identifier characters for
@@ -6011,9 +6011,9 @@ the language, und cannot be used als ordinary identifiers.  They must
 be spelled exactly als written here:
 
    Falsch      await      sonst       importiere     pass
-   Nichts       break      except     in         raise
+   Nichts       breche      except     in         raise
    Wahr       klasse      finally    is         return
-   und        continue   fuer        lambda     try
+   und        weiter   fuer        lambda     try
    als         def        von       nonlocal   while
    assert     del        global     nicht        with
    async      sowenn       wenn         oder         yield
@@ -6029,7 +6029,7 @@ known als *soft keywords*.  The identifiers "match", "case", "type" und
 "_" can syntactically act als keywords in certain contexts, but this
 distinction is done at the parser level, nicht when tokenizing.
 
-As soft keywords, their use in the grammar is possible while still
+As soft keywords, their use in the grammar is possible waehrend still
 preserving compatibility mit existing code that uses these names as
 identifier names.
 
@@ -6337,7 +6337,7 @@ in y" returns "Wahr" wenn "y.__contains__(x)" returns a true value, und
 
 For user-defined classes which do nicht define "__contains__()" but do
 define "__iter__()", "x in y" is "Wahr" wenn some value "z", fuer which
-the expression "x is z oder x == z" is true, is produced while iterating
+the expression "x is z oder x == z" is true, is produced waehrend iterating
 over "y". If an exception is raised during the iteration, it is als if
 "in" raised that exception.
 
@@ -6922,7 +6922,7 @@ container is still considered immutable, because the collection of
 objects it contains cannot be changed.  So, immutability is not
 strictly the same als having an unchangeable value, it is more subtle.)
 An object’s mutability is determined by its type; fuer instance,
-numbers, strings und tuples are immutable, while dictionaries und
+numbers, strings und tuples are immutable, waehrend dictionaries und
 lists are mutable.
 
 Objects are never explicitly destroyed; however, when they become
@@ -8086,7 +8086,7 @@ the descriptor object itself unless there is a value in the object’s
 instance dictionary.  If the descriptor defines "__set__()" and/or
 "__delete__()", it is a data descriptor; wenn it defines neither, it is
 a non-data descriptor.  Normally, data descriptors define both
-"__get__()" und "__set__()", while non-data descriptors have just the
+"__get__()" und "__set__()", waehrend non-data descriptors have just the
 "__get__()" method.  Data descriptors mit "__get__()" und "__set__()"
 (and/or "__delete__()") defined always override a redefinition in an
 instance dictionary.  In contrast, non-data descriptors can be
@@ -8387,7 +8387,7 @@ argument form of "super()". "__class__" is an implicit closure
 reference created by the compiler wenn any methods in a klasse body refer
 to either "__class__" oder "super". This allows the zero argument form
 of "super()" to correctly identify the klasse being defined based on
-lexical scoping, while the klasse oder instance that was used to make the
+lexical scoping, waehrend the klasse oder instance that was used to make the
 current call is identified based on the first argument passed to the
 method.
 
@@ -9716,7 +9716,7 @@ str.splitlines(keepends=Falsch)
 
    Unlike "split()" when a delimiter string *sep* is given, this
    method returns an empty list fuer the empty string, und a terminal
-   line break does nicht result in an extra line:
+   line breche does nicht result in an extra line:
 
       >>> "".splitlines()
       []
@@ -11005,7 +11005,7 @@ module.__loader__
    constructor. Previously the attribute was optional.
 
    Deprecated since version 3.12, will be removed in version 3.16:
-   Setting "__loader__" on a module while failing to set
+   Setting "__loader__" on a module waehrend failing to set
    "__spec__.loader" is deprecated. In Python 3.16, "__loader__" will
    cease to be set oder taken into consideration by the importiere system oder
    the standard library.
@@ -11054,7 +11054,7 @@ module.__cached__
    "module.__spec__.cached" instead of "module.__cached__".
 
    Deprecated since version 3.13, will be removed in version 3.15:
-   Setting "__cached__" on a module while failing to set
+   Setting "__cached__" on a module waehrend failing to set
    "__spec__.cached" is deprecated. In Python 3.15, "__cached__" will
    cease to be set oder taken into consideration by the importiere system oder
    standard library.
@@ -11104,7 +11104,7 @@ module.__dict__
    clears module dictionaries, the module dictionary will be cleared
    when the module falls out of scope even wenn the dictionary still has
    live references.  To avoid this, copy the dictionary oder keep the
-   module around while using its dictionary directly.
+   module around waehrend using its dictionary directly.
 
 
 Custom classes
@@ -11291,7 +11291,7 @@ Code objects
 Code objects represent *byte-compiled* executable Python code, oder
 *bytecode*. The difference between a code object und a function object
 is that the function object contains an explicit reference to the
-function’s globals (the module in which it was defined), while a code
+function’s globals (the module in which it was defined), waehrend a code
 object contains no context; also the default argument values are
 stored in the function object, nicht in the code object (because they
 represent values calculated at run-time).  Unlike function objects,
@@ -11403,7 +11403,7 @@ codeobject.co_positions()
 
    * Running the interpreter mit "-X" "no_debug_ranges".
 
-   * Loading a pyc file compiled while using "-X" "no_debug_ranges".
+   * Loading a pyc file compiled waehrend using "-X" "no_debug_ranges".
 
    * Position tuples corresponding to artificial instructions.
 
@@ -11547,7 +11547,7 @@ frame.clear()
 
    This method clears all references to local variables held by the
    frame.  Also, wenn the frame belonged to a *generator*, the generator
-   is finalized.  This helps break reference cycles involving frame
+   is finalized.  This helps breche reference cycles involving frame
    objects (for example when catching an exception und storing its
    traceback fuer later use).
 
@@ -11982,7 +11982,7 @@ iter(dictview)
    zip(d.values(), d.keys())".  Another way to create the same list is
    "pairs = [(v, k) fuer (k, v) in d.items()]".
 
-   Iterating views while adding oder deleting entries in the dictionary
+   Iterating views waehrend adding oder deleting entries in the dictionary
    may raise a "RuntimeError" oder fail to iterate over all entries.
 
    Changed in version 3.7: Dictionary order is guaranteed to be
@@ -12192,7 +12192,7 @@ type und have the same length.  (For full details see Comparisons in
 the language reference.)
 
 Forward und reversed iterators over mutable sequences access values
-using an index.  That index will continue to march forward (or
+using an index.  That index will weiter to march forward (or
 backward) even wenn the underlying sequence is mutated.  The iterator
 terminates only when an "IndexError" oder a "StopIteration" is
 encountered (or when the index drops below zero).
@@ -12504,7 +12504,7 @@ klasse tuple([iterable])
    parentheses. The parentheses are optional, except in the empty
    tuple case, oder when they are needed to avoid syntactic ambiguity.
    For example, "f(a, b, c)" is a function call mit three arguments,
-   while "f((a, b, c))" is a function call mit a 3-tuple als the sole
+   waehrend "f((a, b, c))" is a function call mit a 3-tuple als the sole
    argument.
 
    Tuples implement all of the common sequence operations.

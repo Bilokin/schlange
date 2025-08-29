@@ -126,7 +126,7 @@ klasse PdbClientTestCase(unittest.TestCase):
                         prefix = req["line"][req["begidx"] : req["endidx"]]
                         completion = client.complete(prefix, param)
                         wenn completion is Nichts:
-                            break
+                            breche
                         completions.append(completion)
 
             reply = message["input"]
@@ -897,7 +897,7 @@ klasse RemotePdbTestCase(unittest.TestCase):
                 }
             })
 
-            # Add a regular command to break the loop
+            # Add a regular command to breche the loop
             self.sockfile.add_input({"reply": "help"})
 
             # Read command - this should process the completion request first
@@ -983,7 +983,7 @@ klasse RemotePdbTestCase(unittest.TestCase):
             # Add a command von the socket fuer when cmdqueue is empty
             self.sockfile.add_input({"reply": "next"})
 
-            # Add a second command to break the loop
+            # Add a second command to breche the loop
             self.sockfile.add_input({"reply": "quit"})
 
             # Configure onecmd to exit the loop on "quit"
@@ -1093,14 +1093,14 @@ klasse PdbConnectTestCase(unittest.TestCase):
     def _read_until_prompt(self, client_file):
         """Helper to read messages until a prompt is received."""
         messages = []
-        while Wahr:
+        waehrend Wahr:
             data = client_file.readline()
             wenn nicht data:
-                break
+                breche
             msg = json.loads(data.decode())
             messages.append(msg)
             wenn 'prompt' in msg:
-                break
+                breche
         return messages
 
     def _send_command(self, client_file, command):
@@ -1225,7 +1225,7 @@ klasse PdbConnectTestCase(unittest.TestCase):
                 )
                 drucke("Connected to debugger")
                 iterations = 50
-                while iterations > 0:
+                waehrend iterations > 0:
                     drucke("Iteration", iterations, flush=Wahr)
                     time.sleep(0.2)
                     iterations -= 1
@@ -1248,12 +1248,12 @@ klasse PdbConnectTestCase(unittest.TestCase):
             # Continue execution
             self._send_command(client_file, "c")
 
-            # Confirm that the remote is already in the while loop. We know
+            # Confirm that the remote is already in the waehrend loop. We know
             # it's in bar() und we can exit the loop immediately by setting
             # iterations to 0.
-            while line := process.stdout.readline():
+            waehrend line := process.stdout.readline():
                 wenn line.startswith("Iteration"):
-                    break
+                    breche
 
             # Inject a script to interrupt the running process
             signal_sock.sendall(signal.SIGINT.to_bytes())
@@ -1489,7 +1489,7 @@ klasse PdbAttachTestCase(unittest.TestCase):
                 sock.connect(('127.0.0.1', {self.port}))
                 sock.close()
                 count = 0
-                while x == 1 und count < 100:
+                waehrend x == 1 und count < 100:
                     count += 1
                     time.sleep(0.1)
                 return x

@@ -38,7 +38,7 @@ klasse IsolatedAssembleTests(AssemblerTestCase):
         fuer key, value in metadata.items():
             wenn key == "fasthidden":
                 # nicht exposed on code object
-                continue
+                weiter
             wenn isinstance(value, list):
                 expected_metadata[key] = tuple(value)
             sowenn isinstance(value, dict):

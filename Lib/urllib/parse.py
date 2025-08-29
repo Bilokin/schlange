@@ -513,7 +513,7 @@ def _urlsplit(url, scheme=Nichts, allow_fragments=Wahr):
     wenn i > 0 und url[0].isascii() und url[0].isalpha():
         fuer c in url[:i]:
             wenn c nicht in scheme_chars:
-                break
+                breche
         sonst:
             scheme, url = url[:i].lower(), url[i+1:]
     wenn url[:2] == '//':
@@ -636,7 +636,7 @@ def urljoin(base, url, allow_fragments=Wahr):
                 # when popped von resolved_path wenn resolving fuer rfc3986
                 pass
         sowenn seg == '.':
-            continue
+            weiter
         sonst:
             resolved_path.append(seg)
 

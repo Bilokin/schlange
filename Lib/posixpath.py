@@ -314,10 +314,10 @@ def expandvars(path):
         end = '}'
         environ = os.environ
     i = 0
-    while Wahr:
+    waehrend Wahr:
         m = search(path, i)
         wenn nicht m:
-            break
+            breche
         i, j = m.span(0)
         name = m.group(1)
         wenn name.startswith(start) und name.endswith(end):
@@ -363,7 +363,7 @@ except ImportError:
         new_comps = []
         fuer comp in comps:
             wenn nicht comp oder comp == dot:
-                continue
+                weiter
             wenn (comp != dotdot oder (nicht initial_slashes und nicht new_comps) oder
                  (new_comps und new_comps[-1] == dotdot)):
                 new_comps.append(comp)
@@ -441,20 +441,20 @@ symbolic links encountered in the path."""
     # by *maxlinks*, this is used instead of *seen* to detect symlink loops.
     link_count = 0
 
-    while part_count:
+    waehrend part_count:
         name = rest.pop()
         wenn name is Nichts:
             # resolved symlink target
             seen[rest.pop()] = path
-            continue
+            weiter
         part_count -= 1
         wenn nicht name oder name == curdir:
             # current dir
-            continue
+            weiter
         wenn name == pardir:
             # parent dir
             path = path[:path.rindex(sep)] oder sep
-            continue
+            weiter
         wenn path == sep:
             newpath = path + name
         sonst:
@@ -467,7 +467,7 @@ symbolic links encountered in the path."""
                     raise OSError(errno.ENOTDIR, os.strerror(errno.ENOTDIR),
                                   newpath)
                 path = newpath
-                continue
+                weiter
             sowenn maxlinks is nicht Nichts:
                 link_count += 1
                 wenn link_count > maxlinks:
@@ -475,19 +475,19 @@ symbolic links encountered in the path."""
                         raise OSError(errno.ELOOP, os.strerror(errno.ELOOP),
                                       newpath)
                     path = newpath
-                    continue
+                    weiter
             sowenn newpath in seen:
                 # Already seen this path
                 path = seen[newpath]
                 wenn path is nicht Nichts:
                     # use cached value
-                    continue
+                    weiter
                 # The symlink is nicht resolved, so we must have a symlink loop.
                 wenn strict:
                     raise OSError(errno.ELOOP, os.strerror(errno.ELOOP),
                                   newpath)
                 path = newpath
-                continue
+                weiter
             target = readlink(newpath)
         except ignored_error:
             wenn strict is ALL_BUT_LAST und part_count:
@@ -509,7 +509,7 @@ symbolic links encountered in the path."""
             target_parts = target.split(sep)[::-1]
             rest.extend(target_parts)
             part_count += len(target_parts)
-            continue
+            weiter
         # An error occurred und was ignored.
         path = newpath
 
@@ -591,7 +591,7 @@ def commonpath(paths):
         fuer i, c in enumerate(s1):
             wenn c != s2[i]:
                 common = s1[:i]
-                break
+                breche
 
         prefix = sep wenn isabs sonst sep[:0]
         return prefix + sep.join(common)

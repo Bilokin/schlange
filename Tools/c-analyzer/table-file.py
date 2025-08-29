@@ -12,7 +12,7 @@ def iter_clean_lines(lines):
     fuer rawline in lines:
         line = rawline.strip()
         wenn line.startswith('#') und nicht rawline.startswith('##'):
-            continue
+            weiter
         yield line, rawline
 
 
@@ -64,7 +64,7 @@ def iter_sections(lines):
             wenn nicht section:
                 wenn header is Nichts:
                     header = value
-                    continue
+                    weiter
                 raise NotImplementedError(repr(value))
             yield tuple(section), value
         sonst:

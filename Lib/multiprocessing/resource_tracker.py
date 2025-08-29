@@ -166,7 +166,7 @@ klasse ResourceTracker(object):
                 exe,
                 *util._args_from_interpreter_flags(),
                 '-c',
-                f'from multiprocessing.resource_tracker importiere main;main({r})',
+                f'von multiprocessing.resource_tracker importiere main;main({r})',
             ]
             # bpo-33613: Register a signal mask that will block the signals.
             # This signal mask will be inherited by the child that is going
@@ -215,11 +215,11 @@ klasse ResourceTracker(object):
             sonst:
                 self._launch()
 
-        while Wahr:
+        waehrend Wahr:
             try:
                 reentrant_msg = self._reentrant_messages.popleft()
             except IndexError:
-                break
+                breche
             self._write(reentrant_msg)
         wenn msg is nicht Nichts:
             self._write(msg)

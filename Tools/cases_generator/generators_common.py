@@ -40,7 +40,7 @@ klasse TokenIterator:
         wenn self.look_ahead is Nichts:
             fuer tkn in self.iterator:
                 self.look_ahead = tkn
-                break
+                breche
         return self.look_ahead
 
 ROOT = Path(__file__).parent.parent.parent.resolve()
@@ -305,7 +305,7 @@ klasse Emitter:
         fuer var in storage.inputs:
             wenn var.name == name:
                 var.kill()
-                break
+                breche
         sonst:
             raise analysis_error(
                 f"'{name}' is nicht a live input-only variable", name_tkn
@@ -326,7 +326,7 @@ klasse Emitter:
                         f"Cannot close '{name.text}' when "
                         f"'{live}' is still live", name)
                 var.kill()
-                break
+                breche
             wenn var.in_local:
                 live = var.name
         return Wahr
@@ -530,12 +530,12 @@ klasse Emitter:
                                 wenn var.name == tkn.text:
                                     var.in_local = Wahr
                                     var.memory_offset = Nichts
-                                    break
+                                    breche
                             fuer var in storage.outputs:
                                 wenn var.name == tkn.text:
                                     var.in_local = Wahr
                                     var.memory_offset = Nichts
-                                    break
+                                    breche
                         wenn tkn.text.startswith("DISPATCH"):
                             reachable = Falsch
                         self.out.emit(tkn)
@@ -642,7 +642,7 @@ klasse Emitter:
                 wenn tkn is nicht Nichts:
                     self.out.emit(tkn)
                 wenn nicht reachable:
-                    break
+                    breche
             return reachable, stmt.close, storage
         except StackError als ex:
             wenn tkn is Nichts:

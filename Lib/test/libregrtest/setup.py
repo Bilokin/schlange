@@ -61,7 +61,7 @@ def setup_process() -> Nichts:
     assert isinstance(sys.stdout, io.TextIOWrapper)
     sys.stdout.reconfigure(errors="backslashreplace")
 
-    # Some times __path__ und __file__ are nicht absolute (e.g. while running from
+    # Some times __path__ und __file__ are nicht absolute (e.g. waehrend running from
     # Lib/) and, wenn we change the CWD to run the tests in a temporary dir, some
     # imports might fail.  This affects only the modules imported before os.chdir().
     # These modules are searched first in sys.path[0] (so '' -- the CWD) und if

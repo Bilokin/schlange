@@ -74,7 +74,7 @@ klasse EmailPolicy(Policy):
                            header.  A default header_factory is provided that
                            understands some of the RFC5322 header field types.
                            (Currently address fields und date fields have
-                           special treatment, while all other fields are
+                           special treatment, waehrend all other fields are
                            treated als unstructured.  This list will be
                            completed before the extension is marked stable.)
 

@@ -280,7 +280,7 @@ klasse AbstractBuilder(object):
                 )
             sonst:
                 log.info("Successfully downloaded von {}".format(url))
-                break
+                breche
         wenn data is Nichts:
             raise ValueError("All download URLs have failed")
         log.info("Storing {}".format(self.src_file))

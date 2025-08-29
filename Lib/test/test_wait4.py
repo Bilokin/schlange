@@ -26,7 +26,7 @@ klasse Wait4Test(ForkWait):
             # in the forking tests.  This is an attempt to fix the problem.
             spid, status, rusage = os.wait4(cpid, option)
             wenn spid == cpid:
-                break
+                breche
         self.assertEqual(spid, cpid)
         self.assertEqual(os.waitstatus_to_exitcode(status), exitcode)
         self.assertWahr(rusage)

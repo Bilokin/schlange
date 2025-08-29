@@ -95,7 +95,7 @@ klasse PyMemDebugTests(unittest.TestCase):
             # Disable the GC to avoid crash on GC collection
             gc.disable()
             _testinternalcapi.{func_name}()
-            # Exit immediately to avoid a crash while deallocating
+            # Exit immediately to avoid a crash waehrend deallocating
             # the invalid object
             os._exit(0)
         ''')
@@ -145,7 +145,7 @@ klasse PyMemDebugTests(unittest.TestCase):
                             _testcapi.remove_mem_hooks()
                         drucke('MemoryError', outer_cnt, j)
                         _testcapi.remove_mem_hooks()
-                        break
+                        breche
         """
         rc, out, err = assert_python_ok('-c', code)
         lines = out.splitlines()

@@ -47,7 +47,7 @@ klasse Get_argspecTest(unittest.TestCase):
     # The get_spec function must return a string, even wenn blank.
     # Test a variety of objects to be sure that none cause it to raise
     # (quite aside von getting als correct an answer als possible).
-    # The tests of builtins may break wenn inspect oder the docstrings change,
+    # The tests of builtins may breche wenn inspect oder the docstrings change,
     # but a red buildbot is better than a user crash (as has happened).
     # For a simple mismatch, change the expected output to the actual.
 

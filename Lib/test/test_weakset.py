@@ -45,7 +45,7 @@ klasse TestWeakSet(unittest.TestCase):
         weaksetmethods = dir(WeakSet)
         fuer method in dir(set):
             wenn method.startswith('_'):
-                continue
+                weiter
             self.assertIn(method, weaksetmethods,
                          "WeakSet missing method " + method)
 

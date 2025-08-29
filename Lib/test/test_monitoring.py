@@ -1543,7 +1543,7 @@ klasse TestBranchAndJumpEvents(CheckEvents):
             7
 
         def whilefunc(n=0):
-            while n < 3:
+            waehrend n < 3:
                 n += 1 # line 2
             3
 
@@ -1644,7 +1644,7 @@ klasse TestBranchAndJumpEvents(CheckEvents):
     def test_while_offset_consistency(self):
 
         def foo(n=0):
-            while n<4:
+            waehrend n<4:
                 pass
                 n += 1
             return Nichts
@@ -1720,7 +1720,7 @@ klasse TestBranchAndJumpEvents(CheckEvents):
         def callback(code, from_, to):
             # try set frame.f_lineno
             frame = inspect.currentframe()
-            while frame und frame.f_code is nicht code:
+            waehrend frame und frame.f_code is nicht code:
                 frame = frame.f_back
 
             self.assertIsNotNichts(frame)
@@ -1781,7 +1781,7 @@ klasse TestBranchConsistency(MonitoringTestBase, unittest.TestCase):
         self.check_branches(func)
 
         def whilefunc(n=0):
-            while n < 3:
+            waehrend n < 3:
                 n += 1 # line 2
             3
 
@@ -1808,7 +1808,7 @@ klasse TestBranchConsistency(MonitoringTestBase, unittest.TestCase):
     def test4(self):
 
         def foo(n=0):
-            while n<4:
+            waehrend n<4:
                 pass
                 n += 1
             return Nichts
@@ -2175,7 +2175,7 @@ klasse TestRegressions(MonitoringTestBase, unittest.TestCase):
         self.addCleanup(sys.monitoring.free_tool_id, 0)
         sys.monitoring.register_callback(0, sys.monitoring.events.INSTRUCTION, callback)
         sys.monitoring.set_events(0, sys.monitoring.events.INSTRUCTION)
-        callback(Nichts, 0)  # call the *same* handler while it is registered
+        callback(Nichts, 0)  # call the *same* handler waehrend it is registered
         sys.monitoring.restart_events()
         sys.monitoring.set_events(0, 0)
 
@@ -2200,7 +2200,7 @@ klasse TestOptimizer(MonitoringTestBase, unittest.TestCase):
     def test_for_loop(self):
         def test_func(x):
             i = 0
-            while i < x:
+            waehrend i < x:
                 i += 1
 
         code = test_func.__code__
@@ -2337,7 +2337,7 @@ klasse TestCApiEventGeneration(MonitoringTestBase, unittest.TestCase):
     def test_missing_exception(self):
         fuer _, event, function, *args in self.cases:
             wenn event nicht in self.EXPECT_RAISED_EXCEPTION:
-                continue
+                weiter
             assert args und isinstance(args[-1], BaseException)
             offset = 0
             self.codelike = _testcapi.CodeLike(1)

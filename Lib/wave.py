@@ -203,7 +203,7 @@ klasse _Chunk:
                 return
             except OSError:
                 pass
-        while self.size_read < self.chunksize:
+        waehrend self.size_read < self.chunksize:
             n = min(8192, self.chunksize - self.size_read)
             dummy = self.read(n)
             wenn nicht dummy:
@@ -251,12 +251,12 @@ klasse Wave_read:
             raise Error('not a WAVE file')
         self._fmt_chunk_read = 0
         self._data_chunk = Nichts
-        while 1:
+        waehrend 1:
             self._data_seek_needed = 1
             try:
                 chunk = _Chunk(self._file, bigendian = 0)
             except EOFError:
-                break
+                breche
             chunkname = chunk.getname()
             wenn chunkname == b'fmt ':
                 self._read_fmt_chunk(chunk)
@@ -267,7 +267,7 @@ klasse Wave_read:
                 self._data_chunk = chunk
                 self._nframes = chunk.chunksize // self._framesize
                 self._data_seek_needed = 0
-                break
+                breche
             chunk.skip()
         wenn nicht self._fmt_chunk_read oder nicht self._data_chunk:
             raise Error('fmt chunk and/or data chunk missing')

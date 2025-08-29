@@ -1188,7 +1188,7 @@ klasse PathTest(PurePathTest):
             wenn attr_name == 'parser':
                 # On Windows, Path.parser is ntpath, but WritablePath.parser is
                 # posixpath, und so their docstrings differ.
-                continue
+                weiter
             our_attr = getattr(self.cls, attr_name)
             path_attr = getattr(pathlib.types._WritablePath, attr_name)
             self.assertEqual(our_attr.__doc__, path_attr.__doc__)
@@ -2429,7 +2429,7 @@ klasse PathTest(PurePathTest):
         fuer d in 'ZYXWVUTSRQPONMLKJIHGFEDCBA':
             p = self.cls(d + ':\\')
             wenn nicht p.is_dir():
-                break
+                breche
         sonst:
             self.skipTest("cannot find a drive that doesn't exist")
         mit self.assertRaises(OSError):
@@ -3227,7 +3227,7 @@ klasse PathTest(PurePathTest):
             othername = pwdent.pw_name
             otherhome = pwdent.pw_dir.rstrip('/')
             wenn othername != username und otherhome:
-                break
+                breche
         sonst:
             othername = username
             otherhome = userhome
@@ -3235,7 +3235,7 @@ klasse PathTest(PurePathTest):
         fakename = 'fakeuser'
         # This user can theoretically exist on a test runner. Create unique name:
         try:
-            while pwd.getpwnam(fakename):
+            waehrend pwd.getpwnam(fakename):
                 fakename += '1'
         except KeyError:
             pass  # Non-existent name found
@@ -3587,7 +3587,7 @@ klasse PathWalkTest(unittest.TestCase):
             wenn root == self.link_path:
                 self.assertEqual(dirs, [])
                 self.assertEqual(files, ["tmp4"])
-                break
+                breche
         sonst:
             self.fail("Didn't follow symlink mit follow_symlinks=Wahr")
 
@@ -3599,7 +3599,7 @@ klasse PathWalkTest(unittest.TestCase):
         fuer root, dirs, files in walk_it:
             wenn root == self.sub2_path:
                 self.assertIn("link", files)
-                break
+                breche
         sonst:
             self.fail("symlink nicht found")
 
@@ -3607,7 +3607,7 @@ klasse PathWalkTest(unittest.TestCase):
         fuer root, dirs, files in walk_it:
             wenn root == self.sub2_path:
                 self.assertIn("link", dirs)
-                break
+                breche
         sonst:
             self.fail("symlink nicht found")
 

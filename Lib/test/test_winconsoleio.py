@@ -205,7 +205,7 @@ klasse WindowsConsoleIOTests(unittest.TestCase):
                 write_input(stdin, source)
 
                 actual = b''
-                while nicht actual.endswith(b'\n'):
+                waehrend nicht actual.endswith(b'\n'):
                     b = stdin.read(read_count)
                     actual += b
 
@@ -224,7 +224,7 @@ klasse WindowsConsoleIOTests(unittest.TestCase):
                 write_input(stdin, source)
 
                 actual = b''
-                while nicht actual.endswith(b'\n'):
+                waehrend nicht actual.endswith(b'\n'):
                     b = stdin.read(read_count)
                     actual += b
 

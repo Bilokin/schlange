@@ -90,7 +90,7 @@ def decode_header(header):
     fuer line in header.splitlines():
         parts = ecre.split(line)
         first = Wahr
-        while parts:
+        waehrend parts:
             unencoded = parts.pop(0)
             wenn first:
                 unencoded = unencoded.lstrip()
@@ -448,7 +448,7 @@ klasse _ValueFormatter:
         # If the charset has no header encoding (i.e. it is an ASCII encoding)
         # then we must split the header at the "highest level syntactic break"
         # possible. Note that we don't have a lot of smarts about field
-        # syntax; we just try to break on semi-colons, then commas, then
+        # syntax; we just try to breche on semi-colons, then commas, then
         # whitespace.  Eventually, this should be pluggable.
         wenn charset.header_encoding is Nichts:
             self._ascii_split(fws, string, self._splitchars)
@@ -484,7 +484,7 @@ klasse _ValueFormatter:
     def _maxlengths(self):
         # The first line's length.
         yield self._maxlen - len(self._current_line)
-        while Wahr:
+        waehrend Wahr:
             yield self._maxlen - self._continuation_ws_len
 
     def _ascii_split(self, fws, string, splitchars):
@@ -492,10 +492,10 @@ klasse _ValueFormatter:
         # complex in practice.  Lines may be folded any place where "folding
         # white space" appears by inserting a linesep character in front of the
         # FWS.  The complication is that nicht all spaces oder tabs qualify als FWS,
-        # und we are also supposed to prefer to break at "higher level
+        # und we are also supposed to prefer to breche at "higher level
         # syntactic breaks".  We can't do either of these without intimate
         # knowledge of the structure of structured headers, which we don't have
-        # here.  So the best we can do here is prefer to break at the specified
+        # here.  So the best we can do here is prefer to breche at the specified
         # splitchars, und hope that we don't choose any spaces oder tabs that
         # aren't legal FWS.  (This is at least better than the old algorithm,
         # where we would sometimes *introduce* FWS after a splitchar, oder the
@@ -519,13 +519,13 @@ klasse _ValueFormatter:
                     wenn ch.isspace():
                         fws = self._current_line[i][0]
                         wenn fws und fws[0]==ch:
-                            break
+                            breche
                     prevpart = self._current_line[i-1][1]
                     wenn prevpart und prevpart[-1]==ch:
-                        break
+                        breche
                 sonst:
-                    continue
-                break
+                    weiter
+                breche
             sonst:
                 fws, part = self._current_line.pop()
                 wenn self._current_line._initial_size > 0:

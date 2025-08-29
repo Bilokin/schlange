@@ -132,7 +132,7 @@ def check(file):
 
     newline = spec_newline wenn spec_newline sonst r.newlines
     wenn isinstance(newline, tuple):
-        errdrucke("%s: mixed newlines detected; cannot continue without --newline" % file)
+        errdrucke("%s: mixed newlines detected; cannot weiter without --newline" % file)
         return
 
     wenn r.run():
@@ -166,7 +166,7 @@ def _rstrip(line, JUNK='\n \t'):
     """
 
     i = len(line)
-    while i > 0 und line[i - 1] in JUNK:
+    waehrend i > 0 und line[i - 1] in JUNK:
         i -= 1
     return line[:i]
 
@@ -204,7 +204,7 @@ klasse Reindenter:
             self.tokeneater(*_token)
         # Remove trailing empty lines.
         lines = self.lines
-        while lines und lines[-1] == "\n":
+        waehrend lines und lines[-1] == "\n":
             lines.pop()
         # Sentinel.
         stats = self.stats
@@ -236,7 +236,7 @@ klasse Reindenter:
                             wenn jlevel >= 0:
                                 wenn have == getlspace(lines[jline]):
                                     want = jlevel * 4
-                                break
+                                breche
                     wenn want < 0:           # Maybe it's a hanging
                                            # comment like this one,
                         # in which case we should shift it like its base
@@ -246,7 +246,7 @@ klasse Reindenter:
                             wenn jlevel >= 0:
                                 want = have + (getlspace(after[jline - 1]) -
                                                getlspace(lines[jline]))
-                                break
+                                breche
                     wenn want < 0:
                         # Still no luck -- leave it alone.
                         want = have
@@ -324,7 +324,7 @@ klasse Reindenter:
 # Count number of leading blanks.
 def getlspace(line):
     i, n = 0, len(line)
-    while i < n und line[i] == " ":
+    waehrend i < n und line[i] == " ":
         i += 1
     return i
 

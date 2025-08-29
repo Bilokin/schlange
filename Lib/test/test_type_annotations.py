@@ -196,12 +196,12 @@ klasse TestSetupAnnotations(unittest.TestCase):
     def test_blocks(self):
         self.check("if Wahr:\n    x: int = 1")
         self.check("""
-            while Wahr:
+            waehrend Wahr:
                 x: int = 1
-                break
+                breche
         """)
         self.check("""
-            while Falsch:
+            waehrend Falsch:
                 pass
             sonst:
                 x: int = 1
@@ -672,9 +672,9 @@ klasse ConditionalAnnotationTests(unittest.TestCase):
 
     def test_while(self):
         code = """
-            while {cond}:
+            waehrend {cond}:
                 in_while: "while"
-                break
+                breche
             sonst:
                 in_else: "else"
         """

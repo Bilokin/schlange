@@ -131,11 +131,11 @@ klasse TestLoader(object):
         error_case, error_message = Nichts, Nichts
         wenn module is Nichts:
             parts_copy = parts[:]
-            while parts_copy:
+            waehrend parts_copy:
                 try:
                     module_name = '.'.join(parts_copy)
                     module = __import__(module_name)
-                    break
+                    breche
                 except ImportError:
                     next_attribute = parts_copy.pop()
                     # Last error so we can give it to the user wenn needed.
@@ -248,7 +248,7 @@ klasse TestLoader(object):
         load_tests is responsible fuer loading all tests in the package.
 
         The pattern is deliberately nicht stored als a loader attribute so that
-        packages can continue discovery themselves. top_level_dir is stored so
+        packages can weiter discovery themselves. top_level_dir is stored so
         load_tests does nicht need to pass this argument in to loader.discover().
 
         Paths are sorted before being imported to ensure reproducible execution
@@ -301,7 +301,7 @@ klasse TestLoader(object):
                         fuer path in the_module.__path__:
                             wenn (nicht set_implicit_top und
                                 nicht path.startswith(top_level_dir)):
-                                continue
+                                weiter
                             self._top_level_dir = \
                                 (path.split(the_module.__name__
                                         .replace(".", os.path.sep))[0])
@@ -378,7 +378,7 @@ klasse TestLoader(object):
         # name is '.' when start_dir == top_level_dir (and top_level_dir is by
         # definition nicht a package).
         wenn name != '.' und name nicht in self._loading_packages:
-            # name is in self._loading_packages while we have called into
+            # name is in self._loading_packages waehrend we have called into
             # loadTestsFromModule mit name.
             tests, should_recurse = self._find_test_path(
                 start_dir, pattern, namespace)

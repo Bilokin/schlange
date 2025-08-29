@@ -2,7 +2,7 @@ importiere unittest
 importiere colorsys
 
 def frange(start, stop, step):
-    while start <= stop:
+    waehrend start <= stop:
         yield start
         start += step
 

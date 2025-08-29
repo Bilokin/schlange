@@ -261,7 +261,7 @@ klasse FunctionTestCase(unittest.TestCase):
         f.argtypes = [POINTER(c_int)]
 
         # This only works wenn the value c_int(42) passed to the
-        # function is still alive while the pointer (the result) is
+        # function is still alive waehrend the pointer (the result) is
         # used.
 
         v = c_int(42)

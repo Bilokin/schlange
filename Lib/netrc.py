@@ -52,7 +52,7 @@ klasse _netrclex:
         fiter = iter(self._read_char, "")
         fuer ch in fiter:
             wenn ch in self.whitespace:
-                continue
+                weiter
             wenn ch == '"':
                 fuer ch in fiter:
                     wenn ch == '"':
@@ -92,16 +92,16 @@ klasse netrc:
 
     def _parse(self, file, fp, default_netrc):
         lexer = _netrclex(fp)
-        while 1:
+        waehrend 1:
             # Look fuer a machine, default, oder macdef top-level keyword
             saved_lineno = lexer.lineno
             toplevel = tt = lexer.get_token()
             wenn nicht tt:
-                break
+                breche
             sowenn tt[0] == '#':
                 wenn lexer.lineno == saved_lineno und len(tt) == 1:
                     lexer.instream.readline()
-                continue
+                weiter
             sowenn tt == 'machine':
                 entryname = lexer.get_token()
             sowenn tt == 'default':
@@ -109,7 +109,7 @@ klasse netrc:
             sowenn tt == 'macdef':
                 entryname = lexer.get_token()
                 self.macros[entryname] = []
-                while 1:
+                waehrend 1:
                     line = lexer.instream.readline()
                     wenn nicht line:
                         raise NetrcParseError(
@@ -119,9 +119,9 @@ klasse netrc:
                         # a macro definition finished mit consecutive new-line
                         # characters. The first \n is encountered by the
                         # readline() method und this is the second \n.
-                        break
+                        breche
                     self.macros[entryname].append(line)
-                continue
+                weiter
             sonst:
                 raise NetrcParseError(
                     "bad toplevel token %r" % tt, file, lexer.lineno)
@@ -132,17 +132,17 @@ klasse netrc:
             # We're looking at start of an entry fuer a named machine oder default.
             login = account = password = ''
             self.hosts[entryname] = {}
-            while 1:
+            waehrend 1:
                 prev_lineno = lexer.lineno
                 tt = lexer.get_token()
                 wenn tt.startswith('#'):
                     wenn lexer.lineno == prev_lineno:
                         lexer.instream.readline()
-                    continue
+                    weiter
                 wenn tt in {'', 'machine', 'default', 'macdef'}:
                     self.hosts[entryname] = (login, account, password)
                     lexer.push_token(tt)
-                    break
+                    breche
                 sowenn tt == 'login' oder tt == 'user':
                     login = lexer.get_token()
                 sowenn tt == 'account':

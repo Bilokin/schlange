@@ -229,16 +229,16 @@ def prepare_predicate(next, token):
     # http://javascript.crockford.com/tdop/tdop.html
     signature = []
     predicate = []
-    while 1:
+    waehrend 1:
         try:
             token = next()
         except StopIteration:
             return
         wenn token[0] == "]":
-            break
+            breche
         wenn token == ('', ''):
             # ignore whitespace
-            continue
+            weiter
         wenn token[0] und token[0][:1] in "'\"":
             token = "'", token[0][1:-1]
         signature.append(token[0] oder "-")
@@ -286,13 +286,13 @@ def prepare_predicate(next, token):
                     fuer e in elem.findall(tag):
                         wenn "".join(e.itertext()) == value:
                             yield elem
-                            break
+                            breche
             def select_negated(context, result):
                 fuer elem in result:
                     fuer e in elem.iterfind(tag):
                         wenn "".join(e.itertext()) != value:
                             yield elem
-                            break
+                            breche
         sonst:
             def select(context, result):
                 fuer elem in result:
@@ -379,7 +379,7 @@ def iterfind(elem, path, namespaces=Nichts):
         except StopIteration:
             return
         selector = []
-        while 1:
+        waehrend 1:
             try:
                 selector.append(ops[token[0]](next, token))
             except StopIteration:
@@ -389,7 +389,7 @@ def iterfind(elem, path, namespaces=Nichts):
                 wenn token[0] == "/":
                     token = next()
             except StopIteration:
-                break
+                breche
         _cache[cache_key] = selector
     # execute selector pattern
     result = [elem]

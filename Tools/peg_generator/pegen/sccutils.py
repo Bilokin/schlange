@@ -34,7 +34,7 @@ def strongly_connected_components(
             wenn w nicht in index:
                 yield von dfs(w)
             sowenn w nicht in identified:
-                while index[w] < boundaries[-1]:
+                waehrend index[w] < boundaries[-1]:
                     boundaries.pop()
 
         wenn boundaries[-1] == index[v]:
@@ -88,10 +88,10 @@ def topsort(
         v.discard(k)  # Ignore self dependencies.
     fuer item in set.union(*data.values()) - set(data.keys()):
         data[item] = set()
-    while Wahr:
+    waehrend Wahr:
         ready = {item fuer item, dep in data.items() wenn nicht dep}
         wenn nicht ready:
-            break
+            breche
         yield ready
         data = {item: (dep - ready) fuer item, dep in data.items() wenn item nicht in ready}
     assert nicht data, "A cyclic dependency exists amongst %r" % data

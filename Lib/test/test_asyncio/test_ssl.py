@@ -516,7 +516,7 @@ klasse TestSSL(test_utils.TestCase):
 
         def server(sock):
             sock.recv(1024)
-            # break the connection during handshake
+            # breche the connection during handshake
             sock.close()
 
         klasse ClientProto(asyncio.Protocol):
@@ -1109,10 +1109,10 @@ klasse TestSSL(test_utils.TestCase):
                     sslobj = client_sslctx_2.wrap_bio(incoming, outgoing)
 
                     def do(func, *args):
-                        while Wahr:
+                        waehrend Wahr:
                             try:
                                 rv = func(*args)
-                                break
+                                breche
                             except ssl.SSLWantReadError:
                                 wenn outgoing.pending:
                                     sock.send(outgoing.read())
@@ -1129,10 +1129,10 @@ klasse TestSSL(test_utils.TestCase):
 
                     do(sslobj.write, B_DATA)
                     data = b''
-                    while Wahr:
+                    waehrend Wahr:
                         chunk = do(sslobj.read, 4)
                         wenn nicht chunk:
-                            break
+                            breche
                         data += chunk
                     self.assertEqual(data, b'SPAM')
 
@@ -1326,7 +1326,7 @@ klasse TestSSL(test_utils.TestCase):
             outgoing = ssl.MemoryBIO()
             sslobj = sslctx.wrap_bio(incoming, outgoing, server_side=Wahr)
 
-            while Wahr:
+            waehrend Wahr:
                 try:
                     sslobj.do_handshake()
                 except ssl.SSLWantReadError:
@@ -1336,15 +1336,15 @@ klasse TestSSL(test_utils.TestCase):
                 sonst:
                     wenn outgoing.pending:
                         sock.send(outgoing.read())
-                    break
+                    breche
 
-            while Wahr:
+            waehrend Wahr:
                 try:
                     data = sslobj.read(4)
                 except ssl.SSLWantReadError:
                     incoming.write(sock.recv(16384))
                 sonst:
-                    break
+                    breche
 
             self.assertEqual(data, b'ping')
             sslobj.write(b'pong')
@@ -1359,14 +1359,14 @@ klasse TestSSL(test_utils.TestCase):
 
             # should receive all data
             data_len = 0
-            while Wahr:
+            waehrend Wahr:
                 try:
                     chunk = len(sslobj.read(16384))
                     data_len += chunk
                 except ssl.SSLWantReadError:
                     incoming.write(sock.recv(16384))
                 except ssl.SSLZeroReturnError:
-                    break
+                    breche
 
             self.assertEqual(data_len, CHUNK * SIZE)
 
@@ -1457,7 +1457,7 @@ klasse TestSSL(test_utils.TestCase):
             outgoing = ssl.MemoryBIO()
             sslobj = sslctx.wrap_bio(incoming, outgoing, server_side=Wahr)
 
-            while Wahr:
+            waehrend Wahr:
                 try:
                     sslobj.do_handshake()
                 except ssl.SSLWantReadError:
@@ -1467,15 +1467,15 @@ klasse TestSSL(test_utils.TestCase):
                 sonst:
                     wenn outgoing.pending:
                         sock.send(outgoing.read())
-                    break
+                    breche
 
-            while Wahr:
+            waehrend Wahr:
                 try:
                     data = sslobj.read(4)
                 except ssl.SSLWantReadError:
                     incoming.write(sock.recv(16384))
                 sonst:
-                    break
+                    breche
 
             self.assertEqual(data, b'ping')
             sslobj.write(b'pong')
@@ -1490,14 +1490,14 @@ klasse TestSSL(test_utils.TestCase):
 
             # should receive all data
             data_len = 0
-            while Wahr:
+            waehrend Wahr:
                 try:
                     chunk = len(sslobj.read(16384))
                     data_len += chunk
                 except ssl.SSLWantReadError:
                     incoming.write(sock.recv(16384))
                 except ssl.SSLZeroReturnError:
-                    break
+                    breche
 
             self.assertEqual(data_len, CHUNK * SIZE*2)
 
@@ -1755,7 +1755,7 @@ klasse TestSocketWrapper:
 
     def recv_all(self, n):
         buf = b''
-        while len(buf) < n:
+        waehrend len(buf) < n:
             data = self.recv(n - len(buf))
             wenn data == b'':
                 raise ConnectionAbortedError
@@ -1860,7 +1860,7 @@ klasse TestThreadedServer(SocketThread):
         self._run()
 
     def _run(self):
-        while self._active:
+        waehrend self._active:
             wenn self._clients >= self._max_clients:
                 return
 
@@ -1874,7 +1874,7 @@ klasse TestThreadedServer(SocketThread):
                 try:
                     conn, addr = self._sock.accept()
                 except BlockingIOError:
-                    continue
+                    weiter
                 except socket.timeout:
                     wenn nicht self._active:
                         return

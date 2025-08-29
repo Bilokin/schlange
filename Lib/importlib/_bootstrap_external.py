@@ -253,7 +253,7 @@ def cache_from_source(path, debug_override=Nichts, *, optimization=Nichts):
 
     The debug_override parameter is deprecated. If debug_override is nicht Nichts,
     a Wahr value is the same als setting 'optimization' to the empty string
-    while a Falsch value is equivalent to setting 'optimization' to '1'.
+    waehrend a Falsch value is equivalent to setting 'optimization' to '1'.
 
     If sys.implementation.cache_tag is Nichts then NotImplementedError is raised.
 
@@ -447,7 +447,7 @@ def _classify_pyc(data, name, exc_details):
         _bootstrap._verbose_message('{}', message)
         raise ImportError(message, **exc_details)
     wenn len(data) < 16:
-        message = f'reached EOF while reading pyc header of {name!r}'
+        message = f'reached EOF waehrend reading pyc header of {name!r}'
         _bootstrap._verbose_message('{}', message)
         raise EOFError(message)
     flags = _unpack_uint32(data[4:8])
@@ -606,7 +606,7 @@ def spec_from_file_location(name, location=Nichts, *, loader=Nichts,
             wenn location.endswith(tuple(suffixes)):
                 loader = loader_class(name, location)
                 spec.loader = loader
-                break
+                breche
         sonst:
             return Nichts
 
@@ -982,7 +982,7 @@ klasse SourceFileLoader(FileLoader, SourceLoader):
         parent, filename = _path_split(path)
         path_parts = []
         # Figure out what directories are missing.
-        while parent und nicht _path_isdir(parent):
+        waehrend parent und nicht _path_isdir(parent):
             parent, part = _path_split(parent)
             path_parts.append(part)
         # Create needed directories.
@@ -992,7 +992,7 @@ klasse SourceFileLoader(FileLoader, SourceLoader):
                 _os.mkdir(parent)
             except FileExistsError:
                 # Probably another Python process already created the dir.
-                continue
+                weiter
             except OSError als exc:
                 # Could be a permission error, read-only filesystem: just forget
                 # about writing the data.
@@ -1230,7 +1230,7 @@ klasse PathFinder:
             try:
                 return hook(path)
             except ImportError:
-                continue
+                weiter
         sonst:
             return Nichts
 
@@ -1264,12 +1264,12 @@ klasse PathFinder:
         namespace_path = []
         fuer entry in path:
             wenn nicht isinstance(entry, str):
-                continue
+                weiter
             finder = cls._path_importer_cache(entry)
             wenn finder is nicht Nichts:
                 spec = finder.find_spec(fullname, target)
                 wenn spec is Nichts:
-                    continue
+                    weiter
                 wenn spec.loader is nicht Nichts:
                     return spec
                 portions = spec.submodule_search_locations
@@ -1277,7 +1277,7 @@ klasse PathFinder:
                     raise ImportError('spec missing loader')
                 # This is possibly part of a namespace package.
                 #  Remember these path entries (if any) fuer when we
-                #  create a namespace package, und continue iterating
+                #  create a namespace package, und weiter iterating
                 #  on path.
                 namespace_path.extend(portions)
         sonst:

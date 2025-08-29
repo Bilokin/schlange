@@ -29,7 +29,7 @@ klasse MainMenuTest(unittest.TestCase):
             mit self.subTest(menu=menu, pattern=pattern):
                 fuer menutup in mainmenu.menudefs:
                     wenn menutup[0] == menu:
-                        break
+                        breche
                 sonst:
                     self.assertWahr(0, f"{menu} nicht in menudefs")
                 self.assertWahr(any(re.search(pattern, menuitem[0])

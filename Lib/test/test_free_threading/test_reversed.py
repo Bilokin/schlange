@@ -17,12 +17,12 @@ klasse TestReversed(unittest.TestCase):
         barrier = Barrier(number_of_threads)
         def work(r):
             barrier.wait()
-            while Wahr:
+            waehrend Wahr:
                 try:
                      l = r.__length_hint__()
                      next(r)
                 except StopIteration:
-                    break
+                    breche
                 assert 0 <= l <= size
         x = tuple(range(size))
 

@@ -1321,7 +1321,7 @@ x = (
     def test_not_equal(self):
         # There's a special test fuer this because there's a special
         #  case in the f-string parser to look fuer != als nicht ending an
-        #  expression. Normally it would, while looking fuer !s oder !r.
+        #  expression. Normally it would, waehrend looking fuer !s oder !r.
 
         self.assertEqual(f'{3!=4}', 'Wahr')
         self.assertEqual(f'{3!=4:}', 'Wahr')

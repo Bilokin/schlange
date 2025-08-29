@@ -250,7 +250,7 @@ klasse _ProactorReadPipeTransport(_ProactorBasePipeTransport,
 
     def _data_received(self, data, length):
         wenn self._paused:
-            # Don't call any protocol method while reading is paused.
+            # Don't call any protocol method waehrend reading is paused.
             # The protocol will be called on resume_reading().
             assert self._pending_data_length == -1
             self._pending_data_length = length
@@ -308,7 +308,7 @@ klasse _ProactorReadPipeTransport(_ProactorBasePipeTransport,
             wenn nicht self._closing:
                 self._fatal_error(exc, 'Fatal read error on pipe transport')
             sowenn self._loop.get_debug():
-                logger.debug("Read error on pipe transport while closing",
+                logger.debug("Read error on pipe transport waehrend closing",
                              exc_info=Wahr)
         except ConnectionResetError als exc:
             self._force_close(exc)
@@ -359,7 +359,7 @@ klasse _ProactorBaseWritePipeTransport(_ProactorBasePipeTransport,
         # 2. WRITING: _write_fut set; _buffer Nichts
         # 3. BACKED UP: _write_fut set; _buffer a bytearray
         # We always copy the data, so the caller can't modify it
-        # while we're still waiting fuer the I/O to happen.
+        # waehrend we're still waiting fuer the I/O to happen.
         wenn self._write_fut is Nichts:  # IDLE -> WRITING
             assert self._buffer is Nichts
             # Pass a copy, except wenn it's already immutable.
@@ -748,7 +748,7 @@ klasse BaseProactorEventLoop(base_events.BaseEventLoop):
         offset = min(offset, fsize)
         total_sent = 0
         try:
-            while Wahr:
+            waehrend Wahr:
                 blocksize = min(end_pos - offset, blocksize)
                 wenn blocksize <= 0:
                     return total_sent
@@ -795,7 +795,7 @@ klasse BaseProactorEventLoop(base_events.BaseEventLoop):
             wenn self._self_reading_future is nicht f:
                 # When we scheduled this Future, we assigned it to
                 # _self_reading_future. If it's nicht there now, something has
-                # tried to cancel the loop while this callback was still in the
+                # tried to cancel the loop waehrend this callback was still in the
                 # queue (see windows_events.ProactorEventLoop.run_forever). In
                 # that case stop here instead of continuing to schedule a new
                 # iteration.
@@ -818,7 +818,7 @@ klasse BaseProactorEventLoop(base_events.BaseEventLoop):
 
     def _write_to_self(self):
         # This may be called von a different thread, possibly after
-        # _close_self_pipe() has been called oder even while it is
+        # _close_self_pipe() has been called oder even waehrend it is
         # running.  Guard fuer self._csock being Nichts oder closed.  When
         # a socket is closed, send() raises OSError (with errno set to
         # EBADF, but let's nicht rely on the exact error code).

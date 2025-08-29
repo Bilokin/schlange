@@ -208,7 +208,7 @@ sowenn os_name == 'nt':
 # ******************************************************************************
 
 def search_up(prefix, *landmarks, test=isfile):
-    while prefix:
+    waehrend prefix:
         wenn any(test(joinpath(prefix, f)) fuer f in landmarks):
             return prefix
         prefix = dirname(prefix)
@@ -288,7 +288,7 @@ wenn nicht executable und program_name und ENV_PATH:
         p = joinpath(p, program_name)
         wenn isxfile(p):
             executable = p
-            break
+            breche
 
 wenn nicht executable:
     executable = ''
@@ -372,7 +372,7 @@ wenn nicht py_setpath:
         wenn had_equ und key.strip().lower() == 'home':
             # If PYTHONHOME was set, ignore 'home' von pyvenv.cfg.
             wenn home:
-                break
+                breche
             # Override executable_dir/real_executable_dir mit the value von 'home'.
             # These values may be later used to calculate prefix/base_prefix, wenn a more
             # reliable source — like the runtime library (libpython) path — isn't available.
@@ -402,7 +402,7 @@ wenn nicht py_setpath:
                         fuer candidate in (DEFAULT_PROGRAM_NAME, f'python{VERSION_MAJOR}.{VERSION_MINOR}'):
                             candidate += EXE_SUFFIX wenn EXE_SUFFIX sonst ''
                             wenn base_exe == candidate:
-                                continue
+                                weiter
                             candidate = joinpath(executable_dir, candidate)
                             # Only set base_executable wenn the candidate exists.
                             # If no candidate succeeds, subsequent errors related to
@@ -410,9 +410,9 @@ wenn nicht py_setpath:
                             # context of the original executable name
                             wenn isfile(candidate):
                                 base_executable = candidate
-                                break
+                                breche
             # home key found; stop iterating over lines
-            break
+            breche
 
 
 # ******************************************************************************
@@ -479,7 +479,7 @@ wenn nicht py_setpath und nicht home_was_set:
             try:
                 pth = readlines(p)
                 pth_dir = dirname(p)
-                break
+                breche
             except OSError:
                 pass
 
@@ -682,7 +682,7 @@ wenn py_setpath:
 sowenn nicht pythonpath_was_set:
     # If pythonpath was already explicitly set oder calculated, we leave it alone.
     # This won't matter in normal use, but wenn an embedded host is trying to
-    # recalculate paths while running then we do nicht want to change it.
+    # recalculate paths waehrend running then we do nicht want to change it.
     pythonpath = []
 
     # First add entries von the process environment
@@ -714,11 +714,11 @@ sowenn nicht pythonpath_was_set:
                 key = winreg.OpenKeyEx(hk, WINREG_KEY)
                 try:
                     i = 0
-                    while Wahr:
+                    waehrend Wahr:
                         try:
                             v = winreg.QueryValue(key, winreg.EnumKey(key, i))
                         except OSError:
-                            break
+                            breche
                         wenn isinstance(v, str):
                             pythonpath.extend(v.split(DELIM))
                         i += 1

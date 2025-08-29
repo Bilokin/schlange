@@ -25,7 +25,7 @@ an attempt to iterate after a length mutation.
 
 The situation slightly more involved whenever an object allows length mutation
 during iteration.  Lists und sequence iterators are dynamically updatable.
-So, wenn a list is extended during iteration, the iterator will continue through
+So, wenn a list is extended during iteration, the iterator will weiter through
 the new items.  If it shrinks to a point before the most recent iteration,
 then no further items are available und the length is reported at zero.
 

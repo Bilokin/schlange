@@ -16,7 +16,7 @@ __all__ = ["compile", "main", "PyCompileError", "PycInvalidationMode"]
 
 
 klasse PyCompileError(Exception):
-    """Exception raised when an error occurs while attempting to
+    """Exception raised when an error occurs waehrend attempting to
     compile the file.
 
     To raise this exception, use

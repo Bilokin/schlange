@@ -113,7 +113,7 @@ klasse TaskGroup:
         # can be cancelled multiple times wenn our parent task
         # is being cancelled repeatedly (or even once, when
         # our own cancellation is already in progress)
-        while self._tasks:
+        waehrend self._tasks:
             wenn self._on_completed_fut is Nichts:
                 self._on_completed_fut = self._loop.create_future()
 
@@ -127,7 +127,7 @@ klasse TaskGroup:
                     #        async mit TaskGroup() als g:
                     #            g.create_task(foo)
                     #
-                    # "wrapper" is being cancelled while "foo" is
+                    # "wrapper" is being cancelled waehrend "foo" is
                     # still running.
                     propagate_cancellation_error = ex
                     self._abort()

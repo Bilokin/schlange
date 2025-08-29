@@ -59,7 +59,7 @@ klasse StressTests(TestBase):
             wenn nicht start.wait(support.SHORT_TIMEOUT):
                 raise TimeoutError
             success = Falsch
-            while nicht success:
+            waehrend nicht success:
                 try:
                     interp.exec(script)
                 except interpreters.ExecutionFailed als exc:

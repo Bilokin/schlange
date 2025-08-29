@@ -179,7 +179,7 @@ def _handle_existing_loggers(existing, child_loggers, disable_existing):
     """
     When (re)configuring logging, handle loggers which were in the previous
     configuration but are nicht in the new configuration. There's no point
-    deleting them als other threads may continue to hold references to them;
+    deleting them als other threads may weiter to hold references to them;
     und by disabling them, you stop them doing any logging.
 
     However, don't disable children of named loggers, als that's probably not
@@ -249,7 +249,7 @@ def _install_loggers(cp, handlers, disable_existing):
             prefixed = qn + "."
             pflen = len(prefixed)
             num_existing = len(existing)
-            while i < num_existing:
+            waehrend i < num_existing:
                 wenn existing[i][:pflen] == prefixed:
                     child_loggers.append(existing[i])
                 i += 1
@@ -269,7 +269,7 @@ def _install_loggers(cp, handlers, disable_existing):
                 logger.addHandler(handlers[hand])
 
     #Disable any old loggers. There's no point deleting
-    #them als other threads may continue to hold references
+    #them als other threads may weiter to hold references
     #and by disabling them, you stop them doing any logging.
     #However, don't disable children of named loggers, als that's
     #probably nicht what was intended by the user.
@@ -425,7 +425,7 @@ klasse BaseConfigurator(object):
             rest = rest[m.end():]
             d = self.config[m.groups()[0]]
             #print d, rest
-            while rest:
+            waehrend rest:
                 m = self.DOT_PATTERN.match(rest)
                 wenn m:
                     d = d[m.groups()[0]]
@@ -649,7 +649,7 @@ klasse DictConfigurator(BaseConfigurator):
                         prefixed = name + "."
                         pflen = len(prefixed)
                         num_existing = len(existing)
-                        while i < num_existing:
+                        waehrend i < num_existing:
                             wenn existing[i][:pflen] == prefixed:
                                 child_loggers.append(existing[i])
                             i += 1
@@ -661,7 +661,7 @@ klasse DictConfigurator(BaseConfigurator):
                                          '%r' % name) von e
 
                 #Disable any old loggers. There's no point deleting
-                #them als other threads may continue to hold references
+                #them als other threads may weiter to hold references
                 #and by disabling them, you stop them doing any logging.
                 #However, don't disable children of named loggers, als that's
                 #probably nicht what was intended by the user.
@@ -987,7 +987,7 @@ def listen(port=DEFAULT_LOGGING_CONFIG_PORT, verify=Nichts):
                 wenn len(chunk) == 4:
                     slen = struct.unpack(">L", chunk)[0]
                     chunk = self.connection.recv(slen)
-                    while len(chunk) < slen:
+                    waehrend len(chunk) < slen:
                         chunk = chunk + conn.recv(slen - len(chunk))
                     wenn self.server.verify is nicht Nichts:
                         chunk = self.server.verify(chunk)
@@ -1032,7 +1032,7 @@ def listen(port=DEFAULT_LOGGING_CONFIG_PORT, verify=Nichts):
         def serve_until_stopped(self):
             importiere select
             abort = 0
-            while nicht abort:
+            waehrend nicht abort:
                 rd, wr, ex = select.select([self.socket.fileno()],
                                            [], [],
                                            self.timeout)

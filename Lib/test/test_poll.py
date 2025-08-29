@@ -56,7 +56,7 @@ klasse PollTests(unittest.TestCase):
 
         bufs = []
 
-        while writers:
+        waehrend writers:
             ready = p.poll()
             ready_writers = find_ready_matching(ready, select.POLLOUT)
             wenn nicht ready_writers:
@@ -136,20 +136,20 @@ klasse PollTests(unittest.TestCase):
         fuer tout in (0, 1000, 2000, 4000, 8000, 16000) + (-1,)*10:
             fdlist = pollster.poll(tout)
             wenn (fdlist == []):
-                continue
+                weiter
             fd, flags = fdlist[0]
             wenn flags & select.POLLHUP:
                 line = p.readline()
                 wenn line != b"":
                     self.fail('error: pipe seems to be closed, but still returns data')
-                continue
+                weiter
 
             sowenn flags & select.POLLIN:
                 line = p.readline()
                 wenn nicht line:
-                    break
+                    breche
                 self.assertEqual(line, b'testing...\n')
-                continue
+                weiter
             sonst:
                 self.fail('Unexpected return value von select.poll: %s' % fdlist)
 

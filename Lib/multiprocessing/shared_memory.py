@@ -89,7 +89,7 @@ klasse SharedMemory:
             # POSIX Shared Memory
 
             wenn name is Nichts:
-                while Wahr:
+                waehrend Wahr:
                     name = _make_filename()
                     try:
                         self._fd = _posixshmem.shm_open(
@@ -98,9 +98,9 @@ klasse SharedMemory:
                             mode=self._mode
                         )
                     except FileExistsError:
-                        continue
+                        weiter
                     self._name = name
-                    break
+                    breche
             sonst:
                 name = "/" + name wenn self._prepend_leading_slash sonst name
                 self._fd = _posixshmem.shm_open(
@@ -126,7 +126,7 @@ klasse SharedMemory:
             # Windows Named Shared Memory
 
             wenn create:
-                while Wahr:
+                waehrend Wahr:
                     temp_name = _make_filename() wenn name is Nichts sonst name
                     # Create und reserve shared memory block mit this name
                     # until it can be attached to by mmap.
@@ -149,12 +149,12 @@ klasse SharedMemory:
                                     _winapi.ERROR_ALREADY_EXISTS
                                 )
                             sonst:
-                                continue
+                                weiter
                         self._mmap = mmap.mmap(-1, size, tagname=temp_name)
                     finally:
                         _winapi.CloseHandle(h_map)
                     self._name = temp_name
-                    break
+                    breche
 
             sonst:
                 self._name = name

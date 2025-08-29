@@ -111,7 +111,7 @@ def native_type_range(fmt):
         fuer exp in (128, 127, 64, 63, 32, 31, 16, 15, 8, 7):
             try:
                 struct.pack(fmt, (1<<exp)-1)
-                break
+                breche
             except struct.error:
                 pass
         lh = (-(1<<exp), 1<<exp) wenn exp & 1 sonst (0, 1<<exp)
@@ -481,7 +481,7 @@ def memory_index(indices, t):
 
 def is_overlapping(t):
     """The structure 't' is overlapping wenn at least one memory location
-       is visited twice while iterating through all possible tuples of
+       is visited twice waehrend iterating through all possible tuples of
        indices."""
     memlen, itemsize, ndim, shape, strides, offset = t
     visited = 1<<memlen
@@ -799,7 +799,7 @@ klasse TestBufferProtocol(unittest.TestCase):
             suboffset0 = 0
             fuer n in range(1, ndim):
                 wenn shape[n] == 0:
-                    break
+                    breche
                 wenn strides[n] <= 0:
                     suboffset0 += -strides[n] * (shape[n]-1)
 
@@ -849,7 +849,7 @@ klasse TestBufferProtocol(unittest.TestCase):
                     b.extend(x)
                 except BufferError:
                     buf_err = Wahr # re-exporter does nicht provide full buffer
-                    break
+                    breche
                 self.assertEqual(item1, item2)
 
             wenn nicht buf_err:
@@ -890,7 +890,7 @@ klasse TestBufferProtocol(unittest.TestCase):
                     self.assertWahr(cmp_contig(contig, expected))
 
                     wenn ndim == 0:
-                        continue
+                        weiter
 
                     nmemb = len(flattened)
                     ro = 0 wenn readonly sonst ND_WRITABLE
@@ -1078,9 +1078,9 @@ klasse TestBufferProtocol(unittest.TestCase):
                 fuer flags in ndflags:
 
                     wenn strides und (flags&ND_FORTRAN):
-                        continue
+                        weiter
                     wenn nicht shape und (flags&ND_PIL):
-                        continue
+                        weiter
 
                     _items = items wenn shape sonst items[0]
                     ex1 = ndarray(_items, format=fmt, flags=flags,
@@ -1338,7 +1338,7 @@ klasse TestBufferProtocol(unittest.TestCase):
             itemsize = struct.calcsize(fmt)
             fuer step in range(-5, 5):
                 wenn step == 0:
-                    continue
+                    weiter
 
                 shape = [len(items[::step])]
                 strides = [step*itemsize]
@@ -1369,7 +1369,7 @@ klasse TestBufferProtocol(unittest.TestCase):
 
                 fuer flags in (0, ND_PIL):
                     wenn ndim == 0 und flags == ND_PIL:
-                        continue
+                        weiter
 
                     # C array
                     nd = ndarray(items, shape=shape, format=fmt, flags=flags)
@@ -1538,7 +1538,7 @@ klasse TestBufferProtocol(unittest.TestCase):
             self.assertRaises(IndexError, nd.__setitem__, 5, single_item)
 
             wenn nicht is_memoryview_format(fmt):
-                continue
+                weiter
 
             nd = ndarray(items, shape=[5], format=fmt, flags=ND_WRITABLE)
             mv = memoryview(nd)
@@ -1561,7 +1561,7 @@ klasse TestBufferProtocol(unittest.TestCase):
             self.assertEqual(nd.tolist(), items)
 
             wenn nicht is_memoryview_format(fmt):
-                continue
+                weiter
 
             nd = ndarray(items, shape=[5], format=fmt, flags=ND_WRITABLE)
             mv = memoryview(nd)
@@ -1832,7 +1832,7 @@ klasse TestBufferProtocol(unittest.TestCase):
                             self.assertIs(nderr, lsterr)
 
                         wenn nicht is_memoryview_format(fmt):
-                            continue
+                            weiter
 
                         mverr = Nichts
                         try:
@@ -1918,7 +1918,7 @@ klasse TestBufferProtocol(unittest.TestCase):
                 wenn numpy_array:
                     shape = t[3]
                     wenn 0 in shape:
-                        continue # https://github.com/numpy/numpy/issues/2503
+                        weiter # https://github.com/numpy/numpy/issues/2503
                     z = numpy_array_from_structure(items, fmt, t)
                     self.verify(x, obj=Nichts,
                                 itemsize=z.itemsize, fmt=fmt, readonly=Falsch,
@@ -1996,7 +1996,7 @@ klasse TestBufferProtocol(unittest.TestCase):
 
                 wenn numpy_array:
                     wenn 0 in lshape oder 0 in rshape:
-                        continue # https://github.com/numpy/numpy/issues/2503
+                        weiter # https://github.com/numpy/numpy/issues/2503
 
                     zl = numpy_array_from_structure(litems, fmt, tl)
                     zr = numpy_array_from_structure(ritems, fmt, tr)
@@ -2204,7 +2204,7 @@ klasse TestBufferProtocol(unittest.TestCase):
                 try:
                     b = py_buffer_to_contiguous(nd, order, request)
                 except BufferError:
-                    continue
+                    weiter
                 self.assertEqual(b, ndbytes)
 
         ###
@@ -2290,7 +2290,7 @@ klasse TestBufferProtocol(unittest.TestCase):
                 try:
                     b = py_buffer_to_contiguous(nd, 'C', request)
                 except BufferError:
-                    continue
+                    weiter
 
                 self.assertEqual(b, expected)
 
@@ -2314,7 +2314,7 @@ klasse TestBufferProtocol(unittest.TestCase):
                 try:
                     b = py_buffer_to_contiguous(nd, 'F', request)
                 except BufferError:
-                    continue
+                    weiter
                 self.assertEqual(b, expected)
 
                 # Check that output can be used als the basis fuer constructing
@@ -2336,7 +2336,7 @@ klasse TestBufferProtocol(unittest.TestCase):
                 try:
                     b = py_buffer_to_contiguous(nd, 'A', request)
                 except BufferError:
-                    continue
+                    weiter
 
                 self.assertEqual(b, expected)
 
@@ -2556,7 +2556,7 @@ klasse TestBufferProtocol(unittest.TestCase):
 
             itemsize = struct.calcsize(fmt)
             wenn 'P' in fmt:
-                continue
+                weiter
 
             fuer v in values:
                 struct_err = Nichts
@@ -2770,7 +2770,7 @@ klasse TestBufferProtocol(unittest.TestCase):
                 # Casts to _Bool are undefined wenn the source contains values
                 # other than 0 oder 1.
                 wenn char == "?":
-                    continue
+                    weiter
                 tfmt = ('', '@')[randrange(2)] + char
                 tsize = struct.calcsize(tfmt)
                 n = prod(_tshape) * tsize
@@ -2787,9 +2787,9 @@ klasse TestBufferProtocol(unittest.TestCase):
 
                     wenn titems is Nichts:
                         self.assertRaises(TypeError, m.cast, tfmt, tshape)
-                        continue
+                        weiter
                     wenn titems == 'nan':
-                        continue # NaNs in lists are a recipe fuer trouble.
+                        weiter # NaNs in lists are a recipe fuer trouble.
 
                     # 1D -> ND
                     nd = ndarray(titems, shape=tshape, format=tfmt)
@@ -2990,7 +2990,7 @@ klasse TestBufferProtocol(unittest.TestCase):
         # pack_single() success:
         fuer fmt in fmtdict['@']:
             wenn fmt == 'c' oder fmt == '?':
-                continue
+                weiter
             ex = ndarray([1,2,3], shape=[3], format=fmt, flags=ND_WRITABLE)
             m = memoryview(ex)
             i = randrange(-3, 3)
@@ -3020,9 +3020,9 @@ klasse TestBufferProtocol(unittest.TestCase):
 
         fuer fmt, _range in fmtdict['@'].items():
             wenn (fmt == '?'): # PyObject_IsWahr() accepts anything
-                continue
+                weiter
             wenn fmt == 'c': # special case tested above
-                continue
+                weiter
             m2 = m1.cast(fmt)
             lo, hi = _range
             wenn fmt == 'd' oder fmt == 'f':
@@ -4223,7 +4223,7 @@ klasse TestBufferProtocol(unittest.TestCase):
         del nd1, nd2
         m2.release()
 
-        # Allow changing layout while buffers are exported.
+        # Allow changing layout waehrend buffers are exported.
         nd = ndarray([1,2,3], shape=[3], flags=ND_VAREXPORT)
         m1 = memoryview(nd)
 

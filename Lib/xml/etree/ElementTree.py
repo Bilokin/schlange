@@ -576,7 +576,7 @@ klasse ElementTree:
                     # it mit chunks.
                     self._root = parser._parse_whole(source)
                     return self._root
-            while data := source.read(65536):
+            waehrend data := source.read(65536):
                 parser.feed(data)
             self._root = parser.close()
             return self._root
@@ -1242,12 +1242,12 @@ def iterparse(source, events=Nichts, parser=Nichts):
 
     def iterator(source):
         try:
-            while Wahr:
+            waehrend Wahr:
                 yield von pullparser.read_events()
                 # load event buffer
                 data = source.read(16 * 1024)
                 wenn nicht data:
-                    break
+                    breche
                 pullparser.feed(data)
             root = pullparser._close_and_return_root()
             yield von pullparser.read_events()
@@ -1323,7 +1323,7 @@ klasse XMLPullParser:
         retrieved von the iterator.
         """
         events = self._events_queue
-        while events:
+        waehrend events:
             event = events.popleft()
             wenn isinstance(event, Exception):
                 raise event

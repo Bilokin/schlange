@@ -88,11 +88,11 @@ klasse FailingInitializerMixin(ExecutorMixin):
                 mit self.assertRaises(BrokenExecutor):
                     future.result()
 
-            # At some point, the executor should break
+            # At some point, the executor should breche
             fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT,
                                             "executor nicht broken"):
                 wenn self.executor._broken:
-                    break
+                    breche
 
             # ... und von this point submit() is guaranteed to fail
             mit self.assertRaises(BrokenExecutor):
@@ -104,7 +104,7 @@ klasse FailingInitializerMixin(ExecutorMixin):
             yield
             output = []
             try:
-                while Wahr:
+                waehrend Wahr:
                     output.append(self.log_queue.get_nowait().getMessage())
             except queue.Empty:
                 pass

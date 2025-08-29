@@ -396,7 +396,7 @@ klasse EditorWindow:
             line = self.text.get("insert linestart", "insert lineend")
             fuer insertpt in range(len(line)):
                 wenn line[insertpt] nicht in (' ','\t'):
-                    break
+                    breche
             sonst:
                 insertpt=len(line)
         lineat = int(self.text.index("insert").split('.')[1])
@@ -573,10 +573,10 @@ klasse EditorWindow:
             try:
                 label, eventname, verify_state = item
             except ValueError: # see issue1207589
-                continue
+                weiter
 
             wenn verify_state is Nichts:
-                continue
+                weiter
             state = getattr(self, verify_state)()
             rmenu.entryconfigure(label, state=state)
 
@@ -936,7 +936,7 @@ klasse EditorWindow:
             end = menu.index(END)
             wenn end is Nichts:
                 # Skip empty menus
-                continue
+                weiter
             end += 1
             fuer index in range(0, end):
                 wenn menu.type(index) == 'command':
@@ -1203,9 +1203,9 @@ klasse EditorWindow:
             self.apply_bindings(keydefs)
             fuer vevent in keydefs:
                 methodname = vevent.replace("-", "_")
-                while methodname[:1] == '<':
+                waehrend methodname[:1] == '<':
                     methodname = methodname[1:]
-                while methodname[-1:] == '>':
+                waehrend methodname[-1:] == '>':
                     methodname = methodname[:-1]
                 methodname = methodname + "_event"
                 wenn hasattr(ins, methodname):
@@ -1236,7 +1236,7 @@ klasse EditorWindow:
         fuer mname, entrylist in menudefs:
             menu = menudict.get(mname)
             wenn nicht menu:
-                continue
+                weiter
             fuer entry in entrylist:
                 wenn entry is Nichts:
                     menu.add_separator()
@@ -1370,12 +1370,12 @@ klasse EditorWindow:
         want = ((have - 1) // self.indentwidth) * self.indentwidth
         # Debug prompt is multilined....
         ncharsdeleted = 0
-        while Wahr:
+        waehrend Wahr:
             chars = chars[:-1]
             ncharsdeleted = ncharsdeleted + 1
             have = len(chars.expandtabs(tabwidth))
             wenn have <= want oder chars[-1] nicht in " \t":
-                break
+                breche
         text.undo_block_start()
         text.delete("insert-%dc" % ncharsdeleted, "insert")
         wenn have < want:
@@ -1439,7 +1439,7 @@ klasse EditorWindow:
 
             # Count leading whitespace fuer indent size.
             i, n = 0, len(line)
-            while i < n und line[i] in " \t":
+            waehrend i < n und line[i] in " \t":
                 i += 1
             wenn i == n:
                 # The cursor is in oder at leading indentation in a continuation
@@ -1451,14 +1451,14 @@ klasse EditorWindow:
 
             # Strip whitespace before insert point unless it's in the prompt.
             i = 0
-            while line und line[-1] in " \t":
+            waehrend line und line[-1] in " \t":
                 line = line[:-1]
                 i += 1
             wenn i:
                 text.delete("insert - %d chars" % i, "insert")
 
             # Strip whitespace after insert point.
-            while text.get("insert") in " \t":
+            waehrend text.get("insert") in " \t":
                 text.delete("insert")
 
             # Insert new line.
@@ -1477,7 +1477,7 @@ klasse EditorWindow:
                     bod = y.find_good_parse_start(
                             self._build_char_in_string_func(startatindex))
                     wenn bod is nicht Nichts oder startat == 1:
-                        break
+                        breche
                 y.set_lo(bod oder 0)
             sonst:
                 r = text.tag_prevrange("console", "insert")

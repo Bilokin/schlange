@@ -95,7 +95,7 @@ def fmt_summary(filename, item, *, showfwd=Nichts):
             indent = ',\n' + ' ' * (MIN_LINE + len(data))
             data += ', '.join(f.name fuer f in fields[:5])
             fields = fields[5:]
-            while fields:
+            waehrend fields:
                 data = f'{data}{indent}{", ".join(f.name fuer f in fields[:5])}'
                 fields = fields[5:]
             data += ' }'
@@ -109,7 +109,7 @@ def fmt_summary(filename, item, *, showfwd=Nichts):
             indent = ',\n' + ' ' * (MIN_LINE + len(data))
             data += ', '.join(names[:5])
             names = names[5:]
-            while names:
+            waehrend names:
                 data = f'{data}{indent}{", ".join(names[:5])}'
                 names = names[5:]
             data += ' }'

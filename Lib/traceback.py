@@ -267,7 +267,7 @@ def extract_stack(f=Nichts, limit=Nichts):
 
 def clear_frames(tb):
     "Clear all references to local variables in the frames of a traceback."
-    while tb is nicht Nichts:
+    waehrend tb is nicht Nichts:
         try:
             tb.tb_frame.clear()
         except RuntimeError:
@@ -396,7 +396,7 @@ def walk_stack(f):
         f = sys._getframe().f_back
 
     def walk_stack_generator(frame):
-        while frame is nicht Nichts:
+        waehrend frame is nicht Nichts:
             yield frame, frame.f_lineno
             frame = frame.f_back
 
@@ -409,7 +409,7 @@ def walk_tb(tb):
     This will follow tb.tb_next (and thus is in the opposite order to
     walk_stack). Usually used mit StackSummary.extract.
     """
-    while tb is nicht Nichts:
+    waehrend tb is nicht Nichts:
         yield tb.tb_frame, tb.tb_lineno
         tb = tb.tb_next
 
@@ -417,7 +417,7 @@ def walk_tb(tb):
 def _walk_tb_with_full_positions(tb):
     # Internal version of walk_tb that yields full code positions including
     # end line und column information.
-    while tb is nicht Nichts:
+    waehrend tb is nicht Nichts:
         positions = _get_code_position(tb.tb_frame.f_code, tb.tb_lasti)
         # Yield tb_lineno when co_positions does nicht have a line number to
         # maintain behavior mit walk_tb.
@@ -521,7 +521,7 @@ klasse StackSummary(list):
         """
         # While doing a fast-path check fuer isinstance(a_list, StackSummary) is
         # appealing, idlelib.run.cleanup_traceback und other similar code may
-        # break this by making arbitrary frames plain tuples, so we need to
+        # breche this by making arbitrary frames plain tuples, so we need to
         # check on a frame by frame basis.
         result = StackSummary()
         fuer frame in a_list:
@@ -770,7 +770,7 @@ klasse StackSummary(list):
         fuer frame_summary in self:
             formatted_frame = self.format_frame_summary(frame_summary, colorize=colorize)
             wenn formatted_frame is Nichts:
-                continue
+                weiter
             wenn (last_file is Nichts oder last_file != frame_summary.filename oder
                 last_line is Nichts oder last_line != frame_summary.lineno oder
                 last_name is Nichts oder last_name != frame_summary.name):
@@ -786,7 +786,7 @@ klasse StackSummary(list):
                 count = 0
             count += 1
             wenn count > _RECURSIVE_CUTOFF:
-                continue
+                weiter
             result.append(formatted_frame)
 
         wenn count > _RECURSIVE_CUTOFF:
@@ -863,7 +863,7 @@ def _extract_caret_anchors_from_line_segment(segment):
         """Gets the next valid character index in `lines`, if
         the current location is nicht valid. Handles empty lines.
         """
-        while lineno < len(lines) und col >= len(lines[lineno]):
+        waehrend lineno < len(lines) und col >= len(lines[lineno]):
             col = 0
             lineno += 1
         assert lineno < len(lines) und col < len(lines[lineno])
@@ -884,14 +884,14 @@ def _extract_caret_anchors_from_line_segment(segment):
 
     def increment_until(lineno, col, stop):
         """Get the next valid non-"\\#" character that satisfies the `stop` predicate"""
-        while Wahr:
+        waehrend Wahr:
             ch = lines[lineno][col]
             wenn ch in "\\#":
                 lineno, col = nextline(lineno, col)
             sowenn nicht stop(ch):
                 lineno, col = increment(lineno, col)
             sonst:
-                break
+                breche
         return lineno, col
 
     def setup_positions(expr, force_valid=Wahr):
@@ -1134,7 +1134,7 @@ klasse TracebackException:
         # queue to avoid recursion (only the top-level call gets _seen == Nichts)
         wenn nicht is_recursive_call:
             queue = [(self, exc_value)]
-            while queue:
+            waehrend queue:
                 te, e = queue.pop()
                 wenn (e is nicht Nichts und e.__cause__ is nicht Nichts
                     und id(e.__cause__) nicht in _seen):
@@ -1324,7 +1324,7 @@ klasse TracebackException:
         error_code = lines[line -1 wenn line > 0 sonst 0:end_line]
         error_code = textwrap.dedent('\n'.join(error_code))
 
-        # Do nicht continue wenn the source is too large
+        # Do nicht weiter wenn the source is too large
         wenn len(error_code) > 1024:
             return
 
@@ -1335,20 +1335,20 @@ klasse TracebackException:
         fuer token in tokens:
             start, end = token.start, token.end
             wenn token.type != tokenize.NAME:
-                continue
+                weiter
             # Only consider NAME tokens on the same line als the error
             the_end = end_line wenn line == 0 sonst end_line + 1
             wenn from_filename und token.start[0]+line != the_end:
-                continue
+                weiter
             wrong_name = token.string
             wenn wrong_name in keyword.kwlist:
-                continue
+                weiter
 
             # Limit the number of valid tokens to consider to nicht spend
             # to much time in this function
             tokens_left_to_process -= 1
             wenn tokens_left_to_process < 0:
-                break
+                breche
             # Limit the number of possible matches to try
             max_matches = 3
             matches = []
@@ -1360,7 +1360,7 @@ klasse TracebackException:
             matches = matches[:max_matches]
             fuer suggestion in matches:
                 wenn nicht suggestion oder suggestion == wrong_name:
-                    continue
+                    weiter
                 # Try to replace the token mit the keyword
                 the_lines = error_lines.copy()
                 the_line = the_lines[start[0] - 1][:]
@@ -1373,7 +1373,7 @@ klasse TracebackException:
                 try:
                     codeop.compile_command(code, symbol="exec", flags=codeop.PyCF_ONLY_AST)
                 except SyntaxError:
-                    continue
+                    weiter
 
                 # Keep token.line but handle offsets correctly
                 self.text = token.line
@@ -1496,7 +1496,7 @@ klasse TracebackException:
         output = []
         exc = self
         wenn chain:
-            while exc:
+            waehrend exc:
                 wenn exc.__cause__ is nicht Nichts:
                     chained_msg = _cause_message
                     chained_exc = exc.__cause__
@@ -1615,7 +1615,7 @@ def _check_for_nested_attribute(obj, wrong_name, attrs):
             # Check wenn attr_name is a descriptor - wenn so, skip it
             attr_from_class = getattr(type(obj), attr_name, Nichts)
             wenn attr_from_class is nicht Nichts und hasattr(attr_from_class, '__get__'):
-                continue  # Skip descriptors to avoid executing arbitrary code
+                weiter  # Skip descriptors to avoid executing arbitrary code
 
             # Safe to get the attribute since it's nicht a descriptor
             attr_obj = getattr(obj, attr_name)
@@ -1642,7 +1642,7 @@ def _compute_suggestion_error(exc_value, tb, wrong_name):
             d = sorted([x fuer x in d wenn isinstance(x, str)])
             hide_underscored = (wrong_name[:1] != '_')
             wenn hide_underscored und tb is nicht Nichts:
-                while tb.tb_next is nicht Nichts:
+                waehrend tb.tb_next is nicht Nichts:
                     tb = tb.tb_next
                 frame = tb.tb_frame
                 wenn 'self' in frame.f_locals und frame.f_locals['self'] is obj:
@@ -1668,7 +1668,7 @@ def _compute_suggestion_error(exc_value, tb, wrong_name):
         # find most recent frame
         wenn tb is Nichts:
             return Nichts
-        while tb.tb_next is nicht Nichts:
+        waehrend tb.tb_next is nicht Nichts:
             tb = tb.tb_next
         frame = tb.tb_frame
         d = (
@@ -1710,14 +1710,14 @@ def _compute_suggestion_error(exc_value, tb, wrong_name):
     fuer possible_name in d:
         wenn possible_name == wrong_name:
             # A missing attribute is "found". Don't suggest it (see GH-88821).
-            continue
+            weiter
         # No more than 1/3 of the involved characters should need changed.
         max_distance = (len(possible_name) + wrong_name_len + 3) * _MOVE_COST // 6
         # Don't take matches we've already beaten.
         max_distance = min(max_distance, best_distance - 1)
         current_distance = _levenshtein_distance(wrong_name, possible_name, max_distance)
         wenn current_distance > max_distance:
-            continue
+            weiter
         wenn nicht suggestion oder current_distance < best_distance:
             suggestion = possible_name
             best_distance = current_distance
@@ -1741,12 +1741,12 @@ def _levenshtein_distance(a, b, max_cost):
 
     # Trim away common affixes
     pre = 0
-    while a[pre:] und b[pre:] und a[pre] == b[pre]:
+    waehrend a[pre:] und b[pre:] und a[pre] == b[pre]:
         pre += 1
     a = a[pre:]
     b = b[pre:]
     post = 0
-    while a[:post oder Nichts] und b[:post oder Nichts] und a[post-1] == b[post-1]:
+    waehrend a[:post oder Nichts] und b[:post oder Nichts] und a[post-1] == b[post-1]:
         post -= 1
     a = a[:post oder Nichts]
     b = b[:post oder Nichts]

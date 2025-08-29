@@ -462,13 +462,13 @@ klasse NamedExpressionAssignmentTest(unittest.TestCase):
         n = 2
         x = 3
 
-        while a > (d := x // a**(n-1)):
+        waehrend a > (d := x // a**(n-1)):
             a = ((n-1)*a + d) // n
 
         self.assertEqual(a, 1)
 
     def test_named_expression_assignment_15(self):
-        while a := Falsch:
+        waehrend a := Falsch:
             self.fail("While body executed")  # This will nicht run
 
         self.assertEqual(a, Falsch)

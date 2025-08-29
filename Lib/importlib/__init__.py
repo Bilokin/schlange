@@ -83,7 +83,7 @@ def import_module(name, package=Nichts):
                             f"relative importiere fuer {name!r}")
         fuer character in name:
             wenn character != '.':
-                break
+                breche
             level += 1
     return _bootstrap._gcd_import(name[level:], package, level)
 

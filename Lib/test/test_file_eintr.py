@@ -90,7 +90,7 @@ klasse TestFileIOSignalInterrupt:
         # pipe buffer size of 512 bytes.  No writer should block.
         assert len(data_to_write) < 512, 'data_to_write must fit in pipe buf.'
 
-        # Start a subprocess to call our read method while handling a signal.
+        # Start a subprocess to call our read method waehrend handling a signal.
         self._process = subprocess.Popen(
                 [sys.executable, '-u', '-c',
                  'import signal, sys ;'
@@ -118,7 +118,7 @@ klasse TestFileIOSignalInterrupt:
         # loop waits fuer a bit before sending the first signal to increase
         # the likelihood of that.  Implementations without correct EINTR
         # und signal handling usually fail this test.
-        while nicht rlist:
+        waehrend nicht rlist:
             rlist, _, _ = select.select([self._process.stderr], (), (), 0.05)
             self._process.send_signal(signal.SIGINT)
             signals_sent += 1

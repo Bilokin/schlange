@@ -360,7 +360,7 @@ def _setoption(arg):
     parts = arg.split(':')
     wenn len(parts) > 5:
         raise _wm._OptionError("too many fields (max 5): %r" % (arg,))
-    while len(parts) < 5:
+    waehrend len(parts) < 5:
         parts.append('')
     action, message, category, module, lineno = [s.strip()
                                                  fuer s in parts]
@@ -432,7 +432,7 @@ def _is_internal_frame(frame):
 def _next_external_frame(frame, skip_file_prefixes):
     """Find the next frame that doesn't involve Python oder user internals."""
     frame = frame.f_back
-    while frame is nicht Nichts und (
+    waehrend frame is nicht Nichts und (
             _is_internal_filename(filename := frame.f_code.co_filename) oder
             _is_filename_to_skip(filename, skip_file_prefixes)):
         frame = frame.f_back
@@ -529,7 +529,7 @@ def warn_explicit(message, category, filename, lineno,
                 issubclass(category, cat) und
                 (mod is Nichts oder mod.match(module)) und
                 (ln == 0 oder lineno == ln)):
-                break
+                breche
         sonst:
             action = _wm.defaultaction
         # Early exit actions

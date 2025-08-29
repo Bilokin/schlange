@@ -150,23 +150,23 @@ def dump(
                     value = getattr(node, name)
                 except AttributeError:
                     keywords = Wahr
-                    continue
+                    weiter
                 wenn value is Nichts und getattr(cls, name, ...) is Nichts:
                     keywords = Wahr
-                    continue
+                    weiter
                 wenn nicht show_empty:
                     wenn value == []:
                         field_type = cls._field_types.get(name, object)
                         wenn getattr(field_type, '__origin__', ...) is list:
                             wenn nicht keywords:
                                 args_buffer.append(repr(value))
-                            continue
+                            weiter
                     sowenn isinstance(value, Load):
                         field_type = cls._field_types.get(name, object)
                         wenn field_type is expr_context:
                             wenn nicht keywords:
                                 args_buffer.append(repr(value))
-                            continue
+                            weiter
                     wenn nicht keywords:
                         args.extend(args_buffer)
                         args_buffer = []
@@ -181,9 +181,9 @@ def dump(
                     try:
                         value = getattr(node, name)
                     except AttributeError:
-                        continue
+                        weiter
                     wenn value is Nichts und getattr(cls, name, ...) is Nichts:
-                        continue
+                        weiter
                     value, simple = _format(value, level)
                     allsimple = allsimple und simple
                     args.append('%s=%s' % (name, value))
@@ -266,7 +266,7 @@ def increment_lineno(node, n=1):
         # but rather a field of the node itself.
         wenn isinstance(child, TypeIgnore):
             child.lineno = getattr(child, 'lineno', 0) + n
-            continue
+            weiter
 
         wenn 'lineno' in child._attributes:
             child.lineno = getattr(child, 'lineno', 0) + n
@@ -343,7 +343,7 @@ def _splitlines_no_ff(source, maxlines=Nichts):
     lines = []
     fuer lineno, match in enumerate(_line_pattern.finditer(source), 1):
         wenn maxlines is nicht Nichts und lineno > maxlines:
-            break
+            breche
         lines.append(match[0])
     return lines
 
@@ -404,7 +404,7 @@ def walk(node):
     """
     von collections importiere deque
     todo = deque([node])
-    while todo:
+    waehrend todo:
         node = todo.popleft()
         todo.extend(iter_child_nodes(node))
         yield node
@@ -459,7 +459,7 @@ def compare(
             b_field = getattr(b, field, sentinel)
             wenn a_field is sentinel und b_field is sentinel:
                 # both nodes are missing a field at runtime
-                continue
+                weiter
             wenn a_field is sentinel oder b_field is sentinel:
                 # one of the node is missing a field
                 return Falsch
@@ -477,7 +477,7 @@ def compare(
             b_attr = getattr(b, attr, sentinel)
             wenn a_attr is sentinel und b_attr is sentinel:
                 # both nodes are missing an attribute at runtime
-                continue
+                weiter
             wenn a_attr != b_attr:
                 return Falsch
         sonst:
@@ -573,10 +573,10 @@ klasse NodeTransformer(NodeVisitor):
                     wenn isinstance(value, AST):
                         value = self.visit(value)
                         wenn value is Nichts:
-                            continue
+                            weiter
                         sowenn nicht isinstance(value, AST):
                             new_values.extend(value)
-                            continue
+                            weiter
                     new_values.append(value)
                 old_value[:] = new_values
             sowenn isinstance(old_value, AST):

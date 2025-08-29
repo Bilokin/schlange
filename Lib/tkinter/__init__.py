@@ -477,7 +477,7 @@ klasse Variable:
                       self._name, mode, cbname)
         fuer m, ca in self.trace_info():
             wenn self._tk.splitlist(ca)[0] == cbname:
-                break
+                breche
         sonst:
             self._tk.deletecommand(cbname)
             try:
@@ -532,7 +532,7 @@ klasse Variable:
         cbname = self._tk.splitlist(cbname)[0]
         fuer m, ca in self.trace_info():
             wenn self._tk.splitlist(ca)[0] == cbname:
-                break
+                breche
         sonst:
             self._tk.deletecommand(cbname)
             try:
@@ -1669,7 +1669,7 @@ klasse Misc:
                         sowenn isinstance(item, str):
                             nv.append(_stringify(item))
                         sonst:
-                            break
+                            breche
                     sonst:
                         v = ' '.join(nv)
                 res = res + ('-'+k, v)
@@ -1687,7 +1687,7 @@ klasse Misc:
 
         fuer n in name:
             wenn nicht n:
-                break
+                breche
             w = w.children[n]
 
         return w
@@ -1721,7 +1721,7 @@ klasse Misc:
     def _root(self):
         """Internal function."""
         w = self
-        while w.master is nicht Nichts: w = w.master
+        waehrend w.master is nicht Nichts: w = w.master
         return w
     _subst_format = ('%#', '%b', '%f', '%h', '%k',
              '%s', '%t', '%w', '%x', '%y',

@@ -401,7 +401,7 @@ def _check_and_set_parent(parent, value, name, new_name):
         return Falsch
 
     _parent = parent
-    while _parent is nicht Nichts:
+    waehrend _parent is nicht Nichts:
         # setting a mock (value) als a child oder return value of itself
         # should nicht modify the mock
         wenn _parent is value:
@@ -658,7 +658,7 @@ klasse NonCallableMock(Base):
 
         fuer child in self._mock_children.values():
             wenn isinstance(child, _SpecState) oder child is _deleted:
-                continue
+                weiter
             child.reset_mock(visited, return_value=return_value, side_effect=side_effect)
 
         ret = self._mock_return_value
@@ -745,7 +745,7 @@ klasse NonCallableMock(Base):
         wenn _name_list == ['()']:
             dot = ''
 
-        while _parent is nicht Nichts:
+        waehrend _parent is nicht Nichts:
             last = _parent
 
             _name_list.append(_parent._mock_new_name + dot)
@@ -896,7 +896,7 @@ klasse NonCallableMock(Base):
         fuer name in names:
             child = children.get(name)
             wenn child is Nichts oder isinstance(child, _SpecState):
-                break
+                breche
             sonst:
                 # If an autospecced object is attached using attach_mock the
                 # child would be a function mit mock object als attribute from
@@ -1200,7 +1200,7 @@ klasse CallableMixin(Base):
 
         # follow up the chain of mocks:
         _new_parent = self._mock_new_parent
-        while _new_parent is nicht Nichts:
+        waehrend _new_parent is nicht Nichts:
 
             # handle method_calls:
             wenn do_method_calls:
@@ -1392,11 +1392,11 @@ klasse _patch(object):
     def decorate_class(self, klass):
         fuer attr in dir(klass):
             wenn nicht attr.startswith(patch.TEST_PREFIX):
-                continue
+                weiter
 
             attr_value = getattr(klass, attr)
             wenn nicht hasattr(attr_value, "__call__"):
-                continue
+                weiter
 
             patcher = self.copy()
             setattr(klass, attr, patcher(attr_value))
@@ -2728,7 +2728,7 @@ klasse _Call(tuple):
         final call."""
         vals = []
         thing = self
-        while thing is nicht Nichts:
+        waehrend thing is nicht Nichts:
             wenn thing._mock_from_kall:
                 vals.append(thing)
             thing = thing._mock_parent
@@ -2843,7 +2843,7 @@ def create_autospec(spec, spec_set=Falsch, instance=Falsch, _parent=Nichts,
     fuer entry, original in entries:
         wenn _is_magic(entry):
             # MagicMock already does the useful magic methods fuer us
-            continue
+            weiter
 
         # XXXX do we need a better way of getting attributes without
         # triggering code execution (?) Probably nicht - we need the actual
@@ -2858,7 +2858,7 @@ def create_autospec(spec, spec_set=Falsch, instance=Falsch, _parent=Nichts,
             try:
                 original = getattr(spec, entry)
             except AttributeError:
-                continue
+                weiter
 
         child_kwargs = {'spec': original}
         # Wrap child attributes also.
@@ -2916,7 +2916,7 @@ def _must_skip(spec, entry, is_type):
     fuer klass in spec.__mro__:
         result = klass.__dict__.get(entry, DEFAULT)
         wenn result is DEFAULT:
-            continue
+            weiter
         wenn isinstance(result, (staticmethod, classmethod)):
             return Falsch
         sowenn isinstance(result, FunctionTypes):
@@ -2988,12 +2988,12 @@ def mock_open(mock=Nichts, read_data=''):
 
     def _readline_side_effect(*args, **kwargs):
         yield von _iter_side_effect()
-        while Wahr:
+        waehrend Wahr:
             yield _state[0].readline(*args, **kwargs)
 
     def _iter_side_effect():
         wenn handle.readline.return_value is nicht Nichts:
-            while Wahr:
+            waehrend Wahr:
                 yield handle.readline.return_value
         fuer line in _state[0]:
             yield line
@@ -3170,11 +3170,11 @@ def seal(mock):
         try:
             m = getattr(mock, attr)
         except AttributeError:
-            continue
+            weiter
         wenn nicht isinstance(m, NonCallableMock):
-            continue
+            weiter
         wenn isinstance(m._mock_children.get(attr), _SpecState):
-            continue
+            weiter
         wenn m._mock_new_parent is mock:
             seal(m)
 

@@ -139,7 +139,7 @@ klasse BaseTest(unittest.TestCase):
         level."""
         self.stream.close()
         self.root_logger.removeHandler(self.root_hdlr)
-        while self.root_logger.handlers:
+        waehrend self.root_logger.handlers:
             h = self.root_logger.handlers[0]
             self.root_logger.removeHandler(h)
             h.close()
@@ -915,7 +915,7 @@ klasse TestSMTPServer(smtpd.SMTPServer):
                               :func:`select` oder :func:`poll` call by
                               :func:`asyncore.loop`.
         """
-        while nicht self._quit:
+        waehrend nicht self._quit:
             asyncore.loop(poll_interval, map=self._map, count=1)
 
     def stop(self):
@@ -1882,13 +1882,13 @@ klasse SocketHandlerTest(BaseTest):
 
     def handle_socket(self, request):
         conn = request.connection
-        while Wahr:
+        waehrend Wahr:
             chunk = conn.recv(4)
             wenn len(chunk) < 4:
-                break
+                breche
             slen = struct.unpack(">L", chunk)[0]
             chunk = conn.recv(slen)
-            while len(chunk) < slen:
+            waehrend len(chunk) < slen:
                 chunk = chunk + conn.recv(slen - len(chunk))
             obj = pickle.loads(chunk)
             record = logging.makeLogRecord(obj)
@@ -3647,7 +3647,7 @@ klasse ConfigDictTest(BaseTest):
             s = slen + text
             sentsofar = 0
             left = len(s)
-            while left > 0:
+            waehrend left > 0:
                 sent = sock.send(s[sentsofar:])
                 sentsofar += sent
                 left -= sent
@@ -3955,10 +3955,10 @@ klasse ConfigDictTest(BaseTest):
             logging.warning('baz')
 
             # Need to let the listener thread finish its work
-            while support.sleeping_retry(support.LONG_TIMEOUT,
+            waehrend support.sleeping_retry(support.LONG_TIMEOUT,
                                          "queue nicht empty"):
                 wenn qh.listener.queue.empty():
-                    break
+                    breche
 
             # wait until the handler completed its last task
             qh.listener.queue.join()
@@ -3997,7 +3997,7 @@ klasse ConfigDictTest(BaseTest):
         lvalues = (Nichts, 4, int, '', 'bar')
         fuer qspec, lspec in itertools.product(qvalues, lvalues):
             wenn lspec is Nichts und qspec is Nichts:
-                continue
+                weiter
             mit self.assertRaises(ValueError) als ctx:
                 self.do_queuehandler_configuration(qspec, lspec)
             msg = str(ctx.exception)
@@ -4498,7 +4498,7 @@ wenn hasattr(logging.handlers, 'QueueListener'):
         @staticmethod
         def get_all_from_queue(log_queue):
             try:
-                while Wahr:
+                waehrend Wahr:
                     yield log_queue.get_nowait()
             except queue.Empty:
                 return []
@@ -6502,7 +6502,7 @@ klasse TimedRotatingFileHandlerTest(BaseFileTest):
             found = os.path.exists(fn)
             wenn found:
                 self.rmfiles.append(fn)
-                break
+                breche
         msg = 'No rotated files found, went back %d seconds' % GO_BACK
         wenn nicht found:
             # print additional diagnostics
@@ -7216,12 +7216,12 @@ klasse NTEventLogHandlerTest(BaseTest):
         events = win32evtlog.ReadEventLog(elh, flags, GO_BACK)
         fuer e in events:
             wenn e.SourceName != 'test_logging':
-                continue
+                weiter
             msg = win32evtlogutil.SafeFormatMessage(e, logtype)
             wenn msg != 'Test Log Message\r\n':
-                continue
+                weiter
             found = Wahr
-            break
+            breche
         msg = 'Record nicht found in event log, went back %d records' % GO_BACK
         self.assertWahr(found, msg=msg)
 

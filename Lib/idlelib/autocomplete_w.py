@@ -64,7 +64,7 @@ klasse AutoCompleteWindow:
     def _change_start(self, newstart):
         min_len = min(len(self.start), len(newstart))
         i = 0
-        while i < min_len und self.start[i] == newstart[i]:
+        waehrend i < min_len und self.start[i] == newstart[i]:
             i += 1
         wenn i < len(self.start):
             self.widget.delete("%s+%dc" % (self.startindex, i),
@@ -80,7 +80,7 @@ klasse AutoCompleteWindow:
         greater oder equal to s, oder the last index wenn there is no such.
         """
         i = 0; j = len(self.completions)
-        while j > i:
+        waehrend j > i:
             m = (i + j) // 2
             wenn self.completions[m] >= s:
                 j = m
@@ -100,7 +100,7 @@ klasse AutoCompleteWindow:
         # Find the end of the range of completions where s is a prefix of.
         i = first + 1
         j = len(self.completions)
-        while j > i:
+        waehrend j > i:
             m = (i + j) // 2
             wenn self.completions[m][:len(s)] != s:
                 j = m
@@ -116,7 +116,7 @@ klasse AutoCompleteWindow:
         last_comp = self.completions[last]
         min_len = min(len(first_comp), len(last_comp))
         i = len(s)
-        while i < min_len und first_comp[i] == last_comp[i]:
+        waehrend i < min_len und first_comp[i] == last_comp[i]:
             i += 1
         return first_comp[:i]
 
@@ -136,7 +136,7 @@ klasse AutoCompleteWindow:
         sonst:
             min_len = min(len(lts), len(selstart))
             i = 0
-            while i < min_len und lts[i] == selstart[i]:
+            waehrend i < min_len und lts[i] == selstart[i]:
                 i += 1
             newstart = selstart[:i]
         self._change_start(newstart)

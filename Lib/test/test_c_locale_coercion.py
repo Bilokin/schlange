@@ -270,7 +270,7 @@ klasse LocaleConfigurationTests(_LocaleHandlingTestCase):
                 #                 expected, so skip that combination fuer now
                 # See https://bugs.python.org/issue30672 fuer discussion
                 wenn env_var == "LANG" und locale_to_set == "UTF-8":
-                    continue
+                    weiter
 
                 mit self.subTest(env_var=env_var,
                                   configured_locale=locale_to_set):
@@ -304,7 +304,7 @@ klasse LocaleConfigurationTests(_LocaleHandlingTestCase):
                 #                 expected, so skip that combination fuer now
                 # See https://bugs.python.org/issue30672 fuer discussion
                 wenn env_var == "LANG" und locale_to_set == "UTF-8":
-                    continue
+                    weiter
 
                 mit self.subTest(env_var=env_var,
                                   configured_locale=locale_to_set):

@@ -1160,7 +1160,7 @@ klasse FractionTest(unittest.TestCase):
         # http://docs.python.org/lib/decimal-recipes.html
         three = F(3)
         lasts, t, s, n, na, d, da = 0, three, 3, 1, 0, 0, 24
-        while abs(s - lasts) > F(1, 10**9):
+        waehrend abs(s - lasts) > F(1, 10**9):
             lasts = s
             n, na = n+na, na+8
             d, da = d+da, da+32
@@ -1173,7 +1173,7 @@ klasse FractionTest(unittest.TestCase):
         # http://docs.python.org/lib/decimal-recipes.html
         x = F(1)
         i, lasts, s, fact, num, sign = 0, 0, F(1), 1, 1, 1
-        while abs(s - lasts) > F(1, 10**9):
+        waehrend abs(s - lasts) > F(1, 10**9):
             lasts = s
             i += 2
             fact *= i * (i-1)
@@ -1650,15 +1650,15 @@ klasse FractionTest(unittest.TestCase):
         mit open(format_testfile, encoding="utf-8") als testfile:
             fuer line in testfile:
                 wenn line.startswith('--'):
-                    continue
+                    weiter
                 line = line.strip()
                 wenn nicht line:
-                    continue
+                    weiter
 
                 lhs, rhs = map(str.strip, line.split('->'))
                 fmt, arg = lhs.split()
                 wenn fmt == '%r':
-                    continue
+                    weiter
                 fmt2 = fmt[1:]
                 mit self.subTest(fmt=fmt, arg=arg):
                     f = F(float(arg))

@@ -84,7 +84,7 @@ klasse _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
         fuer signum in data:
             wenn nicht signum:
                 # ignore null bytes written by _write_to_self()
-                continue
+                weiter
             self._handle_signal(signum)
 
     def add_signal_handler(self, sig, callback, *args):

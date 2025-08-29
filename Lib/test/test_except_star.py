@@ -62,7 +62,7 @@ klasse TestBreakContinueReturnInExceptStarBlock(unittest.TestCase):
             try:
                 raise ValueError
             except* Exception als e:
-                break
+                breche
             """)
 
         self.check_invalid(
@@ -72,7 +72,7 @@ klasse TestBreakContinueReturnInExceptStarBlock(unittest.TestCase):
                     pass
                 except* Exception als e:
                     wenn i == 2:
-                        break
+                        breche
             """)
 
         self.check_invalid(
@@ -82,7 +82,7 @@ klasse TestBreakContinueReturnInExceptStarBlock(unittest.TestCase):
                     pass
                 except* Exception als e:
                     wenn i == 2:
-                        break
+                        breche
                 finally:
                     pass
                 return 0
@@ -96,7 +96,7 @@ klasse TestBreakContinueReturnInExceptStarBlock(unittest.TestCase):
                 try:
                     raise ValueError
                 except* Exception als e:
-                    continue
+                    weiter
             """)
 
         self.check_invalid(
@@ -106,7 +106,7 @@ klasse TestBreakContinueReturnInExceptStarBlock(unittest.TestCase):
                     pass
                 except* Exception als e:
                     wenn i == 2:
-                        continue
+                        weiter
             """)
 
         self.check_invalid(
@@ -116,7 +116,7 @@ klasse TestBreakContinueReturnInExceptStarBlock(unittest.TestCase):
                     pass
                 except* Exception als e:
                     wenn i == 2:
-                        continue
+                        weiter
                 finally:
                     pass
                 return 0
@@ -150,9 +150,9 @@ klasse TestBreakContinueReturnInExceptStarBlock(unittest.TestCase):
             count = 0
             fuer i in range(5):
                 wenn i == 0:
-                    continue
+                    weiter
                 wenn i == 4:
-                    break
+                    breche
                 count += 1
 
             self.assertEqual(count, 3)

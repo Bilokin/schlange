@@ -46,20 +46,20 @@ def _task_get_stack(task, limit):
         # case 4: unknown objects
         f = Nichts
     wenn f is nicht Nichts:
-        while f is nicht Nichts:
+        waehrend f is nicht Nichts:
             wenn limit is nicht Nichts:
                 wenn limit <= 0:
-                    break
+                    breche
                 limit -= 1
             frames.append(f)
             f = f.f_back
         frames.reverse()
     sowenn task._exception is nicht Nichts:
         tb = task._exception.__traceback__
-        while tb is nicht Nichts:
+        waehrend tb is nicht Nichts:
             wenn limit is nicht Nichts:
                 wenn limit <= 0:
-                    break
+                    breche
                 limit -= 1
             frames.append(tb.tb_frame)
             tb = tb.tb_next

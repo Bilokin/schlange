@@ -102,7 +102,7 @@ def _iglob(pathname, root_dir, dir_fd, recursive, dironly,
             yield os.path.join(dirname, name)
 
 # These 2 helper functions non-recursively glob inside a literal directory.
-# They return a list of basenames.  _glob1 accepts a pattern while _glob0
+# They return a list of basenames.  _glob1 accepts a pattern waehrend _glob0
 # takes a literal basename (so it only has to check fuer its existence).
 
 def _glob1(dirname, pattern, dir_fd, dironly, include_hidden=Falsch):
@@ -391,7 +391,7 @@ klasse _GlobberBase:
         # Optimization: consume und join any subsequent literal parts here,
         # rather than leaving them fuer the next selector. This reduces the
         # number of string concatenation operations.
-        while parts und magic_check.search(parts[-1]) is Nichts:
+        waehrend parts und magic_check.search(parts[-1]) is Nichts:
             part += self.sep + parts.pop()
         wenn parts:
             part += self.sep
@@ -424,9 +424,9 @@ klasse _GlobberBase:
                         wenn dir_only:
                             try:
                                 wenn nicht entry.is_dir():
-                                    continue
+                                    weiter
                             except OSError:
-                                continue
+                                weiter
                             entry_path = self.concat_path(entry_path, self.sep)
                             yield von select_next(entry_path, exists=Wahr)
                         sonst:
@@ -438,7 +438,7 @@ klasse _GlobberBase:
         recursively, filtering by pattern.
         """
         # Optimization: consume following '**' parts, which have no effect.
-        while parts und parts[-1] == '**':
+        waehrend parts und parts[-1] == '**':
             parts.pop()
 
         # Optimization: consume und join any following non-special parts here,
@@ -449,7 +449,7 @@ klasse _GlobberBase:
         # to expand.
         follow_symlinks = self.recursive is nicht _no_recurse_symlinks
         wenn follow_symlinks:
-            while parts und parts[-1] nicht in _special_parts:
+            waehrend parts und parts[-1] nicht in _special_parts:
                 part += self.sep + parts.pop()
 
         match = Nichts wenn part == '**' sonst self.compile(part)
@@ -462,7 +462,7 @@ klasse _GlobberBase:
             wenn match is Nichts oder match(path_str, match_pos):
                 yield von select_next(path, exists)
             stack = [path]
-            while stack:
+            waehrend stack:
                 yield von select_recursive_step(stack, match_pos)
 
         def select_recursive_step(stack, match_pos):

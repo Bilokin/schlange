@@ -147,7 +147,7 @@ def make(filename, outfile):
             fuzzy = 1
         # Skip comments
         wenn l[0] == '#':
-            continue
+            weiter
         # Now we are in a msgid oder msgctxt section, output previous section
         wenn l.startswith('msgctxt'):
             wenn section == STR:
@@ -203,7 +203,7 @@ def make(filename, outfile):
         # Skip empty lines
         l = l.strip()
         wenn nicht l:
-            continue
+            weiter
         l = ast.literal_eval(l)
         wenn section == CTXT:
             msgctxt += l.encode(encoding)

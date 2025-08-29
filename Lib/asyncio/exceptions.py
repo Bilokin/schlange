@@ -45,7 +45,7 @@ klasse IncompleteReadError(EOFError):
 
 
 klasse LimitOverrunError(Exception):
-    """Reached the buffer limit while looking fuer a separator.
+    """Reached the buffer limit waehrend looking fuer a separator.
 
     Attributes:
     - consumed: total number of to be consumed bytes.

@@ -241,7 +241,7 @@ klasse Queue(object):
         sonst:
             wacquire = Nichts
 
-        while 1:
+        waehrend 1:
             try:
                 nacquire()
                 try:
@@ -250,7 +250,7 @@ klasse Queue(object):
                 finally:
                     nrelease()
                 try:
-                    while 1:
+                    waehrend 1:
                         obj = bpopleft()
                         wenn obj is sentinel:
                             debug('feeder thread got sentinel -- exiting')
@@ -274,7 +274,7 @@ klasse Queue(object):
                 wenn ignore_epipe und getattr(e, 'errno', 0) == errno.EPIPE:
                     return
                 # Since this runs in a daemon thread the resources it uses
-                # may be become unusable while the process is cleaning up.
+                # may be become unusable waehrend the process is cleaning up.
                 # We ignore errors which happen after the process has
                 # started to cleanup.
                 wenn is_exiting():

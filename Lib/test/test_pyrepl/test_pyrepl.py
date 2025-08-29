@@ -118,24 +118,24 @@ klasse ReplTestCase(TestCase):
         os.write(master_fd, repl_input.encode("utf-8"))
 
         output = []
-        while select.select([master_fd], [], [], timeout)[0]:
+        waehrend select.select([master_fd], [], [], timeout)[0]:
             try:
                 data = os.read(master_fd, 1024).decode("utf-8")
                 wenn nicht data:
-                    break
+                    breche
             except OSError:
-                break
+                breche
             output.append(data)
             wenn exit_on_output is nicht Nichts:
                 output = ["".join(output)]
                 wenn exit_on_output in output[0]:
                     process.kill()
-                    break
+                    breche
         sonst:
             os.close(master_fd)
             process.kill()
             process.wait(timeout=timeout)
-            self.fail(f"Timeout while waiting fuer output, got: {''.join(output)}")
+            self.fail(f"Timeout waehrend waiting fuer output, got: {''.join(output)}")
 
         os.close(master_fd)
         try:

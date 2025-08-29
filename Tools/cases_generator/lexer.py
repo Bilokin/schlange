@@ -367,7 +367,7 @@ def to_text(tkns: list[Token], dedent: int = 0) -> str:
             line, _ = tkn.begin
         l, c = tkn.begin
         # assert(l >= line), (line, txt, start, end)
-        while l > line:
+        waehrend l > line:
             line += 1
             res.append("\n")
             col = 1 + dedent

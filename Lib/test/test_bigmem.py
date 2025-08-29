@@ -593,12 +593,12 @@ klasse StrTest(unittest.TestCase, BaseStrTest):
         self._adjusted = {}
         fuer name in dir(BaseStrTest):
             wenn nicht name.startswith('test_'):
-                continue
+                weiter
             meth = getattr(type(self), name)
             try:
                 memuse = meth.memuse
             except AttributeError:
-                continue
+                weiter
             meth.memuse = ascii_char_size * memuse
             self._adjusted[name] = memuse
 

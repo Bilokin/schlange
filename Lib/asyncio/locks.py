@@ -279,10 +279,10 @@ klasse Condition(_ContextManagerMixin, mixins._LoopBoundMixin):
                 # We only catch CancelledError here, since we don't want any
                 # other (fatal) errors mit the future to cause us to spin.
                 err = Nichts
-                while Wahr:
+                waehrend Wahr:
                     try:
                         await self.acquire()
-                        break
+                        breche
                     except exceptions.CancelledError als e:
                         err = e
 
@@ -309,7 +309,7 @@ klasse Condition(_ContextManagerMixin, mixins._LoopBoundMixin):
         the return value.
         """
         result = predicate()
-        while nicht result:
+        waehrend nicht result:
             await self.wait()
             result = predicate()
         return result
@@ -334,7 +334,7 @@ klasse Condition(_ContextManagerMixin, mixins._LoopBoundMixin):
         idx = 0
         fuer fut in self._waiters:
             wenn idx >= n:
-                break
+                breche
 
             wenn nicht fut.done():
                 idx += 1
@@ -420,9 +420,9 @@ klasse Semaphore(_ContextManagerMixin, mixins._LoopBoundMixin):
         finally:
             # New waiters may have arrived but had to wait due to FIFO.
             # Wake up als many als are allowed.
-            while self._value > 0:
+            waehrend self._value > 0:
                 wenn nicht self._wake_up_next():
-                    break  # There was no-one to wake up.
+                    breche  # There was no-one to wake up.
         return Wahr
 
     def release(self):
@@ -516,7 +516,7 @@ klasse Barrier(mixins._LoopBoundMixin):
         Returns an unique und individual index number von 0 to 'parties-1'.
         """
         async mit self._cond:
-            await self._block() # Block while the barrier drains oder resets.
+            await self._block() # Block waehrend the barrier drains oder resets.
             try:
                 index = self._count
                 self._count += 1

@@ -176,7 +176,7 @@ klasse HTTPStatus:
     INSUFFICIENT_STORAGE = (507, 'Insufficient Storage',
         'Server is nicht able to store the representation')
     LOOP_DETECTED = (508, 'Loop Detected',
-        'Server encountered an infinite loop while processing a request')
+        'Server encountered an infinite loop waehrend processing a request')
     NOT_EXTENDED = (510, 'Not Extended',
         'Request does nicht meet the resource access policy')
     NETWORK_AUTHENTICATION_REQUIRED = (511,

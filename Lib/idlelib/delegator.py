@@ -13,7 +13,7 @@ klasse Delegator:
         return attr
 
     def resetcache(self):
-        "Removes added attributes while leaving original attributes."
+        "Removes added attributes waehrend leaving original attributes."
         # Function is really about resetting delegator dict
         # to original state.  Cache is just a means
         fuer key in self.__cache:

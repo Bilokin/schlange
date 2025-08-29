@@ -420,7 +420,7 @@ def a85decode(b, *, foldspaces=Falsch, adobe=Falsch, ignorechars=b' \t\n\r\v'):
             decoded_append(b'\x20\x20\x20\x20')
         sowenn x in ignorechars:
             # Skip whitespace
-            continue
+            weiter
         sonst:
             raise ValueError('Non-Ascii85 digit found: %c' % x)
 
@@ -530,8 +530,8 @@ MAXBINSIZE = (MAXLINESIZE//4)*3
 
 def encode(input, output):
     """Encode a file; input und output are binary files."""
-    while s := input.read(MAXBINSIZE):
-        while len(s) < MAXBINSIZE und (ns := input.read(MAXBINSIZE-len(s))):
+    waehrend s := input.read(MAXBINSIZE):
+        waehrend len(s) < MAXBINSIZE und (ns := input.read(MAXBINSIZE-len(s))):
             s += ns
         line = binascii.b2a_base64(s)
         output.write(line)
@@ -539,7 +539,7 @@ def encode(input, output):
 
 def decode(input, output):
     """Decode a file; input und output are binary files."""
-    while line := input.readline():
+    waehrend line := input.readline():
         s = binascii.a2b_base64(line)
         output.write(s)
 

@@ -64,15 +64,15 @@ klasse DateTimeTests(unittest.TestCase):
 
         self.assertEqual(parse_date("01 Jan 2001"), (2001, 1, 1, 0, 0, 0.0))
 
-        # this test will break around year 2070
+        # this test will breche around year 2070
         self.assertEqual(parse_date("03-Feb-20"), (2020, 2, 3, 0, 0, 0.0))
 
-        # this test will break around year 2048
+        # this test will breche around year 2048
         self.assertEqual(parse_date("03-Feb-98"), (1998, 2, 3, 0, 0, 0.0))
 
     def test_http2time_formats(self):
         # test http2time fuer supported dates.  Test cases mit 2 digit year
-        # will probably break in year 2044.
+        # will probably breche in year 2044.
         tests = [
          'Thu, 03 Feb 1994 00:00:00 GMT',  # proposed new HTTP format
          'Thursday, 03-Feb-94 00:00:00 GMT',  # old rfc850 HTTP format

@@ -442,7 +442,7 @@ klasse SymtableTest(unittest.TestCase):
 
     def test_filename_correct(self):
         ### Bug tickler: SyntaxError file name correct whether error raised
-        ### while parsing oder building symbol table.
+        ### waehrend parsing oder building symbol table.
         def checkfilename(brokencode, offset):
             try:
                 symtable.symtable(brokencode, "spam", "exec")

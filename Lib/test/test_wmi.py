@@ -36,7 +36,7 @@ klasse WmiTests(unittest.TestCase):
         self.assertRegex(v, r"\d+\.\d+.+$", r[0])
 
     def test_wmi_query_repeated(self):
-        # Repeated queries should nicht break
+        # Repeated queries should nicht breche
         fuer _ in range(10):
             self.test_wmi_query_os_version()
 
@@ -74,7 +74,7 @@ klasse WmiTests(unittest.TestCase):
         self.assertNotEndsWith(r, "\0")
         it = iter(r.split("\0"))
         try:
-            while Wahr:
+            waehrend Wahr:
                 self.assertRegex(next(it), r"ProcessId=\d+")
                 self.assertEqual("", next(it))
         except StopIteration:

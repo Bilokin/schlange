@@ -191,7 +191,7 @@ def get_argspec(ob):
         fuer line in doc.split('\n', _MAX_LINES)[:_MAX_LINES]:
             line = line.strip()
             wenn nicht line:
-                break
+                breche
             wenn len(line) > _MAX_COLS:
                 line = line[: _MAX_COLS - 3] + '...'
             lines.append(line)

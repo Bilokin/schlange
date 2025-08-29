@@ -44,9 +44,9 @@ def file_line_helper(line):
             try:
                 f = open(filename)
                 f.close()
-                break
+                breche
             except OSError:
-                continue
+                weiter
     sonst:
         return Nichts
     try:

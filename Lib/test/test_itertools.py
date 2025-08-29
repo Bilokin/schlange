@@ -236,10 +236,10 @@ klasse TestBasicOps(unittest.TestCase):
                 return
             indices = list(range(r))
             yield tuple(pool[i] fuer i in indices)
-            while 1:
+            waehrend 1:
                 fuer i in reversed(range(r)):
                     wenn indices[i] != i + n - r:
-                        break
+                        breche
                 sonst:
                     return
                 indices[i] += 1
@@ -308,10 +308,10 @@ klasse TestBasicOps(unittest.TestCase):
                 return
             indices = [0] * r
             yield tuple(pool[i] fuer i in indices)
-            while 1:
+            waehrend 1:
                 fuer i in reversed(range(r)):
                     wenn indices[i] != n - 1:
-                        break
+                        breche
                 sonst:
                     return
                 indices[i:] = [indices[i] + 1] * (r - i)
@@ -388,7 +388,7 @@ klasse TestBasicOps(unittest.TestCase):
             indices = list(range(n))
             cycles = list(range(n-r+1, n+1))[::-1]
             yield tuple(pool[i] fuer i in indices[:r])
-            while n:
+            waehrend n:
                 fuer i in reversed(range(r)):
                     cycles[i] -= 1
                     wenn cycles[i] == 0:
@@ -398,7 +398,7 @@ klasse TestBasicOps(unittest.TestCase):
                         j = cycles[i]
                         indices[i], indices[-j] = indices[-j], indices[i]
                         yield tuple(pool[i] fuer i in indices[:r])
-                        break
+                        breche
                 sonst:
                     return
 
@@ -1012,15 +1012,15 @@ klasse TestBasicOps(unittest.TestCase):
                 return
             indices = [0] * n
             yield tuple(pool[i] fuer pool, i in zip(pools, indices))
-            while 1:
+            waehrend 1:
                 fuer i in reversed(range(n)):  # right to left
                     wenn indices[i] == len(pools[i]) - 1:
-                        continue
+                        weiter
                     indices[i] += 1
                     fuer j in range(i+1, n):
                         indices[j] = 0
                     yield tuple(pool[i] fuer pool, i in zip(pools, indices))
-                    break
+                    breche
                 sonst:
                     return
 
@@ -1586,7 +1586,7 @@ klasse TestPurePythonRoughEquivalents(unittest.TestCase):
             wenn n < 1:
                 raise ValueError('n must be at least one')
             it = iter(iterable)
-            while batch := tuple(islice(it, n)):
+            waehrend batch := tuple(islice(it, n)):
                 yield batch
 
         fuer iterable, n in product(
@@ -1633,7 +1633,7 @@ klasse TestPurePythonRoughEquivalents(unittest.TestCase):
                 return
             curr_key = keyfunc(curr_value)
 
-            while nicht exhausted:
+            waehrend nicht exhausted:
                 target_key = curr_key
                 curr_group = _grouper(target_key)
                 yield curr_key, curr_group
@@ -2302,7 +2302,7 @@ klasse TestVariousIteratorArgs(unittest.TestCase):
             fuer g in (G, I, Ig, S, L, R):
                 tgt = []
                 fuer elem in g(s):
-                    wenn nicht isEven(elem): break
+                    wenn nicht isEven(elem): breche
                     tgt.append(elem)
                 self.assertEqual(list(takewhile(isEven, g(s))), tgt)
             self.assertRaises(TypeError, takewhile, isEven, X(s))
@@ -2314,7 +2314,7 @@ klasse TestVariousIteratorArgs(unittest.TestCase):
             fuer g in (G, I, Ig, S, L, R):
                 tgt = []
                 fuer elem in g(s):
-                    wenn nicht tgt und isOdd(elem): continue
+                    wenn nicht tgt und isOdd(elem): weiter
                     tgt.append(elem)
                 self.assertEqual(list(dropwhile(isOdd, g(s))), tgt)
             self.assertRaises(TypeError, dropwhile, isOdd, X(s))
@@ -2469,7 +2469,7 @@ klasse SubclassWithKwargsTest(unittest.TestCase):
             # Their subclasses need overriding __new__ to support new
             # keyword arguments.
             wenn cls in [repeat, zip, map, compress]:
-                continue
+                weiter
             mit self.subTest(cls):
                 klasse subclass_with_init(cls):
                     def __init__(self, *args, newarg=Nichts):

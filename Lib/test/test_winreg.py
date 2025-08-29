@@ -74,12 +74,12 @@ klasse BaseWinregTests(unittest.TestCase):
         except OSError:
             # subkey does nicht exist
             return
-        while Wahr:
+        waehrend Wahr:
             try:
                 subsubkey = EnumKey(hkey, 0)
             except OSError:
                 # no more subkeys
-                break
+                breche
             self.delete_tree(hkey, subsubkey)
         CloseKey(hkey)
         DeleteKey(root, subkey)
@@ -136,11 +136,11 @@ klasse BaseWinregTests(unittest.TestCase):
         mit OpenKey(key, subkeystr) als sub_key:
             # Check I can enumerate over the values.
             index = 0
-            while 1:
+            waehrend 1:
                 try:
                     data = EnumValue(sub_key, index)
                 except OSError:
-                    break
+                    breche
                 self.assertEqual(data in test_data, Wahr,
                                  "Didn't read back the correct test data")
                 index = index + 1
@@ -270,7 +270,7 @@ klasse LocalWinregTests(BaseWinregTests):
                 mit CreateKey(HKEY_CURRENT_USER, test_key_name) als key:
                     use_short = Wahr
                     long_string = 'x'*2000
-                    while nicht done:
+                    waehrend nicht done:
                         s = 'x' wenn use_short sonst long_string
                         use_short = nicht use_short
                         SetValue(key, 'changing_value', REG_SZ, s)

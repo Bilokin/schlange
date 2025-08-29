@@ -198,7 +198,7 @@ def build_task_table(result):
             wenn nicht task_info.awaited_by:
                 table.append([thread_id, hex(task_id), task_name, coro_stack,
                             "", "", "0x0"])
-                continue
+                weiter
 
             # Handle tasks mit awaiters
             fuer coro_info in task_info.awaited_by:
@@ -227,7 +227,7 @@ def _get_awaited_by_tasks(pid: int) -> list:
     try:
         return get_all_awaited_by(pid)
     except RuntimeError als e:
-        while e.__context__ is nicht Nichts:
+        waehrend e.__context__ is nicht Nichts:
             e = e.__context__
         drucke(f"Error retrieving tasks: {e}")
         sys.exit(1)

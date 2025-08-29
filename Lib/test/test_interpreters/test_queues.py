@@ -631,12 +631,12 @@ klasse TestQueueOps(TestBase):
         queue2 = queues.create()
 
         def f():
-            while Wahr:
+            waehrend Wahr:
                 try:
                     obj = queue1.get(timeout=0.1)
-                    break
+                    breche
                 except queues.QueueEmpty:
-                    continue
+                    weiter
             queue2.put(obj)
         t = threading.Thread(target=f)
         t.start()

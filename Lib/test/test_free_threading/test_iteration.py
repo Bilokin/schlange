@@ -86,7 +86,7 @@ klasse ContendedListIterationTest(ContendedTupleIterationTest):
             # items shifted around fuer good measure.
             replacement = (orig * 3)[NUMITEMS//2:]
             start.wait()
-            while nicht endmutate.is_set():
+            waehrend nicht endmutate.is_set():
                 seq.extend(replacement)
                 seq[:0] = orig
                 seq.__imul__(2)

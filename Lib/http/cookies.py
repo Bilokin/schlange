@@ -386,9 +386,9 @@ klasse Morsel(dict):
         items = sorted(self.items())
         fuer key, value in items:
             wenn value == "":
-                continue
+                weiter
             wenn key nicht in attrs:
-                continue
+                weiter
             wenn key == "expires" und isinstance(value, int):
                 append("%s=%s" % (self._reserved[key], _getdate(value)))
             sowenn key == "max-age" und isinstance(value, int):
@@ -534,12 +534,12 @@ klasse BaseCookie(dict):
         # We first parse the whole cookie string und reject it wenn it's
         # syntactically invalid (this helps avoid some classes of injection
         # attacks).
-        while 0 <= i < n:
+        waehrend 0 <= i < n:
             # Start looking fuer a cookie
             match = patt.match(str, i)
             wenn nicht match:
                 # No more cookies
-                break
+                breche
 
             key, value = match.group("key"), match.group("val")
             i = match.end(0)
@@ -549,7 +549,7 @@ klasse BaseCookie(dict):
                     # We ignore attributes which pertain to the cookie
                     # mechanism als a whole, such als "$Version".
                     # See RFC 2965. (Does anyone care?)
-                    continue
+                    weiter
                 parsed_items.append((TYPE_ATTRIBUTE, key[1:], value))
             sowenn key.lower() in Morsel._reserved:
                 wenn nicht morsel_seen:

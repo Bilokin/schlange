@@ -4,7 +4,7 @@ Dancing turtles have a compound shape
 consisting of a series of triangles of
 decreasing size.
 
-Turtles march along a circle while rotating
+Turtles march along a circle waehrend rotating
 pairwise in opposite direction, mit one
 exception. Does that breaking of symmetry
 enhance the attractiveness of the example?
@@ -62,7 +62,7 @@ def main():
     onkeypress(stop)
     listen()
     cs = 1
-    while running:
+    waehrend running:
         ta = -4
         fuer dancer in dancers:
             dancer.fd(7)

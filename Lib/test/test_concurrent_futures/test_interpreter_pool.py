@@ -43,11 +43,11 @@ def read_file_with_timeout(fd, nbytes, timeout):
             return os.read(fd, nbytes)
         except BlockingIOError:
             pass
-        while time.time() < end:
+        waehrend time.time() < end:
             try:
                 return os.read(fd, nbytes)
             except BlockingIOError:
-                continue
+                weiter
         sonst:
             raise TimeoutError('nothing to read')
 
@@ -73,7 +73,7 @@ def write_msg(fd, msg):
 def read_msg(fd, timeout=10.0):
     msg = b''
     ch = read_file_with_timeout(fd, 1, timeout)
-    while ch != b'\0':
+    waehrend ch != b'\0':
         msg += ch
         ch = os.read(fd, 1)
     return msg
@@ -384,7 +384,7 @@ klasse InterpreterPoolExecutorTest(
                 fut = executor.submit(run, i, ready, blocker)
                 futures.append(fut)
             pending = numtasks
-            while pending > 0:
+            waehrend pending > 0:
                 # Wait fuer any to be ready.
                 done = 0
                 fuer _ in range(pending):
@@ -419,7 +419,7 @@ klasse InterpreterPoolExecutorTest(
                 fut = executor.submit(run, i, ready, blocker)
                 futures.append(fut)
             pending = numtasks
-            while pending > 0:
+            waehrend pending > 0:
                 # Wait fuer any to be ready.
                 done = 0
                 fuer _ in range(pending):

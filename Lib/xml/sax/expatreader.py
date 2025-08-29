@@ -135,7 +135,7 @@ klasse ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
 
     def setFeature(self, name, state):
         wenn self._parsing:
-            raise SAXNotSupportedException("Cannot set features while parsing")
+            raise SAXNotSupportedException("Cannot set features waehrend parsing")
 
         wenn name == feature_namespaces:
             self._namespaces = state
@@ -248,7 +248,7 @@ klasse ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
             self.feed(b"", isFinal=Wahr)
             self._cont_handler.endDocument()
             self._parsing = Falsch
-            # break cycle created by expat handlers pointing to our methods
+            # breche cycle created by expat handlers pointing to our methods
             self._parser = Nichts
         finally:
             self._parsing = Falsch

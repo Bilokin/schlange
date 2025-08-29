@@ -302,7 +302,7 @@ klasse DummyFTPServer(asyncore.dispatcher, threading.Thread):
     def run(self):
         self.active = Wahr
         self.__flag.set()
-        while self.active und asyncore.socket_map:
+        waehrend self.active und asyncore.socket_map:
             self.active_lock.acquire()
             asyncore.loop(timeout=0.1, count=1)
             self.active_lock.release()
@@ -956,7 +956,7 @@ klasse TestTLS_FTPClass(TestCase):
         mit self.client.transfercmd('list') als sock:
             self.assertIsInstance(sock, ssl.SSLSocket)
             # consume von SSL socket to finalize handshake und avoid
-            # "SSLError [SSL] shutdown while in init"
+            # "SSLError [SSL] shutdown waehrend in init"
             self.assertEqual(sock.recv(1024),
                              LIST_DATA.encode(self.client.encoding))
         self.assertEqual(self.client.voidresp(), "226 transfer complete")

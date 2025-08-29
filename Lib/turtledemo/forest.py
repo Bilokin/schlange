@@ -85,7 +85,7 @@ def main():
     s = doit2(7, Turtle(undobuffersize=1))
     t = doit3(5, Turtle(undobuffersize=1))
     a = clock()
-    while Wahr:
+    waehrend Wahr:
         done = 0
         fuer b in u,s,t:
             try:
@@ -93,7 +93,7 @@ def main():
             except:
                 done += 1
         wenn done == 3:
-            break
+            breche
 
     tracer(1,10)
     b = clock()

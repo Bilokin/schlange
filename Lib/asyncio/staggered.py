@@ -158,7 +158,7 @@ async def staggered_race(coro_fns, delay, *, loop=Nichts):
         ok_to_start.set()
         propagate_cancellation_error = Nichts
         # Make sure no tasks are left running wenn we leave this function
-        while running_tasks:
+        waehrend running_tasks:
             on_completed_fut = loop.create_future()
             try:
                 await on_completed_fut

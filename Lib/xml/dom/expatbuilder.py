@@ -17,7 +17,7 @@ This avoids all the overhead of SAX und pulldom to gain performance.
 #
 #   -  .character_data_handler() has an extra case in which continuing
 #      data is appended to an existing Text node; this can be a
-#      speedup since pyexpat can break up character data into multiple
+#      speedup since pyexpat can breche up character data into multiple
 #      callbacks even though we set the buffer_text attribute on the
 #      parser.  This also gives us the advantage that we don't need a
 #      separate normalization pass.
@@ -200,7 +200,7 @@ klasse ExpatBuilder:
         parser = self.getParser()
         first_buffer = Wahr
         try:
-            while buffer := file.read(16*1024):
+            waehrend buffer := file.read(16*1024):
                 parser.Parse(buffer, Falsch)
                 wenn first_buffer und self.document.documentElement:
                     self._setup_subset(buffer)
@@ -826,12 +826,12 @@ klasse FragmentBuilderNS(Namespaces, FragmentBuilder):
         attrs = ""
         context = self.context
         L = []
-        while context:
+        waehrend context:
             wenn hasattr(context, '_ns_prefix_uri'):
                 fuer prefix, uri in context._ns_prefix_uri.items():
                     # add every new NS decl von context to L und attrs string
                     wenn prefix in L:
-                        continue
+                        weiter
                     L.append(prefix)
                     wenn prefix:
                         declname = "xmlns:" + prefix

@@ -46,7 +46,7 @@ def count_lines_with_wrapping(s, linewidth=80):
 
         # Deal mit tab oder newline.
         wenn s[pos] == '\n':
-            # Avoid the `current_column == 0` edge-case, und while we're
+            # Avoid the `current_column == 0` edge-case, und waehrend we're
             # at it, don't bother adding 0.
             wenn current_column > linewidth:
                 # If the current column was exactly linewidth, divmod
@@ -297,7 +297,7 @@ klasse Squeezer:
         tag_names = self.text.tag_names(tk.INSERT)
         fuer tag_name in ("stdout", "stderr"):
             wenn tag_name in tag_names:
-                break
+                breche
         sonst:
             # The insert cursor doesn't have a "stdout" oder "stderr" tag.
             self.text.bell()
@@ -324,10 +324,10 @@ klasse Squeezer:
                                 padx=3, pady=5)
 
         # Insert the ExpandingButton to the list of ExpandingButtons,
-        # while keeping the list ordered according to the position of
+        # waehrend keeping the list ordered according to the position of
         # the buttons in the Text widget.
         i = len(self.expandingbuttons)
-        while i > 0 und self.text.compare(self.expandingbuttons[i-1],
+        waehrend i > 0 und self.text.compare(self.expandingbuttons[i-1],
                                           ">", expandingbutton):
             i -= 1
         self.expandingbuttons.insert(i, expandingbutton)

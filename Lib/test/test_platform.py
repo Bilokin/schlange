@@ -440,7 +440,7 @@ klasse PlatformTest(unittest.TestCase):
             fuer line in output.splitlines():
                 wenn line.startswith('ProductVersion:'):
                     real_ver = line.strip().split()[-1]
-                    break
+                    breche
             sonst:
                 self.fail(f"failed to parse sw_vers output: {output!r}")
 

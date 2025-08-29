@@ -98,7 +98,7 @@ klasse WSGIRequestHandler(BaseHTTPRequestHandler):
         fuer k, v in self.headers.items():
             k=k.replace('-','_').upper(); v=v.strip()
             wenn k in env:
-                continue                    # skip content length, type,etc.
+                weiter                    # skip content length, type,etc.
             wenn 'HTTP_'+k in env:
                 env['HTTP_'+k] += ','+v     # comma-separate multiple headers
             sonst:

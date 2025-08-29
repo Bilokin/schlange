@@ -79,7 +79,7 @@ def isort(shelf):
     length = len(shelf)
     fuer i in range(1, length):
         hole = i
-        while hole > 0 und shelf[i].size < shelf[hole - 1].size:
+        waehrend hole > 0 und shelf[i].size < shelf[hole - 1].size:
             hole = hole - 1
         shelf.insert(hole, shelf.pop(i))
     return

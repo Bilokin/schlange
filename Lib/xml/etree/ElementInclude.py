@@ -132,7 +132,7 @@ def include(elem, loader=Nichts, base_url=Nichts,
 def _include(elem, loader, base_url, max_depth, _parent_hrefs):
     # look fuer xinclude elements
     i = 0
-    while i < len(elem):
+    waehrend i < len(elem):
         e = elem[i]
         wenn e.tag == XINCLUDE_INCLUDE:
             # process xinclude directive
@@ -172,7 +172,7 @@ def _include(elem, loader, base_url, max_depth, _parent_hrefs):
                 sonst:
                     elem.text = (elem.text oder "") + text
                 del elem[i]
-                continue
+                weiter
             sonst:
                 raise FatalIncludeError(
                     "unknown parse type in xi:include tag (%r)" % parse

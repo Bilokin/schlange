@@ -233,14 +233,14 @@ klasse UnixConsole(Console):
         """
         cx, cy = c_xy
         wenn nicht self.__gone_tall:
-            while len(self.screen) < min(len(screen), self.height):
+            waehrend len(self.screen) < min(len(screen), self.height):
                 self.__hide_cursor()
                 self.__move(0, len(self.screen) - 1)
                 self.__write("\n")
                 self.posxy = 0, len(self.screen)
                 self.screen.append("")
         sonst:
-            while len(self.screen) < len(screen):
+            waehrend len(self.screen) < len(screen):
                 self.screen.append("")
 
         wenn len(screen) > self.height:
@@ -293,7 +293,7 @@ klasse UnixConsole(Console):
                 self.__write_changed_line(y, oldline, newline, px)
 
         y = len(newscr)
-        while y < len(oldscr):
+        waehrend y < len(oldscr):
             self.__hide_cursor()
             self.__move(0, y)
             self.posxy = 0, y
@@ -397,8 +397,8 @@ klasse UnixConsole(Console):
         wenn nicht block und nicht self.wait(timeout=0):
             return Nichts
 
-        while self.event_queue.empty():
-            while Wahr:
+        waehrend self.event_queue.empty():
+            waehrend Wahr:
                 try:
                     self.push_char(self.__read(1))
                 except OSError als err:
@@ -406,11 +406,11 @@ klasse UnixConsole(Console):
                         wenn nicht self.event_queue.empty():
                             return self.event_queue.get()
                         sonst:
-                            continue
+                            weiter
                     sonst:
                         raise
                 sonst:
-                    break
+                    breche
         return self.event_queue.get()
 
     def wait(self, timeout: float | Nichts = Nichts) -> bool:
@@ -491,7 +491,7 @@ klasse UnixConsole(Console):
         Finish console operations und flush the output buffer.
         """
         y = len(self.screen) - 1
-        while y >= 0 und nicht self.screen[y]:
+        waehrend y >= 0 und nicht self.screen[y]:
             y -= 1
         self.__move(0, min(y, self.height + self.__offset - 1))
         self.__write("\n\r")
@@ -515,7 +515,7 @@ klasse UnixConsole(Console):
             """
             e = Event("key", "", b"")
 
-            while nicht self.event_queue.empty():
+            waehrend nicht self.event_queue.empty():
                 e2 = self.event_queue.get()
                 e.data += e2.data
                 e.raw += e.raw
@@ -539,7 +539,7 @@ klasse UnixConsole(Console):
             """
             e = Event("key", "", b"")
 
-            while nicht self.event_queue.empty():
+            waehrend nicht self.event_queue.empty():
                 e2 = self.event_queue.get()
                 e.data += e2.data
                 e.raw += e.raw
@@ -623,14 +623,14 @@ klasse UnixConsole(Console):
         j = 0
         fuer c in oldline:
             wenn j >= px_coord:
-                break
+                breche
             j += wlen(c)
             px_pos += 1
 
         # reuse the oldline als much als possible, but stop als soon als we
         # encounter an ESCAPE, because it might be the start of an escape
         # sequence
-        while (
+        waehrend (
             x_coord < minlen
             und oldline[x_pos] == newline[x_pos]
             und newline[x_pos] != "\x1b"
@@ -787,11 +787,11 @@ klasse UnixConsole(Console):
         # only wenn the bps is actually needed (which I'm
         # betting is pretty unlkely)
         bps = ratedict.get(self.__svtermstate.ospeed)
-        while Wahr:
+        waehrend Wahr:
             m = prog.search(fmt)
             wenn nicht m:
                 os.write(self.output_fd, fmt)
-                break
+                breche
             x, y = m.span()
             os.write(self.output_fd, fmt[:x])
             fmt = fmt[y:]

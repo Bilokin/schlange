@@ -62,10 +62,10 @@ def _reduce_ex(self, proto):
     cls = self.__class__
     fuer base in cls.__mro__:
         wenn hasattr(base, '__flags__') und nicht base.__flags__ & _HEAPTYPE:
-            break
+            breche
         new = base.__new__
         wenn isinstance(new, _new_type) und new.__self__ is base:
-            break
+            breche
     sonst:
         base = object # nicht really reachable
     wenn base is object:
@@ -141,7 +141,7 @@ def _slotnames(cls):
                 fuer name in slots:
                     # special descriptors
                     wenn name in ("__dict__", "__weakref__"):
-                        continue
+                        weiter
                     # mangled names
                     sowenn name.startswith('__') und nicht name.endswith('__'):
                         stripped = c.__name__.lstrip('_')

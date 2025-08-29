@@ -197,7 +197,7 @@ klasse OSEINTRTest(EINTRBaseTest):
         mit kill_on_error(proc):
             os.close(rd)
             written = 0
-            while written < len(data):
+            waehrend written < len(data):
                 written += os.write(wr, memoryview(data)[written:])
             self.assertEqual(proc.wait(), 0)
 
@@ -276,7 +276,7 @@ klasse SocketEINTRTest(EINTRBaseTest):
             '',
             '    received_data = bytearray(data_len)',
             '    n = 0',
-            '    while n < data_len:',
+            '    waehrend n < data_len:',
             '        n += rd.recv_into(memoryview(received_data)[n:])',
             '',
             'if received_data != data:',
@@ -289,7 +289,7 @@ klasse SocketEINTRTest(EINTRBaseTest):
         mit kill_on_error(proc):
             rd.close()
             written = 0
-            while written < len(data):
+            waehrend written < len(data):
                 sent = send_func(wr, memoryview(data)[written:])
                 # sendall() returns Nichts
                 written += len(data) wenn sent is Nichts sonst sent

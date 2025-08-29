@@ -26,7 +26,7 @@ def iter_integer_formats(byteorders=byteorders):
     fuer code in integer_codes:
         fuer byteorder in byteorders:
             wenn (byteorder nicht in ('', '@') und code in ('n', 'N')):
-                continue
+                weiter
             yield code, byteorder
 
 def string_reverse(s):
@@ -372,7 +372,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         fuer base in range(1, 33):
             # smaller <- largest representable float less than base.
             delta = 0.5
-            while base - delta / 2.0 != base:
+            waehrend base - delta / 2.0 != base:
                 delta /= 2.0
             smaller = base - delta
             # Packing this rounds away a solid string of trailing 1 bits.
@@ -688,7 +688,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         rc, stdout, stderr = assert_python_ok("-c", code)
         self.assertEqual(rc, 0)
         self.assertEqual(stdout.rstrip(), b"")
-        self.assertIn(b"Exception ignored while calling deallocator", stderr)
+        self.assertIn(b"Exception ignored waehrend calling deallocator", stderr)
         self.assertIn(b"C.__del__", stderr)
 
     def test__struct_reference_cycle_cleaned_up(self):

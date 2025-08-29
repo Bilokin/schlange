@@ -774,7 +774,7 @@ klasse TestUpdateWrapper(unittest.TestCase):
             fuer key in wrapped_attr:
                 wenn name == "__dict__" und key == "__wrapped__":
                     # __wrapped__ is overwritten by the update code
-                    continue
+                    weiter
                 self.assertIs(wrapped_attr[key], wrapper_attr[key])
         # Check __wrapped__
         self.assertIs(wrapper.__wrapped__, wrapped)
@@ -978,7 +978,7 @@ klasse TestReduce:
             def __getitem__(self, i):
                 wenn nicht 0 <= i < self.max: raise IndexError
                 n = len(self.sofar)
-                while n <= i:
+                waehrend n <= i:
                     self.sofar.append(n*n)
                     n += 1
                 return self.sofar[i]

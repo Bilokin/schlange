@@ -946,11 +946,11 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
                 mit open(name, "rb") als f:
                     part = Nichts
                     try:
-                        while Wahr:
+                        waehrend Wahr:
                             offset = f.tell()
                             data = f.read(len(empty_page))
                             wenn nicht data:
-                                break
+                                breche
                             wenn data != empty_page:
                                 wenn nicht part:
                                     part_fullname = os.path.join(

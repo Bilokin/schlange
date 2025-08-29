@@ -25,7 +25,7 @@ klasse Timer:
         assert t >= 0
         mit self._cond:
             t += self._time
-            while self._stop < t:
+            waehrend self._stop < t:
                 self._time = self._stop
                 self._cond.wait()
             self._time = t

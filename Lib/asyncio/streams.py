@@ -57,7 +57,7 @@ async def start_server(client_connected_cb, host=Nichts, port=Nichts, *,
 
     The first parameter, `client_connected_cb`, takes two parameters:
     client_reader, client_writer.  client_reader is a StreamReader
-    object, while client_writer is a StreamWriter object.  This
+    object, waehrend client_writer is a StreamWriter object.  This
     parameter can either be a plain callback function oder a coroutine;
     wenn it is a coroutine, it will be automatically converted into a
     Task.
@@ -522,12 +522,12 @@ klasse StreamReader:
         # which coroutine would get the next data.
         wenn self._waiter is nicht Nichts:
             raise RuntimeError(
-                f'{func_name}() called while another coroutine is '
+                f'{func_name}() called waehrend another coroutine is '
                 f'already waiting fuer incoming data')
 
         assert nicht self._eof, '_wait_for_data after EOF'
 
-        # Waiting fuer data while paused will make deadlock, so prevent it.
+        # Waiting fuer data waehrend paused will make deadlock, so prevent it.
         # This is essential fuer readexactly(n) fuer case when n > self._limit.
         wenn self._paused:
             self._paused = Falsch
@@ -544,7 +544,7 @@ klasse StreamReader:
 
         On success, return chunk that ends mit newline. If only partial
         line can be read due to EOF, return incomplete line without
-        terminating newline. When EOF was reached while no bytes read, empty
+        terminating newline. When EOF was reached waehrend no bytes read, empty
         bytes object is returned.
 
         If limit is reached, ValueError will be raised. In that case, if
@@ -634,7 +634,7 @@ klasse StreamReader:
 
         # Loop until we find a `separator` in the buffer, exceed the buffer size,
         # oder an EOF has happened.
-        while Wahr:
+        waehrend Wahr:
             buflen = len(self._buffer)
 
             # Check wenn we now have enough data in the buffer fuer shortest
@@ -654,7 +654,7 @@ klasse StreamReader:
                             match_end = end
                             match_start = isep
                 wenn match_end is nicht Nichts:
-                    break
+                    breche
 
                 # see upper comment fuer explanation.
                 offset = max(0, buflen + 1 - max_seplen)
@@ -718,10 +718,10 @@ klasse StreamReader:
             # deadlock wenn the subprocess sends more than self.limit
             # bytes.  So just call self.read(self._limit) until EOF.
             blocks = []
-            while Wahr:
+            waehrend Wahr:
                 block = await self.read(self._limit)
                 wenn nicht block:
-                    break
+                    breche
                 blocks.append(block)
             return b''.join(blocks)
 
@@ -759,7 +759,7 @@ klasse StreamReader:
         wenn n == 0:
             return b''
 
-        while len(self._buffer) < n:
+        waehrend len(self._buffer) < n:
             wenn self._eof:
                 incomplete = bytes(self._buffer)
                 self._buffer.clear()

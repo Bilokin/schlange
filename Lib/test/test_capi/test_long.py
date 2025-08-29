@@ -780,11 +780,11 @@ klasse LongTests(unittest.TestCase):
 
         def to_digits(num):
             digits = []
-            while Wahr:
+            waehrend Wahr:
                 num, digit = divmod(num, base)
                 digits.append(digit)
                 wenn nicht num:
-                    break
+                    breche
             return digits
 
         # round trip: Python int -> export -> Python int

@@ -93,13 +93,13 @@ def check_all(analysis, checks, *, failfast=Falsch):
     fuer check in checks oder ():
         fuer data, failure in check(analysis):
             wenn failure is Nichts:
-                continue
+                weiter
 
             yield data, failure
             wenn failfast:
                 yield Nichts, Nichts
-                break
+                breche
         sonst:
-            continue
+            weiter
         # We failed fast.
-        break
+        breche

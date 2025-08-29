@@ -130,7 +130,7 @@ klasse ReadlineAlikeReader(historical_reader.HistoricalReader, CompletingReader)
         b = self.buffer
         p = self.pos - 1
         completer_delims = self.config.completer_delims
-        while p >= 0 und b[p] nicht in completer_delims:
+        waehrend p >= 0 und b[p] nicht in completer_delims:
             p -= 1
         return "".join(b[p + 1 : self.pos])
 
@@ -141,7 +141,7 @@ klasse ReadlineAlikeReader(historical_reader.HistoricalReader, CompletingReader)
         wenn len(stem) == 0 und self.more_lines is nicht Nichts:
             b = self.buffer
             p = self.pos
-            while p > 0 und b[p - 1] != "\n":
+            waehrend p > 0 und b[p - 1] != "\n":
                 p -= 1
             num_spaces = 4 - ((self.pos - p) % 4)
             return [" " * num_spaces]
@@ -153,13 +153,13 @@ klasse ReadlineAlikeReader(historical_reader.HistoricalReader, CompletingReader)
             except UnicodeEncodeError:
                 pass  # but feed unicode anyway wenn we have no choice
             state = 0
-            while Wahr:
+            waehrend Wahr:
                 try:
                     next = function(stem, state)
                 except Exception:
-                    break
+                    breche
                 wenn nicht isinstance(next, str):
-                    break
+                    breche
                 result.append(next)
                 state += 1
             # emulate the behavior of the standard readline that sorts
@@ -217,7 +217,7 @@ def set_auto_history(_should_auto_add_history: bool) -> Nichts:
 
 def _get_this_line_indent(buffer: list[str], pos: int) -> int:
     indent = 0
-    while pos > 0 und buffer[pos - 1] in " \t":
+    waehrend pos > 0 und buffer[pos - 1] in " \t":
         indent += 1
         pos -= 1
     wenn pos > 0 und buffer[pos - 1] == "\n":
@@ -227,10 +227,10 @@ def _get_this_line_indent(buffer: list[str], pos: int) -> int:
 
 def _get_previous_line_indent(buffer: list[str], pos: int) -> tuple[int, int | Nichts]:
     prevlinestart = pos
-    while prevlinestart > 0 und buffer[prevlinestart - 1] != "\n":
+    waehrend prevlinestart > 0 und buffer[prevlinestart - 1] != "\n":
         prevlinestart -= 1
     prevlinetext = prevlinestart
-    while prevlinetext < pos und buffer[prevlinetext] in " \t":
+    waehrend prevlinetext < pos und buffer[prevlinetext] in " \t":
         prevlinetext += 1
     wenn prevlinetext == pos:
         indent = Nichts
@@ -256,7 +256,7 @@ def _should_auto_indent(buffer: list[str], pos: int) -> bool:
     # check wenn last character before "pos" is a colon, ignoring
     # whitespaces und comments.
     last_char = Nichts
-    while pos > 0:
+    waehrend pos > 0:
         pos -= 1
         wenn last_char is Nichts:
             wenn buffer[pos] nicht in " \t\n#":  # ignore whitespaces und comments
@@ -266,7 +266,7 @@ def _should_auto_indent(buffer: list[str], pos: int) -> bool:
             # original pos, we keep going back until newline is reached
             # to make sure we ignore comments
             wenn buffer[pos] == "\n":
-                break
+                breche
             wenn buffer[pos] == "#":
                 last_char = Nichts
     return last_char == ":"
@@ -287,7 +287,7 @@ klasse maybe_accept(commands.Command):
         ):
             def _newline_before_pos():
                 before_idx = r.pos - 1
-                while before_idx > 0 und text[before_idx].isspace():
+                waehrend before_idx > 0 und text[before_idx].isspace():
                     before_idx -= 1
                 return text[before_idx : r.pos].count("\n") > 0
 
@@ -329,11 +329,11 @@ klasse backspace_dedent(commands.Command):
                 indent = _get_this_line_indent(b, r.pos)
                 wenn indent > 0:
                     ls = r.pos - indent
-                    while ls > 0:
+                    waehrend ls > 0:
                         ls, pi = _get_previous_line_indent(b, ls - 1)
                         wenn pi is nicht Nichts und pi < indent:
                             repeat = indent - pi
-                            break
+                            breche
             r.pos -= repeat
             del b[r.pos : r.pos + repeat]
             r.dirty = Wahr
@@ -517,7 +517,7 @@ klasse _ReadlineWrapper:
         buf = self.get_line_buffer()
         fuer i in range(cursor - 1, -1, -1):
             wenn buf[i] in self.get_completer_delims():
-                break
+                breche
             start = i
         return start, cursor
 

@@ -300,7 +300,7 @@ def summarize(items, *, groupby='kind', includeempty=Wahr, minimize=Nichts):
             wenn subtotals[outer] == 0:
                 del subtotals[outer]
                 del bygroup[outer]
-                continue
+                weiter
 
             fuer inner in inners:
                 wenn bygroup[outer][inner] == 0:
@@ -364,14 +364,14 @@ def _resolve_ignored(ignored):
                     infile = open(filename)
                 except Exception als exc:
                     logger.error(f'ignore file failed: {exc}')
-                    continue
+                    weiter
                 logger.log(1, f'reading ignored names von {filename!r}')
                 mit infile:
                     fuer line in infile:
                         wenn nicht line:
-                            continue
+                            weiter
                         wenn line[0].isspace():
-                            continue
+                            weiter
                         line = line.partition('#')[0].rstrip()
                         wenn line:
                             # XXX Recurse?
@@ -547,7 +547,7 @@ def render_table(items, *,
     total = 0
     fuer group, grouped in collated.items():
         wenn nicht showempty und group nicht in collated:
-            continue
+            weiter
         yield ''
         yield f' === {group} ==='
         yield ''
@@ -592,7 +592,7 @@ def render_full(items, *,
             yield '#' * 25
             yield ''
             wenn nicht grouped:
-                continue
+                weiter
             wenn sort:
                 grouped = sorted(grouped, key=sortkey)
             fuer item in grouped:

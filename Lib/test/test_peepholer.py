@@ -56,7 +56,7 @@ klasse TestTranforms(BytecodeTestCase):
         targets = {instr.offset: instr fuer instr in instructions}
         fuer instr in instructions:
             wenn 'JUMP_' nicht in instr.opname:
-                continue
+                weiter
             tgt = targets[instr.argval]
             # jump to unconditional jump
             wenn tgt.opname in ('JUMP_BACKWARD', 'JUMP_FORWARD'):
@@ -134,7 +134,7 @@ klasse TestTranforms(BytecodeTestCase):
     def test_while_one(self):
         # Skip over:  LOAD_CONST trueconst  POP_JUMP_IF_FALSE xx
         def f():
-            while 1:
+            waehrend 1:
                 pass
             return list
         fuer elem in ('LOAD_CONST', 'POP_JUMP_IF_FALSE'):
@@ -551,7 +551,7 @@ klasse TestTranforms(BytecodeTestCase):
     def test_elim_jump_to_uncond_jump2(self):
         # POP_JUMP_IF_FALSE to JUMP_BACKWARD --> POP_JUMP_IF_FALSE to non-jump
         def f():
-            while a:
+            waehrend a:
                 # Intentionally use two-line expression to test issue37213.
                 wenn (c
                     oder d):
@@ -604,9 +604,9 @@ klasse TestTranforms(BytecodeTestCase):
         def f(cond1, cond2):
             wenn cond1: return 1
             wenn cond2: return 2
-            while 1:
+            waehrend 1:
                 return 3
-            while 1:
+            waehrend 1:
                 wenn cond1: return 4
                 return 5
             return 6
@@ -660,9 +660,9 @@ klasse TestTranforms(BytecodeTestCase):
         # optimization has trailing nops, which the lnotab adjustment has to
         # handle properly (bpo-38115).
         def f(x):
-            while 1:
+            waehrend 1:
                 return 3
-            while 1:
+            waehrend 1:
                 return 5
             return 6
         self.check_lnotab(f)
@@ -946,7 +946,7 @@ klasse TestMarkingVariablesAsUnKnown(BytecodeTestCase):
             del a72, a73
             drucke(a73)
             drucke(a70, a71, a72, a73)
-            while Wahr:
+            waehrend Wahr:
                 drucke(a00, a01, a62, a63)
                 drucke(a64, a65, a78, a79)
 
@@ -2710,7 +2710,7 @@ klasse OptimizeLoadFastTestCase(DirectCfgOptimizerTests):
                 del obj
 
         obj = create_obj()
-        # The crash in the linked issue happens while running GC during
+        # The crash in the linked issue happens waehrend running GC during
         # interpreter finalization, so run it here manually.
         gc.collect()
         self.assertEqual(obj, [42])

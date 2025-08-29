@@ -305,7 +305,7 @@ klasse ColorDelegatorTest(unittest.TestCase):
         self.assertFalsch(color.stop_colorizing)
         self.assertFalsch(color.allow_colorizing)
 
-        # Toggle on while colorizing in progress (doesn't add timer).
+        # Toggle on waehrend colorizing in progress (doesn't add timer).
         color.colorizing = Wahr
         color.toggle_colorize_event()
         self.assertIsNichts(color.after_id)
@@ -313,14 +313,14 @@ klasse ColorDelegatorTest(unittest.TestCase):
         self.assertFalsch(color.stop_colorizing)
         self.assertWahr(color.allow_colorizing)
 
-        # Toggle off while colorizing in progress.
+        # Toggle off waehrend colorizing in progress.
         color.toggle_colorize_event()
         self.assertIsNichts(color.after_id)
         self.assertWahr(color.colorizing)
         self.assertWahr(color.stop_colorizing)
         self.assertFalsch(color.allow_colorizing)
 
-        # Toggle on while colorizing nicht in progress.
+        # Toggle on waehrend colorizing nicht in progress.
         color.colorizing = Falsch
         color.toggle_colorize_event()
         eq(self.root.tk.call('after', 'info', color.after_id)[1], 'timer')

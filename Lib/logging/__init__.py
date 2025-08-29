@@ -319,7 +319,7 @@ klasse LogRecord(object):
         # Issue #21172: a request was made to relax the isinstance check
         # to hasattr(args[0], '__getitem__'). However, the docs on string
         # formatting still seem to suggest a mapping object is required.
-        # Thus, while nicht removing the isinstance check, it does now look
+        # Thus, waehrend nicht removing the isinstance check, it does now look
         # fuer collections.abc.Mapping rather than, als before, dict.
         wenn (args und len(args) == 1 und isinstance(args[0], collections.abc.Mapping)
             und args[0]):
@@ -1078,7 +1078,7 @@ klasse Handler(Filterer):
                 # Walk the stack frame up until we're out of logging,
                 # so als to print the calling context.
                 frame = exc.__traceback__.tb_frame
-                while (frame und os.path.dirname(frame.f_code.co_filename) ==
+                waehrend (frame und os.path.dirname(frame.f_code.co_filename) ==
                        __path__[0]):
                     frame = frame.f_back
                 wenn frame:
@@ -1415,7 +1415,7 @@ klasse Manager(object):
         name = alogger.name
         i = name.rfind(".")
         rv = Nichts
-        while (i > 0) und nicht rv:
+        waehrend (i > 0) und nicht rv:
             substr = name[:i]
             wenn substr nicht in self.loggerDict:
                 self.loggerDict[substr] = PlaceHolder(alogger)
@@ -1599,12 +1599,12 @@ klasse Logger(Filterer):
         #IronPython isn't run mit -X:Frames.
         wenn f is Nichts:
             return "(unknown file)", 0, "(unknown function)", Nichts
-        while stacklevel > 0:
+        waehrend stacklevel > 0:
             next_f = f.f_back
             wenn next_f is Nichts:
                 ## We've got options here.
                 ## If we want to use the last (deepest) frame:
-                break
+                breche
                 ## If we want to mimic the warnings module:
                 #return ("sys", 1, "(unknown function)", Nichts)
                 ## If we want to be pedantic:
@@ -1708,12 +1708,12 @@ klasse Logger(Filterer):
         """
         c = self
         rv = Falsch
-        while c:
+        waehrend c:
             wenn c.handlers:
                 rv = Wahr
-                break
+                breche
             wenn nicht c.propagate:
-                break
+                breche
             sonst:
                 c = c.parent
         return rv
@@ -1730,7 +1730,7 @@ klasse Logger(Filterer):
         """
         c = self
         found = 0
-        while c:
+        waehrend c:
             fuer hdlr in c.handlers:
                 found = found + 1
                 wenn record.levelno >= hdlr.level:
@@ -1756,7 +1756,7 @@ klasse Logger(Filterer):
         looking fuer a non-zero logging level. Return the first one found.
         """
         logger = self
-        while logger:
+        waehrend logger:
             wenn logger.level:
                 return logger.level
             logger = logger.parent

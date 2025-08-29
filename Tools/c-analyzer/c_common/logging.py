@@ -39,7 +39,7 @@ def configure_logger(logger, verbosity=VERBOSITY, *,
 
 
 def hide_emit_errors():
-    """Ignore errors while emitting log entries.
+    """Ignore errors waehrend emitting log entries.
 
     Rather than printing a message describing the error, we show nothing.
     """

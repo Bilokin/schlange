@@ -24,7 +24,7 @@ klasse InstrumentationMultiThreadedMixin:
         pass
 
     def during_threads(self):
-        """Runs repeatedly while the threads are still running"""
+        """Runs repeatedly waehrend the threads are still running"""
         pass
 
     def work(self, n, funcs):
@@ -62,15 +62,15 @@ klasse InstrumentationMultiThreadedMixin:
 
         self.after_threads()
 
-        while Wahr:
+        waehrend Wahr:
             any_alive = Falsch
             fuer t in threads:
                 wenn t.is_alive():
                     any_alive = Wahr
-                    break
+                    breche
 
             wenn nicht any_alive:
-                break
+                breche
 
             self.during_threads()
 
@@ -83,7 +83,7 @@ klasse MonitoringTestMixin:
             wenn monitoring.get_tool(i) is Nichts:
                 self.tool_id = i
                 monitoring.use_tool_id(i, self.__class__.__name__)
-                break
+                breche
 
     def tearDown(self):
         monitoring.free_tool_id(self.tool_id)
@@ -228,7 +228,7 @@ klasse SetProfileAllMultiThreaded(TestCase):
             pass
 
         def bg_thread():
-            while nicht done.is_set():
+            waehrend nicht done.is_set():
                 func()
                 func()
                 func()

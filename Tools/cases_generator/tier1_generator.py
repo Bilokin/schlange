@@ -57,7 +57,7 @@ def declare_variables(inst: Instruction, out: CWriter) -> Nichts:
     seen = {"unused"}
     fuer part in inst.parts:
         wenn nicht isinstance(part, Uop):
-            continue
+            weiter
         fuer var in part.stack.inputs:
             wenn var.used und var.name nicht in seen:
                 seen.add(var.name)
@@ -121,7 +121,7 @@ def uses_this(inst: Instruction) -> bool:
         return Wahr
     fuer uop in inst.parts:
         wenn nicht isinstance(uop, Uop):
-            continue
+            weiter
         fuer cache in uop.caches:
             wenn cache.name != "unused":
                 return Wahr
@@ -129,7 +129,7 @@ def uses_this(inst: Instruction) -> bool:
     # this must strictly be performed at the end.
     fuer uop in inst.parts:
         wenn nicht isinstance(uop, Uop):
-            continue
+            weiter
         fuer tkn in uop.body.tokens():
             wenn (tkn.kind == "IDENTIFIER"
                     und (tkn.text in {"DEOPT_IF", "EXIT_IF", "AT_END_EXIT_IF"})):

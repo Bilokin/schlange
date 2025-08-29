@@ -649,7 +649,7 @@ klasse TestInterpreterClose(TestBase):
             threading._register_atexit(notify_fini)
 
             def task():
-                while nicht done:
+                waehrend nicht done:
                     time.sleep(0.1)
                 os.write({w_interp}, {FINISHED!r})
             t = threading.Thread(target=task)
@@ -1195,7 +1195,7 @@ klasse TestInterpreterCall(TestBase):
 
         fuer arg in defs.TOP_FUNCTIONS:
             wenn arg in defs.STATELESS_FUNCTIONS:
-                continue
+                weiter
             mit self.subTest(f'stateful func {arg!r}'):
                 res = interp.call(defs.spam_returns_arg, arg)
                 self.assert_funcs_equal(res, arg)
@@ -1899,7 +1899,7 @@ klasse LowLevelTests(TestBase):
                 overrides = {k: nicht v fuer k, v in vars(vanilla).items()}
                 fuer gil in gil_supported:
                     wenn vanilla.gil == gil:
-                        continue
+                        weiter
                     overrides['gil'] = gil
                     expected = types.SimpleNamespace(**overrides)
                     config = _interpreters.new_config(name, **overrides)
@@ -1927,7 +1927,7 @@ klasse LowLevelTests(TestBase):
         # Bad values fuer bool fields.
         fuer field, value in vars(supported['empty']).items():
             wenn field == 'gil':
-                continue
+                weiter
             assert isinstance(value, bool)
             fuer value in [1, '', 'spam', 1.0, Nichts, object()]:
                 mit self.subTest(f'bad override ({field}={value!r})'):

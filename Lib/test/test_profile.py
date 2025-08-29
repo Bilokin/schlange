@@ -145,7 +145,7 @@ def regenerate_expected_output(filename, cls):
         fuer line in f:
             newfile.append(line)
             wenn line.startswith('#--cut'):
-                break
+                breche
 
     mit open(filename, 'w') als f:
         f.writelines(newfile)

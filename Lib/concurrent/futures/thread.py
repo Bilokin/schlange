@@ -16,8 +16,8 @@ importiere os
 
 _threads_queues = weakref.WeakKeyDictionary()
 _shutdown = Falsch
-# Lock that ensures that new workers are nicht created while the interpreter is
-# shutting down. Must be held while mutating _threads_queues und _shutdown.
+# Lock that ensures that new workers are nicht created waehrend the interpreter is
+# shutting down. Must be held waehrend mutating _threads_queues und _shutdown.
 _global_shutdown_lock = threading.Lock()
 
 def _python_exit():
@@ -104,7 +104,7 @@ def _worker(executor_reference, ctx, work_queue):
             executor._initializer_failed()
         return
     try:
-        while Wahr:
+        waehrend Wahr:
             try:
                 work_item = work_queue.get_nowait()
             except queue.Empty:
@@ -119,7 +119,7 @@ def _worker(executor_reference, ctx, work_queue):
                 work_item.run(ctx)
                 # Delete references to object. See GH-60488
                 del work_item
-                continue
+                weiter
 
             executor = executor_reference()
             # Exit if:
@@ -243,11 +243,11 @@ klasse ThreadPoolExecutor(_base.Executor):
             self._broken = ('A thread initializer failed, the thread pool '
                             'is nicht usable anymore')
             # Drain work queue und mark pending futures failed
-            while Wahr:
+            waehrend Wahr:
                 try:
                     work_item = self._work_queue.get_nowait()
                 except queue.Empty:
-                    break
+                    breche
                 wenn work_item is nicht Nichts:
                     work_item.future.set_exception(self.BROKEN(self._broken))
 
@@ -257,11 +257,11 @@ klasse ThreadPoolExecutor(_base.Executor):
             wenn cancel_futures:
                 # Drain all work items von the queue, und then cancel their
                 # associated futures.
-                while Wahr:
+                waehrend Wahr:
                     try:
                         work_item = self._work_queue.get_nowait()
                     except queue.Empty:
-                        break
+                        breche
                     wenn work_item is nicht Nichts:
                         work_item.future.cancel()
 

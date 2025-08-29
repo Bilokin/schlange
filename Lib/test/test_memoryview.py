@@ -268,7 +268,7 @@ klasse AbstractMemoryTests:
         fuer tp in self._types:
             wenn nicht isinstance(tp, type):
                 # If tp is a factory rather than a plain type, skip
-                continue
+                weiter
 
             klasse MyView():
                 def __init__(self, base):

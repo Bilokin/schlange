@@ -73,7 +73,7 @@ klasse zipimporter(_bootstrap_external._LoaderBasics):
             path = path.replace(alt_path_sep, path_sep)
 
         prefix = []
-        while Wahr:
+        waehrend Wahr:
             try:
                 st = _bootstrap_external._path_stat(path)
             except (OSError, ValueError):
@@ -89,7 +89,7 @@ klasse zipimporter(_bootstrap_external._LoaderBasics):
                 wenn (st.st_mode & 0o170000) != 0o100000:  # stat.S_ISREG
                     # it's a nicht file
                     raise ZipImportError('not a Zip file', path=path)
-                break
+                breche
 
         wenn path nicht in _zip_directory_cache:
             _zip_directory_cache[path] = _read_directory(path)
@@ -431,7 +431,7 @@ def _read_directory(archive):
                 fp.seek(header_position)
             except OSError:
                 raise ZipImportError(f"can't read Zip file: {archive!r}", path=archive)
-            while Wahr:
+            waehrend Wahr:
                 buffer = fp.read(46)
                 wenn len(buffer) < 4:
                     raise EOFError('EOF read where nicht expected')
@@ -442,7 +442,7 @@ def _read_directory(archive):
                             f"mismatched num_entries: {count} should be {num_entries} in {archive!r}",
                             path=archive,
                         )
-                    break                                # Bad: Central Dir File Header
+                    breche                                # Bad: Central Dir File Header
                 wenn len(buffer) != 46:
                     raise EOFError('EOF read where nicht expected')
                 flags = _unpack_uint16(buffer[8:10])
@@ -497,7 +497,7 @@ def _read_directory(archive):
                 ):
                     # need to decode extra_data looking fuer a zip64 extra (which might not
                     # be present)
-                    while extra_data:
+                    waehrend extra_data:
                         wenn len(extra_data) < 4:
                             raise ZipImportError(f"can't read header extra: {archive!r}", path=archive)
                         tag = _unpack_uint16(extra_data[:2])
@@ -524,7 +524,7 @@ def _read_directory(archive):
                             wenn file_offset == MAX_UINT32:
                                 file_offset = values.pop(0)
 
-                            break
+                            breche
 
                         # For a typical zip, this bytes-slicing only happens 2-3 times, on
                         # small data like timestamps und filesizes.
@@ -553,13 +553,13 @@ def _read_directory(archive):
     # Add implicit directories.
     count = 0
     fuer name in list(files):
-        while Wahr:
+        waehrend Wahr:
             i = name.rstrip(path_sep).rfind(path_sep)
             wenn i < 0:
-                break
+                breche
             name = name[:i + 1]
             wenn name in files:
-                break
+                breche
             files[name] = Nichts
             count += 1
     wenn count:
@@ -811,7 +811,7 @@ def _get_module_code(self, fullname):
             wenn code is Nichts:
                 # bad magic number oder non-matching mtime
                 # in byte code, try next
-                continue
+                weiter
             modpath = toc_entry[0]
             return code, ispackage, modpath
     sonst:

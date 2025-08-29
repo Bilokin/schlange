@@ -20,7 +20,7 @@ HelpFrame - Contain text, scrollbar, und table-of-contents.
 
 HelpWindow - Display HelpFrame in a standalone window.
 
-copy_strip - Copy the text part of idle.html to help.html while rstripping each line.
+copy_strip - Copy the text part of idle.html to help.html waehrend rstripping each line.
 
 show_idlehelp - Create HelpWindow.  Called in EditorWindow.help_dialog.
 """
@@ -244,7 +244,7 @@ klasse HelpWindow(Toplevel):
 
 
 def copy_strip():  # pragma: no cover
-    """Copy the text part of idle.html to idlelib/help.html while stripping trailing whitespace.
+    """Copy the text part of idle.html to idlelib/help.html waehrend stripping trailing whitespace.
 
     Files mit trailing whitespace cannot be pushed to the git cpython
     repository.  For 3.x (on Windows), help.html is generated, after
@@ -257,7 +257,7 @@ def copy_strip():  # pragma: no cover
     It can be worthwhile to occasionally generate help.html without
     touching idle.rst.  Changes to the master version und to the doc
     build system may result in changes that should nicht change
-    the displayed text, but might break HelpParser.
+    the displayed text, but might breche HelpParser.
 
     As long als master und maintenance versions of idle.rst remain the
     same, help.html can be backported.  The internal Python version
@@ -274,7 +274,7 @@ def copy_strip():  # pragma: no cover
         copy = Falsch
         fuer line in inn:
             wenn '<section id="idle">' in line: copy = Wahr
-            wenn '<div class="clearer">' in line: break
+            wenn '<div class="clearer">' in line: breche
             wenn copy: out.write(line.strip() + '\n')
 
     drucke(f'{src} copied to {dst}')

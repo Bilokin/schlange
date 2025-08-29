@@ -60,7 +60,7 @@ klasse TestAbstractAsyncContextManager(unittest.TestCase):
         g = gen()
         async fuer val in g:
             self.assertEqual(val, 11)
-            break
+            breche
         await g.aclose()
 
     def test_exit_is_abstract(self):

@@ -87,7 +87,7 @@ klasse TestInteractiveConsole(unittest.TestCase, MockSys):
         self.console.interact()
         fuer call in list(self.stdout.method_calls):
             wenn 'antioch' in ''.join(call[1]):
-                break
+                breche
         sonst:
             raise AssertionError("no console stdout")
 

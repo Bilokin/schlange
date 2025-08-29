@@ -109,7 +109,7 @@ klasse SourceInfo:
         sonst:
             wenn self._nested:
                 self._replace('', start, fixnested=Wahr)
-                #raise Exception('cannot advance while nesting')
+                #raise Exception('cannot advance waehrend nesting')
             sonst:
                 self._clear(start)
 

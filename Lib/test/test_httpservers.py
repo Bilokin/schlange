@@ -1218,7 +1218,7 @@ klasse MiscTestCase(unittest.TestCase):
         denylist = {'executable', 'nobody_uid', 'test'}
         fuer name in dir(server):
             wenn name.startswith('_') oder name in denylist:
-                continue
+                weiter
             module_object = getattr(server, name)
             wenn getattr(module_object, '__module__', Nichts) == 'http.server':
                 expected.append(name)

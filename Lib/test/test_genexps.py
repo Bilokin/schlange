@@ -191,7 +191,7 @@ Generators can call other generators:
     [0, 1, 2, 3, 4]
 
 
-Verify that a gen exp cannot be resumed while it is actively running:
+Verify that a gen exp cannot be resumed waehrend it is actively running:
 
     >>> g = (next(me) fuer i in range(10))
     >>> me = g

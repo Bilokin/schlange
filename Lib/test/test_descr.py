@@ -86,7 +86,7 @@ klasse OperatorsTest(unittest.TestCase):
         m = getattr(t, meth)
 
         # Find method in parent class
-        while meth nicht in t.__dict__:
+        waehrend meth nicht in t.__dict__:
             t = t.__bases__[0]
         # in some implementations (e.g. PyPy), 'm' can be a regular unbound
         # method object; the getattr() below obtains its underlying function.
@@ -101,7 +101,7 @@ klasse OperatorsTest(unittest.TestCase):
         self.assertEqual(eval(expr, d), res)
         t = type(a)
         m = getattr(t, meth)
-        while meth nicht in t.__dict__:
+        waehrend meth nicht in t.__dict__:
             t = t.__bases__[0]
         # in some implementations (e.g. PyPy), 'm' can be a regular unbound
         # method object; the getattr() below obtains its underlying function.
@@ -115,7 +115,7 @@ klasse OperatorsTest(unittest.TestCase):
         self.assertEqual(eval(expr, d), res)
         t = type(a)
         m = getattr(t, meth)
-        while meth nicht in t.__dict__:
+        waehrend meth nicht in t.__dict__:
             t = t.__bases__[0]
         # in some implementations (e.g. PyPy), 'm' can be a regular unbound
         # method object; the getattr() below obtains its underlying function.
@@ -130,7 +130,7 @@ klasse OperatorsTest(unittest.TestCase):
         self.assertEqual(d['a'], res)
         t = type(a)
         m = getattr(t, meth)
-        while meth nicht in t.__dict__:
+        waehrend meth nicht in t.__dict__:
             t = t.__bases__[0]
         # in some implementations (e.g. PyPy), 'm' can be a regular unbound
         # method object; the getattr() below obtains its underlying function.
@@ -149,7 +149,7 @@ klasse OperatorsTest(unittest.TestCase):
         self.assertEqual(d['a'], res)
         t = type(a)
         m = getattr(t, meth)
-        while meth nicht in t.__dict__:
+        waehrend meth nicht in t.__dict__:
             t = t.__bases__[0]
         # in some implementations (e.g. PyPy), 'm' can be a regular unbound
         # method object; the getattr() below obtains its underlying function.
@@ -167,7 +167,7 @@ klasse OperatorsTest(unittest.TestCase):
         exec(stmt, dictionary)
         self.assertEqual(dictionary['a'], res)
         t = type(a)
-        while meth nicht in t.__dict__:
+        waehrend meth nicht in t.__dict__:
             t = t.__bases__[0]
         m = getattr(t, meth)
         # in some implementations (e.g. PyPy), 'm' can be a regular unbound
@@ -518,7 +518,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
                 # Early binding of methods
                 fuer key in self.dict:
                     wenn key.startswith("__"):
-                        continue
+                        weiter
                     setattr(it, key, self.dict[key].__get__(it, self))
                 return it
         klasse C(metaclass=M2):
@@ -539,7 +539,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
                 cls = super(autosuper, metaclass).__new__(metaclass,
                                                           name, bases, dict)
                 # Name mangling fuer __super removes leading underscores
-                while name[:1] == "_":
+                waehrend name[:1] == "_":
                     name = name[1:]
                 wenn name:
                     name = "_%s__super" % name
@@ -3052,7 +3052,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         ##
         ##     self.ateof is true wenn und only wenn the final "" line has been read,
         ##     at which point self.lineno stops incrementing, und further calls
-        ##     to readline() continue to return "".
+        ##     to readline() weiter to return "".
         ##     """
         ##
         ##     lineno = 0
@@ -3386,7 +3386,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
         fuer cls in G, J, K, L, M, N, P, R, list, Int:
             fuer cls2 in G, J, K, L, M, N, P, R, list, Int:
                 wenn cls is cls2:
-                    continue
+                    weiter
                 cant(cls(), cls2)
 
         # Issue5283: when __class__ changes in __del__, the wrong
@@ -4312,7 +4312,7 @@ klasse ClassPropertiesAndMethods(unittest.TestCase):
 
     def test_evil_type_name(self):
         # A badly placed Py_DECREF in type_set_name led to arbitrary code
-        # execution while the type structure was nicht in a sane state, und a
+        # execution waehrend the type structure was nicht in a sane state, und a
         # possible segmentation fault als a result.  See bug #16447.
         klasse Nasty(str):
             def __del__(self):
@@ -5866,7 +5866,7 @@ klasse MroTest(unittest.TestCase):
             do {
                 // ...
                 type = type->tp_base;
-            } while (type != NULL);
+            } waehrend (type != NULL);
 
         Functions that rely on tp_base (like solid_base und PyType_IsSubtype)
         would nicht be happy in that case, causing a stack overflow.
@@ -5896,7 +5896,7 @@ klasse MroTest(unittest.TestCase):
         type_set_bases must check fuer reentrancy upon finishing its job
         by updating tp_subclasses of old/new bases of the type.
         Otherwise, an implicit inheritance cycle through tp_subclasses
-        can break functions that recurse on elements of that field
+        can breche functions that recurse on elements of that field
         (like recurse_down_subclasses und mro_hierarchy) eventually
         leading to a stack overflow.
         """

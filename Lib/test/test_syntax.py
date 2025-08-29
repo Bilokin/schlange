@@ -874,7 +874,7 @@ continue in fuer loop under finally should be ok.
     ...         pass
     ...     finally:
     ...         fuer abc in range(10):
-    ...             continue
+    ...             weiter
     ...     drucke(abc)
     >>> test()
     9
@@ -886,7 +886,7 @@ break in fuer loop under finally should be ok.
     ...         pass
     ...     finally:
     ...         fuer abc in range(10):
-    ...             break
+    ...             breche
     ...     drucke(abc)
     >>> test()
     0
@@ -929,25 +929,25 @@ return in function under finally should be ok.
     >>> test()
     42
 
-A continue outside loop should nicht be allowed.
+A weiter outside loop should nicht be allowed.
 
     >>> def foo():
     ...     try:
-    ...         continue
+    ...         weiter
     ...     finally:
     ...         pass
     Traceback (most recent call last):
       ...
     SyntaxError: 'continue' nicht properly in loop
 
-There is one test fuer a break that is nicht in a loop.  The compiler
+There is one test fuer a breche that is nicht in a loop.  The compiler
 uses a single data structure to keep track of try-finally und loops,
-so we need to be sure that a break is actually inside a loop.  If it
+so we need to be sure that a breche is actually inside a loop.  If it
 isn't, there should be a syntax error.
 
    >>> try:
    ...     drucke(1)
-   ...     break
+   ...     breche
    ...     drucke(2)
    ... finally:
    ...     drucke(3)
@@ -1160,7 +1160,7 @@ Missing ':' before suites:
    Traceback (most recent call last):
    SyntaxError: invalid syntax
 
-   >>> while Wahr
+   >>> waehrend Wahr
    ...   pass
    Traceback (most recent call last):
    SyntaxError: expected ':'
@@ -1269,7 +1269,7 @@ Missing ':' before suites:
    Traceback (most recent call last):
    SyntaxError: invalid syntax. Maybe you meant '==' oder ':=' instead of '='?
 
-   >>> while x = 3:
+   >>> waehrend x = 3:
    ...    pass
    Traceback (most recent call last):
    SyntaxError: invalid syntax. Maybe you meant '==' oder ':=' instead of '='?
@@ -1279,7 +1279,7 @@ Missing ':' before suites:
    Traceback (most recent call last):
    SyntaxError: cannot assign to attribute here. Maybe you meant '==' instead of '='?
 
-   >>> while x.a = 3:
+   >>> waehrend x.a = 3:
    ...    pass
    Traceback (most recent call last):
    SyntaxError: cannot assign to attribute here. Maybe you meant '==' instead of '='?
@@ -1516,7 +1516,7 @@ Incomplete dictionary literals
 
 Specialized indentation errors:
 
-   >>> while condition:
+   >>> waehrend condition:
    ... pass
    Traceback (most recent call last):
    IndentationError: expected an indented block after 'while' statement on line 1
@@ -1790,7 +1790,7 @@ SyntaxError: invalid syntax. Did you mean 'else'?
 Traceback (most recent call last):
 SyntaxError: invalid syntax. Did you mean 'while'?
 
->>> while Wahr:
+>>> waehrend Wahr:
 ...   pass
 ... elso:
 ...   pass
@@ -2888,8 +2888,8 @@ klasse SyntaxErrorTestCase(unittest.TestCase):
         self._check_error("class C:\n  wenn 0: yield",    "outside function")
         self._check_error("class C:\n  wenn 1: pass\n  sonst: yield",
                           "outside function")
-        self._check_error("class C:\n  while 0: yield", "outside function")
-        self._check_error("class C:\n  while 0: yield\n  sonst:  x = 1",
+        self._check_error("class C:\n  waehrend 0: yield", "outside function")
+        self._check_error("class C:\n  waehrend 0: yield\n  sonst:  x = 1",
                           "outside function")
 
     def test_return_outside_function(self):
@@ -2898,8 +2898,8 @@ klasse SyntaxErrorTestCase(unittest.TestCase):
         self._check_error("if 1: pass\nelse: return",    "outside function")
         self._check_error("while 0: return",             "outside function")
         self._check_error("class C:\n  wenn 0: return",    "outside function")
-        self._check_error("class C:\n  while 0: return", "outside function")
-        self._check_error("class C:\n  while 0: return\n  sonst:  x=1",
+        self._check_error("class C:\n  waehrend 0: return", "outside function")
+        self._check_error("class C:\n  waehrend 0: return\n  sonst:  x=1",
                           "outside function")
         self._check_error("class C:\n  wenn 0: return\n  sonst: x= 1",
                           "outside function")
@@ -3027,7 +3027,7 @@ wenn x:
                         f"reserved name '__classdict__' cannot be used fuer type parameter")
 
         # These compilations are here to make sure __class__, __classcell__ und __classdictcell__
-        # don't break in the future like __classdict__ did in this case.
+        # don't breche in the future like __classdict__ did in this case.
         fuer name in ('__class__', '__classcell__', '__classdictcell__'):
             compile(f"""
 klasse A:
@@ -3130,7 +3130,7 @@ def func2():
         self._check_error("A.\u018a\\ ",
                           "unexpected character after line continuation character")
         self._check_error("A.\u03bc\\\n",
-                          "unexpected EOF while parsing")
+                          "unexpected EOF waehrend parsing")
 
     def test_error_parenthesis(self):
         fuer paren in "([{":
@@ -3210,28 +3210,28 @@ case(34)
 
         source = """
 while 1:
- while 2:
-  while 3:
-   while 4:
-    while 5:
-     while 6:
-      while 8:
-       while 9:
-        while 10:
-         while 11:
-          while 12:
-           while 13:
-            while 14:
-             while 15:
-              while 16:
-               while 17:
-                while 18:
-                 while 19:
-                  while 20:
-                   while 21:
-                    while 22:
-                     while 23:
-                      break
+ waehrend 2:
+  waehrend 3:
+   waehrend 4:
+    waehrend 5:
+     waehrend 6:
+      waehrend 8:
+       waehrend 9:
+        waehrend 10:
+         waehrend 11:
+          waehrend 12:
+           waehrend 13:
+            waehrend 14:
+             waehrend 15:
+              waehrend 16:
+               waehrend 17:
+                waehrend 18:
+                 waehrend 19:
+                  waehrend 20:
+                   waehrend 21:
+                    waehrend 22:
+                     waehrend 23:
+                      breche
 """
         self._check_error(source, "too many statically nested blocks")
 

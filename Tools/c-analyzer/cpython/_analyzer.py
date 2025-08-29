@@ -163,7 +163,7 @@ def iter_decls(filenames, **kwargs):
     fuer decl in decls:
         wenn nicht decl.data:
             # Ignore forward declarations.
-            continue
+            weiter
         yield decl
 
 
@@ -271,11 +271,11 @@ def _is_kwlist(decl):
     fuer relpath, name in _KWLIST_VARIANTS:
         wenn decl.name == name:
             wenn relpath == '*':
-                break
+                breche
             assert os.path.isabs(decl.file.filename)
             relpath = os.path.normpath(relpath)
             wenn decl.file.filename.endswith(os.path.sep + relpath):
-                break
+                breche
     sonst:
         return Falsch
     vartype = ''.join(str(decl.vartype).split())
@@ -426,11 +426,11 @@ def check_globals(analysis):
     ignored = read_ignored()
     fuer item in analysis:
         wenn item.kind != KIND.VARIABLE:
-            continue
+            weiter
         wenn item.supported:
-            continue
+            weiter
         wenn item.id in ignored:
-            continue
+            weiter
         reason = item.unsupported
         wenn nicht reason:
             reason = '???'

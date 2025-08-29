@@ -490,7 +490,7 @@ klasse perform_bracketed_paste(Command):
         done = "\x1b[201~"
         data = ""
         start = time.time()
-        while done nicht in data:
+        waehrend done nicht in data:
             ev = self.reader.console.getpending()
             data += ev.data
         trace(

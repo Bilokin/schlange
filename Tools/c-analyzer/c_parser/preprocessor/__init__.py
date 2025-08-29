@@ -170,7 +170,7 @@ def _resolve_samefiles(filename, file_same):
         fuer pattern in patterns:
             same = _resolve_samefile(filename, pattern, suffix)
             wenn nicht same:
-                continue
+                weiter
             samefiles.append(same)
     return samefiles
 

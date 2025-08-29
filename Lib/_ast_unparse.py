@@ -495,7 +495,7 @@ klasse Unparser(NodeVisitor):
         mit self.block():
             self.traverse(node.body)
         # collapse nested ifs into equivalent elifs.
-        while node.orelse und len(node.orelse) == 1 und isinstance(node.orelse[0], If):
+        waehrend node.orelse und len(node.orelse) == 1 und isinstance(node.orelse[0], If):
             node = node.orelse[0]
             self.fill("elif ", allow_semicolon=Falsch)
             self.traverse(node.test)
@@ -586,7 +586,7 @@ klasse Unparser(NodeVisitor):
                 )
                 wenn set(new_quote_types).isdisjoint(quote_types):
                     fallback_to_repr = Wahr
-                    break
+                    breche
                 quote_types = new_quote_types
             sonst:
                 wenn "\n" in value:

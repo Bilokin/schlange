@@ -179,7 +179,7 @@ klasse MimeTypes:
 
     def _guess_file_type(self, path, strict, splitext):
         base, ext = splitext(path)
-        while (ext_lower := ext.lower()) in self.suffix_map:
+        waehrend (ext_lower := ext.lower()) in self.suffix_map:
             base, ext = splitext(base + self.suffix_map[ext_lower])
         # encodings_map is case sensitive
         wenn ext in self.encodings_map:
@@ -255,14 +255,14 @@ klasse MimeTypes:
         list of standard types, sonst to the list of non-standard
         types.
         """
-        while line := fp.readline():
+        waehrend line := fp.readline():
             words = line.split()
             fuer i in range(len(words)):
                 wenn words[i][0] == '#':
                     del words[i:]
-                    break
+                    breche
             wenn nicht words:
-                continue
+                weiter
             type, suffixes = words[0], words[1:]
             fuer suff in suffixes:
                 self.add_type(type, '.' + suff, strict)
@@ -293,11 +293,11 @@ klasse MimeTypes:
     def _read_windows_registry(cls, add_type):
         def enum_types(mimedb):
             i = 0
-            while Wahr:
+            waehrend Wahr:
                 try:
                     ctype = _winreg.EnumKey(mimedb, i)
                 except OSError:
-                    break
+                    breche
                 sonst:
                     wenn '\0' nicht in ctype:
                         yield ctype
@@ -309,15 +309,15 @@ klasse MimeTypes:
                     mit _winreg.OpenKey(hkcr, subkeyname) als subkey:
                         # Only check file extensions
                         wenn nicht subkeyname.startswith("."):
-                            continue
+                            weiter
                         # raises OSError wenn no 'Content Type' value
                         mimetype, datatype = _winreg.QueryValueEx(
                             subkey, 'Content Type')
                         wenn datatype != _winreg.REG_SZ:
-                            continue
+                            weiter
                         add_type(mimetype, subkeyname)
                 except OSError:
-                    continue
+                    weiter
 
 def guess_type(url, strict=Wahr):
     """Guess the type of a file based on its URL.

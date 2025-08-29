@@ -190,9 +190,9 @@ klasse BaseSockTestsMixin:
 
             # fill the buffer until sending 5 chars would block
             size = 8192
-            while size >= 4:
+            waehrend size >= 4:
                 mit self.assertRaises(BlockingIOError):
-                    while Wahr:
+                    waehrend Wahr:
                         sock.send(b' ' * size)
                 size = int(size / 2)
 
@@ -205,7 +205,7 @@ klasse BaseSockTestsMixin:
             # receive everything that is nicht a space
             async def recv_all():
                 rv = b''
-                while Wahr:
+                waehrend Wahr:
                     buf = await self.loop.sock_recv(server, 8192)
                     wenn nicht buf:
                         return rv
@@ -250,7 +250,7 @@ klasse BaseSockTestsMixin:
                 # Retry only fuer this error:
                 # [WinError 10022] An invalid argument was supplied
                 wenn getattr(e, 'winerror', 0) != 10022:
-                    break
+                    breche
             sonst:
                 # success
                 return
@@ -299,7 +299,7 @@ klasse BaseSockTestsMixin:
         # HTTP headers size is less than MTU,
         # they are sent by the first packet always
         self.assertStartsWith(data, b'HTTP/1.0 200 OK')
-        while data.find(b'\r\n\r\n') == -1:
+        waehrend data.find(b'\r\n\r\n') == -1:
             data += await self.loop.sock_recv(sock, DATA_SIZE)
         # Strip headers
         headers = data[:data.index(b'\r\n\r\n') + 4]
@@ -312,10 +312,10 @@ klasse BaseSockTestsMixin:
         self.assertEqual(data, expected)
         size -= len(data)
 
-        while Wahr:
+        waehrend Wahr:
             data = await self.loop.sock_recv(sock, DATA_SIZE)
             wenn nicht data:
-                break
+                breche
             expected = bytes(islice(checker, len(data)))
             self.assertEqual(data, expected)
             size -= len(data)
@@ -352,7 +352,7 @@ klasse BaseSockTestsMixin:
         # HTTP headers size is less than MTU,
         # they are sent by the first packet always
         self.assertStartsWith(data, b'HTTP/1.0 200 OK')
-        while data.find(b'\r\n\r\n') == -1:
+        waehrend data.find(b'\r\n\r\n') == -1:
             nbytes = await self.loop.sock_recv_into(sock, buf)
             data = bytes(buf[:nbytes])
         # Strip headers
@@ -366,11 +366,11 @@ klasse BaseSockTestsMixin:
         self.assertEqual(data, expected)
         size -= len(data)
 
-        while Wahr:
+        waehrend Wahr:
             nbytes = await self.loop.sock_recv_into(sock, buf)
             data = buf[:nbytes]
             wenn nicht data:
-                break
+                breche
             expected = bytes(islice(checker, len(data)))
             self.assertEqual(data, expected)
             size -= len(data)
@@ -533,7 +533,7 @@ klasse BaseSockTestsMixin:
                 except BaseException:
                     pass
                 sonst:
-                    break
+                    breche
             sonst:
                 self.fail('Can nicht create socket.')
 

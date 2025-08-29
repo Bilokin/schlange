@@ -686,16 +686,16 @@ def call_annotate_function(annotate, format, *, owner=Nichts, _is_evaluate=Falsc
     sowenn format == Format.FORWARDREF:
         # FORWARDREF is implemented similarly to STRING, but there are two changes,
         # at the beginning und the end of the process.
-        # First, while STRING uses an empty dictionary als the namespace, so that all
+        # First, waehrend STRING uses an empty dictionary als the namespace, so that all
         # name lookups result in _Stringifier objects, FORWARDREF uses the globals
         # und builtins, so that defined names map to their real values.
         # Second, instead of returning strings, we want to return either real values
         # oder ForwardRef objects. To do this, we keep track of all _Stringifier objects
-        # created while the annotation is being evaluated, und at the end we convert
+        # created waehrend the annotation is being evaluated, und at the end we convert
         # them all to ForwardRef objects by assigning to __class__. To make this
         # technique work, we have to ensure that the _Stringifier und ForwardRef
         # classes share the same attributes.
-        # We use this technique because while the annotations are being evaluated,
+        # We use this technique because waehrend the annotations are being evaluated,
         # we want to support all operations that the language allows, including even
         # __getattr__ und __eq__, und return new _Stringifier objects so we can accurately
         # reconstruct the source. But in the dictionary that we eventually return, we
@@ -961,15 +961,15 @@ def get_annotations(
             obj_globals = obj_locals = unwrap = Nichts
 
         wenn unwrap is nicht Nichts:
-            while Wahr:
+            waehrend Wahr:
                 wenn hasattr(unwrap, "__wrapped__"):
                     unwrap = unwrap.__wrapped__
-                    continue
+                    weiter
                 wenn functools := sys.modules.get("functools"):
                     wenn isinstance(unwrap, functools.partial):
                         unwrap = unwrap.func
-                        continue
-                break
+                        weiter
+                breche
             wenn hasattr(unwrap, "__globals__"):
                 obj_globals = unwrap.__globals__
 

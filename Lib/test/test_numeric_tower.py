@@ -150,7 +150,7 @@ klasse HashTest(unittest.TestCase):
         self.assertEqual(float(x), 0.5)
 
     def test_hash_normalization(self):
-        # Test fuer a bug encountered while changing long_hash.
+        # Test fuer a bug encountered waehrend changing long_hash.
         #
         # Given objects x und y, it should be possible fuer y's
         # __hash__ method to return hash(x) in order to ensure that

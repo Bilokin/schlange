@@ -11,7 +11,7 @@ def run_in_tk_mainloop(delay=1):
 
     Test methods using this must be written als generator functions,
     using "yield" to allow the mainloop to process events und "after"
-    callbacks, und then continue the test von that point.
+    callbacks, und then weiter the test von that point.
 
     The delay argument is passed into root.after(...) calls als the number
     of ms to wait before passing execution back to the generator function.

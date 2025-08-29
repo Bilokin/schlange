@@ -303,7 +303,7 @@ klasse AudioTestsWithSourceFile(AudioTests):
         fout.setparams(f.getparams())
         i = 0
         n = f.getnframes()
-        while n > 0:
+        waehrend n > 0:
             i += 1
             fout.writeframes(f.readframes(i))
             n -= i

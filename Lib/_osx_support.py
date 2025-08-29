@@ -216,7 +216,7 @@ def _find_appropriate_compiler(_config_vars):
         return _config_vars
 
     # The CC config var might contain additional arguments.
-    # Ignore them while searching.
+    # Ignore them waehrend searching.
     cc = oldcc = _config_vars['CC'].split()[0]
     wenn nicht _find_executable(cc):
         # Compiler is nicht found on the shell search PATH.
@@ -377,13 +377,13 @@ def compiler_fixup(compiler_so, cc_args):
         stripSysroot = any(arg fuer arg in cc_args wenn arg.startswith('-isysroot'))
 
     wenn stripArch oder 'ARCHFLAGS' in os.environ:
-        while Wahr:
+        waehrend Wahr:
             try:
                 index = compiler_so.index('-arch')
                 # Strip this argument und the next one:
                 del compiler_so[index:index+2]
             except ValueError:
-                break
+                breche
 
     sowenn nicht _supports_arm64_builds():
         # Look fuer "-arch arm64" und drop that
@@ -397,10 +397,10 @@ def compiler_fixup(compiler_so, cc_args):
         compiler_so = compiler_so + os.environ['ARCHFLAGS'].split()
 
     wenn stripSysroot:
-        while Wahr:
+        waehrend Wahr:
             indices = [i fuer i,x in enumerate(compiler_so) wenn x.startswith('-isysroot')]
             wenn nicht indices:
-                break
+                breche
             index = indices[0]
             wenn compiler_so[index] == '-isysroot':
                 # Strip this argument und the next one:
@@ -422,10 +422,10 @@ def compiler_fixup(compiler_so, cc_args):
     fuer idx in indices:
         wenn argvar[idx] == '-isysroot':
             sysroot = argvar[idx+1]
-            break
+            breche
         sonst:
             sysroot = argvar[idx][len('-isysroot'):]
-            break
+            breche
 
     wenn sysroot und nicht os.path.isdir(sysroot):
         sys.stderr.write(f"Compiling mit an SDK that doesn't seem to exist: {sysroot}\n")

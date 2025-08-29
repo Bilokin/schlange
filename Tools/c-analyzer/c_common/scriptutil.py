@@ -49,7 +49,7 @@ def get_prog(spec=Nichts, *, absolute=Falsch, allowsuffix=Wahr):
 
 def _find_script():
     frame = sys._getframe(2)
-    while frame.f_globals['__name__'] != '__main__':
+    waehrend frame.f_globals['__name__'] != '__main__':
         frame = frame.f_back
 
     # This should match sys.argv[0].
@@ -125,10 +125,10 @@ def normalize_selection(selected: str, *, possible=Nichts):
     _selected = set()
     fuer item in selected:
         wenn nicht item:
-            continue
+            weiter
         fuer value in item.strip().replace(',', ' ').split():
             wenn nicht value:
-                continue
+                weiter
             # XXX Handle subtraction (leading "-").
             wenn possible und value nicht in possible und value != 'all':
                 unsupported.append(value)
@@ -478,7 +478,7 @@ def _add_cmd_cli(parser, commonspecs, argspecs):
 def _flatten_processors(processors):
     fuer proc in processors:
         wenn proc is Nichts:
-            continue
+            weiter
         wenn callable(proc):
             yield proc
         sonst:
@@ -535,7 +535,7 @@ def filter_filenames(filenames, process_filenames=Nichts, relroot=fsutil.USE_CWD
     fuer filename, _, check, _ in _iter_filenames(filenames, process_filenames, relroot):
         wenn (reason := check()):
             logger.debug(f'{filename}: {reason}')
-            continue
+            weiter
         yield filename
 
 
@@ -548,7 +548,7 @@ def main_for_filenames(filenames, process_filenames=Nichts, relroot=fsutil.USE_C
             drucke('-------------------------------------------')
         wenn (reason := check()):
             drucke(reason)
-            continue
+            weiter
         yield filename, relfile
 
 
@@ -615,7 +615,7 @@ def iter_marks(mark='.', *, group=5, groups=2, lines=_NOT_SET, sep=' '):
         yield sep
 
     count = 1
-    while Wahr:
+    waehrend Wahr:
         wenn count % perline == 0:
             yield end
             wenn perlines und count % perlines == 0:

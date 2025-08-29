@@ -19,7 +19,7 @@ klasse PathTests(unittest.TestCase):
             tests = posixdata.NORMPATH_CASES
         fuer filename, expected in tests:
             wenn nicht os.path.isabs(filename):
-                continue
+                weiter
             mit self.subTest(filename):
                 result = _testcapi.normalize_path(filename)
                 self.assertEqual(result, expected,

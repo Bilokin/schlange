@@ -819,14 +819,14 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
     async def test_cancelled_wakeup(self):
         # Test that a task cancelled at the "same" time als it is woken
         # up als part of a Condition.notify() does nicht result in a lost wakeup.
-        # This test simulates a cancel while the target task is awaiting initial
+        # This test simulates a cancel waehrend the target task is awaiting initial
         # wakeup on the wakeup queue.
         condition = asyncio.Condition()
         state = 0
         async def consumer():
             nonlocal state
             async mit condition:
-                while Wahr:
+                waehrend Wahr:
                     await condition.wait_for(lambda: state != 0)
                     wenn state < 0:
                         return
@@ -841,7 +841,7 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
             state += 1
             condition.notify(1)
 
-            # Cancel it while it is awaiting to be run.
+            # Cancel it waehrend it is awaiting to be run.
             # This cancellation could come von the outside
             c[0].cancel()
 
@@ -863,14 +863,14 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
     async def test_cancelled_wakeup_relock(self):
         # Test that a task cancelled at the "same" time als it is woken
         # up als part of a Condition.notify() does nicht result in a lost wakeup.
-        # This test simulates a cancel while the target task is acquiring the lock
+        # This test simulates a cancel waehrend the target task is acquiring the lock
         # again.
         condition = asyncio.Condition()
         state = 0
         async def consumer():
             nonlocal state
             async mit condition:
-                while Wahr:
+                waehrend Wahr:
                     await condition.wait_for(lambda: state != 0)
                     wenn state < 0:
                         return
@@ -889,7 +889,7 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
             # settle on re-aquiring the lock
             await asyncio.sleep(0)
 
-            # Cancel it while awaiting the lock
+            # Cancel it waehrend awaiting the lock
             # This cancel could come the outside.
             c[0].cancel()
 

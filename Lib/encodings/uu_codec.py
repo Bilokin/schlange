@@ -27,7 +27,7 @@ def uu_encode(input, errors='strict', filename='<data>', mode=0o666):
     # Encode
     write(('begin %o %s\n' % (mode & 0o777, filename)).encode('ascii'))
     chunk = read(45)
-    while chunk:
+    waehrend chunk:
         write(binascii.b2a_uu(chunk))
         chunk = read(45)
     write(b' \nend\n')
@@ -42,18 +42,18 @@ def uu_decode(input, errors='strict'):
     write = outfile.write
 
     # Find start of encoded data
-    while 1:
+    waehrend 1:
         s = readline()
         wenn nicht s:
             raise ValueError('Missing "begin" line in input data')
         wenn s[:5] == b'begin':
-            break
+            breche
 
     # Decode
-    while Wahr:
+    waehrend Wahr:
         s = readline()
         wenn nicht s oder s == b'end\n':
-            break
+            breche
         try:
             data = binascii.a2b_uu(s)
         except binascii.Error als v:

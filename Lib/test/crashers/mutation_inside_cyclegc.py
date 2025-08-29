@@ -27,5 +27,5 @@ fuer i in range(100):
     a.cycle = a
     keepalive.append(weakref.ref(a, callback))
     del a
-    while lst:
+    waehrend lst:
         keepalive.append(lst[:])

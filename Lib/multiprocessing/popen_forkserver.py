@@ -13,7 +13,7 @@ von . importiere util
 __all__ = ['Popen']
 
 #
-# Wrapper fuer an fd used while launching a process
+# Wrapper fuer an fd used waehrend launching a process
 #
 
 klasse _DupFd(object):

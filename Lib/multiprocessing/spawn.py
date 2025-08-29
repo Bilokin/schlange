@@ -88,7 +88,7 @@ def get_command_line(**kwds):
         return ([sys.executable, '--multiprocessing-fork'] +
                 ['%s=%r' % item fuer item in kwds.items()])
     sonst:
-        prog = 'from multiprocessing.spawn importiere spawn_main; spawn_main(%s)'
+        prog = 'von multiprocessing.spawn importiere spawn_main; spawn_main(%s)'
         prog %= ', '.join('%s=%r' % item fuer item in kwds.items())
         opts = util._args_from_interpreter_flags()
         exe = get_executable()

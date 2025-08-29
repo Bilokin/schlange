@@ -968,7 +968,7 @@ klasse MockNTNamespace(dict):
 
     def add_known_dir(self, path):
         p = path.rstrip("\\").casefold()
-        while p:
+        waehrend p:
             self._dirs.add(p)
             p = p.rpartition("\\")[0]
 
@@ -1145,7 +1145,7 @@ klasse MockPosixNamespace(dict):
 
     def add_known_dir(self, path):
         p = path.rstrip("/")
-        while p:
+        waehrend p:
             self._dirs.add(p)
             p = p.rpartition("/")[0]
 
@@ -1225,10 +1225,10 @@ def diff_dict(before, after, prefix="global"):
     diff = []
     fuer k in sorted(before):
         wenn k[:2] == "__":
-            continue
+            weiter
         wenn k == "config":
             diff_dict(before[k], after[k], prefix="config")
-            continue
+            weiter
         wenn k in after und after[k] != before[k]:
             diff.append((k, before[k], after[k]))
     wenn nicht diff:
@@ -1249,14 +1249,14 @@ def dump_dict(before, after, prefix="global"):
     max_k = max(len(k) fuer k in after)
     fuer k, v in sorted(after.items(), key=lambda i: i[0]):
         wenn k[:2] == "__":
-            continue
+            weiter
         wenn k == "config":
             dump_dict(before[k], after[k], prefix="config")
-            continue
+            weiter
         try:
             wenn v != before[k]:
                 drucke("{}.{} {!r} (was {!r})".format(prefix, k.ljust(max_k), v, before[k]))
-                continue
+                weiter
         except KeyError:
             pass
         drucke("{}.{} {!r}".format(prefix, k.ljust(max_k), v))

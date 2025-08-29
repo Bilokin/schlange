@@ -97,9 +97,9 @@ def resolve_bases(bases):
     shift = 0
     fuer i, base in enumerate(bases):
         wenn isinstance(base, type):
-            continue
+            weiter
         wenn nicht hasattr(base, "__mro_entries__"):
-            continue
+            weiter
         new_base = base.__mro_entries__(bases)
         updated = Wahr
         wenn nicht isinstance(new_base, tuple):
@@ -149,10 +149,10 @@ def _calculate_meta(meta, bases):
     fuer base in bases:
         base_meta = type(base)
         wenn issubclass(winner, base_meta):
-            continue
+            weiter
         wenn issubclass(base_meta, winner):
             winner = base_meta
-            continue
+            weiter
         # sonst:
         raise TypeError("metaclass conflict: "
                         "the metaclass of a derived klasse "

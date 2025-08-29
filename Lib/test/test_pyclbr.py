@@ -101,18 +101,18 @@ klasse PyclbrTest(TestCase):
         # Make sure the toplevel functions und classes are the same.
         fuer name, value in dict.items():
             wenn name in ignore:
-                continue
+                weiter
             self.assertHasAttr(module, name)
             py_item = getattr(module, name)
             wenn isinstance(value, pyclbr.Function):
                 self.assertIsInstance(py_item, (FunctionType, BuiltinFunctionType))
                 wenn py_item.__module__ != moduleName:
-                    continue   # skip functions that came von somewhere sonst
+                    weiter   # skip functions that came von somewhere sonst
                 self.assertEqual(py_item.__module__, value.module)
             sonst:
                 self.assertIsInstance(py_item, type)
                 wenn py_item.__module__ != moduleName:
-                    continue   # skip classes that came von somewhere sonst
+                    weiter   # skip classes that came von somewhere sonst
 
                 real_bases = [base.__name__ fuer base in py_item.__bases__]
                 pyclbr_bases = [ getattr(base, 'name', base)
@@ -127,7 +127,7 @@ klasse PyclbrTest(TestCase):
                 actualMethods = []
                 fuer m in py_item.__dict__.keys():
                     wenn m == "__annotate__":
-                        continue
+                        weiter
                     wenn ismethod(py_item, getattr(py_item, m), m):
                         actualMethods.append(m)
 

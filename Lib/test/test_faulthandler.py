@@ -134,7 +134,7 @@ klasse FaultHandlerTests(unittest.TestCase):
             regex.append("Python runtime state: initialized")
         regex.append('')
         wenn all_threads_disabled und nicht py_fatal_error:
-            regex.append("<Cannot show all threads while the GIL is disabled>")
+            regex.append("<Cannot show all threads waehrend the GIL is disabled>")
         regex.append(fr'{header}')
         wenn support.Py_GIL_DISABLED und py_fatal_error und nicht know_current_thread:
             regex.append("  <tstate is freed>")

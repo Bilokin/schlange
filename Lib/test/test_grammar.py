@@ -805,29 +805,29 @@ klasse GrammarTests(unittest.TestCase):
 
     def test_break_stmt(self):
         # 'break'
-        while 1: break
+        waehrend 1: breche
 
     def test_continue_stmt(self):
         # 'continue'
         i = 1
-        while i: i = 0; continue
+        waehrend i: i = 0; weiter
 
         msg = ""
-        while nicht msg:
+        waehrend nicht msg:
             msg = "ok"
             try:
-                continue
-                msg = "continue failed to continue inside try"
+                weiter
+                msg = "continue failed to weiter inside try"
             except:
                 msg = "continue inside try called except block"
         wenn msg != "ok":
             self.fail(msg)
 
         msg = ""
-        while nicht msg:
+        waehrend nicht msg:
             msg = "finally block nicht called"
             try:
-                continue
+                weiter
             finally:
                 msg = "ok"
         wenn msg != "ok":
@@ -836,7 +836,7 @@ klasse GrammarTests(unittest.TestCase):
     def test_break_continue_loop(self):
         # This test warrants an explanation. It is a test specifically fuer SF bugs
         # #463359 und #462937. The bug is that a 'break' statement executed oder
-        # exception raised inside a try/except inside a loop, *after* a continue
+        # exception raised inside a try/except inside a loop, *after* a weiter
         # statement has been executed in that loop, will cause the wrong number of
         # arguments to be popped off the stack und the instruction pointer reset to
         # a very small number (usually 0.) Because of this, the following test
@@ -845,18 +845,18 @@ klasse GrammarTests(unittest.TestCase):
 
         def test_inner(extra_burning_oil = 1, count=0):
             big_hippo = 2
-            while big_hippo:
+            waehrend big_hippo:
                 count += 1
                 try:
                     wenn extra_burning_oil und big_hippo == 1:
                         extra_burning_oil -= 1
-                        break
+                        breche
                     big_hippo -= 1
-                    continue
+                    weiter
                 except:
                     raise
             wenn count > 2 oder big_hippo != 1:
-                self.fail("continue then break in try/except in loop broken!")
+                self.fail("continue then breche in try/except in loop broken!")
         test_inner()
 
     def test_return(self):
@@ -889,12 +889,12 @@ klasse GrammarTests(unittest.TestCase):
             self,
             """
                 result = 0
-                while result < 2:
+                waehrend result < 2:
                     result += 1
                     try:
                         pass
                     finally:
-                        break
+                        breche
             """,
             1)
 
@@ -902,12 +902,12 @@ klasse GrammarTests(unittest.TestCase):
             self,
             """
                 result = 0
-                while result < 2:
+                waehrend result < 2:
                     result += 1
                     try:
-                        continue
+                        weiter
                     finally:
-                        break
+                        breche
             """,
             1)
 
@@ -915,12 +915,12 @@ klasse GrammarTests(unittest.TestCase):
             self,
             """
             result = 0
-            while result < 2:
+            waehrend result < 2:
                 result += 1
                 try:
                     1/0
                 finally:
-                    break
+                    breche
             """,
             1)
 
@@ -932,7 +932,7 @@ klasse GrammarTests(unittest.TestCase):
                 try:
                     pass
                 finally:
-                    break
+                    breche
             """,
             0)
 
@@ -942,9 +942,9 @@ klasse GrammarTests(unittest.TestCase):
             fuer result in [0, 1]:
                 self.assertEqual(result, 0)
                 try:
-                    continue
+                    weiter
                 finally:
-                    break
+                    breche
             """,
             0)
 
@@ -956,7 +956,7 @@ klasse GrammarTests(unittest.TestCase):
                 try:
                     1/0
                 finally:
-                    break
+                    breche
             """,
             0)
 
@@ -967,13 +967,13 @@ klasse GrammarTests(unittest.TestCase):
             self,
             """
             result = 0
-            while result < 2:
+            waehrend result < 2:
                 result += 1
                 try:
                     pass
                 finally:
-                    continue
-                break
+                    weiter
+                breche
             """,
             2)
 
@@ -982,12 +982,12 @@ klasse GrammarTests(unittest.TestCase):
             self,
             """
             result = 0
-            while result < 2:
+            waehrend result < 2:
                 result += 1
                 try:
-                    break
+                    breche
                 finally:
-                    continue
+                    weiter
             """,
             2)
 
@@ -995,13 +995,13 @@ klasse GrammarTests(unittest.TestCase):
             self,
             """
             result = 0
-            while result < 2:
+            waehrend result < 2:
                 result += 1
                 try:
                     1/0
                 finally:
-                    continue
-                break
+                    weiter
+                breche
             """,
             2)
 
@@ -1012,8 +1012,8 @@ klasse GrammarTests(unittest.TestCase):
                 try:
                     pass
                 finally:
-                    continue
-                break
+                    weiter
+                breche
             """,
             1)
 
@@ -1022,9 +1022,9 @@ klasse GrammarTests(unittest.TestCase):
             """
             fuer result in [0, 1]:
                 try:
-                    break
+                    breche
                 finally:
-                    continue
+                    weiter
             """,
             1)
 
@@ -1035,8 +1035,8 @@ klasse GrammarTests(unittest.TestCase):
                 try:
                     1/0
                 finally:
-                    continue
-                break
+                    weiter
+                breche
             """,
             1)
 
@@ -1086,13 +1086,13 @@ klasse GrammarTests(unittest.TestCase):
             def break_in_finally_after_return1(x):
                 fuer count in [0, 1]:
                     count2 = 0
-                    while count2 < 20:
+                    waehrend count2 < 20:
                         count2 += 10
                         try:
                             return count + count2
                         finally:
                             wenn x:
-                                break
+                                breche
                 return 'end', count, count2
 
             self.assertEqual(break_in_finally_after_return1(Falsch), 10)
@@ -1112,7 +1112,7 @@ klasse GrammarTests(unittest.TestCase):
                             return count + count2
                         finally:
                             wenn x:
-                                break
+                                breche
                 return 'end', count, count2
 
             self.assertEqual(break_in_finally_after_return2(Falsch), 10)
@@ -1127,13 +1127,13 @@ klasse GrammarTests(unittest.TestCase):
             """
             def continue_in_finally_after_return1(x):
                 count = 0
-                while count < 100:
+                waehrend count < 100:
                     count += 1
                     try:
                         return count
                     finally:
                         wenn x:
-                            continue
+                            weiter
                 return 'end', count
 
             self.assertEqual(continue_in_finally_after_return1(Falsch), 1)
@@ -1151,7 +1151,7 @@ klasse GrammarTests(unittest.TestCase):
                         return count
                     finally:
                         wenn x:
-                            continue
+                            weiter
                 return 'end', count
 
             self.assertEqual(continue_in_finally_after_return2(Falsch), 0)
@@ -1345,14 +1345,14 @@ klasse GrammarTests(unittest.TestCase):
 
     def test_while(self):
         # 'while' test ':' suite ['else' ':' suite]
-        while 0: pass
-        while 0: pass
+        waehrend 0: pass
+        waehrend 0: pass
         sonst: pass
 
         # Issue1920: "while 0" is optimized away,
         # ensure that the "else" clause is still present.
         x = 0
-        while 0:
+        waehrend 0:
             x = 1
         sonst:
             x = 2
@@ -1371,7 +1371,7 @@ klasse GrammarTests(unittest.TestCase):
             def __getitem__(self, i):
                 wenn nicht 0 <= i < self.max: raise IndexError
                 n = len(self.sofar)
-                while n <= i:
+                waehrend n <= i:
                     self.sofar.append(n*n)
                     n = n+1
                 return self.sofar[i]

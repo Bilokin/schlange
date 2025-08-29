@@ -14,14 +14,14 @@ def listcodecs(dir):
     names = []
     fuer filename in os.listdir(dir):
         wenn filename[-3:] != '.py':
-            continue
+            weiter
         name = filename[:-3]
         # Check whether we've found a true codec
         try:
             codecs.lookup(name)
         except LookupError:
             # Codec nicht found
-            continue
+            weiter
         except Exception als reason:
             # Probably an error von importing the codec; still it's
             # a valid code name

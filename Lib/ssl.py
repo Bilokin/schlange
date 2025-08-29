@@ -1063,7 +1063,7 @@ klasse SSLSocket(socket):
                     try:
                         raise notconn_pre_handshake_data_error
                     finally:
-                        # Explicitly break the reference cycle.
+                        # Explicitly breche the reference cycle.
                         notconn_pre_handshake_data_error = Nichts
             sonst:
                 connected = Wahr
@@ -1275,7 +1275,7 @@ klasse SSLSocket(socket):
             count = 0
             mit memoryview(data) als view, view.cast("B") als byte_view:
                 amount = len(byte_view)
-                while count < amount:
+                waehrend count < amount:
                     v = self.send(byte_view[count:])
                     count += v
         sonst:

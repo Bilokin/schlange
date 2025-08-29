@@ -744,7 +744,7 @@ klasse CalculationTests(unittest.TestCase):
                                     "year")
         test_helper((1978, 10, 23), "randomly chosen date")
         test_helper((2004, 12, 18), "randomly chosen date")
-        test_helper((1978, 10, 23), "year starting und ending on Monday while "
+        test_helper((1978, 10, 23), "year starting und ending on Monday waehrend "
                                         "date nicht on Sunday oder Monday")
         test_helper((1917, 12, 17), "year starting und ending on Monday mit "
                                         "a Monday nicht at the beginning oder end "
@@ -825,7 +825,7 @@ klasse CacheTests(unittest.TestCase):
         except KeyError:
             pass
         bogus_key = 0
-        while len(_strptime._regex_cache) <= _strptime._CACHE_MAX_SIZE:
+        waehrend len(_strptime._regex_cache) <= _strptime._CACHE_MAX_SIZE:
             _strptime._regex_cache[bogus_key] = Nichts
             bogus_key += 1
         _strptime._strptime_time("10 2004", "%d %Y")
@@ -853,7 +853,7 @@ klasse CacheTests(unittest.TestCase):
                 second_time_re = _strptime._TimeRE_cache
                 # They should nicht be equal.
                 self.assertIsNot(first_time_re, second_time_re)
-            # Possible test locale is nicht supported while initial locale is.
+            # Possible test locale is nicht supported waehrend initial locale is.
             # If this is the case just suppress the exception und fall-through
             # to the resetting to the original locale.
             except locale.Error:

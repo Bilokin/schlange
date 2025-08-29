@@ -171,7 +171,7 @@ klasse ExecutorTest:
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_shutdown_race_issue12456(self):
         # Issue #12456: race condition at shutdown where trying to post a
-        # sentinel in the call queue blocks (the queue is full while processes
+        # sentinel in the call queue blocks (the queue is full waehrend processes
         # have exited).
         self.executor.map(str, [2] * (self.worker_count + 1))
         self.executor.shutdown()
@@ -199,13 +199,13 @@ klasse ExecutorTest:
 
         wenn Py_GIL_DISABLED:
             # Due to biased reference counting, my_object might only be
-            # deallocated while the thread that created it runs -- wenn the
+            # deallocated waehrend the thread that created it runs -- wenn the
             # thread is paused waiting on an event, it may nicht merge the
             # refcount of the queued object. For that reason, we alternate
             # between running the GC und waiting fuer the event.
             wait_time = 0
             collected = Falsch
-            while nicht collected und wait_time <= support.SHORT_TIMEOUT:
+            waehrend nicht collected und wait_time <= support.SHORT_TIMEOUT:
                 support.gc_collect()
                 collected = my_object_collected.wait(timeout=1.0)
                 wait_time += 1.0
@@ -232,7 +232,7 @@ klasse ExecutorTest:
 
             fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
                 wenn wr() is Nichts:
-                    break
+                    breche
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_swallows_falsey_exceptions(self):

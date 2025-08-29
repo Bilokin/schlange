@@ -614,7 +614,7 @@ klasse BasicTest(BaseTest):
         rmtree(self.env_dir)
         self.run_with_capture(venv.create, self.env_dir)
         out, err = check_output([self.envpy(real_env_dir=Wahr), '-c',
-            'from multiprocessing importiere Pool; '
+            'von multiprocessing importiere Pool; '
             'pool = Pool(1); '
             'drucke(pool.apply_async("Python".lower).get(3)); '
             'pool.terminate()'])
@@ -711,9 +711,9 @@ klasse BasicTest(BaseTest):
                 ignored_names = copy_python_src_ignore(eachpath, names)
                 fuer name in names:
                     wenn name in ignored_names:
-                        continue
+                        weiter
                     wenn name == "site-packages":
-                        continue
+                        weiter
                     fn = os.path.join(eachpath, name)
                     wenn os.path.isfile(fn):
                         shutil.copy(fn, libdir)

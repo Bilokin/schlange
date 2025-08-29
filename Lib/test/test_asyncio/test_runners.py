@@ -172,7 +172,7 @@ klasse RunTests(BaseTest):
             pass
 
         async def fidget():
-            while Wahr:
+            waehrend Wahr:
                 yield 1
                 await asyncio.sleep(1)
 
@@ -429,7 +429,7 @@ klasse RunnerTests(BaseTest):
 
         async def coro():
             mit self.assertRaises(asyncio.CancelledError):
-                while Wahr:
+                waehrend Wahr:
                     await asyncio.sleep(0)
             raise asyncio.CancelledError()
 

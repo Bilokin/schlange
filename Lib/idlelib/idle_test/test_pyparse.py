@@ -104,7 +104,7 @@ klasse PyParseTest(unittest.TestCase):
         # The non-continuation def line returns 44 (see below).
         eq(start(is_char_in_string=lambda index: index < pos), Nichts)
 
-        # Code without extra line break in def line - mostly returns the same
+        # Code without extra line breche in def line - mostly returns the same
         # values.
         setcode('"""This is a module docstring"""\n'
                 'class C:\n'
@@ -165,7 +165,7 @@ klasse PyParseTest(unittest.TestCase):
             TestInfo('"This is a complete string."\n', [0, 1], NONE),
             TestInfo('"This is an incomplete string.\n', [0, 1], NONE),
             TestInfo("'This is more incomplete.\n\n", [0, 1, 2], NONE),
-            # Comment (backslash does nicht continue comments).
+            # Comment (backslash does nicht weiter comments).
             TestInfo('# Comment\\\n', [0, 1], NONE),
             # Brackets.
             TestInfo('("""Complete string in bracket"""\n', [0, 1], BRACKET),

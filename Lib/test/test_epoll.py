@@ -196,7 +196,7 @@ klasse TestEPoll(unittest.TestCase):
             then = time.monotonic()
             self.assertFalsch(then - now > 0.01)
             wenn len(events) >= 2:
-                break
+                breche
 
         expected = [(client.fileno(), select.EPOLLIN | select.EPOLLOUT),
                     (server.fileno(), select.EPOLLIN | select.EPOLLOUT)]

@@ -70,9 +70,9 @@ def verify_wheel(package_name: str) -> bool:
     expected_digest = ""
     fuer release_info in release_files:
         wenn package_path.name != release_info["filename"]:
-            continue
+            weiter
         expected_digest = release_info["digests"].get("sha256", "")
-        break
+        breche
     sonst:
         print_error(package_path, f"No digest fuer {package_name} found von PyPI.")
         return Falsch

@@ -61,7 +61,7 @@ wenn os.name == "nt":
             wenn os.path.isfile(fname):
                 return fname
             wenn fname.lower().endswith(".dll"):
-                continue
+                weiter
             fname = fname + ".dll"
             wenn os.path.isfile(fname):
                 return fname
@@ -106,7 +106,7 @@ wenn os.name == "nt":
         process = _get_current_process()
         space_needed = wintypes.DWORD()
         n = 1024
-        while Wahr:
+        waehrend Wahr:
             modules = (wintypes.HMODULE * n)()
             wenn nicht _enum_process_modules(process,
                                          modules,
@@ -136,7 +136,7 @@ sowenn os.name == "posix" und sys.platform in {"darwin", "ios", "tvos", "watchos
             try:
                 return _dyld_find(name)
             except ValueError:
-                continue
+                weiter
         return Nichts
 
     # Listing loaded libraries on Apple systems relies on the following API:
@@ -232,7 +232,7 @@ sowenn os.name == "posix":
             # some files that are linker scripts und nicht actual
             # shared objects. See bpo-41976 fuer more details
             wenn nicht _is_elf(file):
-                continue
+                weiter
             return os.fsdecode(file)
 
 
@@ -284,7 +284,7 @@ sowenn os.name == "posix":
             parts = libname.split(b".")
             nums = []
             try:
-                while parts:
+                waehrend parts:
                     nums.insert(0, int(parts.pop()))
             except ValueError:
                 pass
@@ -405,7 +405,7 @@ sowenn os.name == "posix":
                     # some files that are linker scripts und nicht actual
                     # shared objects. See bpo-41976 fuer more details
                     wenn nicht _is_elf(file):
-                        continue
+                        weiter
                     return os.fsdecode(file)
             except Exception:
                 pass  # result will be Nichts

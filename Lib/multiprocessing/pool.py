@@ -109,16 +109,16 @@ def worker(inqueue, outqueue, initializer=Nichts, initargs=(), maxtasks=Nichts,
         initializer(*initargs)
 
     completed = 0
-    while maxtasks is Nichts oder (maxtasks und completed < maxtasks):
+    waehrend maxtasks is Nichts oder (maxtasks und completed < maxtasks):
         try:
             task = get()
         except (EOFError, OSError):
             util.debug('worker got EOFError oder OSError -- exiting')
-            break
+            breche
 
         wenn task is Nichts:
             util.debug('worker got sentinel -- exiting')
-            break
+            breche
 
         job, i, func, args, kwds = task
         try:
@@ -131,7 +131,7 @@ def worker(inqueue, outqueue, initializer=Nichts, initargs=(), maxtasks=Nichts,
             put((job, i, result))
         except Exception als e:
             wrapped = MaybeEncodingError(e, result[1])
-            util.debug("Possible encoding error while sending result: %s" % (
+            util.debug("Possible encoding error waehrend sending result: %s" % (
                 wrapped))
             put((job, i, (Falsch, wrapped)))
 
@@ -500,7 +500,7 @@ klasse Pool(object):
     @staticmethod
     def _wait_for_updates(sentinels, change_notifier, timeout=Nichts):
         wait(sentinels, timeout=timeout)
-        while nicht change_notifier.empty():
+        waehrend nicht change_notifier.empty():
             change_notifier.get()
 
     @classmethod
@@ -512,7 +512,7 @@ klasse Pool(object):
 
         # Keep maintaining workers until the cache gets drained, unless the pool
         # is terminated.
-        while thread._state == RUN oder (cache und thread._state != TERMINATE):
+        waehrend thread._state == RUN oder (cache und thread._state != TERMINATE):
             cls._maintain_pool(ctx, Process, processes, pool, inqueue,
                                outqueue, initializer, initargs,
                                maxtasksperchild, wrap_exception)
@@ -535,7 +535,7 @@ klasse Pool(object):
                 fuer task in taskseq:
                     wenn thread._state != RUN:
                         util.debug('task handler found thread._state != RUN')
-                        break
+                        breche
                     try:
                         put(task)
                     except Exception als e:
@@ -549,8 +549,8 @@ klasse Pool(object):
                         util.debug('doing set_length()')
                         idx = task[1] wenn task sonst -1
                         set_length(idx + 1)
-                    continue
-                break
+                    weiter
+                breche
             finally:
                 task = taskseq = job = Nichts
         sonst:
@@ -574,7 +574,7 @@ klasse Pool(object):
     def _handle_results(outqueue, get, cache):
         thread = threading.current_thread()
 
-        while 1:
+        waehrend 1:
             try:
                 task = get()
             except (OSError, EOFError):
@@ -584,11 +584,11 @@ klasse Pool(object):
             wenn thread._state != RUN:
                 assert thread._state == TERMINATE, "Thread nicht in TERMINATE"
                 util.debug('result handler found thread._state=TERMINATE')
-                break
+                breche
 
             wenn task is Nichts:
                 util.debug('result handler got sentinel')
-                break
+                breche
 
             job, i, obj = task
             try:
@@ -597,7 +597,7 @@ klasse Pool(object):
                 pass
             task = job = obj = Nichts
 
-        while cache und thread._state != TERMINATE:
+        waehrend cache und thread._state != TERMINATE:
             try:
                 task = get()
             except (OSError, EOFError):
@@ -606,7 +606,7 @@ klasse Pool(object):
 
             wenn task is Nichts:
                 util.debug('result handler ignoring extra sentinel')
-                continue
+                weiter
             job, i, obj = task
             try:
                 cache[job]._set(i, obj)
@@ -622,7 +622,7 @@ klasse Pool(object):
             try:
                 fuer i in range(10):
                     wenn nicht outqueue._reader.poll():
-                        break
+                        breche
                     get()
             except (OSError, EOFError):
                 pass
@@ -633,7 +633,7 @@ klasse Pool(object):
     @staticmethod
     def _get_tasks(func, it, size):
         it = iter(it)
-        while 1:
+        waehrend 1:
             x = tuple(itertools.islice(it, size))
             wenn nicht x:
                 return
@@ -673,7 +673,7 @@ klasse Pool(object):
         # task_handler may be blocked trying to put items on inqueue
         util.debug('removing tasks von inqueue until task handler finished')
         inqueue._rlock.acquire()
-        while task_handler.is_alive() und inqueue._reader.poll():
+        waehrend task_handler.is_alive() und inqueue._reader.poll():
             inqueue._reader.recv()
             time.sleep(0)
 
@@ -879,7 +879,7 @@ klasse IMapIterator(object):
             wenn self._index == i:
                 self._items.append(obj)
                 self._index += 1
-                while self._index in self._unsorted:
+                waehrend self._index in self._unsorted:
                     obj = self._unsorted.pop(self._index)
                     self._items.append(obj)
                     self._index += 1
@@ -946,7 +946,7 @@ klasse ThreadPool(Pool):
     def _help_stuff_finish(inqueue, task_handler, size):
         # drain inqueue, und put sentinels at its head to make workers finish
         try:
-            while Wahr:
+            waehrend Wahr:
                 inqueue.get(block=Falsch)
         except queue.Empty:
             pass

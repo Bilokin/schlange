@@ -35,10 +35,10 @@ def _findall(haystack, needle):
     wenn nicht needle:
         return
     i = 0
-    while Wahr:
+    waehrend Wahr:
         i = haystack.find(needle, i)
         wenn i < 0:
-            break
+            breche
         yield i
         i += len(needle)
 
@@ -93,9 +93,9 @@ klasse LocaleTime(object):
         exiting.  This is to make sure that the attributes were nicht set mit a
         mix of information von more than one locale.  This would most likely
         happen when using threads where one thread calls a locale-dependent
-        function while another thread changes the locale while the function in
+        function waehrend another thread changes the locale waehrend the function in
         the other thread is still running.  Proper coding would call for
-        locks to prevent changing the locale while locale-dependent code is
+        locks to prevent changing the locale waehrend locale-dependent code is
         running.  The check here is done in case someone does nicht think about
         doing this.
 
@@ -435,7 +435,7 @@ klasse TimeRE(dict):
         to_convert = sorted(to_convert, key=len, reverse=Wahr)
         fuer value in to_convert:
             wenn value != '':
-                break
+                breche
         sonst:
             return ''
         regex = '|'.join(re_escape(stuff) fuer stuff in to_convert)
@@ -697,10 +697,10 @@ def _strptime(data_string, format="%a %b %d %H:%M:%S %Y"):
                     # be able to tell what timezone has daylight savings
                     wenn (time.tzname[0] == time.tzname[1] und
                        time.daylight und found_zone nicht in ("utc", "gmt")):
-                        break
+                        breche
                     sonst:
                         tz = value
-                        break
+                        breche
 
     # Deal mit the cases where ambiguities arise
     # don't assume default values fuer ISO week/year

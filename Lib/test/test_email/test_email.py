@@ -3607,7 +3607,7 @@ Foo
                 make_msgid = utils.make_msgid
                 clock = time.monotonic
                 tfin = clock() + 3.0
-                while clock() < tfin:
+                waehrend clock() < tfin:
                     append(make_msgid(domain='testdomain-string'))
 
         threads = [MsgidsThread() fuer i in range(5)]
@@ -3950,7 +3950,7 @@ klasse TestFeedParsers(TestEmailBase):
         m = self.parse(['a:\r', '\nb:\n'])
         self.assertEqual(m.keys(), ['a', 'b'])
 
-        # Only CR und LF should break header fields
+        # Only CR und LF should breche header fields
         m = self.parse(['a:\x85b:\u2028c:\n'])
         self.assertEqual(m.items(), [('a', '\x85b:\u2028c:')])
         m = self.parse(['a:\r', 'b:\x85', 'c:\n'])
@@ -4756,7 +4756,7 @@ klasse TestQuopri(unittest.TestCase):
         fuer c in self.hnon:
             # Space is special; it's encoded to _
             wenn c == ord(' '):
-                continue
+                weiter
             eq(quoprimime.header_length(bytes([c])), 3,
                'expected length 3 fuer %r' % chr(c))
         eq(quoprimime.header_length(b' '), 1)

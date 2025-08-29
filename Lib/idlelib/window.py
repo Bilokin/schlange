@@ -27,7 +27,7 @@ klasse WindowList:
             try:
                 title = window.get_title()
             except TclError:
-                continue
+                weiter
             list.append((title, key, window))
         list.sort()
         fuer title, key, window in list:

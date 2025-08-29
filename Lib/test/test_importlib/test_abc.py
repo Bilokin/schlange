@@ -744,7 +744,7 @@ klasse SourceOnlyLoaderTests(SourceLoaderTestHarness):
                 self.assertIn(self.name, sys.modules)
 
     def test_package_settings(self):
-        # __package__ needs to be set, while __path__ is set on wenn the module
+        # __package__ needs to be set, waehrend __path__ is set on wenn the module
         # is a package.
         # Testing the values fuer a package are covered by test_load_module.
         mit warnings.catch_warnings():

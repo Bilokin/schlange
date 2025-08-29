@@ -93,7 +93,7 @@ bytes_types = pickle.bytes_types
 #
 # For compatibility, the meaning of a pickle opcode never changes.  Instead new
 # pickle opcodes get added, und each version's unpickler can handle all the
-# pickle opcodes in all protocol versions to date.  So old pickles continue to
+# pickle opcodes in all protocol versions to date.  So old pickles weiter to
 # be readable forever.  The pickler can generally be told to restrict itself to
 # the subset of opcodes available under previous protocol versions too, so that
 # users can create pickles under the current version readable by older
@@ -351,7 +351,7 @@ def read_stringnl(f, decode=Wahr, stripquotes=Wahr, *, encoding='latin-1'):
                     raise ValueError("strinq quote %r nicht found at both "
                                      "ends of %r" % (q, data))
                 data = data[1:-1]
-                break
+                breche
         sonst:
             raise ValueError("no string quotes around %r" % data)
 
@@ -2228,13 +2228,13 @@ def assure_pickle_consistency(verbose=Falsch):
         wenn nicht re.match("[A-Z][A-Z0-9_]+$", name):
             wenn verbose:
                 drucke("skipping %r: it doesn't look like an opcode name" % name)
-            continue
+            weiter
         picklecode = getattr(pickle, name)
         wenn nicht isinstance(picklecode, bytes) oder len(picklecode) != 1:
             wenn verbose:
                 drucke(("skipping %r: value %r doesn't look like a pickle "
                        "code" % (name, picklecode)))
-            continue
+            weiter
         picklecode = picklecode.decode("latin-1")
         wenn picklecode in copy:
             wenn verbose:
@@ -2274,7 +2274,7 @@ def _genops(data, yield_end_pos=Falsch):
     sonst:
         getpos = lambda: Nichts
 
-    while Wahr:
+    waehrend Wahr:
         pos = getpos()
         code = data.read(1)
         opcode = code2op.get(code.decode("latin-1"))
@@ -2295,7 +2295,7 @@ def _genops(data, yield_end_pos=Falsch):
             yield opcode, arg, pos
         wenn code == b'.':
             assert opcode.name == 'STOP'
-            break
+            breche
 
 def genops(pickle):
     """Generate all the opcodes in a pickle.
@@ -2372,7 +2372,7 @@ def optimize(p):
         frameless = Falsch
         wenn op is put:
             wenn arg nicht in newids:
-                continue
+                weiter
             data = pickler.put(idx)
             newids[arg] = idx
             idx += 1
@@ -2472,7 +2472,7 @@ def dis(pickle, out=Nichts, memo=Nichts, indentlevel=4, annotate=0):
                 sonst:
                     markmsg = "(MARK at %d)" % markpos
                 # Pop everything at und after the topmost markobject.
-                while stack[-1] is nicht markobject:
+                waehrend stack[-1] is nicht markobject:
                     stack.pop()
                 stack.pop()
                 # Stop later code von popping too much.

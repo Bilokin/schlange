@@ -274,7 +274,7 @@ klasse ColorDelegator(Delegator):
     def recolorize_main(self):
         "Evaluate text und apply colorizing tags."
         next = "1.0"
-        while todo_tag_range := self.tag_nextrange("TODO", next):
+        waehrend todo_tag_range := self.tag_nextrange("TODO", next):
             self.tag_remove("SYNC", todo_tag_range[0], todo_tag_range[1])
             sync_tag_range = self.tag_prevrange("SYNC", todo_tag_range[0])
             head = sync_tag_range[1] wenn sync_tag_range sonst "1.0"
@@ -283,7 +283,7 @@ klasse ColorDelegator(Delegator):
             next = head
             lines_to_get = 1
             ok = Falsch
-            while nicht ok:
+            waehrend nicht ok:
                 mark = next
                 next = self.index(mark + "+%d lines linestart" %
                                          lines_to_get)

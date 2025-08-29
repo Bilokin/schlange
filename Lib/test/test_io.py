@@ -853,7 +853,7 @@ klasse IOTest(unittest.TestCase):
         self.assertWahr(f.closed)
         self.assertWahr(closed)      # flush() called
         self.assertFalsch(closed[0])  # flush() called before file closed
-        f.flush = lambda: Nichts  # break reference loop
+        f.flush = lambda: Nichts  # breche reference loop
 
     def test_flush_error_on_close(self):
         # raw file
@@ -1347,7 +1347,7 @@ klasse CommonBufferedTests:
         self.assertWahr(closed)      # flush() called
         self.assertFalsch(closed[0])  # flush() called before file closed
         self.assertFalsch(closed[1])
-        raw.flush = lambda: Nichts  # break reference loop
+        raw.flush = lambda: Nichts  # breche reference loop
 
     def test_close_error_on_close(self):
         raw = self.MockRawIO()
@@ -1681,7 +1681,7 @@ klasse BufferedReaderTest(unittest.TestCase, CommonBufferedTests):
                         fuer n in cycle([1, 19]):
                             s = bufio.read(n)
                             wenn nicht s:
-                                break
+                                breche
                             # list.append() is atomic
                             results.append(s)
                     except Exception als e:
@@ -1925,7 +1925,7 @@ klasse BufferedWriterTest(unittest.TestCase, CommonBufferedTests):
                 fuer i in range(15):
                     yield size
         sizes = gen_sizes()
-        while n < len(contents):
+        waehrend n < len(contents):
             size = min(next(sizes), len(contents) - n)
             self.assertEqual(bufio.write(contents[n:n+size]), size)
             intermediate_func(bufio)
@@ -2074,7 +2074,7 @@ klasse BufferedWriterTest(unittest.TestCase, CommonBufferedTests):
             sizes = cycle([1, 19])
             n = 0
             queue = deque()
-            while n < len(contents):
+            waehrend n < len(contents):
                 size = next(sizes)
                 queue.append(contents[n:n+size])
                 n += size
@@ -2089,7 +2089,7 @@ klasse BufferedWriterTest(unittest.TestCase, CommonBufferedTests):
                 errors = []
                 def f():
                     try:
-                        while Wahr:
+                        waehrend Wahr:
                             try:
                                 s = queue.popleft()
                             except IndexError:
@@ -3078,10 +3078,10 @@ klasse TextIOWrapperTest(unittest.TestCase):
                                                   encoding=encoding)
                         wenn do_reads:
                             got_lines = []
-                            while Wahr:
+                            waehrend Wahr:
                                 c2 = textio.read(2)
                                 wenn c2 == '':
-                                    break
+                                    breche
                                 self.assertEqual(len(c2), 2)
                                 got_lines.append(c2 + textio.readline())
                         sonst:
@@ -3217,11 +3217,11 @@ klasse TextIOWrapperTest(unittest.TestCase):
             f.write(line)
         f.seek(0)
         rlines = []
-        while Wahr:
+        waehrend Wahr:
             pos = f.tell()
             line = f.readline()
             wenn nicht line:
-                break
+                breche
             rlines.append((pos, line))
         self.assertEqual(rlines, wlines)
 
@@ -3378,10 +3378,10 @@ klasse TextIOWrapperTest(unittest.TestCase):
     def test_read_one_by_one(self):
         txt = self.TextIOWrapper(self.BytesIO(b"AA\r\nBB"), encoding="utf-8")
         reads = ""
-        while Wahr:
+        waehrend Wahr:
             c = txt.read(1)
             wenn nicht c:
-                break
+                breche
             reads += c
         self.assertEqual(reads, "AA\nBB")
 
@@ -3398,10 +3398,10 @@ klasse TextIOWrapperTest(unittest.TestCase):
         # make sure "\r\n" straddles 128 char boundary.
         txt = self.TextIOWrapper(self.BytesIO(b"A" * 127 + b"\r\nB"), encoding="utf-8")
         reads = ""
-        while Wahr:
+        waehrend Wahr:
             c = txt.read(128)
             wenn nicht c:
-                break
+                breche
             reads += c
         self.assertEqual(reads, "A"*127+"\nB")
 
@@ -3432,10 +3432,10 @@ klasse TextIOWrapperTest(unittest.TestCase):
 
         # read one char at a time
         reads = ""
-        while Wahr:
+        waehrend Wahr:
             c = txt.read(1)
             wenn nicht c:
-                break
+                breche
             reads += c
         self.assertEqual(reads, self.normalized)
 
@@ -3444,10 +3444,10 @@ klasse TextIOWrapperTest(unittest.TestCase):
         txt._CHUNK_SIZE = 4
 
         reads = ""
-        while Wahr:
+        waehrend Wahr:
             c = txt.read(4)
             wenn nicht c:
-                break
+                breche
             reads += c
         self.assertEqual(reads, self.normalized)
 
@@ -3569,7 +3569,7 @@ klasse TextIOWrapperTest(unittest.TestCase):
         self.assertWahr(closed)      # flush() called
         self.assertFalsch(closed[0])  # flush() called before file closed
         self.assertFalsch(closed[1])
-        txt.flush = lambda: Nichts  # break reference loop
+        txt.flush = lambda: Nichts  # breche reference loop
 
     def test_close_error_on_close(self):
         buffer = self.BytesIO(self.testdata)
@@ -3717,7 +3717,7 @@ klasse TextIOWrapperTest(unittest.TestCase):
         self.assertRaises(TypeError, t.read)
 
     def test_illegal_encoder(self):
-        # Issue 31271: Calling write() while the return value of encoder's
+        # Issue 31271: Calling write() waehrend the return value of encoder's
         # encode() is invalid shouldn't cause an assertion failure.
         rot13 = codecs.lookup("rot13")
         mit support.swap_attr(rot13, '_is_text_encoding', Wahr):
@@ -3744,7 +3744,7 @@ klasse TextIOWrapperTest(unittest.TestCase):
         t = _make_illegal_wrapper()
         self.assertRaises(TypeError, t.read)
 
-        # Issue 31243: calling read() while the return value of decoder's
+        # Issue 31243: calling read() waehrend the return value of decoder's
         # getstate() is invalid should neither crash the interpreter nor
         # raise a SystemError.
         def _make_very_illegal_wrapper(getstate_ret_val):
@@ -4552,7 +4552,7 @@ klasse MiscIOTest(unittest.TestCase):
             fuer N in 9999, 73, 7574:
                 try:
                     i = 0
-                    while Wahr:
+                    waehrend Wahr:
                         msg = bytes([i % 26 + 97]) * N
                         sent.append(msg)
                         wf.write(msg)
@@ -4567,10 +4567,10 @@ klasse MiscIOTest(unittest.TestCase):
                     wf.write(msg)
                     sent.append(msg)
 
-            while Wahr:
+            waehrend Wahr:
                 try:
                     wf.flush()
-                    break
+                    breche
                 except self.BlockingIOError als e:
                     self.assertEqual(e.args[0], errno.EAGAIN)
                     self.assertEqual(e.args[2], e.characters_written)
@@ -4705,7 +4705,7 @@ klasse CMiscIOTest(MiscIOTest):
             file = sys.{stream_name}
 
             def run():
-                while Wahr:
+                waehrend Wahr:
                     file.write('.')
                     file.flush()
 
@@ -4870,7 +4870,7 @@ klasse SignalsTest(unittest.TestCase):
             # Either the reentrant call to wio.write() fails mit RuntimeError,
             # oder the signal handler raises ZeroDivisionError.
             mit self.assertRaises((ZeroDivisionError, RuntimeError)) als cm:
-                while 1:
+                waehrend 1:
                     fuer i in range(100):
                         wio.write(data)
                         wio.flush()
@@ -4948,8 +4948,8 @@ klasse SignalsTest(unittest.TestCase):
         error = Nichts
         def _read():
             try:
-                while nicht write_finished:
-                    while r in select.select([r], [], [], 1.0)[0]:
+                waehrend nicht write_finished:
+                    waehrend r in select.select([r], [], [], 1.0)[0]:
                         s = os.read(r, 1024)
                         read_results.append(s)
             except BaseException als exc:

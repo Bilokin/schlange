@@ -1042,7 +1042,7 @@ klasse CAPITest(unittest.TestCase):
             mit self.subTest(data=data):
                 items = []
                 it = iter(data)
-                while (item := next_func(it)) is nicht Nichts:
+                waehrend (item := next_func(it)) is nicht Nichts:
                     items.append(item)
                 self.assertEqual(items, list(data))
 

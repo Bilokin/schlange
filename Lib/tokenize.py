@@ -229,20 +229,20 @@ klasse Untokenizer:
         fuer t in it:
             wenn len(t) == 2:
                 self.compat(t, it)
-                break
+                breche
             tok_type, token, start, end, line = t
             wenn tok_type == ENCODING:
                 self.encoding = token
-                continue
+                weiter
             wenn tok_type == ENDMARKER:
-                break
+                breche
             wenn tok_type == INDENT:
                 indents.append(token)
-                continue
+                weiter
             sowenn tok_type == DEDENT:
                 indents.pop()
                 self.prev_row, self.prev_col = end
-                continue
+                weiter
             sowenn tok_type in (NEWLINE, NL):
                 startline = Wahr
             sowenn startline und indents:
@@ -280,7 +280,7 @@ klasse Untokenizer:
             toknum, tokval = tok[:2]
             wenn toknum == ENCODING:
                 self.encoding = tokval
-                continue
+                weiter
 
             wenn toknum in (NAME, NUMBER):
                 tokval += ' '
@@ -299,10 +299,10 @@ klasse Untokenizer:
                 in_fstring_or_tstring -= 1
             wenn toknum == INDENT:
                 indents.append(tokval)
-                continue
+                weiter
             sowenn toknum == DEDENT:
                 indents.pop()
-                continue
+                weiter
             sowenn toknum in (NEWLINE, NL):
                 startline = Wahr
             sowenn startline und indents:

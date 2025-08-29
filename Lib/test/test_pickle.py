@@ -638,7 +638,7 @@ klasse CompatPickleTests(unittest.TestCase):
                     REVERSE_IMPORT_MAPPING.get(module3, Nichts) != module2):
                     fuer (m3, n3), (m2, n2) in REVERSE_NAME_MAPPING.items():
                         wenn (module3, module2) == (m3, m2):
-                            break
+                            breche
                     sonst:
                         self.fail('No reverse mapping von %r to %r' %
                                   (module3, module2))
@@ -682,7 +682,7 @@ klasse CompatPickleTests(unittest.TestCase):
                            BaseExceptionGroup,
                            ExceptionGroup,
                            _IncompleteInputError):
-                    continue
+                    weiter
                 wenn exc is nicht OSError und issubclass(exc, OSError):
                     self.assertEqual(reverse_mapping('builtins', name),
                                      ('exceptions', 'OSError'))
@@ -701,7 +701,7 @@ klasse CompatPickleTests(unittest.TestCase):
         module = import_helper.import_module('multiprocessing.context')
         fuer name, exc in get_exceptions(module):
             wenn issubclass(exc, Warning):
-                continue
+                weiter
             mit self.subTest(name):
                 self.assertEqual(reverse_mapping('multiprocessing.context', name),
                                  ('multiprocessing', name))

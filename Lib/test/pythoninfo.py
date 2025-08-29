@@ -49,7 +49,7 @@ def copy_attributes(info_add, obj, name_fmt, attributes, *, formatter=Nichts):
     fuer attr in attributes:
         value = getattr(obj, attr, Nichts)
         wenn value is Nichts:
-            continue
+            weiter
         name = name_fmt % attr
         wenn formatter is nicht Nichts:
             value = formatter(attr, value)
@@ -121,10 +121,10 @@ def collect_sys(info_add):
     fuer name in ('stdin', 'stdout', 'stderr'):
         stream = getattr(sys, name)
         wenn stream is Nichts:
-            continue
+            weiter
         encoding = getattr(stream, 'encoding', Nichts)
         wenn nicht encoding:
-            continue
+            weiter
         errors = getattr(stream, 'errors', Nichts)
         wenn errors:
             encoding = '%s/%s' % (encoding, errors)
@@ -181,7 +181,7 @@ def collect_platform(info_add):
             'VERSION_ID',
         ):
             wenn key nicht in os_release:
-                continue
+                weiter
             info_add(f'platform.freedesktop_os_release[{key}]',
                      os_release[key])
 
@@ -542,7 +542,7 @@ def collect_sysconfig(info_add):
         value = sysconfig.get_config_var(name)
         wenn name == 'ANDROID_API_LEVEL' und nicht value:
             # skip ANDROID_API_LEVEL=0
-            continue
+            weiter
         value = normalize_text(value)
         info_add('sysconfig[%s]' % name, value)
 
@@ -618,7 +618,7 @@ def collect_ssl(info_add):
         try:
             value = os.environ[name]
         except KeyError:
-            continue
+            weiter
         info_add('ssl.environ[%s]' % name, value)
 
 

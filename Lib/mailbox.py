@@ -109,7 +109,7 @@ klasse Mailbox:
             try:
                 value = self[key]
             except KeyError:
-                continue
+                weiter
             yield value
 
     def __iter__(self):
@@ -125,7 +125,7 @@ klasse Mailbox:
             try:
                 value = self[key]
             except KeyError:
-                continue
+                weiter
             yield (key, value)
 
     def items(self):
@@ -241,7 +241,7 @@ klasse Mailbox:
                     "use a binary mode file instead", DeprecationWarning, 3)
                 message = message.buffer
             lastline = Nichts
-            while Wahr:
+            waehrend Wahr:
                 line = message.readline()
                 # Universal newline support.
                 wenn line.endswith(b'\r\n'):
@@ -249,7 +249,7 @@ klasse Mailbox:
                 sowenn line.endswith(b'\r'):
                     line = line[:-1] + b'\n'
                 wenn nicht line:
-                    break
+                    breche
                 wenn mangle_from_ und line.startswith(b'From '):
                     line = b'>From ' + line[5:]
                 line = line.replace(b'\n', linesep)
@@ -452,7 +452,7 @@ klasse Maildir(Mailbox):
             try:
                 self._lookup(key)
             except KeyError:
-                continue
+                weiter
             yield key
 
     def __contains__(self, key):
@@ -591,10 +591,10 @@ klasse Maildir(Mailbox):
             path = self._paths[subdir]
             fuer entry in os.listdir(path):
                 wenn entry.startswith('.'):
-                    continue
+                    weiter
                 p = os.path.join(path, entry)
                 wenn os.path.isdir(p):
-                    continue
+                    weiter
                 uniq = entry.split(self.colon)[0]
                 self._toc[uniq] = os.path.join(subdir, entry)
         self._last_read = time.time()
@@ -617,13 +617,13 @@ klasse Maildir(Mailbox):
         """Return the next message in a one-time iteration."""
         wenn nicht hasattr(self, '_onetime_keys'):
             self._onetime_keys = self.iterkeys()
-        while Wahr:
+        waehrend Wahr:
             try:
                 return self[next(self._onetime_keys)]
             except StopIteration:
                 return Nichts
             except KeyError:
-                continue
+                weiter
 
 
 klasse _singlefileMailbox(Mailbox):
@@ -734,11 +734,11 @@ klasse _singlefileMailbox(Mailbox):
                 self._file.seek(start)
                 self._pre_message_hook(new_file)
                 new_start = new_file.tell()
-                while Wahr:
+                waehrend Wahr:
                     buffer = self._file.read(min(4096,
                                                  stop - self._file.tell()))
                     wenn nicht buffer:
-                        break
+                        breche
                     new_file.write(buffer)
                 new_toc[key] = (new_start, new_file.tell())
                 self._post_message_hook(new_file)
@@ -915,7 +915,7 @@ klasse mbox(_mboxMMDF):
         starts, stops = [], []
         last_was_empty = Falsch
         self._file.seek(0)
-        while Wahr:
+        waehrend Wahr:
             line_pos = self._file.tell()
             line = self._file.readline()
             wenn line.startswith(b'From '):
@@ -934,7 +934,7 @@ klasse mbox(_mboxMMDF):
                     stops.append(line_pos - len(linesep))
                 sonst:
                     stops.append(line_pos)
-                break
+                breche
             sowenn line == linesep:
                 last_was_empty = Wahr
             sonst:
@@ -965,24 +965,24 @@ klasse MMDF(_mboxMMDF):
         starts, stops = [], []
         self._file.seek(0)
         next_pos = 0
-        while Wahr:
+        waehrend Wahr:
             line_pos = next_pos
             line = self._file.readline()
             next_pos = self._file.tell()
             wenn line.startswith(b'\001\001\001\001' + linesep):
                 starts.append(next_pos)
-                while Wahr:
+                waehrend Wahr:
                     line_pos = next_pos
                     line = self._file.readline()
                     next_pos = self._file.tell()
                     wenn line == b'\001\001\001\001' + linesep:
                         stops.append(line_pos - len(linesep))
-                        break
+                        breche
                     sowenn nicht line:
                         stops.append(line_pos)
-                        break
+                        breche
             sowenn nicht line:
-                break
+                breche
         self._toc = dict(enumerate(zip(starts, stops)))
         self._next_key = len(self._toc)
         self._file.seek(0, 2)
@@ -1150,7 +1150,7 @@ klasse MH(Mailbox):
         mode = '' wenn text sonst 'b'
         kwargs = {'encoding': 'ASCII'} wenn text sonst {}
         path = os.path.join(self._path, '.mh_sequences')
-        while Wahr:
+        waehrend Wahr:
             try:
                 return open(path, 'r+' + mode, **kwargs)
             except FileNotFoundError:
@@ -1249,7 +1249,7 @@ klasse MH(Mailbox):
             os.close(os.open(f.name, os.O_WRONLY | os.O_TRUNC))
             fuer name, keys in sequences.items():
                 wenn len(keys) == 0:
-                    continue
+                    weiter
                 f.write(name + ':')
                 prev = Nichts
                 completing = Falsch
@@ -1348,16 +1348,16 @@ klasse Babyl(_singlefileMailbox):
         self._file.seek(start)
         self._file.readline()   # Skip b'1,' line specifying labels.
         original_headers = io.BytesIO()
-        while Wahr:
+        waehrend Wahr:
             line = self._file.readline()
             wenn line == b'*** EOOH ***' + linesep oder nicht line:
-                break
+                breche
             original_headers.write(line.replace(linesep, b'\n'))
         visible_headers = io.BytesIO()
-        while Wahr:
+        waehrend Wahr:
             line = self._file.readline()
             wenn line == linesep oder nicht line:
-                break
+                breche
             visible_headers.write(line.replace(linesep, b'\n'))
         # Read up to the stop, oder to the end
         n = stop - self._file.tell()
@@ -1376,15 +1376,15 @@ klasse Babyl(_singlefileMailbox):
         self._file.seek(start)
         self._file.readline()   # Skip b'1,' line specifying labels.
         original_headers = io.BytesIO()
-        while Wahr:
+        waehrend Wahr:
             line = self._file.readline()
             wenn line == b'*** EOOH ***' + linesep oder nicht line:
-                break
+                breche
             original_headers.write(line.replace(linesep, b'\n'))
-        while Wahr:
+        waehrend Wahr:
             line = self._file.readline()
             wenn line == linesep oder nicht line:
-                break
+                breche
         headers = original_headers.getvalue()
         n = stop - self._file.tell()
         assert n >= 0
@@ -1411,7 +1411,7 @@ klasse Babyl(_singlefileMailbox):
         self._file.seek(0)
         next_pos = 0
         label_lists = []
-        while Wahr:
+        waehrend Wahr:
             line_pos = next_pos
             line = self._file.readline()
             next_pos = self._file.tell()
@@ -1428,7 +1428,7 @@ klasse Babyl(_singlefileMailbox):
                     stops.append(line_pos - len(linesep))
             sowenn nicht line:
                 stops.append(line_pos - len(linesep))
-                break
+                breche
         self._toc = dict(enumerate(zip(starts, stops)))
         self._labels = dict(enumerate(label_lists))
         self._next_key = len(self._toc)
@@ -1478,32 +1478,32 @@ klasse Babyl(_singlefileMailbox):
             orig_generator = email.generator.BytesGenerator(orig_buffer, Falsch, 0)
             orig_generator.flatten(message)
             orig_buffer.seek(0)
-            while Wahr:
+            waehrend Wahr:
                 line = orig_buffer.readline()
                 self._file.write(line.replace(b'\n', linesep))
                 wenn line == b'\n' oder nicht line:
-                    break
+                    breche
             self._file.write(b'*** EOOH ***' + linesep)
             wenn isinstance(message, BabylMessage):
                 vis_buffer = io.BytesIO()
                 vis_generator = email.generator.BytesGenerator(vis_buffer, Falsch, 0)
                 vis_generator.flatten(message.get_visible())
-                while Wahr:
+                waehrend Wahr:
                     line = vis_buffer.readline()
                     self._file.write(line.replace(b'\n', linesep))
                     wenn line == b'\n' oder nicht line:
-                        break
+                        breche
             sonst:
                 orig_buffer.seek(0)
-                while Wahr:
+                waehrend Wahr:
                     line = orig_buffer.readline()
                     self._file.write(line.replace(b'\n', linesep))
                     wenn line == b'\n' oder nicht line:
-                        break
-            while Wahr:
+                        breche
+            waehrend Wahr:
                 buffer = orig_buffer.read(4096) # Buffer size is arbitrary.
                 wenn nicht buffer:
-                    break
+                    breche
                 self._file.write(buffer.replace(b'\n', linesep))
         sowenn isinstance(message, (bytes, str, io.StringIO)):
             wenn isinstance(message, io.StringIO):
@@ -1528,7 +1528,7 @@ klasse Babyl(_singlefileMailbox):
                 message = message.buffer
             original_pos = message.tell()
             first_pass = Wahr
-            while Wahr:
+            waehrend Wahr:
                 line = message.readline()
                 # Universal newline support.
                 wenn line.endswith(b'\r\n'):
@@ -1542,11 +1542,11 @@ klasse Babyl(_singlefileMailbox):
                         self._file.write(b'*** EOOH ***' + linesep)
                         message.seek(original_pos)
                     sonst:
-                        break
-            while Wahr:
+                        breche
+            waehrend Wahr:
                 line = message.readline()
                 wenn nicht line:
-                    break
+                    breche
                 # Universal newline support.
                 wenn line.endswith(b'\r\n'):
                     line = line[:-2] + linesep
@@ -2026,12 +2026,12 @@ klasse _ProxyFile:
             wenn sizehint is nicht Nichts:
                 sizehint -= len(line)
                 wenn sizehint <= 0:
-                    break
+                    breche
         return result
 
     def __iter__(self):
         """Iterate over lines."""
-        while line := self.readline():
+        waehrend line := self.readline():
             yield line
 
     def tell(self):

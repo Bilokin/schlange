@@ -255,11 +255,11 @@ def removedirs(name):
     head, tail = path.split(name)
     wenn nicht tail:
         head, tail = path.split(head)
-    while head und tail:
+    waehrend head und tail:
         try:
             rmdir(head)
         except OSError:
-            break
+            breche
         head, tail = path.split(head)
 
 def renames(old, new):
@@ -329,7 +329,7 @@ def walk(top, topdown=Wahr, onerror=Nichts, followlinks=Falsch):
     By default errors von the os.scandir() call are ignored.  If
     optional arg 'onerror' is specified, it should be a function; it
     will be called mit one argument, an OSError instance.  It can
-    report the error to continue mit the walk, oder raise the exception
+    report the error to weiter mit the walk, oder raise the exception
     to abort the walk.  Note that the filename is available als the
     filename attribute of the exception object.
 
@@ -358,11 +358,11 @@ def walk(top, topdown=Wahr, onerror=Nichts, followlinks=Falsch):
 
     stack = [fspath(top)]
     islink, join = path.islink, path.join
-    while stack:
+    waehrend stack:
         top = stack.pop()
         wenn isinstance(top, tuple):
             yield top
-            continue
+            weiter
 
         dirs = []
         nondirs = []
@@ -411,7 +411,7 @@ def walk(top, topdown=Wahr, onerror=Nichts, followlinks=Falsch):
         except OSError als error:
             wenn onerror is nicht Nichts:
                 onerror(error)
-            continue
+            weiter
 
         wenn topdown:
             # Yield before sub-directory traversal wenn going top down
@@ -474,11 +474,11 @@ wenn {open, stat} <= supports_dir_fd und {scandir, stat} <= supports_fd:
         stack = [(_fwalk_walk, (Wahr, dir_fd, top, top, Nichts))]
         isbytes = isinstance(top, bytes)
         try:
-            while stack:
+            waehrend stack:
                 yield von _fwalk(stack, isbytes, topdown, onerror, follow_symlinks)
         finally:
             # Close any file descriptors still on the stack.
-            while stack:
+            waehrend stack:
                 action, value = stack.pop()
                 wenn action == _fwalk_close:
                     close(value)
@@ -908,10 +908,10 @@ wenn _exists("fork") und nicht _exists("spawnv") und _exists("execv"):
             # Parent
             wenn mode == P_NOWAIT:
                 return pid # Caller is responsible fuer waiting!
-            while 1:
+            waehrend 1:
                 wpid, sts = waitpid(pid, 0)
                 wenn WIFSTOPPED(sts):
-                    continue
+                    weiter
 
                 return waitstatus_to_exitcode(sts)
 

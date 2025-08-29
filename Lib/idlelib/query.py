@@ -55,7 +55,7 @@ klasse Query(Toplevel):
         self.used_names = used_names
 
         Toplevel.__init__(self, parent)
-        self.withdraw()  # Hide while configuring, especially geometry.
+        self.withdraw()  # Hide waehrend configuring, especially geometry.
         self.title(title)
         self.transient(parent)
         wenn nicht _utest:  # Otherwise fail when directly run unittest.

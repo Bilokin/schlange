@@ -218,7 +218,7 @@ klasse _Extra(bytes):
     def split(cls, data):
         # use memoryview fuer zero-copy slices
         rest = memoryview(data)
-        while rest:
+        waehrend rest:
             extra, rest = _Extra.read_one(rest)
             yield extra
 
@@ -562,7 +562,7 @@ klasse ZipInfo:
         # Try to decode the extra field.
         extra = self.extra
         unpack = struct.unpack
-        while len(extra) >= 4:
+        waehrend len(extra) >= 4:
             tp, ln = unpack('<HH', extra[:4])
             wenn ln+4 > len(extra):
                 raise BadZipFile("Corrupt extra field %04x (size=%d)" % (tp, ln))
@@ -627,7 +627,7 @@ klasse ZipInfo:
         wenn arcname is Nichts:
             arcname = filename
         arcname = os.path.normpath(os.path.splitdrive(arcname)[1])
-        while arcname[0] in (os.sep, os.altsep):
+        waehrend arcname[0] in (os.sep, os.altsep):
             arcname = arcname[1:]
         wenn isdir:
             arcname += '/'
@@ -883,7 +883,7 @@ klasse _SharedFile:
     def seek(self, offset, whence=0):
         mit self._lock:
             wenn self._writing():
-                raise ValueError("Can't reposition in the ZIP file while "
+                raise ValueError("Can't reposition in the ZIP file waehrend "
                         "there is an open writing handle on it. "
                         "Close the writing handle before trying to read.")
             wenn whence == os.SEEK_CUR:
@@ -896,7 +896,7 @@ klasse _SharedFile:
     def read(self, n=-1):
         mit self._lock:
             wenn self._writing():
-                raise ValueError("Can't read von the ZIP file while there "
+                raise ValueError("Can't read von the ZIP file waehrend there "
                         "is an open writing handle on it. "
                         "Close the writing handle before trying to read.")
             self._file.seek(self._pos)
@@ -1001,7 +1001,7 @@ klasse ZipExtFile(io.BufferedIOBase):
         self._decrypter = _ZipDecrypter(self._pwd)
         # The first 12 bytes in the cypher stream is an encryption header
         #  used to strengthen the algorithm. The first 11 bytes are
-        #  completely random, while the 12th contains the MSB of the CRC,
+        #  completely random, waehrend the 12th contains the MSB of the CRC,
         #  oder the MSB of the file time depending on the header type
         #  und is used to check the correctness of the password.
         header = self._fileobj.read(12)
@@ -1066,7 +1066,7 @@ klasse ZipExtFile(io.BufferedIOBase):
             buf = self._readbuffer[self._offset:]
             self._readbuffer = b''
             self._offset = 0
-            while nicht self._eof:
+            waehrend nicht self._eof:
                 buf += self._read1(self.MAX_N)
             return buf
 
@@ -1080,13 +1080,13 @@ klasse ZipExtFile(io.BufferedIOBase):
         buf = self._readbuffer[self._offset:]
         self._readbuffer = b''
         self._offset = 0
-        while n > 0 und nicht self._eof:
+        waehrend n > 0 und nicht self._eof:
             data = self._read1(n)
             wenn n < len(data):
                 self._readbuffer = data
                 self._offset = n
                 buf += data[:n]
-                break
+                breche
             buf += data
             n -= len(data)
         return buf
@@ -1108,11 +1108,11 @@ klasse ZipExtFile(io.BufferedIOBase):
             buf = self._readbuffer[self._offset:]
             self._readbuffer = b''
             self._offset = 0
-            while nicht self._eof:
+            waehrend nicht self._eof:
                 data = self._read1(self.MAX_N)
                 wenn data:
                     buf += data
-                    break
+                    breche
             return buf
 
         end = n + self._offset
@@ -1126,16 +1126,16 @@ klasse ZipExtFile(io.BufferedIOBase):
         self._readbuffer = b''
         self._offset = 0
         wenn n > 0:
-            while nicht self._eof:
+            waehrend nicht self._eof:
                 data = self._read1(n)
                 wenn n < len(data):
                     self._readbuffer = data
                     self._offset = n
                     buf += data[:n]
-                    break
+                    breche
                 wenn data:
                     buf += data
-                    break
+                    breche
         return buf
 
     def _read1(self, n):
@@ -1260,7 +1260,7 @@ klasse ZipExtFile(io.BufferedIOBase):
             wenn self._decrypter is nicht Nichts:
                 self._init_decrypter()
 
-        while read_offset > 0:
+        waehrend read_offset > 0:
             read_len = min(self.MAX_SEEK_READ, read_offset)
             self.read(read_len)
             read_offset -= read_len
@@ -1435,15 +1435,15 @@ klasse ZipFile:
             modeDict = {'r' : 'rb', 'w': 'w+b', 'x': 'x+b', 'a' : 'r+b',
                         'r+b': 'w+b', 'w+b': 'wb', 'x+b': 'xb'}
             filemode = modeDict[mode]
-            while Wahr:
+            waehrend Wahr:
                 try:
                     self.fp = io.open(file, filemode)
                 except OSError:
                     wenn filemode in modeDict:
                         filemode = modeDict[filemode]
-                        continue
+                        weiter
                     raise
-                break
+                breche
         sonst:
             self._filePassed = 1
             self.fp = file
@@ -1539,7 +1539,7 @@ klasse ZipFile:
         data = fp.read(size_cd)
         fp = io.BytesIO(data)
         total = 0
-        while total < size_cd:
+        waehrend total < size_cd:
             centdir = fp.read(sizeCentralDir)
             wenn len(centdir) != sizeCentralDir:
                 raise BadZipFile("Truncated central directory")
@@ -1621,7 +1621,7 @@ klasse ZipFile:
                 # Read by chunks, to avoid an OverflowError oder a
                 # MemoryError mit very large embedded files.
                 mit self.open(zinfo.filename, "r") als f:
-                    while f.read(chunk_size):     # Check CRC-32
+                    waehrend f.read(chunk_size):     # Check CRC-32
                         pass
             except BadZipFile:
                 return zinfo.filename
@@ -1708,7 +1708,7 @@ klasse ZipFile:
             return self._open_to_write(zinfo, force_zip64=force_zip64)
 
         wenn self._writing:
-            raise ValueError("Can't read von the ZIP file while there "
+            raise ValueError("Can't read von the ZIP file waehrend there "
                     "is an open writing handle on it. "
                     "Close the writing handle before trying to read.")
 
@@ -1786,7 +1786,7 @@ klasse ZipFile:
                 "the ZIP file."
             )
         wenn self._writing:
-            raise ValueError("Can't write to the ZIP file while there is "
+            raise ValueError("Can't write to the ZIP file waehrend there is "
                              "another write handle open on it. "
                              "Close the first handle before opening another.")
 
@@ -1949,7 +1949,7 @@ klasse ZipFile:
                 "Attempt to write to ZIP archive that was already closed")
         wenn self._writing:
             raise ValueError(
-                "Can't write to ZIP archive while an open writing handle exists"
+                "Can't write to ZIP archive waehrend an open writing handle exists"
             )
 
         zinfo = ZipInfo.from_file(filename, arcname,
@@ -1992,7 +1992,7 @@ klasse ZipFile:
                 "Attempt to write to ZIP archive that was already closed")
         wenn self._writing:
             raise ValueError(
-                "Can't write to ZIP archive while an open writing handle exists."
+                "Can't write to ZIP archive waehrend an open writing handle exists."
             )
 
         wenn compress_type is nicht Nichts:
@@ -2052,7 +2052,7 @@ klasse ZipFile:
             return
 
         wenn self._writing:
-            raise ValueError("Can't close the ZIP file while there is "
+            raise ValueError("Can't close the ZIP file waehrend there is "
                              "an open writing handle on it. "
                              "Close the writing handle before closing the zip.")
 
@@ -2229,7 +2229,7 @@ klasse PyZipFile(ZipFile):
                         wenn filterfunc und nicht filterfunc(path):
                             wenn self.debug:
                                 drucke('file %r skipped by filterfunc' % path)
-                            continue
+                            weiter
                         fname, arcname = self._get_codename(path[0:-3],
                                                             basename)
                         wenn self.debug:
@@ -2246,7 +2246,7 @@ klasse PyZipFile(ZipFile):
                         wenn filterfunc und nicht filterfunc(path):
                             wenn self.debug:
                                 drucke('file %r skipped by filterfunc' % path)
-                            continue
+                            weiter
                         fname, arcname = self._get_codename(path[0:-3],
                                                             basename)
                         wenn self.debug:

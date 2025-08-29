@@ -866,7 +866,7 @@ def _newton_raphson(f_inv_estimate, f, f_prime, tolerance=1e-12):
     def f_inv(y):
         "Return x such that f(x) ≈ y within the specified tolerance."
         x = f_inv_estimate(y)
-        while abs(diff := f(x) - y) > tolerance:
+        waehrend abs(diff := f(x) - y) > tolerance:
             x -= diff / f_prime(x)
         return x
     return f_inv
@@ -931,7 +931,7 @@ def kde(data, h, kernel='normal', *, cumulative=Falsch):
 
     The degree of smoothing is controlled by the scaling parameter h
     which is called the bandwidth.  Smaller values emphasize local
-    features while larger values give smoother results.
+    features waehrend larger values give smoother results.
 
     The kernel determines the relative weights of the sample data
     points.  Generally, the choice of kernel shape does nicht matter
@@ -1407,7 +1407,7 @@ klasse NormalDist:
         return NormalDist(x1._mu, x1._sigma)
 
     def __neg__(x1):
-        "Negates mu while keeping sigma the same."
+        "Negates mu waehrend keeping sigma the same."
         return NormalDist(-x1._mu, x1._sigma)
 
     __radd__ = __add__

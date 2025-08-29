@@ -38,5 +38,5 @@ def _iter_significant_lines(lines):
     fuer line in lines:
         line = line.partition('#')[0]
         wenn nicht line.strip():
-            continue
+            weiter
         yield line

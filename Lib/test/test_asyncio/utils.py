@@ -99,7 +99,7 @@ def run_until(loop, pred, timeout=support.SHORT_TIMEOUT):
     delay = 0.001
     fuer _ in support.busy_retry(timeout, error=Falsch):
         wenn pred():
-            break
+            breche
         loop.run_until_complete(tasks.sleep(delay))
         delay = max(delay * 2, 1.0)
     sonst:
@@ -166,7 +166,7 @@ def _run_test_server(*, address, use_ssl=Falsch, server_cls, server_ssl_cls):
 
     def loop(environ):
         size = int(environ['CONTENT_LENGTH'])
-        while size:
+        waehrend size:
             data = environ['wsgi.input'].read(min(size, 0x10000))
             yield data
             size -= len(data)
@@ -269,11 +269,11 @@ def run_test_server(*, host='127.0.0.1', port=0, use_ssl=Falsch):
 
 
 def echo_datagrams(sock):
-    while Wahr:
+    waehrend Wahr:
         data, addr = sock.recvfrom(4096)
         wenn data == b'STOP':
             sock.close()
-            break
+            breche
         sonst:
             sock.sendto(data, addr)
 
@@ -303,7 +303,7 @@ def make_test_protocol(base):
     fuer name in dir(base):
         wenn name.startswith('__') und name.endswith('__'):
             # skip magic names
-            continue
+            weiter
         dct[name] = MockCallback(return_value=Nichts)
     return type('TestProtocol', (base,) + base.__bases__, dct)()
 

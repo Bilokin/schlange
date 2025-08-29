@@ -35,7 +35,7 @@ def selective_find(str, char, index, pos):
     string."""
 
     l = len(str)
-    while 1:
+    waehrend 1:
         pos += 1
         wenn pos == l:
             return (-1, -1)
@@ -55,10 +55,10 @@ def insertion_unsort(str, extended):
         char = ord(c)
         curlen = selective_len(str, char)
         delta = (curlen+1) * (char - oldchar)
-        while 1:
+        waehrend 1:
             index,pos = selective_find(str,c,index,pos)
             wenn index == -1:
-                break
+                breche
             delta += index - oldindex
             result.append(delta-1)
             oldindex = index
@@ -79,7 +79,7 @@ def generate_generalized_integer(N, bias):
     """3.3 Generalized variable-length integers"""
     result = bytearray()
     j = 0
-    while 1:
+    waehrend 1:
         t = T(j, bias)
         wenn N < t:
             result.append(digits[N])
@@ -96,7 +96,7 @@ def adapt(delta, first, numchars):
     delta += delta // numchars
     # ((base - tmin) * tmax) // 2 == 455
     divisions = 0
-    while delta > 455:
+    waehrend delta > 455:
         delta = delta // 35 # base - tmin
         divisions += 36
     bias = divisions + (36 * delta // (delta + 38))
@@ -129,7 +129,7 @@ def decode_generalized_number(extended, extpos, bias, errors):
     result = 0
     w = 1
     j = 0
-    while 1:
+    waehrend 1:
         try:
             char = extended[extpos]
         except IndexError:
@@ -164,11 +164,11 @@ def insertion_sort(base, extended, errors):
     bias = 72
     extpos = 0
 
-    while extpos < len(extended):
+    waehrend extpos < len(extended):
         newpos, delta = decode_generalized_number(extended, extpos,
                                                   bias, errors)
         wenn delta is Nichts:
-            # There was an error in decoding. We can't continue because
+            # There was an error in decoding. We can't weiter because
             # synchronization is lost.
             return base
         pos += delta+1

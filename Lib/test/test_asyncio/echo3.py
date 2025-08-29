@@ -1,10 +1,10 @@
 importiere os
 
 wenn __name__ == '__main__':
-    while Wahr:
+    waehrend Wahr:
         buf = os.read(0, 1024)
         wenn nicht buf:
-            break
+            breche
         try:
             os.write(1, b'OUT:'+buf)
         except OSError als ex:

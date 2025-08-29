@@ -240,7 +240,7 @@ klasse ModuleFinder:
     def load_tail(self, q, tail):
         self.msgin(4, "load_tail", q, tail)
         m = q
-        while tail:
+        waehrend tail:
             i = tail.find('.')
             wenn i < 0: i = len(tail)
             head, tail = tail[:i], tail[i+1:]
@@ -282,14 +282,14 @@ klasse ModuleFinder:
                 names = os.listdir(dir)
             except OSError:
                 self.msg(2, "can't list directory", dir)
-                continue
+                weiter
             fuer name in names:
                 mod = Nichts
                 fuer suff in suffixes:
                     n = len(suff)
                     wenn name[-n:] == suff:
                         mod = name[:-n]
-                        break
+                        breche
                 wenn mod und mod != "__init__":
                     modules[mod] = mod
         return modules.keys()
@@ -382,7 +382,7 @@ klasse ModuleFinder:
                     fullname = name + "." + sub
                     wenn fullname in self.badmodules:
                         self._add_badmodule(fullname, caller)
-                        continue
+                        weiter
                     try:
                         self.import_hook(name, caller, [sub], level=level)
                     except ImportError als msg:
@@ -548,11 +548,11 @@ klasse ModuleFinder:
         maybe = []
         fuer name in self.badmodules:
             wenn name in self.excludes:
-                continue
+                weiter
             i = name.rfind(".")
             wenn i < 0:
                 missing.append(name)
-                continue
+                weiter
             subname = name[i+1:]
             pkgname = name[:i]
             pkg = self.modules.get(pkgname)
@@ -586,7 +586,7 @@ klasse ModuleFinder:
         fuer f, r in self.replace_paths:
             wenn original_filename.startswith(f):
                 new_filename = r + original_filename[len(f):]
-                break
+                breche
 
         wenn self.debug und original_filename nicht in self.processed_paths:
             wenn new_filename != original_filename:
@@ -651,7 +651,7 @@ def test():
     fuer arg in args[1:]:
         wenn arg == '-m':
             domods = 1
-            continue
+            weiter
         wenn domods:
             wenn arg[-2:] == '.*':
                 mf.import_hook(arg[:-2], Nichts, ["*"])

@@ -411,13 +411,13 @@ klasse Scanner:
         append = result.append
         match = self.scanner.scanner(string).match
         i = 0
-        while Wahr:
+        waehrend Wahr:
             m = match()
             wenn nicht m:
-                break
+                breche
             j = m.end()
             wenn i == j:
-                break
+                breche
             action = self.lexicon[m.lastindex-1][1]
             wenn callable(action):
                 self.match = m

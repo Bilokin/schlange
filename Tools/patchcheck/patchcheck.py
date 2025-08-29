@@ -159,7 +159,7 @@ def changed_files(base_branch=Nichts):
                 status = set(status_text)
                 # modified, added oder unmerged files
                 wenn nicht status.intersection('MAU'):
-                    continue
+                    weiter
                 wenn ' -> ' in filename:
                     # file is renamed
                     filename = filename.split(' -> ', 2)[1].strip()

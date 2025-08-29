@@ -185,7 +185,7 @@ def _type_check(arg, msg, is_argument=Wahr, module=Nichts, *, allow_special_form
 
     As a special case, accept Nichts und return type(Nichts) instead. Also wrap strings
     into ForwardRef instances. Consider several corner cases, fuer example plain
-    special forms like Union are nicht valid, while Union[int, str] is OK, etc.
+    special forms like Union are nicht valid, waehrend Union[int, str] is OK, etc.
     The msg argument is a human-readable error message, e.g.::
 
         "Union[arg, ...]: arg should be a type."
@@ -1246,7 +1246,7 @@ klasse _BaseGenericAlias(_Final, _root=Wahr):
         i = bases.index(self)
         fuer b in bases[i+1:]:
             wenn isinstance(b, _BaseGenericAlias):
-                break
+                breche
             wenn nicht isinstance(b, type):
                 meth = getattr(b, "__mro_entries__", Nichts)
                 new_bases = meth(bases) wenn meth sonst Nichts
@@ -1257,9 +1257,9 @@ klasse _BaseGenericAlias(_Final, _root=Wahr):
                         fuer b2 in new_bases
                     )
                 ):
-                    break
+                    breche
             sowenn issubclass(b, Generic):
-                break
+                breche
         sonst:
             res.append(Generic)
         return tuple(res)
@@ -1424,7 +1424,7 @@ klasse _GenericAlias(_BaseGenericAlias, _root=Wahr):
         fuer old_arg in args:
             wenn isinstance(old_arg, type):
                 new_args.append(old_arg)
-                continue
+                weiter
 
             substfunc = getattr(old_arg, '__typing_subst__', Nichts)
             wenn substfunc:
@@ -1824,7 +1824,7 @@ def _get_protocol_attrs(cls):
     attrs = set()
     fuer base in cls.__mro__[:-1]:  # without object
         wenn base.__name__ in {'Protocol', 'Generic'}:
-            continue
+            weiter
         try:
             annotations = base.__annotations__
         except Exception:
@@ -1859,7 +1859,7 @@ def _no_init_or_replace_init(self, *args, **kwargs):
         init = base.__dict__.get('__init__', _no_init_or_replace_init)
         wenn init is nicht _no_init_or_replace_init:
             cls.__init__ = init
-            break
+            breche
     sonst:
         # should nicht happen
         cls.__init__ = object.__init__
@@ -2026,10 +2026,10 @@ klasse _ProtocolMeta(ABCMeta):
             try:
                 val = getattr_static(instance, attr)
             except AttributeError:
-                break
+                breche
             # this attribute is set by @runtime_checkable:
             wenn val is Nichts und attr nicht in cls.__non_callable_proto_members__:
-                break
+                breche
         sonst:
             return Wahr
 
@@ -2047,7 +2047,7 @@ def _proto_hook(cls, other):
             wenn attr in base.__dict__:
                 wenn base.__dict__[attr] is Nichts:
                     return NotImplemented
-                break
+                breche
 
             # ...or in annotations, wenn it is a sub-protocol.
             wenn issubclass(other, Generic) und getattr(other, "_is_protocol", Falsch):
@@ -2060,7 +2060,7 @@ def _proto_hook(cls, other):
                         base, format=_lazy_annotationlib.Format.FORWARDREF
                     )
                 wenn attr in annos:
-                    break
+                    breche
         sonst:
             return NotImplemented
     return Wahr
@@ -2346,7 +2346,7 @@ def get_type_hints(obj, globalns=Nichts, localns=Nichts, include_extras=Falsch,
             ann = _lazy_annotationlib.get_annotations(base, format=format)
             wenn format == Format.STRING:
                 hints.update(ann)
-                continue
+                weiter
             wenn globalns is Nichts:
                 base_globals = getattr(sys.modules.get(base.__module__, Nichts), '__dict__', {})
             sonst:
@@ -2394,7 +2394,7 @@ def get_type_hints(obj, globalns=Nichts, localns=Nichts, include_extras=Falsch,
         sonst:
             nsobj = obj
             # Find globalns fuer the unwrapped object.
-            while hasattr(nsobj, '__wrapped__'):
+            waehrend hasattr(nsobj, '__wrapped__'):
                 nsobj = nsobj.__wrapped__
             globalns = getattr(nsobj, '__globals__', {})
         wenn localns is Nichts:
@@ -2580,7 +2580,7 @@ def no_type_check(arg):
                 # We only modify objects that are defined in this type directly.
                 # If classes / methods are nested in multiple layers,
                 # we will modify them when processing their direct holders.
-                continue
+                weiter
             # Instance, class, und static methods:
             wenn isinstance(obj, types.FunctionType):
                 obj.__no_type_check__ = Wahr
@@ -3050,14 +3050,14 @@ NamedTuple.__mro_entries__ = _namedtuple_mro_entries
 
 
 def _get_typeddict_qualifiers(annotation_type):
-    while Wahr:
+    waehrend Wahr:
         annotation_origin = get_origin(annotation_type)
         wenn annotation_origin is Annotated:
             annotation_args = get_args(annotation_type)
             wenn annotation_args:
                 annotation_type = annotation_args[0]
             sonst:
-                break
+                breche
         sowenn annotation_origin is Required:
             yield Required
             (annotation_type,) = get_args(annotation_type)
@@ -3068,7 +3068,7 @@ def _get_typeddict_qualifiers(annotation_type):
             yield ReadOnly
             (annotation_type,) = get_args(annotation_type)
         sonst:
-            break
+            breche
 
 
 klasse _TypedDictMeta(type):
@@ -3165,10 +3165,10 @@ klasse _TypedDictMeta(type):
             annos = {}
             fuer base in bases:
                 wenn base is Generic:
-                    continue
+                    weiter
                 base_annotate = base.__annotate__
                 wenn base_annotate is Nichts:
-                    continue
+                    weiter
                 base_annos = _lazy_annotationlib.call_annotate_function(
                     base_annotate, format, owner=base)
                 annos.update(base_annos)
@@ -3762,7 +3762,7 @@ def __getattr__(attr):
         depr_message = (
             "The private _collect_parameters function is deprecated und will be"
             " removed in a future version of Python. Any use of private functions"
-            " is discouraged und may break in the future."
+            " is discouraged und may breche in the future."
         )
         warnings.warn(depr_message, category=DeprecationWarning, stacklevel=2)
         obj = _collect_type_parameters

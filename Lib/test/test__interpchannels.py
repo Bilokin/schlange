@@ -29,7 +29,7 @@ REPLACE = _crossinterp._UNBOUND_CONSTANT_TO_FLAG[_crossinterp.UNBOUND]
 # helpers
 
 def recv_wait(cid):
-    while Wahr:
+    waehrend Wahr:
         try:
             obj, unboundop = _channels.recv(cid)
         except _channels.ChannelEmptyError:
@@ -696,10 +696,10 @@ klasse ChannelTests(TestBase):
             out = _run_output(id1, dedent(f"""
                 importiere time
                 importiere _interpchannels als _channels
-                while Wahr:
+                waehrend Wahr:
                     try:
                         obj, _ = _channels.recv({cid})
-                        break
+                        breche
                     except _channels.ChannelEmptyError:
                         time.sleep(0.1)
                 assert(obj == b'spam')
@@ -1749,7 +1749,7 @@ klasse ExhaustiveChannelTests(TestBase):
         fuer interp in ('same', 'other'):
             interp = fix.get_interpreter(interp)
             wenn interp.name == 'main':
-                continue
+                weiter
             self._assert_closed_in_interp(fix, interp)
 
         interp = fix.get_interpreter('fresh')

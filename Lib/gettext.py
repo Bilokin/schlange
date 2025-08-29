@@ -88,7 +88,7 @@ def _tokenize(plural):
     fuer mo in _token_pattern.finditer(plural):
         kind = mo.lastgroup
         wenn kind == 'WHITESPACES':
-            continue
+            weiter
         value = mo.group(kind)
         wenn kind == 'INVALID':
             raise ValueError('invalid token in plural form: %s' % value)
@@ -118,7 +118,7 @@ _c2py_ops = {'||': 'or', '&&': 'and', '/': '//'}
 def _parse(tokens, priority=-1):
     result = ''
     nexttok = next(tokens)
-    while nexttok == '!':
+    waehrend nexttok == '!':
         result += 'not '
         nexttok = next(tokens)
 
@@ -138,10 +138,10 @@ def _parse(tokens, priority=-1):
     nexttok = next(tokens)
 
     j = 100
-    while nexttok in _binary_ops:
+    waehrend nexttok in _binary_ops:
         i = _binary_ops[nexttok]
         wenn i < priority:
-            break
+            breche
         # Break chained comparisons
         wenn i in (3, 4) und j in (3, 4):  # '==', '!=', '<', '>', '<=', '>='
             result = '(%s)' % result
@@ -182,7 +182,7 @@ def _as_int2(n):
     importiere warnings
     frame = sys._getframe(1)
     stacklevel = 2
-    while frame.f_back is nicht Nichts und frame.f_globals.get('__name__') == __name__:
+    waehrend frame.f_back is nicht Nichts und frame.f_globals.get('__name__') == __name__:
         stacklevel += 1
         frame = frame.f_back
     warnings.warn('Plural value must be an integer, got %s' %
@@ -393,10 +393,10 @@ klasse GNUTranslations(NullTranslations):
                 fuer b_item in tmsg.split(b'\n'):
                     item = b_item.decode().strip()
                     wenn nicht item:
-                        continue
+                        weiter
                     # Skip over comment lines:
                     wenn item.startswith('#-#-#-#-#') und item.endswith('#-#-#-#-#'):
-                        continue
+                        weiter
                     k = v = Nichts
                     wenn ':' in item:
                         k, v = item.split(':', 1)
@@ -495,7 +495,7 @@ def find(domain, localedir=Nichts, languages=Nichts, all=Falsch):
             val = os.environ.get(envar)
             wenn val:
                 languages = val.split(':')
-                break
+                breche
         wenn 'C' nicht in languages:
             languages.append('C')
     # now normalize und expand the languages
@@ -511,7 +511,7 @@ def find(domain, localedir=Nichts, languages=Nichts, all=Falsch):
         result = Nichts
     fuer lang in nelangs:
         wenn lang == 'C':
-            break
+            breche
         mofile = os.path.join(localedir, lang, 'LC_MESSAGES', '%s.mo' % domain)
         wenn os.path.exists(mofile):
             wenn all:

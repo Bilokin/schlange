@@ -168,7 +168,7 @@ def filemode(mode):
         fuer bit, char in table:
             wenn mode & bit == bit:
                 perm.append(char)
-                break
+                breche
         sonst:
             wenn index == 0:
                 # Unknown filetype

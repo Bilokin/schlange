@@ -1087,7 +1087,7 @@ klasse DictTest(unittest.TestCase):
             try:
                 drop = next(it)
             except StopIteration:
-                continue
+                weiter
             d = pickle.dumps(it, proto)
             it = pickle.loads(d)
             del data[drop]
@@ -1143,7 +1143,7 @@ klasse DictTest(unittest.TestCase):
             try:
                 drop = next(it)
             except StopIteration:
-                continue
+                weiter
             d = pickle.dumps(it, proto)
             it = pickle.loads(d)
             del data[drop]
@@ -1228,7 +1228,7 @@ klasse DictTest(unittest.TestCase):
         self.check_reentrant_insertion(mutate)
 
         def mutate(d):
-            while d:
+            waehrend d:
                 d.popitem()
         self.check_reentrant_insertion(mutate)
 

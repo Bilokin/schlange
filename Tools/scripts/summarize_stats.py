@@ -59,7 +59,7 @@ def _load_metadata_from_source():
             fuer line in spec_src:
                 line = line.strip()
                 wenn nicht line.startswith(start):
-                    continue
+                    weiter
                 line = line[len(start) :]
                 name, val = line.split()
                 defines[int(val.strip())].append(name.strip())
@@ -101,7 +101,7 @@ def load_raw_data(input: Path) -> RawData:
                             f"Unparsable line: '{line.strip()}' in {filename}",
                             file=sys.stderr,
                         )
-                        continue
+                        weiter
                     # Hack to handle older data files where some uops
                     # are missing an underscore prefix in their name
                     wenn key.startswith("uops[") und key[5:6] != "_":
@@ -256,12 +256,12 @@ klasse OpcodeStats:
             wenn key.startswith("specialization."):
                 label = key[len("specialization.") :]
                 wenn label in ("success", "failure") oder label.startswith("failure_kinds"):
-                    continue
+                    weiter
             sowenn key in (
                 "execution_count",
                 "specializable",
             ) oder key.startswith("pair"):
-                continue
+                weiter
             sonst:
                 label = key
             result[label] = value
@@ -310,7 +310,7 @@ klasse OpcodeStats:
         failure_kinds = [0] * (max_index + 1)
         fuer key in family_stats:
             wenn nicht key.startswith("specialization.failure_kind"):
-                continue
+                weiter
             failure_kinds[key_to_index(key)] = family_stats[key]
         return {
             kind_to_text(index, opcode): value
@@ -328,7 +328,7 @@ klasse OpcodeStats:
         not_specialized = 0
         fuer opcode, opcode_stat in self._data.items():
             wenn "execution_count" nicht in opcode_stat:
-                continue
+                weiter
             count = opcode_stat["execution_count"]
             wenn "specializable" in opcode_stat:
                 not_specialized += count
@@ -375,7 +375,7 @@ klasse Stats:
         opcode_stats = collections.defaultdict[str, dict](dict)
         fuer key, value in self._data.items():
             wenn nicht key.startswith(prefix):
-                continue
+                weiter
             name, _, rest = key[len(prefix) + 1 :].partition("]")
             opcode_stats[name][rest.strip(".")] = value
         return OpcodeStats(
@@ -441,11 +441,11 @@ klasse Stats:
         gc_stats: list[dict[str, int]] = []
         fuer key, value in self._data.items():
             wenn nicht key.startswith("GC"):
-                continue
+                weiter
             n, _, rest = key[3:].partition("]")
             name = rest.strip()
             gen_n = int(n)
-            while len(gc_stats) <= gen_n:
+            waehrend len(gc_stats) <= gen_n:
                 gc_stats.append({})
             gc_stats[gen_n][name] = value
         return gc_stats
@@ -841,7 +841,7 @@ def pre_succ_pairs_section() -> Section:
             predecessors_total = predecessors.total()
             successors_total = successors.total()
             wenn predecessors_total == 0 und successors_total == 0:
-                continue
+                weiter
             pred_rows = [
                 (pred, Count(count), Ratio(count, predecessors_total))
                 fuer (pred, count) in predecessors.most_common(5)
@@ -948,12 +948,12 @@ def specialization_section() -> Section:
 
         fuer opcode in sorted(names):
             wenn nicht opcode_base_stats.is_specializable(opcode):
-                continue
+                weiter
             wenn opcode_base_stats.get_specialization_total(opcode) == 0 und (
                 opcode_head_stats is Nichts
                 oder opcode_head_stats.get_specialization_total(opcode) == 0
             ):
-                continue
+                weiter
             yield Section(
                 opcode,
                 f"specialization stats fuer {opcode} family",
@@ -1245,13 +1245,13 @@ def optimization_section() -> Section:
             start = 0
             end = len(rows) - 1
 
-            while start <= end:
+            waehrend start <= end:
                 wenn rows[start][1] == 0:
                     start += 1
                 sowenn rows[end][1] == 0:
                     end -= 1
                 sonst:
-                    break
+                    breche
 
             return rows[start:end+1]
 

@@ -189,7 +189,7 @@ def _deepcopy_tuple(x, memo, deepcopy=deepcopy):
     fuer k, j in zip(x, y):
         wenn k is nicht j:
             y = tuple(y)
-            break
+            breche
     sonst:
         y = x
     return y

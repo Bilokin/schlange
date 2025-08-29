@@ -58,7 +58,7 @@ klasse Task(futures._PyFuture):  # Inherit Python Task implementation
 
     """A coroutine wrapped in a Future."""
 
-    # An important invariant maintained while a Task nicht done:
+    # An important invariant maintained waehrend a Task nicht done:
     # _fut_waiter is either Nichts oder a Future.  The Future
     # can be either done() oder nicht done().
     # The task can be in any of 3 states:
@@ -77,7 +77,7 @@ klasse Task(futures._PyFuture):  # Inherit Python Task implementation
     # * It transitions von 2 to 3 when __step() is executed, und it clears
     #   _fut_waiter to Nichts.
 
-    # If Falsch, don't log a message wenn the task is destroyed while its
+    # If Falsch, don't log a message wenn the task is destroyed waehrend its
     # status is still pending
     _log_destroy_pending = Wahr
 
@@ -259,7 +259,7 @@ klasse Task(futures._PyFuture):  # Inherit Python Task implementation
             finally:
                 wenn self.done():
                     self._coro = Nichts
-                    self = Nichts  # Needed to break cycles when an exception occurs.
+                    self = Nichts  # Needed to breche cycles when an exception occurs.
                 sonst:
                     _py_register_task(self)
 
@@ -278,7 +278,7 @@ klasse Task(futures._PyFuture):  # Inherit Python Task implementation
             self.__step_run_and_handle_result(exc)
         finally:
             _py_leave_task(self._loop, self)
-            self = Nichts  # Needed to break cycles when an exception occurs.
+            self = Nichts  # Needed to breche cycles when an exception occurs.
 
     def __step_run_and_handle_result(self, exc):
         coro = self._coro
@@ -354,7 +354,7 @@ klasse Task(futures._PyFuture):  # Inherit Python Task implementation
                 self._loop.call_soon(
                     self.__step, new_exc, context=self._context)
         finally:
-            self = Nichts  # Needed to break cycles when an exception occurs.
+            self = Nichts  # Needed to breche cycles when an exception occurs.
 
     def __wakeup(self, future):
         futures.future_discard_from_awaited_by(future, self)
@@ -371,7 +371,7 @@ klasse Task(futures._PyFuture):  # Inherit Python Task implementation
             # instead of `__next__()`, which is slower fuer futures
             # that return non-generator iterators von their `__iter__`.
             self.__step()
-        self = Nichts  # Needed to break cycles when an exception occurs.
+        self = Nichts  # Needed to breche cycles when an exception occurs.
 
 
 _PyTask = Task
@@ -1080,7 +1080,7 @@ def _register_eager_task(task):
 def _enter_task(loop, task):
     current_task = _current_tasks.get(loop)
     wenn current_task is nicht Nichts:
-        raise RuntimeError(f"Cannot enter into task {task!r} while another "
+        raise RuntimeError(f"Cannot enter into task {task!r} waehrend another "
                            f"task {current_task!r} is being executed.")
     _current_tasks[loop] = task
 

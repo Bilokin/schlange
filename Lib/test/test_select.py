@@ -65,7 +65,7 @@ klasse SelectTestCase(unittest.TestCase):
                 self.assertEqual(wfd, [])
                 self.assertEqual(xfd, [])
                 wenn nicht rfd:
-                    continue
+                    weiter
                 wenn rfd == [pipe]:
                     line = pipe.readline()
                     wenn support.verbose:
@@ -73,8 +73,8 @@ klasse SelectTestCase(unittest.TestCase):
                     wenn nicht line:
                         wenn support.verbose:
                             drucke('EOF')
-                        break
-                    continue
+                        breche
+                    weiter
                 self.fail('Unexpected return values von select():',
                           rfd, wfd, xfd)
 

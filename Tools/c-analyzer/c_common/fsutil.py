@@ -230,7 +230,7 @@ def walk_tree(root, *,
 
     fuer filename in walk(root):
         wenn suffix und nicht filename.endswith(suffix):
-            continue
+            weiter
         yield filename
 
 
@@ -295,7 +295,7 @@ def iter_files(root, suffix=Nichts, relparent=Nichts, *,
     fuer filename in filenames:
         wenn suffix und nicht isinstance(suffix, str):  # multiple suffixes
             wenn nicht filename.endswith(suffix):
-                continue
+                weiter
         wenn relparent:
             filename = os.path.relpath(filename, relparent)
         yield filename

@@ -81,7 +81,7 @@ klasse FunctionPropertiesTest(FuncAttrsTest):
         fuer src in [A, B, C, D]:
             fuer dst in [A, B, C, D]:
                 wenn src == dst:
-                    continue
+                    weiter
 
                 assert src.__code__.co_flags != dst.__code__.co_flags
                 prev = dst.__code__

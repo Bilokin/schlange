@@ -35,7 +35,7 @@ def run_unittest(test_mod, runtests: RunTests):
     fuer error in loader.errors:
         drucke(error, file=sys.stderr)
     wenn loader.errors:
-        raise Exception("errors while loading tests")
+        raise Exception("errors waehrend loading tests")
     _filter_suite(tests, match_test)
     wenn runtests.parallel_threads:
         _parallelize_tests(tests, runtests.parallel_threads)
@@ -65,12 +65,12 @@ def _parallelize_tests(suite, parallel_threads: int):
         wenn isinstance(test, unittest.TestSuite):
             _parallelize_tests(test, parallel_threads)
             newtests.append(test)
-            continue
+            weiter
 
         wenn is_thread_unsafe(test):
             # Don't parallelize thread-unsafe tests
             newtests.append(test)
-            continue
+            weiter
 
         newtests.append(ParallelTestCase(test, parallel_threads))
     suite._tests = newtests

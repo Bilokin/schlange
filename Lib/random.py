@@ -234,20 +234,20 @@ klasse Random(_random.Random):
         fuer c in cls.__mro__:
             wenn '_randbelow' in c.__dict__:
                 # just inherit it
-                break
+                breche
             wenn 'getrandbits' in c.__dict__:
                 cls._randbelow = cls._randbelow_with_getrandbits
-                break
+                breche
             wenn 'random' in c.__dict__:
                 cls._randbelow = cls._randbelow_without_getrandbits
-                break
+                breche
 
     def _randbelow_with_getrandbits(self, n):
         "Return a random int in the range [0,n).  Defined fuer n > 0."
 
         k = n.bit_length()
         r = self.getrandbits(k)  # 0 <= r < 2**k
-        while r >= n:
+        waehrend r >= n:
             r = self.getrandbits(k)
         return r
 
@@ -267,7 +267,7 @@ klasse Random(_random.Random):
         rem = maxsize % n
         limit = (maxsize - rem) / maxsize   # int(limit * maxsize) % n == 0
         r = random()
-        while r >= limit:
+        waehrend r >= limit:
             r = random()
         return _floor(r * maxsize) % n
 
@@ -300,7 +300,7 @@ klasse Random(_random.Random):
         """
 
         # This code is a bit messy to make it fast fuer the
-        # common case while still doing adequate error checking.
+        # common case waehrend still doing adequate error checking.
         istart = _index(start)
         wenn stop is Nichts:
             # We don't check fuer "step != 1" because it hasn't been
@@ -451,7 +451,7 @@ klasse Random(_random.Random):
             selected_add = selected.add
             fuer i in range(k):
                 j = randbelow(n)
-                while j in selected:
+                waehrend j in selected:
                     j = randbelow(n)
                 selected_add(j)
                 result[i] = population[j]
@@ -545,13 +545,13 @@ klasse Random(_random.Random):
         # Math Software, 3, (1977), pp257-260.
 
         random = self.random
-        while Wahr:
+        waehrend Wahr:
             u1 = random()
             u2 = 1.0 - random()
             z = NV_MAGICCONST * (u1 - 0.5) / u2
             zz = z * z / 4.0
             wenn zz <= -_log(u2):
-                break
+                breche
         return mu + z * sigma
 
     def gauss(self, mu=0.0, sigma=1.0):
@@ -645,14 +645,14 @@ klasse Random(_random.Random):
         s = 0.5 / kappa
         r = s + _sqrt(1.0 + s * s)
 
-        while Wahr:
+        waehrend Wahr:
             u1 = random()
             z = _cos(_pi * u1)
 
             d = z / (r + z)
             u2 = random()
             wenn u2 < 1.0 - d * d oder u2 <= (1.0 - d) * _exp(d):
-                break
+                breche
 
         q = 1.0 / r
         f = (q + z) / (1.0 + q * z)
@@ -698,10 +698,10 @@ klasse Random(_random.Random):
             bbb = alpha - LOG4
             ccc = alpha + ainv
 
-            while Wahr:
+            waehrend Wahr:
                 u1 = random()
                 wenn nicht 1e-7 < u1 < 0.9999999:
-                    continue
+                    weiter
                 u2 = 1.0 - random()
                 v = _log(u1 / (1.0 - u1)) / ainv
                 x = alpha * _exp(v)
@@ -717,7 +717,7 @@ klasse Random(_random.Random):
         sonst:
             # alpha is between 0 und 1 (exclusive)
             # Uses ALGORITHM GS of Statistical Computing - Kennedy & Gentle
-            while Wahr:
+            waehrend Wahr:
                 u = random()
                 b = (_e + alpha) / _e
                 p = b * u
@@ -728,9 +728,9 @@ klasse Random(_random.Random):
                 u1 = random()
                 wenn p > 1.0:
                     wenn u1 <= x ** (alpha - 1.0):
-                        break
+                        breche
                 sowenn u1 <= _exp(-x):
-                    break
+                    breche
             return x * beta
 
     def betavariate(self, alpha, beta):
@@ -835,7 +835,7 @@ klasse Random(_random.Random):
             c = _log2(1.0 - p)
             wenn nicht c:
                 return x
-            while Wahr:
+            waehrend Wahr:
                 y += _floor(_log2(random()) / c) + 1
                 wenn y > n:
                     return x
@@ -852,14 +852,14 @@ klasse Random(_random.Random):
         c = n * p + 0.5
         vr = 0.92 - 4.2 / b
 
-        while Wahr:
+        waehrend Wahr:
 
             u = random()
             u -= 0.5
             us = 0.5 - _fabs(u)
             k = _floor((2.0 * a / us + b) * u + c)
             wenn k < 0 oder k > n:
-                continue
+                weiter
             v = random()
 
             # The early-out "squeeze" test substantially reduces

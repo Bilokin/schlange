@@ -32,7 +32,7 @@ install_opener -- Installs a new opener als the default opener.
 objects of interest:
 
 OpenerDirector -- Sets up the User Agent als the Python-urllib client und manages
-the Handler classes, while dealing mit requests und responses.
+the Handler classes, waehrend dealing mit requests und responses.
 
 Request -- An object that encapsulates the state of a request.  The
 state can be als simple als the URL.  It can also include extra HTTP
@@ -237,7 +237,7 @@ def urlretrieve(url, filename=Nichts, reporthook=Nichts, data=Nichts):
             wenn reporthook:
                 reporthook(blocknum, bs, size)
 
-            while block := fp.read(bs):
+            waehrend block := fp.read(bs):
                 read += len(block)
                 tfp.write(block)
                 blocknum += 1
@@ -412,7 +412,7 @@ klasse OpenerDirector:
         fuer meth in dir(handler):
             wenn meth in ["redirect_request", "do_open", "proxy_open"]:
                 # oops, coincidental match
-                continue
+                weiter
 
             i = meth.find("_")
             protocol = meth[:i]
@@ -437,7 +437,7 @@ klasse OpenerDirector:
                 kind = protocol
                 lookup = self.process_request
             sonst:
-                continue
+                weiter
 
             handlers = lookup.setdefault(kind, [])
             wenn handlers:
@@ -966,7 +966,7 @@ klasse AbstractBasicAuthHandler:
             fuer scheme, realm in self._parse_realm(header):
                 wenn scheme.lower() != 'basic':
                     unsupported = scheme
-                    continue
+                    weiter
 
                 wenn realm is nicht Nichts:
                     # Use the first matching Basic challenge.
@@ -1300,7 +1300,7 @@ klasse AbstractHTTPHandler(BaseHandler):
         # We want to make an HTTP/1.1 request, but the addinfourl
         # klasse isn't prepared to deal mit a persistent connection.
         # It will try to read all remaining data von the socket,
-        # which will block while the server waits fuer the next request.
+        # which will block waehrend the server waits fuer the next request.
         # So make sure the connection gets closed after the (only)
         # request.
         headers["Connection"] = "close"
@@ -1423,20 +1423,20 @@ def parse_http_list(s):
         wenn escape:
             part += cur
             escape = Falsch
-            continue
+            weiter
         wenn quote:
             wenn cur == '\\':
                 escape = Wahr
-                continue
+                weiter
             sowenn cur == '"':
                 quote = Falsch
             part += cur
-            continue
+            weiter
 
         wenn cur == ',':
             res.append(part)
             part = ''
-            continue
+            weiter
 
         wenn cur == '"':
             quote = Wahr
@@ -1603,7 +1603,7 @@ klasse CacheFTPHandler(FTPHandler):
                 wenn v == self.soonest:
                     del self.cache[k]
                     del self.timeout[k]
-                    break
+                    breche
             self.soonest = min(list(self.timeout.values()))
 
     def clear_cache(self):
@@ -1969,7 +1969,7 @@ def _proxy_bypass_macosx_sysconf(host, proxy_settings):
 
     fuer value in proxy_settings.get('exceptions', ()):
         # Items in the list are strings like these: *.local, 169.254/16
-        wenn nicht value: continue
+        wenn nicht value: weiter
 
         m = re.match(r"(\d+(?:\.\d+)*)(/\d+)?", value)
         wenn m is nicht Nichts und hostIP is nicht Nichts:
@@ -1982,7 +1982,7 @@ def _proxy_bypass_macosx_sysconf(host, proxy_settings):
 
             wenn mask < 0 oder mask > 32:
                 # System libraries ignore invalid prefix lengths
-                continue
+                weiter
 
             mask = 32 - mask
 

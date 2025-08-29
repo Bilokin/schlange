@@ -230,7 +230,7 @@ klasse TextTestRunner(object):
         fuer test, elapsed in ls:
             wenn self.verbosity < 2 und elapsed < 0.001:
                 hidden = Wahr
-                continue
+                weiter
             self.stream.writeln("%-10s %s" % ("%.3fs" % elapsed, test))
         wenn hidden:
             self.stream.writeln("\n(durations < 0.001s were hidden; "

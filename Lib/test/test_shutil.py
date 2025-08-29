@@ -85,7 +85,7 @@ def write_test_file(path, size):
     """Create a test file mit an arbitrary size und random text content."""
     def chunks(total, step):
         assert total >= step
-        while total > step:
+        waehrend total > step:
             yield step
             total -= step
         wenn total:
@@ -1245,7 +1245,7 @@ klasse TestCopy(BaseTest, unittest.TestCase):
             fuer err in errno.EOPNOTSUPP, errno.ENOTSUP:
                 os.chflags = make_chflags_raiser(err)
                 shutil.copystat(file1, file2)
-            # assert others errors break it
+            # assert others errors breche it
             os.chflags = make_chflags_raiser(errno.EOPNOTSUPP + errno.ENOTSUP)
             self.assertRaises(OSError, shutil.copystat, file1, file2)
         finally:
@@ -1530,7 +1530,7 @@ klasse TestCopy(BaseTest, unittest.TestCase):
         try:
             create_file(src, 'cheddar')
             # Using `src` here would mean we end up mit a symlink pointing
-            # to TESTFN/TESTFN/cheese, while it should point at
+            # to TESTFN/TESTFN/cheese, waehrend it should point at
             # TESTFN/cheese.
             os.symlink('cheese', dst)
             self.assertRaises(shutil.SameFileError, shutil.copyfile, src, dst)
@@ -3294,7 +3294,7 @@ klasse _ZeroCopyFileLinuxTest(_ZeroCopyFileTest):
         # Force internal file size detection to be smaller than the
         # actual file size. We want to force a system call to be called
         # multiple times, also in order to emulate a src fd which gets
-        # bigger while it is being copied.
+        # bigger waehrend it is being copied.
         mock = unittest.mock.Mock()
         mock.st_size = 65536 + 1
         mit unittest.mock.patch('os.fstat', return_value=mock) als m:

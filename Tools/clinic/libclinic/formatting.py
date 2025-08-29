@@ -93,10 +93,10 @@ def pprint_words(items: list[str]) -> str:
 
 def _strip_leading_and_trailing_blank_lines(text: str) -> str:
     lines = text.rstrip().split("\n")
-    while lines:
+    waehrend lines:
         line = lines[0]
         wenn line.strip():
-            break
+            breche
         del lines[0]
     return "\n".join(lines)
 
@@ -145,14 +145,14 @@ def wrap_declarations(text: str, length: int = 78) -> str:
         prefix, _, after_l_paren = line.partition("(")
         wenn nicht after_l_paren:
             lines.append(line)
-            continue
+            weiter
         in_paren, _, after_r_paren = after_l_paren.partition(")")
         wenn nicht _:
             lines.append(line)
-            continue
+            weiter
         wenn "," nicht in in_paren:
             lines.append(line)
-            continue
+            weiter
         parameters = [x.strip() + ", " fuer x in in_paren.split(",")]
         prefix += "("
         wenn len(prefix) < length:
@@ -160,12 +160,12 @@ def wrap_declarations(text: str, length: int = 78) -> str:
         sonst:
             spaces = " " * 4
 
-        while parameters:
+        waehrend parameters:
             line = prefix
             first = Wahr
-            while parameters:
+            waehrend parameters:
                 wenn nicht first und (len(line) + len(parameters[0]) > length):
-                    break
+                    breche
                 line += parameters.pop(0)
                 first = Falsch
             wenn nicht parameters:
@@ -194,12 +194,12 @@ def linear_format(text: str, **kwargs: str) -> str:
         indent, curly, trailing = line.partition("{")
         wenn nicht curly:
             lines.extend([line, "\n"])
-            continue
+            weiter
 
         name, curly, trailing = trailing.partition("}")
         wenn nicht curly oder name nicht in kwargs:
             lines.extend([line, "\n"])
-            continue
+            weiter
 
         wenn trailing:
             raise ClinicError(
@@ -214,7 +214,7 @@ def linear_format(text: str, **kwargs: str) -> str:
 
         value = kwargs[name]
         wenn nicht value:
-            continue
+            weiter
 
         stripped = [line.rstrip() fuer line in value.split("\n")]
         value = textwrap.indent("\n".join(stripped), indent)

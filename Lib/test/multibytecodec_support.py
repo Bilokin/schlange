@@ -177,14 +177,14 @@ klasse TestBase:
             istream = UTF8Reader(BytesIO(self.tstring[1]))
             ostream = BytesIO()
             encoder = self.incrementalencoder()
-            while 1:
+            waehrend 1:
                 wenn sizehint is nicht Nichts:
                     data = istream.read(sizehint)
                 sonst:
                     data = istream.read()
 
                 wenn nicht data:
-                    break
+                    breche
                 e = encoder.encode(data)
                 ostream.write(e)
 
@@ -197,10 +197,10 @@ klasse TestBase:
             istream = BytesIO(self.tstring[0])
             ostream = UTF8Writer(BytesIO())
             decoder = self.incrementaldecoder()
-            while 1:
+            waehrend 1:
                 data = istream.read(sizehint)
                 wenn nicht data:
-                    break
+                    breche
                 sonst:
                     u = decoder.decode(data)
                     ostream.write(u)
@@ -235,10 +235,10 @@ klasse TestBase:
                 istream = self.reader(BytesIO(self.tstring[0]))
                 ostream = UTF8Writer(BytesIO())
                 func = getattr(istream, name)
-                while 1:
+                waehrend 1:
                     data = func(sizehint)
                     wenn nicht data:
-                        break
+                        breche
                     wenn name == "readlines":
                         ostream.writelines(data)
                     sonst:
@@ -255,14 +255,14 @@ klasse TestBase:
                 istream = UTF8Reader(BytesIO(self.tstring[1]))
                 ostream = self.writer(BytesIO())
                 func = getattr(istream, name)
-                while 1:
+                waehrend 1:
                     wenn sizehint is nicht Nichts:
                         data = func(sizehint)
                     sonst:
                         data = func()
 
                     wenn nicht data:
-                        break
+                        breche
                     wenn name == "readlines":
                         ostream.writelines(data)
                     sonst:
@@ -313,20 +313,20 @@ klasse TestBase_Mapping(unittest.TestCase):
         mit self.open_mapping_file() als f:
             fuer line in f:
                 wenn nicht line:
-                    break
+                    breche
                 data = line.split('#')[0].split()
                 wenn len(data) != 2:
-                    continue
+                    weiter
 
                 wenn data[0][:2] != '0x':
                     self.fail(f"Invalid line: {line!r}")
                 csetch = bytes.fromhex(data[0][2:])
                 wenn len(csetch) == 1 und 0x80 <= csetch[0]:
-                    continue
+                    weiter
 
                 unich = unichrs(data[1])
                 wenn ord(unich) == 0xfffd oder unich in urt_wa:
-                    continue
+                    weiter
                 urt_wa[unich] = csetch
 
                 self._testpoint(csetch, unich)

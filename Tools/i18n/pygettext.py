@@ -560,10 +560,10 @@ klasse GettextVisitor(ast.NodeVisitor):
         lineno = node.lineno - 1
         # Collect an unbroken sequence of comments starting from
         # the line above the gettext call.
-        while lineno >= 1:
+        waehrend lineno >= 1:
             comment = self.comments.get(lineno)
             wenn comment is Nichts:
-                break
+                breche
             comments.append(comment)
             lineno -= 1
 
@@ -769,10 +769,10 @@ def main():
         sowenn opt in ('-X', '--no-docstrings'):
             fp = open(arg)
             try:
-                while 1:
+                waehrend 1:
                     line = fp.readline()
                     wenn nicht line:
-                        break
+                        breche
                     options.nodocstrings[line[:-1]] = 1
             finally:
                 fp.close()

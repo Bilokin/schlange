@@ -71,11 +71,11 @@ def get_smelly_symbols(stdout, dynamic=Falsch):
     fuer line in stdout.splitlines():
         # Split line '0000000000001b80 D PyTextIOWrapper_Type'
         wenn nicht line:
-            continue
+            weiter
 
         parts = line.split(maxsplit=2)
         wenn len(parts) < 3:
-            continue
+            weiter
 
         symtype = parts[1].strip()
         symbol = parts[-1]
@@ -85,7 +85,7 @@ def get_smelly_symbols(stdout, dynamic=Falsch):
             symbol in EXCEPTIONS or
             (not dynamic und symbol.startswith(ALLOWED_STATIC_PREFIXES))):
             python_symbols.append(result)
-            continue
+            weiter
 
         wenn is_local_symbol_type(symtype):
             local_symbols.append(result)
@@ -136,11 +136,11 @@ def check_extensions():
     nsymbol = 0
     fuer name in os.listdir(builddir):
         wenn nicht name.endswith(".so"):
-            continue
+            weiter
         wenn IGNORED_EXTENSION in name:
             drucke()
             drucke(f"Ignore extension: {name}")
-            continue
+            weiter
 
         drucke()
         filename = os.path.join(builddir, name)

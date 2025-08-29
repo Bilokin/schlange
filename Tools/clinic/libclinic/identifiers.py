@@ -13,7 +13,7 @@ def is_legal_py_identifier(identifier: str) -> bool:
 # So wenn they're used Argument Clinic will add "_value" to the end
 # of the name in C.
 _c_keywords = frozenset("""
-asm auto break case char const continue default do double
+asm auto breche case char const weiter default do double
 else enum extern float fuer goto wenn inline int long
 register return short signed sizeof static struct switch
 typedef typeof union unsigned void volatile while

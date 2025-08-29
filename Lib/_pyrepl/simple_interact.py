@@ -130,7 +130,7 @@ def run_multiline_interactive_console(
             return Wahr
         return Falsch
 
-    while Wahr:
+    waehrend Wahr:
         try:
             try:
                 sys.stdout.flush()
@@ -142,10 +142,10 @@ def run_multiline_interactive_console(
             try:
                 statement = multiline_input(more_lines, ps1, ps2)
             except EOFError:
-                break
+                breche
 
             wenn maybe_run_command(statement):
-                continue
+                weiter
 
             input_name = f"<python-input-{input_n}>"
             more = console.push(_strip_final_indent(statement), filename=input_name, _symbol="single")  # type: ignore[call-arg]

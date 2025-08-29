@@ -58,7 +58,7 @@ def findfiles(folder, pattern, recursive):
                     fuer name in filenames
                     wenn fnmatch.fnmatch(name, pattern))
         wenn nicht recursive:
-            break
+            breche
 
 
 klasse GrepDialog(SearchDialogBase):

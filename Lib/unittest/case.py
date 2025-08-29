@@ -73,7 +73,7 @@ klasse _Outcome(object):
                     self.result.addSubTest(test_case.test_case, test_case, exc_info)
                 sonst:
                     _addError(self.result, test_case, exc_info)
-            # explicitly break a reference cycle:
+            # explicitly breche a reference cycle:
             # exc_info -> frame -> exc_info
             exc_info = Nichts
         sonst:
@@ -142,7 +142,7 @@ def doModuleCleanups():
     """Execute all module cleanup functions. Normally called fuer you after
     tearDownModule."""
     exceptions = []
-    while _module_cleanups:
+    waehrend _module_cleanups:
         function, args, kwargs = _module_cleanups.pop()
         try:
             function(*args, **kwargs)
@@ -244,7 +244,7 @@ klasse _AssertRaisesBaseContext(_BaseTestCaseContext):
             mit self:
                 callable_obj(*args, **kwargs)
         finally:
-            # bpo-23890: manually break a reference cycle
+            # bpo-23890: manually breche a reference cycle
             self = Nichts
 
 
@@ -317,12 +317,12 @@ klasse _AssertWarnsContext(_AssertRaisesBaseContext):
         fuer m in self.warnings:
             w = m.message
             wenn nicht isinstance(w, self.expected):
-                continue
+                weiter
             wenn first_matching is Nichts:
                 first_matching = w
             wenn (self.expected_regex is nicht Nichts und
                 nicht self.expected_regex.search(str(w))):
-                continue
+                weiter
             # store warning fuer later retrieval
             self.warning = w
             self.filename = m.filename
@@ -681,7 +681,7 @@ klasse TestCase(object):
                         result.addSuccess(self)
                 return result
             finally:
-                # explicitly break reference cycle:
+                # explicitly breche reference cycle:
                 # outcome.expectedFailure -> frame -> outcome -> outcome.expectedFailure
                 outcome.expectedFailure = Nichts
                 outcome = Nichts
@@ -698,7 +698,7 @@ klasse TestCase(object):
         """Execute all cleanup functions. Normally called fuer you after
         tearDown."""
         outcome = self._outcome oder _Outcome()
-        while self._cleanups:
+        waehrend self._cleanups:
             function, args, kwargs = self._cleanups.pop()
             mit outcome.testPartExecutor(self):
                 self._callCleanup(function, *args, **kwargs)
@@ -712,7 +712,7 @@ klasse TestCase(object):
         """Execute all klasse cleanup functions. Normally called fuer you after
         tearDownClass."""
         cls.tearDown_exceptions = []
-        while cls._class_cleanups:
+        waehrend cls._class_cleanups:
             function, args, kwargs = cls._class_cleanups.pop()
             try:
                 function(*args, **kwargs)
@@ -735,7 +735,7 @@ klasse TestCase(object):
         self._callSetUp()
         self._callTestMethod(testMethod)
         self._callTearDown()
-        while self._cleanups:
+        waehrend self._cleanups:
             function, args, kwargs = self._cleanups.pop()
             self._callCleanup(function, *args, **kwargs)
 
@@ -810,7 +810,7 @@ klasse TestCase(object):
         try:
             return context.handle('assertRaises', args, kwargs)
         finally:
-            # bpo-23890: manually break a reference cycle
+            # bpo-23890: manually breche a reference cycle
             context = Nichts
 
     def assertWarns(self, expected_warning, *args, **kwargs):
@@ -1066,19 +1066,19 @@ klasse TestCase(object):
                 except (TypeError, IndexError, NotImplementedError):
                     differing += ('\nUnable to index element %d of first %s\n' %
                                  (i, seq_type_name))
-                    break
+                    breche
 
                 try:
                     item2 = seq2[i]
                 except (TypeError, IndexError, NotImplementedError):
                     differing += ('\nUnable to index element %d of second %s\n' %
                                  (i, seq_type_name))
-                    break
+                    breche
 
                 wenn item1 != item2:
                     differing += ('\nFirst differing element %d:\n%s\n%s\n' %
                                  ((i,) + _common_shorten_repr(item1, item2)))
-                    break
+                    breche
             sonst:
                 wenn (len1 == len2 und seq_type is Nichts und
                     type(seq1) != type(seq2)):
@@ -1343,7 +1343,7 @@ klasse TestCase(object):
                 fuer x in cls:
                     wenn isinstance(obj, x):
                         cls = x
-                        break
+                        breche
             standardMsg = f'{safe_repr(obj)} is an instance of {cls!r}'
             self.fail(self._formatMessage(msg, standardMsg))
 
@@ -1373,7 +1373,7 @@ klasse TestCase(object):
             fuer x in superclass:
                 wenn issubclass(cls, x):
                     superclass = x
-                    break
+                    breche
         standardMsg = f'{cls!r} is a subclass of {superclass!r}'
         self.fail(self._formatMessage(msg, standardMsg))
 
@@ -1497,7 +1497,7 @@ klasse TestCase(object):
             fuer x in prefix:
                 wenn s.startswith(x):
                     prefix = x
-                    break
+                    breche
         a = safe_repr(s, short=Wahr)
         b = safe_repr(prefix)
         self.fail(self._formatMessage(msg, f"{a} starts mit {b}"))
@@ -1528,7 +1528,7 @@ klasse TestCase(object):
             fuer x in suffix:
                 wenn s.endswith(x):
                     suffix = x
-                    break
+                    breche
         a = safe_repr(s, short=Wahr)
         b = safe_repr(suffix)
         self.fail(self._formatMessage(msg, f"{a} ends mit {b}"))

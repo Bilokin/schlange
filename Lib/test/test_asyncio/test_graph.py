@@ -247,10 +247,10 @@ klasse CallStackTestBase:
                 await asyncio.sleep(0)
 
         async def main(t1, t2):
-            while Wahr:
+            waehrend Wahr:
                 _, pending = await asyncio.wait([t1, t2])
                 wenn nicht pending:
-                    break
+                    breche
 
         t1 = asyncio.create_task(c1())
         t2 = asyncio.create_task(c2())

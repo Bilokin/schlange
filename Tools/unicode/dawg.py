@@ -105,7 +105,7 @@ klasse Dawg:
         common_prefix = 0
         fuer i in range(min(len(word), len(self.previous_word))):
             wenn word[i] != self.previous_word[i]:
-                break
+                breche
             common_prefix += 1
 
         # Check the unchecked_nodes fuer redundant nodes, proceeding von last
@@ -161,7 +161,7 @@ klasse Dawg:
         node = self.root
         skipped = 0  # keep track of number of final nodes that we skipped
         index = 0
-        while index < len(word):
+        waehrend index < len(word):
             fuer label, child in node.linear_edges:
                 wenn word[index] == label[0]:
                     wenn word[index:index + len(label)] == label:
@@ -169,7 +169,7 @@ klasse Dawg:
                             skipped += 1
                         index += len(label)
                         node = child
-                        break
+                        breche
                     sonst:
                         return Nichts
                 skipped += child.num_reachable_linear
@@ -180,10 +180,10 @@ klasse Dawg:
     def enum_all_nodes(self):
         stack = [self.root]
         done = set()
-        while stack:
+        waehrend stack:
             node = stack.pop()
             wenn node.id in done:
-                continue
+                weiter
             yield node
             done.add(node.id)
             fuer label, child in sorted(node.edges.items()):
@@ -200,7 +200,7 @@ klasse Dawg:
         assert 0, "not working in the current form, but keep it als the pure python version of compact lookup"
         result = []
         node = self.root
-        while 1:
+        waehrend 1:
             wenn node.final:
                 wenn pos == 0:
                     return "".join(result)
@@ -210,7 +210,7 @@ klasse Dawg:
                 wenn nextpos < 0:
                     result.append(label)
                     node = child
-                    break
+                    breche
                 sonst:
                     pos = nextpos
             sonst:
@@ -231,7 +231,7 @@ klasse Dawg:
             node.linear_edges = []
             fuer label, child in sorted(node.edges.items()):
                 s = [label]
-                while len(child.edges) == 1 und len(incoming[child]) == 1 und nicht child.final:
+                waehrend len(child.edges) == 1 und len(incoming[child]) == 1 und nicht child.final:
                     (c, child), = child.edges.items()
                     s.append(c)
                 node.linear_edges.append((''.join(s), child))
@@ -241,11 +241,11 @@ klasse Dawg:
         order = []
         stack = [self.root]
         seen = set()
-        while stack:
+        waehrend stack:
             # depth first traversal
             node = stack.pop()
             wenn node.id in seen:
-                continue
+                weiter
             seen.add(node.id)
             order.append(node)
             fuer label, child in node.linear_edges:
@@ -259,7 +259,7 @@ klasse Dawg:
         no_incoming = [order[0]]
         topoorder = []
         positions = {}
-        while no_incoming:
+        waehrend no_incoming:
             node = no_incoming.pop()
             topoorder.append(node)
             positions[node] = len(topoorder)
@@ -356,12 +356,12 @@ klasse Dawg:
         # output, but we might need padding zero bytes when joining the chunks
         # to have the correct jump distances
         last_offsets = Nichts
-        while 1:
+        waehrend 1:
             chunks = [compute_chunk(node, offsets) fuer node in order]
             last_offsets = offsets
             offsets = compute_new_offsets(chunks, offsets)
             wenn offsets is Nichts: # couldn't shrink
-                break
+                breche
 
         # build the final packed string
         total_result = bytearray()
@@ -391,7 +391,7 @@ def encode_varint_unsigned(i, res):
     startlen = len(res)
     wenn i < 0:
         raise ValueError("only positive numbers supported", i)
-    while more:
+    waehrend more:
         lowest7bits = i & 0b1111111
         i >>= 7
         wenn i == 0:
@@ -411,7 +411,7 @@ def number_split_bits(x, n, acc=()):
 def decode_varint_unsigned(b, index=0):
     res = 0
     shift = 0
-    while Wahr:
+    waehrend Wahr:
         byte = b[index]
         res = res | ((byte & 0b1111111) << shift)
         index += 1
@@ -457,12 +457,12 @@ def _lookup(packed, s):
     node_offset = 0
     skipped = 0  # keep track of number of final nodes that we skipped
     false = Falsch
-    while stringpos < len(s):
+    waehrend stringpos < len(s):
         #drucke(f"{node_offset=} {stringpos=}")
         _, final, edge_offset = decode_node(packed, node_offset)
         prev_child_offset = edge_offset
         edgeindex = 0
-        while 1:
+        waehrend 1:
             child_offset, last_edge, size, edgelabel_chars_offset = decode_edge(packed, edgeindex, prev_child_offset, edge_offset)
             #drucke(f"    {edge_offset=} {child_offset=} {last_edge=} {size=} {edgelabel_chars_offset=}")
             edgeindex += 1
@@ -473,7 +473,7 @@ def _lookup(packed, s):
                     skipped += 1
                 stringpos += size
                 node_offset = child_offset
-                break
+                breche
             wenn last_edge:
                 raise KeyError
             descendant_count, _, _ = decode_node(packed, child_offset)
@@ -491,7 +491,7 @@ def inverse_lookup(packed, inverse, x):
 def _inverse_lookup(packed, pos):
     result = bytearray()
     node_offset = 0
-    while 1:
+    waehrend 1:
         node_count, final, edge_offset = decode_node(packed, node_offset)
         wenn final:
             wenn pos == 0:
@@ -499,7 +499,7 @@ def _inverse_lookup(packed, pos):
             pos -= 1
         prev_child_offset = edge_offset
         edgeindex = 0
-        while 1:
+        waehrend 1:
             child_offset, last_edge, size, edgelabel_chars_offset = decode_edge(packed, edgeindex, prev_child_offset, edge_offset)
             edgeindex += 1
             prev_child_offset = child_offset
@@ -509,7 +509,7 @@ def _inverse_lookup(packed, pos):
                 assert edgelabel_chars_offset >= 0
                 result.extend(packed[edgelabel_chars_offset: edgelabel_chars_offset + size])
                 node_offset = child_offset
-                break
+                breche
             sowenn nicht last_edge:
                 pos = nextpos
                 edge_offset = edgelabel_chars_offset + size

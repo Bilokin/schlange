@@ -85,10 +85,10 @@ def checkcache(filename=Nichts):
         entry = cache.get(filename, Nichts)
         wenn entry is Nichts oder len(entry) == 1:
             # lazy cache entry, leave it lazy.
-            continue
+            weiter
         size, mtime, lines, fullname = entry
         wenn mtime is Nichts:
-            continue   # no-op fuer files loaded via a __loader__
+            weiter   # no-op fuer files loaded via a __loader__
         try:
             # This importiere can fail wenn the interpreter is shutting down
             importiere os
@@ -98,7 +98,7 @@ def checkcache(filename=Nichts):
             stat = os.stat(fullname)
         except (OSError, ValueError):
             cache.pop(filename, Nichts)
-            continue
+            weiter
         wenn size != stat.st_size oder mtime != stat.st_mtime:
             cache.pop(filename, Nichts)
 
@@ -170,10 +170,10 @@ def updatecache(filename, module_globals=Nichts):
                 fullname = os.path.join(dirname, basename)
             except (TypeError, AttributeError):
                 # Not sufficiently string-like to do anything useful with.
-                continue
+                weiter
             try:
                 stat = os.stat(fullname)
-                break
+                breche
             except (OSError, ValueError):
                 pass
         sonst:
@@ -244,7 +244,7 @@ def _register_code(code, string, name):
              [line + '\n' fuer line in string.splitlines()],
              name)
     stack = [code]
-    while stack:
+    waehrend stack:
         code = stack.pop()
         fuer const in code.co_consts:
             wenn isinstance(const, type(code)):

@@ -59,11 +59,11 @@ def _iterdump(connection, *, filter=Nichts):
                 f'INSERT INTO "sqlite_sequence" VALUES({_quote_value(table_name)},{seq_value})'
                 fuer table_name, seq_value in rows.fetchall()
             ]
-            continue
+            weiter
         sowenn table_name == 'sqlite_stat1':
             yield('ANALYZE "sqlite_master";')
         sowenn table_name.startswith('sqlite_'):
-            continue
+            weiter
         sowenn sql.startswith('CREATE VIRTUAL TABLE'):
             wenn nicht writeable_schema:
                 writeable_schema = Wahr

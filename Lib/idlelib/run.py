@@ -153,14 +153,14 @@ def main(del_exitfunc=Falsch):
                      daemon=Wahr,
                     ).start()
 
-    while Wahr:
+    waehrend Wahr:
         try:
             wenn exit_now:
                 try:
                     exit()
                 except KeyboardInterrupt:
                     # exiting but got an extra KBI? Try again!
-                    continue
+                    weiter
             try:
                 request = rpc.request_queue.get(block=Wahr, timeout=0.05)
             except queue.Empty:
@@ -176,7 +176,7 @@ def main(del_exitfunc=Falsch):
         except KeyboardInterrupt:
             wenn quitting:
                 exit_now = Wahr
-            continue
+            weiter
         except SystemExit:
             capture_warnings(Falsch)
             raise
@@ -190,14 +190,14 @@ def main(del_exitfunc=Falsch):
                 traceback.print_exception(type, value, tb, file=sys.__stderr__)
                 exit()
             sonst:
-                continue
+                weiter
 
 def manage_socket(address):
     fuer i in range(3):
         time.sleep(i)
         try:
             server = MyRPCServer(address, MyHandler)
-            break
+            breche
         except OSError als err:
             drucke("IDLE Subprocess: OSError: " + err.args[1] +
                   ", retrying....", file=sys.__stderr__)
@@ -280,19 +280,19 @@ def print_exception():
 def cleanup_traceback(tb, exclude):
     "Remove excluded traces von beginning/end of tb; get cached lines"
     orig_tb = tb[:]
-    while tb:
+    waehrend tb:
         fuer rpcfile in exclude:
             wenn tb[0][0].count(rpcfile):
-                break    # found an exclude, break for: und delete tb[0]
+                breche    # found an exclude, breche for: und delete tb[0]
         sonst:
-            break        # no excludes, have left RPC code, break while:
+            breche        # no excludes, have left RPC code, breche while:
         del tb[0]
-    while tb:
+    waehrend tb:
         fuer rpcfile in exclude:
             wenn tb[-1][0].count(rpcfile):
-                break
+                breche
         sonst:
-            break
+            breche
         del tb[-1]
     wenn len(tb) == 0:
         # exception was in IDLE internals, don't prune!
@@ -494,12 +494,12 @@ klasse StdInputFile(StdioFile):
         result = self._line_buffer
         self._line_buffer = ''
         wenn size < 0:
-            while line := self.shell.readline():
+            waehrend line := self.shell.readline():
                 result += line
         sonst:
-            while len(result) < size:
+            waehrend len(result) < size:
                 line = self.shell.readline()
-                wenn nicht line: break
+                wenn nicht line: breche
                 result += line
             self._line_buffer = result[size:]
             result = result[:size]
@@ -639,7 +639,7 @@ klasse Executive:
         flist = Nichts
         wenn flist_oid is nicht Nichts:
             flist = self.rpchandler.get_remote_proxy(flist_oid)
-        while tb und tb.tb_frame.f_globals["__name__"] in ["rpc", "run"]:
+        waehrend tb und tb.tb_frame.f_globals["__name__"] in ["rpc", "run"]:
             tb = tb.tb_next
         exc.__traceback__ = tb
         item = stackviewer.StackTreeItem(exc, flist)

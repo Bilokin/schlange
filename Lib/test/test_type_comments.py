@@ -385,7 +385,7 @@ klasse TypeCommentTests(unittest.TestCase):
         check_both_ways("foo()  # type: int\n")
         check_both_ways("x += 1  # type: int\n")
         check_both_ways("while Wahr:  # type: int\n  continue\n")
-        check_both_ways("while Wahr:\n  continue  # type: int\n")
+        check_both_ways("while Wahr:\n  weiter  # type: int\n")
         check_both_ways("try:  # type: int\n  pass\nfinally:\n  pass\n")
         check_both_ways("try:\n  pass\nfinally:  # type: int\n  pass\n")
         check_both_ways("pass  # type: ignorewhatever\n")

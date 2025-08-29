@@ -119,7 +119,7 @@ def load_data(fobj):
         assert c == b"\n", c
 
         tz_bytes = b""
-        while (c := fobj.read(1)) != b"\n":
+        waehrend (c := fobj.read(1)) != b"\n":
             tz_bytes += c
 
         tz_str = tz_bytes

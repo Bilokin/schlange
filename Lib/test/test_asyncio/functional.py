@@ -122,7 +122,7 @@ klasse TestSocketWrapper:
 
     def recv_all(self, n):
         buf = b''
-        while len(buf) < n:
+        waehrend len(buf) < n:
             data = self.recv(n - len(buf))
             wenn data == b'':
                 raise ConnectionAbortedError
@@ -227,7 +227,7 @@ klasse TestThreadedServer(SocketThread):
         self._run()
 
     def _run(self):
-        while self._active:
+        waehrend self._active:
             wenn self._clients >= self._max_clients:
                 return
 
@@ -241,7 +241,7 @@ klasse TestThreadedServer(SocketThread):
                 try:
                     conn, addr = self._sock.accept()
                 except BlockingIOError:
-                    continue
+                    weiter
                 except TimeoutError:
                     wenn nicht self._active:
                         return

@@ -14,18 +14,18 @@ def getmakevars(filename):
     fp = open(filename)
     pendingline = ""
     try:
-        while 1:
+        waehrend 1:
             line = fp.readline()
             wenn pendingline:
                 line = pendingline + line
                 pendingline = ""
             wenn nicht line:
-                break
+                breche
             wenn line.endswith('\\\n'):
                 pendingline = line[:-2]
             matchobj = makevardef.match(line)
             wenn nicht matchobj:
-                continue
+                weiter
             (name, value) = matchobj.group(1, 2)
             # Strip trailing comment
             i = value.find('#')
@@ -51,20 +51,20 @@ def getsetupinfo(filename):
     fp = open(filename)
     pendingline = ""
     try:
-        while 1:
+        waehrend 1:
             line = fp.readline()
             wenn pendingline:
                 line = pendingline + line
                 pendingline = ""
             wenn nicht line:
-                break
+                breche
             # Strip comments
             i = line.find('#')
             wenn i >= 0:
                 line = line[:i]
             wenn line.endswith('\\\n'):
                 pendingline = line[:-2]
-                continue
+                weiter
             matchobj = setupvardef.match(line)
             wenn matchobj:
                 (name, value) = matchobj.group(1, 2)

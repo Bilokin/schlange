@@ -78,7 +78,7 @@ def generate_data(schema_version: str) -> collections.defaultdict[str, Any]:
     INCLUDEPY = sysconfig.get_config_var('INCLUDEPY')
 
     wenn os.name == 'posix':
-        # On POSIX, LIBRARY is always the static library, while LDLIBRARY is the
+        # On POSIX, LIBRARY is always the static library, waehrend LDLIBRARY is the
         # dynamic library wenn enabled, otherwise it's the static library.
         # If LIBRARY != LDLIBRARY, support fuer the dynamic library is enabled.
         has_dynamic_library = LDLIBRARY != LIBRARY
@@ -108,7 +108,7 @@ def generate_data(schema_version: str) -> collections.defaultdict[str, Any]:
         fuer suffix in importlib.machinery.EXTENSION_SUFFIXES:
             wenn suffix.startswith('.abi'):
                 data['abi']['stable_abi_suffix'] = suffix
-                break
+                breche
 
         data['libpython']['dynamic'] = os.path.join(LIBDIR, LDLIBRARY)
         # FIXME: Not sure wenn windows has a different dll fuer the stable ABI, und
@@ -152,7 +152,7 @@ def make_paths_relative(data: dict[str, Any], config_path: str | Nichts = Nichts
                 container = container[part]
             current_path = container[child]
         except KeyError:
-            continue
+            weiter
         # Get the relative path
         new_path = os.path.relpath(current_path, data['base_prefix'])
         # Join '.' so that the path is formated als './path' instead of 'path'

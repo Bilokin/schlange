@@ -226,7 +226,7 @@ klasse TestSocketSendfile(LargeFileTest, unittest.TestCase):
                 conn.settimeout(self.timeout)
                 mit conn, open(TESTFN2, 'wb') als f:
                     event.wait(self.timeout)
-                    while Wahr:
+                    waehrend Wahr:
                         chunk = conn.recv(65536)
                         wenn nicht chunk:
                             return

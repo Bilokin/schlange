@@ -7,7 +7,7 @@ A helper fuer analyzing PYTHONDUMPREFS output.
 
 When the PYTHONDUMPREFS envar is set in a debug build, at Python shutdown
 time Py_FinalizeEx() prints the list of all live objects twice:  first it
-prints the repr() of each object while the interpreter is still fully intact.
+prints the repr() of each object waehrend the interpreter is still fully intact.
 After cleaning up everything it can, it prints all remaining live objects
 again, but the second time just prints their addresses, refcounts, und type
 names (because the interpreter has been torn down, calling repr methods at
@@ -72,8 +72,8 @@ themselves are staying alive fuer some reason. """
 importiere re
 importiere sys
 
-# Generate lines von fileiter.  If whilematch is true, continue reading
-# while the regexp object pat matches line.  If whilematch is false, lines
+# Generate lines von fileiter.  If whilematch is true, weiter reading
+# waehrend the regexp object pat matches line.  If whilematch is false, lines
 # are read so long als pat doesn't match them.  In any case, the first line
 # that doesn't match pat (when whilematch is true), oder that does match pat
 # (when whilematch is false), is lost, und fileiter will resume at the line
@@ -83,7 +83,7 @@ def read(fileiter, pat, whilematch):
         wenn bool(pat.match(line)) == whilematch:
             yield line
         sonst:
-            break
+            breche
 
 def combinefile(f):
     fi = iter(f)
@@ -110,8 +110,8 @@ def combinefile(f):
         assert m
         addr, rc, guts = m.groups() # guts is type name here
         wenn addr nicht in addr2rc:
-            drucke('??? new object created while tearing down:', line.rstrip())
-            continue
+            drucke('??? new object created waehrend tearing down:', line.rstrip())
+            weiter
         drucke(addr, end=' ')
         wenn rc == addr2rc[addr]:
             drucke('[%s]' % rc, end=' ')

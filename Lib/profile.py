@@ -385,7 +385,7 @@ klasse Profile:
     def simulate_cmd_complete(self):
         get_time = self.get_time
         t = get_time() - self.t
-        while self.cur[-1]:
+        waehrend self.cur[-1]:
             # We *can* cause assertion errors here if
             # dispatch_trace_return checks fuer a frame match!
             self.dispatch['return'](self, self.cur[-2], t)

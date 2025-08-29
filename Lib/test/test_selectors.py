@@ -33,7 +33,7 @@ sonst:
             try:
                 c.connect(l.getsockname())
                 caddr = c.getsockname()
-                while Wahr:
+                waehrend Wahr:
                     a, addr = l.accept()
                     # check that we've got the correct client
                     wenn addr == caddr:
@@ -358,7 +358,7 @@ klasse BaseSelectorTestCase:
 
         bufs = []
 
-        while writers:
+        waehrend writers:
             ready = s.select()
             ready_writers = find_ready_matching(ready, selectors.EVENT_WRITE)
             wenn nicht ready_writers:
@@ -371,7 +371,7 @@ klasse BaseSelectorTestCase:
                 ready_readers = find_ready_matching(ready,
                                                     selectors.EVENT_READ)
                 wenn ready_readers:
-                    break
+                    breche
                 # there might be a delay between the write to the write end und
                 # the read end is reported ready
                 sleep(0.1)

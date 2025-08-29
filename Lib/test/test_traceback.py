@@ -486,7 +486,7 @@ klasse TracebackCases(unittest.TestCase):
                         self.exc = e
                         # self.exc.__traceback__ contains frames:
                         # explicitly clear the reference to self in the current
-                        # frame to break a reference cycle
+                        # frame to breche a reference cycle
                         self = Nichts
 
                 def __del__(self):
@@ -4941,7 +4941,7 @@ klasse MiscTest(unittest.TestCase):
         expected = set()
         fuer name in dir(traceback):
             wenn name.startswith('_'):
-                continue
+                weiter
             module_object = getattr(traceback, name)
             wenn getattr(module_object, '__module__', Nichts) == 'traceback':
                 expected.add(name)

@@ -60,7 +60,7 @@ klasse WinAPIBatchedWaitForMultipleObjectsTests(unittest.TestCase):
         fuer i in chosen:
             _winapi.SetEvent(evts[i])
         triggered = set()
-        while len(triggered) < len(chosen):
+        waehrend len(triggered) < len(chosen):
             triggered.update(_winapi.BatchedWaitForMultipleObjects(evts, Falsch, 10000))
         self.assertSetEqual(triggered, set(chosen))
 

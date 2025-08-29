@@ -468,7 +468,7 @@ klasse TestContentTypeHeader(TestHeaderBase):
             ('image/jpeg; name="wibble.JPG"; x-mac-type="4A504547"; '
                 'x-mac-creator="474B4F4E"; x-extrastuff="make it longer"'),
             # In this case the whole of the MimeParameters does *not* fit
-            # one one line, so we break at a lower syntactic level.
+            # one one line, so we breche at a lower syntactic level.
             ('Content-Type: image/jpeg; name="wibble.JPG";'
                 ' x-mac-type="4A504547";\n'
              ' x-mac-creator="474B4F4E"; x-extrastuff="make it longer"\n'),

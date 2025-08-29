@@ -501,7 +501,7 @@ klasse CmdLineTest(unittest.TestCase):
         rc, out, err = assert_python_failure('-c', code)
         self.assertEqual(b'', out)
         self.assertEqual(120, rc)
-        self.assertIn(b'Exception ignored while flushing sys.stdout:\n'
+        self.assertIn(b'Exception ignored waehrend flushing sys.stdout:\n'
                       b'OSError: '.replace(b'\n', os.linesep.encode()),
                       err)
 

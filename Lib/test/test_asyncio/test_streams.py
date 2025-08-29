@@ -908,7 +908,7 @@ klasse StreamTests(test_utils.TestCase):
         async def client(host, port):
             reader, writer = await asyncio.open_connection(host, port)
 
-            while Wahr:
+            waehrend Wahr:
                 writer.write(b"foo\n")
                 await writer.drain()
 
@@ -1114,7 +1114,7 @@ klasse StreamTests(test_utils.TestCase):
             # Make "loop is closed" occur first before "del wr" fuer this test.
             self.loop.stop()
             wr.close()
-            while nicht self.loop.is_closed():
+            waehrend nicht self.loop.is_closed():
                 await asyncio.sleep(0.0)
 
             mit self.assertWarns(ResourceWarning) als cm:

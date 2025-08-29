@@ -243,7 +243,7 @@ klasse AddrlistClass:
     def gotonext(self):
         """Skip white space und extract comments."""
         wslist = []
-        while self.pos < len(self.field):
+        waehrend self.pos < len(self.field):
             wenn self.field[self.pos] in self.LWS + '\n\r':
                 wenn self.field[self.pos] nicht in '\n\r':
                     wslist.append(self.field[self.pos])
@@ -251,7 +251,7 @@ klasse AddrlistClass:
             sowenn self.field[self.pos] == '(':
                 self.commentlist.append(self.getcomment())
             sonst:
-                break
+                breche
         return EMPTYSTRING.join(wslist)
 
     def getaddrlist(self):
@@ -260,7 +260,7 @@ klasse AddrlistClass:
         Returns a list containing all of the addresses.
         """
         result = []
-        while self.pos < len(self.field):
+        waehrend self.pos < len(self.field):
             ad = self.getaddress()
             wenn ad:
                 result += ad
@@ -299,11 +299,11 @@ klasse AddrlistClass:
 
             fieldlen = len(self.field)
             self.pos += 1
-            while self.pos < len(self.field):
+            waehrend self.pos < len(self.field):
                 self.gotonext()
                 wenn self.pos < fieldlen und self.field[self.pos] == ';':
                     self.pos += 1
-                    break
+                    breche
                 returnlist = returnlist + self.getaddress()
 
         sowenn self.field[self.pos] == '<':
@@ -339,13 +339,13 @@ klasse AddrlistClass:
         self.pos += 1
         self.gotonext()
         adlist = ''
-        while self.pos < len(self.field):
+        waehrend self.pos < len(self.field):
             wenn expectroute:
                 self.getdomain()
                 expectroute = Falsch
             sowenn self.field[self.pos] == '>':
                 self.pos += 1
-                break
+                breche
             sowenn self.field[self.pos] == '@':
                 self.pos += 1
                 expectroute = Wahr
@@ -354,7 +354,7 @@ klasse AddrlistClass:
             sonst:
                 adlist = self.getaddrspec()
                 self.pos += 1
-                break
+                breche
             self.gotonext()
 
         return adlist
@@ -364,7 +364,7 @@ klasse AddrlistClass:
         aslist = []
 
         self.gotonext()
-        while self.pos < len(self.field):
+        waehrend self.pos < len(self.field):
             preserve_ws = Wahr
             wenn self.field[self.pos] == '.':
                 wenn aslist und nicht aslist[-1].strip():
@@ -377,7 +377,7 @@ klasse AddrlistClass:
             sowenn self.field[self.pos] in self.atomends:
                 wenn aslist und nicht aslist[-1].strip():
                     aslist.pop()
-                break
+                breche
             sonst:
                 aslist.append(self.getatom())
             ws = self.gotonext()
@@ -400,7 +400,7 @@ klasse AddrlistClass:
     def getdomain(self):
         """Get the complete domain name von an address."""
         sdlist = []
-        while self.pos < len(self.field):
+        waehrend self.pos < len(self.field):
             wenn self.field[self.pos] in self.LWS:
                 self.pos += 1
             sowenn self.field[self.pos] == '(':
@@ -415,7 +415,7 @@ klasse AddrlistClass:
                 # `a@malicious.org@important.com`.
                 return EMPTYSTRING
             sowenn self.field[self.pos] in self.atomends:
-                break
+                breche
             sonst:
                 sdlist.append(self.getatom())
         return EMPTYSTRING.join(sdlist)
@@ -439,16 +439,16 @@ klasse AddrlistClass:
         slist = ['']
         quote = Falsch
         self.pos += 1
-        while self.pos < len(self.field):
+        waehrend self.pos < len(self.field):
             wenn quote:
                 slist.append(self.field[self.pos])
                 quote = Falsch
             sowenn self.field[self.pos] in endchars:
                 self.pos += 1
-                break
+                breche
             sowenn allowcomments und self.field[self.pos] == '(':
                 slist.append(self.getcomment())
-                continue        # have already advanced pos von getcomment
+                weiter        # have already advanced pos von getcomment
             sowenn self.field[self.pos] == '\\':
                 quote = Wahr
             sonst:
@@ -480,9 +480,9 @@ klasse AddrlistClass:
         wenn atomends is Nichts:
             atomends = self.atomends
 
-        while self.pos < len(self.field):
+        waehrend self.pos < len(self.field):
             wenn self.field[self.pos] in atomends:
-                break
+                breche
             sonst:
                 atomlist.append(self.field[self.pos])
             self.pos += 1
@@ -498,7 +498,7 @@ klasse AddrlistClass:
         """
         plist = []
 
-        while self.pos < len(self.field):
+        waehrend self.pos < len(self.field):
             wenn self.field[self.pos] in self.FWS:
                 self.pos += 1
             sowenn self.field[self.pos] == '"':
@@ -506,7 +506,7 @@ klasse AddrlistClass:
             sowenn self.field[self.pos] == '(':
                 self.commentlist.append(self.getcomment())
             sowenn self.field[self.pos] in self.phraseends:
-                break
+                breche
             sonst:
                 plist.append(self.getatom(self.phraseends))
 

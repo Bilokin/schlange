@@ -40,10 +40,10 @@ def computerzug(state):
 
 def randommove(state):
     m = max(state)
-    while Wahr:
+    waehrend Wahr:
         z = random.randint(0,2)
         wenn state[z] > (m > 1):
-            break
+            breche
     rand = random.randint(m > 1, state[z]-1)
     return z, rand
 

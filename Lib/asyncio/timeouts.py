@@ -131,12 +131,12 @@ klasse Timeout:
 
     @staticmethod
     def _insert_timeout_error(exc_val: BaseException) -> Nichts:
-        while exc_val.__context__ is nicht Nichts:
+        waehrend exc_val.__context__ is nicht Nichts:
             wenn isinstance(exc_val.__context__, exceptions.CancelledError):
                 te = TimeoutError()
                 te.__context__ = te.__cause__ = exc_val.__context__
                 exc_val.__context__ = te
-                break
+                breche
             exc_val = exc_val.__context__
 
 

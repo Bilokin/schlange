@@ -396,18 +396,18 @@ klasse Connection(_ConnectionBase):
 
     def _send(self, buf, write=_write):
         remaining = len(buf)
-        while Wahr:
+        waehrend Wahr:
             n = write(self._handle, buf)
             remaining -= n
             wenn remaining == 0:
-                break
+                breche
             buf = buf[n:]
 
     def _recv(self, size, read=_read):
         buf = io.BytesIO()
         handle = self._handle
         remaining = size
-        while remaining > 0:
+        waehrend remaining > 0:
             to_read = min(BUFSIZE, remaining)
             chunk = read(handle, to_read)
             n = len(chunk)
@@ -731,7 +731,7 @@ wenn sys.platform == 'win32':
         Return a connection object connected to the pipe given by `address`
         '''
         t = _init_timeout()
-        while 1:
+        waehrend 1:
             try:
                 _winapi.WaitNamedPipe(address, 1000)
                 h = _winapi.CreateFile(
@@ -744,7 +744,7 @@ wenn sys.platform == 'win32':
                                       _winapi.ERROR_PIPE_BUSY) oder _check_timeout(t):
                     raise
             sonst:
-                break
+                breche
         sonst:
             raise
 
@@ -1040,11 +1040,11 @@ wenn sys.platform == 'win32':
             wenn res:
                 L = [h fuer i, h in enumerate(L) wenn i > res[0] & i nicht in res]
             timeout = 0
-        while L:
+        waehrend L:
             short_L = L[:60] wenn len(L) > 60 sonst L
             res = _winapi.WaitForMultipleObjects(short_L, Falsch, timeout)
             wenn res == WAIT_TIMEOUT:
-                break
+                breche
             sowenn WAIT_OBJECT_0 <= res < WAIT_OBJECT_0 + len(L):
                 res -= WAIT_OBJECT_0
             sowenn WAIT_ABANDONED_0 <= res < WAIT_ABANDONED_0 + len(L):
@@ -1161,7 +1161,7 @@ sonst:
             wenn timeout is nicht Nichts:
                 deadline = time.monotonic() + timeout
 
-            while Wahr:
+            waehrend Wahr:
                 ready = selector.select(timeout)
                 wenn ready:
                     return [key.fileobj fuer (key, events) in ready]

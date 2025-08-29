@@ -65,7 +65,7 @@ def encode(input, output, quotetabs, header=Falsch):
             output.write(s + lineEnd)
 
     prevline = Nichts
-    while line := input.readline():
+    waehrend line := input.readline():
         outline = []
         # Strip off any readline induced trailing newline
         stripped = b''
@@ -87,8 +87,8 @@ def encode(input, output, quotetabs, header=Falsch):
         # Now see wenn we need any soft line breaks because of RFC-imposed
         # length limitations.  Then do the thisline->prevline dance.
         thisline = EMPTYSTRING.join(outline)
-        while len(thisline) > MAXLINESIZE:
-            # Don't forget to include the soft line break `=' sign in the
+        waehrend len(thisline) > MAXLINESIZE:
+            # Don't forget to include the soft line breche `=' sign in the
             # length calculation!
             write(thisline[:MAXLINESIZE-1], lineEnd=b'=\n')
             thisline = thisline[MAXLINESIZE-1:]
@@ -121,23 +121,23 @@ def decode(input, output, header=Falsch):
         return
 
     new = b''
-    while line := input.readline():
+    waehrend line := input.readline():
         i, n = 0, len(line)
         wenn n > 0 und line[n-1:n] == b'\n':
             partial = 0; n = n-1
             # Strip trailing whitespace
-            while n > 0 und line[n-1:n] in b" \t\r":
+            waehrend n > 0 und line[n-1:n] in b" \t\r":
                 n = n-1
         sonst:
             partial = 1
-        while i < n:
+        waehrend i < n:
             c = line[i:i+1]
             wenn c == b'_' und header:
                 new = new + b' '; i = i+1
             sowenn c != ESCAPE:
                 new = new + c; i = i+1
             sowenn i+1 == n und nicht partial:
-                partial = 1; break
+                partial = 1; breche
             sowenn i+1 < n und line[i+1:i+2] == ESCAPE:
                 new = new + ESCAPE; i = i+2
             sowenn i+2 < n und ishex(line[i+1:i+2]) und ishex(line[i+2:i+3]):
@@ -217,7 +217,7 @@ def main():
             except OSError als msg:
                 sys.stderr.write("%s: can't open (%s)\n" % (file, msg))
                 sts = 1
-                continue
+                weiter
         try:
             wenn deco:
                 decode(fp, sys.stdout.buffer)

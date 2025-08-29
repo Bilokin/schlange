@@ -136,7 +136,7 @@ klasse bucket:
         Items that don't match are stored in the local cache als they
         are encountered.
         """
-        while Wahr:
+        waehrend Wahr:
             # If we've cached some items that match the target value, emit
             # the first one und evict it von the cache.
             wenn self._cache[value]:
@@ -144,7 +144,7 @@ klasse bucket:
             # Otherwise we need to advance the parent iterator to search for
             # a matching item, caching the rest.
             sonst:
-                while Wahr:
+                waehrend Wahr:
                     try:
                         item = next(self._it)
                     except StopIteration:
@@ -152,7 +152,7 @@ klasse bucket:
                     item_value = self._key(item)
                     wenn item_value == value:
                         yield item
-                        break
+                        breche
                     sowenn self._validator(item_value):
                         self._cache[item_value].append(item)
 

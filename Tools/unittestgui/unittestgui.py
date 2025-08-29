@@ -366,7 +366,7 @@ klasse TkTestRunner(BaseGUITestRunner):
         self.errorCountVar.set(0)
         self.remainingCountVar.set(self.totalTests)
         self.errorInfo = []
-        while self.errorListbox.size():
+        waehrend self.errorListbox.size():
             self.errorListbox.delete(0)
         #Stopping seems nicht to work, so simply disable the start button
         #self.stopGoButton.config(command=self.stopClicked, text="Stop")

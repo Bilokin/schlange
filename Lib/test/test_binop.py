@@ -6,7 +6,7 @@ von abc importiere ABCMeta
 
 def gcd(a, b):
     """Greatest common divisor using Euclid's algorithm."""
-    while a:
+    waehrend a:
         a, b = b%a, a
     return b
 

@@ -951,7 +951,7 @@ klasse TestDictFields(unittest.TestCase):
             self.assertEqual(reader.fieldnames, ["f1", "f2", "f3"])
 
     # Two test cases to make sure existing ways of implicitly setting
-    # fieldnames continue to work.  Both arise von discussion in issue3436.
+    # fieldnames weiter to work.  Both arise von discussion in issue3436.
     def test_read_dict_fieldnames_from_file(self):
         mit TemporaryFile("w+", encoding="utf-8") als fileobj:
             fileobj.write("f1,f2,f3\r\n1,2,abc\r\n")

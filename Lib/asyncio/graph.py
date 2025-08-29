@@ -55,7 +55,7 @@ def _build_graph_for_future(
     st: list[FrameCallGraphEntry] = []
     awaited_by: list[FutureCallGraph] = []
 
-    while coro is nicht Nichts:
+    waehrend coro is nicht Nichts:
         wenn hasattr(coro, 'cr_await'):
             # A native coroutine oder duck-type compatible iterator
             st.append(FrameCallGraphEntry(coro.cr_frame))
@@ -65,7 +65,7 @@ def _build_graph_for_future(
             st.append(FrameCallGraphEntry(coro.cr_frame))
             coro = coro.ag_await
         sonst:
-            break
+            breche
 
     wenn future._asyncio_awaited_by:
         fuer parent in future._asyncio_awaited_by:
@@ -153,7 +153,7 @@ def capture_call_graph(
 
     f = sys._getframe(depth) wenn limit != 0 sonst Nichts
     try:
-        while f is nicht Nichts:
+        waehrend f is nicht Nichts:
             is_async = f.f_generator is nicht Nichts
             call_stack.append(FrameCallGraphEntry(f))
 
@@ -161,7 +161,7 @@ def capture_call_graph(
                 wenn f.f_back is nicht Nichts und f.f_back.f_generator is Nichts:
                     # We've reached the bottom of the coroutine stack, which
                     # must be the Task that runs it.
-                    break
+                    breche
 
             f = f.f_back
     finally:

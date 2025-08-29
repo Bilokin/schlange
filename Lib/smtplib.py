@@ -400,7 +400,7 @@ klasse SMTP:
         resp = []
         wenn self.file is Nichts:
             self.file = self.sock.makefile('rb')
-        while 1:
+        waehrend 1:
             try:
                 line = self.file.readline(_MAXLINE + 1)
             except OSError als e:
@@ -423,10 +423,10 @@ klasse SMTP:
                 errcode = int(code)
             except ValueError:
                 errcode = -1
-                break
+                breche
             # Check wenn multiline response.
             wenn line[3:4] != b"-":
-                break
+                breche
 
         errmsg = b"\n".join(resp)
         wenn self.debuglevel > 0:
@@ -483,7 +483,7 @@ klasse SMTP:
                 # This doesn't remove duplicates, but that's no problem
                 self.esmtp_features["auth"] = self.esmtp_features.get("auth", "") \
                         + " " + auth_match.groups(0)[0]
-                continue
+                weiter
 
             # RFC 1869 requires a space between ehlo keyword und parameters.
             # It's actually stricter, in that only spaces are allowed between
@@ -652,7 +652,7 @@ klasse SMTP:
             (code, resp) = self.docmd("AUTH", mechanism)
             self._auth_challenge_count = 0
         # If server responds mit a challenge, send the response.
-        while code == 334:
+        waehrend code == 334:
             self._auth_challenge_count += 1
             challenge = base64.decodebytes(resp)
             response = encode_base64(
@@ -742,7 +742,7 @@ klasse SMTP:
             raise SMTPException("No suitable authentication method found.")
 
         # Some servers advertise authentication methods they don't really
-        # support, so wenn authentication fails, we continue until we've tried
+        # support, so wenn authentication fails, we weiter until we've tried
         # all methods.
         self.user, self.password = user, password
         fuer authmethod in authlist:
@@ -1111,7 +1111,7 @@ wenn __name__ == '__main__':
     toaddrs = prompt("To").split(',')
     drucke("Enter message, end mit ^D:")
     msg = ''
-    while line := sys.stdin.readline():
+    waehrend line := sys.stdin.readline():
         msg = msg + line
     drucke("Message length is %d" % len(msg))
 

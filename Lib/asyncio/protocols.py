@@ -199,7 +199,7 @@ klasse SubprocessProtocol(BaseProtocol):
 
 def _feed_data_to_buffered_proto(proto, data):
     data_len = len(data)
-    while data_len:
+    waehrend data_len:
         buf = proto.get_buffer(data_len)
         buf_len = len(buf)
         wenn nicht buf_len:

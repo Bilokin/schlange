@@ -34,7 +34,7 @@ def no_other_refs():
     # due to gh-124392 coroutines now refer to their locals
     coro = asyncio.current_task().get_coro()
     frame = sys._getframe(1)
-    while coro.cr_frame != frame:
+    waehrend coro.cr_frame != frame:
         coro = coro.cr_await
     return [coro]
 
@@ -107,7 +107,7 @@ klasse BaseTestTaskGroup:
         async mit taskgroups.TaskGroup() als g:
             t1 = g.create_task(foo1())
             await asyncio.sleep(0.15)
-            # cancel t1 explicitly, i.e. everything should continue
+            # cancel t1 explicitly, i.e. everything should weiter
             # working als expected.
             t1.cancel()
 
@@ -719,7 +719,7 @@ klasse BaseTestTaskGroup:
             g.create_task(hydra(g))
 
         async def hercules():
-            while nhydras < 10:
+            waehrend nhydras < 10:
                 await asyncio.sleep(0.015)
             1 / 0
 

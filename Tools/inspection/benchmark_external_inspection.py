@@ -54,7 +54,7 @@ def main_loop():
     """Main computation loop mit different execution paths"""
     iteration = 0
 
-    while Wahr:
+    waehrend Wahr:
         iteration += 1
 
         # Different execution paths mit different frequencies
@@ -111,7 +111,7 @@ def io_intensive_work():
 
 def mixed_workload():
     """Mix of CPU und IO work"""
-    while Wahr:
+    waehrend Wahr:
         wenn random.random() < 0.3:
             cpu_intensive_work()
         sonst:
@@ -183,7 +183,7 @@ def benchmark(unwinder, duration_seconds=10):
     )
 
     try:
-        while time.perf_counter() < end_time:
+        waehrend time.perf_counter() < end_time:
             total_attempts += 1
             work_start = time.perf_counter()
             try:

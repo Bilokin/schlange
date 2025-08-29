@@ -108,7 +108,7 @@ klasse TestFilemode:
             wenn func is Nichts:
                 wenn funcname == testname:
                     raise ValueError(funcname)
-                continue
+                weiter
             wenn funcname == testname:
                 self.assertWahr(func(mode))
             sonst:
@@ -212,7 +212,7 @@ klasse TestFilemode:
                 st_mode, modestr = self.get_mode(blockdev, lstat=Falsch)
                 self.assertEqual(modestr[0], 'b')
                 self.assertS_IS("BLK", st_mode)
-                break
+                breche
 
     @socket_helper.skip_unless_bind_unix_socket
     def test_socket(self):

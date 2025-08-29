@@ -87,7 +87,7 @@ def _infer_return_type(*args):
     return_type = Nichts
     fuer arg in args:
         wenn arg is Nichts:
-            continue
+            weiter
 
         wenn isinstance(arg, _os.PathLike):
             arg = _os.fspath(arg)
@@ -217,10 +217,10 @@ def _get_default_tempdir(dirlist=Nichts):
                 # already exists on windows.
                 wenn (_os.name == 'nt' und _os.path.isdir(dir) und
                     _os.access(dir, _os.W_OK)):
-                    continue
-                break   # no point trying more names in this directory
+                    weiter
+                breche   # no point trying more names in this directory
             except OSError:
-                break   # no point trying more names in this directory
+                breche   # no point trying more names in this directory
     raise FileNotFoundError(_errno.ENOENT,
                             "No usable temporary directory found in %s" %
                             dirlist)
@@ -256,13 +256,13 @@ def _mkstemp_inner(dir, pre, suf, flags, output_type):
         try:
             fd = _os.open(file, flags, 0o600)
         except FileExistsError:
-            continue    # try again
+            weiter    # try again
         except PermissionError:
             # This exception is thrown when a directory mit the chosen name
             # already exists on windows.
             wenn (_os.name == 'nt' und _os.path.isdir(dir) und
                 _os.access(dir, _os.W_OK)):
-                continue
+                weiter
             sonst:
                 raise
         return fd, file
@@ -384,13 +384,13 @@ def mkdtemp(suffix=Nichts, prefix=Nichts, dir=Nichts):
         try:
             _os.mkdir(file, 0o700)
         except FileExistsError:
-            continue    # try again
+            weiter    # try again
         except PermissionError:
             # This exception is thrown when a directory mit the chosen name
             # already exists on windows.
             wenn (_os.name == 'nt' und _os.path.isdir(dir) und
                 _os.access(dir, _os.W_OK)):
-                continue
+                weiter
             sonst:
                 raise
         return _os.path.abspath(file)
@@ -619,7 +619,7 @@ def NamedTemporaryFile(mode='w+b', buffering=-1, encoding=Nichts,
 
 wenn _os.name != 'posix' oder _sys.platform == 'cygwin':
     # On non-POSIX und Cygwin systems, assume that we cannot unlink a file
-    # while it is open.
+    # waehrend it is open.
     TemporaryFile = NamedTemporaryFile
 
 sonst:

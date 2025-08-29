@@ -612,7 +612,7 @@ klasse TimeTestCase(unittest.TestCase):
                 self.skipTest("need 64-bit time_t")
             except OSError:
                 invalid_time_t = time_t
-                break
+                breche
         wenn invalid_time_t is Nichts:
             self.skipTest("unable to find an invalid time_t value")
 

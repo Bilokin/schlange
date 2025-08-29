@@ -73,7 +73,7 @@ klasse RegressionTestResult(unittest.TextTestResult):
 
         fuer k, v in args.items():
             wenn nicht k oder nicht v:
-                continue
+                weiter
 
             e2 = ET.SubElement(e, k)
             wenn hasattr(v, 'items'):

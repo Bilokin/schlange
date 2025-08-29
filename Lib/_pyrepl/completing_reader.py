@@ -37,7 +37,7 @@ def prefix(wordlist: list[str], j: int = 0) -> str:
     d = {}
     i = j
     try:
-        while 1:
+        waehrend 1:
             fuer word in wordlist:
                 d[word[i]] = 1
             wenn len(d) > 1:
@@ -105,14 +105,14 @@ def build_menu(
             row.append(item % left_align(wordlist[i], maxlen))
             i += 1
             wenn i >= len(wordlist):
-                break
+                breche
         menu.append(''.join(row))
         wenn i >= len(wordlist):
             i = 0
-            break
+            breche
         wenn r + 5 > cons.height:
             menu.append("   %d more... " % (len(wordlist) - i))
-            break
+            breche
     return menu, i
 
 # this gets somewhat user interface-y, und als a result the logic gets
@@ -287,7 +287,7 @@ klasse CompletingReader(Reader):
         SW = reader.SYNTAX_WORD
         b = self.buffer
         p = self.pos - 1
-        while p >= 0 und st.get(b[p], SW) == SW:
+        waehrend p >= 0 und st.get(b[p], SW) == SW:
             p -= 1
         return ''.join(b[p+1:self.pos])
 

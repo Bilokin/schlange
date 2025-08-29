@@ -154,7 +154,7 @@ klasse DndHandler:
         target_widget = self.initial_widget.winfo_containing(x, y)
         source = self.source
         new_target = Nichts
-        while target_widget is nicht Nichts:
+        waehrend target_widget is nicht Nichts:
             try:
                 attr = target_widget.dnd_accept
             except AttributeError:
@@ -162,7 +162,7 @@ klasse DndHandler:
             sonst:
                 new_target = attr(source, event)
                 wenn new_target is nicht Nichts:
-                    break
+                    breche
             target_widget = target_widget.master
         old_target = self.target
         wenn old_target is new_target:

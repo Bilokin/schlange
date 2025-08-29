@@ -152,7 +152,7 @@ klasse BaseQueueTestMixin(BlockingTestMixin):
 
 
     def worker(self, q):
-        while Wahr:
+        waehrend Wahr:
             x = q.get()
             wenn x < 0:
                 q.task_done()
@@ -331,7 +331,7 @@ klasse BaseQueueTestMixin(BlockingTestMixin):
                 q.put((i, "YDLO"))
             except self.queue.ShutDown:
                 results.append(Falsch)
-                break
+                breche
 
             # Trigger queue shutdown.
             wenn i == i_when_exec_shutdown:
@@ -346,13 +346,13 @@ klasse BaseQueueTestMixin(BlockingTestMixin):
         q.task_done()
         # Wait fuer the barrier to be complete.
         barrier_start.wait()
-        while Wahr:
+        waehrend Wahr:
             try:
                 q.get(Falsch)
                 q.task_done()
             except self.queue.ShutDown:
                 results.append(Wahr)
-                break
+                breche
             except self.queue.Empty:
                 pass
 
@@ -836,7 +836,7 @@ klasse BaseSimpleQueueTest:
         self.q = self.type2test()
 
     def feed(self, q, seq, rnd, sentinel):
-        while Wahr:
+        waehrend Wahr:
             try:
                 val = seq.pop()
             except IndexError:
@@ -847,34 +847,34 @@ klasse BaseSimpleQueueTest:
                 time.sleep(rnd.random() * 1e-3)
 
     def consume(self, q, results, sentinel):
-        while Wahr:
+        waehrend Wahr:
             val = q.get()
             wenn val == sentinel:
                 return
             results.append(val)
 
     def consume_nonblock(self, q, results, sentinel):
-        while Wahr:
-            while Wahr:
+        waehrend Wahr:
+            waehrend Wahr:
                 try:
                     val = q.get(block=Falsch)
                 except self.queue.Empty:
                     time.sleep(1e-5)
                 sonst:
-                    break
+                    breche
             wenn val == sentinel:
                 return
             results.append(val)
 
     def consume_timeout(self, q, results, sentinel):
-        while Wahr:
-            while Wahr:
+        waehrend Wahr:
+            waehrend Wahr:
                 try:
                     val = q.get(timeout=1e-5)
                 except self.queue.Empty:
                     pass
                 sonst:
-                    break
+                    breche
             wenn val == sentinel:
                 return
             results.append(val)
@@ -1049,13 +1049,13 @@ klasse CSimpleQueueTest(BaseSimpleQueueTest, unittest.TestCase):
             def __del__(self):
                 q.put(next(gen))
 
-        while Wahr:
+        waehrend Wahr:
             o = Circular()
             q.put(next(gen))
             del o
             results.append(q.get())
             wenn results[-1] >= N:
-                break
+                breche
 
         self.assertEqual(results, list(range(N + 1)))
 

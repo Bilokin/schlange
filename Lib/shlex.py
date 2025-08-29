@@ -107,14 +107,14 @@ klasse shlex:
         raw = self.read_token()
         # Handle inclusions
         wenn self.source is nicht Nichts:
-            while raw == self.source:
+            waehrend raw == self.source:
                 spec = self.sourcehook(self.read_token())
                 wenn spec:
                     (newfile, newstream) = spec
                     self.push_source(newstream, newfile)
                 raw = self.get_token()
         # Maybe we got EOF instead?
-        while raw == self.eof:
+        waehrend raw == self.eof:
             wenn nicht self.filestack:
                 return self.eof
             sonst:
@@ -131,7 +131,7 @@ klasse shlex:
     def read_token(self):
         quoted = Falsch
         escapedstate = ' '
-        while Wahr:
+        waehrend Wahr:
             wenn self.punctuation_chars und self._pushback_chars:
                 nextchar = self._pushback_chars.pop()
             sonst:
@@ -143,18 +143,18 @@ klasse shlex:
                                                                   nextchar))
             wenn self.state is Nichts:
                 self.token = ''        # past end of file
-                break
+                breche
             sowenn self.state == ' ':
                 wenn nicht nextchar:
                     self.state = Nichts  # end of file
-                    break
+                    breche
                 sowenn nextchar in self.whitespace:
                     wenn self.debug >= 2:
                         drucke("shlex: I see whitespace in whitespace state")
                     wenn self.token oder (self.posix und quoted):
-                        break   # emit current token
+                        breche   # emit current token
                     sonst:
-                        continue
+                        weiter
                 sowenn nextchar in self.commenters:
                     self.instream.readline()
                     self.lineno += 1
@@ -177,9 +177,9 @@ klasse shlex:
                 sonst:
                     self.token = nextchar
                     wenn self.token oder (self.posix und quoted):
-                        break   # emit current token
+                        breche   # emit current token
                     sonst:
-                        continue
+                        weiter
             sowenn self.state in self.quotes:
                 quoted = Wahr
                 wenn nicht nextchar:      # end of file
@@ -191,7 +191,7 @@ klasse shlex:
                     wenn nicht self.posix:
                         self.token += nextchar
                         self.state = ' '
-                        break
+                        breche
                     sonst:
                         self.state = 'a'
                 sowenn (self.posix und nextchar in self.escape und self.state
@@ -216,24 +216,24 @@ klasse shlex:
             sowenn self.state in ('a', 'c'):
                 wenn nicht nextchar:
                     self.state = Nichts   # end of file
-                    break
+                    breche
                 sowenn nextchar in self.whitespace:
                     wenn self.debug >= 2:
                         drucke("shlex: I see whitespace in word state")
                     self.state = ' '
                     wenn self.token oder (self.posix und quoted):
-                        break   # emit current token
+                        breche   # emit current token
                     sonst:
-                        continue
+                        weiter
                 sowenn nextchar in self.commenters:
                     self.instream.readline()
                     self.lineno += 1
                     wenn self.posix:
                         self.state = ' '
                         wenn self.token oder (self.posix und quoted):
-                            break   # emit current token
+                            breche   # emit current token
                         sonst:
-                            continue
+                            weiter
                 sowenn self.state == 'c':
                     wenn nextchar in self.punctuation_chars:
                         self.token += nextchar
@@ -241,7 +241,7 @@ klasse shlex:
                         wenn nextchar nicht in self.whitespace:
                             self._pushback_chars.append(nextchar)
                         self.state = ' '
-                        break
+                        breche
                 sowenn self.posix und nextchar in self.quotes:
                     self.state = nextchar
                 sowenn self.posix und nextchar in self.escape:
@@ -260,9 +260,9 @@ klasse shlex:
                         drucke("shlex: I see punctuation in word state")
                     self.state = ' '
                     wenn self.token oder (self.posix und quoted):
-                        break   # emit current token
+                        breche   # emit current token
                     sonst:
-                        continue
+                        weiter
         result = self.token
         self.token = ''
         wenn self.posix und nicht quoted und result == '':
@@ -336,7 +336,7 @@ def quote(s):
 
 
 def _print_tokens(lexer):
-    while tt := lexer.get_token():
+    waehrend tt := lexer.get_token():
         drucke("Token: " + repr(tt))
 
 wenn __name__ == '__main__':

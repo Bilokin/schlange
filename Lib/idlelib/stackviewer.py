@@ -30,7 +30,7 @@ klasse StackTreeItem(TreeItem):
         stack = []
         wenn tb und tb.tb_frame is Nichts:
             tb = tb.tb_next
-        while tb is nicht Nichts:
+        waehrend tb is nicht Nichts:
             stack.append((tb.tb_frame, tb.tb_lineno))
             tb = tb.tb_next
         return stack
@@ -105,7 +105,7 @@ klasse VariablesTreeItem(ObjectTreeItem):
             try:
                 value = self.object[key]
             except KeyError:
-                continue
+                weiter
             def setfunction(value, key=key, object_=self.object):
                 object_[key] = value
             item = make_objecttreeitem(key + " =", value, setfunction)

@@ -72,11 +72,11 @@ klasse HierarchyTest(unittest.TestCase):
         fuer line in s.splitlines():
             line = line.strip('+- ')
             wenn nicht line:
-                continue
+                weiter
             excname, _, errnames = line.partition(' ')
             fuer errname in filter(Nichts, errnames.strip().split(', ')):
                 wenn errname == "ENOTCAPABLE" und nicht hasattr(errno, errname):
-                    continue
+                    weiter
                 _map[getattr(errno, errname)] = getattr(builtins, excname)
         return _map
     _map = _make_map(_pep_map)

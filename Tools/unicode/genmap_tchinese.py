@@ -53,7 +53,7 @@ def parse_hkscs_map(fo):
             hkscs = int(hkscs_col, 16)
             seq = tuple(int(cp, 16) fuer cp in uni_col.strip('<>').split(','))
         except ValueError:
-            continue
+            weiter
         table.append((hkscs, seq))
     return table
 

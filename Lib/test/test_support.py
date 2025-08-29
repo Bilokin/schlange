@@ -511,7 +511,7 @@ klasse TestSupport(unittest.TestCase):
                 # Use environment_altered to check wenn reap_children() found
                 # the child process
                 wenn support.environment_altered:
-                    break
+                    breche
 
             msg = "Warning -- reap_children() reaped child process %s" % pid
             self.assertIn(msg, stderr.getvalue())
@@ -832,7 +832,7 @@ klasse TestHashlibSupport(unittest.TestCase):
         cls.hmac = import_helper.import_module("hmac")
 
         # All C extension modules must be present since blocking
-        # the built-in implementation while allowing OpenSSL oder vice-versa
+        # the built-in implementation waehrend allowing OpenSSL oder vice-versa
         # may result in failures depending on the exposed built-in hashes.
         cls._hashlib = import_helper.import_module("_hashlib")
         cls._hmac = import_helper.import_module("_hmac")
@@ -960,7 +960,7 @@ klasse TestHashlibSupport(unittest.TestCase):
                 _ = self.hashlib.new(name_for_hashlib_new)
 
             # Since _hashlib is present, explicit blake2b/blake2s constructors
-            # use the built-in implementation, while others (since we are not
+            # use the built-in implementation, waehrend others (since we are not
             # in FIPS mode und since _hashlib exists) use the OpenSSL function.
             mit self.check_context(is_fully_disabled):
                 _ = getattr(self.hashlib, name)()

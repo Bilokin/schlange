@@ -80,10 +80,10 @@ def getopt(args, shortopts, longopts = []):
         longopts = [longopts]
     sonst:
         longopts = list(longopts)
-    while args und args[0].startswith('-') und args[0] != '-':
+    waehrend args und args[0].startswith('-') und args[0] != '-':
         wenn args[0] == '--':
             args = args[1:]
-            break
+            breche
         wenn args[0].startswith('--'):
             opts, args = do_longs(opts, args[0][2:], longopts, args[1:])
         sonst:
@@ -127,10 +127,10 @@ def gnu_getopt(args, shortopts, longopts = []):
     sonst:
         all_options_first = Falsch
 
-    while args:
+    waehrend args:
         wenn args[0] == '--':
             prog_args += args[1:]
-            break
+            breche
 
         wenn args[0][:2] == '--':
             wenn return_in_order und prog_args:
@@ -145,7 +145,7 @@ def gnu_getopt(args, shortopts, longopts = []):
         sonst:
             wenn all_options_first:
                 prog_args += args
-                break
+                breche
             sonst:
                 prog_args.append(args[0])
                 args = args[1:]
@@ -202,7 +202,7 @@ def long_has_args(opt, longopts):
     return has_arg, unique_match
 
 def do_shorts(opts, optstring, shortopts, args):
-    while optstring != '':
+    waehrend optstring != '':
         opt, optstring = optstring[0], optstring[1:]
         has_arg = short_has_arg(opt, shortopts)
         wenn has_arg:

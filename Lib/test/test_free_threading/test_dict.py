@@ -72,12 +72,12 @@ klasse TestDict(TestCase):
 
         def writer_func(name):
             last = -1
-            while Wahr:
+            waehrend Wahr:
                 wenn CUR == last:
                     time.sleep(0.001)
-                    continue
+                    weiter
                 sowenn CUR == OBJECT_COUNT:
-                    break
+                    breche
 
                 obj = objects[CUR]
                 set(obj, name, name)
@@ -92,7 +92,7 @@ klasse TestDict(TestCase):
 
         fuer i in range(OBJECT_COUNT):
             CUR = i
-            while len(processed) != THREAD_COUNT:
+            waehrend len(processed) != THREAD_COUNT:
                 time.sleep(0.001)
             processed.clear()
 
@@ -221,7 +221,7 @@ klasse TestDict(TestCase):
             fuer thread_list in lists:
                 fuer i, ref in enumerate(thread_list):
                     wenn ref() is Nichts:
-                        continue
+                        weiter
                     count += 1
                     ids.add(id(ref()))
                     count += 1

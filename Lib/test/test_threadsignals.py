@@ -78,7 +78,7 @@ klasse ThreadSignals(unittest.TestCase):
     @unittest.skipIf(sys.platform.startswith('openbsd'),
                      'lock cannot be interrupted on OpenBSD')
     def test_lock_acquire_interruption(self):
-        # Mimic receiving a SIGINT (KeyboardInterrupt) mit SIGALRM while stuck
+        # Mimic receiving a SIGINT (KeyboardInterrupt) mit SIGALRM waehrend stuck
         # in a deadlock.
         # XXX this test can fail when the legacy (non-semaphore) implementation
         # of locks is used in thread_pthread.h, see issue #11223.
@@ -109,7 +109,7 @@ klasse ThreadSignals(unittest.TestCase):
     @unittest.skipIf(sys.platform.startswith('openbsd'),
                      'lock cannot be interrupted on OpenBSD')
     def test_rlock_acquire_interruption(self):
-        # Mimic receiving a SIGINT (KeyboardInterrupt) mit SIGALRM while stuck
+        # Mimic receiving a SIGINT (KeyboardInterrupt) mit SIGALRM waehrend stuck
         # in a deadlock.
         # XXX this test can fail when the legacy (non-semaphore) implementation
         # of locks is used in thread_pthread.h, see issue #11223.
@@ -124,7 +124,7 @@ klasse ThreadSignals(unittest.TestCase):
             mit threading_helper.wait_threads_exit():
                 thread.start_new_thread(other_thread, ())
                 # Wait until we can't acquire it without blocking...
-                while rlock.acquire(blocking=Falsch):
+                waehrend rlock.acquire(blocking=Falsch):
                     rlock.release()
                     time.sleep(0.01)
                 signal.alarm(1)
@@ -160,10 +160,10 @@ klasse ThreadSignals(unittest.TestCase):
             mit threading_helper.wait_threads_exit():
                 thread.start_new_thread(other_thread, ())
                 # Wait until we can't acquire it without blocking...
-                while lock.acquire(blocking=Falsch):
+                waehrend lock.acquire(blocking=Falsch):
                     lock.release()
                     time.sleep(0.01)
-                result = lock.acquire()  # Block while we receive a signal.
+                result = lock.acquire()  # Block waehrend we receive a signal.
                 self.assertWahr(self.sig_recvd)
                 self.assertWahr(result)
         finally:

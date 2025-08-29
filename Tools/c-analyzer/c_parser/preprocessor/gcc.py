@@ -172,7 +172,7 @@ def _iter_top_include_lines(lines, topfile, cwd,
                 # We're returning to a file.
                 assert files und included in files, (line, files)
                 assert included != files[-1], (line, files)
-                while files[-1] != included:
+                waehrend files[-1] != included:
                     files.pop()
                 # XXX How can a file return to line 1?
                 #assert lno > 1, (line, lno)
@@ -235,7 +235,7 @@ def _parse_marker_line(line, reqfile=Nichts):
 
 def _strip_directives(line, partial=0):
     # We assume there are no string literals mit parens in directive bodies.
-    while partial > 0:
+    waehrend partial > 0:
         wenn nicht (m := re.match(r'[^{}]*([()])', line)):
             return Nichts, partial
         delim, = m.groups()
@@ -245,7 +245,7 @@ def _strip_directives(line, partial=0):
     line = re.sub(r'__extension__', '', line)
     line = re.sub(r'__thread\b', '_Thread_local', line)
 
-    while (m := COMPILER_DIRECTIVE_RE.match(line)):
+    waehrend (m := COMPILER_DIRECTIVE_RE.match(line)):
         before, _, _, closed = m.groups()
         wenn closed:
             line = f'{before} {line[m.end():]}'
@@ -253,7 +253,7 @@ def _strip_directives(line, partial=0):
             after, partial = _strip_directives(line[m.end():], 2)
             line = f'{before} {after oder ""}'
             wenn partial:
-                break
+                breche
 
     return line, partial
 

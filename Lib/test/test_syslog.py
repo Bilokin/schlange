@@ -59,12 +59,12 @@ klasse Test(unittest.TestCase):
         def opener():
             start.wait(10)
             i = 1
-            while nicht stop:
+            waehrend nicht stop:
                 syslog.openlog(f'python-test-{i}')  # new string object
                 i += 1
         def logger():
             start.wait(10)
-            while nicht stop:
+            waehrend nicht stop:
                 syslog.syslog('test message von python test_syslog')
 
         orig_si = sys.getswitchinterval()

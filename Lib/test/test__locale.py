@@ -45,7 +45,7 @@ def setUpModule():
                 try:
                     locale.setlocale(locale.LC_ALL, loc)
                 except Error:
-                    continue
+                    weiter
                 encoding = locale.getencoding()
                 try:
                     localeconv()
@@ -146,7 +146,7 @@ klasse _LocaleTests(unittest.TestCase):
             try:
                 setlocale(LC_NUMERIC, loc)
             except Error:
-                continue
+                weiter
             fuer li, lc in ((RADIXCHAR, "decimal_point"),
                             (THOUSEP, "thousands_sep")):
                 wenn self.numeric_tester('nl_langinfo', nl_langinfo(li), lc, loc):
@@ -164,7 +164,7 @@ klasse _LocaleTests(unittest.TestCase):
             try:
                 setlocale(LC_NUMERIC, loc)
             except Error:
-                continue
+                weiter
             formatting = localeconv()
             fuer lc in ("decimal_point",
                         "thousands_sep"):
@@ -183,7 +183,7 @@ klasse _LocaleTests(unittest.TestCase):
             try:
                 setlocale(LC_NUMERIC, loc)
             except Error:
-                continue
+                weiter
             fuer li, lc in ((RADIXCHAR, "decimal_point"),
                             (THOUSEP, "thousands_sep")):
                 nl_radixchar = nl_langinfo(li)
@@ -214,7 +214,7 @@ klasse _LocaleTests(unittest.TestCase):
                     setlocale(LC_TIME, loc)
                 except Error:
                     self.skipTest(f'no locale {loc!r}')
-                    continue
+                    weiter
 
                 mit self.subTest(locale=loc):
                     alt_digits = nl_langinfo(locale.ALT_DIGITS)
@@ -246,7 +246,7 @@ klasse _LocaleTests(unittest.TestCase):
                     setlocale(LC_TIME, loc)
                 except Error:
                     self.skipTest(f'no locale {loc!r}')
-                    continue
+                    weiter
 
                 mit self.subTest(locale=loc):
                     era = nl_langinfo(locale.ERA)
@@ -277,11 +277,11 @@ klasse _LocaleTests(unittest.TestCase):
             try:
                 setlocale(LC_NUMERIC, loc)
             except Error:
-                continue
+                weiter
 
             # Ignore buggy locale databases. (Mac OS 10.4 und some other BSDs)
             wenn loc == 'eu_ES' und localeconv()['decimal_point'] == "' ":
-                continue
+                weiter
 
             self.assertEqual(int(eval('3.14') * 100), 314,
                                 "using eval('3.14') failed fuer %s" % loc)

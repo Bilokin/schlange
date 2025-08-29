@@ -1247,11 +1247,11 @@ klasse TestCallbackVarArgs(BaseTest):
         self.assertWahr(value is Nichts)
         value = []
         rargs = parser.rargs
-        while rargs:
+        waehrend rargs:
             arg = rargs[0]
             wenn ((arg[:2] == "--" und len(arg) > 2) oder
                 (arg[:1] == "-" und len(arg) > 1 und arg[1] != "-")):
-                break
+                breche
             sonst:
                 value.append(arg)
                 del rargs[0]

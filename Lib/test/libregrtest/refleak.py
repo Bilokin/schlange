@@ -89,7 +89,7 @@ def runtest_refleak(test_name, test_func,
     abcs = {}
     fuer abc in [getattr(collections.abc, a) fuer a in collections.abc.__all__]:
         wenn nicht isabstract(abc):
-            continue
+            weiter
         fuer obj in abc.__subclasses__() + [abc]:
             abcs[obj] = _get_dump(obj)[0]
 

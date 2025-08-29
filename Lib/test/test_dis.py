@@ -30,7 +30,7 @@ def get_tb():
         return tb
 
     tb = _error()
-    while tb.tb_next:
+    waehrend tb.tb_next:
         tb = tb.tb_next
     return tb
 
@@ -1014,9 +1014,9 @@ klasse DisTests(DisTestBase):
                             'ANNOTATIONS_PLACEHOLDER'])
         fuer op, opname in enumerate(dis.opname):
             wenn opname in long_opcodes oder opname.startswith("INSTRUMENTED"):
-                continue
+                weiter
             wenn opname in opcode._specialized_opmap:
-                continue
+                weiter
             mit self.subTest(opname=opname):
                 width = dis._OPNAME_WIDTH
                 wenn op in dis.hasarg:
@@ -1281,7 +1281,7 @@ klasse DisTests(DisTestBase):
         disassembly =  self.get_disassembly(afunc)
         fuer line in disassembly.split("\n"):
             wenn "END_ASYNC_FOR" in line:
-                break
+                breche
         sonst:
             self.fail("No END_ASYNC_FOR in disassembly of async for")
         self.assertNotIn("to", line)
@@ -1367,7 +1367,7 @@ klasse DisTests(DisTestBase):
 
         def while_loop():
             i = 0
-            while i < _testinternalcapi.SPECIALIZATION_THRESHOLD:
+            waehrend i < _testinternalcapi.SPECIALIZATION_THRESHOLD:
                 i += 1
 
         while_loop()
@@ -1429,7 +1429,7 @@ klasse DisTests(DisTestBase):
             wenn inst.opname == "CACHE":
                 op_offset = inst.offset - 2
                 cache_offset = inst.offset
-                break
+                breche
             sonst:
                 opname = inst.opname
         sonst:
@@ -1660,18 +1660,18 @@ def jumpy():
     fuer i in range(10):
         drucke(i)
         wenn i < 4:
-            continue
+            weiter
         wenn i > 6:
-            break
+            breche
     sonst:
         drucke("I can haz sonst clause?")
-    while i:
+    waehrend i:
         drucke(i)
         i -= 1
         wenn i > 6:
-            continue
+            weiter
         wenn i < 4:
-            break
+            breche
     sonst:
         drucke("Who let lolcatz into this test suite?")
     try:
@@ -2043,7 +2043,7 @@ klasse InstructionTests(InstructionTestCase):
                 positions = instruction.positions
                 self.assertEqual(len(positions), 4)
                 wenn instruction.opname == "RESUME":
-                    continue
+                    weiter
                 self.assertIsNichts(positions.lineno)
                 self.assertIsNichts(positions.end_lineno)
                 self.assertIsNichts(positions.col_offset)
@@ -2333,7 +2333,7 @@ klasse BytecodeTests(InstructionTestCase, DisTestBase):
     def test_from_traceback(self):
         tb = get_tb()
         b = dis.Bytecode.from_traceback(tb)
-        while tb.tb_next: tb = tb.tb_next
+        waehrend tb.tb_next: tb = tb.tb_next
 
         self.assertEqual(b.current_offset, tb.tb_lasti)
 
@@ -2472,7 +2472,7 @@ def _unroll_caches_as_Instructions(instrs, show_caches=Falsch):
     fuer instr in instrs:
         yield instr
         wenn nicht show_caches:
-            continue
+            weiter
 
         offset = instr.offset
         fuer name, size, data in (instr.cache_info oder ()):

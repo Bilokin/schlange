@@ -95,7 +95,7 @@ klasse ParserBase:
             return j
         wenn decltype == "doctype":
             self._decl_otherchars = ''
-        while j < n:
+        waehrend j < n:
             c = rawdata[j]
             wenn c == ">":
                 # end of declaration syntax
@@ -180,7 +180,7 @@ klasse ParserBase:
         rawdata = self.rawdata
         n = len(rawdata)
         j = i
-        while j < n:
+        waehrend j < n:
             c = rawdata[j]
             wenn c == "<":
                 s = rawdata[j:j+2]
@@ -202,7 +202,7 @@ klasse ParserBase:
                     j = self.parse_comment(j, report=0)
                     wenn j < 0:
                         return j
-                    continue
+                    weiter
                 name, j = self._scan_name(j + 2, declstartpos)
                 wenn j == -1:
                     return -1
@@ -228,7 +228,7 @@ klasse ParserBase:
                     j = j + 1
             sowenn c == "]":
                 j = j + 1
-                while j < n und rawdata[j].isspace():
+                waehrend j < n und rawdata[j].isspace():
                     j = j + 1
                 wenn j < n:
                     wenn rawdata[j] == ">":
@@ -265,7 +265,7 @@ klasse ParserBase:
             return -1
         wenn c == ">":
             return j + 1
-        while 1:
+        waehrend 1:
             # scan a series of attribute descriptions; simplified:
             #   name type [value] [#constraint]
             name, j = self._scan_name(j, declstartpos)
@@ -280,7 +280,7 @@ klasse ParserBase:
                     j = rawdata.find(")", j) + 1
                 sonst:
                     return -1
-                while rawdata[j:j+1].isspace():
+                waehrend rawdata[j:j+1].isspace():
                     j = j + 1
                 wenn nicht rawdata[j:]:
                     # end of buffer, incomplete
@@ -319,7 +319,7 @@ klasse ParserBase:
         wenn j < 0:
             return j
         rawdata = self.rawdata
-        while 1:
+        waehrend 1:
             c = rawdata[j:j+1]
             wenn nicht c:
                 # end of buffer; incomplete
@@ -341,20 +341,20 @@ klasse ParserBase:
         rawdata = self.rawdata
         wenn rawdata[i:i+1] == "%":
             j = i + 1
-            while 1:
+            waehrend 1:
                 c = rawdata[j:j+1]
                 wenn nicht c:
                     return -1
                 wenn c.isspace():
                     j = j + 1
                 sonst:
-                    break
+                    breche
         sonst:
             j = i
         name, j = self._scan_name(j, declstartpos)
         wenn j < 0:
             return j
-        while 1:
+        waehrend 1:
             c = self.rawdata[j:j+1]
             wenn nicht c:
                 return -1

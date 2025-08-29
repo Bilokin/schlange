@@ -788,11 +788,11 @@ klasse ScopeTests(unittest.TestCase):
         # The issue was that wenn self was part of a cycle involving the
         # frame of a method call, *and* the method contained a nested
         # function referencing self, thereby forcing 'self' into a
-        # cell, setting self to Nichts would nicht be enough to break the
+        # cell, setting self to Nichts would nicht be enough to breche the
         # frame -- the frame had another reference to the instance,
         # which could nicht be cleared by the code running in the frame
         # (though it will be cleared when the frame is collected).
-        # Without the lambda, setting self to Nichts is enough to break
+        # Without the lambda, setting self to Nichts is enough to breche
         # the cycle.
         klasse Tester:
             def dig(self):

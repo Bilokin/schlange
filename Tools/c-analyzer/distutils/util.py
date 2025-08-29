@@ -130,12 +130,12 @@ def split_quoted (s):
     words = []
     pos = 0
 
-    while s:
+    waehrend s:
         m = _wordchars_re.match(s, pos)
         end = m.end()
         wenn end == len(s):
             words.append(s[:end])
-            break
+            breche
 
         wenn s[end] in string.whitespace: # unescaped, unquoted whitespace: now
             words.append(s[:end])       # we definitely have a word delimiter
@@ -164,7 +164,7 @@ def split_quoted (s):
 
         wenn pos >= len(s):
             words.append(s)
-            break
+            breche
 
     return words
 

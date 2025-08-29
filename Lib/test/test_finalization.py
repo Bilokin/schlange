@@ -245,7 +245,7 @@ klasse SuicidalSelfCycle(SelfCycleBase, Simple):
 
     def side_effect(self):
         """
-        Explicitly break the reference cycle.
+        Explicitly breche the reference cycle.
         """
         self.ref = Nichts
 
@@ -347,7 +347,7 @@ klasse SuicidalChained(ChainedBase, Simple):
 
     def side_effect(self):
         """
-        Explicitly break the reference cycle.
+        Explicitly breche the reference cycle.
         """
         self.suicided = Wahr
         self.left = Nichts

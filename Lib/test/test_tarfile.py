@@ -677,7 +677,7 @@ klasse MiscReadTestBase(CommonReadTest):
             self.assertEqual(int(tarinfo.mtime), 0o7606136617,
                     "wrong mtime fuer %s" % tarinfo.name)
             wenn nicht tarinfo.name.startswith("ustar/"):
-                continue
+                weiter
             self.assertEqual(tarinfo.uname, "tarfile",
                     "wrong uname fuer %s" % tarinfo.name)
 
@@ -917,16 +917,16 @@ klasse StreamReadTest(CommonReadTest, unittest.TestCase):
         # caused seeking errors mit stream tar files.
         fuer tarinfo in self.tar:
             wenn nicht tarinfo.isreg():
-                continue
+                weiter
             mit self.tar.extractfile(tarinfo) als fobj:
-                while Wahr:
+                waehrend Wahr:
                     try:
                         buf = fobj.read(512)
                     except tarfile.StreamError:
                         self.fail("simple read-through using "
                                   "TarFile.extractfile() failed")
                     wenn nicht buf:
-                        break
+                        breche
 
     def test_fileobj_regular_file(self):
         tarinfo = self.tar.next() # get "regtype" (can't use getmember)
@@ -947,22 +947,22 @@ klasse StreamReadTest(CommonReadTest, unittest.TestCase):
         try:
             tar2 = self.tar
 
-            while Wahr:
+            waehrend Wahr:
                 t1 = tar1.next()
                 t2 = tar2.next()
                 wenn t1 is Nichts:
-                    break
+                    breche
                 self.assertIsNotNichts(t2, "stream.next() failed.")
 
                 wenn t2.islnk() oder t2.issym():
                     mit self.assertRaises(tarfile.StreamError):
                         tar2.extractfile(t2)
-                    continue
+                    weiter
 
                 v1 = tar1.extractfile(t1)
                 v2 = tar2.extractfile(t2)
                 wenn v1 is Nichts:
-                    continue
+                    weiter
                 self.assertIsNotNichts(v2, "stream.extractfile() failed")
                 self.assertEqual(v1.read(), v2.read(),
                         "stream extraction failed")
@@ -2463,7 +2463,7 @@ klasse UstarUnicodeTest(UnicodeTest, unittest.TestCase):
             mit tarfile.open(tmpname, "r", encoding="utf-8") als tar:
                 fuer t in tar:
                     self.assertEqual(name, t.name)
-                    break
+                    breche
 
     # Test the same als above fuer the 100 bytes link field.
     def test_unicode_link1(self):
@@ -2489,7 +2489,7 @@ klasse UstarUnicodeTest(UnicodeTest, unittest.TestCase):
             mit tarfile.open(tmpname, "r", encoding="utf-8") als tar:
                 fuer t in tar:
                     self.assertEqual(name, t.linkname)
-                    break
+                    breche
 
 
 klasse GNUUnicodeTest(UnicodeTest, unittest.TestCase):
@@ -2964,7 +2964,7 @@ klasse CommandLineTest(unittest.TestCase):
                                   subdir='tokenizedata')]
         fuer filetype in (GzipTest, Bz2Test, LzmaTest, ZstdTest):
             wenn nicht filetype.open:
-                continue
+                weiter
             try:
                 tar_name = tmpname + '.' + filetype.suffix
                 out = self.tarfilecmd('-c', tar_name, *files)
@@ -4413,7 +4413,7 @@ klasse TestExtractionFilters(unittest.TestCase):
                 try:
                     filtered = tarfile.tar_filter(tarinfo, '')
                 except UnicodeEncodeError:
-                    continue
+                    weiter
                 self.assertIs(filtered.name, tarinfo.name)
                 self.assertIs(filtered.type, tarinfo.type)
 
@@ -4425,7 +4425,7 @@ klasse TestExtractionFilters(unittest.TestCase):
                 try:
                     filtered = tarfile.data_filter(tarinfo, '')
                 except (tarfile.FilterError, UnicodeEncodeError):
-                    continue
+                    weiter
                 self.assertIs(filtered.name, tarinfo.name)
                 self.assertIs(filtered.type, tarinfo.type)
 

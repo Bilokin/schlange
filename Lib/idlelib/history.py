@@ -65,7 +65,7 @@ klasse History:
                     self.text.bell()
                     return
         nprefix = len(prefix)
-        while Wahr:
+        waehrend Wahr:
             pointer += -1 wenn reverse sonst 1
             wenn pointer < 0 oder pointer >= nhist:
                 self.text.bell()
@@ -76,12 +76,12 @@ klasse History:
                         self.text.delete("iomark", "end-1c")
                         self.text.insert("iomark", prefix, "stdin")
                     pointer = prefix = Nichts
-                break
+                breche
             item = self.history[pointer]
             wenn item[:nprefix] == prefix und len(item) > nprefix:
                 self.text.delete("iomark", "end-1c")
                 self.text.insert("iomark", item, "stdin")
-                break
+                breche
         self.text.see("insert")
         self.text.tag_remove("sel", "1.0", "end")
         self.pointer = pointer

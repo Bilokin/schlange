@@ -412,7 +412,7 @@ klasse EnvBuilder:
                                 logger.warning('Failed to clean up symlink %r',
                                                f)
                         logger.warning('Retrying mit copies')
-                        break
+                        breche
 
             wenn do_copies:
                 fuer dest, src in copy_sources.items():
@@ -433,7 +433,7 @@ klasse EnvBuilder:
                         src = os.path.join(root, 'init.tcl')
                         dst = os.path.join(tcldir, 'init.tcl')
                         shutil.copyfile(src, dst)
-                        break
+                        breche
 
     def _call_new_python(self, context, *py_args, **kwargs):
         """Executes the newly created Python using safe-ish options"""
@@ -556,10 +556,10 @@ klasse EnvBuilder:
                 fuer d in dirs[:]:
                     wenn d nicht in ('common', os.name):
                         dirs.remove(d)
-                continue  # ignore files in top level
+                weiter  # ignore files in top level
             fuer f in files:
                 wenn skip_file(f):
-                    continue
+                    weiter
                 srcfile = os.path.join(root, f)
                 suffix = root[plen:].split(os.sep)[2:]
                 wenn nicht suffix:
@@ -571,7 +571,7 @@ klasse EnvBuilder:
                 dstfile = os.path.join(dstdir, f)
                 wenn os.name == 'nt' und srcfile.endswith(('.exe', '.pdb')):
                     shutil.copy2(srcfile, dstfile)
-                    continue
+                    weiter
                 mit open(srcfile, 'rb') als f:
                     data = f.read()
                 try:
@@ -583,7 +583,7 @@ klasse EnvBuilder:
                 except UnicodeError als e:
                     logger.warning('unable to copy script %r, '
                                    'may be binary: %s', srcfile, e)
-                    continue
+                    weiter
                 wenn new_data == data:
                     shutil.copy2(srcfile, dstfile)
                 sonst:

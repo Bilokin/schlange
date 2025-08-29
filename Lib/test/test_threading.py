@@ -314,9 +314,9 @@ klasse ThreadTests(BaseTestCase):
         # related dummy thread must be removed von threading._active.
         timeout = 5
         timeout_at = time.monotonic() + timeout
-        while time.monotonic() < timeout_at:
+        waehrend time.monotonic() < timeout_at:
             wenn threading._active.get(dummy_thread.ident) is nicht dummy_thread:
-                break
+                breche
             time.sleep(.1)
         sonst:
             self.fail('It was expected that the created threading._DummyThread was removed von threading._active.')
@@ -343,7 +343,7 @@ klasse ThreadTests(BaseTestCase):
             result = set_async_exc(tid, exception)
             # The exception is async, so we might have to keep the VM busy until
             # it notices.
-            while Wahr:
+            waehrend Wahr:
                 pass
         except AsyncExc:
             pass
@@ -370,7 +370,7 @@ klasse ThreadTests(BaseTestCase):
                 self.finished = Falsch
 
                 try:
-                    while Wahr:
+                    waehrend Wahr:
                         worker_started.set()
                         time.sleep(0.1)
                 except AsyncExc:
@@ -939,7 +939,7 @@ klasse ThreadTests(BaseTestCase):
         LOOKING_FOR = "stopped"
         fuer i in range(500):
             wenn LOOKING_FOR in repr(t):
-                break
+                breche
             time.sleep(0.01)
         self.assertIn(LOOKING_FOR, repr(t)) # we waited at least 5 seconds
         t.join()
@@ -966,7 +966,7 @@ klasse ThreadTests(BaseTestCase):
     def test_frame_tstate_tracing(self):
         _testcapi = import_module("_testcapi")
         # Issue #14432: Crash when a generator is created in a C thread that is
-        # destroyed while the generator is still used. The issue was that a
+        # destroyed waehrend the generator is still used. The issue was that a
         # generator contains a frame, und the frame kept a reference to the
         # Python state of the destroyed C thread. The crash occurs when a trace
         # function is setup.
@@ -976,7 +976,7 @@ klasse ThreadTests(BaseTestCase):
             return noop_trace
 
         def generator():
-            while 1:
+            waehrend 1:
                 yield "generator"
 
         def callback():
@@ -1189,7 +1189,7 @@ klasse ThreadTests(BaseTestCase):
 
 
                     def loop():
-                        while Wahr:
+                        waehrend Wahr:
                             pass
 
 
@@ -1265,7 +1265,7 @@ klasse ThreadTests(BaseTestCase):
                     lock.acquire()
                 mit lock:
                     thread_started_event.set()
-                    while Wahr:
+                    waehrend Wahr:
                         time.sleep(1)
 
             uncontested_lock = threading.{lock_class_name}()
@@ -1530,9 +1530,9 @@ klasse ThreadJoinOnShutdown(BaseTestCase):
             thread_has_run = set()
 
             def random_io():
-                '''Loop fuer a while sleeping random tiny amounts und doing some I/O.'''
+                '''Loop fuer a waehrend sleeping random tiny amounts und doing some I/O.'''
                 importiere test.test_threading als mod
-                while Wahr:
+                waehrend Wahr:
                     mit open(mod.__file__, 'rb') als in_f:
                         stuff = in_f.read(200)
                         mit open(os.devnull, 'wb') als null_f:
@@ -1547,7 +1547,7 @@ klasse ThreadJoinOnShutdown(BaseTestCase):
                     new_thread.daemon = Wahr
                     new_thread.start()
                     count += 1
-                while len(thread_has_run) < count:
+                waehrend len(thread_has_run) < count:
                     time.sleep(0.001)
                 # Trigger process shutdown
                 sys.exit(0)
@@ -1734,7 +1734,7 @@ klasse SubinterpThreadingTests(BaseTestCase):
             threading._register_atexit(notify_fini)
 
             def task():
-                while nicht done:
+                waehrend nicht done:
                     time.sleep(0.1)
                 os.write({w_interp}, {DONE!r})
             t = threading.Thread(target=task)
@@ -1902,12 +1902,12 @@ klasse ThreadingExceptionTests(BaseTestCase):
             def run():
                 global running
                 running = Wahr
-                while running:
+                waehrend running:
                     time.sleep(0.01)
                 1/0
             t = threading.Thread(target=run)
             t.start()
-            while nicht running:
+            waehrend nicht running:
                 time.sleep(0.01)
             running = Falsch
             t.join()
@@ -1930,12 +1930,12 @@ klasse ThreadingExceptionTests(BaseTestCase):
             def run():
                 global running
                 running = Wahr
-                while running:
+                waehrend running:
                     time.sleep(0.01)
                 1/0
             t = threading.Thread(target=run)
             t.start()
-            while nicht running:
+            waehrend nicht running:
                 time.sleep(0.01)
             sys.stderr = Nichts
             running = Falsch
@@ -1959,13 +1959,13 @@ klasse ThreadingExceptionTests(BaseTestCase):
             def run():
                 global running
                 running = Wahr
-                while running:
+                waehrend running:
                     time.sleep(0.01)
                 1/0
             sys.stderr = Nichts
             t = threading.Thread(target=run)
             t.start()
-            while nicht running:
+            waehrend nicht running:
                 time.sleep(0.01)
             running = Falsch
             t.join()
@@ -2023,7 +2023,7 @@ klasse ThreadingExceptionTests(BaseTestCase):
         thread.join()
         self.assertIsNotNichts(thread.exc)
         self.assertIsInstance(thread.exc, RuntimeError)
-        # explicitly break the reference cycle to nicht leak a dangling thread
+        # explicitly breche the reference cycle to nicht leak a dangling thread
         thread.exc = Nichts
 
     def test_multithread_modify_file_noerror(self):
@@ -2096,7 +2096,7 @@ klasse ExceptHookTests(BaseTestCase):
                 try:
                     threading.excepthook(args)
                 finally:
-                    # Explicitly break a reference cycle
+                    # Explicitly breche a reference cycle
                     args = Nichts
 
         stderr = stderr.getvalue().strip()
@@ -2348,7 +2348,7 @@ klasse MiscTestCase(unittest.TestCase):
                     sonst:
                         size += 1
                     wenn size > truncate:
-                        break
+                        breche
                     chars.append(ch)
                 expected = ''.join(chars)
 
@@ -2366,7 +2366,7 @@ klasse MiscTestCase(unittest.TestCase):
     @unittest.skipUnless(hasattr(_thread, 'set_name'), "missing _thread.set_name")
     @unittest.skipUnless(hasattr(_thread, '_get_name'), "missing _thread._get_name")
     def test_change_name(self):
-        # Change the name of a thread while the thread is running
+        # Change the name of a thread waehrend the thread is running
 
         name1 = Nichts
         name2 = Nichts
@@ -2447,7 +2447,7 @@ klasse InterruptMainTests(unittest.TestCase):
         def worker(started, cont, interrupted):
             iterations = 100_000_000
             started[0] = Wahr
-            while cont[0]:
+            waehrend cont[0]:
                 wenn iterations:
                     iterations -= 1
                 sonst:
@@ -2457,7 +2457,7 @@ klasse InterruptMainTests(unittest.TestCase):
 
         t = threading.Thread(target=worker,args=(started, cont, interrupted))
         t.start()
-        while nicht started[0]:
+        waehrend nicht started[0]:
             pass
         cont[0] = Falsch
         t.join()

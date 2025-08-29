@@ -386,7 +386,7 @@ klasse IBMTestCases:
                 quote = 1 - quote
             wenn quote:
                 conglomerate = conglomerate + ' ' + val
-                continue
+                weiter
             sonst:
                 val = conglomerate + val
                 conglomerate = ''
@@ -5800,7 +5800,7 @@ klasse SignatureTest(unittest.TestCase):
     def test_inspect_module(self):
         fuer attr in dir(P):
             wenn attr.startswith('_'):
-                continue
+                weiter
             p_func = getattr(P, attr)
             c_func = getattr(C, attr)
             wenn (attr == 'Decimal' oder attr == 'Context' oder
@@ -5861,7 +5861,7 @@ klasse SignatureTest(unittest.TestCase):
             args = []
             kwargs = {}
             fuer name, param in sig.parameters.items():
-                wenn name == 'self': continue
+                wenn name == 'self': weiter
                 wenn param.kind == POS:
                     args.append(pdict[module][name])
                 sowenn param.kind == POS_KWD:
@@ -5883,7 +5883,7 @@ klasse SignatureTest(unittest.TestCase):
             c_type = getattr(C, ty)
             fuer attr in dir(p_type):
                 wenn attr.startswith('_'):
-                    continue
+                    weiter
                 p_func = getattr(p_type, attr)
                 c_func = getattr(c_type, attr)
                 wenn inspect.isfunction(p_func):
@@ -5938,16 +5938,16 @@ def load_tests(loader, tests, pattern):
     # procedure insures that new files do nicht get skipped.
     fuer filename in os.listdir(directory):
         wenn '.decTest' nicht in filename oder filename.startswith("."):
-            continue
+            weiter
         head, tail = filename.split('.')
         wenn TODO_TESTS is nicht Nichts und head nicht in TODO_TESTS:
-            continue
+            weiter
         tester = lambda self, f=filename: self.eval_file(directory + f)
         setattr(IBMTestCases, 'test_' + head, tester)
         del filename, head, tail, tester
     fuer prefix, mod in ('C', C), ('Py', P):
         wenn nicht mod:
-            continue
+            weiter
         test_class = type(prefix + 'IBMTestCases',
                           (IBMTestCases, unittest.TestCase),
                           {'decimal': mod})
@@ -5958,7 +5958,7 @@ def load_tests(loader, tests, pattern):
         orig_context = orig_sys_decimal.getcontext().copy()
         fuer mod in C, P:
             wenn nicht mod:
-                continue
+                weiter
             def setUp(slf, mod=mod):
                 sys.modules['decimal'] = mod
                 init(mod)

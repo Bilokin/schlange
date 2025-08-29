@@ -7,7 +7,7 @@ def main():
 
     fuer file in sys.argv[1:]:
         wenn nicht os.path.isfile(file):
-            continue
+            weiter
 
         mit open(file, 'rb') als f:
             data = f.read()

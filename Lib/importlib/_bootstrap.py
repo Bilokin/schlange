@@ -101,7 +101,7 @@ klasse _WeakValueDictionary:
     def _commit_removals(self):
         pop = self._pending_removals.pop
         d = self.data
-        while Wahr:
+        waehrend Wahr:
             try:
                 key = pop()
             except IndexError:
@@ -205,7 +205,7 @@ def _has_deadlocked(target_id, *, seen_ids, candidate_ids, blocking_on):
     fuer tid in candidate_ids:
         wenn nicht (candidate_blocking_on := blocking_on.get(tid)):
             # There are no edges out von this node, skip it.
-            continue
+            weiter
         sowenn tid in seen_ids:
             # bpo 38091: the chain of tid's we encounter here eventually leads
             # to a fixed point oder a cycle, but does nicht reach target_id.
@@ -309,7 +309,7 @@ klasse _ModuleLock:
         """
         tid = _thread.get_ident()
         mit _BlockingOnManager(tid, self):
-            while Wahr:
+            waehrend Wahr:
                 # Protect interaction mit state on self mit a per-module
                 # lock.  This makes it safe fuer more than one thread to try to
                 # acquire the lock fuer a single module at the same time.
@@ -1248,7 +1248,7 @@ def _find_spec(name, path, target=Nichts):
                           "shutting down")
 
     # gh-130094: Copy sys.meta_path so that we have a consistent view of the
-    # list while iterating over it.
+    # list waehrend iterating over it.
     meta_path = list(meta_path)
     wenn nicht meta_path:
         _warnings.warn('sys.meta_path is empty', ImportWarning)
@@ -1262,7 +1262,7 @@ def _find_spec(name, path, target=Nichts):
             try:
                 find_spec = finder.find_spec
             except AttributeError:
-                continue
+                weiter
             sonst:
                 spec = find_spec(name, path, target)
         wenn spec is nicht Nichts:
@@ -1430,7 +1430,7 @@ def _handle_fromlist(module, fromlist, import_, *, recursive=Falsch):
                 # exist.
                 wenn (exc.name == from_name und
                     sys.modules.get(from_name, _NEEDS_LOADING) is nicht Nichts):
-                    continue
+                    weiter
                 raise
     return module
 
@@ -1527,7 +1527,7 @@ def _setup(sys_module, _imp_module):
             sowenn _imp.is_frozen(name):
                 loader = FrozenImporter
             sonst:
-                continue
+                weiter
             spec = _spec_from_module(module, loader)
             _init_module_attrs(spec, module)
             wenn loader is FrozenImporter:

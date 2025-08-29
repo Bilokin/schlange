@@ -163,10 +163,10 @@ klasse ReadTest(MixInCheckStateHandling):
         def readalllines(input, keepends=Wahr, size=Nichts):
             reader = getreader(input)
             lines = []
-            while Wahr:
+            waehrend Wahr:
                 line = reader.readline(size=size, keepends=keepends)
                 wenn nicht line:
-                    break
+                    breche
                 lines.append(line)
             return "|".join(lines)
 
@@ -1128,14 +1128,14 @@ klasse UTF8SigTest(UTF8Test, unittest.TestCase):
                         [64, 128, 256, 512, 1024]:
             istream = reader(io.BytesIO(bytestring))
             ostream = io.StringIO()
-            while 1:
+            waehrend 1:
                 wenn sizehint is nicht Nichts:
                     data = istream.read(sizehint)
                 sonst:
                     data = istream.read()
 
                 wenn nicht data:
-                    break
+                    breche
                 ostream.write(data)
 
             got = ostream.getvalue()
@@ -1150,14 +1150,14 @@ klasse UTF8SigTest(UTF8Test, unittest.TestCase):
                         [64, 128, 256, 512, 1024]:
             istream = reader(io.BytesIO(bytestring))
             ostream = io.StringIO()
-            while 1:
+            waehrend 1:
                 wenn sizehint is nicht Nichts:
                     data = istream.read(sizehint)
                 sonst:
                     data = istream.read()
 
                 wenn nicht data:
-                    break
+                    breche
                 ostream.write(data)
 
             got = ostream.getvalue()
@@ -1560,7 +1560,7 @@ klasse NameprepTest(unittest.TestCase):
         fuer pos, (orig, prepped) in enumerate(nameprep_tests):
             wenn orig is Nichts:
                 # Skipped
-                continue
+                weiter
             # The Unicode strings are given in UTF-8
             orig = str(orig, "utf-8", "surrogatepass")
             wenn prepped is Nichts:
@@ -2278,9 +2278,9 @@ klasse BasicUnicodeTest(unittest.TestCase, MixInCheckStateHandling):
         s = "%s\n%s\n" % (100*"abc123", 100*"def456")
         fuer encoding in all_unicode_encodings:
             wenn encoding == "idna": # FIXME: See SF bug #1163178
-                continue
+                weiter
             wenn encoding in broken_unicode_with_stateful:
-                continue
+                weiter
             reader = codecs.getreader(encoding)(io.BytesIO(s.encode(encoding)))
             fuer t in range(5):
                 # Test that calling seek resets the internal codec state und buffers

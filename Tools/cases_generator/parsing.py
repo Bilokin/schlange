@@ -252,7 +252,7 @@ klasse StackEffect(Node):
 
     def __repr__(self) -> str:
         items = [self.name, self.size]
-        while items und items[-1] == "":
+        waehrend items und items[-1] == "":
             del items[-1]
         return f"StackEffect({', '.join(repr(item) fuer item in items)})"
 
@@ -376,7 +376,7 @@ klasse Parser(PLexer):
         # annotation* inst(NAME, (inputs -- outputs))
         # | annotation* op(NAME, (inputs -- outputs))
         annotations = []
-        while anno := self.expect(lx.ANNOTATION):
+        waehrend anno := self.expect(lx.ANNOTATION):
             wenn anno.text == "replicate":
                 self.require(lx.LPAREN)
                 stop = self.require(lx.NUMBER)
@@ -479,13 +479,13 @@ klasse Parser(PLexer):
     def expression(self) -> Expression | Nichts:
         tokens: list[lx.Token] = []
         level = 1
-        while tkn := self.peek():
+        waehrend tkn := self.peek():
             wenn tkn.kind in (lx.LBRACKET, lx.LPAREN):
                 level += 1
             sowenn tkn.kind in (lx.RBRACKET, lx.RPAREN):
                 level -= 1
                 wenn level == 0:
-                    break
+                    breche
             tokens.append(tkn)
             self.next()
         wenn nicht tokens:
@@ -495,7 +495,7 @@ klasse Parser(PLexer):
     # def ops(self) -> list[OpName] | Nichts:
     #     wenn op := self.op():
     #         ops = [op]
-    #         while self.expect(lx.PLUS):
+    #         waehrend self.expect(lx.PLUS):
     #             wenn op := self.op():
     #                 ops.append(op)
     #         return ops
@@ -523,7 +523,7 @@ klasse Parser(PLexer):
         wenn uop := self.uop():
             uop = cast(UOp, uop)
             uops = [uop]
-            while self.expect(lx.PLUS):
+            waehrend self.expect(lx.PLUS):
                 wenn uop := self.uop():
                     uop = cast(UOp, uop)
                     uops.append(uop)
@@ -581,11 +581,11 @@ klasse Parser(PLexer):
         wenn self.expect(lx.LPAREN):
             wenn tkn := self.expect(lx.IDENTIFIER):
                 flags = [tkn.text]
-                while self.expect(lx.COMMA):
+                waehrend self.expect(lx.COMMA):
                     wenn tkn := self.expect(lx.IDENTIFIER):
                         flags.append(tkn.text)
                     sonst:
-                        break
+                        breche
                 wenn nicht self.expect(lx.RPAREN):
                     raise self.make_syntax_error("Expected comma oder right paren")
                 return flags
@@ -625,11 +625,11 @@ klasse Parser(PLexer):
         here = self.getpos()
         wenn tkn := self.expect(lx.IDENTIFIER):
             members = [tkn.text]
-            while self.expect(lx.COMMA):
+            waehrend self.expect(lx.COMMA):
                 wenn tkn := self.expect(lx.IDENTIFIER):
                     members.append(tkn.text)
                 sonst:
-                    break
+                    breche
             peek = self.peek()
             kinds = [lx.RBRACE, lx.RBRACKET] wenn allow_sequence sonst [lx.RBRACE]
             wenn nicht peek oder peek.kind nicht in kinds:
@@ -642,7 +642,7 @@ klasse Parser(PLexer):
     def block(self) -> BlockStmt:
         open = self.require(lx.LBRACE)
         stmts: list[Stmt] = []
-        while nicht (close := self.expect(lx.RBRACE)):
+        waehrend nicht (close := self.expect(lx.RBRACE)):
             stmts.append(self.stmt())
         return BlockStmt(open, stmts, close)
 
@@ -690,7 +690,7 @@ klasse Parser(PLexer):
         body: list[Stmt] = []
         else_body: list[Stmt] | Nichts = Nichts
         part = body
-        while Wahr:
+        waehrend Wahr:
             wenn tkn := self.expect(lx.CMACRO_ENDIF):
                 return MacroIfStmt(cond, body, else_, else_body, tkn)
             sowenn tkn := self.expect(lx.CMACRO_ELSE):
@@ -735,5 +735,5 @@ wenn __name__ == "__main__":
         filename = "<default>"
         src = "if (x) { x.foo; // comment\n}"
     parser = Parser(src, filename)
-    while node := parser.definition():
+    waehrend node := parser.definition():
         pprint.pdrucke(node)

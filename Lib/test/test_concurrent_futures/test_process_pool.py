@@ -119,7 +119,7 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
         self.assertWahr(obj.event.wait(timeout=1))
 
         # explicitly destroy the object to ensure that EventfulGCObj.__del__()
-        # is called while manager is still running.
+        # is called waehrend manager is still running.
         support.gc_collect()
         obj = Nichts
         support.gc_collect()
@@ -184,7 +184,7 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
         self.assertEqual(f3.result(), original_pid)
 
         # A new worker is spawned, mit a statistically different pid,
-        # while the previous was reaped.
+        # waehrend the previous was reaped.
         f4 = executor.submit(os.getpid)
         new_pid = f4.result()
         self.assertNotEqual(original_pid, new_pid)
@@ -330,7 +330,7 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
 
             # A signal sent, is nicht a signal reacted to.
             # So wait a moment here fuer the process to die.
-            # If we don't, every once in a while we may get an ENV CHANGE
+            # If we don't, every once in a waehrend we may get an ENV CHANGE
             # error since the process would be alive immediately after the
             # test run.. und die a moment later.
             worker_process.join(support.SHORT_TIMEOUT)
@@ -342,7 +342,7 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
             # get marked als an ENV CHANGE due to living child process.
             fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
                 wenn nicht worker_process.is_alive():
-                    break
+                    breche
 
 
 create_executor_tests(globals(), ProcessPoolExecutorTest,

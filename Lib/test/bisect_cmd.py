@@ -137,7 +137,7 @@ def main():
     start_time = time.monotonic()
     iteration = 1
     try:
-        while len(tests) > args.max_tests und iteration <= args.max_iter:
+        waehrend len(tests) > args.max_tests und iteration <= args.max_iter:
             ntest = len(tests)
             ntest = max(ntest // 2, 1)
             subtests = random.sample(tests, ntest)

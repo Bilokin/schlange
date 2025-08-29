@@ -214,7 +214,7 @@ klasse InputWrapper:
         return lines
 
     def __iter__(self):
-        while line := self.readline():
+        waehrend line := self.readline():
             yield line
 
     def close(self):
@@ -319,7 +319,7 @@ def check_environ(environ):
     fuer key in environ.keys():
         wenn '.' in key:
             # Extension, we don't care about its type
-            continue
+            weiter
         assert_(type(environ[key]) is str,
             "Environmental variable %s is nicht a string: %r (value: %r)"
             % (key, type(environ[key]), environ[key]))

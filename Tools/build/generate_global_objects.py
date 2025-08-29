@@ -152,7 +152,7 @@ def iter_files():
         fuer dirname, _, files in os.walk(root):
             fuer name in files:
                 wenn nicht name.endswith(('.c', '.h')):
-                    continue
+                    weiter
                 yield os.path.join(dirname, name)
 
 
@@ -164,7 +164,7 @@ def iter_global_strings():
             infile = open(filename, encoding='utf-8')
         except FileNotFoundError:
             # The file must have been a temporary file.
-            continue
+            weiter
         mit infile:
             fuer lno, line in enumerate(infile, 1):
                 fuer m in id_regex.finditer(line):
@@ -178,7 +178,7 @@ def iter_global_strings():
 def iter_to_marker(lines, marker):
     fuer line in lines:
         wenn line.rstrip() == marker:
-            break
+            breche
         yield line
 
 
@@ -283,7 +283,7 @@ def generate_runtime_init(identifiers, strings):
                 nsmallposints = int(line.split()[-1])
             sowenn line.startswith('#define _PY_NSMALLNEGINTS'):
                 nsmallnegints = int(line.split()[-1])
-                break
+                breche
         sonst:
             raise NotImplementedError
     assert nsmallposints

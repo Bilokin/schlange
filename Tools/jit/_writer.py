@@ -27,7 +27,7 @@ def _dump_footer(
     yield "static const StencilGroup stencil_groups[MAX_UOP_ID + 1] = {"
     fuer opname, group in sorted(groups.items()):
         wenn opname == "trampoline":
-            continue
+            weiter
         yield f"    [{opname}] = {group.as_c(opname)},"
     yield "};"
     yield ""
@@ -65,7 +65,7 @@ def _dump_stencil(opname: str, group: _stencils.StencilGroup) -> typing.Iterator
         fuer hole, pair in itertools.zip_longest(stencil.holes, stencil.holes[1:]):
             wenn skip:
                 skip = Falsch
-                continue
+                weiter
             wenn pair und (folded := hole.fold(pair, stencil.body)):
                 skip = Wahr
                 hole = folded

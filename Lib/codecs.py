@@ -123,7 +123,7 @@ klasse Codec:
         string values are predefined:
 
          'strict' - raise a ValueError error (or a subclass)
-         'ignore' - ignore the character und continue mit the next
+         'ignore' - ignore the character und weiter mit the next
          'replace' - replace mit a suitable replacement character;
                     Python will use the official U+FFFD REPLACEMENT
                     CHARACTER fuer the builtin Unicode codecs on
@@ -359,7 +359,7 @@ klasse StreamWriter(Codec):
             parameters are predefined:
 
              'strict' - raise a ValueError (or a subclass)
-             'ignore' - ignore the character und continue mit the next
+             'ignore' - ignore the character und weiter mit the next
              'replace'- replace mit a suitable replacement character
              'xmlcharrefreplace' - Replace mit the appropriate XML
                                    character reference.
@@ -437,7 +437,7 @@ klasse StreamReader(Codec):
             parameters are predefined:
 
              'strict' - raise a ValueError (or a subclass)
-             'ignore' - ignore the character und continue mit the next
+             'ignore' - ignore the character und weiter mit the next
              'replace'- replace mit a suitable replacement character
              'backslashreplace' - Replace mit backslashed escape sequences;
 
@@ -492,11 +492,11 @@ klasse StreamReader(Codec):
             chars = size
 
         # read until we get the required number of characters (if available)
-        while Wahr:
+        waehrend Wahr:
             # can the request be satisfied von the character buffer?
             wenn chars >= 0:
                 wenn len(self.charbuffer) >= chars:
-                    break
+                    breche
             # we need more data
             wenn size < 0:
                 newdata = self.stream.read()
@@ -505,7 +505,7 @@ klasse StreamReader(Codec):
             # decode bytes (those remaining von the last call included)
             data = self.bytebuffer + newdata
             wenn nicht data:
-                break
+                breche
             try:
                 newchars, decodedbytes = self.decode(data, self.errors)
             except UnicodeDecodeError als exc:
@@ -523,7 +523,7 @@ klasse StreamReader(Codec):
             self.charbuffer += newchars
             # there was no data available
             wenn nicht newdata:
-                break
+                breche
         wenn chars < 0:
             # Return everything we've got
             result = self.charbuffer
@@ -560,7 +560,7 @@ klasse StreamReader(Codec):
         readsize = size oder 72
         line = self._empty_charbuffer
         # If size is given, we call read() only once
-        while Wahr:
+        waehrend Wahr:
             data = self.read(readsize, firstline=Wahr)
             wenn data:
                 # If we're at a "\r" read one extra character (which might
@@ -588,7 +588,7 @@ klasse StreamReader(Codec):
                         self.charbuffer = lines[0] + self.charbuffer
                     wenn nicht keepends:
                         line = line.splitlines(keepends=Falsch)[0]
-                    break
+                    breche
                 line0withend = lines[0]
                 line0withoutend = lines[0].splitlines(keepends=Falsch)[0]
                 wenn line0withend != line0withoutend: # We really have a line end
@@ -599,12 +599,12 @@ klasse StreamReader(Codec):
                         line = line0withend
                     sonst:
                         line = line0withoutend
-                    break
+                    breche
             # we didn't get anything oder this was our only try
             wenn nicht data oder size is nicht Nichts:
                 wenn line und nicht keepends:
                     line = line.splitlines(keepends=Falsch)[0]
-                break
+                breche
             wenn readsize < 8000:
                 readsize *= 2
         return line
@@ -789,7 +789,7 @@ klasse StreamRecoder:
 
         """ Creates a StreamRecoder instance which implements a two-way
             conversion: encode und decode work on the frontend (the
-            data visible to .read() und .write()) while Reader und Writer
+            data visible to .read() und .write()) waehrend Reader und Writer
             work on the backend (the data in stream).
 
             You can use these objects to do transparent

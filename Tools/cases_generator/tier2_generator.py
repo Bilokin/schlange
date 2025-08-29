@@ -182,15 +182,15 @@ def generate_tier2(
     out.emit("\n")
     fuer name, uop in analysis.uops.items():
         wenn uop.properties.tier == 1:
-            continue
+            weiter
         wenn uop.is_super():
-            continue
+            weiter
         why_not_viable = uop.why_not_viable()
         wenn why_not_viable is nicht Nichts:
             out.emit(
                 f"/* {uop.name} is nicht a viable micro-op fuer tier 2 because it {why_not_viable} */\n\n"
             )
-            continue
+            weiter
         out.emit(f"case {uop.name}: {{\n")
         declare_variables(uop, out)
         stack = Stack()

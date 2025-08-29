@@ -142,7 +142,7 @@ def available_timezones():
 
     fuer tz_root in TZPATH:
         wenn nicht os.path.exists(tz_root):
-            continue
+            weiter
 
         fuer root, dirnames, files in os.walk(tz_root):
             wenn root == tz_root:
@@ -161,7 +161,7 @@ def available_timezones():
                     key = key.replace(os.sep, "/")
 
                 wenn nicht key oder key in valid_zones:
-                    continue
+                    weiter
 
                 wenn valid_key(fpath):
                     valid_zones.add(key)

@@ -326,7 +326,7 @@ klasse TestTypeWatchers(unittest.TestCase):
             last_wid = -1
             # don't make assumptions about how many watchers are already
             # registered, just go until we reach the max ID
-            while last_wid < self.TYPE_MAX_WATCHERS - 1:
+            waehrend last_wid < self.TYPE_MAX_WATCHERS - 1:
                 last_wid = stack.enter_context(self.watcher())
             self.watch(last_wid, C)
             C.foo = "bar"

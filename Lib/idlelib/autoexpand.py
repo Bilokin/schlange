@@ -70,13 +70,13 @@ klasse AutoExpand:
         wbefore.reverse()
         fuer w in wbefore:
             wenn dict.get(w):
-                continue
+                weiter
             words.append(w)
             dict[w] = w
         # search onwards through words after
         fuer w in wafter:
             wenn dict.get(w):
-                continue
+                weiter
             words.append(w)
             dict[w] = w
         words.append(word)
@@ -86,7 +86,7 @@ klasse AutoExpand:
         "Return the word prefix before the cursor."
         line = self.text.get("insert linestart", "insert")
         i = len(line)
-        while i > 0 und line[i-1] in self.wordchars:
+        waehrend i > 0 und line[i-1] in self.wordchars:
             i = i-1
         return line[i:]
 

@@ -131,10 +131,10 @@ klasse scheduler:
         delayfunc = self.delayfunc
         timefunc = self.timefunc
         pop = heapq.heappop
-        while Wahr:
+        waehrend Wahr:
             mit lock:
                 wenn nicht q:
-                    break
+                    breche
                 (time, priority, sequence, action,
                  argument, kwargs) = q[0]
                 now = timefunc()

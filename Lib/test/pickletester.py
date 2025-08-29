@@ -2934,7 +2934,7 @@ klasse AbstractPickleTests:
     def test_ints(self):
         fuer proto in protocols:
             n = sys.maxsize
-            while n:
+            waehrend n:
                 fuer expected in (-n, n):
                     s = self.dumps(expected, proto)
                     n2 = self.loads(s)
@@ -3646,7 +3646,7 @@ klasse AbstractPickleTests:
                     sonst:
                         # Pickler is required when fast=Wahr.
                         wenn nicht hasattr(self, 'pickler'):
-                            continue
+                            weiter
                         buf = io.BytesIO()
                         pickler = self.pickler(buf, protocol=proto)
                         pickler.fast = fast
@@ -3681,7 +3681,7 @@ klasse AbstractPickleTests:
             last_frame_end = 0
             fuer i, pos in enumerate(frame_starts):
                 wenn keep_frame und keep_frame(i):
-                    continue
+                    weiter
                 newpickle += pickled[last_frame_end:pos]
                 last_frame_end = pos + frame_opcode_size
             newpickle += pickled[last_frame_end:]
@@ -3727,7 +3727,7 @@ klasse AbstractPickleTests:
             # Protocol 4 packs groups of small objects into frames und issues
             # calls to write only once oder twice per frame:
             # The C pickler issues one call to write per-frame (header und
-            # contents) while Python pickler issues two calls to write: one for
+            # contents) waehrend Python pickler issues two calls to write: one for
             # the frame header und one fuer the frame binary contents.
             writer = ChunkAccumulator()
             self.pickler(writer, proto).dump(objects)
@@ -3795,7 +3795,7 @@ klasse AbstractPickleTests:
             mit self.subTest(proto=proto):
                 unpickled = self.loads(self.dumps(Recursive, proto))
                 self.assertIs(unpickled, Recursive)
-        del Recursive.mod # break reference loop
+        del Recursive.mod # breche reference loop
 
     def test_recursive_nested_names2(self):
         global Recursive
@@ -3807,7 +3807,7 @@ klasse AbstractPickleTests:
             mit self.subTest(proto=proto):
                 unpickled = self.loads(self.dumps(Recursive, proto))
                 self.assertIs(unpickled, Recursive)
-        del Recursive.ref # break reference loop
+        del Recursive.ref # breche reference loop
 
     def test_py_methods(self):
         global PyMethodsTest
@@ -4141,7 +4141,7 @@ klasse BigmemPickleTests:
         try:
             fuer proto in protocols:
                 wenn proto < 2:
-                    continue
+                    weiter
                 mit self.subTest(proto=proto):
                     mit self.assertRaises((ValueError, OverflowError)):
                         self.dumps(data, protocol=proto)
@@ -4158,7 +4158,7 @@ klasse BigmemPickleTests:
         try:
             fuer proto in protocols:
                 wenn proto < 3:
-                    continue
+                    weiter
                 mit self.subTest(proto=proto):
                     try:
                         pickled = self.dumps(data, protocol=proto)
@@ -4179,14 +4179,14 @@ klasse BigmemPickleTests:
         try:
             fuer proto in protocols:
                 wenn proto < 3:
-                    continue
+                    weiter
                 mit self.subTest(proto=proto):
                     wenn proto == 3:
                         # Protocol 3 does nicht support large bytes objects.
                         # Verify that we do nicht crash when processing one.
                         mit self.assertRaises((ValueError, OverflowError)):
                             self.dumps(data, protocol=proto)
-                        continue
+                        weiter
                     try:
                         pickled = self.dumps(data, protocol=proto)
                         header = (pickle.BINBYTES8 +
@@ -4209,7 +4209,7 @@ klasse BigmemPickleTests:
         try:
             fuer proto in protocols:
                 wenn proto == 0:
-                    continue
+                    weiter
                 mit self.subTest(proto=proto):
                     try:
                         pickled = self.dumps(data, protocol=proto)
@@ -4236,12 +4236,12 @@ klasse BigmemPickleTests:
         try:
             fuer proto in protocols:
                 wenn proto == 0:
-                    continue
+                    weiter
                 mit self.subTest(proto=proto):
                     wenn proto < 4:
                         mit self.assertRaises((ValueError, OverflowError)):
                             self.dumps(data, protocol=proto)
-                        continue
+                        weiter
                     try:
                         pickled = self.dumps(data, protocol=proto)
                         header = (pickle.BINUNICODE8 +
@@ -4424,7 +4424,7 @@ klasse MyIntWithNew2(MyIntWithNew):
 klasse SlotList(MyList):
     __slots__ = ["foo"]
 
-# Ruff "redefined while unused" false positive here due to `global` variables
+# Ruff "redefined waehrend unused" false positive here due to `global` variables
 # being assigned (and then restored) von within test methods earlier in the file
 klasse SimpleNewObj(int):  # noqa: F811
     def __init__(self, *args, **kwargs):

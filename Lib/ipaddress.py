@@ -242,14 +242,14 @@ def summarize_address_range(first, last):
     ip_bits = first.max_prefixlen
     first_int = first._ip
     last_int = last._ip
-    while first_int <= last_int:
+    waehrend first_int <= last_int:
         nbits = min(_count_righthand_zero_bits(first_int, ip_bits),
                     (last_int - first_int + 1).bit_length() - 1)
         net = ip((first_int, ip_bits - nbits))
         yield net
         first_int += 1 << nbits
         wenn first_int - 1 == ip._ALL_ONES:
-            break
+            breche
 
 
 def _collapse_addresses_internal(addresses):
@@ -279,7 +279,7 @@ def _collapse_addresses_internal(addresses):
     # First merge
     to_merge = list(addresses)
     subnets = {}
-    while to_merge:
+    waehrend to_merge:
         net = to_merge.pop()
         supernet = net.supernet()
         existing = subnets.get(supernet)
@@ -296,7 +296,7 @@ def _collapse_addresses_internal(addresses):
             # Since they are sorted, last.network_address <= net.network_address
             # is a given.
             wenn last.broadcast_address >= net.broadcast_address:
-                continue
+                weiter
         yield net
         last = net
 
@@ -841,7 +841,7 @@ klasse _BaseNetwork(_IPAddressBase):
                                            other.prefixlen))
 
         s1, s2 = self.subnets()
-        while s1 != other und s2 != other:
+        waehrend s1 != other und s2 != other:
             wenn other.subnet_of(s1):
                 yield s2
                 s1, s2 = s1.subnets()

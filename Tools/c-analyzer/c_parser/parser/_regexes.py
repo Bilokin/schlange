@@ -82,13 +82,13 @@ _KEYWORD = textwrap.dedent(r'''
             goto |
             return |
             sizeof |
-            break |
-            continue |
+            breche |
+            weiter |
             wenn |
             sonst |
             fuer |
             do |
-            while |
+            waehrend |
             switch |
             case |
             default |
@@ -487,7 +487,7 @@ COMPOUND_STMT = textwrap.dedent(rf'''
             |
             (?:
                 (?:  # <COMPOUND_PAREN>
-                    fuer | while | wenn | switch
+                    fuer | waehrend | wenn | switch
                  )
                 \s* (?= [(] )  # Note this lookahead.
              )

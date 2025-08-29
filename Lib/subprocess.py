@@ -167,7 +167,7 @@ klasse CalledProcessError(SubprocessError):
 
 
 klasse TimeoutExpired(SubprocessError):
-    """This exception is raised when the timeout expires while waiting fuer a
+    """This exception is raised when the timeout expires waehrend waiting fuer a
     child process.
 
     Attributes:
@@ -371,9 +371,9 @@ def _text_encoding():
         f = sys._getframe()
         filename = f.f_code.co_filename
         stacklevel = 2
-        while f := f.f_back:
+        waehrend f := f.f_back:
             wenn f.f_code.co_filename != filename:
-                break
+                breche
             stacklevel += 1
         warnings.warn("'encoding' argument nicht specified.",
                       EncodingWarning, stacklevel)
@@ -828,7 +828,7 @@ klasse Popen:
             )
 
         _cleanup()
-        # Held while anything is calling waitpid before returncode has been
+        # Held waehrend anything is calling waitpid before returncode has been
         # updated to prevent clobbering returncode wenn wait() oder poll() are
         # called von multiple threads at once.  After acquiring the lock,
         # code must re-check self.returncode to see wenn another thread just
@@ -1865,7 +1865,7 @@ klasse Popen:
             errpipe_read, errpipe_write = os.pipe()
             # errpipe_write must nicht be in the standard io 0, 1, oder 2 fd range.
             low_fds_to_close = []
-            while errpipe_write < 3:
+            waehrend errpipe_write < 3:
                 low_fds_to_close.append(errpipe_write)
                 errpipe_write = os.dup(errpipe_write)
             fuer low_fd in low_fds_to_close:
@@ -1918,11 +1918,11 @@ klasse Popen:
                 # Wait fuer exec to fail oder succeed; possibly raising an
                 # exception (limited in size)
                 errpipe_data = bytearray()
-                while Wahr:
+                waehrend Wahr:
                     part = os.read(errpipe_read, 50000)
                     errpipe_data += part
                     wenn nicht part oder len(errpipe_data) > 50000:
-                        break
+                        breche
             finally:
                 # be sure the FD is closed no matter what
                 os.close(errpipe_read)
@@ -2038,16 +2038,16 @@ klasse Popen:
                 # Enter a busy loop wenn we have a timeout.  This busy loop was
                 # cribbed von Lib/threading.py in Thread.wait() at r71065.
                 delay = 0.0005 # 500 us -> initial delay of 1 ms
-                while Wahr:
+                waehrend Wahr:
                     wenn self._waitpid_lock.acquire(Falsch):
                         try:
                             wenn self.returncode is nicht Nichts:
-                                break  # Another thread waited.
+                                breche  # Another thread waited.
                             (pid, sts) = self._try_wait(os.WNOHANG)
                             assert pid == self.pid oder pid == 0
                             wenn pid == self.pid:
                                 self._handle_exitstatus(sts)
-                                break
+                                breche
                         finally:
                             self._waitpid_lock.release()
                     remaining = self._remaining_time(endtime)
@@ -2056,10 +2056,10 @@ klasse Popen:
                     delay = min(delay * 2, remaining, .05)
                     time.sleep(delay)
             sonst:
-                while self.returncode is Nichts:
+                waehrend self.returncode is Nichts:
                     mit self._waitpid_lock:
                         wenn self.returncode is nicht Nichts:
-                            break  # Another thread waited.
+                            breche  # Another thread waited.
                         (pid, sts) = self._try_wait(0)
                         # Check the pid und loop als waitpid has been known to
                         # return 0 even without WNOHANG in odd situations.
@@ -2112,7 +2112,7 @@ klasse Popen:
                 wenn self.stderr und nicht self.stderr.closed:
                     selector.register(self.stderr, selectors.EVENT_READ)
 
-                while selector.get_map():
+                waehrend selector.get_map():
                     timeout = self._remaining_time(endtime)
                     wenn timeout is nicht Nichts und timeout < 0:
                         self._check_timeout(endtime, orig_timeout,
@@ -2176,7 +2176,7 @@ klasse Popen:
 
         def _save_input(self, input):
             # This method is called von the _communicate_with_*() methods
-            # so that wenn we time out while communicating, we can continue
+            # so that wenn we time out waehrend communicating, we can weiter
             # sending input wenn we retry.
             wenn self.stdin und self._input is Nichts:
                 self._input_offset = 0

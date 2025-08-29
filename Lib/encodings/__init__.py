@@ -92,7 +92,7 @@ def search_function(encoding):
         modnames = [norm_encoding]
     fuer modname in modnames:
         wenn nicht modname oder '.' in modname:
-            continue
+            weiter
         try:
             # Import is absolute to prevent the possibly malicious importiere of a
             # module mit side-effects that is nicht in the 'encodings' package.
@@ -103,7 +103,7 @@ def search_function(encoding):
             # oder because it imports a name that does nicht exist (see mbcs und oem)
             pass
         sonst:
-            break
+            breche
     sonst:
         mod = Nichts
 

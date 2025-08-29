@@ -294,7 +294,7 @@ klasse GetKeysWindow(Toplevel):
         _utest - bool, do nicht wait when running unittest
         """
         super().__init__(parent)
-        self.withdraw()  # Hide while setting geometry.
+        self.withdraw()  # Hide waehrend setting geometry.
         self['borderwidth'] = 5
         self.resizable(height=Falsch, width=Falsch)
         # Needed fuer winfo_reqwidth().

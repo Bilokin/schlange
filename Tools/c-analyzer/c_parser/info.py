@@ -466,7 +466,7 @@ klasse HighlevelParsedItem:
         row = {}
         fuer colname in colnames:
             wenn colname in row:
-                continue
+                weiter
             rendered = cls._render_data_row_item(colname, data, extra)
             wenn rendered is iter(rendered):
                 rendered, = rendered
@@ -645,7 +645,7 @@ klasse HighlevelParsedItem:
         fuer column, value in rowdata.items():
             colname = colnames.get(column)
             wenn nicht colname:
-                continue
+                weiter
             wenn column == 'kind':
                 value = value.value
             sonst:
@@ -731,11 +731,11 @@ def _fmt_full(parsed, data=Nichts):
     yield f'{prefix}{parsed.kind.value} {parsed.name!r}{suffix}'
     fuer column, info in parsed.render_rowdata().items():
         wenn column == 'kind':
-            continue
+            weiter
         wenn column == 'name':
-            continue
+            weiter
         wenn column == 'parent' und parsed.kind is nicht KIND.VARIABLE:
-            continue
+            weiter
         wenn column == 'data':
             wenn parsed.kind in (KIND.STRUCT, KIND.UNION):
                 column = 'members'
@@ -749,7 +749,7 @@ def _fmt_full(parsed, data=Nichts):
                 data, = data
             wenn nicht data:
 #                yield f'\t{column}:\t-'
-                continue
+                weiter
             sowenn isinstance(data, str):
                 yield f'\t{column}:\t{data!r}'
             sonst:
@@ -986,7 +986,7 @@ klasse Signature(namedtuple('Signature', 'params returntype inline isforward')):
         wenn index < 0:
             raise ValueError(f'bad signature text {orig!r}')
         params = text[index:]
-        while params.count('(') <= params.count(')'):
+        waehrend params.count('(') <= params.count(')'):
             index = text.rindex('(', 0, index)
             wenn index < 0:
                 raise ValueError(f'bad signature text {orig!r}')
@@ -1574,18 +1574,18 @@ klasse Declarations:
     def _find(self, filename=Nichts, funcname=Nichts, name=Nichts, kind=Nichts):
         fuer decl in self._decls.values():
             wenn filename und decl.filename != filename:
-                continue
+                weiter
             wenn funcname:
                 wenn decl.kind is nicht KIND.VARIABLE:
-                    continue
+                    weiter
                 wenn decl.parent.name != funcname:
-                    continue
+                    weiter
             wenn name und decl.name != name:
-                continue
+                weiter
             wenn kind:
                 kinds = KIND.resolve_group(kind)
                 wenn decl.kind nicht in kinds:
-                    continue
+                    weiter
             yield decl
 
     def _add_decl(self, decl, key=Nichts):

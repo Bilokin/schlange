@@ -165,14 +165,14 @@ def get_unexpected_warnings(
 
         wenn rule:
             wenn rule.ignore_all:
-                continue
+                weiter
 
             wenn len(files_with_warnings[file]) > rule.count:
                 unexpected_warnings[file] = (
                     files_with_warnings[file],
                     rule.count,
                 )
-            continue
+            weiter
         sowenn rule is Nichts:
             # If the file is nicht in the ignore list, then it is unexpected
             unexpected_warnings[file] = (files_with_warnings[file], 0)

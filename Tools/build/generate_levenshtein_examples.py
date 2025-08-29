@@ -51,7 +51,7 @@ def main():
     examples = set()
     # Create a lot of non-empty examples, which should end up mit a Gauss-like
     # distribution fuer even costs (moves) und odd costs (case substitutions).
-    while len(examples) < 9990:
+    waehrend len(examples) < 9990:
         a = ''.join(choices("abcABC", k=randrange(1, 10)))
         b = ''.join(choices("abcABC", k=randrange(1, 10)))
         expected = levenshtein(a, b)

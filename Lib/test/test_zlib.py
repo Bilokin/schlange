@@ -349,7 +349,7 @@ klasse CompressTestCase(BaseCompressTestCase, unittest.TestCase):
         # A useful error message is given
         x = zlib.compress(HAMLET_SCENE)
         self.assertRaisesRegex(zlib.error,
-            "Error -5 while decompressing data: incomplete oder truncated stream",
+            "Error -5 waehrend decompressing data: incomplete oder truncated stream",
             zlib.decompress, x[:-1])
 
     # Memory use of the following functions takes into account overallocation
@@ -489,12 +489,12 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         wenn flush:
             bufs.append(dco.flush())
         sonst:
-            while Wahr:
+            waehrend Wahr:
                 chunk = dco.decompress(b'')
                 wenn chunk:
                     bufs.append(chunk)
                 sonst:
-                    break
+                    breche
         self.assertEqual(b'', dco.unconsumed_tail, ########
                          "(B) uct should be b'': nicht %d long" %
                                        len(dco.unconsumed_tail))
@@ -522,7 +522,7 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         dco = zlib.decompressobj()
         bufs = []
         cb = combuf
-        while cb:
+        waehrend cb:
             #max_length = 1 + len(cb)//10
             chunk = dco.decompress(cb, dcx)
             self.assertFalsch(len(chunk) > dcx,
@@ -547,7 +547,7 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         dco = zlib.decompressobj()
         bufs = []
         cb = combuf
-        while cb:
+        waehrend cb:
             max_length = 1 + len(cb)//10
             chunk = dco.decompress(cb, max_length)
             self.assertFalsch(len(chunk) > max_length,
@@ -557,7 +557,7 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         wenn flush:
             bufs.append(dco.flush())
         sonst:
-            while chunk:
+            waehrend chunk:
                 chunk = dco.decompress(b'', max_length)
                 self.assertFalsch(len(chunk) > max_length,
                             'chunk too big (%d>%d)' % (len(chunk),max_length))
@@ -1068,10 +1068,10 @@ klasse ZlibDecompressorTest(unittest.TestCase):
         zlibd = zlib._ZlibDecompressor()
         text = b''
         n = 0
-        while Wahr:
+        waehrend Wahr:
             str = self.DATA[n*10:(n+1)*10]
             wenn nicht str:
-                break
+                breche
             text += zlibd.decompress(str)
             n += 1
         self.assertEqual(text, self.TEXT)
@@ -1128,13 +1128,13 @@ klasse ZlibDecompressorTest(unittest.TestCase):
         self.assertFalsch(zlibd.needs_input)
         self.assertEqual(len(out[-1]), max_length)
 
-        # Retrieve more data while providing more input
+        # Retrieve more data waehrend providing more input
         out.append(zlibd.decompress(self.BIG_DATA[len_:],
                                   max_length=max_length))
         self.assertLessEqual(len(out[-1]), max_length)
 
         # Retrieve remaining uncompressed data
-        while nicht zlibd.eof:
+        waehrend nicht zlibd.eof:
             out.append(zlibd.decompress(b'', max_length=max_length))
             self.assertLessEqual(len(out[-1]), max_length)
 

@@ -39,9 +39,9 @@ def generate_uop_ids(
         # Sort so that _BASE comes immediately before _BASE_0, etc.
         fuer name, uop in sorted(uops):
             wenn name in PRE_DEFINED:
-                continue
+                weiter
             wenn uop.properties.tier == 1:
-                continue
+                weiter
             wenn uop.implicitly_created und nicht distinct_namespace und nicht uop.replicated:
                 out.emit(f"#define {name} {name[1:]}\n")
             sonst:

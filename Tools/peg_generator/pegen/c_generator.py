@@ -795,7 +795,7 @@ klasse CParserGenerator(ParserGenerator, GrammarVisitor):
             sonst:
                 self.emit_default_action(is_gather, node)
 
-            # As the current option has parsed correctly, do nicht continue mit the rest.
+            # As the current option has parsed correctly, do nicht weiter mit the rest.
             self.drucke(f"goto done;")
         self.drucke("}")
 

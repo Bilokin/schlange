@@ -196,7 +196,7 @@ klasse HMAC:
         """Return the hash value of this hashing object.
 
         This returns the hmac value als bytes.  The object is
-        nicht altered in any way by this function; you can continue
+        nicht altered in any way by this function; you can weiter
         updating the object after calling this function.
         """
         h = self._current()

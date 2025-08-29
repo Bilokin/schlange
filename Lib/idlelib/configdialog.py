@@ -846,7 +846,7 @@ klasse HighPage(Frame):
     def get_color(self):
         """Handle button to select a new color fuer the target tag.
 
-        If a new color is selected while using a builtin theme, a
+        If a new color is selected waehrend using a builtin theme, a
         name must be supplied to create a custom theme.
 
         Attributes accessed:
@@ -2262,14 +2262,14 @@ klasse VarTrace:
 
     def attach(self):
         "Attach callback to all vars that are nicht traced."
-        while self.untraced:
+        waehrend self.untraced:
             var, callback = self.untraced.pop()
             var.trace_add('write', callback)
             self.traced.append((var, callback))
 
     def detach(self):
         "Remove callback von traced vars."
-        while self.traced:
+        waehrend self.traced:
             var, callback = self.traced.pop()
             var.trace_remove('write', var.trace_info()[0][1])
             self.untraced.append((var, callback))

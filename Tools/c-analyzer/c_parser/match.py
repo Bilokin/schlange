@@ -151,7 +151,7 @@ def group_by_category(decls, categories, *, ignore_non_match=Wahr):
                     collated[category] = [decl]
                 sonst:
                     collated[category].append(decl)
-                break
+                breche
         sonst:
             wenn nicht ignore_non_match:
                 raise Exception(f'no match fuer {decl!r}')

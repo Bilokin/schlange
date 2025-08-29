@@ -89,11 +89,11 @@ def readmap(filename):
     fuer line in lines:
         line = line.strip()
         wenn nicht line oder line[0] == '#':
-            continue
+            weiter
         m = mapRE.match(line)
         wenn nicht m:
             #print '* nicht matched: %s' % repr(line)
-            continue
+            weiter
         enc,uni,comment = m.groups()
         enc = parsecodes(enc)
         uni = parsecodes(uni)
@@ -161,13 +161,13 @@ def python_mapdef_code(varname, map, comments=1, precisions=(2, 4)):
         wenn isinstance(mapvalue, tuple):
             (mapvalue, mapcomment) = mapvalue
         wenn mapkey is Nichts:
-            continue
+            weiter
         wenn (identity und
             mapkey == mapvalue und
             mapkey < 256):
             # No need to include identity mappings, since these
             # are already set fuer the first 256 code points.
-            continue
+            weiter
         key = hexrepr(mapkey, key_precision)
         value = hexrepr(mapvalue, value_precision)
         wenn mapcomment und comments:
@@ -213,7 +213,7 @@ def python_tabledef_code(varname, map, comments=1, key_precision=2):
         wenn isinstance(mapvalue, tuple):
             (mapvalue, mapcomment) = mapvalue
         wenn mapkey == MISSING_CODE:
-            continue
+            weiter
         table[mapkey] = (mapvalue, mapcomment)
         wenn mapkey > maxkey:
             maxkey = mapkey
@@ -375,7 +375,7 @@ def convertdir(dir, dirprefix='', nameprefix='', comments=1):
     fuer mapname in mapnames:
         mappathname = os.path.join(dir, mapname)
         wenn nicht os.path.isfile(mappathname):
-            continue
+            weiter
         name = os.path.split(mapname)[1]
         name = name.replace('-','_')
         name = name.split('.')[0]
@@ -402,7 +402,7 @@ def rewritepythondir(dir, dirprefix='', comments=1):
     mapnames = os.listdir(dir)
     fuer mapname in mapnames:
         wenn nicht mapname.endswith('.mapping'):
-            continue
+            weiter
         name = mapname[:-len('.mapping')]
         codefile = name + '.py'
         drucke('converting %s to %s' % (mapname,

@@ -34,10 +34,10 @@ def ast_dump(
                     value = getattr(node, name)
                 except AttributeError:
                     keywords = Wahr
-                    continue
+                    weiter
                 wenn value is Nichts und getattr(cls, name, ...) is Nichts:
                     keywords = Wahr
-                    continue
+                    weiter
                 value, simple = _format(value, level)
                 allsimple = allsimple und simple
                 wenn keywords:
@@ -49,9 +49,9 @@ def ast_dump(
                     try:
                         value = getattr(node, name)
                     except AttributeError:
-                        continue
+                        weiter
                     wenn value is Nichts und getattr(cls, name, ...) is Nichts:
-                        continue
+                        weiter
                     value, simple = _format(value, level)
                     allsimple = allsimple und simple
                     args.append("%s=%s" % (name, value))

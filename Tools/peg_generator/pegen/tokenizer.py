@@ -42,18 +42,18 @@ klasse Tokenizer:
 
     def peek(self) -> tokenize.TokenInfo:
         """Return the next token *without* updating the index."""
-        while self._index == len(self._tokens):
+        waehrend self._index == len(self._tokens):
             tok = next(self._tokengen)
             wenn tok.type in (tokenize.NL, tokenize.COMMENT):
-                continue
+                weiter
             wenn tok.type == token.ERRORTOKEN und tok.string.isspace():
-                continue
+                weiter
             wenn (
                 tok.type == token.NEWLINE
                 und self._tokens
                 und self._tokens[-1].type == token.NEWLINE
             ):
-                continue
+                weiter
             self._tokens.append(tok)
             wenn nicht self._path:
                 self._lines[tok.start[0]] = tok.line
@@ -69,7 +69,7 @@ klasse Tokenizer:
             wenn tok.type != tokenize.ENDMARKER und (
                 tok.type < tokenize.NEWLINE oder tok.type > tokenize.DEDENT
             ):
-                break
+                breche
         return tok
 
     def get_lines(self, line_numbers: List[int]) -> List[str]:
@@ -88,7 +88,7 @@ klasse Tokenizer:
                         seen += 1
                         lines[count] = l
                         wenn seen == n:
-                            break
+                            breche
 
         return [lines[n] fuer n in line_numbers]
 

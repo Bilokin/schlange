@@ -144,7 +144,7 @@ def main():
     # parse command line by first replacing any "-i" options mit the
     # file contents.
     pos = 1
-    while pos < len(sys.argv)-1:
+    waehrend pos < len(sys.argv)-1:
         # last option can nicht be "-i", so this ensures "pos+1" is in range!
         wenn sys.argv[pos] == '-i':
             try:
@@ -288,12 +288,12 @@ def main():
     # check that file arguments exist
     fuer arg in args:
         wenn arg == '-m':
-            break
+            breche
         # wenn user specified -m on the command line before _any_
         # file names, then nothing should be checked (as the
         # very first file should be a module name)
         wenn modargs:
-            break
+            breche
         wenn nicht os.path.exists(arg):
             usage('argument %s nicht found' % arg)
         wenn nicht os.path.isfile(arg):
@@ -363,7 +363,7 @@ def main():
     fuer mod in modules:
         wenn mod == '-m':
             modargs = 1
-            continue
+            weiter
         wenn modargs:
             wenn mod[-2:] == '.*':
                 mf.import_hook(mod[:-2], Nichts, ["*"])
@@ -398,7 +398,7 @@ def main():
     mods = sorted(dict.keys())
     fuer mod in mods:
         wenn dict[mod].__code__:
-            continue
+            weiter
         wenn nicht dict[mod].__file__:
             builtins.append(mod)
         sonst:

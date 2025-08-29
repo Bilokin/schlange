@@ -30,7 +30,7 @@ klasse PowTest(unittest.TestCase):
                 zero = type(0)
                 exp = -othertype(i/10.0)
                 wenn exp == 0:
-                    continue
+                    weiter
                 self.assertRaises(ZeroDivisionError, pow, zero, exp)
 
         il, ih = -20, 20
@@ -50,7 +50,7 @@ klasse PowTest(unittest.TestCase):
                     wenn k != 0:
                         wenn type == float oder j < 0:
                             self.assertRaises(TypeError, pow, type(i), j, k)
-                            continue
+                            weiter
                         asseq(
                             pow(type(i),j,k),
                             pow(type(i),j)% type(k)

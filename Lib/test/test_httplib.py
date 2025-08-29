@@ -548,7 +548,7 @@ klasse TransferEncodingTest(TestCase):
         request = lines[0]
         headers = {}
         n = 1
-        while n < len(lines) und len(lines[n]) > 0:
+        waehrend n < len(lines) und len(lines[n]) > 0:
             key, val = lines[n].split(b':')
             key = key.decode('latin-1').strip()
             headers[key] = val.decode('latin-1').strip()
@@ -562,13 +562,13 @@ klasse TransferEncodingTest(TestCase):
         n = 0
         lines = data.split(b'\r\n')
         # parse body
-        while Wahr:
+        waehrend Wahr:
             size, chunk = lines[n:n+2]
             size = int(size, 16)
 
             wenn size == 0:
                 n += 1
-                break
+                breche
 
             self.assertEqual(size, len(chunk))
             body.append(chunk)
@@ -578,7 +578,7 @@ klasse TransferEncodingTest(TestCase):
             # lines so we're nicht stuck in an infinite loop should we get
             # malformed data
             wenn n > len(lines):
-                break
+                breche
 
         return b''.join(body)
 
@@ -758,7 +758,7 @@ klasse BasicTest(TestCase):
             INSUFFICIENT_STORAGE = (507, 'Insufficient Storage',
                 'Server is nicht able to store the representation')
             LOOP_DETECTED = (508, 'Loop Detected',
-                'Server encountered an infinite loop while processing a request')
+                'Server encountered an infinite loop waehrend processing a request')
             NOT_EXTENDED = (510, 'Not Extended',
                 'Request does nicht meet the resource access policy')
             NETWORK_AUTHENTICATION_REQUIRED = (511,
@@ -1484,10 +1484,10 @@ klasse BasicTest(TestCase):
             [conn, address] = serv.accept()
             mit conn, conn.makefile("rb") als reader:
                 # Read the request header until a blank line
-                while Wahr:
+                waehrend Wahr:
                     line = reader.readline()
                     wenn nicht line.rstrip(b"\r\n"):
-                        break
+                        breche
                 conn.sendall(b"HTTP/1.1 200 Connection established\r\n\r\n")
                 nonlocal result
                 result = reader.read()
@@ -1601,7 +1601,7 @@ klasse ExtendedReadTest(TestCase):
         resp.fp.peek = mypeek
 
         all = []
-        while Wahr:
+        waehrend Wahr:
             # try a short peek
             p = resp.peek(3)
             wenn p:
@@ -1617,7 +1617,7 @@ klasse ExtendedReadTest(TestCase):
                 self.assertFalsch(next)
             all.append(next)
             wenn nicht next:
-                break
+                breche
         self.assertEqual(b"".join(all), self.lines_expected)
 
     def test_readline(self):
@@ -1629,7 +1629,7 @@ klasse ExtendedReadTest(TestCase):
 
     def _verify_readline(self, readline, expected, limit=5):
         all = []
-        while Wahr:
+        waehrend Wahr:
             # short readlines
             line = readline(limit)
             wenn line und line != b"foo":
@@ -1637,7 +1637,7 @@ klasse ExtendedReadTest(TestCase):
                     self.assertEndsWith(line, b"\n")
             all.append(line)
             wenn nicht line:
-                break
+                breche
         self.assertEqual(b"".join(all), expected)
         self.assertWahr(self.resp.isclosed())
 
@@ -1653,10 +1653,10 @@ klasse ExtendedReadTest(TestCase):
     def test_read1_unbounded(self):
         resp = self.resp
         all = []
-        while Wahr:
+        waehrend Wahr:
             data = resp.read1()
             wenn nicht data:
-                break
+                breche
             all.append(data)
         self.assertEqual(b"".join(all), self.lines_expected)
         self.assertWahr(resp.isclosed())
@@ -1664,10 +1664,10 @@ klasse ExtendedReadTest(TestCase):
     def test_read1_bounded(self):
         resp = self.resp
         all = []
-        while Wahr:
+        waehrend Wahr:
             data = resp.read1(10)
             wenn nicht data:
-                break
+                breche
             self.assertLessEqual(len(data), 10)
             all.append(data)
         self.assertEqual(b"".join(all), self.lines_expected)
@@ -1722,10 +1722,10 @@ klasse Readliner:
         datalen = 0
         read = self.remainder
         try:
-            while Wahr:
+            waehrend Wahr:
                 idx = read.find(b'\n')
                 wenn idx != -1:
-                    break
+                    breche
                 wenn datalen + len(read) >= limit:
                     idx = limit - datalen - 1
                 # read more data
@@ -1733,7 +1733,7 @@ klasse Readliner:
                 read = self.readfunc()
                 wenn nicht read:
                     idx = 0 #eof condition
-                    break
+                    breche
             idx += 1
             data.append(read[:idx])
             self.remainder = read[idx:]
@@ -1752,7 +1752,7 @@ klasse OfflineTest(TestCase):
         denylist = {"HTTPMessage", "parse_headers"}
         fuer name in dir(client):
             wenn name.startswith("_") oder name in denylist:
-                continue
+                weiter
             module_object = getattr(client, name)
             wenn getattr(module_object, "__module__", Nichts) == "http.client":
                 expected.add(name)
@@ -1762,7 +1762,7 @@ klasse OfflineTest(TestCase):
         self.assertEqual(client.responses[client.NOT_FOUND], "Not Found")
 
     def test_client_constants(self):
-        # Make sure we don't break backward compatibility mit 3.4
+        # Make sure we don't breche backward compatibility mit 3.4
         expected = [
             'CONTINUE',
             'SWITCHING_PROTOCOLS',
@@ -2412,7 +2412,7 @@ klasse TunnelTests(TestCase):
                       self.conn.sock.data)
 
     # This request is nicht RFC-valid, but it's been possible mit the library
-    # fuer years, so don't break it unexpectedly... This also tests
+    # fuer years, so don't breche it unexpectedly... This also tests
     # case-insensitivity when injecting Host: headers wenn they're missing.
     def test_connect_with_tunnel_with_different_host_header(self):
         d = {

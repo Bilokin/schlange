@@ -226,10 +226,10 @@ def cmd_data(datacmd, **kwargs):
             decls = []
             fuer decl in _analyzer.iter_decls(files, **kwargs):
                 wenn nicht KIND.is_type_decl(decl.kind):
-                    continue
+                    weiter
                 wenn nicht decl.filename.endswith('.h'):
                     wenn decl.shortkey nicht in _analyzer.KNOWN_IN_DOT_C:
-                        continue
+                        weiter
                 decls.append(decl)
             results = _c_analyzer.analyze_decls(
                 decls,

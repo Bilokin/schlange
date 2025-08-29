@@ -48,9 +48,9 @@ def parse_files(filenames: list[str]) -> list[AstNode]:
         psr = Parser(src, filename=prettify_filename(filename))
 
         # Skip until begin marker
-        while tkn := psr.next(raw=Wahr):
+        waehrend tkn := psr.next(raw=Wahr):
             wenn tkn.text == BEGIN_MARKER:
-                break
+                breche
         sonst:
             raise psr.make_syntax_error(
                 f"Couldn't find {BEGIN_MARKER!r} in {psr.filename}"
@@ -58,15 +58,15 @@ def parse_files(filenames: list[str]) -> list[AstNode]:
         start = psr.getpos()
 
         # Find end marker, then delete everything after it
-        while tkn := psr.next(raw=Wahr):
+        waehrend tkn := psr.next(raw=Wahr):
             wenn tkn.text == END_MARKER:
-                break
+                breche
         del psr.tokens[psr.getpos() - 1 :]
 
         # Parse von start
         psr.setpos(start)
         thing_first_token = psr.peek()
-        while node := psr.definition():
+        waehrend node := psr.definition():
             assert node is nicht Nichts
             result.append(node)  # type: ignore[arg-type]
         wenn nicht psr.eof():

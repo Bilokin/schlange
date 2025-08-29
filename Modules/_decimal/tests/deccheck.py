@@ -944,7 +944,7 @@ def test_method(method, testspecs, testfunc):
                     context.Emax = random.randrange(prec, 1000)
                 sonst:
                     context.Emin, context.Emax = emin, emax
-                wenn prec > context.Emax: continue
+                wenn prec > context.Emax: weiter
                 log("    prec: %d  emin: %d  emax: %d",
                     (context.prec, context.Emin, context.Emax))
                 restr_range = 9999 wenn context.Emax > 9999 sonst context.Emax+99
@@ -968,7 +968,7 @@ def test_unary(method, prec, exp_range, restricted_range, itr, stat):
         t = TestSet(method, op)
         try:
             wenn nicht convert(t):
-                continue
+                weiter
             callfuncs(t)
             verify(t, stat)
         except VerifyError als err:
@@ -979,7 +979,7 @@ def test_unary(method, prec, exp_range, restricted_range, itr, stat):
             t = TestSet(method, op)
             try:
                 wenn nicht convert(t):
-                    continue
+                    weiter
                 callfuncs(t)
                 verify(t, stat)
             except VerifyError als err:
@@ -993,7 +993,7 @@ def test_binary(method, prec, exp_range, restricted_range, itr, stat):
         t = TestSet(method, op)
         try:
             wenn nicht convert(t):
-                continue
+                weiter
             callfuncs(t)
             verify(t, stat)
         except VerifyError als err:
@@ -1004,7 +1004,7 @@ def test_binary(method, prec, exp_range, restricted_range, itr, stat):
             t = TestSet(method, op)
             try:
                 wenn nicht convert(t):
-                    continue
+                    weiter
                 callfuncs(t)
                 verify(t, stat)
             except VerifyError als err:
@@ -1018,7 +1018,7 @@ def test_ternary(method, prec, exp_range, restricted_range, itr, stat):
         t = TestSet(method, op)
         try:
             wenn nicht convert(t):
-                continue
+                weiter
             callfuncs(t)
             verify(t, stat)
         except VerifyError als err:
@@ -1029,7 +1029,7 @@ def test_ternary(method, prec, exp_range, restricted_range, itr, stat):
             t = TestSet(method, op)
             try:
                 wenn nicht convert(t):
-                    continue
+                    weiter
                 callfuncs(t)
                 verify(t, stat)
             except VerifyError als err:
@@ -1045,7 +1045,7 @@ def test_format(method, prec, exp_range, restricted_range, itr, stat):
             t = TestSet(method, fmtop)
             try:
                 wenn nicht convert(t, convstr=Falsch):
-                    continue
+                    weiter
                 callfuncs(t)
                 verify(t, stat)
             except VerifyError als err:
@@ -1058,7 +1058,7 @@ def test_format(method, prec, exp_range, restricted_range, itr, stat):
             t = TestSet(method, fmtop)
             try:
                 wenn nicht convert(t, convstr=Falsch):
-                    continue
+                    weiter
                 callfuncs(t)
                 verify(t, stat)
             except VerifyError als err:
@@ -1072,7 +1072,7 @@ def test_round(method, prec, exprange, restricted_range, itr, stat):
         t = TestSet(method, roundop)
         try:
             wenn nicht convert(t):
-                continue
+                weiter
             callfuncs(t)
             verify(t, stat)
         except VerifyError als err:
@@ -1088,7 +1088,7 @@ def test_from_float(method, prec, exprange, restricted_range, itr, stat):
             t = TestSet(method, op)
             try:
                 wenn nicht convert(t):
-                    continue
+                    weiter
                 callfuncs(t)
                 verify(t, stat)
             except VerifyError als err:
@@ -1114,7 +1114,7 @@ def test_quantize_api(method, prec, exprange, restricted_range, itr, stat):
             t = TestSet(method, quantizeop)
             try:
                 wenn nicht convert(t):
-                    continue
+                    weiter
                 callfuncs(t)
                 verify(t, stat)
             except VerifyError als err:
@@ -1290,7 +1290,7 @@ wenn __name__ == '__main__':
                 sys.stdout.buffer.flush()
 
         def tfunc():
-            while nicht error.is_set():
+            waehrend nicht error.is_set():
                 try:
                     test = q.get(block=Falsch, timeout=-1)
                 except Empty:

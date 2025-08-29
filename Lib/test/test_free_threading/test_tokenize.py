@@ -16,7 +16,7 @@ klasse TestTokenize(unittest.TestCase):
 
         tokens = []
         def next_token(it):
-            while Wahr:
+            waehrend Wahr:
                 try:
                     r = next(it)
                     tokens.append(tokenize.TokenInfo._make(r))

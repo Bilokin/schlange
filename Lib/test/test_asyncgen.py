@@ -27,7 +27,7 @@ def awaitable(*, throw=Falsch):
 
 def run_until_complete(coro):
     exc = Falsch
-    while Wahr:
+    waehrend Wahr:
         try:
             wenn exc:
                 exc = Falsch
@@ -136,39 +136,39 @@ klasse AsyncGenTest(unittest.TestCase):
     def compare_generators(self, sync_gen, async_gen):
         def sync_iterate(g):
             res = []
-            while Wahr:
+            waehrend Wahr:
                 try:
                     res.append(g.__next__())
                 except StopIteration:
                     res.append('STOP')
-                    break
+                    breche
                 except Exception als ex:
                     res.append(str(type(ex)))
             return res
 
         def async_iterate(g):
             res = []
-            while Wahr:
+            waehrend Wahr:
                 an = g.__anext__()
                 try:
-                    while Wahr:
+                    waehrend Wahr:
                         try:
                             an.__next__()
                         except StopIteration als ex:
                             wenn ex.args:
                                 res.append(ex.args[0])
-                                break
+                                breche
                             sonst:
                                 res.append('EMPTY StopIteration')
-                                break
+                                breche
                         except StopAsyncIteration:
                             raise
                         except Exception als ex:
                             res.append(str(type(ex)))
-                            break
+                            breche
                 except StopAsyncIteration:
                     res.append('STOP')
-                    break
+                    breche
             return res
 
         sync_gen_result = sync_iterate(sync_gen)
@@ -408,7 +408,7 @@ klasse AsyncGenTest(unittest.TestCase):
             pass
 
         async def agenfn():
-            while Wahr:
+            waehrend Wahr:
                 try:
                     await _async_yield(Nichts)
                 except MyExc:
@@ -441,7 +441,7 @@ klasse AsyncGenTest(unittest.TestCase):
             pass
 
         async def agenfn():
-            while Wahr:
+            waehrend Wahr:
                 try:
                     await _async_yield(Nichts)
                 except MyExc:
@@ -478,7 +478,7 @@ klasse AsyncGenTest(unittest.TestCase):
                 yield
             except MyExc:
                 pass
-            while Wahr:
+            waehrend Wahr:
                 try:
                     await _async_yield(Nichts)
                 except MyExc:
@@ -516,7 +516,7 @@ klasse AsyncGenTest(unittest.TestCase):
                 yield
             except MyExc:
                 pass
-            while Wahr:
+            waehrend Wahr:
                 try:
                     await _async_yield(Nichts)
                 except MyExc:
@@ -747,11 +747,11 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
         g = Gen()
         async def consume():
             ait = aiter(g)
-            while Wahr:
+            waehrend Wahr:
                 try:
                     results.append(await anext(ait))
                 except StopAsyncIteration:
-                    break
+                    breche
         self.loop.run_until_complete(consume())
         self.assertEqual(results, [1, 2])
 
@@ -1292,7 +1292,7 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
         async def gen():
             nonlocal DONE
             try:
-                while Wahr:
+                waehrend Wahr:
                     yield 1
             finally:
                 await asyncio.sleep(0)
@@ -1739,7 +1739,7 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
             loop.set_exception_handler(exception_handler)
 
             async fuer i in it:
-                break
+                breche
 
         asyncio.run(main())
 
@@ -1764,7 +1764,7 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
             loop.set_exception_handler(exception_handler)
 
             async fuer i in it:
-                break
+                breche
 
         asyncio.run(main())
 
@@ -1792,7 +1792,7 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
             loop.set_exception_handler(exception_handler)
 
             async fuer i in async_iterate():
-                break
+                breche
             gc_collect()
 
         asyncio.run(main())
@@ -1851,7 +1851,7 @@ klasse AsyncGenAsyncioTest(unittest.TestCase):
             loop.set_exception_handler(exception_handler)
 
             async fuer i in async_iterate():
-                break
+                breche
 
         asyncio.run(main())
 
@@ -2061,7 +2061,7 @@ klasse TestUnawaitedWarnings(unittest.TestCase):
             return (yield v)
 
         async def agenfn():
-            while Wahr:
+            waehrend Wahr:
                 await _async_yield(1)
             return
             yield
@@ -2085,7 +2085,7 @@ klasse TestUnawaitedWarnings(unittest.TestCase):
             return (yield v)
 
         async def agenfn():
-            while Wahr:
+            waehrend Wahr:
                 await _async_yield(1)
             return
             yield

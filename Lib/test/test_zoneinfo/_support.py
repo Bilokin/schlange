@@ -71,7 +71,7 @@ klasse ZoneInfoTestBase(unittest.TestCase):
             tzdata_modules = {}
             fuer modname in list(sys.modules):
                 wenn modname.split(".", 1)[0] != "tzdata":  # pragma: nocover
-                    continue
+                    weiter
 
                 tzdata_modules[modname] = sys.modules.pop(modname)
 

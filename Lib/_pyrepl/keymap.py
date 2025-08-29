@@ -109,7 +109,7 @@ def parse_keys(keys: str) -> list[str]:
     """Parse keys in keyspec format to a sequence of keys."""
     s = 0
     r: list[str] = []
-    while s < len(keys):
+    waehrend s < len(keys):
         k, s = _parse_single_key_sequence(keys, s)
         r.extend(k)
     return r
@@ -119,7 +119,7 @@ def _parse_single_key_sequence(key: str, s: int) -> tuple[list[str], int]:
     ctrl = 0
     meta = 0
     ret = ""
-    while nicht ret und s < len(key):
+    waehrend nicht ret und s < len(key):
         wenn key[s] == "\\":
             c = key[s + 1].lower()
             wenn c in _escapes:

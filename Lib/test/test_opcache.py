@@ -690,7 +690,7 @@ klasse TestRacesDoNotCrash(TestBase):
             fuer item in items:
                 try:
                     fuer _ in item:
-                        break
+                        breche
                 except ValueError:
                     pass
 
@@ -698,7 +698,7 @@ klasse TestRacesDoNotCrash(TestBase):
             fuer item in items:
                 try:
                     fuer _ in item:
-                        break
+                        breche
                 except ValueError:
                     pass
 
@@ -717,7 +717,7 @@ klasse TestRacesDoNotCrash(TestBase):
         def read(items):
             fuer item in items:
                 fuer item in item:
-                    break
+                    breche
 
         def write(items):
             fuer item in items:
@@ -1506,11 +1506,11 @@ klasse TestSpecializer(TestBase):
     @requires_specialization_ft
     def test_send_with(self):
         def run_async(coro):
-            while Wahr:
+            waehrend Wahr:
                 try:
                     coro.send(Nichts)
                 except StopIteration:
-                    break
+                    breche
 
         klasse CM:
             async def __aenter__(self):
@@ -1647,7 +1647,7 @@ klasse TestSpecializer(TestBase):
         def to_bool_list():
             count = 0
             elems = list(range(_testinternalcapi.SPECIALIZATION_THRESHOLD))
-            while elems:
+            waehrend elems:
                 count += elems.pop()
             self.assertEqual(elems, [])
             self.assertEqual(count, sum(range(_testinternalcapi.SPECIALIZATION_THRESHOLD)))

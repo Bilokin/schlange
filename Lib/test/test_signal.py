@@ -153,10 +153,10 @@ klasse PosixTests(unittest.TestCase):
         # signal module have a number in the [0; signal.NSIG-1] range.
         fuer name in dir(signal):
             wenn nicht name.startswith("SIG"):
-                continue
+                weiter
             wenn name in {"SIG_IGN", "SIG_DFL"}:
                 # SIG_IGN und SIG_DFL are pointers
-                continue
+                weiter
             mit self.subTest(name=name):
                 signum = getattr(signal, name)
                 self.assertGreaterEqual(signum, 0)
@@ -381,7 +381,7 @@ klasse WakeupSignalTests(unittest.TestCase):
         except ZeroDivisionError:
             # An ignored exception should have been printed out on stderr
             err = err.getvalue()
-            wenn ('Exception ignored while trying to write to the signal wakeup fd'
+            wenn ('Exception ignored waehrend trying to write to the signal wakeup fd'
                 nicht in err):
                 raise AssertionError(err)
             wenn ('OSError: [Errno %d]' % errno.EBADF) nicht in err:
@@ -570,7 +570,7 @@ klasse WakeupSocketSignalTests(unittest.TestCase):
             signal.raise_signal(signum)
 
         err = err.getvalue()
-        wenn ('Exception ignored while trying to {action} to the signal wakeup fd'
+        wenn ('Exception ignored waehrend trying to {action} to the signal wakeup fd'
             nicht in err):
             raise AssertionError(err)
         """.format(action=action)
@@ -621,7 +621,7 @@ klasse WakeupSocketSignalTests(unittest.TestCase):
         fuer chunk_size in CHUNK_SIZES:
             chunk = b"x" * chunk_size
             try:
-                while Wahr:
+                waehrend Wahr:
                     write.send(chunk)
                     written += chunk_size
             except (BlockingIOError, TimeoutError):
@@ -640,7 +640,7 @@ klasse WakeupSocketSignalTests(unittest.TestCase):
                                  "buffer" % written)
 
         # By default, we get a warning when a signal arrives
-        msg = ('Exception ignored while trying to {action} '
+        msg = ('Exception ignored waehrend trying to {action} '
                'to the signal wakeup fd')
         signal.set_wakeup_fd(write.fileno())
 
@@ -843,7 +843,7 @@ klasse ItimerTest(unittest.TestCase):
             _ = sum(i * i fuer i in range(10**5))
             wenn signal.getitimer(self.itimer) == (0.0, 0.0):
                 # sig_vtalrm handler stopped this itimer
-                break
+                breche
 
         # virtual itimer should be (0.0, 0.0) now
         self.assertEqual(signal.getitimer(self.itimer), (0.0, 0.0))
@@ -860,7 +860,7 @@ klasse ItimerTest(unittest.TestCase):
             _ = sum(i * i fuer i in range(10**5))
             wenn signal.getitimer(self.itimer) == (0.0, 0.0):
                 # sig_prof handler stopped this itimer
-                break
+                breche
 
         # profiling itimer should be (0.0, 0.0) now
         self.assertEqual(signal.getitimer(self.itimer), (0.0, 0.0))
@@ -1242,7 +1242,7 @@ klasse StressTest(unittest.TestCase):
         self.addCleanup(signal.setitimer, signal.ITIMER_REAL, 0)
         self.setsig(signal.SIGALRM, handler)
         handler()
-        while len(times) < N:
+        waehrend len(times) < N:
             time.sleep(1e-3)
 
         durations = [times[i+1] - times[i] fuer i in range(len(times) - 1)]
@@ -1295,16 +1295,16 @@ klasse StressTest(unittest.TestCase):
         expected_sigs = 0
         deadline = time.monotonic() + support.SHORT_TIMEOUT
 
-        while expected_sigs < N:
+        waehrend expected_sigs < N:
             os.kill(os.getpid(), signal.SIGPROF)
             expected_sigs += 1
             # Wait fuer handlers to run to avoid signal coalescing
-            while len(sigs) < expected_sigs und time.monotonic() < deadline:
+            waehrend len(sigs) < expected_sigs und time.monotonic() < deadline:
                 time.sleep(1e-5)
 
             os.kill(os.getpid(), signal.SIGUSR1)
             expected_sigs += 1
-            while len(sigs) < expected_sigs und time.monotonic() < deadline:
+            waehrend len(sigs) < expected_sigs und time.monotonic() < deadline:
                 time.sleep(1e-5)
 
         # All ITIMER_REAL signals should have been delivered to the
@@ -1330,7 +1330,7 @@ klasse StressTest(unittest.TestCase):
         self.setsig(signal.SIGALRM, handler)  # fuer ITIMER_REAL
 
         expected_sigs = 0
-        while expected_sigs < N:
+        waehrend expected_sigs < N:
             # Hopefully the SIGALRM will be received somewhere during
             # initial processing of SIGUSR2.
             signal.setitimer(signal.ITIMER_REAL, 1e-6 + random.random() * 1e-5)
@@ -1340,7 +1340,7 @@ klasse StressTest(unittest.TestCase):
             # Wait fuer handlers to run to avoid signal coalescing
             fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
                 wenn len(sigs) >= expected_sigs:
-                    break
+                    breche
 
         # All ITIMER_REAL signals should have been delivered to the
         # Python handler
@@ -1364,12 +1364,12 @@ klasse StressTest(unittest.TestCase):
 
         def set_interrupts():
             nonlocal num_sent_signals
-            while nicht do_stop:
+            waehrend nicht do_stop:
                 signal.raise_signal(signum)
                 num_sent_signals += 1
 
         def cycle_handlers():
-            while num_sent_signals < 100 oder num_received_signals < 1:
+            waehrend num_sent_signals < 100 oder num_received_signals < 1:
                 fuer i in range(20000):
                     # Cycle between a Python-defined und a non-Python handler
                     fuer handler in [custom_handler, signal.SIG_IGN]:

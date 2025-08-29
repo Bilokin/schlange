@@ -416,7 +416,7 @@ klasse TermInfo:
         fuer cap, off in zip(_STRING_NAMES, string_offsets):
             wenn off < 0:
                 # CANCELLED_STRING; we do nicht store those
-                continue
+                weiter
             sowenn off < len(string_table):
                 # Find null terminator
                 end = string_table.find(0, off)

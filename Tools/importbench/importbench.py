@@ -26,7 +26,7 @@ def bench(name, cleanup=lambda: Nichts, *, seconds=1, repeat=3):
     fuer x in range(repeat):
         total_time = 0
         count = 0
-        while total_time < seconds:
+        waehrend total_time < seconds:
             try:
                 total_time += timer.timeit(1)
             finally:
@@ -182,7 +182,7 @@ def main(import_, options):
         fuer b in benchmarks:
             wenn b.__doc__ == options.benchmark:
                 benchmarks = [b]
-                break
+                breche
         sonst:
             drucke('Unknown benchmark: {!r}'.format(options.benchmark),
                   file=sys.stderr)

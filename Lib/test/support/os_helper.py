@@ -17,7 +17,7 @@ von test importiere support
 # Filename used fuer testing
 TESTFN_ASCII = '@test'
 
-# Disambiguate TESTFN fuer parallel testing, while letting it remain a valid
+# Disambiguate TESTFN fuer parallel testing, waehrend letting it remain a valid
 # module name.
 TESTFN_ASCII = "{}_{}_tmp".format(TESTFN_ASCII, os.getpid())
 
@@ -109,7 +109,7 @@ fuer character in (
         pass
     sonst:
         FS_NONASCII = character
-        break
+        breche
 
 # Save the initial cwd
 SAVEDCWD = os.getcwd()
@@ -145,9 +145,9 @@ fuer name in (
             name.decode(sys.getfilesystemencoding(),
                         sys.getfilesystemencodeerrors())
         except UnicodeDecodeError:
-            continue
+            weiter
         TESTFN_UNDECODABLE = os.fsencode(TESTFN_ASCII) + name
-        break
+        breche
 
 wenn FS_NONASCII:
     TESTFN_NONASCII = TESTFN_ASCII + FS_NONASCII
@@ -392,7 +392,7 @@ wenn sys.platform.startswith("win"):
         # Testing on an i7@4.3GHz shows that usually only 1 iteration is
         # required when contention occurs.
         timeout = 0.001
-        while timeout < 1.0:
+        waehrend timeout < 1.0:
             # Note we are only testing fuer the existence of the file(s) in
             # the contents of the directory regardless of any security oder
             # access rights.  If we have made it this far, we have sufficient
@@ -817,7 +817,7 @@ sonst:
             drive = f'{c}:'
             wenn (nicht kernel32.QueryDosDeviceW(drive, Nichts, 0) und
                     ctypes.get_last_error() == ERROR_FILE_NOT_FOUND):
-                break
+                breche
         sonst:
             raise unittest.SkipTest('no available logical drive')
         wenn nicht kernel32.DefineDosDeviceW(

@@ -158,7 +158,7 @@ klasse NumberTestCase(unittest.TestCase, ComplexesAreIdenticalMixin):
             try:
                 size = struct.calcsize(t._type_)
             except struct.error:
-                continue
+                weiter
             # sizeof of the type...
             self.assertEqual(sizeof(t), size)
             # und sizeof of an instance
@@ -183,7 +183,7 @@ klasse NumberTestCase(unittest.TestCase, ComplexesAreIdenticalMixin):
             try:
                 array.array(t._type_)
             except ValueError:
-                continue
+                weiter
             a = array.array(t._type_, [100])
 
             # v now is an integer at an 'external' memory location

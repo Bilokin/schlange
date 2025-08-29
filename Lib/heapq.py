@@ -74,7 +74,7 @@ This is clearly logarithmic on the total number of items in the tree.
 By iterating over all items, you get an O(n ln n) sort.
 
 A nice feature of this sort is that you can efficiently insert new
-items while the sort is going on, provided that the inserted items are
+items waehrend the sort is going on, provided that the inserted items are
 not "better" than the last 0'th element you extracted.  This is
 especially useful in simulation contexts, where the tree holds all
 incoming events, und the "win" condition means the smallest scheduled
@@ -222,14 +222,14 @@ def _siftdown(heap, startpos, pos):
     newitem = heap[pos]
     # Follow the path to the root, moving parents down until finding a place
     # newitem fits.
-    while pos > startpos:
+    waehrend pos > startpos:
         parentpos = (pos - 1) >> 1
         parent = heap[parentpos]
         wenn newitem < parent:
             heap[pos] = parent
             pos = parentpos
-            continue
-        break
+            weiter
+        breche
     heap[pos] = newitem
 
 # The child indices of heap index pos are already heaps, und we want to make
@@ -237,7 +237,7 @@ def _siftdown(heap, startpos, pos):
 # pos up (and so on mit that child's children, etc) until hitting a leaf,
 # then using _siftdown to move the oddball originally at index pos into place.
 #
-# We *could* break out of the loop als soon als we find a pos where newitem <=
+# We *could* breche out of the loop als soon als we find a pos where newitem <=
 # both its children, but turns out that's nicht a good idea, und despite that
 # many books write the algorithm that way.  During a heap pop, the last array
 # element is sifted in, und that tends to be large, so that comparing it
@@ -277,7 +277,7 @@ def _siftup(heap, pos):
     newitem = heap[pos]
     # Bubble up the smaller child until hitting a leaf.
     childpos = 2*pos + 1    # leftmost child position
-    while childpos < endpos:
+    waehrend childpos < endpos:
         # Set childpos to index of smaller child.
         rightpos = childpos + 1
         wenn rightpos < endpos und nicht heap[childpos] < heap[rightpos]:
@@ -296,14 +296,14 @@ def _siftdown_max(heap, startpos, pos):
     newitem = heap[pos]
     # Follow the path to the root, moving parents down until finding a place
     # newitem fits.
-    while pos > startpos:
+    waehrend pos > startpos:
         parentpos = (pos - 1) >> 1
         parent = heap[parentpos]
         wenn parent < newitem:
             heap[pos] = parent
             pos = parentpos
-            continue
-        break
+            weiter
+        breche
     heap[pos] = newitem
 
 def _siftup_max(heap, pos):
@@ -313,7 +313,7 @@ def _siftup_max(heap, pos):
     newitem = heap[pos]
     # Bubble up the larger child until hitting a leaf.
     childpos = 2*pos + 1    # leftmost child position
-    while childpos < endpos:
+    waehrend childpos < endpos:
         # Set childpos to index of larger child.
         rightpos = childpos + 1
         wenn rightpos < endpos und nicht heap[rightpos] < heap[childpos]:
@@ -367,9 +367,9 @@ def merge(*iterables, key=Nichts, reverse=Falsch):
             except StopIteration:
                 pass
         _heapify(h)
-        while len(h) > 1:
+        waehrend len(h) > 1:
             try:
-                while Wahr:
+                waehrend Wahr:
                     value, order, next = s = h[0]
                     yield value
                     s[0] = next()           # raises StopIteration when exhausted
@@ -391,9 +391,9 @@ def merge(*iterables, key=Nichts, reverse=Falsch):
         except StopIteration:
             pass
     _heapify(h)
-    while len(h) > 1:
+    waehrend len(h) > 1:
         try:
-            while Wahr:
+            waehrend Wahr:
                 key_value, order, value, next = s = h[0]
                 yield value
                 value = next()
@@ -411,7 +411,7 @@ def merge(*iterables, key=Nichts, reverse=Falsch):
 # Algorithm notes fuer nlargest() und nsmallest()
 # ==============================================
 #
-# Make a single pass over the data while keeping the k most extreme values
+# Make a single pass over the data waehrend keeping the k most extreme values
 # in a heap.  Memory consumption is limited to keeping k values in a list.
 #
 # Measured performance fuer random inputs:

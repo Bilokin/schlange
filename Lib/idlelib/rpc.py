@@ -307,7 +307,7 @@ klasse SocketIO:
         self.debug("_getresponse:myseq:", myseq)
         wenn threading.current_thread() is self.sockthread:
             # this thread does all reading of requests oder responses
-            while Wahr:
+            waehrend Wahr:
                 response = self.pollresponse(myseq, wait)
                 wenn response is nicht Nichts:
                     return response
@@ -315,7 +315,7 @@ klasse SocketIO:
             # wait fuer notification von socket handling thread
             cvar = self.cvars[myseq]
             cvar.acquire()
-            while myseq nicht in self.responses:
+            waehrend myseq nicht in self.responses:
                 cvar.wait()
             response = self.responses[myseq]
             self.debug("_getresponse:%s: thread woke up: response: %s" %
@@ -337,7 +337,7 @@ klasse SocketIO:
             drucke("Cannot pickle:", repr(message), file=sys.__stderr__)
             raise
         s = struct.pack("<i", len(s)) + s
-        while len(s) > 0:
+        waehrend len(s) > 0:
             try:
                 r, w, x = select.select([], [self.sock], [])
                 n = self.sock.send(s[:BUFSIZE])
@@ -417,7 +417,7 @@ klasse SocketIO:
         self.responses und notify the owning thread.
 
         """
-        while Wahr:
+        waehrend Wahr:
             # send queued response wenn there is one available
             try:
                 qmsg = response_queue.get(0)
@@ -451,7 +451,7 @@ klasse SocketIO:
                 sowenn how == "QUEUE":
                     # don't acknowledge the 'queue' request!
                     pass
-                continue
+                weiter
             # return wenn completed message transaction
             sowenn seq == myseq:
                 return resq
@@ -465,7 +465,7 @@ klasse SocketIO:
                     self.responses[seq] = resq
                     cv.notify()
                     cv.release()
-                continue
+                weiter
 
     def handle_EOF(self):
         "action taken upon link being closed by peer"
@@ -621,7 +621,7 @@ def displayhook(value):
     try:
         sys.stdout.write(text)
     except UnicodeEncodeError:
-        # let's use ascii while utf8-bmp codec doesn't present
+        # let's use ascii waehrend utf8-bmp codec doesn't present
         encoding = 'ascii'
         bytes = text.encode(encoding, 'backslashreplace')
         text = bytes.decode(encoding, 'strict')
