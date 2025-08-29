@@ -22,7 +22,6 @@ static KeywordToken *reserved_keywords[] = {
     (KeywordToken[]) {{NULL, -1}},
     (KeywordToken[]) {
         {"in", 700},
-        {"or", 589},
         {"is", 597},
         {NULL, -1},
     },
@@ -33,8 +32,7 @@ static KeywordToken *reserved_keywords[] = {
         {"mit", 652},
         {"try", 661},
         {"als", 685},
-        {"and", 590},
-        {"not", 708},
+        {"und", 590},
         {NULL, -1},
     },
     (KeywordToken[]) {
@@ -42,6 +40,7 @@ static KeywordToken *reserved_keywords[] = {
         {"wenn", 687},
         {"fuer", 699},
         {"Wahr", 623},
+        {"oder", 589},
         {NULL, -1},
     },
     (KeywordToken[]) {
@@ -51,6 +50,7 @@ static KeywordToken *reserved_keywords[] = {
         {"async", 703},
         {"while", 694},
         {"sonst", 691},
+        {"nicht", 708},
         {"await", 598},
         {NULL, -1},
     },
@@ -12152,7 +12152,7 @@ named_expression_rule(Parser *p)
     return _res;
 }
 
-// disjunction: conjunction (('or' conjunction))+ | conjunction
+// disjunction: conjunction (('oder' conjunction))+ | conjunction
 static expr_ty
 disjunction_rule(Parser *p)
 {
@@ -12178,21 +12178,21 @@ disjunction_rule(Parser *p)
     UNUSED(_start_lineno); // Only used by EXTRA macro
     int _start_col_offset = p->tokens[_mark]->col_offset;
     UNUSED(_start_col_offset); // Only used by EXTRA macro
-    { // conjunction (('or' conjunction))+
+    { // conjunction (('oder' conjunction))+
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> disjunction[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "conjunction (('or' conjunction))+"));
+        D(fprintf(stderr, "%*c> disjunction[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "conjunction (('oder' conjunction))+"));
         expr_ty a;
         asdl_seq * b;
         if (
             (a = conjunction_rule(p))  // conjunction
             &&
-            (b = _loop1_59_rule(p))  // (('or' conjunction))+
+            (b = _loop1_59_rule(p))  // (('oder' conjunction))+
         )
         {
-            D(fprintf(stderr, "%*c+ disjunction[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "conjunction (('or' conjunction))+"));
+            D(fprintf(stderr, "%*c+ disjunction[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "conjunction (('oder' conjunction))+"));
             Token *_token = _PyPegen_get_last_nonnwhitespace_token(p);
             if (_token == NULL) {
                 p->level--;
@@ -12212,7 +12212,7 @@ disjunction_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s disjunction[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "conjunction (('or' conjunction))+"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "conjunction (('oder' conjunction))+"));
     }
     { // conjunction
         if (p->error_indicator) {
@@ -12240,7 +12240,7 @@ disjunction_rule(Parser *p)
     return _res;
 }
 
-// conjunction: inversion (('and' inversion))+ | inversion
+// conjunction: inversion (('und' inversion))+ | inversion
 static expr_ty
 conjunction_rule(Parser *p)
 {
@@ -12266,21 +12266,21 @@ conjunction_rule(Parser *p)
     UNUSED(_start_lineno); // Only used by EXTRA macro
     int _start_col_offset = p->tokens[_mark]->col_offset;
     UNUSED(_start_col_offset); // Only used by EXTRA macro
-    { // inversion (('and' inversion))+
+    { // inversion (('und' inversion))+
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> conjunction[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "inversion (('and' inversion))+"));
+        D(fprintf(stderr, "%*c> conjunction[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "inversion (('und' inversion))+"));
         expr_ty a;
         asdl_seq * b;
         if (
             (a = inversion_rule(p))  // inversion
             &&
-            (b = _loop1_60_rule(p))  // (('and' inversion))+
+            (b = _loop1_60_rule(p))  // (('und' inversion))+
         )
         {
-            D(fprintf(stderr, "%*c+ conjunction[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "inversion (('and' inversion))+"));
+            D(fprintf(stderr, "%*c+ conjunction[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "inversion (('und' inversion))+"));
             Token *_token = _PyPegen_get_last_nonnwhitespace_token(p);
             if (_token == NULL) {
                 p->level--;
@@ -12300,7 +12300,7 @@ conjunction_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s conjunction[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "inversion (('and' inversion))+"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "inversion (('und' inversion))+"));
     }
     { // inversion
         if (p->error_indicator) {
@@ -12328,7 +12328,7 @@ conjunction_rule(Parser *p)
     return _res;
 }
 
-// inversion: 'not' inversion | comparison
+// inversion: 'nicht' inversion | comparison
 static expr_ty
 inversion_rule(Parser *p)
 {
@@ -12354,21 +12354,21 @@ inversion_rule(Parser *p)
     UNUSED(_start_lineno); // Only used by EXTRA macro
     int _start_col_offset = p->tokens[_mark]->col_offset;
     UNUSED(_start_col_offset); // Only used by EXTRA macro
-    { // 'not' inversion
+    { // 'nicht' inversion
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> inversion[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'not' inversion"));
+        D(fprintf(stderr, "%*c> inversion[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'nicht' inversion"));
         Token * _keyword;
         expr_ty a;
         if (
-            (_keyword = _PyPegen_expect_token(p, 708))  // token='not'
+            (_keyword = _PyPegen_expect_token(p, 708))  // token='nicht'
             &&
             (a = inversion_rule(p))  // inversion
         )
         {
-            D(fprintf(stderr, "%*c+ inversion[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'not' inversion"));
+            D(fprintf(stderr, "%*c+ inversion[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'nicht' inversion"));
             Token *_token = _PyPegen_get_last_nonnwhitespace_token(p);
             if (_token == NULL) {
                 p->level--;
@@ -12388,7 +12388,7 @@ inversion_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s inversion[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'not' inversion"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'nicht' inversion"));
     }
     { // comparison
         if (p->error_indicator) {
@@ -12994,7 +12994,7 @@ gt_bitwise_or_rule(Parser *p)
     return _res;
 }
 
-// notin_bitwise_or: 'not' 'in' bitwise_or
+// notin_bitwise_or: 'nicht' 'in' bitwise_or
 static CmpopExprPair*
 notin_bitwise_or_rule(Parser *p)
 {
@@ -13007,24 +13007,24 @@ notin_bitwise_or_rule(Parser *p)
     }
     CmpopExprPair* _res = NULL;
     int _mark = p->mark;
-    { // 'not' 'in' bitwise_or
+    { // 'nicht' 'in' bitwise_or
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> notin_bitwise_or[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'not' 'in' bitwise_or"));
+        D(fprintf(stderr, "%*c> notin_bitwise_or[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'nicht' 'in' bitwise_or"));
         Token * _keyword;
         Token * _keyword_1;
         expr_ty a;
         if (
-            (_keyword = _PyPegen_expect_token(p, 708))  // token='not'
+            (_keyword = _PyPegen_expect_token(p, 708))  // token='nicht'
             &&
             (_keyword_1 = _PyPegen_expect_token(p, 700))  // token='in'
             &&
             (a = bitwise_or_rule(p))  // bitwise_or
         )
         {
-            D(fprintf(stderr, "%*c+ notin_bitwise_or[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'not' 'in' bitwise_or"));
+            D(fprintf(stderr, "%*c+ notin_bitwise_or[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'nicht' 'in' bitwise_or"));
             _res = _PyPegen_cmpop_expr_pair ( p , NotIn , a );
             if (_res == NULL && PyErr_Occurred()) {
                 p->error_indicator = 1;
@@ -13035,7 +13035,7 @@ notin_bitwise_or_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s notin_bitwise_or[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'not' 'in' bitwise_or"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'nicht' 'in' bitwise_or"));
     }
     _res = NULL;
   done:
@@ -13089,7 +13089,7 @@ in_bitwise_or_rule(Parser *p)
     return _res;
 }
 
-// isnot_bitwise_or: 'is' 'not' bitwise_or
+// isnot_bitwise_or: 'is' 'nicht' bitwise_or
 static CmpopExprPair*
 isnot_bitwise_or_rule(Parser *p)
 {
@@ -13102,24 +13102,24 @@ isnot_bitwise_or_rule(Parser *p)
     }
     CmpopExprPair* _res = NULL;
     int _mark = p->mark;
-    { // 'is' 'not' bitwise_or
+    { // 'is' 'nicht' bitwise_or
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> isnot_bitwise_or[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'is' 'not' bitwise_or"));
+        D(fprintf(stderr, "%*c> isnot_bitwise_or[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'is' 'nicht' bitwise_or"));
         Token * _keyword;
         Token * _keyword_1;
         expr_ty a;
         if (
             (_keyword = _PyPegen_expect_token(p, 597))  // token='is'
             &&
-            (_keyword_1 = _PyPegen_expect_token(p, 708))  // token='not'
+            (_keyword_1 = _PyPegen_expect_token(p, 708))  // token='nicht'
             &&
             (a = bitwise_or_rule(p))  // bitwise_or
         )
         {
-            D(fprintf(stderr, "%*c+ isnot_bitwise_or[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'is' 'not' bitwise_or"));
+            D(fprintf(stderr, "%*c+ isnot_bitwise_or[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'is' 'nicht' bitwise_or"));
             _res = _PyPegen_cmpop_expr_pair ( p , IsNot , a );
             if (_res == NULL && PyErr_Occurred()) {
                 p->error_indicator = 1;
@@ -13130,7 +13130,7 @@ isnot_bitwise_or_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s isnot_bitwise_or[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'is' 'not' bitwise_or"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'is' 'nicht' bitwise_or"));
     }
     _res = NULL;
   done:
@@ -27260,7 +27260,7 @@ invalid_string_tstring_concat_rule(Parser *p)
     return _res;
 }
 
-// invalid_arithmetic: sum ('+' | '-' | '*' | '/' | '%' | '//' | '@') 'not' inversion
+// invalid_arithmetic: sum ('+' | '-' | '*' | '/' | '%' | '//' | '@') 'nicht' inversion
 static void *
 invalid_arithmetic_rule(Parser *p)
 {
@@ -27273,12 +27273,12 @@ invalid_arithmetic_rule(Parser *p)
     }
     void * _res = NULL;
     int _mark = p->mark;
-    { // sum ('+' | '-' | '*' | '/' | '%' | '//' | '@') 'not' inversion
+    { // sum ('+' | '-' | '*' | '/' | '%' | '//' | '@') 'nicht' inversion
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> invalid_arithmetic[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "sum ('+' | '-' | '*' | '/' | '%' | '//' | '@') 'not' inversion"));
+        D(fprintf(stderr, "%*c> invalid_arithmetic[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "sum ('+' | '-' | '*' | '/' | '%' | '//' | '@') 'nicht' inversion"));
         void *_tmp_154_var;
         Token * a;
         expr_ty b;
@@ -27288,13 +27288,13 @@ invalid_arithmetic_rule(Parser *p)
             &&
             (_tmp_154_var = _tmp_154_rule(p))  // '+' | '-' | '*' | '/' | '%' | '//' | '@'
             &&
-            (a = _PyPegen_expect_token(p, 708))  // token='not'
+            (a = _PyPegen_expect_token(p, 708))  // token='nicht'
             &&
             (b = inversion_rule(p))  // inversion
         )
         {
-            D(fprintf(stderr, "%*c+ invalid_arithmetic[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "sum ('+' | '-' | '*' | '/' | '%' | '//' | '@') 'not' inversion"));
-            _res = RAISE_SYNTAX_ERROR_KNOWN_RANGE ( a , b , "'not' after an operator must be parenthesized" );
+            D(fprintf(stderr, "%*c+ invalid_arithmetic[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "sum ('+' | '-' | '*' | '/' | '%' | '//' | '@') 'nicht' inversion"));
+            _res = RAISE_SYNTAX_ERROR_KNOWN_RANGE ( a , b , "'nicht' after an operator must be parenthesized" );
             if (_res == NULL && PyErr_Occurred()) {
                 p->error_indicator = 1;
                 p->level--;
@@ -27304,7 +27304,7 @@ invalid_arithmetic_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s invalid_arithmetic[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "sum ('+' | '-' | '*' | '/' | '%' | '//' | '@') 'not' inversion"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "sum ('+' | '-' | '*' | '/' | '%' | '//' | '@') 'nicht' inversion"));
     }
     _res = NULL;
   done:
@@ -27312,7 +27312,7 @@ invalid_arithmetic_rule(Parser *p)
     return _res;
 }
 
-// invalid_factor: ('+' | '-' | '~') 'not' factor
+// invalid_factor: ('+' | '-' | '~') 'nicht' factor
 static void *
 invalid_factor_rule(Parser *p)
 {
@@ -27325,25 +27325,25 @@ invalid_factor_rule(Parser *p)
     }
     void * _res = NULL;
     int _mark = p->mark;
-    { // ('+' | '-' | '~') 'not' factor
+    { // ('+' | '-' | '~') 'nicht' factor
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> invalid_factor[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "('+' | '-' | '~') 'not' factor"));
+        D(fprintf(stderr, "%*c> invalid_factor[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "('+' | '-' | '~') 'nicht' factor"));
         void *_tmp_155_var;
         Token * a;
         expr_ty b;
         if (
             (_tmp_155_var = _tmp_155_rule(p))  // '+' | '-' | '~'
             &&
-            (a = _PyPegen_expect_token(p, 708))  // token='not'
+            (a = _PyPegen_expect_token(p, 708))  // token='nicht'
             &&
             (b = factor_rule(p))  // factor
         )
         {
-            D(fprintf(stderr, "%*c+ invalid_factor[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "('+' | '-' | '~') 'not' factor"));
-            _res = RAISE_SYNTAX_ERROR_KNOWN_RANGE ( a , b , "'not' after an operator must be parenthesized" );
+            D(fprintf(stderr, "%*c+ invalid_factor[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "('+' | '-' | '~') 'nicht' factor"));
+            _res = RAISE_SYNTAX_ERROR_KNOWN_RANGE ( a , b , "'nicht' after an operator must be parenthesized" );
             if (_res == NULL && PyErr_Occurred()) {
                 p->error_indicator = 1;
                 p->level--;
@@ -27353,7 +27353,7 @@ invalid_factor_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s invalid_factor[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "('+' | '-' | '~') 'not' factor"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "('+' | '-' | '~') 'nicht' factor"));
     }
     _res = NULL;
   done:
@@ -31014,7 +31014,7 @@ _gather_58_rule(Parser *p)
     return _res;
 }
 
-// _loop1_59: ('or' conjunction)
+// _loop1_59: ('oder' conjunction)
 static asdl_seq *
 _loop1_59_rule(Parser *p)
 {
@@ -31036,15 +31036,15 @@ _loop1_59_rule(Parser *p)
     }
     Py_ssize_t _children_capacity = 1;
     Py_ssize_t _n = 0;
-    { // ('or' conjunction)
+    { // ('oder' conjunction)
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> _loop1_59[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "('or' conjunction)"));
+        D(fprintf(stderr, "%*c> _loop1_59[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "('oder' conjunction)"));
         void *_tmp_160_var;
         while (
-            (_tmp_160_var = _tmp_160_rule(p))  // 'or' conjunction
+            (_tmp_160_var = _tmp_160_rule(p))  // 'oder' conjunction
         )
         {
             _res = _tmp_160_var;
@@ -31065,7 +31065,7 @@ _loop1_59_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s _loop1_59[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "('or' conjunction)"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "('oder' conjunction)"));
     }
     if (_n == 0 || p->error_indicator) {
         PyMem_Free(_children);
@@ -31086,7 +31086,7 @@ _loop1_59_rule(Parser *p)
     return _seq;
 }
 
-// _loop1_60: ('and' inversion)
+// _loop1_60: ('und' inversion)
 static asdl_seq *
 _loop1_60_rule(Parser *p)
 {
@@ -31108,15 +31108,15 @@ _loop1_60_rule(Parser *p)
     }
     Py_ssize_t _children_capacity = 1;
     Py_ssize_t _n = 0;
-    { // ('and' inversion)
+    { // ('und' inversion)
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> _loop1_60[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "('and' inversion)"));
+        D(fprintf(stderr, "%*c> _loop1_60[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "('und' inversion)"));
         void *_tmp_161_var;
         while (
-            (_tmp_161_var = _tmp_161_rule(p))  // 'and' inversion
+            (_tmp_161_var = _tmp_161_rule(p))  // 'und' inversion
         )
         {
             _res = _tmp_161_var;
@@ -31137,7 +31137,7 @@ _loop1_60_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s _loop1_60[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "('and' inversion)"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "('und' inversion)"));
     }
     if (_n == 0 || p->error_indicator) {
         PyMem_Free(_children);
@@ -37278,7 +37278,7 @@ _tmp_159_rule(Parser *p)
     return _res;
 }
 
-// _tmp_160: 'or' conjunction
+// _tmp_160: 'oder' conjunction
 static void *
 _tmp_160_rule(Parser *p)
 {
@@ -37291,21 +37291,21 @@ _tmp_160_rule(Parser *p)
     }
     void * _res = NULL;
     int _mark = p->mark;
-    { // 'or' conjunction
+    { // 'oder' conjunction
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> _tmp_160[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'or' conjunction"));
+        D(fprintf(stderr, "%*c> _tmp_160[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'oder' conjunction"));
         Token * _keyword;
         expr_ty c;
         if (
-            (_keyword = _PyPegen_expect_token(p, 589))  // token='or'
+            (_keyword = _PyPegen_expect_token(p, 589))  // token='oder'
             &&
             (c = conjunction_rule(p))  // conjunction
         )
         {
-            D(fprintf(stderr, "%*c+ _tmp_160[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'or' conjunction"));
+            D(fprintf(stderr, "%*c+ _tmp_160[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'oder' conjunction"));
             _res = c;
             if (_res == NULL && PyErr_Occurred()) {
                 p->error_indicator = 1;
@@ -37316,7 +37316,7 @@ _tmp_160_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s _tmp_160[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'or' conjunction"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'oder' conjunction"));
     }
     _res = NULL;
   done:
@@ -37324,7 +37324,7 @@ _tmp_160_rule(Parser *p)
     return _res;
 }
 
-// _tmp_161: 'and' inversion
+// _tmp_161: 'und' inversion
 static void *
 _tmp_161_rule(Parser *p)
 {
@@ -37337,21 +37337,21 @@ _tmp_161_rule(Parser *p)
     }
     void * _res = NULL;
     int _mark = p->mark;
-    { // 'and' inversion
+    { // 'und' inversion
         if (p->error_indicator) {
             p->level--;
             return NULL;
         }
-        D(fprintf(stderr, "%*c> _tmp_161[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'and' inversion"));
+        D(fprintf(stderr, "%*c> _tmp_161[%d-%d]: %s\n", p->level, ' ', _mark, p->mark, "'und' inversion"));
         Token * _keyword;
         expr_ty c;
         if (
-            (_keyword = _PyPegen_expect_token(p, 590))  // token='and'
+            (_keyword = _PyPegen_expect_token(p, 590))  // token='und'
             &&
             (c = inversion_rule(p))  // inversion
         )
         {
-            D(fprintf(stderr, "%*c+ _tmp_161[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'and' inversion"));
+            D(fprintf(stderr, "%*c+ _tmp_161[%d-%d]: %s succeeded!\n", p->level, ' ', _mark, p->mark, "'und' inversion"));
             _res = c;
             if (_res == NULL && PyErr_Occurred()) {
                 p->error_indicator = 1;
@@ -37362,7 +37362,7 @@ _tmp_161_rule(Parser *p)
         }
         p->mark = _mark;
         D(fprintf(stderr, "%*c%s _tmp_161[%d-%d]: %s failed!\n", p->level, ' ',
-                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'and' inversion"));
+                  p->error_indicator ? "ERROR!" : "-", _mark, p->mark, "'und' inversion"));
     }
     _res = NULL;
   done:
